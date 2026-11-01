@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "item": "minecraft:diamond_shovel"
+    },
+    {
+      "item": "aptitudes:soul_shard"
+    },
+    {
+      "item": "aptitudes:soul_shard"
+    },
+    {
+      "item": "aptitudes:soul_shard"
+    }
+  ],
+  "result": {
+    "id": "aptitudes:soul_shovel",
+    "count": 1
+  }
+}

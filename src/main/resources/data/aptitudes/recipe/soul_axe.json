@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "item": "minecraft:diamond_axe"
+    },
+    {
+      "item": "aptitudes:soul_shard"
+    },
+    {
+      "item": "aptitudes:soul_shard"
+    },
+    {
+      "item": "aptitudes:soul_shard"
+    }
+  ],
+  "result": {
+    "id": "aptitudes:soul_axe",
+    "count": 1
+  }
+}

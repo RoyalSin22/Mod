@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "dev.aptitudes.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"LivingEntityMixin",
+		"MerchantEntityMixin",
+		"MobEntityMixin",
+		"PlayerEntityMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

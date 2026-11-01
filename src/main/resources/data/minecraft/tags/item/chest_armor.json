@@ -1,0 +1,19 @@
+{
+  "replace": false,
+  "values": [
+    "aptitudes:berserker_chestplate",
+    "aptitudes:mage_chestplate",
+    "aptitudes:assassin_chestplate",
+    "aptitudes:herbalist_chestplate",
+    "aptitudes:engineer_chestplate",
+    "aptitudes:lancer_chestplate",
+    "aptitudes:swordsman_chestplate",
+    "aptitudes:paladin_chestplate",
+    "aptitudes:necromancer_chestplate",
+    "aptitudes:druid_chestplate",
+    "aptitudes:merchant_chestplate",
+    "aptitudes:monk_chestplate",
+    "aptitudes:elementalist_chestplate",
+    "aptitudes:shapeshifter_chestplate"
+  ]
+}
