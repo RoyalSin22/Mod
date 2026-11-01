@@ -80,6 +80,26 @@ public final class ModItems {
 	public static final Item MIMIC_MASK = register("mimic_mask",
 			new MimicMaskItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE)));
 
+	// ------------------------------------------------- Ítems de los roles nuevos
+
+	public static final Item ARCANE_REVOLVER = register("arcane_revolver",
+			new HitscanWeaponItem(HitscanWeaponItem.Kind.REVOLVER, new Item.Settings().maxCount(1).rarity(Rarity.RARE)));
+
+	public static final Item WEAPON_SIGIL = register("weapon_sigil",
+			new HitscanWeaponItem(HitscanWeaponItem.Kind.BLADE, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
+
+	/** Cuchillo de caza (Cazador): rápido y ligero. */
+	public static final Item HUNTING_KNIFE = register("hunting_knife", new SwordItem(ToolMaterials.IRON,
+			new Item.Settings().attributeModifiers(SwordItem.createAttributeModifiers(ToolMaterials.IRON, 2, -1.8f))));
+
+	public static final Item LUTE = register("lute", new LuteItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
+
+	public static final Item PACT_TALISMAN = register("pact_talisman",
+			new HitscanWeaponItem(HitscanWeaponItem.Kind.CURSE, new Item.Settings().maxCount(1).rarity(Rarity.RARE)));
+
+	public static final Item BEAST_WHISTLE = register("beast_whistle",
+			new BeastWhistleItem(new Item.Settings().maxCount(1)));
+
 	/** Requisito para evolucionar un rol a Maestro (se consume). */
 	public static final Item MASTERY_EMBLEM = register("mastery_emblem",
 			new Item(new Item.Settings().maxCount(16).rarity(Rarity.RARE)));
@@ -142,6 +162,12 @@ public final class ModItems {
 						entries.add(HAND_WRAPS);
 						entries.add(ELEMENTAL_ORB);
 						entries.add(MIMIC_MASK);
+						entries.add(ARCANE_REVOLVER);
+						entries.add(WEAPON_SIGIL);
+						entries.add(HUNTING_KNIFE);
+						entries.add(LUTE);
+						entries.add(PACT_TALISMAN);
+						entries.add(BEAST_WHISTLE);
 						entries.add(dev.aptitudes.block.ModBlocks.BONFIRE_ITEM);
 						entries.add(MASTERY_EMBLEM);
 						entries.add(ULTIMATE_CORE);

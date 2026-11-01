@@ -26,7 +26,13 @@ public enum RoleResource {
 	GOLD(0xFFC107, false),       // Mercader
 	CHI(0xFF7043, true),         // Monje: también meditando (agachado e inmóvil)
 	RESONANCE(0x29B6F6, false),  // Elementalista
-	ESSENCE(0xBA68C8, false);    // Cambiaformas: también estando transformado
+	ESSENCE(0xBA68C8, false),    // Cambiaformas: también estando transformado
+	CYLINDER(0x26C6DA, true),    // Mago pistolero
+	ARSENAL(0xB0BEC5, false),    // Invocador de armas
+	TRACKING(0x9CCC65, true),    // Cazador
+	HARMONY(0xF48FB1, false),    // Bardo
+	CORRUPTION(0xC2185B, false), // Brujo
+	BOND(0xBCAAA4, false);       // Domador
 
 	public static final float MAX = 100f;
 	public static final float EMPOWER_COST = 50f;
@@ -62,6 +68,12 @@ public enum RoleResource {
 			case MONK -> CHI;
 			case ELEMENTALIST -> RESONANCE;
 			case SHAPESHIFTER -> ESSENCE;
+			case GUNSLINGER -> CYLINDER;
+			case WEAPON_SUMMONER -> ARSENAL;
+			case HUNTER -> TRACKING;
+			case BARD -> HARMONY;
+			case WARLOCK -> CORRUPTION;
+			case TAMER -> BOND;
 		};
 	}
 }

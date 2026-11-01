@@ -254,6 +254,7 @@ public final class RolePassives {
 		}
 		drain(player, result);
 		RoleArmorSets.afterOutgoing(player, result);
+		NewRoles.afterOutgoing(player, result, direct);
 		return result;
 	}
 

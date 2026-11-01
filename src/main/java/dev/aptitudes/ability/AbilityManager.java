@@ -179,15 +179,24 @@ public final class AbilityManager {
 		CastFx.onCast(player, role, slot == ULTIMATE_SLOT ? CastFx.Kind.ULTIMATE
 				: slot == SIGNATURE_SLOT ? CastFx.Kind.SIGNATURE : CastFx.Kind.ACTIVE);
 		if (empowered) RoleResources.consumeEmpower(player, role);
-		RoleMechanics.onCast(player, role, energyCost);
 		cooldowns(player).put(cooldownKey, now + cooldown);
 		if (ServerPlayNetworking.canSend(player, CooldownPayload.ID)) {
 			ServerPlayNetworking.send(player, new CooldownPayload(slot, cooldown));
 		}
+		RoleMechanics.onCast(player, role, energyCost);
+		NewRoles.onCast(player, role, cooldownKey, slot);
 		sendEnergy(player, false);
 		RoleManager.addRoleXp(player, role, Aptitudes.config().roleXpPerAbilityUse);
 		RoleManager.recordTrial(player, role, Evolution.TrialType.ABILITY_USES, 1);
 		dev.aptitudes.unique.UniqueEffects.recordAbility(player, cooldownKey);
+	}
+
+	/** Quita el enfriamiento de una habilidad (Bardo – Bis) y avisa al HUD. */
+	public static void resetCooldown(ServerPlayerEntity player, String cooldownKey, int slot) {
+		cooldowns(player).remove(cooldownKey);
+		if (ServerPlayNetworking.canSend(player, CooldownPayload.ID)) {
+			ServerPlayNetworking.send(player, new CooldownPayload(slot, 0));
+		}
 	}
 
 	/** Tope del rango efectivo de las activas (evolución + recurso): evita valores absurdos en las fórmulas. */

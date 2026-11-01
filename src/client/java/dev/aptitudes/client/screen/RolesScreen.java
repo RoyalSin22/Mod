@@ -57,8 +57,13 @@ public class RolesScreen extends Screen {
 		}
 	}
 
-	private static final int COL_W = 36;
-	private static final int ROW_H = 29;
+	/** X local de cada columna: tres zonas (pasivas 0-2, sendas 3-5, activas 6-8) con separación entre zonas. */
+	private static final int[] COL_X = {8, 46, 84, 136, 194, 252, 304, 342, 380};
+	private static final int ROW_H = 38;
+	/** Zonas del árbol: x inicial, x final, color y clave del título. */
+	private static final int[][] ZONES = {{0, 112, 0x182A3A55}, {124, 288, 0x18C9A54C}, {296, 412, 0x18E57373}};
+	private static final String[] ZONE_KEYS = {"screen.aptitudes.tree.passives", "screen.aptitudes.tree.paths",
+			"screen.aptitudes.tree.actives"};
 	/** Colores de las tres sendas (A, B, C). */
 	private static final int[] PATH_COLORS = {0xFFE57373, 0xFF64B5F6, 0xFF81C784};
 
@@ -93,8 +98,8 @@ public class RolesScreen extends Screen {
 	// Coordenadas LOCALES del árbol (antes de desplazar y escalar la vista).
 	private int gridX() { return 40; }
 	private int gridY() { return 8; }
-	private static final int CONTENT_W = 296;
-	private static final int CONTENT_H = 214;
+	private static final int CONTENT_W = 416;
+	private static final int CONTENT_H = 8 + ROW_H * 6 + 24 + 14;
 
 	// Vista del árbol: desplazamiento (arrastrar) y zoom (rueda).
 	private double panX;
@@ -272,14 +277,14 @@ public class RolesScreen extends Screen {
 	private List<NodeView> nodes() {
 		List<NodeView> out = new ArrayList<>();
 		// Columna izquierda: núcleo, característica y definitiva.
-		int sx = 8;
-		out.add(new NodeView(NodeKind.CORE, null, sx, gridY()));
-		out.add(new NodeView(NodeKind.SIGNATURE, null, sx, gridY() + ROW_H * 2));
-		out.add(new NodeView(NodeKind.ULTIMATE, null, sx, gridY() + ROW_H * 4));
+		// Fila 0, centro: característica · núcleo · definitiva.
+		out.add(new NodeView(NodeKind.CORE, null, COL_X[4], gridY()));
+		out.add(new NodeView(NodeKind.SIGNATURE, null, COL_X[3], gridY()));
+		out.add(new NodeView(NodeKind.ULTIMATE, null, COL_X[5], gridY()));
 		for (RoleNode node : RoleTree.nodes(selected)) {
 			RoleTree.GridPos pos = RoleTree.position(node.id());
 			if (pos == null) continue;
-			out.add(new NodeView(NodeKind.NODE, node, gridX() + pos.col() * COL_W, gridY() + pos.row() * ROW_H));
+			out.add(new NodeView(NodeKind.NODE, node, COL_X[Math.min(8, pos.col())], gridY() + pos.row() * ROW_H));
 		}
 		return out;
 	}
@@ -534,24 +539,22 @@ public class RolesScreen extends Screen {
 	private List<Text> renderTreeLocal(DrawContext ctx, RoleSyncPayload data, int mouseX, int mouseY) {
 		List<NodeView> views = nodes();
 		int tier = data.tier(selected);
-		// Conexiones: cada nodo con su requisito; las raíces, con el núcleo.
+		renderZones(ctx);
+		// Conexiones en ángulo recto: cada nodo con su requisito; las raíces (fila 1), con el núcleo.
 		NodeView core = views.get(0);
+		NodeView sig = views.get(1);
+		NodeView ult = views.get(2);
 		for (NodeView v : views) {
 			if (v.node() == null) continue;
 			String pre = v.node().prerequisite();
-			NodeView parent = pre == null ? null : nodeView(pre);
+			NodeView parent = pre == null ? core : nodeView(pre);
+			if (parent == null) continue;
 			boolean on = data.rank(v.node().id()) > 0;
-			if (parent != null) {
-				line(ctx, parent, v, on ? UiStyle.GOLD_DARK : 0xFF2C3044);
-			} else if (RoleTree.position(v.node().id()) != null && RoleTree.position(v.node().id()).row() == 0
-					&& RoleTree.position(v.node().id()).col() <= 1) {
-				line(ctx, core, v, on ? UiStyle.GOLD_DARK : 0xFF262A3A);
-			}
+			boolean open = !on && available(data, v);
+			elbow(ctx, parent, v, on ? UiStyle.GOLD : open ? 0xFF6A7090 : 0xFF2C3044);
 		}
-		NodeView sig = views.get(1);
-		NodeView ult = views.get(2);
-		line(ctx, core, sig, tier >= Evolution.MASTER ? UiStyle.GOLD_DARK : 0xFF2C3044);
-		line(ctx, sig, ult, tier >= Evolution.ULTIMATE ? UiStyle.GOLD_DARK : 0xFF2C3044);
+		hline(ctx, sig, core, tier >= Evolution.MASTER ? UiStyle.GOLD : 0xFF2C3044);
+		hline(ctx, core, ult, tier >= Evolution.ULTIMATE ? UiStyle.GOLD : 0xFF2C3044);
 		renderPathLabels(ctx, data);
 
 		List<Text> tooltip = null;
@@ -610,8 +613,41 @@ public class RolesScreen extends Screen {
 		return tooltip;
 	}
 
-	private void line(DrawContext ctx, NodeView a, NodeView b, int color) {
-		UiStyle.line(ctx, a.x() + 11, a.y() + 11, b.x() + 11, b.y() + 11, color);
+	/** Conector en ángulo recto de 2 px: baja desde el padre, cruza en horizontal a media altura y baja al hijo. */
+	private void elbow(DrawContext ctx, NodeView parent, NodeView child, int color) {
+		int px = parent.x() + 11;
+		int cx = child.x() + 11;
+		int py = parent.y() + 24;
+		int cy = child.y();
+		int mid = cy - 7;
+		if (mid < py) mid = py + (cy - py) / 2;
+		ctx.fill(px, py, px + 2, mid + 2, color);
+		ctx.fill(Math.min(px, cx), mid, Math.max(px, cx) + 2, mid + 2, color);
+		ctx.fill(cx, mid, cx + 2, cy, color);
+	}
+
+	/** Conector horizontal entre dos casillas de la misma fila. */
+	private void hline(DrawContext ctx, NodeView a, NodeView b, int color) {
+		int y = a.y() + 11;
+		ctx.fill(a.x() + 24, y, b.x(), y + 2, color);
+	}
+
+	/** Fondos de las tres zonas del árbol con su título. */
+	private void renderZones(DrawContext ctx) {
+		int top = gridY() + ROW_H - 10;
+		int bottom = gridY() + ROW_H * 6 + 30;
+		for (int i = 0; i < ZONES.length; i++) {
+			int[] z = ZONES[i];
+			ctx.fill(z[0], top, z[1], bottom, z[2] | 0x20000000);
+			ctx.drawBorder(z[0], top, z[1] - z[0], bottom - top, (z[2] & 0xFFFFFF) | 0x50000000);
+			Text title = Text.translatable(ZONE_KEYS[i]);
+			int tw = (int) (textRenderer.getWidth(title) * 0.75f);
+			ctx.getMatrices().push();
+			ctx.getMatrices().translate((z[0] + z[1]) / 2f - tw / 2f, bottom - 9, 0);
+			ctx.getMatrices().scale(0.75f, 0.75f, 1f);
+			ctx.drawText(textRenderer, title, 0, 0, 0xFF8A8FA3, false);
+			ctx.getMatrices().pop();
+		}
 	}
 
 	/** Un nodo no aprendido cuyo requisito ya se cumple se oscurece menos. */
@@ -631,16 +667,21 @@ public class RolesScreen extends Screen {
 		};
 	}
 
-	/** Nombres de las tres sendas bajo sus columnas, escalonados para que no se solapen. */
+	/** Nombre de cada senda encima de su columna (letra pequeña), en su color. */
 	private void renderPathLabels(DrawContext ctx, RoleSyncPayload data) {
-		int y = gridY() + ROW_H * 5 + 2;
+		int y = gridY() + ROW_H * 3 - 9;
 		for (int path = 1; path <= 3; path++) {
-			Text name = Text.translatable(RoleTree.pathKey(selected, path));
-			int cx = gridX() + (1 + path) * COL_W + 12;
+			Text name = UiStyle.fit(textRenderer, Text.translatable(RoleTree.pathKey(selected, path)), 72);
+			int cx = COL_X[2 + path] + 12;
 			boolean locked = RoleTree.pathLocked(data::rank, selected, path);
 			boolean started = RoleTree.pathStarted(data::rank, selected, path);
-			int color = locked ? UiStyle.DOWN : started ? PATH_COLORS[path - 1] : UiStyle.MUTED;
-			ctx.drawText(textRenderer, name, cx - textRenderer.getWidth(name) / 2, y + (path - 1) * 9, color, false);
+			int color = locked ? UiStyle.DOWN : started ? PATH_COLORS[path - 1] : (PATH_COLORS[path - 1] & 0xFFFFFF) | 0xA0000000;
+			int w = (int) (textRenderer.getWidth(name) * 0.75f);
+			ctx.getMatrices().push();
+			ctx.getMatrices().translate(cx - w / 2f, y, 0);
+			ctx.getMatrices().scale(0.75f, 0.75f, 1f);
+			ctx.drawText(textRenderer, name, 0, 0, color, false);
+			ctx.getMatrices().pop();
 		}
 	}
 

@@ -47,6 +47,34 @@ public final class NodeIcons {
 		put("elemental_dominion", Items.HEART_OF_THE_SEA); put("elemental_burst", Items.FIRE_CHARGE);
 		put("mimicry", Items.SLIME_BALL); put("transform", Items.CREEPER_HEAD);
 		put("trickster", Items.JACK_O_LANTERN); put("form_power", Items.GUNPOWDER);
+		// Roles nuevos (v11)
+		put("quickdraw", Items.FEATHER); put("arcane_shot", Items.PRISMARINE_CRYSTALS);
+		put("eagle_eye", Items.SPYGLASS); put("fan_the_hammer", Items.FIREWORK_STAR);
+		put("arcane_cylinder", Items.HEART_OF_THE_SEA); put("dodge_roll", Items.RABBIT_FOOT);
+		put("reload", Items.GUNPOWDER); put("ricochet", Items.AMETHYST_SHARD);
+		put("deadeye", Items.ENDER_EYE); put("armory", Items.IRON_SWORD);
+		put("blade_volley", Items.GOLDEN_SWORD); put("blade_guard", Items.IRON_CHESTPLATE);
+		put("sword_rain", Items.DIAMOND_SWORD); put("floating_arsenal", Items.NETHERITE_SWORD);
+		put("intercepting_blade", Items.SHIELD); put("reforge", Items.ANVIL);
+		put("spectral_greatsword", Items.STONE_SWORD); put("blade_prison", Items.CHAIN);
+		put("predator", Items.BOW); put("hunters_mark", Items.TARGET);
+		put("tracker", Items.COMPASS); put("bear_trap", Items.TRIPWIRE_HOOK);
+		put("the_hunt", Items.CROSSBOW); put("camouflage", Items.FERN);
+		put("trophy", Items.LEATHER); put("arrow_volley", Items.SPECTRAL_ARROW);
+		put("falcon_strike", Items.FEATHER); put("inspiring_presence", Items.BELL);
+		put("song_of_valor", Items.GOAT_HORN); put("soothing_melody", Items.NOTE_BLOCK);
+		put("dissonance", Items.JUKEBOX); put("crescendo", Items.MUSIC_DISC_CAT);
+		put("encore", Items.MUSIC_DISC_13); put("lullaby", Items.WHITE_WOOL);
+		put("ballad_of_shielding", Items.SHIELD); put("requiem", Items.MUSIC_DISC_11);
+		put("dark_bargain", Items.NETHER_WART); put("curse_of_agony", Items.CRIMSON_FUNGUS);
+		put("soul_link", Items.CHAIN); put("abyssal_bolt", Items.ENDER_PEARL);
+		put("demonic_pact", Items.REDSTONE); put("demonic_ward", Items.CRYING_OBSIDIAN);
+		put("soul_feast", Items.SOUL_TORCH); put("summon_imps", Items.VEX_ARMOR_TRIM_SMITHING_TEMPLATE);
+		put("doom", Items.WITHER_SKELETON_SKULL); put("beast_bond", Items.LEAD);
+		put("sic_em", Items.BONE); put("pack_leader", Items.WOLF_ARMOR);
+		put("vital_bond", Items.GOLDEN_CARROT); put("companion", Items.NAME_TAG);
+		put("protective_instinct", Items.TURTLE_HELMET); put("feral_feast", Items.MUTTON);
+		put("stampede", Items.GOAT_HORN); put("alpha_roar", Items.SADDLE);
 		// Mecánicas, reactivas y activas C/D
 		put("frenzy", Items.REDSTONE_TORCH); put("unbreakable", Items.OBSIDIAN);
 		put("carnage", Items.BEEF); put("leap_slam", Items.ANVIL);
@@ -109,6 +137,12 @@ public final class NodeIcons {
 		sig(Role.MONK, Items.GOLDEN_APPLE, Items.ENCHANTED_GOLDEN_APPLE);
 		sig(Role.ELEMENTALIST, Items.COBBLESTONE_WALL, Items.NETHER_STAR);
 		sig(Role.SHAPESHIFTER, Items.EGG, Items.SCULK_SHRIEKER);
+		sig(Role.GUNSLINGER, Items.FIREWORK_ROCKET, Items.CLOCK);
+		sig(Role.WEAPON_SUMMONER, Items.DIAMOND_SWORD, Items.NETHERITE_SWORD);
+		sig(Role.HUNTER, Items.CROSSBOW, Items.SPECTRAL_ARROW);
+		sig(Role.BARD, Items.NOTE_BLOCK, Items.JUKEBOX);
+		sig(Role.WARLOCK, Items.END_PORTAL_FRAME, Items.WITHER_SKELETON_SKULL);
+		sig(Role.TAMER, Items.BONE, Items.IRON_BLOCK);
 	}
 
 	private NodeIcons() {

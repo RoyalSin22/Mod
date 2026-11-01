@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "  S",
+    " PS",
+    "PP "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:string"
+    },
+    "P": {
+      "item": "minecraft:oak_planks"
+    }
+  },
+  "result": {
+    "id": "aptitudes:lute",
+    "count": 1
+  }
+}

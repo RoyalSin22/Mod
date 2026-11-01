@@ -122,83 +122,113 @@ public final class AbilityHud {
 
 	// ----------------------------------------------------- Barras Souls
 
-	/** Vida, maná y aguante en barras largas arriba a la izquierda; su longitud crece con el máximo. */
+	/**
+	 * Barras arriba a la izquierda: icono + barra redondeada con degradado y brillo, valor
+	 * dentro de la barra. La longitud crece con el máximo (como en Souls).
+	 */
 	private static void renderSoulsBars(DrawContext ctx, TextRenderer text, RoleSyncPayload data, MinecraftClient client) {
 		ClientConfig cfg = ClientConfig.get();
 		var player = client.player;
+		int age = player.age;
 		ctx.getMatrices().push();
 		ctx.getMatrices().translate(6, 6, 0);
 		ctx.getMatrices().scale(cfg.hudScale, cfg.hudScale, 1f);
 		int y = 0;
 
-		// Vida (con absorción dorada y el trozo amarillo retrasado)
+		// Vida: trozo retrasado (daño reciente), absorción y latido con poca vida.
 		float health = player.getHealth();
 		float maxHealth = Math.max(1f, player.getMaxHealth());
 		if (laggedHealth < 0 || laggedHealth < health) laggedHealth = health;
 		else laggedHealth = Math.max(health, laggedHealth - Math.max(0.05f, (laggedHealth - health) * 0.04f));
-		int hw = Math.min(220, 70 + (int) (maxHealth * 3));
-		soulsFrame(ctx, 0, y, hw, 8);
-		fillBar(ctx, 0, y, hw, 8, laggedHealth / maxHealth, 0xFFB08A2E, 0xFFE0C060);
-		fillBar(ctx, 0, y, hw, 8, health / maxHealth, 0xFF7A1212, 0xFFC62828);
+		int hw = Math.min(200, 60 + (int) (maxHealth * 3));
+		boolean low = health / maxHealth < 0.25f;
+		icon(ctx, HEART, 0, y, low && (age / 5) % 2 == 0 ? 0xFFFF8A80 : 0xFFE53935);
+		pill(ctx, 12, y, hw, 9, laggedHealth / maxHealth, 0xFFFFF59D, 0xFFFFCA28, false);
+		pill(ctx, 12, y, hw, 9, health / maxHealth, 0xFFFF6E6E, 0xFFB71C1C, true);
 		float absorption = player.getAbsorptionAmount();
 		if (absorption > 0) {
-			int aw = (int) (hw * Math.min(1f, absorption / maxHealth));
-			ctx.fill(0, y + 6, aw, y + 8, 0xFFFFD54F);
+			int aw = (int) ((hw - 2) * Math.min(1f, absorption / maxHealth));
+			ctx.fill(13, y + 7, 13 + aw, y + 8, 0xFFFFD54F);
 		}
-		small(ctx, text, Text.literal((int) Math.ceil(health) + " / " + (int) maxHealth), hw + 4, y + 1, 0xFFE8D5B0);
-		y += 11;
+		if (low) ctx.drawBorder(11, y - 1, hw + 2, 11, (((age % 20) < 10 ? 0xC0 : 0x60) << 24) | 0xFF1744);
+		centered(ctx, text, (int) Math.ceil(health) + " / " + (int) maxHealth, 12, y + 2, hw);
+		y += 12;
 
 		// Maná
 		float mana = ClientRoleState.energy();
 		float maxMana = Math.max(1f, ClientRoleState.maxEnergy());
-		int mw = Math.min(220, 60 + (int) (maxMana * 0.8f));
-		soulsFrame(ctx, 0, y, mw, 6);
-		fillBar(ctx, 0, y, mw, 6, mana / maxMana, 0xFF1A4F9C, 0xFF4F8FEA);
-		small(ctx, text, Text.literal((int) mana + " / " + (int) maxMana), mw + 4, y, 0xFFB8D4FF);
-		y += 9;
+		int mw = Math.min(200, 50 + (int) (maxMana * 0.8f));
+		icon(ctx, GEM, 0, y, 0xFF42A5F5);
+		pill(ctx, 12, y, mw, 8, mana / maxMana, 0xFF82CFFF, 0xFF1565C0, true);
+		centered(ctx, text, (int) mana + " / " + (int) maxMana, 12, y + 1, mw);
+		y += 11;
 
 		// Aguante (hambre: en Minecraft es lo que limita esprintar)
 		int food = player.getHungerManager().getFoodLevel();
-		int sw = 100;
-		soulsFrame(ctx, 0, y, sw, 5);
-		fillBar(ctx, 0, y, sw, 5, food / 20f, 0xFF2E6B2E, 0xFF5FB35F);
+		icon(ctx, BOLT, 0, y - 2, 0xFF9CCC65);
+		pill(ctx, 12, y, 90, 4, food / 20f, 0xFFC5E1A5, 0xFF558B2F, true);
 		y += 8;
 
-		// Recursos de rol
+		// Recursos de rol: píldoras finas con el color del recurso; brillan al poder potenciar.
 		for (Role role : new Role[]{data.primaryRole(), data.secondaryRole()}) {
 			if (role == null) continue;
 			RoleResource resource = RoleResource.of(role);
 			float value = ClientRoleState.resource(role == data.primaryRole());
 			int color = 0xFF000000 | resource.color();
-			soulsFrame(ctx, 0, y, 80, 4);
-			fillBar(ctx, 0, y, 80, 4, value / RoleResource.MAX, darker(color), color);
-			if (value >= RoleResource.EMPOWER_COST) ctx.drawBorder(-2, y - 2, 84, 8, 0xFFFFE082);
-			small(ctx, text, Text.translatable(resource.translationKey()), 84, y - 1, color);
+			boolean ready = value >= RoleResource.EMPOWER_COST;
+			ctx.fill(2, y, 8, y + 4, ready && (age / 4) % 2 == 0 ? 0xFFFFE082 : color);
+			pill(ctx, 12, y, 70, 4, value / RoleResource.MAX, lighter(color), darker(color), true);
+			small(ctx, text, Text.translatable(resource.translationKey()), 86, y - 1, ready ? 0xFFFFE082 : color);
 			y += 7;
 		}
 		// Elemento activo
 		Element element = data.activeElementValue();
 		if (element != null && (data.primaryRole() == Role.ELEMENTALIST || data.secondaryRole() == Role.ELEMENTALIST)) {
 			small(ctx, text, Text.translatable("hud.aptitudes.element", Text.translatable(element.translationKey())),
-					0, y + 1, 0xFF000000 | element.color());
+					12, y + 1, 0xFF000000 | element.color());
 		}
 		ctx.getMatrices().pop();
 	}
 
-	/** Marco oscuro con bordes dorados de las barras Souls. */
-	private static void soulsFrame(DrawContext ctx, int x, int y, int width, int height) {
-		ctx.fill(x - 2, y - 2, x + width + 2, y + height + 2, 0xD0000000);
-		ctx.fill(x - 1, y - 1, x + width + 1, y, 0xFF6B5428);
-		ctx.fill(x - 1, y + height, x + width + 1, y + height + 1, 0xFF3A2E16);
-		ctx.fill(x + width, y - 1, x + width + 1, y + height + 1, 0xFF6B5428);
-		ctx.fill(x, y, x + width, y + height, 0xFF14110C);
+	/** Barra redondeada: fondo oscuro, relleno con degradado vertical y brillo superior. */
+	private static void pill(DrawContext ctx, int x, int y, int width, int height, float fraction, int light, int dark,
+							 boolean background) {
+		if (background) {
+			ctx.fill(x + 1, y, x + width - 1, y + height, 0xB0000000);
+			ctx.fill(x, y + 1, x + width, y + height - 1, 0xB0000000);
+		}
+		int filled = (int) ((width - 2) * Math.max(0, Math.min(1, fraction)));
+		if (filled <= 0) return;
+		ctx.fillGradient(x + 1, y + 1, x + 1 + filled, y + height - 1, light, dark);
+		if (height >= 6) ctx.fill(x + 2, y + 1, x + filled, y + 2, 0x60FFFFFF); // brillo
 	}
 
-	private static void fillBar(DrawContext ctx, int x, int y, int width, int height, float fraction, int dark, int light) {
-		int filled = (int) (width * Math.max(0, Math.min(1, fraction)));
-		if (filled <= 0) return;
-		ctx.fill(x, y, x + filled, y + height, dark);
-		ctx.fill(x, y, x + filled, y + Math.max(1, height / 2), light);
+	private static void centered(DrawContext ctx, TextRenderer text, String value, int x, int y, int width) {
+		int w = (int) (text.getWidth(value) * 0.7f);
+		small(ctx, text, Text.literal(value), x + (width - w) / 2, y, 0xFFFFFFFF);
+	}
+
+	/** Iconos de 9×9 en pixel art (corazón, gema, rayo). */
+	private static final String[] HEART = {".XX.XX...", "XXXXXXX..", "XXXXXXX..", ".XXXXX...", "..XXX....", "...X....."};
+	private static final String[] GEM = {"..XXX....", ".XXXXX...", "XXXXXXX..", ".XXXXX...", "..XXX....", "...X....."};
+	private static final String[] BOLT = {"...XX....", "..XX.....", ".XXXX....", "...XX....", "..XX.....", ".X......."};
+
+	private static void icon(DrawContext ctx, String[] shape, int x, int y, int color) {
+		for (int row = 0; row < shape.length; row++) {
+			for (int col = 0; col < shape[row].length(); col++) {
+				if (shape[row].charAt(col) == 'X') {
+					ctx.fill(x + col + 1, y + row + 1, x + col + 2, y + row + 2, 0xA0000000); // sombra
+					ctx.fill(x + col, y + row, x + col + 1, y + row + 1, color);
+				}
+			}
+		}
+	}
+
+	private static int lighter(int color) {
+		int r = Math.min(255, (color >> 16 & 0xFF) + 70);
+		int g = Math.min(255, (color >> 8 & 0xFF) + 70);
+		int b = Math.min(255, (color & 0xFF) + 70);
+		return 0xFF000000 | r << 16 | g << 8 | b;
 	}
 
 	// --------------------------------------------------------- Mecánica

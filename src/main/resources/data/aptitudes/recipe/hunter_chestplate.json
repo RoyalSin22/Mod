@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "XSX",
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:leather"
+    },
+    "S": {
+      "item": "aptitudes:soul_shard"
+    }
+  },
+  "result": {
+    "id": "aptitudes:hunter_chestplate",
+    "count": 1
+  }
+}

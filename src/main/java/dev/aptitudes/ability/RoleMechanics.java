@@ -109,6 +109,7 @@ public final class RoleMechanics {
 	public static void forget(ServerPlayerEntity p) {
 		STATES.remove(p.getUuid());
 		LAST_SENT.remove(p.getUuid());
+		NewRoles.forget(p);
 	}
 
 	// ------------------------------------------------------------- HUD
@@ -152,7 +153,7 @@ public final class RoleMechanics {
 						? new MechanicPayload.Entry(node, (s.reactionUntil - now + 19) / 20, 0, "mech.aptitudes.reaction_on")
 						: new MechanicPayload.Entry(node, 0, 0, "mech.aptitudes.reaction_ready");
 				case "instinct" -> entry(node, s.instinct, 2 + r);
-				default -> null;
+				default -> NewRoles.mechanic(p, node, r);
 			};
 			if (e != null) entries.add(e);
 		}
@@ -266,6 +267,7 @@ public final class RoleMechanics {
 		if (reaction > 0 && !direct && s.reactionUntil > now) bonus += 0.15f + 0.15f * reaction;
 		// Cambiaformas – Instinto
 		if (rank(p, "instinct") > 0) bonus += 0.05f * s.instinct;
+		bonus += NewRoles.outgoing(p, target, source, direct, amount); // roles nuevos (v11)
 		sync(p);
 
 		return 1.0f + bonus;
@@ -285,6 +287,7 @@ public final class RoleMechanics {
 	}
 
 	public static float incoming(ServerPlayerEntity p, DamageSource source, float amount) {
+		amount = NewRoles.incoming(p, source, amount); // roles nuevos (v11)
 		State s = state(p);
 		Entity attacker = source.getAttacker();
 		boolean melee = attacker instanceof LivingEntity && source.getSource() == attacker;
@@ -427,6 +430,7 @@ public final class RoleMechanics {
 			p.heal(devour);
 			p.getHungerManager().add(1, 0.3f);
 		}
+		NewRoles.onKill(p, victim);
 		sync(p);
 	}
 
@@ -572,6 +576,7 @@ public final class RoleMechanics {
 			} else {
 				s.instinct = 0;
 			}
+			NewRoles.tick(server, p);
 			sync(p);
 		}
 	}

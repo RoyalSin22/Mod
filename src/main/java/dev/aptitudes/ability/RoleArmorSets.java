@@ -76,6 +76,11 @@ public final class RoleArmorSets {
 		ATTRIBUTES.put(Role.PALADIN, new AttrBonus(EntityAttributes.GENERIC_MAX_HEALTH, 4.0, Operation.ADD_VALUE));
 		ATTRIBUTES.put(Role.MERCHANT, new AttrBonus(EntityAttributes.GENERIC_LUCK, 2.0, Operation.ADD_VALUE));
 		ATTRIBUTES.put(Role.SHAPESHIFTER, new AttrBonus(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.10, Operation.ADD_MULTIPLIED_BASE));
+		ATTRIBUTES.put(Role.GUNSLINGER, new AttrBonus(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.10, Operation.ADD_MULTIPLIED_BASE));
+		ATTRIBUTES.put(Role.WEAPON_SUMMONER, new AttrBonus(EntityAttributes.GENERIC_ARMOR, 3.0, Operation.ADD_VALUE));
+		ATTRIBUTES.put(Role.HUNTER, new AttrBonus(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.10, Operation.ADD_MULTIPLIED_BASE));
+		ATTRIBUTES.put(Role.BARD, new AttrBonus(EntityAttributes.GENERIC_MAX_HEALTH, 4.0, Operation.ADD_VALUE));
+		ATTRIBUTES.put(Role.TAMER, new AttrBonus(EntityAttributes.GENERIC_MAX_HEALTH, 4.0, Operation.ADD_VALUE));
 	}
 
 	private RoleArmorSets() {
@@ -147,7 +152,18 @@ public final class RoleArmorSets {
 					quiet(p, StatusEffects.FIRE_RESISTANCE, 60, 0);
 					p.setFrozenTicks(0);
 				}
-				case SHAPESHIFTER -> quiet(p, StatusEffects.NIGHT_VISION, 260, 0);
+				case SHAPESHIFTER, HUNTER -> quiet(p, StatusEffects.NIGHT_VISION, 260, 0);
+				case WARLOCK -> p.removeStatusEffect(StatusEffects.WITHER);
+				case BARD -> {
+					for (net.minecraft.entity.player.PlayerEntity ally : Targeting.playersAround(p, 8)) {
+						quiet(ally, StatusEffects.LUCK, 60, 0);
+					}
+				}
+				case TAMER -> {
+					for (net.minecraft.entity.passive.TameableEntity pet : NewRoles.pets(p, 24)) {
+						quiet(pet, StatusEffects.RESISTANCE, 60, 0);
+					}
+				}
 				default -> {
 				}
 			}
@@ -208,6 +224,12 @@ public final class RoleArmorSets {
 				case MONK -> {
 					if (direct && player.getMainHandStack().isEmpty()) mult += 0.30f;
 				}
+				case GUNSLINGER -> {
+					if (!direct) mult += 0.15f;
+				}
+				case WEAPON_SUMMONER -> {
+					if (direct) mult += 0.15f;
+				}
 				default -> {
 				}
 			}
@@ -236,6 +258,9 @@ public final class RoleArmorSets {
 	public static void afterOutgoing(ServerPlayerEntity player, float damage) {
 		if (damage > 0 && has(player, Role.NECROMANCER) && player.getHealth() < player.getMaxHealth()) {
 			player.heal(damage * 0.10f);
+		}
+		if (damage > 0 && has(player, Role.WARLOCK) && player.getHealth() < player.getMaxHealth()) {
+			player.heal(damage * 0.08f);
 		}
 	}
 

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "XSX",
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:flint"
+    },
+    "S": {
+      "item": "aptitudes:soul_shard"
+    }
+  },
+  "result": {
+    "id": "aptitudes:weapon_summoner_chestplate",
+    "count": 1
+  }
+}

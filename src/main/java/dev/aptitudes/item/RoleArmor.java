@@ -65,7 +65,7 @@ public final class RoleArmor {
 	public static Weight weight(Role role) {
 		return switch (role) {
 			case BERSERKER, LANCER, PALADIN -> Weight.HEAVY;
-			case SWORDSMAN, ENGINEER, DRUID, NECROMANCER -> Weight.MEDIUM;
+			case SWORDSMAN, ENGINEER, DRUID, NECROMANCER, WEAPON_SUMMONER, TAMER -> Weight.MEDIUM;
 			default -> Weight.LIGHT;
 		};
 	}
@@ -87,6 +87,12 @@ public final class RoleArmor {
 			case MONK -> Items.WHITE_WOOL;
 			case ELEMENTALIST -> Items.BREEZE_ROD;
 			case SHAPESHIFTER -> Items.RABBIT_HIDE;
+			case GUNSLINGER -> Items.LAPIS_LAZULI;
+			case WEAPON_SUMMONER -> Items.FLINT;
+			case HUNTER -> Items.LEATHER;
+			case BARD -> Items.STRING;
+			case WARLOCK -> Items.NETHER_WART;
+			case TAMER -> Items.HAY_BLOCK;
 		};
 	}
 

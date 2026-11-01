@@ -74,6 +74,11 @@ public final class RoleEvents {
 			if (entity instanceof ServerPlayerEntity victim && victim.isBlocking() && source.getAttacker() != null) {
 				RoleManager.addRoleXp(victim, Role.PALADIN, xp);
 			}
+			// Domador: el daño de tus mascotas te da XP.
+			if (source.getAttacker() instanceof net.minecraft.entity.passive.TameableEntity pet
+					&& pet.getOwner() instanceof ServerPlayerEntity owner && !AbilityState.isSummon(pet)) {
+				RoleManager.addRoleXp(owner, Role.TAMER, xp);
+			}
 			// Nigromante: el daño de tus esbirros te da XP.
 			if (source.getAttacker() != null && AbilityState.isMinion(source.getAttacker())) {
 				ServerPlayerEntity owner = AbilityState.ownerOf(source.getAttacker());
@@ -209,11 +214,14 @@ public final class RoleEvents {
 	@Nullable
 	private static Role combatRole(ServerPlayerEntity attacker, @Nullable Entity direct) {
 		if (direct instanceof TridentEntity) return Role.LANCER;
+		// Flechas (arco o ballesta): Cazador.
+		if (direct instanceof net.minecraft.entity.projectile.PersistentProjectileEntity) return Role.HUNTER;
 		if (direct != attacker) return null;
 		ItemStack stack = attacker.getMainHandStack();
 		if (stack.isEmpty()) return Role.MONK;
 		if (stack.isOf(ModItems.HOLY_HAMMER)) return Role.PALADIN;
 		if (stack.isOf(ModItems.DAGGER)) return Role.ASSASSIN;
+		if (stack.isOf(ModItems.HUNTING_KNIFE)) return Role.HUNTER;
 		if (stack.isOf(ModItems.SPEAR) || stack.isOf(Items.TRIDENT)) return Role.LANCER;
 		if (stack.getItem() instanceof AxeItem) return Role.BERSERKER;
 		if (stack.getItem() instanceof SwordItem) return Role.SWORDSMAN;

@@ -34,7 +34,13 @@ public class HitscanWeaponItem extends Item {
 		ARCANE(Role.MAGE, 24.0, 4.0f, 8.0, 14, 0.0f, ParticleTypes.WITCH, SoundEvents.ENTITY_EVOKER_CAST_SPELL),
 		PLASMA(Role.ENGINEER, 32.0, 5.0f, 10.0, 10, 0.0f, ParticleTypes.ELECTRIC_SPARK, SoundEvents.BLOCK_BEACON_DEACTIVATE),
 		/** Tomo nigromántico: rayo de almas que roba el 30 % del daño como vida. */
-		NECROTIC(Role.NECROMANCER, 20.0, 4.0f, 10.0, 16, 0.3f, ParticleTypes.SOUL, SoundEvents.ENTITY_WITHER_AMBIENT);
+		NECROTIC(Role.NECROMANCER, 20.0, 4.0f, 10.0, 16, 0.3f, ParticleTypes.SOUL, SoundEvents.ENTITY_WITHER_AMBIENT),
+		/** Revólver arcano (Mago pistolero): rápido, largo alcance. */
+		REVOLVER(Role.GUNSLINGER, 36.0, 5.0f, 6.0, 8, 0.0f, ParticleTypes.ELECTRIC_SPARK, SoundEvents.ENTITY_FIREWORK_ROCKET_BLAST),
+		/** Sello de armas (Invocador de armas): dispara una espada espectral. */
+		BLADE(Role.WEAPON_SUMMONER, 20.0, 5.0f, 8.0, 14, 0.0f, ParticleTypes.ENCHANTED_HIT, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP),
+		/** Talismán del pacto (Brujo): rayo maldito que roba un poco de vida. */
+		CURSE(Role.WARLOCK, 22.0, 4.5f, 9.0, 16, 0.15f, ParticleTypes.CRIMSON_SPORE, SoundEvents.ENTITY_VEX_CHARGE);
 
 		final Role role;
 		final double range;
@@ -73,7 +79,9 @@ public class HitscanWeaponItem extends Item {
 		}
 		if (!AbilityManager.tryConsume(player, kind.energyCost)) return TypedActionResult.fail(stack);
 
-		player.getItemCooldownManager().set(this, kind.cooldownTicks);
+		// Mago pistolero – Desenfunde rápido: −10 % de enfriamiento del arma por rango.
+		int quickdraw = RoleManager.activeRank(player, "quickdraw");
+		player.getItemCooldownManager().set(this, Math.max(3, Math.round(kind.cooldownTicks * (1 - 0.1f * quickdraw))));
 		world.playSound(null, player.getX(), player.getY(), player.getZ(), kind.sound, SoundCategory.PLAYERS, 0.7f, 1.4f);
 
 		LivingEntity target = Targeting.raycastLiving(player, kind.range);

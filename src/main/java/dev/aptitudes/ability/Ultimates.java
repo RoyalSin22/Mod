@@ -308,8 +308,14 @@ public final class Ultimates {
 	private Ultimates() {
 	}
 
+	/** Registro desde otras clases del paquete (roles nuevos, ver {@link NewRoles}). */
+	static void register(Role role, Ability ability) {
+		REGISTRY.put(role, ability);
+	}
+
 	@Nullable
 	public static Ability get(Role role) {
+		if (REGISTRY.get(role) == null) NewRoles.ensureRegistered();
 		return REGISTRY.get(role);
 	}
 

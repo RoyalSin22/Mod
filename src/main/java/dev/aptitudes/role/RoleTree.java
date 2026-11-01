@@ -191,6 +191,67 @@ public final class RoleTree {
 				passiveNode("devour", Role.SHAPESHIFTER, 18, null),
 				activeNode("pounce", Role.SHAPESHIFTER, 14, null, 25, 10),
 				activeNode("beast_howl", Role.SHAPESHIFTER, 22, null, 35, 22));
+		// ---- Roles nuevos (v11)
+		define(Role.GUNSLINGER,
+				passiveNode("quickdraw", Role.GUNSLINGER, 1, null),
+				activeNode("arcane_shot", Role.GUNSLINGER, 3, null, 20, 5),
+				passiveNode("eagle_eye", Role.GUNSLINGER, 8, "quickdraw"),
+				activeNode("fan_the_hammer", Role.GUNSLINGER, 12, "arcane_shot", 35, 14),
+				passiveNode("arcane_cylinder", Role.GUNSLINGER, 1, null),
+				passiveNode("dodge_roll", Role.GUNSLINGER, 10, null),
+				passiveNode("reload", Role.GUNSLINGER, 18, null),
+				activeNode("ricochet", Role.GUNSLINGER, 14, null, 30, 10),
+				activeNode("deadeye", Role.GUNSLINGER, 22, null, 50, 30));
+		define(Role.WEAPON_SUMMONER,
+				passiveNode("armory", Role.WEAPON_SUMMONER, 1, null),
+				activeNode("blade_volley", Role.WEAPON_SUMMONER, 3, null, 25, 8),
+				passiveNode("blade_guard", Role.WEAPON_SUMMONER, 8, "armory"),
+				activeNode("sword_rain", Role.WEAPON_SUMMONER, 12, "blade_volley", 40, 18),
+				passiveNode("floating_arsenal", Role.WEAPON_SUMMONER, 1, null),
+				passiveNode("intercepting_blade", Role.WEAPON_SUMMONER, 10, null),
+				passiveNode("reforge", Role.WEAPON_SUMMONER, 18, null),
+				activeNode("spectral_greatsword", Role.WEAPON_SUMMONER, 14, null, 35, 12),
+				activeNode("blade_prison", Role.WEAPON_SUMMONER, 22, null, 45, 24));
+		define(Role.HUNTER,
+				passiveNode("predator", Role.HUNTER, 1, null),
+				activeNode("hunters_mark", Role.HUNTER, 3, null, 15, 10),
+				passiveNode("tracker", Role.HUNTER, 8, "predator"),
+				activeNode("bear_trap", Role.HUNTER, 12, "hunters_mark", 25, 16),
+				passiveNode("the_hunt", Role.HUNTER, 1, null),
+				passiveNode("camouflage", Role.HUNTER, 10, null),
+				passiveNode("trophy", Role.HUNTER, 18, null),
+				activeNode("arrow_volley", Role.HUNTER, 14, null, 35, 14),
+				activeNode("falcon_strike", Role.HUNTER, 22, null, 40, 18));
+		define(Role.BARD,
+				passiveNode("inspiring_presence", Role.BARD, 1, null),
+				activeNode("song_of_valor", Role.BARD, 3, null, 30, 20),
+				passiveNode("soothing_melody", Role.BARD, 8, "inspiring_presence"),
+				activeNode("dissonance", Role.BARD, 12, "song_of_valor", 25, 12),
+				passiveNode("crescendo", Role.BARD, 1, null),
+				passiveNode("encore", Role.BARD, 10, null),
+				passiveNode("lullaby", Role.BARD, 18, null),
+				activeNode("ballad_of_shielding", Role.BARD, 14, null, 40, 30),
+				activeNode("requiem", Role.BARD, 22, null, 50, 30));
+		define(Role.WARLOCK,
+				passiveNode("dark_bargain", Role.WARLOCK, 1, null),
+				activeNode("curse_of_agony", Role.WARLOCK, 3, null, 20, 8),
+				passiveNode("soul_link", Role.WARLOCK, 8, "dark_bargain"),
+				activeNode("abyssal_bolt", Role.WARLOCK, 12, "curse_of_agony", 25, 6),
+				passiveNode("demonic_pact", Role.WARLOCK, 1, null),
+				passiveNode("demonic_ward", Role.WARLOCK, 10, null),
+				passiveNode("soul_feast", Role.WARLOCK, 18, null),
+				activeNode("summon_imps", Role.WARLOCK, 14, null, 50, 60),
+				activeNode("doom", Role.WARLOCK, 22, null, 45, 30));
+		define(Role.TAMER,
+				passiveNode("beast_bond", Role.TAMER, 1, null),
+				activeNode("sic_em", Role.TAMER, 3, null, 15, 10),
+				passiveNode("pack_leader", Role.TAMER, 8, "beast_bond"),
+				activeNode("vital_bond", Role.TAMER, 12, "sic_em", 30, 25),
+				passiveNode("companion", Role.TAMER, 1, null),
+				passiveNode("protective_instinct", Role.TAMER, 10, null),
+				passiveNode("feral_feast", Role.TAMER, 18, null),
+				activeNode("stampede", Role.TAMER, 14, null, 35, 16),
+				activeNode("alpha_roar", Role.TAMER, 22, null, 45, 40));
 	}
 
 	private RoleTree() {
@@ -243,6 +304,17 @@ public final class RoleTree {
 				spec(Role.ELEMENTALIST, 2, EntityAttributes.GENERIC_ARMOR, add, 1));
 		stats(Role.SHAPESHIFTER, spec(Role.SHAPESHIFTER, 1, null, add, 10),
 				spec(Role.SHAPESHIFTER, 2, EntityAttributes.GENERIC_MOVEMENT_SPEED, mult, 0.03));
+		stats(Role.GUNSLINGER, spec(Role.GUNSLINGER, 1, EntityAttributes.GENERIC_MOVEMENT_SPEED, mult, 0.03),
+				spec(Role.GUNSLINGER, 2, null, add, 10));
+		stats(Role.WEAPON_SUMMONER, spec(Role.WEAPON_SUMMONER, 1, EntityAttributes.GENERIC_ATTACK_DAMAGE, add, 0.4),
+				spec(Role.WEAPON_SUMMONER, 2, EntityAttributes.GENERIC_ARMOR, add, 1));
+		stats(Role.HUNTER, spec(Role.HUNTER, 1, EntityAttributes.GENERIC_MOVEMENT_SPEED, mult, 0.04),
+				spec(Role.HUNTER, 2, EntityAttributes.GENERIC_LUCK, add, 0.5));
+		stats(Role.BARD, spec(Role.BARD, 1, EntityAttributes.GENERIC_MAX_HEALTH, add, 2), spec(Role.BARD, 2, null, add, 15));
+		stats(Role.WARLOCK, spec(Role.WARLOCK, 1, null, add, 15),
+				spec(Role.WARLOCK, 2, EntityAttributes.GENERIC_MAX_HEALTH, add, 1));
+		stats(Role.TAMER, spec(Role.TAMER, 1, EntityAttributes.GENERIC_MAX_HEALTH, add, 2),
+				spec(Role.TAMER, 2, EntityAttributes.GENERIC_ARMOR, add, 1));
 	}
 
 	// ---------------------------------------------------------------- Sendas
@@ -281,6 +353,12 @@ public final class RoleTree {
 		paths(Role.MERCHANT, of(G, M, LK), of(C, L, X), of(D, V, R));           // Tesorero / Mercenario
 		paths(Role.MONK, of(C, AS, S), of(D, H, M), of(L, K, X));               // Puño de hierro / Loto
 		paths(Role.ELEMENTALIST, of(C, X, F), of(M, G, R), of(S, D, V));        // Catalizador / Conductor
+		paths(Role.GUNSLINGER, of(C, AS, X), of(M, G, D), of(L, V, S));        // Pistolero / Tirador arcano / Forajido
+		paths(Role.WEAPON_SUMMONER, of(C, AS, L), of(R, T, HP), of(G, M, X));   // Espadas danzantes / Bastión / Forja rúnica
+		paths(Role.HUNTER, of(C, X, S), of(P, D, V), of(L, HP, K));            // Francotirador / Trampero / Bestia
+		paths(Role.BARD, of(G, M, LK), of(C, AS, F), of(H, R, HP));            // Juglar / Trovador de guerra / Cantor sagrado
+		paths(Role.WARLOCK, of(W, P, X), of(L, HP, H), of(C, M, G));           // Maldito / Pacto de sangre / Abismo
+		paths(Role.TAMER, of(K, HP, R), of(C, AS, L), of(H, LK, G));           // Jauría / Salvaje / Pastor
 		paths(Role.SHAPESHIFTER, of(C, L, V), of(D, G, M), of(HP, R, T));        // Depredador / Mimo
 	}
 
@@ -344,7 +422,7 @@ public final class RoleTree {
 		return out;
 	}
 
-	/** Posición de cada nodo en la cuadrícula del árbol (columna 0-6, fila 0-5). */
+	/** Posición de cada nodo en la cuadrícula del árbol (columna 0-8, fila 1-6; la fila 0 es del núcleo). */
 	public record GridPos(int col, int row) {}
 
 	private static RoleNode at(RoleNode node, int col, int row, int level, @Nullable String prerequisite) {
@@ -358,12 +436,14 @@ public final class RoleTree {
 	 * Árbol de 23 nodos con requisitos (cada nodo exige al menos 1 rango de su padre):
 	 *
 	 * <pre>
-	 * fila 0:          [Pasiva A]       [MECÁNICA]        [Activa A]
-	 * fila 1:  [Entr.1]      [Pasiva B]           [Presteza]     [Activa B]
-	 * fila 2:      [Reactiva 1]  [A1]  [B1]  [C1]   [Eficiencia]
-	 * fila 3:  [Entr.2]          [A2]  [B2]  [C2]                [Activa C]
-	 * fila 4:      [Reactiva 2]  [A3]  [B3]  [C3]   [Maestría]
-	 * fila 5:                                                    [Activa D]
+	 *            PASIVAS (0-2)        SENDAS (3-5)          ACTIVAS (6-8)
+	 * fila 0:                   [Caract.] [NÚCLEO] [Definit.]
+	 * fila 1:      [Pasiva A]              [MECÁNICA]              [Activa A]
+	 * fila 2:  [Entr.1]  [Pasiva B]                       [Presteza]       [Activa B]
+	 * fila 3:      [Reactiva 1]    [A1]   [B1]   [C1]        [Eficiencia]
+	 * fila 4:  [Entr.2]            [A2]   [B2]   [C2]                      [Activa C]
+	 * fila 5:      [Reactiva 2]    [A3]   [B3]   [C3]        [Maestría]
+	 * fila 6:                                                              [Activa D]
 	 * </pre>
 	 *
 	 * Las tres Sendas (A, B, C) nacen de la mecánica del rol; solo se pueden seguir dos.
@@ -374,29 +454,30 @@ public final class RoleTree {
 							   RoleNode mechanic, RoleNode reactive1, RoleNode reactive2, RoleNode activeC,
 							   RoleNode activeD) {
 		String k = role.key();
-		RoleNode pA = at(passiveA, 1, 0, passiveA.requiredLevel(), null);
-		RoleNode mech = at(mechanic, 3, 0, 1, null);
-		RoleNode aA = at(activeA, 5, 0, activeA.requiredLevel(), null);
-		RoleNode pB = at(passiveB, 2, 1, passiveB.requiredLevel(), pA.id());
-		RoleNode aB = at(activeB, 6, 1, activeB.requiredLevel(), aA.id());
-		RoleNode r1 = at(reactive1, 1, 2, 10, pB.id());
-		RoleNode r2 = at(reactive2, 1, 4, 18, r1.id());
-		RoleNode aC = at(activeC, 6, 3, 14, aB.id());
-		RoleNode aD = at(activeD, 6, 5, 22, aC.id());
+		// Fila 0 de la cuadrícula: núcleo, característica y definitiva (los dibuja la GUI).
+		RoleNode pA = at(passiveA, 1, 1, passiveA.requiredLevel(), null);
+		RoleNode mech = at(mechanic, 4, 1, 1, null);
+		RoleNode aA = at(activeA, 7, 1, activeA.requiredLevel(), null);
+		RoleNode pB = at(passiveB, 2, 2, passiveB.requiredLevel(), pA.id());
+		RoleNode aB = at(activeB, 8, 2, activeB.requiredLevel(), aA.id());
+		RoleNode r1 = at(reactive1, 1, 3, 10, pB.id());
+		RoleNode r2 = at(reactive2, 1, 5, 18, r1.id());
+		RoleNode aC = at(activeC, 8, 4, 14, aB.id());
+		RoleNode aD = at(activeD, 8, 6, 22, aC.id());
 		List<RoleNode> nodes = new ArrayList<>(List.of(pA, aA, pB, aB,
-				at(RoleNode.extraNode(k + "_stat1", role, RoleNode.Kind.STAT, 4, null), 0, 1, 4, pA.id()),
-				at(RoleNode.extraNode(k + "_stat2", role, RoleNode.Kind.STAT, 15, null), 0, 3, 15, k + "_stat1"),
-				at(RoleNode.extraNode(k + "_haste", role, RoleNode.Kind.HASTE, 5, null), 4, 1, 5, aA.id()),
-				at(RoleNode.extraNode(k + "_efficiency", role, RoleNode.Kind.EFFICIENCY, 10, null), 5, 2, 10, k + "_haste"),
-				at(RoleNode.extraNode(k + "_mastery", role, RoleNode.Kind.MASTERY, 18, null), 5, 4, 18, k + "_efficiency")));
-		// Sendas: A (columna 2), B (3) y C (4); niveles 10, 14 y 20; la raíz de cada una es la mecánica.
+				at(RoleNode.extraNode(k + "_stat1", role, RoleNode.Kind.STAT, 4, null), 0, 2, 4, pA.id()),
+				at(RoleNode.extraNode(k + "_stat2", role, RoleNode.Kind.STAT, 15, null), 0, 4, 15, k + "_stat1"),
+				at(RoleNode.extraNode(k + "_haste", role, RoleNode.Kind.HASTE, 5, null), 6, 2, 5, aA.id()),
+				at(RoleNode.extraNode(k + "_efficiency", role, RoleNode.Kind.EFFICIENCY, 10, null), 7, 3, 10, k + "_haste"),
+				at(RoleNode.extraNode(k + "_mastery", role, RoleNode.Kind.MASTERY, 18, null), 7, 5, 18, k + "_efficiency")));
+		// Sendas: A (columna 3), B (4) y C (5), filas 3-5; niveles 10, 14 y 20; nacen de la mecánica.
 		String[] letters = {"_a", "_b", "_c"};
 		int[] levels = {10, 14, 20};
 		for (int path = 0; path < 3; path++) {
 			for (int i = 0; i < 3; i++) {
 				String id = k + letters[path] + (i + 1);
 				String pre = i == 0 ? mech.id() : k + letters[path] + i;
-				nodes.add(at(RoleNode.extraNode(id, role, RoleNode.Kind.PATH, levels[i], null), 2 + path, 2 + i,
+				nodes.add(at(RoleNode.extraNode(id, role, RoleNode.Kind.PATH, levels[i], null), 3 + path, 3 + i,
 						levels[i], pre));
 			}
 		}

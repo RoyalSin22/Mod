@@ -369,6 +369,31 @@ A los 4 nodos propios de cada rol se suman 5:
 
 Comandos: `/unique` (lista) · `/unique admin give <jugador> <habilidad>` · `/unique admin revoke <habilidad>`.
 
+## v11: 6 roles nuevos, árbol rediseñado y barras nuevas
+
+### Roles nuevos (20 en total, 4 por categoría)
+| Rol | Categoría | Ítem | Mecánica | Activas |
+|---|---|---|---|---|
+| Mago pistolero | Arcana | Revólver arcano | Tambor arcano (6.ª bala explosiva) | Disparo arcano, Vaciar el tambor, Rebote, Ojo de la muerte |
+| Invocador de armas | Oficio | Sello de armas | Arsenal flotante (espadas que orbitan) | Andanada de espadas, Lluvia de espadas, Espadón espectral, Prisión de espadas |
+| Cazador | Sombras | Cuchillo de caza | La cacería (presa acumulada) | Marca del cazador, Trampa, Lluvia de flechas, Ataque del halcón |
+| Bardo | Guardianes | Laúd | Crescendo (4 notas → final) | Canción del valor, Disonancia, Balada protectora, Réquiem |
+| Brujo | Sombras | Talismán del pacto | Pacto demoníaco (vida → corrupción) | Maldición de agonía, Rayo del abismo, Invocar diablillos, Condena |
+| Domador | Oficio | Silbato del domador | Compañero (bonus si tu mascota ataca) | ¡A por él!, Vínculo vital, Estampida, Rugido alfa |
+
+Cada uno tiene 23 nodos, 3 Sendas, característica, definitiva, recurso propio, set de armadura con
+bonificación y prueba de evolución. XP: Cazador con flechas y cuchillo; Domador con el daño de sus
+mascotas; Bardo con el Laúd; el resto con su ítem y sus habilidades.
+
+### Árbol
+Tres zonas (Pasivas · Sendas · Activas), conectores en ángulo recto, núcleo/característica/definitiva
+arriba en el centro y el nombre de cada senda sobre su columna. Las líneas se iluminan en dorado
+al aprender y en gris claro cuando el nodo ya está disponible.
+
+### Barras
+Icono pixel art + barra redondeada con degradado y brillo, valor dentro de la barra; la vida late en
+rojo con menos del 25 %; los recursos de rol parpadean cuando pueden potenciar una habilidad.
+
 ## Cambios v10 (tras la prueba de la v8)
 
 - **Textos**: las etiquetas largas se recortan con "…" en lugar de pisar los valores; nivel y puntos
