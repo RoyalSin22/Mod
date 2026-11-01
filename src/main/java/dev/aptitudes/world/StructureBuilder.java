@@ -85,6 +85,17 @@ final class StructureBuilder {
 		if (be instanceof MobSpawnerBlockEntity spawner) spawner.setEntityType(type, random);
 	}
 
+	/** Campeón (élite con barra de jefe) en la posición relativa. */
+	void champion(EntityType<? extends MobEntity> type, int x, int y, int z) {
+		MobEntity mob = type.create(world.toServerWorld());
+		if (mob == null) return;
+		BlockPos p = at(x, y, z);
+		mob.refreshPositionAndAngles(p.getX() + 0.5, p.getY(), p.getZ() + 0.5, random.nextFloat() * 360f, 0);
+		mob.initialize(world, world.getLocalDifficulty(p), SpawnReason.STRUCTURE, null);
+		dev.aptitudes.elite.Elites.makeElite(mob, true, random);
+		world.spawnEntityAndPassengers(mob);
+	}
+
 	/** Aparece un monstruo persistente (no desaparece) en la posición relativa. */
 	void mob(EntityType<? extends MobEntity> type, int x, int y, int z) {
 		MobEntity mob = type.create(world.toServerWorld());

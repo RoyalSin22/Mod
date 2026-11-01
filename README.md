@@ -369,6 +369,32 @@ A los 4 nodos propios de cada rol se suman 5:
 
 Comandos: `/unique` (lista) · `/unique admin give <jugador> <habilidad>` · `/unique admin revoke <habilidad>`.
 
+## v13: élites, campeones y accesorios
+
+### Élites y campeones
+- **Élite** (5 % de los monstruos, `eliteChance` en la config): 1-2 modificadores, ×2 de vida,
+  nombre visible. Suelta Fragmentos de alma, **Esencia de élite** (50 %) y más XP.
+- **Campeón** (10 % de las élites, y siempre uno en la azotea de cada torre): 3 modificadores,
+  ×4 de vida y **barra de jefe**. Suelta un **Corazón de campeón**, esencias y una pieza de armadura
+  de rol; se anuncia en el chat quién lo derrota.
+- Modificadores: Veloz, Blindado, Vampírico, Brutal, Regenerante, Explosivo (sin romper bloques),
+  Gélido, Escurridizo (se teletransporta al recibir golpes) y Gigante.
+
+### Accesorios (tecla **Y**)
+2 ranuras de anillo y 1 de amuleto; se conservan al morir.
+
+| Anillo | Efecto | Amuleto | Efecto |
+|---|---|---|---|
+| Fuerza | +1,5 de daño | Guardián | +3 de armadura |
+| Vitalidad | +4 de vida | Fénix | te salva de la muerte (cada 10 min) |
+| Celeridad | +8 % velocidad | Arcano | −10 % enfriamientos |
+| Maná | +30 de maná | Arboleda | regeneración fuera de combate |
+| Vampiro | robo de vida 5 % | Trofeo del cazador | +25 % de daño a élites |
+| Fortuna | +2 de suerte | | |
+
+Recetas: anillo = 4 pepitas de oro + gema + Esencia de élite; amuleto = cuerda + Esencia + gema
+(el del Fénix usa un Corazón de campeón). También aparecen en los cofres de las torres.
+
 ## v12: legendarias en el árbol, estructuras y aldeano de gremio
 
 ### Habilidades legendarias (antes "únicas")

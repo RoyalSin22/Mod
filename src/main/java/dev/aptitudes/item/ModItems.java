@@ -142,6 +142,25 @@ public final class ModItems {
 	public static final Item ARMORY_VOUCHER = register("armory_voucher",
 			new ArmoryVoucherItem(new Item.Settings().maxCount(16).rarity(Rarity.UNCOMMON)));
 
+	// ---------------------------------------------------- Élites y accesorios
+
+	/** Esencia de élite: la sueltan élites y campeones; material de los accesorios. */
+	public static final Item ELITE_ESSENCE = register("elite_essence", new Item(new Item.Settings().rarity(Rarity.UNCOMMON)));
+	/** Corazón de campeón: solo lo sueltan los campeones. */
+	public static final Item CHAMPION_HEART = register("champion_heart",
+			new Item(new Item.Settings().rarity(Rarity.EPIC).fireproof()));
+
+	public static final java.util.Map<dev.aptitudes.accessory.Accessory, Item> ACCESSORIES = registerAccessories();
+
+	private static java.util.Map<dev.aptitudes.accessory.Accessory, Item> registerAccessories() {
+		java.util.Map<dev.aptitudes.accessory.Accessory, Item> map = new java.util.EnumMap<>(dev.aptitudes.accessory.Accessory.class);
+		for (dev.aptitudes.accessory.Accessory a : dev.aptitudes.accessory.Accessory.values()) {
+			map.put(a, register(a.key(), new dev.aptitudes.accessory.AccessoryItem(a,
+					new Item.Settings().rarity(a.ring() ? Rarity.RARE : Rarity.EPIC))));
+		}
+		return map;
+	}
+
 	static {
 		RoleArmor.register(); // un set de 4 piezas por rol
 	}
@@ -178,6 +197,9 @@ public final class ModItems {
 						entries.add(SOUL_SHARD);
 						entries.add(REBIRTH_OFFERING);
 						entries.add(ARMORY_VOUCHER);
+						entries.add(ELITE_ESSENCE);
+						entries.add(CHAMPION_HEART);
+						for (Item accessory : ACCESSORIES.values()) entries.add(accessory);
 						entries.add(dev.aptitudes.world.GuildVillagers.GUILD_DESK_ITEM);
 						entries.add(ESTUS_FLASK);
 						entries.add(ETHER_FLASK);

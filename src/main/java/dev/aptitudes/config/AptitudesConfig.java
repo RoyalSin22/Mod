@@ -89,6 +89,8 @@ public class AptitudesConfig {
 	public int rolePointsEveryLevels = 3;
 	/** Obsoleto: ya no se usa (el cambio de rol se hace con el ritual de la Hoguera). */
 	public int roleChangeCooldownMinutes = 0;
+	/** Probabilidad de que un monstruo aparezca como élite (el 10 % de esas, campeón). 0 lo desactiva. */
+	public double eliteChance = 0.05;
 	/** Sustituir un rol ya elegido exige quemar una Ofrenda de renacimiento en una Hoguera. */
 	public boolean roleChangeRequiresRitual = true;
 	public int roleXpPerAbilityUse = 5;

@@ -35,6 +35,7 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playS2C().register(DamageNumberPayload.ID, DamageNumberPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(SkillXpPayload.ID, SkillXpPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(LevelUpPayload.ID, LevelUpPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(OpenAccessoriesPayload.ID, OpenAccessoriesPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(RequestStatsPayload.ID, RequestStatsPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(AllocatePointsPayload.ID, AllocatePointsPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(UseAbilityPayload.ID, UseAbilityPayload.CODEC);
@@ -59,6 +60,8 @@ public final class ModNetworking {
 		ServerPlayNetworking.registerGlobalReceiver(UseAbilityPayload.ID,
 				(payload, context) -> AbilityManager.use(context.player(), payload.slot()));
 
+		ServerPlayNetworking.registerGlobalReceiver(OpenAccessoriesPayload.ID,
+				(payload, context) -> dev.aptitudes.accessory.Accessories.open(context.player()));
 		ServerPlayNetworking.registerGlobalReceiver(RoleActionPayload.ID, (payload, context) -> {
 			var player = context.player();
 			switch (payload.action()) {

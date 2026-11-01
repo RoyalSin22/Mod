@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "SSS",
+    "SES",
+    " G "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:string"
+    },
+    "E": {
+      "item": "aptitudes:elite_essence"
+    },
+    "G": {
+      "item": "minecraft:skeleton_skull"
+    }
+  },
+  "result": {
+    "id": "aptitudes:hunters_trophy",
+    "count": 1
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "SSS",
+    "SES",
+    " G "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:string"
+    },
+    "E": {
+      "item": "aptitudes:elite_essence"
+    },
+    "G": {
+      "item": "minecraft:ender_eye"
+    }
+  },
+  "result": {
+    "id": "aptitudes:arcane_amulet",
+    "count": 1
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " N ",
+    "NGN",
+    " E "
+  ],
+  "key": {
+    "N": {
+      "item": "minecraft:gold_nugget"
+    },
+    "G": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "E": {
+      "item": "aptitudes:elite_essence"
+    }
+  },
+  "result": {
+    "id": "aptitudes:ring_of_mana",
+    "count": 1
+  }
+}

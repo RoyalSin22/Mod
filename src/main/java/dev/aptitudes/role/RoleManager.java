@@ -352,6 +352,7 @@ public final class RoleManager {
 		RoleResources.send(player, true);
 		// Legendarias: dependen de los nodos aprendidos y de los roles activos.
 		dev.aptitudes.unique.UniqueManager.refreshAttributes(player);
+		dev.aptitudes.accessory.Accessories.apply(player);
 		dev.aptitudes.unique.UniqueManager.sync(player);
 	}
 

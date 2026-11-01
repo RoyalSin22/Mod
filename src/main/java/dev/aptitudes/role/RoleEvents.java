@@ -129,7 +129,8 @@ public final class RoleEvents {
 				return false;
 			}
 			return !RolePassives.tryCrimsonImmortality(player) && !RolePassives.tryForestRebirth(player)
-					&& !dev.aptitudes.logic.SkillMilestones.trySecondChance(player);
+					&& !dev.aptitudes.logic.SkillMilestones.trySecondChance(player)
+					&& !dev.aptitudes.accessory.Accessories.tryPhoenix(player);
 		});
 
 		// Las invocaciones mueren sin soltar botín ni XP (evita granjas de hierro o huesos).
@@ -204,6 +205,7 @@ public final class RoleEvents {
 				dev.aptitudes.logic.SkillMilestones.tick(server);
 				dev.aptitudes.ability.RoleArmorSets.tick(server);
 				dev.aptitudes.ability.RoleMechanics.tick(server);
+				dev.aptitudes.accessory.Accessories.tick(server);
 			}
 			if (ticks % 100 == 0) dev.aptitudes.unique.UniqueManager.checkAll(server);
 			AbilityState.tick(server);

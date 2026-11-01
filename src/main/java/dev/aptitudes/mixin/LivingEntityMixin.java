@@ -20,6 +20,8 @@ public abstract class LivingEntityMixin {
 	private float aptitudes$modifyIncomingAmount(float amount, DamageSource source) {
 		LivingEntity self = (LivingEntity) (Object) this;
 		float modified = RolePassives.modifyOutgoingDamage(self, source, amount);
-		return dev.aptitudes.unique.UniqueEffects.modifyDamage(self, source, modified);
+		modified = dev.aptitudes.unique.UniqueEffects.modifyDamage(self, source, modified);
+		modified = dev.aptitudes.elite.Elites.modifyDamage(self, source, modified);
+		return dev.aptitudes.accessory.Accessories.modifyDamage(self, source, modified);
 	}
 }

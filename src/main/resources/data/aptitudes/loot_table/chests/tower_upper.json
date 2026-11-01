@@ -602,6 +602,74 @@
           "weight": 1
         }
       ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 0,
+        "max": 1
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:ring_of_strength",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:ring_of_vitality",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:ring_of_swiftness",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:ring_of_mana",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:ring_of_the_vampire",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:ring_of_fortune",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:amulet_of_the_guardian",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:amulet_of_the_phoenix",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:arcane_amulet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:amulet_of_the_grove",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:hunters_trophy",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 10
+        }
+      ]
     }
   ]
 }
