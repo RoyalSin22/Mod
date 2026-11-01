@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "XSX",
+    "X X"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:iron_ingot"
+    },
+    "S": {
+      "item": "aptitudes:soul_shard"
+    }
+  },
+  "result": {
+    "id": "aptitudes:berserker_boots",
+    "count": 1
+  }
+}

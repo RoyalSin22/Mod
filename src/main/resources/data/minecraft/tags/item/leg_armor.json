@@ -1,0 +1,19 @@
+{
+  "replace": false,
+  "values": [
+    "aptitudes:berserker_leggings",
+    "aptitudes:mage_leggings",
+    "aptitudes:assassin_leggings",
+    "aptitudes:herbalist_leggings",
+    "aptitudes:engineer_leggings",
+    "aptitudes:lancer_leggings",
+    "aptitudes:swordsman_leggings",
+    "aptitudes:paladin_leggings",
+    "aptitudes:necromancer_leggings",
+    "aptitudes:druid_leggings",
+    "aptitudes:merchant_leggings",
+    "aptitudes:monk_leggings",
+    "aptitudes:elementalist_leggings",
+    "aptitudes:shapeshifter_leggings"
+  ]
+}

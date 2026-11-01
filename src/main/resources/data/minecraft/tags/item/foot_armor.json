@@ -1,0 +1,19 @@
+{
+  "replace": false,
+  "values": [
+    "aptitudes:berserker_boots",
+    "aptitudes:mage_boots",
+    "aptitudes:assassin_boots",
+    "aptitudes:herbalist_boots",
+    "aptitudes:engineer_boots",
+    "aptitudes:lancer_boots",
+    "aptitudes:swordsman_boots",
+    "aptitudes:paladin_boots",
+    "aptitudes:necromancer_boots",
+    "aptitudes:druid_boots",
+    "aptitudes:merchant_boots",
+    "aptitudes:monk_boots",
+    "aptitudes:elementalist_boots",
+    "aptitudes:shapeshifter_boots"
+  ]
+}

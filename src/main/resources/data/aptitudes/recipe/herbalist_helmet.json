@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "XXX",
+    "XSX"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:honeycomb"
+    },
+    "S": {
+      "item": "aptitudes:soul_shard"
+    }
+  },
+  "result": {
+    "id": "aptitudes:herbalist_helmet",
+    "count": 1
+  }
+}

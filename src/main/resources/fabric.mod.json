@@ -1,0 +1,31 @@
+{
+	"schemaVersion": 1,
+	"id": "aptitudes",
+	"version": "${version}",
+	"name": "Aptitudes",
+	"description": "Sistema RPG de habilidades que suben con el uso y atributos que se mejoran con puntos.",
+	"authors": [],
+	"license": "MIT",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"dev.aptitudes.Aptitudes"
+		],
+		"client": [
+			"dev.aptitudes.client.AptitudesClient"
+		]
+	},
+	"mixins": [
+		"aptitudes.mixins.json",
+		{
+			"config": "aptitudes.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.16.0",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
