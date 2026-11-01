@@ -6,6 +6,7 @@
 		"LivingEntityMixin",
 		"MerchantEntityMixin",
 		"MobEntityMixin",
+		"PersistentProjectileAccessor",
 		"PlayerEntityMixin"
 	],
 	"injectors": {
