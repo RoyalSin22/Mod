@@ -802,7 +802,9 @@ public final class NewRoles {
 	// ============================================================== Utilidades
 
 	private static int maxBlades(ServerPlayerEntity p) {
-		return 2 + rank(p, "floating_arsenal");
+		// Legendaria Puerta del arsenal: +1 espada máxima.
+		int legend = dev.aptitudes.unique.UniqueManager.has(p, dev.aptitudes.unique.UniqueSkill.GATE_OF_ARMS) ? 1 : 0;
+		return 2 + rank(p, "floating_arsenal") + legend;
 	}
 
 	/** Punto de una órbita alrededor del jugador (para las espadas flotantes). */

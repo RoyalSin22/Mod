@@ -253,7 +253,7 @@ public final class RoleManager {
 		RoleData data = get(player);
 		if (!data.isActive(node.role())) return UpgradeResult.ROLE_NOT_ACTIVE;
 		int rank = data.rank(nodeId);
-		if (rank >= RoleNode.MAX_RANK) return UpgradeResult.MAX_RANK;
+		if (rank >= node.maxRank()) return UpgradeResult.MAX_RANK;
 		if (data.level(node.role()) < node.levelForRank(rank + 1)) return UpgradeResult.LEVEL_TOO_LOW;
 		if (node.prerequisite() != null && data.rank(node.prerequisite()) <= 0) return UpgradeResult.MISSING_PREREQUISITE;
 		if (availablePoints(data, node.role()) <= 0) return UpgradeResult.NO_POINTS;
@@ -350,6 +350,9 @@ public final class RoleManager {
 		sync(player);
 		AbilityManager.sendEnergy(player, true);
 		RoleResources.send(player, true);
+		// Legendarias: dependen de los nodos aprendidos y de los roles activos.
+		dev.aptitudes.unique.UniqueManager.refreshAttributes(player);
+		dev.aptitudes.unique.UniqueManager.sync(player);
 	}
 
 	private static void ensureConsistent(ServerPlayerEntity player, RoleData data) {

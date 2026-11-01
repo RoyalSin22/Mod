@@ -152,6 +152,12 @@ public final class UniqueEffects {
 						quiet(p, StatusEffects.RESISTANCE, 40, 0);
 					}
 				}
+				case WORLD_TREE -> {
+					var ground = p.getWorld().getBlockState(p.getBlockPos().down());
+					if (ground.isIn(net.minecraft.registry.tag.BlockTags.DIRT) || ground.isIn(net.minecraft.registry.tag.BlockTags.LEAVES)) {
+						quiet(p, StatusEffects.REGENERATION, 40, 0);
+					}
+				}
 				case ADAPTATION -> {
 					Map<String, int[]> stacks = ADAPTATION.get(p.getUuid());
 					if (stacks != null) stacks.values().removeIf(s -> now - s[1] > 60 * 20);
@@ -163,6 +169,10 @@ public final class UniqueEffects {
 	}
 
 	public static void applyAttributes(ServerPlayerEntity player, UniqueSkill skill) {
+		// Atravesacielos: +1 de alcance contra entidades.
+		AttributeApplier.set(player, EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE,
+				dev.aptitudes.Aptitudes.id("unique/skypiercer"), skill == UniqueSkill.SKYPIERCER ? 1.0 : 0.0,
+				Operation.ADD_VALUE);
 		AttributeApplier.set(player, EntityAttributes.GENERIC_MAX_HEALTH, KING_HEALTH,
 				skill == UniqueSkill.CHOSEN_KING ? 8.0 : 0.0, Operation.ADD_VALUE);
 		if (skill != UniqueSkill.PENDRAGON) {
@@ -224,6 +234,9 @@ public final class UniqueEffects {
 				}
 				case PENDRAGON -> {
 					if (melee && attacker.getMainHandStack().getItem() instanceof SwordItem) amount *= 1.10f;
+				}
+				case LAST_BULLET -> {
+					if (!melee) amount *= 1.10f;
 				}
 				default -> {
 				}
@@ -491,6 +504,60 @@ public final class UniqueEffects {
 				burst(p, ParticleTypes.SNOWFLAKE, 80);
 				sound(p, SoundEvents.BLOCK_BEACON_DEACTIVATE);
 				return !frozen.isEmpty();
+			}
+			case SKYPIERCER -> {
+				Vec3d point = Targeting.lookEnd(p, 30);
+				Targeting.particleLine(world, ParticleTypes.END_ROD, point.add(0, 20, 0), point);
+				AbilityState.schedule(server, 15, () -> {
+					for (LivingEntity e : world.getEntitiesByClass(LivingEntity.class,
+							new net.minecraft.util.math.Box(point, point).expand(4), e -> Targeting.isHostileTo(p, e))) {
+						e.damage(p.getDamageSources().indirectMagic(p, p), 14);
+						e.addVelocity(0, 0.8, 0);
+						e.velocityModified = true;
+					}
+					world.spawnParticles(ParticleTypes.EXPLOSION_EMITTER, point.x, point.y, point.z, 1, 0, 0, 0, 0);
+					world.playSound(null, point.x, point.y, point.z, SoundEvents.ITEM_TRIDENT_THUNDER, SoundCategory.PLAYERS, 1.0f, 1.0f);
+				});
+				return true;
+			}
+			case WORLD_TREE -> {
+				Vec3d center = p.getPos();
+				AbilityState.repeat(server, 8, 20, i -> {
+					for (LivingEntity e : world.getEntitiesByClass(LivingEntity.class,
+							new net.minecraft.util.math.Box(center, center).expand(8), LivingEntity::isAlive)) {
+						if (e instanceof PlayerEntity) e.heal(2.0f);
+						else if (Targeting.isHostileTo(p, e)) effect(e, StatusEffects.SLOWNESS, 30, 3);
+					}
+					world.spawnParticles(ParticleTypes.CHERRY_LEAVES, center.x, center.y + 3, center.z, 60, 6, 1, 6, 0);
+				});
+				burst(p, ParticleTypes.HAPPY_VILLAGER, 60);
+				sound(p, SoundEvents.BLOCK_AZALEA_PLACE);
+				return true;
+			}
+			case LAST_BULLET -> {
+				LivingEntity target = Targeting.raycastLiving(p, 40);
+				Vec3d end = target != null ? target.getEyePos() : Targeting.lookEnd(p, 40);
+				Targeting.particleLine(world, ParticleTypes.ELECTRIC_SPARK, p.getEyePos(), end);
+				sound(p, SoundEvents.ENTITY_FIREWORK_ROCKET_LARGE_BLAST);
+				if (target == null) return false;
+				float damage = target.getHealth() < target.getMaxHealth() * 0.5f ? 60f : 30f;
+				target.damage(p.getDamageSources().indirectMagic(p, p), damage);
+				return true;
+			}
+			case GATE_OF_ARMS -> {
+				AbilityState.repeat(server, 30, 2, i -> {
+					double ang = p.getRandom().nextDouble() * Math.PI * 2;
+					double dist = p.getRandom().nextDouble() * 10;
+					Vec3d hit = p.getPos().add(Math.cos(ang) * dist, 0, Math.sin(ang) * dist);
+					Targeting.particleLine(world, ParticleTypes.ENCHANTED_HIT, hit.add(0, 8, 0), hit);
+					for (LivingEntity e : world.getEntitiesByClass(LivingEntity.class,
+							new net.minecraft.util.math.Box(hit, hit).expand(2), e -> Targeting.isHostileTo(p, e))) {
+						e.timeUntilRegen = 0;
+						e.damage(p.getDamageSources().indirectMagic(p, p), 4);
+					}
+				});
+				sound(p, SoundEvents.BLOCK_ANVIL_LAND);
+				return true;
 			}
 			case HARBINGER -> {
 				LivingEntity target = Targeting.raycastLiving(p, 20);

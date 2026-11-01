@@ -80,7 +80,7 @@ public final class RoleData {
 		this.xp = fromNames(xp);
 		this.ranks = new HashMap<>();
 		ranks.forEach((id, r) -> {
-			if (RoleTree.get(id) != null && r > 0) this.ranks.put(id, Math.min(r, RoleNode.MAX_RANK));
+			if (RoleTree.get(id) != null && r > 0) this.ranks.put(id, Math.min(r, RoleTree.get(id).maxRank()));
 		});
 		this.energy = Math.max(0.0, energy);
 		this.lastRoleChange = lastRoleChange;
@@ -149,7 +149,8 @@ public final class RoleData {
 
 	public int rank(String nodeId) { return ranks.getOrDefault(nodeId, 0); }
 	public void setRank(String nodeId, int rank) {
-		if (rank <= 0) ranks.remove(nodeId); else ranks.put(nodeId, Math.min(rank, RoleNode.MAX_RANK));
+		if (rank <= 0) ranks.remove(nodeId);
+		else ranks.put(nodeId, Math.min(rank, RoleTree.get(nodeId) != null ? RoleTree.get(nodeId).maxRank() : RoleNode.MAX_RANK));
 	}
 	public Map<String, Integer> ranks() { return ranks; }
 

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "aptitudes:block/guild_desk_top",
+    "side": "aptitudes:block/guild_desk_side",
+    "bottom": "aptitudes:block/guild_desk_bottom"
+  }
+}

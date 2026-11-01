@@ -1,0 +1,173 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 3,
+        "max": 6
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:nether_wart",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 6
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:redstone",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 8
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:glowstone_dust",
+          "weight": 6,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 6
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:fermented_spider_eye",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:ghast_tear",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:pact_talisman",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:necro_tome",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:soul_shard",
+          "weight": 6,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:ether_flask",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:crying_obsidian",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 0,
+        "max": 1
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:warlock_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:warlock_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:warlock_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:warlock_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:necromancer_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:necromancer_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:necromancer_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:necromancer_boots",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

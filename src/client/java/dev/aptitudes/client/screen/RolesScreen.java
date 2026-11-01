@@ -159,11 +159,9 @@ public class RolesScreen extends Screen {
 				.dimensions(canvasX() + canvasW() - 150, top + H - 70, 70, 16).build());
 
 		addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.tab.attributes"),
-				b -> client.setScreen(new AptitudesScreen())).dimensions(width / 2 - 154, top + H - 26, 100, 18).build());
-		addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.tab.uniques"),
-				b -> client.setScreen(new UniquesScreen())).dimensions(width / 2 - 50, top + H - 26, 100, 18).build());
+				b -> client.setScreen(new AptitudesScreen())).dimensions(width / 2 - 102, top + H - 26, 100, 18).build());
 		addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, b -> close())
-				.dimensions(width / 2 + 54, top + H - 26, 100, 18).build());
+				.dimensions(width / 2 + 2, top + H - 26, 100, 18).build());
 		updateButtons();
 	}
 
@@ -242,7 +240,7 @@ public class RolesScreen extends Screen {
 		Role role = node.role();
 		boolean active = role == data.primaryRole() || role == data.secondaryRole();
 		int rank = data.rank(node.id());
-		return active && rank < RoleNode.MAX_RANK && data.level(role) >= node.levelForRank(rank + 1)
+		return active && rank < node.maxRank() && data.level(role) >= node.levelForRank(rank + 1)
 				&& (node.prerequisite() == null || data.rank(node.prerequisite()) > 0)
 				&& availablePoints(data, role) > 0
 				&& !pathLocked(data, node);
@@ -377,7 +375,7 @@ public class RolesScreen extends Screen {
 			return true;
 		}
 		if (keyCode == GLFW.GLFW_KEY_TAB) {
-			client.setScreen(hasShiftDown() ? new AptitudesScreen() : new UniquesScreen());
+			client.setScreen(new AptitudesScreen());
 			return true;
 		}
 		return super.keyPressed(keyCode, scanCode, modifiers);
@@ -564,7 +562,8 @@ public class RolesScreen extends Screen {
 				case CORE -> UiStyle.Frame.CORE;
 				case SIGNATURE -> UiStyle.Frame.SIGNATURE;
 				case ULTIMATE -> UiStyle.Frame.ULTIMATE;
-				case NODE -> v.node().active() || v.node().kind() == RoleNode.Kind.HASTE
+				case NODE -> v.node().kind() == RoleNode.Kind.LEGENDARY ? UiStyle.Frame.UNIQUE
+						: v.node().active() || v.node().kind() == RoleNode.Kind.HASTE
 						|| v.node().kind() == RoleNode.Kind.EFFICIENCY || v.node().kind() == RoleNode.Kind.MASTERY
 						? UiStyle.Frame.ACTIVE : UiStyle.Frame.PASSIVE;
 			};
@@ -581,7 +580,7 @@ public class RolesScreen extends Screen {
 				int rank = data.rank(v.node().id());
 				String r = rank + (rank > 0 && tier > 0 ? "+" + tier : "");
 				ctx.drawTextWithShadow(textRenderer, r, v.x() + 22 - textRenderer.getWidth(r), v.y() + 15,
-						rank >= RoleNode.MAX_RANK ? UiStyle.GOLD : rank > 0 ? UiStyle.TEXT : UiStyle.MUTED);
+						rank >= v.node().maxRank() ? UiStyle.GOLD : rank > 0 ? UiStyle.TEXT : UiStyle.MUTED);
 				// Activas equipadas: "1" / "2" en la esquina superior derecha.
 				if (v.node().active()) {
 					int index = RoleTree.activeIndex(v.node());
@@ -643,7 +642,7 @@ public class RolesScreen extends Screen {
 			Text title = Text.translatable(ZONE_KEYS[i]);
 			int tw = (int) (textRenderer.getWidth(title) * 0.75f);
 			ctx.getMatrices().push();
-			ctx.getMatrices().translate((z[0] + z[1]) / 2f - tw / 2f, bottom - 9, 0);
+			ctx.getMatrices().translate((z[0] + z[1]) / 2f - tw / 2f, top + 2, 0);
 			ctx.getMatrices().scale(0.75f, 0.75f, 1f);
 			ctx.drawText(textRenderer, title, 0, 0, 0xFF8A8FA3, false);
 			ctx.getMatrices().pop();
@@ -715,14 +714,16 @@ public class RolesScreen extends Screen {
 		List<RoleNode> tree = RoleTree.nodes(selected);
 		int index = tree.indexOf(node);
 		// Los 5 últimos de la lista: mecánica, reactiva 1, reactiva 2 y las activas C/D.
-		if (index == tree.size() - 5) return Text.translatable("screen.aptitudes.node.mechanic");
-		if (index == tree.size() - 4 || index == tree.size() - 3) return Text.translatable("screen.aptitudes.node.reactive");
+		// Orden fijo de RoleTree: 9 clásicos, 9 de senda, mecánica (18), reactivas (19, 20), activas C/D, legendario.
+		if (index == 18) return Text.translatable("screen.aptitudes.node.mechanic");
+		if (index == 19 || index == 20) return Text.translatable("screen.aptitudes.node.reactive");
 		return Text.translatable(switch (node.kind()) {
 			case PASSIVE -> "screen.aptitudes.roles.passive";
 			case ACTIVE -> "screen.aptitudes.roles.active";
 			case STAT -> "screen.aptitudes.node.stat";
 			case PATH -> "screen.aptitudes.node.path";
 			case HASTE, EFFICIENCY, MASTERY -> "screen.aptitudes.node.upgrade";
+			case LEGENDARY -> "screen.aptitudes.node.legendary";
 		});
 	}
 
@@ -754,9 +755,9 @@ public class RolesScreen extends Screen {
 				RoleNode node = v.node();
 				desc = Text.translatable(node.descriptionKey());
 				int rank = data.rank(node.id());
-				Text rankText = Text.translatable("screen.aptitudes.node.rank", rank, RoleNode.MAX_RANK,
+				Text rankText = Text.translatable("screen.aptitudes.node.rank", rank, node.maxRank(),
 						data.tier(selected));
-				Text req = rank >= RoleNode.MAX_RANK ? Text.empty()
+				Text req = rank >= node.maxRank() ? Text.empty()
 						: Text.translatable("screen.aptitudes.roles.requires", node.levelForRank(rank + 1));
 				extra = node.active()
 						? rankText.copy().append(" · ").append(Text.translatable("screen.aptitudes.node.cost",

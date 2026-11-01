@@ -172,7 +172,7 @@ public class AptitudesScreen extends Screen {
 		int step = hasShiftDown() ? 5 : 1;
 		if (keyCode == GLFW.GLFW_KEY_TAB) {
 			if (hasShiftDown()) {
-				client.setScreen(new UniquesScreen());
+				client.setScreen(new RolesScreen());
 			} else if (tab == Tab.ATTRIBUTES) {
 				tab = Tab.SKILLS;
 			} else {
@@ -198,14 +198,13 @@ public class AptitudesScreen extends Screen {
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		// Pestañas
 		int tabX = left + W - 10;
-		String[] tabs = {"screen.aptitudes.tab.uniques", "screen.aptitudes.tab.roles", "screen.aptitudes.tab.skills",
+		String[] tabs = {"screen.aptitudes.tab.roles", "screen.aptitudes.tab.skills",
 				"screen.aptitudes.tab.attributes"};
 		for (String key : tabs) {
 			int w = textRenderer.getWidth(Text.translatable(key)) + 10;
 			tabX -= w;
 			if (mouseX >= tabX && mouseX < tabX + w && mouseY >= top + 6 && mouseY < top + 20) {
 				switch (key) {
-					case "screen.aptitudes.tab.uniques" -> client.setScreen(new UniquesScreen());
 					case "screen.aptitudes.tab.roles" -> client.setScreen(new RolesScreen());
 					case "screen.aptitudes.tab.skills" -> tab = Tab.SKILLS;
 					default -> tab = Tab.ATTRIBUTES;
@@ -262,7 +261,7 @@ public class AptitudesScreen extends Screen {
 
 	private void renderTabs(DrawContext ctx, int mouseX, int mouseY) {
 		int tabX = left + W - 10;
-		String[] tabs = {"screen.aptitudes.tab.uniques", "screen.aptitudes.tab.roles", "screen.aptitudes.tab.skills",
+		String[] tabs = {"screen.aptitudes.tab.roles", "screen.aptitudes.tab.skills",
 				"screen.aptitudes.tab.attributes"};
 		for (String key : tabs) {
 			Text label = Text.translatable(key);

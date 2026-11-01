@@ -27,8 +27,10 @@ public record RoleNode(String id, Role role, Kind kind, int requiredLevel,
 		EFFICIENCY,
 		/** Maestría: +1 rango efectivo por rango en las activas del rol. */
 		MASTERY,
-		/** Nodo de Senda: aplica un {@link PathEffect}. Las dos sendas de un rol se excluyen. */
-		PATH
+		/** Nodo de Senda: aplica un {@link PathEffect}. Solo se siguen 2 de las 3 sendas de un rol. */
+		PATH,
+		/** Nodo legendario (antigua habilidad única): 1 rango; se activa con la tecla H. */
+		LEGENDARY
 	}
 
 	/** {@code true} si es una habilidad activa (compatibilidad con el código anterior). */
@@ -37,6 +39,11 @@ public record RoleNode(String id, Role role, Kind kind, int requiredLevel,
 	}
 
 	public static final int MAX_RANK = 3;
+
+	/** Rangos máximos de este nodo (el legendario tiene uno). */
+	public int maxRank() {
+		return kind == Kind.LEGENDARY ? 1 : MAX_RANK;
+	}
 	/** Niveles de rol adicionales que exige cada rango después del primero. */
 	public static final int LEVELS_PER_RANK = 5;
 

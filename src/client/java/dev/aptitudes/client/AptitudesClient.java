@@ -4,7 +4,6 @@ import dev.aptitudes.ability.AbilityManager;
 import dev.aptitudes.client.hud.AbilityHud;
 import dev.aptitudes.client.screen.AptitudesScreen;
 import dev.aptitudes.client.screen.RolesScreen;
-import dev.aptitudes.client.screen.UniquesScreen;
 import dev.aptitudes.network.FormSyncPayload;
 import dev.aptitudes.network.MorphPayload;
 import dev.aptitudes.network.UniqueSyncPayload;
@@ -35,7 +34,6 @@ public class AptitudesClient implements ClientModInitializer {
 	private static KeyBinding openSkillsKey;
 	private static KeyBinding openRolesKey;
 	private static KeyBinding cycleElementKey;
-	private static KeyBinding openUniquesKey;
 	private static KeyBinding toggleHudKey;
 	private static final KeyBinding[] abilityKeys = new KeyBinding[AbilityManager.SLOTS];
 
@@ -50,8 +48,6 @@ public class AptitudesClient implements ClientModInitializer {
 		ClientConfig.load();
 		toggleHudKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 				"key.aptitudes.toggle_hud", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_O, CATEGORY));
-		openUniquesKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-				"key.aptitudes.uniques", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_U, CATEGORY));
 		for (int i = 0; i < abilityKeys.length; i++) {
 			abilityKeys[i] = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 					"key.aptitudes.ability_" + (i + 1), InputUtil.Type.KEYSYM, DEFAULT_ABILITY_KEYS[i], CATEGORY));
@@ -72,9 +68,6 @@ public class AptitudesClient implements ClientModInitializer {
 					client.player.sendMessage(net.minecraft.text.Text.translatable(ClientConfig.get().hudVisible
 							? "aptitudes.hud.shown" : "aptitudes.hud.hidden"), true);
 				}
-			}
-			while (openUniquesKey.wasPressed()) {
-				if (client.player != null && client.currentScreen == null) client.setScreen(new UniquesScreen());
 			}
 			while (openSkillsKey.wasPressed()) {
 				if (client.player != null && client.currentScreen == null) client.setScreen(new AptitudesScreen());

@@ -52,9 +52,22 @@ public final class UniqueManager {
 		return player.getAttachedOrCreate(ModAttachments.UNIQUE_PROGRESS);
 	}
 
+	/**
+	 * Legendaria activa del jugador: la del rol principal si tiene aprendido su nodo
+	 * legendario; si no, la del secundario.
+	 */
 	@Nullable
 	public static UniqueSkill skillOf(ServerPlayerEntity player) {
-		return player.getServer() == null ? null : UniqueState.get(player.getServer()).skillOf(player.getUuid());
+		RoleData data = RoleManager.get(player);
+		for (Role role : new Role[]{data.primary(), data.secondary()}) {
+			if (role != null && data.rank(legendNode(role)) > 0) return UniqueSkill.forRole(role);
+		}
+		return null;
+	}
+
+	/** Id del nodo legendario de un rol. */
+	public static String legendNode(Role role) {
+		return role.key() + "_legend";
 	}
 
 	public static boolean has(ServerPlayerEntity player, UniqueSkill skill) {
@@ -90,11 +103,14 @@ public final class UniqueManager {
 			case SKY_LORD -> stats.getStat(Stats.CUSTOM, Stats.AVIATE_ONE_CM) / 100_000; // km
 			case STILLNESS -> stats.getStat(Stats.CUSTOM, Stats.SNEAK_TIME) / 1200;      // minutos
 			case HARBINGER -> stats.getStat(Stats.CUSTOM, Stats.DEATHS);
+			case SKYPIERCER, WORLD_TREE, LAST_BULLET, GATE_OF_ARMS -> 0;
 		};
 	}
 
 	/** Cada 5 s: liberaciones por inactividad, nuevas asignaciones y progreso a los clientes. */
 	public static void checkAll(MinecraftServer server) {
+		// v12: las legendarias se aprenden en el árbol; ya no hay gestas ni asignación por servidor.
+		if (true) return;
 		UniqueState state = UniqueState.get(server);
 		boolean changed = releaseInactive(server, state);
 		for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
@@ -149,7 +165,22 @@ public final class UniqueManager {
 
 	// ------------------------------------------------------------- Admin
 
+	/** Comando: concede el nodo legendario de {@code skill} (rango 1 en el árbol de su rol). */
 	public static boolean give(ServerPlayerEntity player, UniqueSkill skill) {
+		RoleManager.get(player).setRank(legendNode(skill.role()), 1);
+		RoleManager.refresh(player);
+		return true;
+	}
+
+	/** Comando: quita el nodo legendario de {@code skill} a todos los jugadores conectados. */
+	public static void revoke(MinecraftServer server, UniqueSkill skill) {
+		for (ServerPlayerEntity p : server.getPlayerManager().getPlayerList()) {
+			RoleManager.get(p).setRank(legendNode(skill.role()), 0);
+			RoleManager.refresh(p);
+		}
+	}
+
+	private static boolean giveLegacy(ServerPlayerEntity player, UniqueSkill skill) {
 		MinecraftServer server = player.getServer();
 		UniqueState state = UniqueState.get(server);
 		UniqueSkill previous = state.skillOf(player.getUuid());
@@ -165,7 +196,7 @@ public final class UniqueManager {
 		return true;
 	}
 
-	public static void revoke(MinecraftServer server, UniqueSkill skill) {
+	private static void revokeLegacy(MinecraftServer server, UniqueSkill skill) {
 		UniqueState state = UniqueState.get(server);
 		UniqueState.Holder holder = state.holder(skill);
 		state.release(skill);
@@ -259,7 +290,7 @@ public final class UniqueManager {
 			holders[s.ordinal()] = h == null ? "" : h.name();
 			progress[s.ordinal()] = Math.min(progress(player, s), s.target());
 		}
-		UniqueSkill own = state.skillOf(player.getUuid());
+		UniqueSkill own = skillOf(player);
 		LAST_PROGRESS.put(player.getUuid(), progress);
 		ServerPlayNetworking.send(player, new UniqueSyncPayload(holders, progress, own == null ? -1 : own.ordinal()));
 	}

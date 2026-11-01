@@ -159,6 +159,10 @@ public final class NodeIcons {
 
 	/** Icono de un nodo del árbol. */
 	public static ItemStack of(RoleNode node) {
+		if (node.kind() == RoleNode.Kind.LEGENDARY) {
+			dev.aptitudes.unique.UniqueSkill legend = dev.aptitudes.unique.UniqueSkill.forRole(node.role());
+			if (legend != null) return legend.iconStack();
+		}
 		Item item = BY_NODE.get(node.id());
 		if (item == null) {
 			item = switch (node.kind()) {

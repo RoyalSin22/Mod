@@ -47,6 +47,8 @@ public class Aptitudes implements ModInitializer {
 		reloadConfig();
 		dev.aptitudes.block.ModBlocks.init();
 		ModItems.init();
+		dev.aptitudes.world.ModWorldGen.init();
+		dev.aptitudes.world.GuildVillagers.init();
 		ModAttachments.init();
 		ModNetworking.registerCommon();
 		XpEvents.register();

@@ -138,8 +138,12 @@ public final class ModItems {
 	public static final Item REBIRTH_OFFERING = register("rebirth_offering",
 			new RebirthOfferingItem(new Item.Settings().maxCount(16).rarity(Rarity.RARE)));
 
+	/** Vale de armería (aldeano de gremio): una pieza del set de tu rol principal. */
+	public static final Item ARMORY_VOUCHER = register("armory_voucher",
+			new ArmoryVoucherItem(new Item.Settings().maxCount(16).rarity(Rarity.UNCOMMON)));
+
 	static {
-		RoleArmor.register(); // 14 sets × 4 piezas
+		RoleArmor.register(); // un set de 4 piezas por rol
 	}
 
 	public static final ItemGroup GROUP = Registry.register(Registries.ITEM_GROUP, Aptitudes.id("items"),
@@ -173,6 +177,8 @@ public final class ModItems {
 						entries.add(ULTIMATE_CORE);
 						entries.add(SOUL_SHARD);
 						entries.add(REBIRTH_OFFERING);
+						entries.add(ARMORY_VOUCHER);
+						entries.add(dev.aptitudes.world.GuildVillagers.GUILD_DESK_ITEM);
 						entries.add(ESTUS_FLASK);
 						entries.add(ETHER_FLASK);
 						entries.add(SOUL_PICKAXE);

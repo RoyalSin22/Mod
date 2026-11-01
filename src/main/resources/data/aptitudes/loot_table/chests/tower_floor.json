@@ -1,0 +1,253 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 3,
+        "max": 6
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:soul_shard",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:iron_ingot",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:gold_ingot",
+          "weight": 6,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bread",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:arrow",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 4,
+                "max": 12
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:experience_bottle",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:book",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:estus_flask",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:ether_flask",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:emerald",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 4
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 0,
+        "max": 1
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:berserker_axe",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:arcane_staff",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:dagger",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:herb_pouch",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:wrench",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:spear",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:katana",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:holy_hammer",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:necro_tome",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:oak_staff",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:guild_seal",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:hand_wraps",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:elemental_orb",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:mimic_mask",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:arcane_revolver",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:weapon_sigil",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:hunting_knife",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:lute",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:pact_talisman",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:beast_whistle",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

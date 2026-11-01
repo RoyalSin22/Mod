@@ -117,7 +117,7 @@ public final class RoleMechanics {
 	/** Mecánica de cada rol: id del nodo (la fila 0 central del árbol). */
 	private static String mechanicNode(Role role) {
 		List<dev.aptitudes.role.RoleNode> nodes = dev.aptitudes.role.RoleTree.nodes(role);
-		return nodes.size() >= 5 ? nodes.get(nodes.size() - 5).id() : "";
+		return nodes.size() > 18 ? nodes.get(18).id() : ""; // orden fijo: 9 clásicos, 9 de senda, mecánica…
 	}
 
 	/** Envía al HUD el estado de las mecánicas de los roles activos (solo si cambió). */

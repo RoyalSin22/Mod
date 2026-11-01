@@ -369,6 +369,44 @@ A los 4 nodos propios de cada rol se suman 5:
 
 Comandos: `/unique` (lista) · `/unique admin give <jugador> <habilidad>` · `/unique admin revoke <habilidad>`.
 
+## v12: legendarias en el árbol, estructuras y aldeano de gremio
+
+### Habilidades legendarias (antes "únicas")
+Cada rol tiene un **nodo legendario** al final de su árbol (fila 6, centro; nivel 25, exige la
+mecánica). Se aprende con 1 punto y se activa con **H**. Sin límite por servidor ni gestas.
+Si tienes las dos, cuenta la del rol principal.
+
+| Rol | Legendaria | Rol | Legendaria |
+|---|---|---|---|
+| Bersérker | Rueda de la Adaptación | Mercader | Corona de la Codicia |
+| Mago | Archivo del Vacío | Herbolista | Plaga Fúngica |
+| Asesino | Parásito | Brujo | Fuego del Averno |
+| Paladín | Rey Elegido | Ingeniero | Señor del Espacio-Tiempo |
+| Bardo | Dominio de la Negación | Domador | Genetista |
+| Cambiaformas | Espejo Perfecto | Cazador | Explotador |
+| Espadachín | Pendragón | Elementalista | Señor de los Cielos |
+| Monje | Quietud Eterna | Nigromante | Heraldo de la Muerte |
+| Lancero | **Atravesacielos** (nueva) | Druida | **Árbol del Mundo** (nueva) |
+| Mago pistolero | **La Última Bala** (nueva) | Invocador de armas | **Puerta del Arsenal** (nueva) |
+
+`/unique give <jugador> <legendaria>` concede el nodo; la pantalla de Únicas desaparece.
+
+### Estructuras (Overworld)
+| Estructura | Rareza (1 de cada N chunks) | Contenido |
+|---|---|---|
+| Torre en ruinas | 240 | 4 pisos, cofre por piso, generadores (zombi/esqueleto/araña), cofre de azotea con armaduras de rol y herramientas de alma |
+| Santuario de Hoguera | 150 | Hoguera encendida, cofre con fragmentos, frascos y a veces una Ofrenda |
+| Campamento | 200 | Cazadores (pillagers), brujos (brujas) o bandidos (vindicadores); botín temático |
+
+Las tablas de botín están en `data/aptitudes/loot_table/chests/` y la rareza en
+`data/aptitudes/worldgen/placed_feature/` (editables con un datapack).
+
+### Aldeano de gremio
+Coloca una **Mesa del gremio** (oro + esmeralda + tablones) junto a un aldeano sin profesión.
+Vende Fragmentos de alma, frascos de Estus y Éter, materiales de rol, **Vales de armería**
+(dan una pieza del set de tu rol principal, primero las que te faltan), Ofrendas de renacimiento,
+Emblemas de maestría y Núcleos definitivos.
+
 ## v11: 6 roles nuevos, árbol rediseñado y barras nuevas
 
 ### Roles nuevos (20 en total, 4 por categoría)
