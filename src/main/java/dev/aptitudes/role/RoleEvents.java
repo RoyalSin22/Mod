@@ -55,7 +55,8 @@ public final class RoleEvents {
 					|| !MorphManager.allowIncomingDamage(victim, source)
 					|| !UniqueEffects.allowIncomingDamage(victim, source, amount)
 					|| !dev.aptitudes.logic.SkillMilestones.allowIncomingDamage(victim, source)
-					|| !dev.aptitudes.ability.RoleArmorSets.allowIncoming(victim, source))) {
+					|| !dev.aptitudes.ability.RoleArmorSets.allowIncoming(victim, source)
+					|| !dev.aptitudes.ability.RoleMechanics.allowIncoming(victim, source))) {
 				return false;
 			}
 			if (amount <= 0 || entity instanceof ArmorStandEntity) return true;
@@ -97,6 +98,7 @@ public final class RoleEvents {
 				MorphManager.onKill(killer, entity.getType());
 				dev.aptitudes.logic.SkillMilestones.onKill(killer, entity);
 				dev.aptitudes.logic.SoulTools.onKill(killer, entity);
+				dev.aptitudes.ability.RoleMechanics.onKill(killer, entity, source);
 				UniqueEffects.onKill(killer, entity, source);
 				Role role = combatRole(killer, source.getSource());
 				if (role != null) RoleManager.recordTrial(killer, role, Evolution.TrialType.WEAPON_KILLS, 1);
@@ -128,6 +130,7 @@ public final class RoleEvents {
 		// Las invocaciones mueren sin soltar botín ni XP (evita granjas de hierro o huesos).
 		ServerLivingEntityEvents.ALLOW_DEATH.register((entity, source, amount) -> {
 			if (AbilityState.isSummon(entity)) {
+				dev.aptitudes.ability.RoleMechanics.onSummonDeath(entity);
 				entity.discard();
 				return false;
 			}
@@ -195,6 +198,7 @@ public final class RoleEvents {
 				UniqueEffects.tick(server);
 				dev.aptitudes.logic.SkillMilestones.tick(server);
 				dev.aptitudes.ability.RoleArmorSets.tick(server);
+				dev.aptitudes.ability.RoleMechanics.tick(server);
 			}
 			if (ticks % 100 == 0) dev.aptitudes.unique.UniqueManager.checkAll(server);
 			AbilityState.tick(server);

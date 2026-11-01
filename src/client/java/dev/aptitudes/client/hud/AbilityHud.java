@@ -152,7 +152,7 @@ public final class AbilityHud {
 		}
 		Role role = slot < 2 ? data.primaryRole() : data.secondaryRole();
 		if (role == null) return null;
-		RoleNode node = RoleTree.active(role, slot % 2);
+		RoleNode node = RoleTree.active(role, data.equipped(role, slot % 2));
 		if (node == null) return null;
 		return new SlotView(NodeIcons.of(node), data.rank(node.id()) > 0, node.energyCost(), 0, role);
 	}

@@ -35,7 +35,8 @@ public final class RoleData {
 			INT_MAP.optionalFieldOf("tiers", Map.of()).forGetter(d -> toNames(d.tiers)),
 			INT_MAP.optionalFieldOf("trials", Map.of()).forGetter(d -> toNames(d.trials)),
 			Codec.STRING.listOf().optionalFieldOf("boss_slain", List.of())
-					.forGetter(d -> d.bossSlain.stream().map(Role::key).toList())
+					.forGetter(d -> d.bossSlain.stream().map(Role::key).toList()),
+			INT_MAP.optionalFieldOf("loadout", Map.of()).forGetter(d -> toNames(d.loadout))
 	).apply(instance, RoleData::new));
 
 	@Nullable private Role primary;
@@ -56,15 +57,18 @@ public final class RoleData {
 	private final EnumMap<Role, Integer> trials;
 	/** Roles con los que se ha derrotado a un jefe (requisito del Definitivo). */
 	private final EnumSet<Role> bossSlain;
+	/** Activas equipadas por rol, empaquetadas: ranura 1 + ranura 2 × 4 (índices 0-3 de {@code RoleTree.actives}). */
+	private final EnumMap<Role, Integer> loadout;
 
 	public RoleData() {
-		this("", "", Map.of(), Map.of(), Map.of(), 0.0, Long.MIN_VALUE, List.of(), 0, Map.of(), Map.of(), List.of());
+		this("", "", Map.of(), Map.of(), Map.of(), 0.0, Long.MIN_VALUE, List.of(), 0, Map.of(), Map.of(), List.of(),
+				Map.of());
 	}
 
 	private RoleData(String primary, String secondary, Map<String, Integer> levels, Map<String, Integer> xp,
 					 Map<String, Integer> ranks, double energy, long lastRoleChange,
 					 List<String> elements, int activeElement, Map<String, Integer> tiers,
-					 Map<String, Integer> trials, List<String> bossSlain) {
+					 Map<String, Integer> trials, List<String> bossSlain, Map<String, Integer> loadout) {
 		this.primary = Role.byKey(primary).orElse(null);
 		this.secondary = Role.byKey(secondary).orElse(null);
 		if (this.secondary == this.primary) this.secondary = null;
@@ -87,6 +91,29 @@ public final class RoleData {
 		this.trials = fromNames(trials);
 		this.bossSlain = EnumSet.noneOf(Role.class);
 		for (String key : bossSlain) Role.byKey(key).ifPresent(this.bossSlain::add);
+		this.loadout = fromNames(loadout);
+	}
+
+	/** Índice (0-3) de la activa equipada en la ranura {@code which} (0 o 1) del rol. Por defecto A y B. */
+	public int equipped(Role role, int which) {
+		Integer packed = loadout.get(role);
+		if (packed == null) return which;
+		int value = which == 0 ? packed & 3 : (packed >> 2) & 3;
+		return value;
+	}
+
+	/** Equipa la activa {@code index} en la ranura {@code which}; si ya estaba en la otra, se intercambian. */
+	public void equip(Role role, int which, int index) {
+		int first = equipped(role, 0);
+		int second = equipped(role, 1);
+		if (which == 0) {
+			if (second == index) second = first;
+			first = index;
+		} else {
+			if (first == index) first = second;
+			second = index;
+		}
+		loadout.put(role, (first & 3) | ((second & 3) << 2));
 	}
 
 	public int tier(Role role) { return tiers.getOrDefault(role, Evolution.BASE); }

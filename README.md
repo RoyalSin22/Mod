@@ -369,6 +369,55 @@ A los 4 nodos propios de cada rol se suman 5:
 
 Comandos: `/unique` (lista) · `/unique admin give <jugador> <habilidad>` · `/unique admin revoke <habilidad>`.
 
+## Árbol ramificado y mecánicas de rol (v9, fase 1)
+
+### Árbol con requisitos (23 nodos por rol)
+```
+fila 0:          [Pasiva A]       [MECÁNICA]        [Activa A]
+fila 1:  [Entr.1]      [Pasiva B]           [Presteza]     [Activa B]
+fila 2:      [Reactiva 1]  [A1]  [B1]  [C1]   [Eficiencia]
+fila 3:  [Entr.2]          [A2]  [B2]  [C2]                [Activa C]
+fila 4:      [Reactiva 2]  [A3]  [B3]  [C3]   [Maestría]
+fila 5:                                                    [Activa D]
+```
+- Cada nodo exige al menos 1 rango de su padre (línea en el árbol).
+- **3 Sendas** por rol que nacen de la mecánica; solo puedes seguir **2**.
+- Puntos de árbol: 1 + 3 cada 3 niveles (31 al nivel 30) para 69 rangos posibles.
+
+### 4 activas por rol, 2 equipadas
+Cada rol tiene 4 activas (A, B, C, D). En la ficha de una activa aprendida, los botones
+**Ran. 1 / Ran. 2** la equipan en las teclas V/B (principal) o N/M (secundario).
+En el árbol, el número en la esquina indica la ranura.
+
+### Mecánica propia y pasivas reactivas
+| Rol | Mecánica | Reactivas |
+|---|---|---|
+| Bersérker | Frenesí (golpes seguidos acumulan daño) | Inquebrantable, Carnicería |
+| Mago | Cargas arcanas (hechizo gratis cada N) | Escudo de maná, Eco arcano |
+| Asesino | Ritmo letal (3.er golpe = remate) | Huida en humo, Desvanecerse |
+| Herbolista | Floración (quieto = regeneración en área) | Antídoto, Piel espinosa |
+| Ingeniero | Sobrecarga (calor → modo potenciado) | Escudo automático, Reparación de campo |
+| Lancero | Ímpetu (esprintar carga el golpe) | Afianzarse, Caída del dragontino |
+| Espadachín | Kata (3.er golpe barre) | Reflejos, Ráfaga |
+| Paladín | Luz sagrada (5 cargas → explosión) | Intercesión, Luz purificadora |
+| Nigromante | Cosecha de almas | Escudo de hueso, Estallido de cadáver |
+| Druida | Ciclo natural (día cura / noche daño) | Piel de corteza, Zarzas |
+| Mercader | Interés compuesto (esmeraldas) | Seguro, Recompensa |
+| Monje | Posturas Tigre / Grulla | Desviar, Paz interior |
+| Elementalista | Reacción (cambiar de elemento potencia) | Guarda elemental, Muerte resonante |
+| Cambiaformas | Instinto (transformado acumula daño) | Escurridizo, Devorar |
+
+Activas nuevas: Salto demoledor, Torbellino, Nova de escarcha, Misiles arcanos, Abanico de cuchillas,
+Shuriken, Lluvia sanadora, Nube de esporas, Garfio, Granada de pulso, Salto del dragón, Estocada
+perforante, Iaido, Mil cortes, Consagración, Martillo de la justicia, Lanza de hueso, Sifón de almas,
+Manada, Tormenta de espinas, Lanzamiento de moneda, Guardia dorada, Patada voladora, Cien puños,
+Ráfaga elemental, Aura elemental, Abalanzarse, Aullido de la bestia.
+
+### Hoja de ruta
+- **Fase 2**: nuevos elementos (Luz, Vacío, Veneno, Cristal, Sonido) y fusiones entre elementos.
+- **Fase 3**: armas mejoradas, accesorios, consumibles, materiales y enemigos élite/jefes.
+- **Fase 4**: sinergias entre rol principal y secundario.
+
 ## Equipo, objetos y efectos visuales (v8)
 
 ### Sets de armadura por rol

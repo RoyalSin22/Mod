@@ -46,16 +46,26 @@ public class RolesScreen extends Screen {
 	private static final int LIST_W = 124;
 	private static final int ROLE_ROW_H = 18;
 
-	private enum NodeKind { CORE, PASSIVE_A, ACTIVE_A, PASSIVE_B, ACTIVE_B, STAT_1, STAT_2, HASTE, EFFICIENCY, MASTERY,
-		PATH_A1, PATH_A2, PATH_A3, PATH_B1, PATH_B2, PATH_B3, SIGNATURE, ULTIMATE }
+	/** Tipo de casilla del lienzo: un nodo del árbol o una de las 3 especiales (núcleo, característica, definitiva). */
+	private enum NodeKind { CORE, NODE, SIGNATURE, ULTIMATE }
 
-	private record NodeView(NodeKind kind, @Nullable RoleNode node, int x, int y) {}
+	private record NodeView(NodeKind kind, @Nullable RoleNode node, int x, int y) {
+		String key() {
+			return node != null ? node.id() : kind.name();
+		}
+	}
+
+	private static final int COL_W = 36;
+	private static final int ROW_H = 29;
+	/** Colores de las tres sendas (A, B, C). */
+	private static final int[] PATH_COLORS = {0xFFE57373, 0xFF64B5F6, 0xFF81C784};
 
 	private int left;
 	private int top;
 	private RoleCategory category = RoleCategory.MARTIAL;
 	private Role selected = Role.BERSERKER;
-	private NodeKind selectedNode = NodeKind.CORE;
+	/** Clave de la casilla seleccionada: id del nodo o nombre de {@link NodeKind}. */
+	private String selectedNode = NodeKind.CORE.name();
 	private boolean extraView;
 
 	private ButtonWidget primaryButton;
@@ -63,6 +73,8 @@ public class RolesScreen extends Screen {
 	private ButtonWidget evolveButton;
 	private ButtonWidget upgradeButton;
 	private ButtonWidget extraButton;
+	private ButtonWidget equip1Button;
+	private ButtonWidget equip2Button;
 
 	public RolesScreen() {
 		super(Text.translatable("screen.aptitudes.roles.title"));
@@ -76,7 +88,8 @@ public class RolesScreen extends Screen {
 	private int canvasX() { return left + LIST_W + 16; }
 	private int canvasW() { return W - LIST_W - 24; }
 	private int canvasCenterX() { return canvasX() + canvasW() / 2 - 12; }
-	private int coreY() { return top + 100; }
+	private int gridX() { return canvasX() + 40; }
+	private int gridY() { return top + 34; }
 
 	@Override
 	protected void init() {
@@ -93,8 +106,16 @@ public class RolesScreen extends Screen {
 			NodeView v = nodeView(selectedNode);
 			if (v != null && v.node() != null) send(RoleActionPayload.UPGRADE_NODE, v.node().id());
 		}).dimensions(canvasX() + canvasW() - 76, top + H - 70, 70, 16).build());
+		equip1Button = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.equip", 1), b -> {
+			NodeView v = nodeView(selectedNode);
+			if (v != null && v.node() != null) send(RoleActionPayload.EQUIP_1, v.node().id());
+		}).dimensions(canvasX() + canvasW() - 76, top + H - 88, 34, 16).build());
+		equip2Button = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.equip", 2), b -> {
+			NodeView v = nodeView(selectedNode);
+			if (v != null && v.node() != null) send(RoleActionPayload.EQUIP_2, v.node().id());
+		}).dimensions(canvasX() + canvasW() - 40, top + H - 88, 34, 16).build());
 		extraButton = addDrawableChild(ButtonWidget.builder(Text.empty(), b -> extraView = !extraView)
-				.dimensions(canvasX() + canvasW() - 76, top + 30, 70, 14).build());
+				.dimensions(canvasX() + canvasW() - 150, top + H - 70, 70, 16).build());
 
 		addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.tab.attributes"),
 				b -> client.setScreen(new AptitudesScreen())).dimensions(width / 2 - 154, top + H - 26, 100, 18).build());
@@ -125,6 +146,15 @@ public class RolesScreen extends Screen {
 		NodeView v = nodeView(selectedNode);
 		upgradeButton.visible = !extraView && v != null && v.node() != null;
 		upgradeButton.active = ready && v != null && v.node() != null && canUpgrade(data, v.node());
+		boolean equippable = !extraView && ready && v != null && v.node() != null && v.node().active()
+				&& data.rank(v.node().id()) > 0;
+		equip1Button.visible = equippable;
+		equip2Button.visible = equippable;
+		if (equippable) {
+			int index = RoleTree.activeIndex(v.node());
+			equip1Button.active = data.equipped(selected, 0) != index;
+			equip2Button.active = data.equipped(selected, 1) != index;
+		}
 
 		extraButton.visible = hasExtraView();
 		extraButton.setMessage(Text.translatable(extraView ? "screen.aptitudes.roles.tree"
@@ -174,16 +204,14 @@ public class RolesScreen extends Screen {
 		return active && rank < RoleNode.MAX_RANK && data.level(role) >= node.levelForRank(rank + 1)
 				&& (node.prerequisite() == null || data.rank(node.prerequisite()) > 0)
 				&& availablePoints(data, role) > 0
-				&& !otherPathChosen(data, node);
+				&& !pathLocked(data, node);
 	}
 
-	/** Sendas excluyentes: no se puede subir un nodo de la senda contraria a la elegida. */
-	private static boolean otherPathChosen(RoleSyncPayload data, RoleNode node) {
-		dev.aptitudes.role.RoleTree.PathSpec spec = dev.aptitudes.role.RoleTree.pathSpec(node.id());
-		if (spec == null) return false;
-		String other = node.role().key() + (spec.path() == 1 ? "_b" : "_a");
-		for (int i = 1; i <= 3; i++) if (data.rank(other + i) > 0) return true;
-		return false;
+	/** Solo 2 de las 3 sendas: un nodo de una tercera senda queda bloqueado. */
+	private static boolean pathLocked(RoleSyncPayload data, @Nullable RoleNode node) {
+		if (node == null) return false;
+		RoleTree.PathSpec spec = RoleTree.pathSpec(node.id());
+		return spec != null && RoleTree.pathLocked(data::rank, node.role(), spec.path());
 	}
 
 	private static int availablePoints(RoleSyncPayload data, Role role) {
@@ -206,36 +234,23 @@ public class RolesScreen extends Screen {
 	// --------------------------------------------------------- Geometría
 
 	private List<NodeView> nodes() {
-		List<RoleNode> tree = RoleTree.nodes(selected);
-		int cx = canvasCenterX();
-		int cy = coreY();
 		List<NodeView> out = new ArrayList<>();
-		out.add(new NodeView(NodeKind.CORE, null, cx, cy));
-		out.add(new NodeView(NodeKind.PASSIVE_A, tree.get(0), cx - 58, cy));
-		out.add(new NodeView(NodeKind.PASSIVE_B, tree.get(2), cx - 116, cy));
-		out.add(new NodeView(NodeKind.ACTIVE_A, tree.get(1), cx + 58, cy));
-		out.add(new NodeView(NodeKind.ACTIVE_B, tree.get(3), cx + 116, cy));
-		// Fila inferior: entrenamientos bajo las pasivas; Presteza y Eficiencia bajo las activas.
-		out.add(new NodeView(NodeKind.STAT_1, tree.get(4), cx - 58, cy + 38));
-		out.add(new NodeView(NodeKind.STAT_2, tree.get(5), cx - 116, cy + 38));
-		out.add(new NodeView(NodeKind.HASTE, tree.get(6), cx + 58, cy + 38));
-		out.add(new NodeView(NodeKind.EFFICIENCY, tree.get(7), cx + 116, cy + 38));
-		out.add(new NodeView(NodeKind.MASTERY, tree.get(8), cx + 116, cy - 40));
-		out.add(new NodeView(NodeKind.SIGNATURE, null, cx, cy - 40));
-		out.add(new NodeView(NodeKind.ULTIMATE, null, cx, cy - 76));
-		// Sendas excluyentes: A hacia la izquierda y B hacia la derecha, bajo el núcleo.
-		out.add(new NodeView(NodeKind.PATH_A1, tree.get(9), cx - 40, cy + 82));
-		out.add(new NodeView(NodeKind.PATH_A2, tree.get(10), cx - 80, cy + 82));
-		out.add(new NodeView(NodeKind.PATH_A3, tree.get(11), cx - 120, cy + 82));
-		out.add(new NodeView(NodeKind.PATH_B1, tree.get(12), cx + 40, cy + 82));
-		out.add(new NodeView(NodeKind.PATH_B2, tree.get(13), cx + 80, cy + 82));
-		out.add(new NodeView(NodeKind.PATH_B3, tree.get(14), cx + 120, cy + 82));
+		// Columna izquierda: núcleo, característica y definitiva.
+		int sx = canvasX() + 8;
+		out.add(new NodeView(NodeKind.CORE, null, sx, gridY()));
+		out.add(new NodeView(NodeKind.SIGNATURE, null, sx, gridY() + ROW_H * 2));
+		out.add(new NodeView(NodeKind.ULTIMATE, null, sx, gridY() + ROW_H * 4));
+		for (RoleNode node : RoleTree.nodes(selected)) {
+			RoleTree.GridPos pos = RoleTree.position(node.id());
+			if (pos == null) continue;
+			out.add(new NodeView(NodeKind.NODE, node, gridX() + pos.col() * COL_W, gridY() + pos.row() * ROW_H));
+		}
 		return out;
 	}
 
 	@Nullable
-	private NodeView nodeView(NodeKind kind) {
-		for (NodeView v : nodes()) if (v.kind() == kind) return v;
+	private NodeView nodeView(String key) {
+		for (NodeView v : nodes()) if (v.key().equals(key)) return v;
 		return null;
 	}
 
@@ -268,7 +283,7 @@ public class RolesScreen extends Screen {
 		} else {
 			for (NodeView v : nodes()) {
 				if (mouseX >= v.x() && mouseX < v.x() + 24 && mouseY >= v.y() && mouseY < v.y() + 24) {
-					selectedNode = v.kind();
+					selectedNode = v.key();
 					updateButtons();
 					return true;
 				}
@@ -289,7 +304,7 @@ public class RolesScreen extends Screen {
 	private void selectRole(Role role) {
 		selected = role;
 		category = role.category();
-		selectedNode = NodeKind.CORE;
+		selectedNode = NodeKind.CORE.name();
 		extraView = false;
 		updateButtons();
 	}
@@ -423,51 +438,91 @@ public class RolesScreen extends Screen {
 	private List<Text> renderTree(DrawContext ctx, RoleSyncPayload data, int mouseX, int mouseY) {
 		List<NodeView> views = nodes();
 		int tier = data.tier(selected);
-		// Conexiones
-		link(ctx, views, NodeKind.CORE, NodeKind.PASSIVE_A, lit(data, NodeKind.PASSIVE_A));
-		link(ctx, views, NodeKind.PASSIVE_A, NodeKind.PASSIVE_B, lit(data, NodeKind.PASSIVE_B));
-		link(ctx, views, NodeKind.CORE, NodeKind.ACTIVE_A, lit(data, NodeKind.ACTIVE_A));
-		link(ctx, views, NodeKind.ACTIVE_A, NodeKind.ACTIVE_B, lit(data, NodeKind.ACTIVE_B));
-		link(ctx, views, NodeKind.PASSIVE_A, NodeKind.STAT_1, lit(data, NodeKind.STAT_1));
-		link(ctx, views, NodeKind.STAT_1, NodeKind.STAT_2, lit(data, NodeKind.STAT_2));
-		link(ctx, views, NodeKind.ACTIVE_A, NodeKind.HASTE, lit(data, NodeKind.HASTE));
-		link(ctx, views, NodeKind.HASTE, NodeKind.EFFICIENCY, lit(data, NodeKind.EFFICIENCY));
-		link(ctx, views, NodeKind.ACTIVE_B, NodeKind.MASTERY, lit(data, NodeKind.MASTERY));
-		link(ctx, views, NodeKind.CORE, NodeKind.PATH_A1, lit(data, NodeKind.PATH_A1));
-		link(ctx, views, NodeKind.PATH_A1, NodeKind.PATH_A2, lit(data, NodeKind.PATH_A2));
-		link(ctx, views, NodeKind.PATH_A2, NodeKind.PATH_A3, lit(data, NodeKind.PATH_A3));
-		link(ctx, views, NodeKind.CORE, NodeKind.PATH_B1, lit(data, NodeKind.PATH_B1));
-		link(ctx, views, NodeKind.PATH_B1, NodeKind.PATH_B2, lit(data, NodeKind.PATH_B2));
-		link(ctx, views, NodeKind.PATH_B2, NodeKind.PATH_B3, lit(data, NodeKind.PATH_B3));
+		// Conexiones: cada nodo con su requisito; las raíces, con el núcleo.
+		NodeView core = views.get(0);
+		for (NodeView v : views) {
+			if (v.node() == null) continue;
+			String pre = v.node().prerequisite();
+			NodeView parent = pre == null ? null : nodeView(pre);
+			boolean on = data.rank(v.node().id()) > 0;
+			if (parent != null) {
+				line(ctx, parent, v, on ? UiStyle.GOLD_DARK : 0xFF2C3044);
+			} else if (RoleTree.position(v.node().id()) != null && RoleTree.position(v.node().id()).row() == 0
+					&& RoleTree.position(v.node().id()).col() <= 1) {
+				line(ctx, core, v, on ? UiStyle.GOLD_DARK : 0xFF262A3A);
+			}
+		}
+		NodeView sig = views.get(1);
+		NodeView ult = views.get(2);
+		line(ctx, core, sig, tier >= Evolution.MASTER ? UiStyle.GOLD_DARK : 0xFF2C3044);
+		line(ctx, sig, ult, tier >= Evolution.ULTIMATE ? UiStyle.GOLD_DARK : 0xFF2C3044);
 		renderPathLabels(ctx, data);
-		link(ctx, views, NodeKind.CORE, NodeKind.SIGNATURE, tier >= Evolution.MASTER);
-		link(ctx, views, NodeKind.SIGNATURE, NodeKind.ULTIMATE, tier >= Evolution.ULTIMATE);
 
 		List<Text> tooltip = null;
 		for (NodeView v : views) {
 			boolean hover = mouseX >= v.x() && mouseX < v.x() + 24 && mouseY >= v.y() && mouseY < v.y() + 24;
 			UiStyle.Frame frame = switch (v.kind()) {
 				case CORE -> UiStyle.Frame.CORE;
-				case PASSIVE_A, PASSIVE_B, STAT_1, STAT_2, PATH_A1, PATH_A2, PATH_A3, PATH_B1, PATH_B2, PATH_B3 ->
-						UiStyle.Frame.PASSIVE;
-				case ACTIVE_A, ACTIVE_B, HASTE, EFFICIENCY, MASTERY -> UiStyle.Frame.ACTIVE;
 				case SIGNATURE -> UiStyle.Frame.SIGNATURE;
 				case ULTIMATE -> UiStyle.Frame.ULTIMATE;
+				case NODE -> v.node().active() || v.node().kind() == RoleNode.Kind.HASTE
+						|| v.node().kind() == RoleNode.Kind.EFFICIENCY || v.node().kind() == RoleNode.Kind.MASTERY
+						? UiStyle.Frame.ACTIVE : UiStyle.Frame.PASSIVE;
 			};
-			boolean lit = lit(data, v.kind());
-			UiStyle.frame(ctx, v.x(), v.y(), frame, lit, hover || v.kind() == selectedNode);
+			boolean lit = lit(data, v);
+			UiStyle.frame(ctx, v.x(), v.y(), frame, lit, hover || v.key().equals(selectedNode));
 			ctx.drawItem(nodeIcon(v), v.x() + 4, v.y() + 4);
-			if (!lit) ctx.fill(v.x() + 2, v.y() + 2, v.x() + 22, v.y() + 22, 0x90101018);
-			if (pathLocked(data, v)) ctx.fill(v.x() + 2, v.y() + 2, v.x() + 22, v.y() + 22, 0x90801010); // senda bloqueada
+			if (!lit) ctx.fill(v.x() + 2, v.y() + 2, v.x() + 22, v.y() + 22, available(data, v) ? 0x60101018 : 0x90101018);
+			if (pathLocked(data, v.node())) ctx.fill(v.x() + 2, v.y() + 2, v.x() + 22, v.y() + 22, 0x90801010);
+			ctx.getMatrices().push();
+			ctx.getMatrices().translate(0, 0, 200);
 			if (v.node() != null) {
+				RoleTree.PathSpec spec = RoleTree.pathSpec(v.node().id());
+				if (spec != null) ctx.fill(v.x() + 2, v.y() + 2, v.x() + 5, v.y() + 5, PATH_COLORS[spec.path() - 1]);
 				int rank = data.rank(v.node().id());
 				String r = rank + (rank > 0 && tier > 0 ? "+" + tier : "");
-				ctx.drawText(textRenderer, r, v.x() + 12 - textRenderer.getWidth(r) / 2, v.y() + 26,
-						rank >= RoleNode.MAX_RANK ? UiStyle.GOLD : UiStyle.MUTED, false);
+				ctx.drawTextWithShadow(textRenderer, r, v.x() + 22 - textRenderer.getWidth(r), v.y() + 15,
+						rank >= RoleNode.MAX_RANK ? UiStyle.GOLD : rank > 0 ? UiStyle.TEXT : UiStyle.MUTED);
+				// Activas equipadas: "1" / "2" en la esquina superior derecha.
+				if (v.node().active()) {
+					int index = RoleTree.activeIndex(v.node());
+					String slot = data.equipped(selected, 0) == index ? "1" : data.equipped(selected, 1) == index ? "2" : "";
+					if (!slot.isEmpty()) {
+						ctx.fill(v.x() + 16, v.y() + 1, v.x() + 23, v.y() + 9, 0xE0201A10);
+						ctx.drawText(textRenderer, slot, v.x() + 18, v.y() + 1, UiStyle.GOLD, false);
+					}
+				}
 			}
-			if (hover) tooltip = List.of(nodeName(v).copy().formatted(Formatting.YELLOW), nodeType(v).copy().formatted(Formatting.GRAY));
+			ctx.getMatrices().pop();
+			if (hover) {
+				List<Text> lines = new ArrayList<>();
+				lines.add(nodeName(v).copy().formatted(Formatting.YELLOW));
+				lines.add(nodeType(v).copy().formatted(Formatting.GRAY));
+				if (v.node() != null) {
+					RoleTree.PathSpec spec = RoleTree.pathSpec(v.node().id());
+					if (spec != null) lines.add(Text.translatable(RoleTree.pathKey(selected, spec.path()))
+							.withColor(PATH_COLORS[spec.path() - 1] & 0xFFFFFF));
+					if (v.node().prerequisite() != null && data.rank(v.node().prerequisite()) <= 0) {
+						RoleNode pre = RoleTree.get(v.node().prerequisite());
+						if (pre != null) lines.add(Text.translatable("screen.aptitudes.node.needs",
+								Text.translatable(pre.translationKey())).formatted(Formatting.RED));
+					}
+				}
+				tooltip = lines;
+			}
 		}
 		return tooltip;
+	}
+
+	private void line(DrawContext ctx, NodeView a, NodeView b, int color) {
+		UiStyle.line(ctx, a.x() + 11, a.y() + 11, b.x() + 11, b.y() + 11, color);
+	}
+
+	/** Un nodo no aprendido cuyo requisito ya se cumple se oscurece menos. */
+	private boolean available(RoleSyncPayload data, NodeView v) {
+		if (v.node() == null) return false;
+		String pre = v.node().prerequisite();
+		return (pre == null || data.rank(pre) > 0) && data.level(selected) >= v.node().requiredLevel();
 	}
 
 	/** Icono de cada nodo: el del rol para los propios y uno genérico para los comunes. */
@@ -476,61 +531,30 @@ public class RolesScreen extends Screen {
 			case CORE -> selected.iconStack();
 			case SIGNATURE -> dev.aptitudes.role.NodeIcons.signature(selected);
 			case ULTIMATE -> dev.aptitudes.role.NodeIcons.ultimate(selected);
-			default -> dev.aptitudes.role.NodeIcons.of(v.node());
+			case NODE -> dev.aptitudes.role.NodeIcons.of(v.node());
 		};
 	}
 
-	/** {@code true} si el nodo es de la senda contraria a la ya elegida. */
-	private boolean pathLocked(RoleSyncPayload data, NodeView v) {
-		if (v.node() == null) return false;
-		dev.aptitudes.role.RoleTree.PathSpec spec = dev.aptitudes.role.RoleTree.pathSpec(v.node().id());
-		if (spec == null) return false;
-		int chosen = chosenPath(data);
-		return chosen != 0 && chosen != spec.path();
-	}
-
-	private int chosenPath(RoleSyncPayload data) {
-		for (int i = 1; i <= 3; i++) {
-			if (data.rank(selected.key() + "_a" + i) > 0) return 1;
-			if (data.rank(selected.key() + "_b" + i) > 0) return 2;
-		}
-		return 0;
-	}
-
+	/** Nombres de las tres sendas bajo sus columnas, escalonados para que no se solapen. */
 	private void renderPathLabels(DrawContext ctx, RoleSyncPayload data) {
-		int cx = canvasCenterX();
-		int y = coreY() + 70;
-		int chosen = chosenPath(data);
-		Text a = Text.translatable(dev.aptitudes.role.RoleTree.pathKey(selected, 1));
-		Text b = Text.translatable(dev.aptitudes.role.RoleTree.pathKey(selected, 2));
-		ctx.drawText(textRenderer, a, cx - 96 + 12 - textRenderer.getWidth(a) / 2, y,
-				chosen == 2 ? UiStyle.DOWN : UiStyle.GOLD, false);
-		ctx.drawText(textRenderer, b, cx + 104 + 12 - textRenderer.getWidth(b) / 2, y,
-				chosen == 1 ? UiStyle.DOWN : UiStyle.GOLD, false);
-		Text or = Text.translatable("screen.aptitudes.path.or");
-		ctx.drawText(textRenderer, or, cx + 12 - textRenderer.getWidth(or) / 2, y + 16, UiStyle.MUTED, false);
+		int y = gridY() + ROW_H * 5 + 2;
+		for (int path = 1; path <= 3; path++) {
+			Text name = Text.translatable(RoleTree.pathKey(selected, path));
+			int cx = gridX() + (1 + path) * COL_W + 12;
+			boolean locked = RoleTree.pathLocked(data::rank, selected, path);
+			boolean started = RoleTree.pathStarted(data::rank, selected, path);
+			int color = locked ? UiStyle.DOWN : started ? PATH_COLORS[path - 1] : UiStyle.MUTED;
+			ctx.drawText(textRenderer, name, cx - textRenderer.getWidth(name) / 2, y + (path - 1) * 9, color, false);
+		}
 	}
 
-	private boolean lit(RoleSyncPayload data, NodeKind kind) {
-		return switch (kind) {
+	private boolean lit(RoleSyncPayload data, NodeView v) {
+		return switch (v.kind()) {
 			case CORE -> true;
 			case SIGNATURE -> data.tier(selected) >= Evolution.MASTER;
 			case ULTIMATE -> data.tier(selected) >= Evolution.ULTIMATE;
-			default -> {
-				NodeView v = nodeView(kind);
-				yield v != null && v.node() != null && data.rank(v.node().id()) > 0;
-			}
+			case NODE -> data.rank(v.node().id()) > 0;
 		};
-	}
-
-	private void link(DrawContext ctx, List<NodeView> views, NodeKind a, NodeKind b, boolean lit) {
-		NodeView va = null, vb = null;
-		for (NodeView v : views) {
-			if (v.kind() == a) va = v;
-			if (v.kind() == b) vb = v;
-		}
-		if (va == null || vb == null) return;
-		UiStyle.line(ctx, va.x() + 11, va.y() + 11, vb.x() + 11, vb.y() + 11, lit ? UiStyle.GOLD_DARK : 0xFF2C3044);
 	}
 
 	private Text nodeName(NodeView v) {
@@ -538,20 +562,30 @@ public class RolesScreen extends Screen {
 			case CORE -> Text.translatable(selected.translationKey());
 			case SIGNATURE -> Text.translatable(Evolution.signatureKey(selected));
 			case ULTIMATE -> Text.translatable(Evolution.ultimateKey(selected));
-			default -> Text.translatable(v.node().translationKey());
+			case NODE -> Text.translatable(v.node().translationKey());
 		};
 	}
 
 	private Text nodeType(NodeView v) {
-		return Text.translatable(switch (v.kind()) {
-			case CORE -> "screen.aptitudes.node.core";
-			case PASSIVE_A, PASSIVE_B -> "screen.aptitudes.roles.passive";
-			case ACTIVE_A, ACTIVE_B -> "screen.aptitudes.roles.active";
-			case STAT_1, STAT_2 -> "screen.aptitudes.node.stat";
-			case PATH_A1, PATH_A2, PATH_A3, PATH_B1, PATH_B2, PATH_B3 -> "screen.aptitudes.node.path";
+		if (v.kind() != NodeKind.NODE) {
+			return Text.translatable(switch (v.kind()) {
+				case SIGNATURE -> "screen.aptitudes.node.signature";
+				case ULTIMATE -> "screen.aptitudes.node.ultimate";
+				default -> "screen.aptitudes.node.core";
+			});
+		}
+		RoleNode node = v.node();
+		List<RoleNode> tree = RoleTree.nodes(selected);
+		int index = tree.indexOf(node);
+		// Los 5 últimos de la lista: mecánica, reactiva 1, reactiva 2 y las activas C/D.
+		if (index == tree.size() - 5) return Text.translatable("screen.aptitudes.node.mechanic");
+		if (index == tree.size() - 4 || index == tree.size() - 3) return Text.translatable("screen.aptitudes.node.reactive");
+		return Text.translatable(switch (node.kind()) {
+			case PASSIVE -> "screen.aptitudes.roles.passive";
+			case ACTIVE -> "screen.aptitudes.roles.active";
+			case STAT -> "screen.aptitudes.node.stat";
+			case PATH -> "screen.aptitudes.node.path";
 			case HASTE, EFFICIENCY, MASTERY -> "screen.aptitudes.node.upgrade";
-			case SIGNATURE -> "screen.aptitudes.node.signature";
-			case ULTIMATE -> "screen.aptitudes.node.ultimate";
 		});
 	}
 
@@ -560,7 +594,7 @@ public class RolesScreen extends Screen {
 		NodeView v = nodeView(selectedNode);
 		if (v == null) return;
 		int x = canvasX() + 8;
-		int y = coreY() + 116;
+		int y = gridY() + ROW_H * 6 + 20;
 		int w = canvasW() - 16;
 		ctx.fill(x, y - 4, x + w, y - 3, UiStyle.BORDER);
 		ctx.drawTextWithShadow(textRenderer, nodeName(v), x, y, UiStyle.GOLD);

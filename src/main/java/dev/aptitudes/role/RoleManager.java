@@ -257,13 +257,30 @@ public final class RoleManager {
 		if (node.prerequisite() != null && data.rank(node.prerequisite()) <= 0) return UpgradeResult.MISSING_PREREQUISITE;
 		if (availablePoints(data, node.role()) <= 0) return UpgradeResult.NO_POINTS;
 		RoleTree.PathSpec path = RoleTree.pathSpec(nodeId);
-		if (path != null) {
-			int chosen = RoleTree.chosenPath(data, node.role());
-			if (chosen != 0 && chosen != path.path()) return UpgradeResult.PATH_LOCKED; // sendas excluyentes
+		if (path != null && RoleTree.pathLocked(data::rank, node.role(), path.path())) {
+			return UpgradeResult.PATH_LOCKED; // solo 2 de las 3 sendas
 		}
 		data.setRank(nodeId, rank + 1);
 		refresh(player);
 		return UpgradeResult.OK;
+	}
+
+	/**
+	 * Equipa una activa aprendida del rol en su ranura 1 o 2 ({@code which} 0/1).
+	 * @return false si el nodo no es una activa del rol o no está aprendida.
+	 */
+	public static boolean equip(ServerPlayerEntity player, String nodeId, int which) {
+		RoleNode node = RoleTree.get(nodeId);
+		if (node == null || !node.active() || which < 0 || which > 1) return false;
+		RoleData data = get(player);
+		if (data.rank(nodeId) <= 0) return false;
+		int index = RoleTree.activeIndex(node);
+		if (index < 0) return false;
+		data.equip(node.role(), which, index);
+		player.sendMessage(Text.translatable("aptitudes.role.equipped", Text.translatable(node.translationKey()),
+				which + 1).formatted(net.minecraft.util.Formatting.GOLD), true);
+		refresh(player);
+		return true;
 	}
 
 	// ------------------------------------------------------------- Elementos
@@ -286,6 +303,7 @@ public final class RoleManager {
 		RoleData data = get(player);
 		if (!data.isActive(Role.ELEMENTALIST) || data.elements().size() < 2) return;
 		data.cycleElement();
+		dev.aptitudes.ability.RoleMechanics.onElementSwitch(player);
 		Element active = data.activeElement();
 		if (active != null) {
 			player.sendMessage(Text.translatable("aptitudes.element.switched",

@@ -76,7 +76,7 @@ public final class AbilityManager {
 			fail(player, Text.translatable(slot < 2 ? "aptitudes.ability.no_primary" : "aptitudes.ability.no_secondary"));
 			return;
 		}
-		RoleNode node = RoleTree.active(role, slot % 2);
+		RoleNode node = RoleTree.active(role, data.equipped(role, slot % 2));
 		int learned = node == null ? 0 : RoleManager.activeRank(player, node.id()); // incluye la bonificación de evolución
 		if (node == null || learned <= 0) {
 			fail(player, Text.translatable("aptitudes.ability.not_learned"));
@@ -179,6 +179,7 @@ public final class AbilityManager {
 		CastFx.onCast(player, role, slot == ULTIMATE_SLOT ? CastFx.Kind.ULTIMATE
 				: slot == SIGNATURE_SLOT ? CastFx.Kind.SIGNATURE : CastFx.Kind.ACTIVE);
 		if (empowered) RoleResources.consumeEmpower(player, role);
+		RoleMechanics.onCast(player, role, energyCost);
 		cooldowns(player).put(cooldownKey, now + cooldown);
 		if (ServerPlayNetworking.canSend(player, CooldownPayload.ID)) {
 			ServerPlayNetworking.send(player, new CooldownPayload(slot, cooldown));
@@ -232,7 +233,7 @@ public final class AbilityManager {
 				key = role == null ? null : "ultimate." + role.key();
 			} else {
 				Role role = RoleManager.roleInSlot(data, slot);
-				RoleNode node = role == null ? null : RoleTree.active(role, slot % 2);
+				RoleNode node = role == null ? null : RoleTree.active(role, data.equipped(role, slot % 2));
 				key = node == null ? null : node.id();
 			}
 			Integer until = key == null ? null : cooldowns(player).get(key);

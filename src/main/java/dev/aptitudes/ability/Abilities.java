@@ -346,12 +346,15 @@ public final class Abilities {
 		// ---------------- Cambiaformas ----------------
 		register("transform", (p, r) -> dev.aptitudes.morph.MorphManager.toggle(p));
 		register("form_power", (p, r) -> dev.aptitudes.morph.MorphManager.usePower(p, r));
+
+		// Activas C y D de cada rol.
+		AbilitiesExtra.registerAll();
 	}
 
 	private Abilities() {
 	}
 
-	private static void register(String id, Ability ability) {
+	static void register(String id, Ability ability) {
 		REGISTRY.put(id, ability);
 	}
 

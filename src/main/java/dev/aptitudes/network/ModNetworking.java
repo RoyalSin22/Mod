@@ -88,6 +88,8 @@ public final class ModNetworking {
 					}
 				}
 				case RoleActionPayload.CYCLE_ELEMENT -> RoleManager.cycleElement(player);
+				case RoleActionPayload.EQUIP_1, RoleActionPayload.EQUIP_2 ->
+						RoleManager.equip(player, payload.nodeId(), payload.action() == RoleActionPayload.EQUIP_1 ? 0 : 1);
 				case RoleActionPayload.SELECT_FORM -> {
 					dev.aptitudes.morph.MorphForm form = dev.aptitudes.morph.MorphForm.byIndex(payload.roleIndex());
 					if (form != null) dev.aptitudes.morph.MorphManager.select(player, form);
