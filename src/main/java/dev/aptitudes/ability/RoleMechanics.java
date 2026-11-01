@@ -34,7 +34,11 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 
+import dev.aptitudes.network.MechanicPayload;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -73,6 +77,8 @@ public final class RoleMechanics {
 	}
 
 	private static final Map<UUID, State> STATES = new HashMap<>();
+	/** Último estado enviado al HUD de cada jugador (para no reenviar lo mismo). */
+	private static final Map<UUID, List<MechanicPayload.Entry>> LAST_SENT = new HashMap<>();
 	private static final Identifier MERCHANT_LUCK = Aptitudes.id("mech/compound_interest");
 
 	private RoleMechanics() {
@@ -102,6 +108,62 @@ public final class RoleMechanics {
 
 	public static void forget(ServerPlayerEntity p) {
 		STATES.remove(p.getUuid());
+		LAST_SENT.remove(p.getUuid());
+	}
+
+	// ------------------------------------------------------------- HUD
+
+	/** Mecánica de cada rol: id del nodo (la fila 0 central del árbol). */
+	private static String mechanicNode(Role role) {
+		List<dev.aptitudes.role.RoleNode> nodes = dev.aptitudes.role.RoleTree.nodes(role);
+		return nodes.size() >= 5 ? nodes.get(nodes.size() - 5).id() : "";
+	}
+
+	/** Envía al HUD el estado de las mecánicas de los roles activos (solo si cambió). */
+	public static void sync(ServerPlayerEntity p) {
+		if (!ServerPlayNetworking.canSend(p, MechanicPayload.ID)) return;
+		State s = state(p);
+		int now = now(p);
+		RoleData data = RoleManager.get(p);
+		List<MechanicPayload.Entry> entries = new ArrayList<>();
+		for (Role role : new Role[]{data.primary(), data.secondary()}) {
+			if (role == null) continue;
+			String node = mechanicNode(role);
+			int r = rank(p, node);
+			if (r <= 0) continue;
+			MechanicPayload.Entry e = switch (node) {
+				case "frenzy" -> entry(node, s.frenzy, 2 + r);
+				case "arcane_charges" -> entry(node, s.mageCharges, Math.max(2, 6 - r));
+				case "lethal_tempo" -> entry(node, now - s.lastHit <= 40 ? s.combo : 0, 3);
+				case "bloom" -> entry(node, Math.min(3, s.stillSeconds), 3);
+				case "overdrive" -> s.overdriveUntil > now
+						? new MechanicPayload.Entry(node, (s.overdriveUntil - now + 19) / 20, 0, "mech.aptitudes.overdrive_on")
+						: entry(node, s.heat / 25, 4);
+				case "impetus" -> entry(node, Math.min(2, s.sprintSeconds), 2);
+				case "kata" -> entry(node, now - s.lastKata <= 30 ? s.kata : 0, 3);
+				case "holy_light" -> entry(node, s.holy, 5);
+				case "soul_harvest" -> entry(node, s.souls, 2 + r);
+				case "day_night_cycle" -> new MechanicPayload.Entry(node, 0, 0,
+						p.getWorld().isDay() ? "mech.aptitudes.day" : "mech.aptitudes.night");
+				case "compound_interest" -> entry(node, Math.min(2 + r, p.getInventory().count(Items.EMERALD) / 10), 2 + r);
+				case "stances" -> new MechanicPayload.Entry(node, 0, 0, p.isSprinting() ? "mech.aptitudes.tiger"
+						: p.isSneaking() ? "mech.aptitudes.crane" : "mech.aptitudes.neutral");
+				case "elemental_reaction" -> s.reactionUntil > now
+						? new MechanicPayload.Entry(node, (s.reactionUntil - now + 19) / 20, 0, "mech.aptitudes.reaction_on")
+						: new MechanicPayload.Entry(node, 0, 0, "mech.aptitudes.reaction_ready");
+				case "instinct" -> entry(node, s.instinct, 2 + r);
+				default -> null;
+			};
+			if (e != null) entries.add(e);
+		}
+		List<MechanicPayload.Entry> last = LAST_SENT.get(p.getUuid());
+		if (entries.equals(last)) return;
+		LAST_SENT.put(p.getUuid(), entries);
+		ServerPlayNetworking.send(p, new MechanicPayload(entries));
+	}
+
+	private static MechanicPayload.Entry entry(String node, int value, int max) {
+		return new MechanicPayload.Entry(node, Math.max(0, Math.min(value, max)), max, "");
 	}
 
 	// ------------------------------------------------------------ Golpes
@@ -204,6 +266,7 @@ public final class RoleMechanics {
 		if (reaction > 0 && !direct && s.reactionUntil > now) bonus += 0.15f + 0.15f * reaction;
 		// Cambiaformas – Instinto
 		if (rank(p, "instinct") > 0) bonus += 0.05f * s.instinct;
+		sync(p);
 
 		return 1.0f + bonus;
 	}
@@ -364,6 +427,7 @@ public final class RoleMechanics {
 			p.heal(devour);
 			p.getHungerManager().add(1, 0.3f);
 		}
+		sync(p);
 	}
 
 	/** Nigromante – Estallido de cadáver: al morir un esbirro, daña a los enemigos cercanos. */
@@ -413,12 +477,14 @@ public final class RoleMechanics {
 				sound(p, SoundEvents.BLOCK_BEACON_ACTIVATE, 1.8f);
 			}
 		}
+		sync(p);
 	}
 
 	/** Elementalista – Reacción: cambiar de elemento abre una ventana de 5 s. */
 	public static void onElementSwitch(ServerPlayerEntity p) {
 		if (rank(p, "elemental_reaction") <= 0) return;
 		state(p).reactionUntil = now(p) + 100;
+		sync(p);
 		ParticleFx.ring(p.getServerWorld(), p.getPos().add(0, 0.1, 0), 1.0, ParticleTypes.ELECTRIC_SPARK, 14);
 	}
 
@@ -506,6 +572,7 @@ public final class RoleMechanics {
 			} else {
 				s.instinct = 0;
 			}
+			sync(p);
 		}
 	}
 

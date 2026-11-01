@@ -20,6 +20,15 @@ public final class ClientConfig {
 	public boolean screenEffects = true;
 	/** Números de daño flotantes. */
 	public boolean damageNumbers = true;
+	/** Escala del HUD de habilidades (0,5 – 2). */
+	public float hudScale = 1.0f;
+	/** Desplazamiento de la barra de habilidades respecto a su posición por defecto (píxeles de GUI). */
+	public int hudOffsetX = 0;
+	public int hudOffsetY = 0;
+	/** Barras de vida/maná/aguante largas arriba a la izquierda (estilo Souls) en lugar de junto a la hotbar. */
+	public boolean soulsBars = true;
+	/** Indicador de la mecánica del rol (acumulaciones, estados) sobre la barra de habilidades. */
+	public boolean showMechanic = true;
 
 	private static Path path() {
 		return FabricLoader.getInstance().getConfigDir().resolve(Aptitudes.MOD_ID + "-client.json");

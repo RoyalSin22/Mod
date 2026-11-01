@@ -286,29 +286,29 @@ public class AptitudesScreen extends Screen {
 		int free = Math.max(0, data.availablePoints());
 		int buy = levelsToBuy(data);
 		int after = Math.max(0, free - stagedTotal());
-		ctx.drawText(textRenderer, Text.translatable("screen.aptitudes.soul_level"), x, top + 28, UiStyle.TEXT, false);
+		UiStyle.label(ctx, textRenderer, Text.translatable("screen.aptitudes.soul_level"), x, top + 28, 90, UiStyle.TEXT);
 		UiStyle.valueArrow(ctx, textRenderer, String.valueOf(data.soulLevel()), String.valueOf(data.soulLevel() + buy),
 				x + 140, top + 28, buy > 0);
 		if (bonfire) {
 			int cost = costOf(data, buy);
 			int have = client.player == null ? 0 : client.player.experienceLevel;
-			ctx.drawText(textRenderer, Text.translatable("screen.aptitudes.xp_cost"), x, top + 39, UiStyle.TEXT, false);
+			UiStyle.label(ctx, textRenderer, Text.translatable("screen.aptitudes.xp_cost"), x, top + 39, 80, UiStyle.TEXT);
 			String costText = cost + " / " + have;
 			ctx.drawText(textRenderer, costText, x + 140 - textRenderer.getWidth(costText), top + 39,
 					cost > have ? UiStyle.DOWN : UiStyle.GOOD, false);
 		} else if (free > 0) {
-			ctx.drawText(textRenderer, Text.translatable("screen.aptitudes.attribute_points"), x, top + 39, UiStyle.TEXT, false);
+			UiStyle.label(ctx, textRenderer, Text.translatable("screen.aptitudes.attribute_points"), x, top + 39, 90, UiStyle.TEXT);
 			UiStyle.valueArrow(ctx, textRenderer, String.valueOf(free), String.valueOf(after), x + 140, top + 39, after != free);
 		} else {
-			ctx.drawText(textRenderer, Text.translatable("screen.aptitudes.need_bonfire"), x, top + 39, UiStyle.MUTED, false);
+			UiStyle.label(ctx, textRenderer, Text.translatable("screen.aptitudes.need_bonfire"), x, top + 39, 140, UiStyle.MUTED);
 		}
 		UiStyle.header(ctx, textRenderer, Text.translatable("screen.aptitudes.attributes"), x, top + 50, 140);
 		for (int i = 0; i < attrs.length; i++) {
 			int y = top + 66 + i * ATTR_ROW_H;
 			UiStyle.row(ctx, x, y, 140, ATTR_ROW_H - 2, i, i == selected);
 			int affinity = data.affinity(attrs[i]);
-			ctx.drawText(textRenderer, Text.translatable(attrs[i].translationKey()), x + 4, y + 4,
-					affinity > 0 ? UiStyle.GOLD : UiStyle.TEXT, false);
+			UiStyle.label(ctx, textRenderer, Text.translatable(attrs[i].translationKey()), x + 4, y + 4,
+					affinity > 0 ? 56 : 66, affinity > 0 ? UiStyle.GOLD : UiStyle.TEXT);
 			if (affinity > 0) ctx.drawText(textRenderer, "★", x + 62, y + 4, UiStyle.GOLD, false);
 			int cur = data.allocated(attrs[i]);
 			boolean changed = staged[i] > 0;
@@ -319,26 +319,33 @@ public class AptitudesScreen extends Screen {
 		}
 
 		// ---- Columna 2: estadísticas base
-		int sx = left + 160;
-		UiStyle.header(ctx, textRenderer, Text.translatable("screen.aptitudes.base_stats"), sx, top + 30, 120);
+		int sx = left + 158;
+		int sw = 128;
+		UiStyle.header(ctx, textRenderer, Text.translatable("screen.aptitudes.base_stats"), sx, top + 30, sw);
 		int affected = STAT_OF_ATTRIBUTE[selected];
 		for (int s = 0; s < STAT_KEYS.length; s++) {
 			int y = top + 46 + s * STAT_ROW_H;
-			UiStyle.row(ctx, sx, y, 120, STAT_ROW_H - 2, s, s == affected);
+			UiStyle.row(ctx, sx, y, sw, STAT_ROW_H - 2, s, s == affected);
 			if (s == affected) ctx.drawText(textRenderer, "+", sx - 7, y + 3, UiStyle.GOLD, false);
-			ctx.drawText(textRenderer, Text.translatable("stat.aptitudes." + STAT_KEYS[s]), sx + 4, y + 3, UiStyle.TEXT, false);
-			if (stats == null || s >= stats.stats().length) continue;
+			Text statName = Text.translatable("stat.aptitudes." + STAT_KEYS[s]);
+			if (stats == null || s >= stats.stats().length) {
+				UiStyle.label(ctx, textRenderer, statName, sx + 4, y + 3, sw - 8, UiStyle.TEXT);
+				continue;
+			}
 			double cur = stats.stats()[s];
 			double next = cur;
 			for (int a = 0; a < attrs.length; a++) {
 				if (STAT_OF_ATTRIBUTE[a] == s && a < stats.slopes().length) next += staged[a] * stats.slopes()[a];
 			}
-			UiStyle.valueArrow(ctx, textRenderer, UiStyle.fmt(cur), UiStyle.fmt(next), sx + 116, y + 3,
-					Math.abs(next - cur) > 1e-6);
+			String curText = UiStyle.fmt(cur);
+			String nextText = UiStyle.fmt(next);
+			int valueW = textRenderer.getWidth(curText + " → " + nextText);
+			UiStyle.label(ctx, textRenderer, statName, sx + 4, y + 3, sw - 14 - valueW, UiStyle.TEXT);
+			UiStyle.valueArrow(ctx, textRenderer, curText, nextText, sx + sw - 4, y + 3, Math.abs(next - cur) > 1e-6);
 		}
 
 		// ---- Columna 3: detalle del atributo seleccionado
-		int dx = left + 290;
+		int dx = left + 294;
 		PlayerAttribute attr = attrs[selected];
 		UiStyle.header(ctx, textRenderer, Text.translatable("screen.aptitudes.details"), dx, top + 30, 130);
 		UiStyle.panel(ctx, dx, top + 46, 130, 120);

@@ -369,6 +369,23 @@ A los 4 nodos propios de cada rol se suman 5:
 
 Comandos: `/unique` (lista) · `/unique admin give <jugador> <habilidad>` · `/unique admin revoke <habilidad>`.
 
+## Cambios v10 (tras la prueba de la v8)
+
+- **Textos**: las etiquetas largas se recortan con "…" en lugar de pisar los valores; nivel y puntos
+  del rol en dos líneas; columna de estadísticas más ancha.
+- **Árbol**: se arrastra con el ratón (clic en vacío o botón derecho), la rueda acerca/aleja y `C` lo
+  centra. La ventana crece con la pantalla (hasta 760×480).
+- **Cambio de rol**: ya no hay espera de 30 min. Ocupar una ranura vacía o intercambiar principal y
+  secundario es gratis; **sustituir** un rol exige quemar una **Ofrenda de renacimiento** en una Hoguera
+  (clic derecho con ella en la mano). Receta: 3 Fragmentos de alma + lingote de oro + vela.
+  `roleChangeRequiresRitual` en `config/aptitudes.json` lo desactiva.
+- **Mago arcano**: sin fuego ni hielo. Proyectil arcano, Distorsión temporal, Lluvia rúnica
+  (característica) y Senda Arcanista (crítico, ejecución, marchitar).
+- **HUD**: barras estilo Souls arriba a la izquierda (vida con trozo retrasado y absorción, maná,
+  aguante, recursos), indicador de la mecánica del rol sobre la barra de habilidades, ranuras con
+  esquinas doradas y destello al quedar listas. **Mayús + O** abre la configuración: arrastrar la
+  barra, escala 50–200 %, y activar/desactivar cada elemento.
+
 ## Árbol ramificado y mecánicas de rol (v9, fase 1)
 
 ### Árbol con requisitos (23 nodos por rol)

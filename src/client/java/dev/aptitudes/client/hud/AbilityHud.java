@@ -22,7 +22,10 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import dev.aptitudes.network.MechanicPayload;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * HUD junto a la hotbar (tecla O para ocultarlo):
@@ -50,18 +53,187 @@ public final class AbilityHud {
 	private AbilityHud() {
 	}
 
+	/** Estado de las mecánicas de rol recibido del servidor. */
+	private static List<MechanicPayload.Entry> mechanics = List.of();
+	/** Animación de "lista": tick hasta el que brilla cada ranura tras terminar su enfriamiento. */
+	private static final int[] READY_FLASH = new int[AbilityManager.SLOTS];
+	private static final int[] LAST_COOLDOWN = new int[AbilityManager.SLOTS];
+	/** Vida mostrada con retraso (el "trozo" amarillo que se vacía tras recibir daño, como en Souls). */
+	private static float laggedHealth = -1;
+
+	public static void onMechanics(MechanicPayload payload) {
+		mechanics = List.copyOf(payload.entries());
+	}
+
+	public static void clear() {
+		mechanics = List.of();
+		laggedHealth = -1;
+	}
+
 	public static void render(DrawContext ctx, RenderTickCounter tickCounter) {
 		MinecraftClient client = MinecraftClient.getInstance();
 		RoleSyncPayload data = ClientRoleState.data();
 		if (client.player == null || client.options.hudHidden || client.player.isSpectator()) return;
 		if (data == null || !ClientConfig.get().hudVisible) return;
-		if (data.primaryRole() == null && ownUnique() == null) return;
 		TextRenderer text = client.textRenderer;
 		int w = ctx.getScaledWindowWidth();
 		int h = ctx.getScaledWindowHeight();
+		ClientConfig cfg = ClientConfig.get();
 
-		renderBars(ctx, text, data, w, h);
-		renderSlots(ctx, text, data, w, h, client.player.age);
+		if (cfg.soulsBars) renderSoulsBars(ctx, text, data, client);
+		if (data.primaryRole() == null && ownUnique() == null) return;
+		if (!cfg.soulsBars) renderBars(ctx, text, data, w, h);
+		renderAbilityBar(ctx, text, data, w, h, client.player.age);
+	}
+
+	/** Barra de habilidades + indicador de mecánica, con la escala y el desplazamiento configurados. */
+	public static void renderAbilityBar(DrawContext ctx, TextRenderer text, RoleSyncPayload data, int w, int h, int age) {
+		ClientConfig cfg = ClientConfig.get();
+		int[] origin = barOrigin(w, h);
+		ctx.getMatrices().push();
+		ctx.getMatrices().translate(origin[0], origin[1], 0);
+		ctx.getMatrices().scale(cfg.hudScale, cfg.hudScale, 1f);
+		renderSlots(ctx, text, data, age);
+		if (cfg.showMechanic) renderMechanics(ctx, text, data);
+		ctx.getMatrices().pop();
+	}
+
+	/** Ancho total (sin escala) de la barra de habilidades. */
+	public static int barWidth() {
+		int total = 0;
+		for (int i = 0; i < ORDER.length; i++) total += SLOT + GAP + (GAP_BEFORE[i] ? GROUP_GAP : 0);
+		return total;
+	}
+
+	/** Esquina superior izquierda de la barra en pantalla (posición por defecto + desplazamiento). */
+	public static int[] barOrigin(int w, int h) {
+		ClientConfig cfg = ClientConfig.get();
+		int total = (int) (barWidth() * cfg.hudScale);
+		int x = w / 2 + 91 + 12;
+		int y = h - (int) (SLOT * cfg.hudScale) - 2;
+		if (x + total > w - 2) { // pantalla estrecha: encima de la hotbar, a la derecha
+			x = w - total - 2;
+			y = h - (int) (SLOT * cfg.hudScale) - 46;
+		}
+		x = Math.max(0, Math.min(w - total, x + cfg.hudOffsetX));
+		y = Math.max(10, Math.min(h - (int) (SLOT * cfg.hudScale), y + cfg.hudOffsetY));
+		return new int[]{x, y};
+	}
+
+	// ----------------------------------------------------- Barras Souls
+
+	/** Vida, maná y aguante en barras largas arriba a la izquierda; su longitud crece con el máximo. */
+	private static void renderSoulsBars(DrawContext ctx, TextRenderer text, RoleSyncPayload data, MinecraftClient client) {
+		ClientConfig cfg = ClientConfig.get();
+		var player = client.player;
+		ctx.getMatrices().push();
+		ctx.getMatrices().translate(6, 6, 0);
+		ctx.getMatrices().scale(cfg.hudScale, cfg.hudScale, 1f);
+		int y = 0;
+
+		// Vida (con absorción dorada y el trozo amarillo retrasado)
+		float health = player.getHealth();
+		float maxHealth = Math.max(1f, player.getMaxHealth());
+		if (laggedHealth < 0 || laggedHealth < health) laggedHealth = health;
+		else laggedHealth = Math.max(health, laggedHealth - Math.max(0.05f, (laggedHealth - health) * 0.04f));
+		int hw = Math.min(220, 70 + (int) (maxHealth * 3));
+		soulsFrame(ctx, 0, y, hw, 8);
+		fillBar(ctx, 0, y, hw, 8, laggedHealth / maxHealth, 0xFFB08A2E, 0xFFE0C060);
+		fillBar(ctx, 0, y, hw, 8, health / maxHealth, 0xFF7A1212, 0xFFC62828);
+		float absorption = player.getAbsorptionAmount();
+		if (absorption > 0) {
+			int aw = (int) (hw * Math.min(1f, absorption / maxHealth));
+			ctx.fill(0, y + 6, aw, y + 8, 0xFFFFD54F);
+		}
+		small(ctx, text, Text.literal((int) Math.ceil(health) + " / " + (int) maxHealth), hw + 4, y + 1, 0xFFE8D5B0);
+		y += 11;
+
+		// Maná
+		float mana = ClientRoleState.energy();
+		float maxMana = Math.max(1f, ClientRoleState.maxEnergy());
+		int mw = Math.min(220, 60 + (int) (maxMana * 0.8f));
+		soulsFrame(ctx, 0, y, mw, 6);
+		fillBar(ctx, 0, y, mw, 6, mana / maxMana, 0xFF1A4F9C, 0xFF4F8FEA);
+		small(ctx, text, Text.literal((int) mana + " / " + (int) maxMana), mw + 4, y, 0xFFB8D4FF);
+		y += 9;
+
+		// Aguante (hambre: en Minecraft es lo que limita esprintar)
+		int food = player.getHungerManager().getFoodLevel();
+		int sw = 100;
+		soulsFrame(ctx, 0, y, sw, 5);
+		fillBar(ctx, 0, y, sw, 5, food / 20f, 0xFF2E6B2E, 0xFF5FB35F);
+		y += 8;
+
+		// Recursos de rol
+		for (Role role : new Role[]{data.primaryRole(), data.secondaryRole()}) {
+			if (role == null) continue;
+			RoleResource resource = RoleResource.of(role);
+			float value = ClientRoleState.resource(role == data.primaryRole());
+			int color = 0xFF000000 | resource.color();
+			soulsFrame(ctx, 0, y, 80, 4);
+			fillBar(ctx, 0, y, 80, 4, value / RoleResource.MAX, darker(color), color);
+			if (value >= RoleResource.EMPOWER_COST) ctx.drawBorder(-2, y - 2, 84, 8, 0xFFFFE082);
+			small(ctx, text, Text.translatable(resource.translationKey()), 84, y - 1, color);
+			y += 7;
+		}
+		// Elemento activo
+		Element element = data.activeElementValue();
+		if (element != null && (data.primaryRole() == Role.ELEMENTALIST || data.secondaryRole() == Role.ELEMENTALIST)) {
+			small(ctx, text, Text.translatable("hud.aptitudes.element", Text.translatable(element.translationKey())),
+					0, y + 1, 0xFF000000 | element.color());
+		}
+		ctx.getMatrices().pop();
+	}
+
+	/** Marco oscuro con bordes dorados de las barras Souls. */
+	private static void soulsFrame(DrawContext ctx, int x, int y, int width, int height) {
+		ctx.fill(x - 2, y - 2, x + width + 2, y + height + 2, 0xD0000000);
+		ctx.fill(x - 1, y - 1, x + width + 1, y, 0xFF6B5428);
+		ctx.fill(x - 1, y + height, x + width + 1, y + height + 1, 0xFF3A2E16);
+		ctx.fill(x + width, y - 1, x + width + 1, y + height + 1, 0xFF6B5428);
+		ctx.fill(x, y, x + width, y + height, 0xFF14110C);
+	}
+
+	private static void fillBar(DrawContext ctx, int x, int y, int width, int height, float fraction, int dark, int light) {
+		int filled = (int) (width * Math.max(0, Math.min(1, fraction)));
+		if (filled <= 0) return;
+		ctx.fill(x, y, x + filled, y + height, dark);
+		ctx.fill(x, y, x + filled, y + Math.max(1, height / 2), light);
+	}
+
+	// --------------------------------------------------------- Mecánica
+
+	/** Iconos de la mecánica sobre la barra: pips de acumulación o el estado con nombre. */
+	private static void renderMechanics(DrawContext ctx, TextRenderer text, RoleSyncPayload data) {
+		int x = 0;
+		int y = -22;
+		for (MechanicPayload.Entry e : mechanics) {
+			RoleNode node = RoleTree.get(e.node());
+			if (node == null) continue;
+			int color = 0xFF000000 | node.role().color();
+			ctx.fill(x - 1, y - 1, x + 13, y + 13, 0xC0000000);
+			ctx.drawBorder(x - 1, y - 1, 14, 14, color);
+			ctx.getMatrices().push();
+			ctx.getMatrices().translate(x, y, 0);
+			ctx.getMatrices().scale(0.75f, 0.75f, 1f);
+			ctx.drawItem(NodeIcons.of(node), 0, 0);
+			ctx.getMatrices().pop();
+			int px = x + 16;
+			if (e.max() > 0) {
+				for (int i = 0; i < e.max(); i++) {
+					boolean on = i < e.value();
+					int c = on ? (e.value() >= e.max() ? 0xFFFFE082 : color) : 0xFF2A2A34;
+					ctx.fill(px + 1, y + 3, px + 4, y + 9, c);
+					ctx.fill(px, y + 4, px + 5, y + 8, c);
+					px += 7;
+				}
+			} else if (!e.label().isEmpty()) {
+				Text label = e.value() > 0 ? Text.translatable(e.label(), e.value()) : Text.translatable(e.label());
+				small(ctx, text, label, px, y + 4, color);
+				px += (int) (text.getWidth(label) * 0.7f) + 2;
+			}
+			x = px + 6;
+		}
 	}
 
 	// ------------------------------------------------------------ Barras
@@ -116,15 +288,9 @@ public final class AbilityHud {
 
 	// ----------------------------------------------------------- Ranuras
 
-	private static void renderSlots(DrawContext ctx, TextRenderer text, RoleSyncPayload data, int w, int h, int age) {
-		int total = 0;
-		for (int i = 0; i < ORDER.length; i++) total += SLOT + GAP + (GAP_BEFORE[i] ? GROUP_GAP : 0);
-		int x = w / 2 + 91 + 12;
-		int y = h - SLOT - 1;
-		if (x + total > w - 2) { // pantalla estrecha: encima de la hotbar, a la derecha
-			x = w - total - 2;
-			y = h - SLOT - 46;
-		}
+	private static void renderSlots(DrawContext ctx, TextRenderer text, RoleSyncPayload data, int age) {
+		int x = 0;
+		int y = 0;
 
 		for (int i = 0; i < ORDER.length; i++) {
 			int slot = ORDER[i];
@@ -159,10 +325,19 @@ public final class AbilityHud {
 
 	private static void drawSlot(DrawContext ctx, TextRenderer text, RoleSyncPayload data, @Nullable SlotView view,
 								 int slot, int x, int y, int age) {
-		// Marco tipo hotbar
-		ctx.fill(x - 1, y - 1, x + SLOT + 1, y + SLOT + 1, 0xC0000000);
-		ctx.fill(x, y, x + SLOT, y + SLOT, 0xA0303648);
-		ctx.drawBorder(x, y, SLOT, SLOT, 0xFF5A6078);
+		// Marco oscuro con esquinas doradas
+		ctx.fill(x - 1, y - 1, x + SLOT + 1, y + SLOT + 1, 0xD0000000);
+		ctx.fillGradient(x, y, x + SLOT, y + SLOT, 0xC0302A20, 0xC0141018);
+		ctx.drawBorder(x, y, SLOT, SLOT, 0xFF4A4030);
+		int corner = 0xFFC9A54C;
+		ctx.fill(x - 1, y - 1, x + 3, y, corner);
+		ctx.fill(x - 1, y - 1, x, y + 3, corner);
+		ctx.fill(x + SLOT - 3, y - 1, x + SLOT + 1, y, corner);
+		ctx.fill(x + SLOT, y - 1, x + SLOT + 1, y + 3, corner);
+		ctx.fill(x - 1, y + SLOT, x + 3, y + SLOT + 1, corner);
+		ctx.fill(x - 1, y + SLOT - 3, x, y + SLOT + 1, corner);
+		ctx.fill(x + SLOT - 3, y + SLOT, x + SLOT + 1, y + SLOT + 1, corner);
+		ctx.fill(x + SLOT, y + SLOT - 3, x + SLOT + 1, y + SLOT + 1, corner);
 		Text key = AptitudesClient.abilityKey(slot).getBoundKeyLocalizedText();
 		small(ctx, text, key, x + SLOT / 2 - (int) (text.getWidth(key) * 0.35f), y - 7, view == null ? 0xFF707070 : 0xFFE0E0E0);
 		if (view == null) return;
@@ -176,6 +351,14 @@ public final class AbilityHud {
 			return;
 		}
 		int cooldown = ClientRoleState.cooldown(slot);
+		// Destello al quedar lista
+		if (LAST_COOLDOWN[slot] > 0 && cooldown == 0) READY_FLASH[slot] = age + 8;
+		LAST_COOLDOWN[slot] = cooldown;
+		if (READY_FLASH[slot] > age) {
+			int alpha = (READY_FLASH[slot] - age) * 24;
+			ctx.fill(x + 1, y + 1, x + SLOT - 1, y + SLOT - 1, (Math.min(200, alpha) << 24) | 0xFFF3C0);
+			ctx.drawBorder(x - 2, y - 2, SLOT + 4, SLOT + 4, (Math.min(255, alpha + 60) << 24) | 0xFFE082);
+		}
 		if (cooldown > 0) {
 			int filled = (int) ((SLOT - 2) * ClientRoleState.cooldownFraction(slot));
 			ctx.fill(x + 1, y + 1, x + SLOT - 1, y + 1 + filled, 0xB0000000);

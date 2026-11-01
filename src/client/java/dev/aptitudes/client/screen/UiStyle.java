@@ -41,10 +41,27 @@ public final class UiStyle {
 		ctx.drawBorder(x, y, w, h, BORDER);
 	}
 
+	/**
+	 * Recorta un texto para que quepa en {@code maxWidth} píxeles, añadiendo "…".
+	 * Evita que etiquetas largas (o traducciones más largas) pisen los valores.
+	 */
+	public static Text fit(TextRenderer tr, Text text, int maxWidth) {
+		if (maxWidth <= 0) return Text.empty();
+		if (tr.getWidth(text) <= maxWidth) return text;
+		String ellipsis = "…";
+		String trimmed = tr.trimToWidth(text.getString(), Math.max(0, maxWidth - tr.getWidth(ellipsis)));
+		return Text.literal(trimmed.stripTrailing() + ellipsis).setStyle(text.getStyle());
+	}
+
+	/** Dibuja {@code text} recortado a {@code maxWidth}. */
+	public static void label(DrawContext ctx, TextRenderer tr, Text text, int x, int y, int maxWidth, int color) {
+		ctx.drawText(tr, fit(tr, text, maxWidth), x, y, color, false);
+	}
+
 	/** Cabecera dorada con rombo y línea inferior. */
 	public static void header(DrawContext ctx, TextRenderer tr, Text text, int x, int y, int width) {
 		ctx.drawText(tr, Text.literal("◆ "), x, y, GOLD, false);
-		ctx.drawTextWithShadow(tr, text, x + 10, y, GOLD);
+		ctx.drawTextWithShadow(tr, fit(tr, text, width - 12), x + 10, y, GOLD);
 		ctx.fill(x, y + 11, x + width, y + 12, GOLD_DARK);
 	}
 

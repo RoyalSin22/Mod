@@ -57,7 +57,7 @@ public final class RoleTree {
 				passiveNode("arcane_charges", Role.MAGE, 1, null),
 				passiveNode("mana_shield", Role.MAGE, 10, null),
 				passiveNode("spell_echo", Role.MAGE, 18, null),
-				activeNode("frost_nova", Role.MAGE, 14, null, 35, 18),
+				activeNode("time_warp", Role.MAGE, 14, null, 35, 18),
 				activeNode("arcane_missiles", Role.MAGE, 22, null, 40, 14));
 		// Asesino: sigilo y golpes por la espalda.
 		define(Role.ASSASSIN,
@@ -269,7 +269,7 @@ public final class RoleTree {
 				N = PathEffect.MINION_POWER, K = PathEffect.KNOCKBACK, V = PathEffect.SPEED,
 				HP = PathEffect.MAX_HEALTH, AS = PathEffect.ATTACK_SPEED, LK = PathEffect.LUCK;
 		paths(Role.BERSERKER, of(L, C, X), of(T, K, R), of(AS, V, H));           // Carnicero / Coloso
-		paths(Role.MAGE, of(C, F, X), of(M, G, R), of(S, D, M));                // Piromante / Erudito
+		paths(Role.MAGE, of(C, X, W), of(M, G, R), of(S, D, M));                // Arcanista / Erudito / Cronomante
 		paths(Role.ASSASSIN, of(C, X, P), of(D, V, S), of(W, L, AS));            // Verdugo / Fantasma
 		paths(Role.HERBALIST, of(H, HP, R), of(P, S, X), of(G, M, LK));          // Sanador / Envenenador
 		paths(Role.ENGINEER, of(C, X, M), of(R, K, HP), of(AS, V, G));           // Artillero / Acorazado

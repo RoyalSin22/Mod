@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " S ",
+    "SGS",
+    " C "
+  ],
+  "key": {
+    "S": {
+      "item": "aptitudes:soul_shard"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "C": {
+      "item": "minecraft:candle"
+    }
+  },
+  "result": {
+    "id": "aptitudes:rebirth_offering",
+    "count": 1
+  }
+}

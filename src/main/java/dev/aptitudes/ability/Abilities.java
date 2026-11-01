@@ -58,20 +58,21 @@ public final class Abilities {
 		});
 
 		// ---------------- Mago ----------------
+		// Proyectil arcano (id "fireball" por compatibilidad con rangos guardados): sin fuego ni elementos.
 		register("fireball", (p, r) -> {
-			// Implementado como impacto directo (no proyectil vanilla) para no incendiar construcciones.
 			LivingEntity target = Targeting.raycastLiving(p, 24);
 			Vec3d end = target != null ? target.getPos().add(0, target.getHeight() / 2, 0) : Targeting.lookEnd(p, 24);
-			Targeting.particleLine(world(p), ParticleTypes.FLAME, p.getEyePos(), end);
-			sound(p, SoundEvents.ENTITY_BLAZE_SHOOT, 1.0f);
+			Targeting.particleLine(world(p), ParticleFx.dust(0xB388FF, 1.2f), p.getEyePos(), end);
+			sound(p, SoundEvents.ENTITY_ILLUSIONER_CAST_SPELL, 1.3f);
 			if (target == null) return false;
 			float damage = 4 + 2 * r;
 			for (LivingEntity e : p.getWorld().getEntitiesByClass(LivingEntity.class, target.getBoundingBox().expand(2),
 					e -> e == target || Targeting.isHostileTo(p, e))) {
 				e.damage(p.getDamageSources().indirectMagic(p, p), e == target ? damage : damage / 2);
-				e.setOnFireFor(2 + r);
+				if (e == target) effect(e, StatusEffects.GLOWING, 60, 0); // runa de rastreo
 			}
-			world(p).spawnParticles(ParticleTypes.LAVA, end.x, end.y, end.z, 8, 0.5, 0.5, 0.5, 0.1);
+			world(p).spawnParticles(ParticleTypes.WITCH, end.x, end.y, end.z, 20, 0.5, 0.5, 0.5, 0.1);
+			ParticleFx.ring(world(p), end, 1.5, ParticleTypes.ENCHANT, 16);
 			return true;
 		});
 		register("blink", (p, r) -> {

@@ -28,6 +28,8 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playS2C().register(UniqueSyncPayload.ID, UniqueSyncPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(StatsPayload.ID, StatsPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(OpenBonfirePayload.ID, OpenBonfirePayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(OpenRolesPayload.ID, OpenRolesPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(MechanicPayload.ID, MechanicPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(ResourcePayload.ID, ResourcePayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(ScreenFxPayload.ID, ScreenFxPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(DamageNumberPayload.ID, DamageNumberPayload.CODEC);
@@ -65,10 +67,8 @@ public final class ModNetworking {
 					if (role == null) return;
 					RoleManager.ChangeResult result =
 							RoleManager.setRole(player, role, payload.action() == RoleActionPayload.SET_PRIMARY);
-					if (result == RoleManager.ChangeResult.ON_COOLDOWN) {
-						int minutes = (RoleManager.changeCooldownRemaining(player, RoleManager.get(player)) + 1199) / 1200;
-						player.sendMessage(Text.translatable("aptitudes.role.change_cooldown", minutes)
-								.formatted(Formatting.RED), true);
+					if (result == RoleManager.ChangeResult.NEEDS_RITUAL) {
+						player.sendMessage(Text.translatable("aptitudes.role.needs_ritual").formatted(Formatting.RED), true);
 					}
 				}
 				case RoleActionPayload.UPGRADE_NODE -> {

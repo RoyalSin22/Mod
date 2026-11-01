@@ -72,16 +72,19 @@ final class AbilitiesExtra {
 		});
 
 		// ---------------- Mago ----------------
-		// Nova de escarcha: daña y congela a los enemigos cercanos.
-		Abilities.register("frost_nova", (p, r) -> {
+		// Distorsión temporal: el tiempo se frena para los enemigos y se acelera para ti.
+		Abilities.register("time_warp", (p, r) -> {
 			double radius = 4 + r;
 			for (LivingEntity e : Targeting.hostilesAround(p, radius)) {
-				e.damage(magic(p), 3 + r);
+				e.damage(magic(p), 2 + r);
 				effect(e, StatusEffects.SLOWNESS, 60 + 20 * r, 3);
-				e.setFrozenTicks(e.getMinFreezeDamageTicks() + 80);
+				effect(e, StatusEffects.MINING_FATIGUE, 60 + 20 * r, 2);
 			}
-			ParticleFx.shockwave(server(p), world(p), p.getPos(), radius, ParticleTypes.SNOWFLAKE, 8);
-			sound(p, SoundEvents.BLOCK_GLASS_BREAK, 0.6f);
+			effect(p, StatusEffects.SPEED, 60 + 20 * r, 1);
+			effect(p, StatusEffects.HASTE, 60 + 20 * r, 1);
+			ParticleFx.shockwave(server(p), world(p), p.getPos(), radius, ParticleFx.dust(0x80DEEA, 1.2f), 8);
+			ParticleFx.runeCircle(world(p), p.getPos(), radius * 0.6, ParticleTypes.ENCHANT);
+			sound(p, SoundEvents.BLOCK_BELL_RESONATE, 1.6f);
 			return true;
 		});
 		// Misiles arcanos: 3 + r proyectiles teledirigidos a los enemigos más cercanos.

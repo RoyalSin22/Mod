@@ -20,10 +20,10 @@ import java.util.Map;
  * GUI calcule puntos y XP con los valores del servidor.
  *
  * @param slotCooldowns ticks restantes de enfriamiento de cada ranura (0-3)
- * @param roleChangeCooldown ticks restantes hasta poder cambiar un rol ocupado
+ * @param rebirths cambios de rol concedidos por el ritual de la Hoguera y aún no usados
  */
 public record RoleSyncPayload(int primary, int secondary, int[] levels, int[] xp, Map<String, Integer> ranks,
-							  RoleRules rules, int[] slotCooldowns, int roleChangeCooldown,
+							  RoleRules rules, int[] slotCooldowns, int rebirths,
 							  int[] elements, int activeElement,
 							  int[] tiers, int[] trials, int bossMask, int[] loadout) implements CustomPayload {
 
@@ -32,7 +32,7 @@ public record RoleSyncPayload(int primary, int secondary, int[] levels, int[] xp
 			PacketCodec.of(RoleSyncPayload::write, RoleSyncPayload::read);
 	private static final int MAX_ENTRIES = 512;
 
-	public static RoleSyncPayload of(RoleData data, RoleRules rules, int[] slotCooldowns, int roleChangeCooldown) {
+	public static RoleSyncPayload of(RoleData data, RoleRules rules, int[] slotCooldowns, int rebirths) {
 		Role[] roles = Role.values();
 		int[] levels = new int[roles.length];
 		int[] xp = new int[roles.length];
@@ -43,7 +43,7 @@ public record RoleSyncPayload(int primary, int secondary, int[] levels, int[] xp
 		return new RoleSyncPayload(
 				data.primary() == null ? -1 : data.primary().ordinal(),
 				data.secondary() == null ? -1 : data.secondary().ordinal(),
-				levels, xp, new HashMap<>(data.ranks()), rules, slotCooldowns, roleChangeCooldown,
+				levels, xp, new HashMap<>(data.ranks()), rules, slotCooldowns, rebirths,
 				data.elements().stream().mapToInt(Element::ordinal).toArray(), data.activeElementIndex(),
 				perRole(data::tier), perRole(data::trialProgress), bossMask(data),
 				perRole(r -> data.equipped(r, 0) | (data.equipped(r, 1) << 2)));
@@ -108,7 +108,7 @@ public record RoleSyncPayload(int primary, int secondary, int[] levels, int[] xp
 		buf.writeDouble(rules.xpExponent());
 		buf.writeVarInt(rules.pointsEveryLevels());
 		writeArray(buf, slotCooldowns);
-		buf.writeVarInt(roleChangeCooldown);
+		buf.writeVarInt(rebirths);
 		writeArray(buf, elements);
 		buf.writeVarInt(activeElement);
 		writeArray(buf, tiers);

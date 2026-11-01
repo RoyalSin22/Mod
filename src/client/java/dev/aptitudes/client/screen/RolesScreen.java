@@ -23,6 +23,7 @@ import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.util.math.MathHelper;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -41,8 +42,9 @@ import java.util.List;
  * Como el resto de pantallas, solo envía peticiones: el servidor valida todo.
  */
 public class RolesScreen extends Screen {
-	private static final int W = 440;
-	private static final int H = 322;
+	/** Tamaño de la ventana: crece con la pantalla (mínimo 440×322). */
+	private int W = 440;
+	private int H = 322;
 	private static final int LIST_W = 124;
 	private static final int ROLE_ROW_H = 18;
 
@@ -88,11 +90,44 @@ public class RolesScreen extends Screen {
 	private int canvasX() { return left + LIST_W + 16; }
 	private int canvasW() { return W - LIST_W - 24; }
 	private int canvasCenterX() { return canvasX() + canvasW() / 2 - 12; }
-	private int gridX() { return canvasX() + 40; }
-	private int gridY() { return top + 34; }
+	// Coordenadas LOCALES del árbol (antes de desplazar y escalar la vista).
+	private int gridX() { return 40; }
+	private int gridY() { return 8; }
+	private static final int CONTENT_W = 296;
+	private static final int CONTENT_H = 214;
+
+	// Vista del árbol: desplazamiento (arrastrar) y zoom (rueda).
+	private double panX;
+	private double panY;
+	private float zoom = 1.0f;
+	private boolean dragging;
+
+	private int infoTop() { return top + H - 100; }
+	private int viewX1() { return canvasX() + 1; }
+	private int viewY1() { return top + 27; }
+	private int viewX2() { return canvasX() + canvasW() - 1; }
+	private int viewY2() { return infoTop() - 4; }
+
+	private boolean inView(double mx, double my) {
+		return mx >= viewX1() && mx < viewX2() && my >= viewY1() && my < viewY2();
+	}
+
+	private double toLocalX(double mx) { return (mx - viewX1() - panX) / zoom; }
+	private double toLocalY(double my) { return (my - viewY1() - panY) / zoom; }
+
+	/** Ajusta el zoom para que quepa el árbol entero y lo centra. */
+	private void resetView() {
+		int vw = viewX2() - viewX1();
+		int vh = viewY2() - viewY1();
+		zoom = MathHelper.clamp(Math.min(vw / (float) CONTENT_W, vh / (float) CONTENT_H), 0.6f, 1.8f);
+		panX = (vw - CONTENT_W * zoom) / 2.0;
+		panY = Math.max(0, (vh - CONTENT_H * zoom) / 2.0);
+	}
 
 	@Override
 	protected void init() {
+		W = MathHelper.clamp(width - 20, 440, 760);
+		H = MathHelper.clamp(height - 16, 322, 480);
 		left = (width - W) / 2;
 		top = (height - H) / 2;
 		int lx = left + 8;
@@ -102,6 +137,7 @@ public class RolesScreen extends Screen {
 				b -> send(RoleActionPayload.SET_SECONDARY, "")).dimensions(lx, top + 200, LIST_W, 16).build());
 		evolveButton = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.evolve"),
 				b -> send(RoleActionPayload.EVOLVE, "")).dimensions(lx, top + 218, LIST_W, 16).build());
+		resetView();
 		upgradeButton = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.roles.upgrade"), b -> {
 			NodeView v = nodeView(selectedNode);
 			if (v != null && v.node() != null) send(RoleActionPayload.UPGRADE_NODE, v.node().id());
@@ -109,11 +145,11 @@ public class RolesScreen extends Screen {
 		equip1Button = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.equip", 1), b -> {
 			NodeView v = nodeView(selectedNode);
 			if (v != null && v.node() != null) send(RoleActionPayload.EQUIP_1, v.node().id());
-		}).dimensions(canvasX() + canvasW() - 76, top + H - 88, 34, 16).build());
+		}).dimensions(canvasX() + canvasW() - 76, top + H - 87, 34, 16).build());
 		equip2Button = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.equip", 2), b -> {
 			NodeView v = nodeView(selectedNode);
 			if (v != null && v.node() != null) send(RoleActionPayload.EQUIP_2, v.node().id());
-		}).dimensions(canvasX() + canvasW() - 40, top + H - 88, 34, 16).build());
+		}).dimensions(canvasX() + canvasW() - 40, top + H - 87, 34, 16).build());
 		extraButton = addDrawableChild(ButtonWidget.builder(Text.empty(), b -> extraView = !extraView)
 				.dimensions(canvasX() + canvasW() - 150, top + H - 70, 70, 16).build());
 
@@ -236,7 +272,7 @@ public class RolesScreen extends Screen {
 	private List<NodeView> nodes() {
 		List<NodeView> out = new ArrayList<>();
 		// Columna izquierda: núcleo, característica y definitiva.
-		int sx = canvasX() + 8;
+		int sx = 8;
 		out.add(new NodeView(NodeKind.CORE, null, sx, gridY()));
 		out.add(new NodeView(NodeKind.SIGNATURE, null, sx, gridY() + ROW_H * 2));
 		out.add(new NodeView(NodeKind.ULTIMATE, null, sx, gridY() + ROW_H * 4));
@@ -281,19 +317,60 @@ public class RolesScreen extends Screen {
 		if (extraView) {
 			if (clickExtra(mouseX, mouseY)) return true;
 		} else {
-			for (NodeView v : nodes()) {
-				if (mouseX >= v.x() && mouseX < v.x() + 24 && mouseY >= v.y() && mouseY < v.y() + 24) {
-					selectedNode = v.key();
-					updateButtons();
-					return true;
+			if (inView(mouseX, mouseY)) {
+				double lx = toLocalX(mouseX);
+				double ly = toLocalY(mouseY);
+				for (NodeView v : nodes()) {
+					if (lx >= v.x() && lx < v.x() + 24 && ly >= v.y() && ly < v.y() + 24) {
+						selectedNode = v.key();
+						updateButtons();
+						return true;
+					}
 				}
+				dragging = true; // clic en vacío: empieza a arrastrar la vista
+				return true;
 			}
 		}
 		return super.mouseClicked(mouseX, mouseY, button);
 	}
 
 	@Override
+	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+		if (!extraView && (dragging || (button == 1 && inView(mouseX, mouseY)))) {
+			panX += deltaX;
+			panY += deltaY;
+			return true;
+		}
+		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+	}
+
+	@Override
+	public boolean mouseReleased(double mouseX, double mouseY, int button) {
+		dragging = false;
+		return super.mouseReleased(mouseX, mouseY, button);
+	}
+
+	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+		if (!extraView && inView(mouseX, mouseY) && verticalAmount != 0) {
+			float old = zoom;
+			zoom = MathHelper.clamp(zoom * (verticalAmount > 0 ? 1.15f : 1 / 1.15f), 0.6f, 2.4f);
+			// El punto bajo el cursor se queda fijo.
+			double ax = mouseX - viewX1();
+			double ay = mouseY - viewY1();
+			panX = ax - (ax - panX) * zoom / old;
+			panY = ay - (ay - panY) * zoom / old;
+			return true;
+		}
+		return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
+	}
+
+	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		if (keyCode == GLFW.GLFW_KEY_C && !extraView) {
+			resetView();
+			return true;
+		}
 		if (keyCode == GLFW.GLFW_KEY_TAB) {
 			client.setScreen(hasShiftDown() ? new AptitudesScreen() : new UniquesScreen());
 			return true;
@@ -306,6 +383,7 @@ public class RolesScreen extends Screen {
 		category = role.category();
 		selectedNode = NodeKind.CORE.name();
 		extraView = false;
+		resetView();
 		updateButtons();
 	}
 
@@ -401,10 +479,11 @@ public class RolesScreen extends Screen {
 			int y = top + 48 + i * ROLE_ROW_H;
 			UiStyle.row(ctx, left + 8, y, LIST_W, ROLE_ROW_H - 2, i, role == selected);
 			ctx.drawItem(role.iconStack(), left + 9, y);
-			ctx.drawText(textRenderer, Text.translatable(role.translationKey()), left + 28, y + 4, UiStyle.TEXT, false);
 			String marker = role == data.primaryRole() ? "P" : role == data.secondaryRole() ? "S" : "";
 			String stars = "★".repeat(data.tier(role));
 			String right = (marker.isEmpty() ? "" : marker + " ") + stars + data.level(role);
+			UiStyle.label(ctx, textRenderer, Text.translatable(role.translationKey()), left + 28, y + 4,
+					LIST_W - 26 - textRenderer.getWidth(right), UiStyle.TEXT);
 			ctx.drawText(textRenderer, right, left + 4 + LIST_W - textRenderer.getWidth(right), y + 4,
 					marker.isEmpty() ? UiStyle.MUTED : UiStyle.GOLD, false);
 			if (mouseX >= left + 8 && mouseX < left + 8 + LIST_W && mouseY >= y && mouseY < y + ROLE_ROW_H - 2) {
@@ -419,23 +498,40 @@ public class RolesScreen extends Screen {
 		int level = data.level(selected);
 		UiStyle.header(ctx, textRenderer, Text.translatable(Evolution.titleKey(selected, data.tier(selected))),
 				left + 8, y, LIST_W);
+		// Nivel y puntos en dos líneas: en una sola se pisaban (sobre todo traducidos).
 		Text lv = level >= rules.maxLevel() ? Text.translatable("screen.aptitudes.max") : Text.translatable("screen.aptitudes.level", level);
-		ctx.drawText(textRenderer, lv, left + 8, y + 16, UiStyle.TEXT, false);
+		UiStyle.label(ctx, textRenderer, lv, left + 8, y + 15, LIST_W, UiStyle.TEXT);
 		int pts = availablePoints(data, selected);
-		Text points = Text.translatable("screen.aptitudes.points", pts);
-		ctx.drawText(textRenderer, points, left + 8 + LIST_W - textRenderer.getWidth(points), y + 16,
-				pts > 0 ? UiStyle.GOOD : UiStyle.MUTED, false);
-		ctx.fill(left + 8, y + 28, left + 8 + LIST_W, y + 31, 0xFF202433);
+		UiStyle.label(ctx, textRenderer, Text.translatable("screen.aptitudes.points", pts), left + 8, y + 25, LIST_W,
+				pts > 0 ? UiStyle.GOOD : UiStyle.MUTED);
+		ctx.fill(left + 8, y + 36, left + 8 + LIST_W, y + 39, 0xFF202433);
 		double fill = level >= rules.maxLevel() ? 1 : Math.min(1, data.xp(selected) / (double) rules.xpToNext(level));
-		ctx.fill(left + 8, y + 28, left + 8 + (int) (LIST_W * fill), y + 31, 0xFF000000 | selected.color());
-		if (data.roleChangeCooldown() > 0) {
-			ctx.drawText(textRenderer, Text.translatable("screen.aptitudes.roles.change_cd",
-					(data.roleChangeCooldown() + 1199) / 1200), left + 8, y + 36, UiStyle.DOWN, false);
-		}
+		ctx.fill(left + 8, y + 36, left + 8 + (int) (LIST_W * fill), y + 39, 0xFF000000 | selected.color());
+		// Ritual de la Hoguera: cambios de rol disponibles.
+		Text rebirth = data.rebirths() > 0 ? Text.translatable("screen.aptitudes.roles.rebirths", data.rebirths())
+				: Text.translatable("screen.aptitudes.roles.need_ritual");
+		UiStyle.label(ctx, textRenderer, rebirth, left + 8, y + 44, LIST_W, data.rebirths() > 0 ? UiStyle.GOOD : UiStyle.MUTED);
 		return tooltip;
 	}
 
-	private List<Text> renderTree(DrawContext ctx, RoleSyncPayload data, int mouseX, int mouseY) {
+	private List<Text> renderTree(DrawContext ctx, RoleSyncPayload data, int screenMouseX, int screenMouseY) {
+		ctx.enableScissor(viewX1(), viewY1(), viewX2(), viewY2());
+		ctx.getMatrices().push();
+		ctx.getMatrices().translate(viewX1() + panX, viewY1() + panY, 0);
+		ctx.getMatrices().scale(zoom, zoom, 1);
+		boolean over = inView(screenMouseX, screenMouseY);
+		int mouseX = over ? (int) Math.floor(toLocalX(screenMouseX)) : -10_000;
+		int mouseY = over ? (int) Math.floor(toLocalY(screenMouseY)) : -10_000;
+		List<Text> tooltip = renderTreeLocal(ctx, data, mouseX, mouseY);
+		ctx.getMatrices().pop();
+		ctx.disableScissor();
+		Text hint = Text.translatable("screen.aptitudes.tree.hint");
+		UiStyle.label(ctx, textRenderer, hint, viewX2() - 4 - Math.min(textRenderer.getWidth(hint), canvasW() - 10),
+				viewY2() - 10, canvasW() - 10, 0xFF5A6078);
+		return tooltip;
+	}
+
+	private List<Text> renderTreeLocal(DrawContext ctx, RoleSyncPayload data, int mouseX, int mouseY) {
 		List<NodeView> views = nodes();
 		int tier = data.tier(selected);
 		// Conexiones: cada nodo con su requisito; las raíces, con el núcleo.
@@ -594,7 +690,7 @@ public class RolesScreen extends Screen {
 		NodeView v = nodeView(selectedNode);
 		if (v == null) return;
 		int x = canvasX() + 8;
-		int y = gridY() + ROW_H * 6 + 20;
+		int y = infoTop() + 4;
 		int w = canvasW() - 16;
 		ctx.fill(x, y - 4, x + w, y - 3, UiStyle.BORDER);
 		ctx.drawTextWithShadow(textRenderer, nodeName(v), x, y, UiStyle.GOLD);

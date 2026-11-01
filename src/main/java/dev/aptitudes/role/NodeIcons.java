@@ -21,7 +21,7 @@ public final class NodeIcons {
 	static {
 		put("tough_skin", Items.LEATHER_CHESTPLATE); put("rage", Items.BLAZE_POWDER);
 		put("bloodlust", Items.REDSTONE); put("war_cry", Items.GOAT_HORN);
-		put("arcane_affinity", Items.LAPIS_LAZULI); put("fireball", Items.FIRE_CHARGE);
+		put("arcane_affinity", Items.LAPIS_LAZULI); put("fireball", Items.AMETHYST_SHARD);
 		put("clear_mind", Items.CLOCK); put("blink", Items.ENDER_PEARL);
 		put("shadow", Items.BLACK_DYE); put("vanish", Items.GLASS_BOTTLE);
 		put("backstab", Items.IRON_SWORD); put("shadow_step", Items.ENDER_EYE);
@@ -52,7 +52,7 @@ public final class NodeIcons {
 		put("carnage", Items.BEEF); put("leap_slam", Items.ANVIL);
 		put("whirlwind", Items.IRON_AXE); put("arcane_charges", Items.AMETHYST_CLUSTER);
 		put("mana_shield", Items.LAPIS_BLOCK); put("spell_echo", Items.ECHO_SHARD);
-		put("frost_nova", Items.BLUE_ICE); put("arcane_missiles", Items.END_ROD);
+		put("time_warp", Items.CLOCK); put("arcane_missiles", Items.END_ROD);
 		put("lethal_tempo", Items.IRON_SWORD); put("smoke_escape", Items.GRAY_DYE);
 		put("vanish_on_kill", Items.FERMENTED_SPIDER_EYE); put("fan_of_knives", Items.SHEARS);
 		put("shuriken", Items.NETHER_STAR); put("bloom", Items.PINK_PETALS);
@@ -96,7 +96,7 @@ public final class NodeIcons {
 		BY_EFFECT.put(PathEffect.LUCK, Items.RABBIT_FOOT);
 
 		sig(Role.BERSERKER, Items.GOAT_HORN, Items.NETHERITE_AXE);
-		sig(Role.MAGE, Items.FIRE_CHARGE, Items.END_CRYSTAL);
+		sig(Role.MAGE, Items.AMETHYST_CLUSTER, Items.END_CRYSTAL);
 		sig(Role.ASSASSIN, Items.SKELETON_SKULL, Items.WITHER_SKELETON_SKULL);
 		sig(Role.HERBALIST, Items.HONEY_BOTTLE, Items.FLOWERING_AZALEA);
 		sig(Role.ENGINEER, Items.LODESTONE, Items.TNT);

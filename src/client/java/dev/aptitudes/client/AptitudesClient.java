@@ -61,6 +61,11 @@ public class AptitudesClient implements ClientModInitializer {
 			ClientRoleState.tick();
 			ClientMorphs.tick(client);
 			while (toggleHudKey.wasPressed()) {
+				// Mayús + O: configuración del HUD (posición, escala, qué se muestra).
+				if (net.minecraft.client.gui.screen.Screen.hasShiftDown()) {
+					if (client.currentScreen == null) client.setScreen(new dev.aptitudes.client.screen.HudConfigScreen());
+					continue;
+				}
 				ClientConfig.get().hudVisible = !ClientConfig.get().hudVisible;
 				ClientConfig.save();
 				if (client.player != null) {
@@ -118,12 +123,15 @@ public class AptitudesClient implements ClientModInitializer {
 			ClientMorphs.clear();
 			ClientExtraState.clear();
 			dev.aptitudes.client.hud.ClientFx.clear();
+			AbilityHud.clear();
 		});
 
 		HudRenderCallback.EVENT.register(AbilityHud::render);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.ClientFx::renderHud);
 		net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents.AFTER_ENTITIES.register(
 				dev.aptitudes.client.hud.ClientFx::renderWorld);
+		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.MechanicPayload.ID,
+				(payload, context) -> AbilityHud.onMechanics(payload));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.ScreenFxPayload.ID,
 				(payload, context) -> dev.aptitudes.client.hud.ClientFx.onScreenFx(payload));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.DamageNumberPayload.ID,
@@ -134,6 +142,8 @@ public class AptitudesClient implements ClientModInitializer {
 		// Hoguera: modelo con planos de fuego recortados.
 		net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap.INSTANCE.putBlock(
 				dev.aptitudes.block.ModBlocks.BONFIRE, net.minecraft.client.render.RenderLayer.getCutout());
+		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.OpenRolesPayload.ID,
+				(payload, context) -> context.client().setScreen(new RolesScreen()));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.OpenBonfirePayload.ID,
 				(payload, context) -> context.client().setScreen(new AptitudesScreen(true)));
 	}

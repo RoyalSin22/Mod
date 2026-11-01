@@ -114,6 +114,10 @@ public final class ModItems {
 			.rarity(Rarity.RARE).attributeModifiers(net.minecraft.item.HoeItem.createAttributeModifiers(
 					ToolMaterials.DIAMOND, -3.0f, 0.0f))));
 
+	/** Se quema en una Hoguera para poder cambiar un rol ya elegido. */
+	public static final Item REBIRTH_OFFERING = register("rebirth_offering",
+			new RebirthOfferingItem(new Item.Settings().maxCount(16).rarity(Rarity.RARE)));
+
 	static {
 		RoleArmor.register(); // 14 sets × 4 piezas
 	}
@@ -142,6 +146,7 @@ public final class ModItems {
 						entries.add(MASTERY_EMBLEM);
 						entries.add(ULTIMATE_CORE);
 						entries.add(SOUL_SHARD);
+						entries.add(REBIRTH_OFFERING);
 						entries.add(ESTUS_FLASK);
 						entries.add(ETHER_FLASK);
 						entries.add(SOUL_PICKAXE);

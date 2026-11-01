@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public final class RoleManager {
 	/** Resultado de intentar cambiar un rol (para mostrar mensajes concretos). */
-	public enum ChangeResult { OK, SAME, ON_COOLDOWN }
+	public enum ChangeResult { OK, SAME, NEEDS_RITUAL }
 
 	/** Resultado de intentar subir un rango. */
 	public enum UpgradeResult { OK, UNKNOWN_NODE, ROLE_NOT_ACTIVE, MAX_RANK, LEVEL_TOO_LOW, MISSING_PREREQUISITE, NO_POINTS,
@@ -204,19 +204,20 @@ public final class RoleManager {
 	// ---------------------------------------------------------- Elección
 
 	/**
-	 * Asigna {@code role} como principal o secundario. Ocupar una ranura vacía es
-	 * gratis; sustituir un rol ya elegido activa el enfriamiento de cambio. Si el
-	 * rol ya estaba en la otra ranura, se intercambian.
+	 * Asigna {@code role} como principal o secundario. Ocupar una ranura vacía o
+	 * intercambiar principal y secundario es gratis; sustituir un rol ya elegido
+	 * exige el ritual de la Hoguera (Ofrenda de renacimiento), que concede un cambio.
 	 */
 	public static ChangeResult setRole(ServerPlayerEntity player, Role role, boolean primary) {
 		RoleData data = get(player);
 		Role current = primary ? data.primary() : data.secondary();
 		if (current == role) return ChangeResult.SAME;
 
-		boolean replacing = current != null;
-		if (replacing && changeCooldownRemaining(player, data) > 0) return ChangeResult.ON_COOLDOWN;
-
 		Role other = primary ? data.secondary() : data.primary();
+		boolean replacing = current != null && other != role;
+		boolean ritual = replacing && Aptitudes.config().roleChangeRequiresRitual && !player.isCreative();
+		if (ritual && data.rebirths() <= 0) return ChangeResult.NEEDS_RITUAL;
+
 		if (other == role) { // intercambio
 			if (primary) { data.setSecondary(current); data.setPrimary(role); }
 			else { data.setPrimary(current); data.setSecondary(role); }
@@ -227,16 +228,16 @@ public final class RoleManager {
 		}
 		if (data.level(role) == 0) data.setLevel(role, 1); // permite aprender el primer nodo al instante
 		if (replacing) data.setLastRoleChange(worldTime(player));
+		if (ritual) data.setRebirths(data.rebirths() - 1);
 		refresh(player);
 		return ChangeResult.OK;
 	}
 
-	/** @return ticks restantes hasta poder sustituir un rol ya elegido. */
-	public static int changeCooldownRemaining(ServerPlayerEntity player, RoleData data) {
-		if (data.lastRoleChange() == Long.MIN_VALUE) return 0;
-		long cooldown = Aptitudes.config().roleChangeCooldownMinutes * 60L * 20L;
-		long remaining = data.lastRoleChange() + cooldown - worldTime(player);
-		return (int) Math.max(0, Math.min(Integer.MAX_VALUE, remaining));
+	/** Ritual completado en la Hoguera: concede un cambio de rol. */
+	public static void grantRebirth(ServerPlayerEntity player) {
+		RoleData data = get(player);
+		data.setRebirths(data.rebirths() + 1);
+		sync(player);
 	}
 
 	private static long worldTime(ServerPlayerEntity player) {
@@ -369,7 +370,7 @@ public final class RoleManager {
 		if (!ServerPlayNetworking.canSend(player, RoleSyncPayload.ID)) return;
 		RoleData data = get(player);
 		ServerPlayNetworking.send(player, RoleSyncPayload.of(data, rules(),
-				AbilityManager.slotCooldowns(player), changeCooldownRemaining(player, data)));
+				AbilityManager.slotCooldowns(player), data.rebirths()));
 	}
 
 	@Nullable
