@@ -49,6 +49,12 @@ public final class RoleManager {
 			dev.aptitudes.unique.UniqueManager.onLeave(handler.getPlayer());
 			dev.aptitudes.souls.SoulsManager.forget(handler.getPlayer());
 		});
+		// La marca del grimorio debe sobrevivir a la muerte aunque vanilla no copiara las etiquetas:
+		// se copia explícitamente (idempotente) para que nunca se entregue un segundo libro.
+		ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) -> {
+			String tag = dev.aptitudes.Aptitudes.MOD_ID + ".got_guide";
+			if (oldPlayer.getCommandTags().contains(tag)) newPlayer.addCommandTag(tag);
+		});
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
 			refresh(newPlayer);
 			// Al morir se pierde la transformación.

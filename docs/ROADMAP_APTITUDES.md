@@ -71,6 +71,9 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Problemas conocidos / pendientes
 - Hasta la v15 todo compila en el PC del autor; falta probar en partida (ver docs/TESTING.md).
+- ~~La marca del grimorio podría perderse al morir~~ **Corregido (v15.2):** se copia en
+  `ServerPlayerEvents.COPY_FROM`, así que nunca se entrega un segundo libro.
+- Pruebas JUnit 5 de Codex: siguen fuera del repositorio hasta que se compartan.
 - ~~La pantalla del árbol no conoce `legendaryExclusive`~~ **Corregido (v15.1):** la sincronización de
   legendarias incluye el modo exclusivo; el botón Mejorar se desactiva y la ficha del nodo dice quién la
   tiene o que ya tienes otra. Al reservar o liberar una legendaria se avisa a todos los jugadores. El

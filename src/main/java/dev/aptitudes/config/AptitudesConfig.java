@@ -197,8 +197,10 @@ public class AptitudesConfig {
 		}
 	}
 
-	/** Corrige valores fuera de rango para que el juego nunca entre en un estado inválido. */
-	/** Visible en el paquete para las pruebas unitarias. */
+	/**
+	 * Corrige valores fuera de rango para que el juego nunca entre en un estado inválido.
+	 * Visible en el paquete para las pruebas unitarias.
+	 */
 	static AptitudesConfig validated(AptitudesConfig c) {
 		// 1) Validación general: en esta configuración ningún número tiene sentido negativo, NaN o infinito.
 		//    Un valor así vuelve al predeterminado y se avisa en el log con el nombre del campo.
