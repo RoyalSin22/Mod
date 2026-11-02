@@ -31,16 +31,30 @@ public final class ClientMorphs {
 		EntityType<?> type = id == null ? null : Registries.ENTITY_TYPE.getOrEmpty(id).orElse(null);
 		if (type == null || type == EntityType.PLAYER) TYPES.remove(player);
 		else TYPES.put(player, type);
+		// v26: el cliente calcula la misma caja de colisión que el servidor.
+		dev.aptitudes.morph.MorphSize.setClient(player, type);
+		MinecraftClient client = MinecraftClient.getInstance();
+		if (client.world != null && client.world.getPlayerByUuid(player) instanceof net.minecraft.entity.player.PlayerEntity p) {
+			p.calculateDimensions();
+		}
 	}
 
 	static void clear() {
 		TYPES.clear();
 		FAKES.clear();
+		dev.aptitudes.morph.MorphSize.clearClient();
 	}
 
 	/** Avanza la animación de caminar de cada entidad falsa al ritmo del jugador. */
 	static void tick(MinecraftClient client) {
 		if (client.world == null) return;
+		// v26: jugadores transformados que aparecieron después del aviso: ajusta su caja si no coincide.
+		for (Map.Entry<UUID, EntityType<?>> e : TYPES.entrySet()) {
+			Entity player = client.world.getPlayerByUuid(e.getKey());
+			if (player != null && Math.abs(player.getWidth() - player.getDimensions(player.getPose()).width()) > 0.01f) {
+				player.calculateDimensions();
+			}
+		}
 		for (Map.Entry<UUID, LivingEntity> e : FAKES.entrySet()) {
 			Entity player = client.world.getPlayerByUuid(e.getKey());
 			if (player instanceof LivingEntity living) {

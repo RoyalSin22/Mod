@@ -100,6 +100,12 @@ Decisiones: tope de espera aceptado de 1 día real (datos corruptos o mundos con
 para siempre), máximo 256 esperas por jugador y 4096 bloques temporales por mundo; un bloque temporal
 solo se retira si en su posición sigue el mismo bloque.
 
+### v26 — colisión de las transformaciones
+Mixin `PlayerEntity#getBaseDimensions` (con `require = 0`: si no existiera el método, el juego arranca igual
+y se avisa una vez en el registro) + `morph/MorphSize` (servidor: forma guardada; cliente: forma recibida) +
+`MorphSizeRules` (puro, 3 pruebas: ancho 0,3–1,2, alto 0,35–2,6, ojos dentro del cuerpo). Recalculo al
+transformarse, destransformarse y entrar; el cliente corrige cada tick a los jugadores que aparecen después.
+
 ### v25 — texturas de las armaduras de rol
 `tools/textures/gen_armor.py`: 80 iconos (16×16) y 40 capas del modelo puesto (64×32, mapa UV estándar).
 Estilo según el peso del rol: pesada (placas tintadas, visera, cresta, remaches, gema en el pecho,

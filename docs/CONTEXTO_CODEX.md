@@ -80,6 +80,7 @@ retematizaron (p. ej., «Talismán maldito»).
 | 20 roles, árbol de 23 nodos + legendario, sendas, evoluciones, armas de evolución | `role/`, `ability/`, `item/weapon/` |
 | Filas de evolución del árbol (v23): +5 nodos con Maestro y +5 con Definitivo por rol (200 en total), bloqueadas visibles hasta evolucionar, +10/+5 puntos | `role/EvolvedTree` (datos), `ability/EvolvedAbilities` (10 plantillas: NOVA, BEAM, CONE, DASH, ZONE, VORTEX, AURA, HEAL, SHIELD, SUMMON) |
 | Activas equipadas: 8 por rol, se equipan 2 | `role/LoadoutCodec` (3 bits + bit de formato; lee el formato antiguo) |
+| Colisión de las transformaciones (v26): caja y altura de ojos según la forma | `morph/MorphSize` + `MorphSizeRules`; mixin `PlayerEntity#getBaseDimensions` con `require = 0` |
 | Animaciones de lanzamiento de TODAS las habilidades (gesto, sello rúnico animado, remate por categoría de rol) e impactos | `ability/CastFx` (`onCast`, `impact`) — no dupliques estos efectos en cada habilidad |
 | Elementalista: 14 elementos y 10 fusiones | `role/Element`, `ability/ElementEffects`, `ability/ElementFusions` |
 | Legendarias (exclusividad opcional `legendaryExclusive`) | `unique/` |
@@ -96,11 +97,11 @@ retematizaron (p. ej., «Talismán maldito»).
 | Texturas de armaduras: 80 iconos y 40 capas del modelo puesto (generadas) | `tools/textures/gen_armor.py` |
 | Textos de los 200 nodos evolucionados (generados) | `tools/lang/gen_evolved_lang.py` |
 
-Historial en `main` (último commit `0374efb`): auditoría de seguridad y balance, v14–v25 (grimorio,
+Historial en `main`: auditoría de seguridad y balance, v14–v26 (grimorio,
 elementos, armas de evolución, Pesca, rendimiento decreciente, anti-granjas, esperas y muros persistentes, IA
 Brain, pantalla de roles con desplazamiento, grimorio interactivo con recetas reales, Encantamiento, pantalla
-K animada, texturas de armas y objetos, árbol que crece al evolucionar, animaciones de habilidades y texturas
-de armaduras). **Todas las texturas de objetos del mod ya están rehechas con los generadores.**
+K animada, texturas de armas y objetos, árbol que crece al evolucionar, animaciones de habilidades, texturas
+de armaduras y colisión de las transformaciones). **Todas las texturas de objetos del mod ya están rehechas con los generadores.**
 
 ## 7. Reglas técnicas
 
@@ -149,7 +150,7 @@ de armaduras). **Todas las texturas de objetos del mod ya están rehechas con lo
 - Pruebas existentes (no las sobrescribas ni crees otras con el **mismo nombre y paquete**):
   `souls/SoulsMathTest`, `logic/AttributeScalingTest`, `logic/XpDiminishingTest`,
   `logic/PlacedBlockLogTest`, `ability/CooldownBookTest`, `world/TemporaryBlockScheduleTest`,
-  `role/RoleRulesTest`, `role/LoadoutCodecTest`, `role/EvolutionPointsTest`, `data/ProgressRulesTest`,
+  `role/RoleRulesTest`, `role/LoadoutCodecTest`, `role/EvolutionPointsTest`, `morph/MorphSizeRulesTest`, `data/ProgressRulesTest`,
   `config/AptitudesConfigValidationTest`.
 - Puedes escribir pruebas en JUnit 5 o JUnit 4; ambos funcionan.
 - **No escribas pruebas que llamen a métodos que no existen.** Si una prueba necesita una API nueva,
@@ -170,7 +171,6 @@ de armaduras). **Todas las texturas de objetos del mod ya están rehechas con lo
 |---|---|
 | `attributeScaling = SOFTCAP` por defecto | Decisión del autor tras probar en partida |
 | Pruebas en partida de la v15–v25 | `docs/TESTING.md`, puntos 6–18 |
-| Caja de colisión de las transformaciones (`getDimensions`) | Abierta; requiere un mixin (consultar antes) |
 | Filtro de mobs con IA Brain | Actúa cada 5 ticks (limitación documentada) |
 | Diseño de cualquier contenido grande nuevo | Proponer primero al autor (como se hizo en `docs/V23_DISENO_ARBOL.md`) |
 

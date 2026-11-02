@@ -42,7 +42,7 @@ Historial reciente en `main`: auditoría de seguridad y balance, v14 (grimorio, 
 muerte y pruebas de configuración) y v16 (Defensa con `AFTER_DAMAGE`, esbirros sin conversión a
 ahogado, Bombardeo orbital sin fuego amigo), v17 (anti-granjas de colocar y romper), v18 (esperas y muros persistentes) y v19 (desplazamiento de la
 pantalla de roles y filtro para mobs con IA Brain), v20 (grimorio interactivo con recetas reales) y
-v21 (Encantamiento y pantalla K animada) , v22 (texturas de armas y objetos clave) , v23 (árbol que crece al evolucionar) , v24 (animaciones de habilidades) y v25 (texturas de armaduras).
+v21 (Encantamiento y pantalla K animada) , v22 (texturas de armas y objetos clave) , v23 (árbol que crece al evolucionar) , v24 (animaciones de habilidades), v25 (texturas de armaduras) y v26 (colisión de las transformaciones).
 
 ## 3. Exclusiones absolutas (no negociables)
 
@@ -93,7 +93,7 @@ retematizaron (p. ej., «Talismán maldito»). **No cambies los ids de registro 
 - Pruebas existentes (no las sobrescribas ni crees otras con el **mismo nombre y paquete**):
   `souls/SoulsMathTest`, `logic/AttributeScalingTest`, `logic/XpDiminishingTest`,
   `logic/PlacedBlockLogTest`, `ability/CooldownBookTest`, `world/TemporaryBlockScheduleTest`,
-  `role/LoadoutCodecTest`, `role/EvolutionPointsTest`,
+  `role/LoadoutCodecTest`, `role/EvolutionPointsTest`, `morph/MorphSizeRulesTest`,
   `role/RoleRulesTest`, `data/ProgressRulesTest` y
   `config/AptitudesConfigValidationTest`.
 - **No escribas pruebas que llamen a métodos que no existen.** Si una prueba necesita una API nueva,
@@ -104,8 +104,7 @@ retematizaron (p. ej., «Talismán maldito»). **No cambies los ids de registro 
 
 - Activar `attributeScaling = SOFTCAP` por defecto: **decisión del autor** tras probar en partida.
 - Pruebas en partida de la v15–v16 (`docs/TESTING.md`, puntos 6–9).
-- Limitaciones abiertas: tabla «Limitaciones conocidas» del `README.md` (colisión de
-  transformaciones; el filtro Brain actúa cada 5 ticks).
+- Limitaciones abiertas: tabla «Limitaciones conocidas» del `README.md` (el filtro Brain actúa cada 5 ticks).
 
 ## 8. Al terminar una tarea
 

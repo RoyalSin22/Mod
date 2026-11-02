@@ -371,6 +371,7 @@ public final class MorphManager {
 
 	/** Envía la forma de {@code player} a todos los jugadores con el mod. */
 	public static void broadcast(ServerPlayerEntity player) {
+		MorphSize.refresh(player); // v26: la caja de colisión sigue a la forma (también al entrar)
 		MorphPayload payload = new MorphPayload(player.getUuid(), get(player).activeType());
 		for (ServerPlayerEntity other : player.getServer().getPlayerManager().getPlayerList()) {
 			if (ServerPlayNetworking.canSend(other, MorphPayload.ID)) ServerPlayNetworking.send(other, payload);

@@ -691,7 +691,6 @@ src/client/java/dev/aptitudes/client/   (solo cliente)
 | Mobs con IA de "Brain" (piglins, hoglins, warden) | Se corrigen cada 5 ticks (v19): entre dos revisiones pueden iniciar un ataque; el warden, muy agresivo, puede llegar a golpear | Mixin sobre sus tareas de ataque si hiciera falta |
 | El rango efectivo puede llegar a 5 con la evolución | Algunos valores (esquiva 35 %, Mente clara −50 %) pueden quedar fuertes | Ajustar tras probar; Mente clara está limitada a −60 % |
 | Fuego del Averno y explosiones del Creeper modifican bloques | Cambios permanentes del mundo (según `uniqueGriefing`) | — |
-| Las transformaciones no cambian la caja de colisión | Un "murciélago" sigue ocupando lo que un jugador | Cambiar las dimensiones del jugador (mixin de `getDimensions`) |
 | Quietud Eterna usa `NoAI` | Se repara al cargar, pero otro mod que lea `NoAI` podría verse afectado | — |
 | No se ha compilado en el entorno donde se generó | Puede requerir algún ajuste menor de mappings | Ejecutar `./gradlew build` |
 
@@ -717,6 +716,11 @@ algún bloque (comportamiento vanilla de las explosiones).
 árbol o con RePág/AvPág cuando no cabe (p. ej., escala de interfaz 4 en 1080p) y muestra una barra; el zoom
 y la posición del árbol se conservan. Los mobs con IA de tipo Brain respetan el Soborno, el camuflaje del
 Cambiaformas y el Heraldo de la Muerte (`BrainTargetFilter`, sin mixins).
+
+**Resuelta en la v26:** las transformaciones cambian la caja de colisión y la altura de los ojos del
+jugador según la forma (un murciélago cabe por huecos de 1 bloque; un mob enorme queda acotado a 1,2 de ancho y
+2,6 de alto para no atascarse). Servidor y cliente calculan lo mismo (`morph/MorphSize`). Al volver a la forma
+de jugador dentro de un hueco pequeño, el jugador puede asfixiarse como en vanilla: sal antes del hueco.
 
 ### Siguientes pasos sugeridos
 
