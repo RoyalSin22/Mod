@@ -3,9 +3,16 @@
 	"id": "aptitudes",
 	"version": "${version}",
 	"name": "Aptitudes",
-	"description": "Sistema RPG de habilidades que suben con el uso y atributos que se mejoran con puntos.",
-	"authors": [],
+	"description": "RPG de habilidades que suben con el uso, atributos estilo Souls en la Hoguera, 20 roles con árboles y evoluciones, combos, runas, jefes y el Eclipse. / RPG skills that level up with use, Souls-style attributes, 20 roles, combos, runes, bosses and the Eclipse.",
+	"authors": [
+		"RoyalSin22"
+	],
 	"license": "MIT",
+	"icon": "assets/aptitudes/icon.png",
+	"contact": {
+		"sources": "https://github.com/RoyalSin22/mod",
+		"issues": "https://github.com/RoyalSin22/mod/issues"
+	},
 	"environment": "*",
 	"entrypoints": {
 		"main": [

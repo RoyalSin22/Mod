@@ -11,7 +11,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
   Fabric API `0.116.6+1.21.1`, Gradle 8.14.3.
 - Compilar y probar: `.\gradlew.bat build` en Windows (o `./gradlew build`). **Nunca digas que algo
   compila o que las pruebas pasan sin haberlo ejecutado**; si no pudiste ejecutarlo, dilo.
-- Documentación viva: `README.md`, `docs/ROADMAP_APTITUDES.md` (estado real y pendientes),
+- Documentación viva: `CHANGELOG.md` (añade una entrada por versión), `README.md`, `docs/ROADMAP_APTITUDES.md` (estado real y pendientes),
   `docs/BALANCE.md`, `docs/CONFIGURATION.md` y `docs/TESTING.md`. Actualízalas cuando cambies algo.
 
 ## 2. Estado (lo que YA existe: no lo reimplementes ni lo dupliques)
@@ -49,7 +49,7 @@ Historial reciente en `main`: auditoría de seguridad y balance, v14 (grimorio, 
 muerte y pruebas de configuración) y v16 (Defensa con `AFTER_DAMAGE`, esbirros sin conversión a
 ahogado, Bombardeo orbital sin fuego amigo), v17 (anti-granjas de colocar y romper), v18 (esperas y muros persistentes) y v19 (desplazamiento de la
 pantalla de roles y filtro para mobs con IA Brain), v20 (grimorio interactivo con recetas reales) y
-v21 (Encantamiento y pantalla K animada) , v22 (texturas de armas y objetos clave) , v23 (árbol que crece al evolucionar) , v24 (animaciones de habilidades), v25 (texturas de armaduras) , v26 (colisión de las transformaciones) , v27 (Mesa del gremio y atributos −30 %) y v28 (combos). Después: v32 (runas), v33 (jefes), v34 (Eclipse), v35 (Runas+), v36 (anti-granjas persistente) y v37 (sonidos).
+v21 (Encantamiento y pantalla K animada) , v22 (texturas de armas y objetos clave) , v23 (árbol que crece al evolucionar) , v24 (animaciones de habilidades), v25 (texturas de armaduras) , v26 (colisión de las transformaciones) , v27 (Mesa del gremio y atributos −30 %) y v28 (combos). Después: v32 (runas), v33 (jefes), v34 (Eclipse), v35 (Runas+), v36 (anti-granjas persistente), v37 (sonidos) y v38 (versión publicable 1.3.7; ver `CHANGELOG.md`).
 
 ## 3. Exclusiones absolutas (no negociables)
 

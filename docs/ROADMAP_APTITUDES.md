@@ -222,3 +222,8 @@ registro en memoria con tope de 100 000 posiciones por mundo (FIFO).
 - Uso: aviso, inicio y totalidad del Eclipse y Heraldo (categoría Hostil), remate de combo (además del sonido
   de cada categoría) y engarzar/quitar runas (antes, sin sonido / afilador vanilla).
 - Pendiente opcional: sustituirlos por grabaciones propias manteniendo los mismos nombres de archivo.
+
+### v38 — Versión publicable
+- Versión `1.3.7` (`gradle.properties`, decisión del autor); `CHANGELOG.md` con el historial; icono 128×128 generado
+  (`tools/textures/gen_icon.py`); autor, icono y enlaces en `fabric.mod.json`.
+- Guía de publicación: `docs/PUBLICACION.md` (incluye decisiones del autor: licencia y visibilidad del repositorio).
