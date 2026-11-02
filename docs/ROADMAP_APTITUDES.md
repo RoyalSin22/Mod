@@ -180,3 +180,19 @@ registro en memoria con tope de 100 000 posiciones por mundo (FIFO).
 - Tres arquetipos de jefe aparecen en las estructuras existentes: Centinela de la Torre (torre), Oráculo del Santuario (santuario) y Campeón del Campamento (variantes de cacería, brujos y bandidos).
 - Cada uno usa tres fases persistentes por umbrales de salud, avisos de transición y ataques de área en fase final. Reutiliza la entidad base y barra de campeón vanilla/élite; no registra entidades nuevas.
 - Cada jefe suelta un núcleo distinto. En la Mesa del gremio, cada material se aplica una vez a un arma de evolución y suma +0,5 daño; máximo +1,5 con los tres.
+
+### v34 — El Eclipse (evento del mundo)
+- Eclipse solar cada 10 días (desde el día 10), de 6:00 a 18:00 en el Mundo Normal, con aviso la tarde anterior.
+  Fases: Penumbra, Totalidad (oleadas cada 30 s, 50 % élites y 10 % campeones), Heraldo a mediodía y Retirada.
+- Criaturas del eclipse con +50 % de vida y daño, casco oscuro irrompible (no arden de día) y tope de 12 por
+  jugador. Se disuelven al terminar o si se cargan fuera del evento.
+- Heraldo del Eclipse: nuevo `BossKind.ECLIPSE_HERALD` (al final del enum), uno por grupo de jugadores (64
+  bloques), con vida ×1–×4 según el grupo. Suelta el Núcleo del eclipse (cuarto núcleo; el tope sigue en 3 por arma).
+- Recompensas: Fragmentos del eclipse, Runa del Eclipse (`RuneKind.ECLIPSE`, al final del enum; +15 % de daño
+  contra élites, campeones y jefes) y XP de rol y Combate para los supervivientes.
+- Cielo rojo con mixins de cliente (`require = 0`, sin `@Shadow`): cielo, nubes, niebla y sol eclipsado;
+  viñeta, ceniza y relámpagos visuales sin mixins. Opción de cliente `eclipseSkyEffects`.
+- Comando `/aptitudes eclipse [status|next|start|stop]` (iniciar y detener: permiso 2).
+- Lógica pura `event/EclipseRules` con `event/EclipseRulesTest` (8 pruebas). Especificación: `docs/V34_ECLIPSE.md`.
+- Pendiente: integrar con grupos, contratos y logros cuando la v29–v31 estén en `main`; «Templado en la
+  Hoguera» (trofeos ganados en combate), más adelante.

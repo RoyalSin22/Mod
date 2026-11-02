@@ -15,4 +15,6 @@ public final class RuneRules {
 	public static float leechAmount() { return 1.0f; }
 	public static int leechCooldownTicks() { return 80; }
 	public static int flameSeconds() { return 3; }
+	/** Runa del Eclipse (v34): +15 % de daño contra élites, campeones y jefes. */
+	public static float eclipseBonus() { return 0.15f; }
 }

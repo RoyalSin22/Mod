@@ -887,6 +887,10 @@ ITEMS = {
     'tower_core': ('core', {'D': '#39333b', 'J': '#f49a34'}),
     'shrine_sigil': ('sigil', {'G': '#b7d9e8', 'S': '#5a9ab5', 'J': '#f5efbd'}),
     'warlord_medallion': ('emblem', {'G': '#b9813c', 'J': '#c83d36', 'A': '#6c7782'}),
+    # v34: Eclipse
+    'eclipse_fragment': ('shard', {'A': '#8a1420'}),
+    'eclipse_core': ('core', {'D': '#1c1012', 'J': '#e0242f'}),
+    'rune_eclipse': ('sigil', {'G': '#2a1a1c', 'S': '#7a0f17', 'J': '#ff3b3b'}),
     'soul_pickaxe': ('pickaxe', {'A': '#8e7cf0', 'W': '#3a2f4a', 'J': '#d1c4ff'}),
     'soul_axe': ('axe', {'A': '#8e7cf0', 'W': '#3a2f4a', 'G': '#d1c4ff'}),
     'soul_shovel': ('shovel', {'A': '#8e7cf0', 'W': '#3a2f4a', 'L': '#2b2238', 'J': '#d1c4ff'}),

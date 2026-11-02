@@ -146,3 +146,20 @@ Cada arma de rol admite dos runas distintas. Fuego aplica 3 segundos de ignició
 Centinela de la Torre, Oráculo del Santuario y Campeón del Campamento aparecen en las estructuras actuales y conservan tres fases en sus etiquetas de entidad. Los tres comparten el escalado y la barra de campeón existente. En fase final, cada 3–4 s hacen un golpe de área telegráfico: 5, 4 o 4,5 puntos de daño respectivamente; el Oráculo también aplica lentitud.
 
 Cada jefe deja un núcleo distinto. Aplicar un núcleo en la Mesa del gremio añade +0,5 de daño a un arma de evolución. Cada arma acepta una vez cada uno de los tres núcleos, hasta +1,5 total; no cambia la potencia de armas que no sean evolutivas.
+
+# Eclipse (v34)
+
+| Elemento | Valor por defecto | Notas |
+|---|---|---|
+| Frecuencia | Cada 10 días, desde el día 10 | De 6:00 a 18:00 (10 min reales) |
+| Oleada | 2 criaturas (Penumbra) / 4 (Totalidad) por jugador cada 30 s | Tope de 12 vivas por jugador |
+| Criaturas | Vida y daño ×1,5 | Antes del escalado de élite (×2/×4 de vida) |
+| Élites / campeones | 50 % / 10 % | Recompensas normales de élite y campeón, más fragmentos |
+| Heraldo | Campeón esqueleto wither con armadura de netherita | Vida ×(1 + 0,5 por jugador extra), máx. ×4; fases y golpe de área de la v33 |
+| Fragmentos | Élite 1, campeón 3, Heraldo 8, normal 10 % → 1 | — |
+| Runa del Eclipse | +15 % de daño contra élites, campeones y jefes | Multiplicador aditivo dentro del tope global `maxDamageMultiplier` |
+| Núcleo del eclipse | +0,5 de daño en un arma de evolución | Cuenta para el tope de 3 núcleos por arma |
+| Superviviente | 300 XP de rol principal y 200 de Combate | Solo si no mueres durante el evento |
+
+«Morir es fácil» por diseño (decisión del autor). Para suavizarlo en un servidor: bajar
+`eclipseMobDamageMultiplier`, `eclipseEliteChance` o `eclipseMaxMobsPerPlayer`.

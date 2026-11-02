@@ -107,6 +107,7 @@ retematizaron (p. ej., «Talismán maldito»).
 | Combos de combate (contador, bonificación y remates por categoría) | `ability/Combos` + `logic/ComboCounter`; HUD `client/hud/ComboHud` |
 | Runas para armas de rol (v32) | `rune/RuneSocketing`, `rune/RuneRules`, NBT persistente en `ItemStack.CUSTOM_DATA` |
 | Jefes propios en estructuras (v33) | `boss/BossManager`, `BossKind`, `BossRules`; etiquetas persistentes, barra de campeón existente y mejora de armas con núcleos |
+| Eclipse, evento del mundo (v34) | `event/EclipseManager`, `EclipseRules` (puro, con pruebas), `EclipseState`; cliente `ClientEclipse`, `hud/EclipseHud`, mixins `Eclipse*Mixin` con `require = 0` y sin `@Shadow`; diseño en `docs/V34_ECLIPSE.md` |
 | Fabricación en la Mesa del gremio (armaduras de rol) | `world/GuildCrafting` (tipo `aptitudes:guild_crafting`), `GuildShapedRecipe`, `GuildDeskScreenHandler`, `GuildDeskBlock`; cliente `GuildDeskScreen` |
 | Configuración validada al cargar | `config/AptitudesConfig.validated` |
 | Texturas de armas y objetos (generadas) | `tools/textures/gen_items.py` |

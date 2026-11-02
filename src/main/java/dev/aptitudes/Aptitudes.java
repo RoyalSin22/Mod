@@ -67,6 +67,7 @@ public class Aptitudes implements ModInitializer {
 		ProgressManager.registerLifecycleEvents();
 		RoleManager.registerLifecycleEvents();
 		dev.aptitudes.rune.RuneSocketing.register();
+		dev.aptitudes.event.EclipseManager.register();
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			AptitudesCommand.register(dispatcher);
 			RoleCommand.register(dispatcher);

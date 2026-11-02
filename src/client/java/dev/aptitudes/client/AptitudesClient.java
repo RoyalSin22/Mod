@@ -70,6 +70,7 @@ public class AptitudesClient implements ClientModInitializer {
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			ClientRoleState.tick();
+			ClientEclipse.tick(client);
 			ClientMorphs.tick(client);
 			while (toggleHudKey.wasPressed()) {
 				// Mayús + O: configuración del HUD (posición, escala, qué se muestra).
@@ -123,6 +124,8 @@ public class AptitudesClient implements ClientModInitializer {
 				(payload, context) -> ClientRoleState.onCooldown(payload));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.ComboPayload.ID,
 				(payload, context) -> dev.aptitudes.client.hud.ComboHud.onCombo(payload));
+		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.EclipsePayload.ID,
+				(payload, context) -> ClientEclipse.onPayload(payload));
 
 		ClientPlayNetworking.registerGlobalReceiver(MorphPayload.ID,
 				(payload, context) -> ClientMorphs.set(payload.player(), payload.typeId()));
@@ -140,11 +143,13 @@ public class AptitudesClient implements ClientModInitializer {
 			ClientExtraState.clear();
 			dev.aptitudes.client.hud.ClientFx.clear();
 			AbilityHud.clear();
+			ClientEclipse.clear();
 		});
 
 		HudRenderCallback.EVENT.register(AbilityHud::render);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.ClientFx::renderHud);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.ComboHud::render);
+		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.EclipseHud::render);
 		net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents.AFTER_ENTITIES.register(
 				dev.aptitudes.client.hud.ClientFx::renderWorld);
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.MechanicPayload.ID,

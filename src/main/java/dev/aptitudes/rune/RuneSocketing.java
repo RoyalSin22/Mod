@@ -100,6 +100,11 @@ public final class RuneSocketing {
 	}
 
 	public static boolean has(ItemStack stack, RuneKind kind) { return runes(stack).contains(kind.id()); }
+	/** Bonificación de la Runa del Eclipse contra élites, campeones y jefes (multiplicador aditivo). */
+	public static float eclipseBonus(ServerPlayerEntity player, net.minecraft.entity.LivingEntity target) {
+		if (!dev.aptitudes.elite.Elites.isElite(target) || !has(player.getMainHandStack(), RuneKind.ECLIPSE)) return 0f;
+		return RuneRules.eclipseBonus();
+	}
 	public static float damageBonus(ItemStack stack) { return has(stack, RuneKind.FORCE) ? RuneRules.damageBonus(1) : 0.0f; }
 
 	public static void appendTooltip(ItemStack stack, List<Text> tooltip) {

@@ -102,3 +102,24 @@ los ajustes propios) y usa `/aptitudes admin reload` o reinicia.
 | `comboMaxBonus` | 0.15 | [0, 2] | Tope de la bonificación de combo (dentro del tope global `maxDamageMultiplier`). |
 | `comboFinisherHits` | 5 | [2, 50] | Golpes para que el siguiente sea un remate. |
 | `comboFinisherCooldownSeconds` | 4.0 | [0, 600] | Espera mínima entre remates. |
+
+## Eclipse (v34)
+
+| Campo | Defecto | Límites | Descripción |
+|---|---|---|---|
+| `eclipseEnabled` | true | — | Activa el evento del Eclipse. Si se desactiva durante un eclipse, termina sin recompensas. |
+| `eclipseIntervalDays` | 10 | [1, 365] | Cada cuántos días de juego hay eclipse (días múltiplos del intervalo). |
+| `eclipseFirstDay` | 10 | [1, 3650] | Primer día en el que puede haber eclipse. |
+| `eclipseWaveIntervalSeconds` | 30 | [10, 300] | Segundos entre oleadas. |
+| `eclipseMaxMobsPerPlayer` | 12 | [0, 40] | Tope de criaturas del eclipse vivas a 48 bloques de cada jugador. 0 = sin oleadas. |
+| `eclipseMobHealthMultiplier` | 1.5 | [1, 5] | Vida de las criaturas del eclipse (antes del escalado de élite). |
+| `eclipseMobDamageMultiplier` | 1.5 | [1, 5] | Daño cuerpo a cuerpo de las criaturas del eclipse. |
+| `eclipseEliteChance` | 0.5 | [0, 1] | Probabilidad de élite. |
+| `eclipseChampionChance` | 0.1 | [0, 1] | Probabilidad de campeón (se comprueba antes que la de élite). |
+| `eclipseHeraldEnabled` | true | — | Aparición del Heraldo del Eclipse a mediodía. |
+| `eclipseSurvivorRoleXp` | 300 | [0, 100 000] | XP del rol principal para quien no muere durante el eclipse. |
+| `eclipseSurvivorCombatXp` | 200 | [0, 100 000] | XP de Combate para quien no muere durante el eclipse. |
+
+Opción del cliente (`config/aptitudes-client.json`, también en Mayús + O): `eclipseSkyEffects` (true) tiñe el
+cielo, la niebla y las nubes y cambia la textura del sol. Desactívala si los efectos molestan; la viñeta y la
+ceniza se siguen viendo.

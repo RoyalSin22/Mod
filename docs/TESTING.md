@@ -116,3 +116,20 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
 4. En fase final, observa el aviso/partículas antes del golpe de área; el Oráculo aplica lentitud. Comprueba alcance y tiempos de 3–4 s.
 5. En la Mesa del gremio, aplica cada núcleo una vez a una hoja o foco de evolución: consume el material y sube +0,5 daño. Duplicados y núcleos adicionales se rechazan; bonificación máxima +1,5.
 6. Reinicia el mundo y confirma que no reaparecen jefes ya vencidos y que el progreso/núcleos de armas persiste.
+
+# v34 — el Eclipse (verificación manual)
+
+1. `/aptitudes eclipse` muestra los días hasta el próximo. `/aptitudes eclipse start` (operador): mensaje,
+   sonido, el cielo enrojece poco a poco y aparece la barra «Eclipse · Penumbra».
+2. A los ~2,5 min (Totalidad): sol con anillo carmesí, ceniza, relámpagos sin daño y oleadas cada 30 s. Las
+   criaturas llevan casco oscuro y no arden. No más de 12 vivas alrededor de cada jugador.
+3. A mitad del evento aparece el Heraldo del Eclipse con barra de jefe. Con dos jugadores juntos, un solo
+   Heraldo con más vida; separados (>64 bloques), uno cada uno. Suelta el Núcleo del eclipse y fragmentos.
+4. Fabrica la Runa del Eclipse en la Mesa del gremio y engárzala: más daño contra élites (no contra criaturas normales).
+5. Muere durante el evento: al terminar no recibes la recompensa de superviviente; otro jugador que no murió sí.
+6. `/aptitudes eclipse stop`: las criaturas del eclipse se disuelven, el cielo vuelve a la normalidad, sin recompensas.
+7. Eclipse natural: con `/time set` ponte en el día 9 al atardecer (18:00): aviso con campana. Al amanecer del
+   día 10 empieza solo. Reinicia el servidor a mitad: el evento continúa y las criaturas cargadas siguen.
+8. En el Nether durante un eclipse: sin cielo rojo ni HUD; al volver, el estado se restablece.
+9. Mayús + O → «Cielo del Eclipse» desactivado: cielo normal, pero viñeta y ceniza visibles.
+10. Dificultad Pacífica: hay cielo y avisos, pero no aparecen criaturas ni Heraldo.

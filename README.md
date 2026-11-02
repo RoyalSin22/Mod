@@ -736,3 +736,7 @@ de jugador dentro de un hueco pequeño, el jugador puede asfixiarse como en vani
 **v32 (rama local):** cuatro runas engarzables en armas de rol, con dos ranuras persistentes y recetas en la Mesa del gremio. Ver `docs/BALANCE.md` y `docs/ROADMAP_APTITUDES.md`.
 
 **v33 (rama local):** tres jefes con fases en torres, santuarios y campamentos. Sus núcleos mejoran armas de evolución desde la Mesa del gremio. Ver `docs/BALANCE.md` y `docs/ROADMAP_APTITUDES.md`.
+
+**v34:** el Eclipse. Cada 10 días el sol se oscurece en el Mundo Normal: cielo rojo, oleadas de élites y
+campeones y el Heraldo del Eclipse a mediodía. Recompensas: Fragmentos, Núcleo y Runa del Eclipse. Comando
+`/aptitudes eclipse`. Ver `docs/V34_ECLIPSE.md`, `docs/BALANCE.md` y `docs/CONFIGURATION.md`.

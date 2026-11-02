@@ -4,7 +4,10 @@
 	"compatibilityLevel": "JAVA_21",
 	"client": [
 		"CameraMixin",
-		"EntityRenderDispatcherMixin"
+		"EntityRenderDispatcherMixin",
+		"EclipseFogMixin",
+		"EclipseSkyMixin",
+		"EclipseSunMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

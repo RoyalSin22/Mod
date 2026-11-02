@@ -161,6 +161,10 @@ public final class ModItems {
 	public static final Item TOWER_CORE = register("tower_core", new dev.aptitudes.boss.BossCoreItem("tower", new Item.Settings().rarity(Rarity.EPIC).fireproof()));
 	public static final Item SHRINE_SIGIL = register("shrine_sigil", new dev.aptitudes.boss.BossCoreItem("shrine", new Item.Settings().rarity(Rarity.EPIC)));
 	public static final Item WARLORD_MEDALLION = register("warlord_medallion", new dev.aptitudes.boss.BossCoreItem("camp", new Item.Settings().rarity(Rarity.EPIC)));
+	// v34: Eclipse
+	public static final Item ECLIPSE_FRAGMENT = register("eclipse_fragment", new Item(new Item.Settings().rarity(Rarity.RARE)));
+	public static final Item ECLIPSE_CORE = register("eclipse_core", new dev.aptitudes.boss.BossCoreItem("eclipse", new Item.Settings().rarity(Rarity.EPIC).fireproof()));
+	public static final Item RUNE_ECLIPSE = register("rune_eclipse", new dev.aptitudes.rune.RuneItem(dev.aptitudes.rune.RuneKind.ECLIPSE, new Item.Settings().rarity(Rarity.EPIC)));
 
 	public static final java.util.Map<dev.aptitudes.accessory.Accessory, Item> ACCESSORIES = registerAccessories();
 
@@ -220,6 +224,9 @@ public final class ModItems {
 						entries.add(TOWER_CORE);
 						entries.add(SHRINE_SIGIL);
 						entries.add(WARLORD_MEDALLION);
+						entries.add(ECLIPSE_FRAGMENT);
+						entries.add(ECLIPSE_CORE);
+						entries.add(RUNE_ECLIPSE);
 						for (Item accessory : ACCESSORIES.values()) entries.add(accessory);
 						for (Item weapon : dev.aptitudes.item.weapon.RoleWeapons.all()) entries.add(weapon);
 						entries.add(dev.aptitudes.world.GuildVillagers.GUILD_DESK_ITEM);

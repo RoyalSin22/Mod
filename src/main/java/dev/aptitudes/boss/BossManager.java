@@ -69,10 +69,10 @@ public final class BossManager {
 		});
 	}
 
-	/** Crea un campeón nombrado; las fases se guardan en etiquetas del mob vanilla. */
-	public static void spawn(ServerWorld world, EntityType<? extends MobEntity> type, BlockPos pos, BossKind kind) {
+	/** Crea un campeón nombrado; las fases se guardan en etiquetas del mob vanilla. Devuelve el jefe o null. */
+	public static MobEntity spawn(ServerWorld world, EntityType<? extends MobEntity> type, BlockPos pos, BossKind kind) {
 		MobEntity mob = type.create(world);
-		if (mob == null) return;
+		if (mob == null) return null;
 		mob.refreshPositionAndAngles(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, world.random.nextFloat() * 360f, 0);
 		mob.initialize(world, world.getLocalDifficulty(pos), SpawnReason.STRUCTURE, null);
 		Elites.makeElite(mob, true, world.random); // reutiliza el escalado, las barras y recompensas de campeón
@@ -86,6 +86,10 @@ public final class BossManager {
 			mob.equipStack(EquipmentSlot.HEAD, new ItemStack(net.minecraft.item.Items.IRON_HELMET));
 		} else if (kind == BossKind.SHRINE_ORACLE) {
 			mob.equipStack(EquipmentSlot.HEAD, new ItemStack(net.minecraft.item.Items.GOLDEN_HELMET));
+		} else if (kind == BossKind.ECLIPSE_HERALD) {
+			mob.equipStack(EquipmentSlot.MAINHAND, new ItemStack(net.minecraft.item.Items.NETHERITE_SWORD));
+			mob.equipStack(EquipmentSlot.HEAD, new ItemStack(net.minecraft.item.Items.NETHERITE_HELMET));
+			mob.equipStack(EquipmentSlot.CHEST, new ItemStack(net.minecraft.item.Items.NETHERITE_CHESTPLATE));
 		} else {
 			mob.equipStack(EquipmentSlot.MAINHAND, new ItemStack(net.minecraft.item.Items.IRON_AXE));
 			mob.equipStack(EquipmentSlot.CHEST, new ItemStack(net.minecraft.item.Items.CHAINMAIL_CHESTPLATE));
@@ -93,6 +97,7 @@ public final class BossManager {
 		for (EquipmentSlot slot : EquipmentSlot.values()) mob.setEquipmentDropChance(slot, 0.0f);
 		world.spawnEntityAndPassengers(mob);
 		LOADED.put(mob.getUuid(), kind);
+		return mob;
 	}
 
 	private static Optional<BossKind> kind(MobEntity mob) {
@@ -140,7 +145,7 @@ public final class BossManager {
 				SoundCategory.HOSTILE, 0.8f, phase == 2 ? 1.25f : 0.8f);
 		world.spawnParticles(kind == BossKind.SHRINE_ORACLE ? ParticleTypes.ENCHANT : ParticleTypes.SOUL,
 				boss.getX(), boss.getBodyY(0.5), boss.getZ(), 48, 1.2, 1.0, 1.2, 0.08);
-		if (kind == BossKind.TOWER_SENTINEL) boss.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 160, phase - 2));
+		if (kind == BossKind.TOWER_SENTINEL || kind == BossKind.ECLIPSE_HERALD) boss.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 160, phase - 2));
 		else if (kind == BossKind.SHRINE_ORACLE) boss.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 100, phase - 2));
 		else boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 160, phase - 2));
 	}
@@ -169,6 +174,7 @@ public final class BossManager {
 			case TOWER_SENTINEL -> ModItems.TOWER_CORE;
 			case SHRINE_ORACLE -> ModItems.SHRINE_SIGIL;
 			case CAMP_CHAMPION -> ModItems.WARLORD_MEDALLION;
+			case ECLIPSE_HERALD -> ModItems.ECLIPSE_CORE;
 		});
 		mob.dropStack(reward);
 		if (attacker instanceof ServerPlayerEntity killer) {
@@ -216,7 +222,7 @@ public final class BossManager {
 		if (!root.contains(UPGRADE_DATA, NbtCompound.COMPOUND_TYPE)) return List.of();
 		NbtCompound saved = root.getCompound(UPGRADE_DATA);
 		List<String> ids = new ArrayList<>(BossRules.MAX_WEAPON_CORES);
-		for (String id : List.of("tower", "shrine", "camp")) if (saved.getBoolean(id)) ids.add(id);
+		for (String id : List.of("tower", "shrine", "camp", "eclipse")) if (saved.getBoolean(id)) ids.add(id);
 		return List.copyOf(ids);
 	}
 }

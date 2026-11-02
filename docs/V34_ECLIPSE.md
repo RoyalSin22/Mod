@@ -1,6 +1,7 @@
 # v34 — El Eclipse (evento del mundo)
 
-Estado: **especificación aprobada por el autor** (decisiones abajo). Pendiente de implementar.
+Estado: **implementado** en la rama `feature/v34-eclipse` (pendiente de compilar en el PC del autor y de
+probar en partida; ver `docs/TESTING.md`, sección v34).
 Depende de: v32 (runas) y v33 (jefes), ya en `main`. Las integraciones con grupos, contratos y logros
 (v29–v31) se añaden cuando esas versiones estén en `main`.
 
@@ -62,8 +63,9 @@ Un día de Minecraft dura 24 000 ticks: `timeOfDay` 0 = 6:00, 6000 = 12:00, 12 0
     o los modificadores de `Elites`, siempre con ids estables.
   - Probabilidad de élite `eclipseEliteChance` y de campeón `eclipseChampionChance`, con
     `Elites.makeElite`.
-  - **Resistencia al fuego** mientras dura el evento, para que los no muertos no ardan con la poca luz
-    del eclipse. Al terminar se les quita y se disuelven.
+  - **Casco oscuro irrompible** (cuero teñido, sin soltarlo) para que los no muertos no ardan de día. Se
+    descartó la resistencia al fuego: anularía la Runa de Fuego y los ataques ígneos de los jugadores. Al
+    terminar, las criaturas se disuelven.
 - **Heraldo del Eclipse:**
   - Nuevo `BossKind.ECLIPSE_HERALD`, **añadido al final del enum**.
   - Aparece con `BossManager.spawn(...)`. Ya reutiliza fases, barra y escalado de campeón.
@@ -101,7 +103,11 @@ arranca igual y solo se pierde el efecto. **Verifica cada firma en Yarn `1.21.1+
 - **Accesibilidad:** opción de cliente `eclipseSkyEffects` (en `ClientConfig`) para desactivar el tinte
   del cielo y los destellos; algunos jugadores son sensibles a los destellos.
 - **Textura del sol** generada por script (`tools/textures/gen_eclipse.py`, semilla fija), no a mano.
-  Diseño propio: disco negro, anillo de corona roja e irregular y un leve halo.
+  Diseño propio: disco negro, anillo de corona roja e irregular y un leve halo. El sol se dibuja con mezcla
+  aditiva: el disco negro no tapa, deja ver el cielo carmesí, y lo que se ve es el anillo.
+- **Mixins sin `@Shadow`:** un campo sombreado que no existiera tumbaría el arranque aunque los inyectores
+  tengan `require = 0`. La niebla se tiñe modificando los argumentos de `RenderSystem.clearColor` y
+  reescribiendo el color de niebla del shader tras `applyFogColor`.
 
 ## 5. Arquitectura
 
@@ -140,7 +146,8 @@ que existan. Casos mínimos:
 | `eclipseSurvivorRoleXp` | 300 | 0–100 000 |
 | `eclipseSurvivorCombatXp` | 200 | 0–100 000 |
 
-El daño de las criaturas del eclipse sigue sujeto al tope global `maxDamageMultiplier`.
+El tope global `maxDamageMultiplier` limita el daño que hacen los jugadores; el de las criaturas del eclipse
+lo limita su propio campo (máximo ×5).
 
 ## 7. Textos e interfaz
 

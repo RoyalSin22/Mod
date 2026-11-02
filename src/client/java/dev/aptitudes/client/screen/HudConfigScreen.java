@@ -26,7 +26,7 @@ public class HudConfigScreen extends Screen {
 	protected void init() {
 		ClientConfig cfg = ClientConfig.get();
 		int cx = width / 2;
-		int y = height / 2 - 70;
+		int y = height / 2 - 80;
 		addDrawableChild(ButtonWidget.builder(Text.literal("−"), b -> scale(-0.1f)).dimensions(cx - 100, y, 20, 18).build());
 		addDrawableChild(ButtonWidget.builder(Text.literal("+"), b -> scale(0.1f)).dimensions(cx + 80, y, 20, 18).build());
 		y += 22;
@@ -37,6 +37,8 @@ public class HudConfigScreen extends Screen {
 		addDrawableChild(toggle(cx - 100, y, "screen.aptitudes.hud.damage_numbers", () -> cfg.damageNumbers, v -> cfg.damageNumbers = v));
 		y += 22;
 		addDrawableChild(toggle(cx - 100, y, "screen.aptitudes.hud.screen_effects", () -> cfg.screenEffects, v -> cfg.screenEffects = v));
+		y += 22;
+		addDrawableChild(toggle(cx - 100, y, "screen.aptitudes.hud.eclipse_sky", () -> cfg.eclipseSkyEffects, v -> cfg.eclipseSkyEffects = v));
 		y += 22;
 		addDrawableChild(toggle(cx - 100, y, "screen.aptitudes.hud.visible", () -> cfg.hudVisible, v -> cfg.hudVisible = v));
 		y += 26;

@@ -81,7 +81,16 @@ public final class AptitudesCommand {
 						.then(literal("addpoints").then(argument("player", EntityArgumentType.player())
 								.then(argument("amount", integer())
 										.executes(AptitudesCommand::adminAddPoints))))
-						.then(literal("reload").executes(AptitudesCommand::adminReload))));
+						.then(literal("reload").executes(AptitudesCommand::adminReload)))
+				// v34: el Eclipse. Consultar es libre; iniciar y detener exige permiso de administrador.
+				.then(literal("eclipse")
+						.executes(AptitudesCommand::eclipseStatus)
+						.then(literal("status").executes(AptitudesCommand::eclipseStatus))
+						.then(literal("next").executes(AptitudesCommand::eclipseStatus))
+						.then(literal("start").requires(src -> src.hasPermissionLevel(2))
+								.executes(AptitudesCommand::eclipseStart))
+						.then(literal("stop").requires(src -> src.hasPermissionLevel(2))
+								.executes(AptitudesCommand::eclipseStop))));
 
 		// Alias. Brigadier no ejecuta "executes" de un nodo redirigido sin argumentos,
 		// por eso el alias declara su propio executes.
@@ -197,5 +206,30 @@ public final class AptitudesCommand {
 
 	private static PlayerAttribute parseAttribute(String key) throws CommandSyntaxException {
 		return PlayerAttribute.byKey(key).orElseThrow(() -> UNKNOWN_ATTRIBUTE.create(key));
+	}
+
+	// ------------------------------------------------------------------ Eclipse (v34)
+
+	private static int eclipseStatus(CommandContext<ServerCommandSource> ctx) {
+		ctx.getSource().sendFeedback(() -> dev.aptitudes.event.EclipseManager.status(ctx.getSource().getServer()), false);
+		return 1;
+	}
+
+	private static int eclipseStart(CommandContext<ServerCommandSource> ctx) {
+		if (!dev.aptitudes.event.EclipseManager.forceStart(ctx.getSource().getServer())) {
+			ctx.getSource().sendError(Text.translatable("eclipse.aptitudes.command.already_active"));
+			return 0;
+		}
+		ctx.getSource().sendFeedback(() -> Text.translatable("eclipse.aptitudes.command.started"), true);
+		return 1;
+	}
+
+	private static int eclipseStop(CommandContext<ServerCommandSource> ctx) {
+		if (!dev.aptitudes.event.EclipseManager.forceStop(ctx.getSource().getServer())) {
+			ctx.getSource().sendError(Text.translatable("eclipse.aptitudes.command.not_active"));
+			return 0;
+		}
+		ctx.getSource().sendFeedback(() -> Text.translatable("eclipse.aptitudes.command.stopped"), true);
+		return 1;
 	}
 }

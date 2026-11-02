@@ -4,7 +4,9 @@ import dev.aptitudes.Aptitudes;
 
 /** Arquetipos propios guardados como etiquetas persistentes sobre entidades vanilla. */
 public enum BossKind {
-	TOWER_SENTINEL("tower_sentinel"), SHRINE_ORACLE("shrine_oracle"), CAMP_CHAMPION("camp_champion");
+	TOWER_SENTINEL("tower_sentinel"), SHRINE_ORACLE("shrine_oracle"), CAMP_CHAMPION("camp_champion"),
+	/** v34: jefe del Eclipse. Añadido al final (los demás valores no cambian de posición). */
+	ECLIPSE_HERALD("eclipse_herald");
 	private final String id;
 	BossKind(String id) { this.id = id; }
 	public String id() { return id; }

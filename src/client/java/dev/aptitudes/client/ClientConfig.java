@@ -29,6 +29,8 @@ public final class ClientConfig {
 	public boolean soulsBars = true;
 	/** Indicador de la mecánica del rol (acumulaciones, estados) sobre la barra de habilidades. */
 	public boolean showMechanic = true;
+	/** Eclipse (v34): cielo, niebla y nubes teñidos de rojo y sol eclipsado. Desactívalo si los destellos molestan. */
+	public boolean eclipseSkyEffects = true;
 
 	private static Path path() {
 		return FabricLoader.getInstance().getConfigDir().resolve(Aptitudes.MOD_ID + "-client.json");

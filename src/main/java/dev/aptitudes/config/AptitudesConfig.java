@@ -124,6 +124,31 @@ public class AptitudesConfig {
 	/** Espera mínima entre remates, en segundos. */
 	public double comboFinisherCooldownSeconds = 4.0;
 
+	// ---------- Eclipse (v34) ----------
+	/** Evento del mundo: eclipse solar con oleadas, élites y el Heraldo del Eclipse. */
+	public boolean eclipseEnabled = true;
+	/** Cada cuántos días de juego hay eclipse. */
+	public int eclipseIntervalDays = 10;
+	/** Primer día en el que puede haber eclipse (margen para mundos nuevos). */
+	public int eclipseFirstDay = 10;
+	/** Segundos entre oleadas. */
+	public int eclipseWaveIntervalSeconds = 30;
+	/** Tope de criaturas del eclipse vivas alrededor de cada jugador. */
+	public int eclipseMaxMobsPerPlayer = 12;
+	/** Multiplicador de vida de las criaturas del eclipse (1,5 = +50 %). */
+	public double eclipseMobHealthMultiplier = 1.5;
+	/** Multiplicador de daño de las criaturas del eclipse (sujeto a maxDamageMultiplier). */
+	public double eclipseMobDamageMultiplier = 1.5;
+	/** Probabilidad de que una criatura del eclipse sea élite. */
+	public double eclipseEliteChance = 0.5;
+	/** Probabilidad de que sea campeón (se comprueba antes que la de élite). */
+	public double eclipseChampionChance = 0.1;
+	/** Aparición del Heraldo del Eclipse a mediodía. */
+	public boolean eclipseHeraldEnabled = true;
+	/** XP de rol principal y de Combate para quien sobrevive al eclipse sin morir. */
+	public int eclipseSurvivorRoleXp = 300;
+	public int eclipseSurvivorCombatXp = 200;
+
 	/** v23: puntos de árbol extra al evolucionar a Maestro (para la fila nueva de 5 nodos × 2 rangos). */
 	public int masterBonusPoints = 10;
 	/** v23: puntos de árbol extra al evolucionar a Definitivo (fila nueva de 5 nodos × 1 rango). */
@@ -293,6 +318,16 @@ public class AptitudesConfig {
 		c.comboFinisherHits = clamp(c.comboFinisherHits, 2, 50);
 		c.comboFinisherCooldownSeconds = Math.min(600.0, c.comboFinisherCooldownSeconds);
 		c.ultimateBonusPoints = clamp(c.ultimateBonusPoints, 0, 100);
+		c.eclipseIntervalDays = clamp(c.eclipseIntervalDays, 1, 365);
+		c.eclipseFirstDay = clamp(c.eclipseFirstDay, 1, 3650);
+		c.eclipseWaveIntervalSeconds = clamp(c.eclipseWaveIntervalSeconds, 10, 300);
+		c.eclipseMaxMobsPerPlayer = clamp(c.eclipseMaxMobsPerPlayer, 0, 40);
+		c.eclipseMobHealthMultiplier = Math.max(1.0, Math.min(5.0, c.eclipseMobHealthMultiplier));
+		c.eclipseMobDamageMultiplier = Math.max(1.0, Math.min(5.0, c.eclipseMobDamageMultiplier));
+		c.eclipseEliteChance = Math.min(1.0, c.eclipseEliteChance);
+		c.eclipseChampionChance = Math.min(1.0, c.eclipseChampionChance);
+		c.eclipseSurvivorRoleXp = clamp(c.eclipseSurvivorRoleXp, 0, 100_000);
+		c.eclipseSurvivorCombatXp = clamp(c.eclipseSurvivorCombatXp, 0, 100_000);
 		c.roleChangeCooldownMinutes = clamp(c.roleChangeCooldownMinutes, 0, 100_000);
 		c.baseMaxEnergy = Math.max(1.0, c.baseMaxEnergy);
 		c.baseEnergyRegenPerSecond = Math.max(0.0, c.baseEnergyRegenPerSecond);

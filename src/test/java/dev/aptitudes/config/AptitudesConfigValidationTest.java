@@ -65,4 +65,22 @@ public class AptitudesConfigValidationTest {
 		assertTrue(v.attributeSoftCapSecond >= v.attributeSoftCapFirst);
 		assertEquals(1.0, v.attributeSaturationPoints, 0);
 	}
+
+	@Test
+	public void eclipseValuesAreClamped() {
+		AptitudesConfig c = new AptitudesConfig();
+		c.eclipseIntervalDays = 0;
+		c.eclipseWaveIntervalSeconds = 1;
+		c.eclipseMaxMobsPerPlayer = 500;
+		c.eclipseMobHealthMultiplier = 0.2;
+		c.eclipseMobDamageMultiplier = 50;
+		c.eclipseEliteChance = 3;
+		AptitudesConfig v = AptitudesConfig.validated(c);
+		assertEquals(1, v.eclipseIntervalDays);
+		assertEquals(10, v.eclipseWaveIntervalSeconds);
+		assertEquals(40, v.eclipseMaxMobsPerPlayer);
+		assertEquals(1.0, v.eclipseMobHealthMultiplier, 0);
+		assertEquals(5.0, v.eclipseMobDamageMultiplier, 0);
+		assertEquals(1.0, v.eclipseEliteChance, 0);
+	}
 }

@@ -40,13 +40,14 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 | Bloques temporales de habilidades (persistentes, sin drops) | `world/TemporaryBlocks.place(...)`; nunca `setBlockState` + `schedule` para bloques temporales |
 | Runas de armas v32 | `rune/RuneSocketing`, `rune/RuneRules`; hasta dos por arma, engarzadas en la Mesa del gremio |
 | Jefes propios v33 | `boss/BossManager` y `boss/BossRules`; fases guardadas en etiquetas del mob y tres núcleos que mejoran armas de evolución |
+| Eclipse v34 (evento del mundo cada 10 días) | `event/EclipseManager`, `event/EclipseRules` (puro), `event/EclipseState`; cliente `ClientEclipse`, `hud/EclipseHud` y mixins `Eclipse*Mixin` (`require = 0`). Textura del sol: `tools/textures/gen_eclipse.py` |
 
 Historial reciente en `main`: auditoría de seguridad y balance, v14 (grimorio, elementos y armas), v15
 (Pesca y rendimiento decreciente), v15.1 (árbol con legendarias exclusivas), v15.2 (grimorio tras la
 muerte y pruebas de configuración) y v16 (Defensa con `AFTER_DAMAGE`, esbirros sin conversión a
 ahogado, Bombardeo orbital sin fuego amigo), v17 (anti-granjas de colocar y romper), v18 (esperas y muros persistentes) y v19 (desplazamiento de la
 pantalla de roles y filtro para mobs con IA Brain), v20 (grimorio interactivo con recetas reales) y
-v21 (Encantamiento y pantalla K animada) , v22 (texturas de armas y objetos clave) , v23 (árbol que crece al evolucionar) , v24 (animaciones de habilidades), v25 (texturas de armaduras) , v26 (colisión de las transformaciones) , v27 (Mesa del gremio y atributos −30 %) y v28 (combos).
+v21 (Encantamiento y pantalla K animada) , v22 (texturas de armas y objetos clave) , v23 (árbol que crece al evolucionar) , v24 (animaciones de habilidades), v25 (texturas de armaduras) , v26 (colisión de las transformaciones) , v27 (Mesa del gremio y atributos −30 %) y v28 (combos). Después: v32 (runas), v33 (jefes) y v34 (Eclipse).
 
 ## 3. Exclusiones absolutas (no negociables)
 
@@ -113,6 +114,7 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
   `logic/PlacedBlockLogTest`, `ability/CooldownBookTest`, `world/TemporaryBlockScheduleTest`,
   `role/LoadoutCodecTest`, `role/EvolutionPointsTest`, `morph/MorphSizeRulesTest`, `logic/ComboCounterTest`,
   `role/RoleRulesTest`, `data/ProgressRulesTest` y
+  `rune/RuneRulesTest`, `boss/BossRulesTest`, `event/EclipseRulesTest`,
   `config/AptitudesConfigValidationTest`.
 - **No escribas pruebas que llamen a métodos que no existen.** Si una prueba necesita una API nueva,
   impleméntala en el código principal en el mismo cambio y explícalo.

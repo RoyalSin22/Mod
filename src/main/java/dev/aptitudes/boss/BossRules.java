@@ -20,7 +20,7 @@ public final class BossRules {
 	}
 
 	public static boolean isCore(String id) {
-		return "tower".equals(id) || "shrine".equals(id) || "camp".equals(id);
+		return "tower".equals(id) || "shrine".equals(id) || "camp".equals(id) || "eclipse".equals(id);
 	}
 
 	public static double damageBonus(int coreCount) {
