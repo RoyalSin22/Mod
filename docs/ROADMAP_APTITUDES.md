@@ -100,6 +100,13 @@ Decisiones: tope de espera aceptado de 1 día real (datos corruptos o mundos con
 para siempre), máximo 256 esperas por jugador y 4096 bloques temporales por mundo; un bloque temporal
 solo se retira si en su posición sigue el mismo bloque.
 
+### v22 — texturas de armas y objetos clave
+86 texturas nuevas de 16×16 generadas con `tools/textures/gen_items.py`: plantillas a mano por arquetipo
+(espada, mandoble, katana, daga, hacha, lanza, martillo, bastones, focos, armas de fuego, tomo, anillos,
+amuletos, frascos…), rampas de 5 tonos por material con desplazamiento de matiz, luz arriba-izquierda,
+contorno selectivo, brillos y halos. Armas de evolución con el color de su rol: Maestro con guarda dorada,
+Definitivo con mandoble de guarda alada o foco doble con destellos. Pendiente: las 80 piezas de armadura.
+
 ### v19 — interfaz y mobs con IA Brain
 | Área | Antes | Ahora |
 |---|---|---|

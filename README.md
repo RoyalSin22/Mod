@@ -693,7 +693,7 @@ src/client/java/dev/aptitudes/client/   (solo cliente)
 | Fuego del Averno y explosiones del Creeper modifican bloques | Cambios permanentes del mundo (según `uniqueGriefing`) | — |
 | Las transformaciones no cambian la caja de colisión | Un "murciélago" sigue ocupando lo que un jugador | Cambiar las dimensiones del jugador (mixin de `getDimensions`) |
 | Quietud Eterna usa `NoAI` | Se repara al cargar, pero otro mod que lea `NoAI` podría verse afectado | — |
-| Las texturas son placeholder | Aspecto básico | Sustituir los PNG en `assets/aptitudes/textures/item/` |
+| Las armaduras de rol conservan las texturas provisionales (v22 rehízo armas y objetos) | Aspecto básico en las 80 piezas de armadura | Segunda tanda con `tools/textures/gen_items.py` |
 | No se ha compilado en el entorno donde se generó | Puede requerir algún ajuste menor de mappings | Ejecutar `./gradlew build` |
 
 **Resueltas en la v16:** la Defensa solo da XP por daño realmente recibido (no por golpes bloqueados con
