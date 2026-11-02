@@ -100,6 +100,13 @@ Decisiones: tope de espera aceptado de 1 día real (datos corruptos o mundos con
 para siempre), máximo 256 esperas por jugador y 4096 bloques temporales por mundo; un bloque temporal
 solo se retira si en su posición sigue el mismo bloque.
 
+### v25 — texturas de las armaduras de rol
+`tools/textures/gen_armor.py`: 80 iconos (16×16) y 40 capas del modelo puesto (64×32, mapa UV estándar).
+Estilo según el peso del rol: pesada (placas tintadas, visera, cresta, remaches, gema en el pecho,
+hombreras y cinturón con hebilla), media (cuero con escamas del color del rol) y ligera (capucha con la cara
+abierta, túnica con franja dorada, fajín y puños). Semilla fija: las texturas salen iguales en cada
+ejecución. Con esto, todas las texturas de objetos del mod están rehechas.
+
 ### v24 — animaciones de habilidades
 Para TODAS las habilidades (antiguas y evolucionadas), centralizado en `CastFx.onCast`: gesto del brazo
 visible para todos, sello rúnico animado (anillo y estrella de 6 puntas que giran y siguen al jugador) y un

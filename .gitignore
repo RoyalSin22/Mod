@@ -8,3 +8,5 @@ run/
 bin/
 javac.*.args
 aptitudes.zip
+__pycache__/
+*.pyc
