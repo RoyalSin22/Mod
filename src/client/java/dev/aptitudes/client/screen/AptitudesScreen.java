@@ -59,6 +59,8 @@ public class AptitudesScreen extends Screen {
 	private int selected = 0;
 	private int left;
 	private int top;
+	/** v39: desplazamiento vertical de la ventana cuando no cabe (p. ej., 720p a escala 3 o 1080p a escala 4). */
+	private int pageScroll;
 	private int ticks;
 	private ButtonWidget confirmButton;
 	private ButtonWidget resetButton;
@@ -95,7 +97,8 @@ public class AptitudesScreen extends Screen {
 	@Override
 	protected void init() {
 		left = (width - W) / 2;
-		top = (height - H) / 2;
+		pageScroll = MathHelper.clamp(pageScroll, 0, maxPageScroll());
+		top = maxPageScroll() > 0 ? 8 - pageScroll : (height - H) / 2;
 		confirmButton = addDrawableChild(ButtonWidget.builder(Text.translatable(bonfire
 						? "screen.aptitudes.level_up" : "screen.aptitudes.confirm"), b -> confirm())
 				.dimensions(left + 10, top + H - 44, 140, 20).build());
@@ -103,6 +106,24 @@ public class AptitudesScreen extends Screen {
 				.dimensions(left + 156, top + H - 44, 70, 20).build());
 		requestStats();
 		updateButtons();
+	}
+
+	/** Cuánto se puede desplazar la ventana (0 si cabe con 8 px de margen arriba y abajo). */
+	private int maxPageScroll() {
+		return Math.max(0, H + 16 - height);
+	}
+
+	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+		if (verticalAmount != 0 && maxPageScroll() > 0) {
+			int target = MathHelper.clamp(pageScroll + (verticalAmount > 0 ? -24 : 24), 0, maxPageScroll());
+			if (target != pageScroll) {
+				pageScroll = target;
+				clearAndInit(); // recoloca los botones con el nuevo desplazamiento
+				return true;
+			}
+		}
+		return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
 	}
 
 	private void requestStats() {
@@ -254,6 +275,15 @@ public class AptitudesScreen extends Screen {
 	@Override
 	public void render(DrawContext ctx, int mouseX, int mouseY, float delta) {
 		super.render(ctx, mouseX, mouseY, delta);
+		// Barra de desplazamiento de la ventana (solo si no cabe en la pantalla), como en la pantalla de roles.
+		int maxScroll = maxPageScroll();
+		if (maxScroll > 0) {
+			int trackH = height - 16;
+			int thumbH = Math.max(20, trackH * height / (H + 16));
+			int thumbY = 8 + (trackH - thumbH) * pageScroll / maxScroll;
+			ctx.fill(width - 5, 8, width - 2, 8 + trackH, 0x60000000);
+			ctx.fill(width - 5, thumbY, width - 2, thumbY + thumbH, UiStyle.GOLD);
+		}
 		ctx.drawTextWithShadow(textRenderer, Text.translatable(tab == Tab.ATTRIBUTES
 				? "screen.aptitudes.tab.attributes" : "screen.aptitudes.tab.skills").copy()
 				.formatted(net.minecraft.util.Formatting.BOLD), left + 12, top + 9, UiStyle.GOLD);

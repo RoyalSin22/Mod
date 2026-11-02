@@ -46,7 +46,9 @@ public final class EclipseHud {
 				Text.translatable("eclipse.aptitudes.phase_name." + PHASES[phase])).formatted(Formatting.RED);
 		int barWidth = 120;
 		int x = w / 2 - barWidth / 2;
-		int y = h - 72; // encima de la barra de experiencia, sin tapar la barra de jefe de arriba
+		// v39: por encima de la barra de acción (h − 72) y del nombre del objeto en mano (h − 59), para no tapar los
+		// avisos de runas ni otros mensajes; tampoco choca con las barras de jefe (arriba) ni con los efectos (arriba a la derecha).
+		int y = h - 92;
 		int textWidth = client.textRenderer.getWidth(label);
 		ctx.drawTextWithShadow(client.textRenderer, label, w / 2 - textWidth / 2, y - 10, 0xFFFF5555);
 		ctx.fill(x - 1, y - 1, x + barWidth + 1, y + 3, 0xA0000000);

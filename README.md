@@ -752,3 +752,6 @@ combo y engarzar/quitar runas. Sintetizados por programa (`tools/audio/gen_sound
 
 **v38 — Versión publicable (1.3.7):** `CHANGELOG.md`, icono del mod, autor y enlaces en
 `fabric.mod.json`, y la guía `docs/PUBLICACION.md` para Modrinth o CurseForge.
+
+**v39 — Interfaz con escala grande:** la pantalla K se desplaza con la rueda si no cabe (720p/768p a escala 3,
+1080p a escala 4) y la barra del Eclipse ya no tapa los avisos de la barra de acción.

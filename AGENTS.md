@@ -49,7 +49,7 @@ Historial reciente en `main`: auditoría de seguridad y balance, v14 (grimorio, 
 muerte y pruebas de configuración) y v16 (Defensa con `AFTER_DAMAGE`, esbirros sin conversión a
 ahogado, Bombardeo orbital sin fuego amigo), v17 (anti-granjas de colocar y romper), v18 (esperas y muros persistentes) y v19 (desplazamiento de la
 pantalla de roles y filtro para mobs con IA Brain), v20 (grimorio interactivo con recetas reales) y
-v21 (Encantamiento y pantalla K animada) , v22 (texturas de armas y objetos clave) , v23 (árbol que crece al evolucionar) , v24 (animaciones de habilidades), v25 (texturas de armaduras) , v26 (colisión de las transformaciones) , v27 (Mesa del gremio y atributos −30 %) y v28 (combos). Después: v32 (runas), v33 (jefes), v34 (Eclipse), v35 (Runas+), v36 (anti-granjas persistente), v37 (sonidos) y v38 (versión publicable 1.3.7; ver `CHANGELOG.md`).
+v21 (Encantamiento y pantalla K animada) , v22 (texturas de armas y objetos clave) , v23 (árbol que crece al evolucionar) , v24 (animaciones de habilidades), v25 (texturas de armaduras) , v26 (colisión de las transformaciones) , v27 (Mesa del gremio y atributos −30 %) y v28 (combos). Después: v32 (runas), v33 (jefes), v34 (Eclipse), v35 (Runas+), v36 (anti-granjas persistente), v37 (sonidos), v38 (versión publicable 1.3.7; ver `CHANGELOG.md`) y v39 (interfaz con escala grande).
 
 ## 3. Exclusiones absolutas (no negociables)
 
@@ -105,8 +105,8 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
 - **Idiomas**: añade cada clave en `en_us.json` y `es_es.json`; después **copia `es_es.json`** a `es_mx`,
   `es_ar`, `es_cl`, `es_ec`, `es_uy` y `es_ve` (son idénticos). Un `%` literal en un texto con argumentos
   se escribe `%%`. Añade las claves **sin reformatear** el archivo (2 espacios, como está).
-- **Interfaz**: la pantalla K (`AptitudesScreen`) mide 430×262 y tiene exactamente 10 tarjetas (5×2): una
-  habilidad nueva rompe la simetría. El grimorio lee las recetas del juego: no las copies en los textos.
+- **Interfaz**: la pantalla K (`AptitudesScreen`) mide 430×262 (se desplaza si no cabe) y tiene exactamente 10 tarjetas (5×2): una
+  habilidad nueva rompe la simetría. Toda pantalla nueva debe caber en 426×240 o desplazarse. El grimorio lee las recetas del juego: no las copies en los textos.
 
 ## 6. Pruebas
 

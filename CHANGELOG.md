@@ -3,6 +3,12 @@
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); versiones con
 [Versionado Semántico](https://semver.org/lang/es/). Las «vNN» son las etapas internas de desarrollo.
 
+## [Sin publicar]
+
+### Cambiado
+- **v39** — La pantalla K se desplaza con la rueda cuando no cabe (escala de interfaz grande); la barra del
+  Eclipse sube para no tapar los avisos de la barra de acción.
+
 ## [1.3.7] — 2026-11-02
 
 Primera versión preparada para publicar. Las etapas v34–v37 aún no se han probado en partida

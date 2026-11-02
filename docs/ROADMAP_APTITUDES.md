@@ -227,3 +227,19 @@ registro en memoria con tope de 100 000 posiciones por mundo (FIFO).
 - Versión `1.3.7` (`gradle.properties`, decisión del autor); `CHANGELOG.md` con el historial; icono 128×128 generado
   (`tools/textures/gen_icon.py`); autor, icono y enlaces en `fabric.mod.json`.
 - Guía de publicación: `docs/PUBLICACION.md` (incluye decisiones del autor: licencia y visibilidad del repositorio).
+
+### v39 — Interfaz con escala grande
+Revisión estática de tamaños (Minecraft garantiza al menos 320×240 de GUI; casos reales: 1080p a escala 4 →
+480×270, 768p a escala 3 → 455×256, 720p a escala 3 → 426×240).
+
+| Pantalla / HUD | Tamaño | Resultado |
+|---|---|---|
+| Pantalla K (`AptitudesScreen`) | 430×262 fijo | No cabía en alto con 768p/720p a escala 3 ni con poco margen a 1080p/4 → **desplazamiento vertical** con la rueda y barra dorada, como la pantalla de roles |
+| Roles (`RolesScreen`) | mín. 440×322 | Ya se desplaza (v19) |
+| Grimorio (`GuideScreen`) | mín. 380×236 | Cabe en alto (19 capítulos × 10 px); en ancho < 380 (monitores 4:3 a escala máxima) se recorta un poco |
+| Mesa del gremio, accesorios | 176×166 | Caben |
+| Ajustes del HUD | 8 filas (≈ 176 px) | Caben en 240 |
+| HUD del Eclipse | centrado abajo | Estaba a la altura de la barra de acción (h − 72) y tapaba los avisos de runas → **subido a h − 92** |
+| HUD de combos | junto a la mira | Sin cambios |
+
+Pendiente: comprobarlo en el juego (ver `docs/TESTING.md`, v39).

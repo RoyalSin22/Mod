@@ -164,3 +164,11 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
 3. Remate de combo: el golpe común suena junto al sonido de la categoría.
 4. Engarzar una runa: campanilla. Quitarla (Mayús + clic en la Mesa): raspado y chasquido.
 5. Con el volumen de «Criaturas hostiles» a 0 no se oyen los sonidos del Eclipse (categoría Hostil).
+
+# v39 — interfaz con escala grande (verificación manual)
+
+1. Opciones → Gráficos → Escala de interfaz **4** con ventana 1920×1080, y **3** con ventana 1280×720.
+2. Pantalla K (tecla K): si no cabe, aparece una barra dorada a la derecha; la rueda del ratón mueve la
+   ventana y los botones Confirmar/Reiniciar siguen funcionando en su sitio. Con escala 2 no hay barra.
+3. Pantalla de roles, grimorio, Mesa del gremio y ajustes del HUD (Mayús + O): nada se sale ni se solapa.
+4. Durante un Eclipse, engarza una runa: el aviso de la barra de acción ya no queda tapado por la barra del Eclipse.
