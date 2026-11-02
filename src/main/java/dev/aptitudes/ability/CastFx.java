@@ -23,6 +23,11 @@ import org.jetbrains.annotations.Nullable;
  *   <li><b>Definitiva</b>: todo lo anterior a mayor escala, columna de luz y sacudida fuerte.</li>
  * </ul>
  * El Elementalista usa el color de su elemento activo.
+ *
+ * <p>v24: además, en toda habilidad (antiguas y evolucionadas): gesto del brazo visible para todos, sello
+ * rúnico animado que gira y sigue al jugador, y un remate propio de la CATEGORÍA del rol (marcial: tajo en
+ * arco; arcana: orbes que orbitan; sombra: humo y estela; guardián: pilar de luz; oficio: chispas y
+ * engranaje), con su sonido. Todo son partículas del servidor: lo ven todos los jugadores cercanos.</p>
  */
 public final class CastFx {
 	public enum Kind { ACTIVE, SIGNATURE, ULTIMATE, UNIQUE }
@@ -44,6 +49,11 @@ public final class CastFx {
 		DustParticleEffect dust = ParticleFx.dust(color, kind == Kind.ACTIVE ? 1.0f : 1.6f);
 		DustParticleEffect bright = ParticleFx.dust(lighten(color), 1.2f);
 		Vec3d feet = player.getPos();
+		// v24: gesto de lanzamiento (lo ven todos), sello animado y remate por categoría.
+		player.swingHand(net.minecraft.util.Hand.MAIN_HAND, true);
+		animatedSigil(player, color, kind == Kind.ACTIVE ? 1.6 : kind == Kind.ULTIMATE ? 3.2 : 2.4,
+				kind == Kind.ACTIVE ? 12 : 20);
+		if (role != null) categoryFlourish(player, role.category(), color, kind != Kind.ACTIVE);
 		switch (kind) {
 			case ACTIVE -> {
 				ParticleFx.runeCircle(world, feet, 1.3, dust);
@@ -68,6 +78,104 @@ public final class CastFx {
 				screen(player, ScreenFxPayload.SHAKE, color, 0.7f);
 			}
 		}
+	}
+
+	/**
+	 * Sello rúnico animado: anillo exterior y una estrella de 6 puntas que gira, siguiendo al jugador
+	 * durante {@code ticks} ticks (se apaga si muere o cambia de mundo).
+	 */
+	private static void animatedSigil(ServerPlayerEntity player, int color, double radius, int ticks) {
+		ServerWorld origin = player.getServerWorld();
+		DustParticleEffect dust = ParticleFx.dust(color, 0.9f);
+		DustParticleEffect light = ParticleFx.dust(lighten(color), 0.7f);
+		AbilityState.repeat(player.getServer(), ticks, 1, i -> {
+			if (!player.isAlive() || player.getServerWorld() != origin) return;
+			Vec3d c = player.getPos().add(0, 0.05, 0);
+			double spin = i * Math.toRadians(9);
+			double fade = 1.0 - i / (double) ticks;
+			int ringPoints = (int) (10 + 14 * fade);
+			for (int k = 0; k < ringPoints; k++) {
+				double a = spin + 2 * Math.PI * k / ringPoints;
+				origin.spawnParticles(dust, c.x + Math.cos(a) * radius, c.y, c.z + Math.sin(a) * radius, 1, 0, 0, 0, 0);
+			}
+			// Estrella de 6 puntas: dos triángulos que giran en sentidos opuestos.
+			for (int tri = 0; tri < 2; tri++) {
+				double rot = tri == 0 ? spin : -spin + Math.PI / 3;
+				for (int v = 0; v < 3; v++) {
+					double a1 = rot + 2 * Math.PI * v / 3;
+					double a2 = rot + 2 * Math.PI * (v + 1) / 3;
+					Vec3d p1 = c.add(Math.cos(a1) * radius * 0.85, 0, Math.sin(a1) * radius * 0.85);
+					Vec3d p2 = c.add(Math.cos(a2) * radius * 0.85, 0, Math.sin(a2) * radius * 0.85);
+					ParticleFx.line(origin, light, p1, p2, 4);
+				}
+			}
+		});
+	}
+
+	/** Remate visual y sonoro según la categoría del rol. {@code big}: característica, definitiva o legendaria. */
+	private static void categoryFlourish(ServerPlayerEntity player, dev.aptitudes.role.RoleCategory category, int color,
+										 boolean big) {
+		ServerWorld world = player.getServerWorld();
+		Vec3d eye = player.getEyePos();
+		Vec3d look = Targeting.horizontalFacing(player);
+		DustParticleEffect dust = ParticleFx.dust(color, big ? 1.4f : 1.1f);
+		float volume = big ? 0.9f : 0.6f;
+		switch (category) {
+			case MARTIAL -> { // tajo en arco delante del pecho
+				for (int k = -6; k <= 6; k++) {
+					Vec3d dir = look.rotateY((float) Math.toRadians(k * 12));
+					Vec3d at = player.getPos().add(0, 1.1 + k * 0.03, 0).add(dir.multiply(1.6));
+					world.spawnParticles(dust, at.x, at.y, at.z, 1, 0, 0, 0, 0);
+				}
+				world.spawnParticles(ParticleTypes.SWEEP_ATTACK, player.getX() + look.x * 1.5, player.getBodyY(0.6),
+						player.getZ() + look.z * 1.5, 1, 0, 0, 0, 0);
+				sound(player, net.minecraft.sound.SoundEvents.ENTITY_PLAYER_ATTACK_STRONG, volume, 0.9f);
+			}
+			case ARCANE -> { // orbes que orbitan y suben
+				AbilityState.repeat(player.getServer(), 10, 1, i -> {
+					if (!player.isAlive()) return;
+					for (int o = 0; o < 3; o++) {
+						double a = i * 0.6 + o * 2 * Math.PI / 3;
+						Vec3d at = player.getPos().add(Math.cos(a) * 0.9, 0.4 + i * 0.16, Math.sin(a) * 0.9);
+						world.spawnParticles(ParticleTypes.ENCHANT, at.x, at.y, at.z, 2, 0.02, 0.02, 0.02, 0.0);
+						world.spawnParticles(dust, at.x, at.y, at.z, 1, 0, 0, 0, 0);
+					}
+				});
+				sound(player, net.minecraft.sound.SoundEvents.ENTITY_ILLUSIONER_CAST_SPELL, volume, 1.2f);
+			}
+			case SHADOW -> { // humo y estela oscura
+				world.spawnParticles(ParticleTypes.LARGE_SMOKE, player.getX(), player.getBodyY(0.5), player.getZ(),
+						big ? 24 : 12, 0.4, 0.6, 0.4, 0.01);
+				world.spawnParticles(ParticleTypes.SQUID_INK, player.getX(), player.getBodyY(0.4), player.getZ(),
+						big ? 10 : 5, 0.3, 0.4, 0.3, 0.02);
+				ParticleFx.column(world, player.getPos().subtract(look.multiply(0.8)), 1.8, dust, 10);
+				sound(player, net.minecraft.sound.SoundEvents.ENTITY_PHANTOM_FLAP, volume, 0.7f);
+			}
+			case GUARDIAN -> { // pilar de luz que sube
+				AbilityState.repeat(player.getServer(), 8, 1, i -> {
+					if (!player.isAlive()) return;
+					world.spawnParticles(ParticleTypes.END_ROD, player.getX(), player.getY() + i * 0.35, player.getZ(),
+							3, 0.15, 0.05, 0.15, 0.01);
+				});
+				ParticleFx.ring(world, player.getPos().add(0, 0.2, 0), 1.0, ParticleFx.dust(0xFFE082, 1.2f), 16);
+				sound(player, net.minecraft.sound.SoundEvents.BLOCK_BEACON_POWER_SELECT, volume, 1.5f);
+			}
+			case CRAFT -> { // chispas eléctricas y engranaje
+				world.spawnParticles(ParticleTypes.ELECTRIC_SPARK, eye.x, eye.y - 0.4, eye.z, big ? 30 : 14, 0.5, 0.4, 0.5, 0.2);
+				ParticleFx.ring(world, player.getPos().add(0, 1.0, 0), 0.9, dust, 12);
+				for (int t = 0; t < 8; t++) { // dientes del engranaje
+					double a = t * Math.PI / 4;
+					Vec3d at = player.getPos().add(Math.cos(a) * 1.15, 1.0, Math.sin(a) * 1.15);
+					world.spawnParticles(dust, at.x, at.y, at.z, 1, 0, 0, 0, 0);
+				}
+				sound(player, net.minecraft.sound.SoundEvents.BLOCK_SMITHING_TABLE_USE, volume, 1.3f);
+			}
+		}
+	}
+
+	private static void sound(ServerPlayerEntity p, net.minecraft.sound.SoundEvent sound, float volume, float pitch) {
+		p.getWorld().playSound(null, p.getX(), p.getY(), p.getZ(), sound, net.minecraft.sound.SoundCategory.PLAYERS,
+				volume, pitch);
 	}
 
 	/** Golpe fuerte recibido: sacudida proporcional al daño (desde 6 de daño). */

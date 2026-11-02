@@ -100,6 +100,13 @@ Decisiones: tope de espera aceptado de 1 día real (datos corruptos o mundos con
 para siempre), máximo 256 esperas por jugador y 4096 bloques temporales por mundo; un bloque temporal
 solo se retira si en su posición sigue el mismo bloque.
 
+### v24 — animaciones de habilidades
+Para TODAS las habilidades (antiguas y evolucionadas), centralizado en `CastFx.onCast`: gesto del brazo
+visible para todos, sello rúnico animado (anillo y estrella de 6 puntas que giran y siguen al jugador) y un
+remate por categoría de rol con sonido (marcial: tajo en arco; arcana: orbes que orbitan; sombra: humo y
+estela; guardián: pilar de luz; oficio: chispas y engranaje). HUD: la ranura destella con el color del rol y
+el icono rebota al lanzar. Árbol: al aprender un rango, el nodo late en dorado y emite una onda.
+
 ### v23 — el árbol crece al evolucionar
 +5 nodos con Maestro y +5 con Definitivo en cada rol (200 en total): 120 pasivas sobre `PathEffect`
 (×1,5 por rango en Maestro, ×3 en Definitivo) y 80 activas sobre 10 plantillas (`EvolvedAbilities`). Filas

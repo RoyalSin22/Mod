@@ -112,6 +112,9 @@ public class RolesScreen extends Screen {
 	private static final int CONTENT_H = 8 + ROW_H * 8 + EVOLVED_GAP + 24 + 14;
 	/** Momento en que se vio desbloqueada por primera vez cada fila (rol:evolución): brillo de despliegue. */
 	private static final java.util.Map<String, Long> ROW_UNLOCK_SEEN = new java.util.HashMap<>();
+	/** v24: último rango visto de cada nodo y momento en que subió (animación de «aprendido»). */
+	private static final java.util.Map<String, Integer> LAST_RANK = new java.util.HashMap<>();
+	private static final java.util.Map<String, Long> LEARNED_AT = new java.util.HashMap<>();
 
 	// Vista del árbol: desplazamiento (arrastrar) y zoom (rueda).
 	private double panX;
@@ -658,6 +661,23 @@ public class RolesScreen extends Screen {
 						? UiStyle.Frame.ACTIVE : UiStyle.Frame.PASSIVE;
 			};
 			boolean lit = lit(data, v);
+			// v24: si el rango subió desde la última vez, el nodo late en dorado y lanza una onda (0,9 s).
+			long learnedFor = Long.MAX_VALUE;
+			if (v.node() != null) {
+				int rankNow = data.rank(v.node().id());
+				Integer before = LAST_RANK.put(v.node().id(), rankNow);
+				long nowMs = net.minecraft.util.Util.getMeasuringTimeMs();
+				if (before != null && rankNow > before) LEARNED_AT.put(v.node().id(), nowMs);
+				Long at = LEARNED_AT.get(v.node().id());
+				if (at != null) learnedFor = nowMs - at;
+			}
+			if (learnedFor < 900) {
+				float t = learnedFor / 900f;
+				int grow = (int) (t * 12);
+				int a = (int) (230 * (1f - t));
+				ctx.drawBorder(v.x() - grow, v.y() - grow, 24 + grow * 2, 24 + grow * 2, (a << 24) | 0xE6C36A);
+				ctx.fill(v.x() - 2, v.y() - 2, v.x() + 26, v.y() + 26, ((int) (120 * (1f - t)) << 24) | 0xFFF3B0);
+			}
 			UiStyle.frame(ctx, v.x(), v.y(), frame, lit, hover || v.key().equals(selectedNode));
 			ctx.drawItem(nodeIcon(v), v.x() + 4, v.y() + 4);
 			if (!lit) ctx.fill(v.x() + 2, v.y() + 2, v.x() + 22, v.y() + 22, available(data, v) ? 0x60101018 : 0x90101018);

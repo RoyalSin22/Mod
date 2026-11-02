@@ -373,7 +373,25 @@ public final class AbilityHud {
 		if (view == null) return;
 
 		if (view.border() != 0) ctx.drawBorder(x - 1, y - 1, SLOT + 2, SLOT + 2, view.border());
-		ctx.drawItem(view.icon(), x + 2, y + 2);
+		// v24: al lanzar, el icono rebota (×1,35 → ×1) y la ranura destella con el color del rol (350 ms).
+		long since = ClientRoleState.sinceCast(slot);
+		if (since < 350) {
+			float t = since / 350f;
+			float scale = 1f + 0.35f * (1f - t) * (1f - t);
+			int rgb = view.role() != null ? view.role().color() : 0xB388FF;
+			int alpha = (int) (200 * (1f - t));
+			ctx.fill(x + 1, y + 1, x + SLOT - 1, y + SLOT - 1, (alpha << 24) | (rgb & 0xFFFFFF));
+			int grow = (int) (t * 5);
+			ctx.drawBorder(x - 1 - grow, y - 1 - grow, SLOT + 2 + grow * 2, SLOT + 2 + grow * 2,
+					((int) (255 * (1f - t)) << 24) | (rgb & 0xFFFFFF));
+			ctx.getMatrices().push();
+			ctx.getMatrices().translate(x + SLOT / 2f, y + SLOT / 2f, 0);
+			ctx.getMatrices().scale(scale, scale, 1f);
+			ctx.drawItem(view.icon(), -8, -8);
+			ctx.getMatrices().pop();
+		} else {
+			ctx.drawItem(view.icon(), x + 2, y + 2);
+		}
 
 		if (!view.learned()) {
 			ctx.fill(x + 1, y + 1, x + SLOT - 1, y + SLOT - 1, 0xB0101010);

@@ -46,10 +46,20 @@ public final class ClientRoleState {
 		return primary ? resourcePrimary : resourceSecondary;
 	}
 
+	/** v24: momento (ms) del último lanzamiento de cada ranura, para la animación del HUD. */
+	private static final long[] castAt = new long[AbilityManager.SLOTS];
+
 	static void onCooldown(CooldownPayload payload) {
 		if (payload.slot() < 0 || payload.slot() >= cooldowns.length) return;
 		cooldowns[payload.slot()] = payload.ticks();
 		cooldownTotals[payload.slot()] = Math.max(1, payload.ticks());
+		if (payload.ticks() > 0) castAt[payload.slot()] = net.minecraft.util.Util.getMeasuringTimeMs();
+	}
+
+	/** Milisegundos desde el último lanzamiento de la ranura (Long.MAX_VALUE si nunca). */
+	public static long sinceCast(int slot) {
+		if (slot < 0 || slot >= castAt.length || castAt[slot] == 0) return Long.MAX_VALUE;
+		return net.minecraft.util.Util.getMeasuringTimeMs() - castAt[slot];
 	}
 
 	static void tick() {

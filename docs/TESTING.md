@@ -78,6 +78,9 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
     (2 rangos, puntos +10). Equipa una activa nueva (índice 5-8) y úsala; sal y entra: sigue equipada.
     `/roles admin settier J <rol> 0` → los nodos evolucionados vuelven a 0.
 17. Mundo guardado antes de la v23 con activas equipadas en V/B → siguen siendo las mismas tras actualizar.
+18. Animaciones v24: lanza una activa de cada categoría (Bersérker, Mago, Asesino, Paladín, Ingeniero) →
+    gesto del brazo, sello que gira bajo los pies y remate propio con sonido; otro jugador cerca también lo ve.
+    En el HUD la ranura destella y el icono rebota. En el árbol, aprender un rango hace latir el nodo.
 14. Escala de interfaz 4 (o ventana pequeña): abrir la pantalla de roles (J) → aparece una barra a la
     derecha; rueda fuera del árbol o RePág/AvPág hasta ver «Hecho»; el zoom del árbol no cambia.
 15. En el Nether, sobornar a un piglin (Soborno) → deja de atacar en menos de medio segundo. Con el
