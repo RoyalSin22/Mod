@@ -29,6 +29,8 @@ public class GuildDeskBlock extends Block {
 		if (player instanceof net.minecraft.server.network.ServerPlayerEntity serverPlayer) {
 			var main = player.getMainHandStack();
 			var off = player.getOffHandStack();
+			if (dev.aptitudes.boss.BossManager.upgrade(serverPlayer, main, off)
+					|| dev.aptitudes.boss.BossManager.upgrade(serverPlayer, off, main)) return ActionResult.CONSUME;
 			if (dev.aptitudes.rune.RuneSocketing.socket(serverPlayer, main, off)
 					|| dev.aptitudes.rune.RuneSocketing.socket(serverPlayer, off, main)) return ActionResult.CONSUME;
 		}

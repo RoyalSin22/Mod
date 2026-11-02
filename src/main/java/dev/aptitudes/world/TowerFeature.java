@@ -76,8 +76,8 @@ public class TowerFeature extends Feature<DefaultFeatureConfig> {
 		}
 		// Azotea: el mejor cofre
 		b.chest(0, top + 1, 0, "tower_top");
-		// Guardián de la torre: un campeón esqueleto en la azotea.
-		b.champion(EntityType.SKELETON, 1, top + 1, 1);
+		// Centinela de la torre: jefe de tres fases en la azotea.
+		b.boss(EntityType.WITHER_SKELETON, 1, top + 1, 1, dev.aptitudes.boss.BossKind.TOWER_SENTINEL);
 		return true;
 	}
 }

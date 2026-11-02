@@ -2532,5 +2532,19 @@
   "aptitudes.rune.hint": "Bring the weapon and a rune to the Guild Desk to socket it.",
   "aptitudes.rune.socketed": "Socketed %s into slot %s/%s.",
   "aptitudes.rune.full": "This weapon already has both sockets filled.",
-  "aptitudes.rune.duplicate": "This weapon already has that rune."
+  "aptitudes.rune.duplicate": "This weapon already has that rune.",
+  "item.aptitudes.tower_core": "Tower Sentinel Core",
+  "item.aptitudes.shrine_sigil": "Shrine Oracle Sigil",
+  "item.aptitudes.warlord_medallion": "Camp Champion Medallion",
+  "boss.aptitudes.tower_sentinel": "Tower Sentinel",
+  "boss.aptitudes.shrine_oracle": "Shrine Oracle",
+  "boss.aptitudes.camp_champion": "Camp Champion",
+  "boss.aptitudes.phase_two": "%s enters phase II!",
+  "boss.aptitudes.phase_three": "%s enters its final phase!",
+  "boss.aptitudes.defeated": "%s defeated %s!",
+  "boss.aptitudes.weapon_cores": "Awakening cores: %s/%s (+%s damage)",
+  "boss.aptitudes.weapon_upgraded": "%s improved by +%s damage.",
+  "boss.aptitudes.weapon_full": "This evolution weapon already has all three cores.",
+  "boss.aptitudes.weapon_duplicate": "This weapon already contains that core.",
+  "boss.aptitudes.core_hint": "Use at the Guild Desk with an evolution weapon in the other hand."
 }

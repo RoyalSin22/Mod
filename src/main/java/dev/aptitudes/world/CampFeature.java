@@ -70,20 +70,20 @@ public class CampFeature extends Feature<DefaultFeatureConfig> {
 				b.set(0, 0, 4, Blocks.HAY_BLOCK.getDefaultState());
 				b.set(1, 0, 4, Blocks.HAY_BLOCK.getDefaultState());
 				b.set(-1, 0, -4, Blocks.TARGET.getDefaultState());
-				b.mob(EntityType.PILLAGER, 1, 0, 2);
+				b.boss(EntityType.PILLAGER, 1, 0, 2, dev.aptitudes.boss.BossKind.CAMP_CHAMPION);
 				b.mob(EntityType.PILLAGER, -1, 0, -2);
 			}
 			case WARLOCK -> {
 				b.set(0, 0, 4, Blocks.CRYING_OBSIDIAN.getDefaultState());
 				b.set(0, 1, 4, Blocks.SOUL_LANTERN.getDefaultState());
 				b.set(0, 0, -4, Blocks.BREWING_STAND.getDefaultState());
-				b.mob(EntityType.WITCH, 1, 0, 2);
+				b.boss(EntityType.WITCH, 1, 0, 2, dev.aptitudes.boss.BossKind.CAMP_CHAMPION);
 				b.mob(EntityType.WITCH, -1, 0, -2);
 			}
 			case BANDIT -> {
 				b.barrel(0, 0, 4, "camp_bandit");
 				b.set(1, 0, 4, Blocks.BARREL.getDefaultState());
-				b.mob(EntityType.VINDICATOR, 1, 0, 2);
+				b.boss(EntityType.VINDICATOR, 1, 0, 2, dev.aptitudes.boss.BossKind.CAMP_CHAMPION);
 				b.mob(EntityType.VINDICATOR, -1, 0, -2);
 				b.mob(EntityType.PILLAGER, 0, 0, -3);
 			}

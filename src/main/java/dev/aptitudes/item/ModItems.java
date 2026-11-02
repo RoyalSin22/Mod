@@ -158,6 +158,9 @@ public final class ModItems {
 	public static final Item RUNE_LEECH = register("rune_leech", new dev.aptitudes.rune.RuneItem(dev.aptitudes.rune.RuneKind.LEECH, new Item.Settings().rarity(Rarity.RARE)));
 	public static final Item RUNE_SWIFT = register("rune_swift", new dev.aptitudes.rune.RuneItem(dev.aptitudes.rune.RuneKind.SWIFT, new Item.Settings().rarity(Rarity.RARE)));
 	public static final Item RUNE_FORCE = register("rune_force", new dev.aptitudes.rune.RuneItem(dev.aptitudes.rune.RuneKind.FORCE, new Item.Settings().rarity(Rarity.UNCOMMON)));
+	public static final Item TOWER_CORE = register("tower_core", new dev.aptitudes.boss.BossCoreItem("tower", new Item.Settings().rarity(Rarity.EPIC).fireproof()));
+	public static final Item SHRINE_SIGIL = register("shrine_sigil", new dev.aptitudes.boss.BossCoreItem("shrine", new Item.Settings().rarity(Rarity.EPIC)));
+	public static final Item WARLORD_MEDALLION = register("warlord_medallion", new dev.aptitudes.boss.BossCoreItem("camp", new Item.Settings().rarity(Rarity.EPIC)));
 
 	public static final java.util.Map<dev.aptitudes.accessory.Accessory, Item> ACCESSORIES = registerAccessories();
 
@@ -214,6 +217,9 @@ public final class ModItems {
 						entries.add(RUNE_LEECH);
 						entries.add(RUNE_SWIFT);
 						entries.add(RUNE_FORCE);
+						entries.add(TOWER_CORE);
+						entries.add(SHRINE_SIGIL);
+						entries.add(WARLORD_MEDALLION);
 						for (Item accessory : ACCESSORIES.values()) entries.add(accessory);
 						for (Item weapon : dev.aptitudes.item.weapon.RoleWeapons.all()) entries.add(weapon);
 						entries.add(dev.aptitudes.world.GuildVillagers.GUILD_DESK_ITEM);

@@ -175,3 +175,8 @@ registro en memoria con tope de 100 000 posiciones por mundo (FIFO).
 - Cuatro runas fabricables en la Mesa del gremio y engarzables al hacer clic en la mesa con un arma de rol en una mano y una runa en la otra.
 - Dos ranuras persistentes por arma; una runa de cada tipo como máximo. Efectos: Fuego (ignición 3 s), Robo de vida (1 salud/4 s), Aceleración (+10 % ataque; focos −2 ticks) y Fuerza (+1 daño).
 - Prueba pura: `rune/RuneRulesTest`. Build y pruebas pendientes.
+
+### v33 — Jefes propios (implementado en rama local)
+- Tres arquetipos de jefe aparecen en las estructuras existentes: Centinela de la Torre (torre), Oráculo del Santuario (santuario) y Campeón del Campamento (variantes de cacería, brujos y bandidos).
+- Cada uno usa tres fases persistentes por umbrales de salud, avisos de transición y ataques de área en fase final. Reutiliza la entidad base y barra de campeón vanilla/élite; no registra entidades nuevas.
+- Cada jefe suelta un núcleo distinto. En la Mesa del gremio, cada material se aplica una vez a un arma de evolución y suma +0,5 daño; máximo +1,5 con los tres.

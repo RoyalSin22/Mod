@@ -107,3 +107,12 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
 3. Engarza una segunda runa diferente; una tercera y un duplicado deben rechazarse. Cierra/abre el mundo y verifica persistencia.
 4. Prueba Fuego, Robo de vida, Aceleración y Fuerza; comprueba magnitudes y enfriamiento indicados en `docs/BALANCE.md`.
 5. Confirma que una espada vanilla no admite runas.
+
+# v33 — jefes propios (verificación manual)
+
+1. En una torre nueva, llega a la azotea y derrota al Centinela; revisa barra, nombre y su núcleo.
+2. En un santuario de Hoguera nuevo, lucha con el Oráculo. En cada tipo de campamento nuevo, aparece el Campeón con la variante correspondiente.
+3. Reduce la vida de un jefe por debajo de 2/3 y 1/3: cada fase debe activarse una sola vez, incluso tras salir y volver a cargar el chunk.
+4. En fase final, observa el aviso/partículas antes del golpe de área; el Oráculo aplica lentitud. Comprueba alcance y tiempos de 3–4 s.
+5. En la Mesa del gremio, aplica cada núcleo una vez a una hoja o foco de evolución: consume el material y sube +0,5 daño. Duplicados y núcleos adicionales se rechazan; bonificación máxima +1,5.
+6. Reinicia el mundo y confirma que no reaparecen jefes ya vencidos y que el progreso/núcleos de armas persiste.

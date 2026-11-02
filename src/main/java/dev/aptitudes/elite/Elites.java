@@ -109,6 +109,12 @@ public final class Elites {
 		return e.getCommandTags().contains(mod.tag());
 	}
 
+	/** Actualiza el título de la barra compartida cuando un campeón tiene nombre propio. */
+	public static void setChampionBarName(Entity entity, Text name) {
+		ServerBossBar bar = BARS.get(entity.getUuid());
+		if (bar != null) bar.setName(name);
+	}
+
 	/** Convierte un monstruo en élite (o campeón). Se puede llamar durante la generación del mundo. */
 	public static void makeElite(MobEntity mob, boolean champion, Random random) {
 		mob.addCommandTag(CHECKED);

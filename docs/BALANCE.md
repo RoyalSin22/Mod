@@ -140,3 +140,9 @@ Presteza, Eficiencia y el tope del 60 %. Puntos: +10 con Maestro y +5 con Defini
 Cada arma de rol admite dos runas distintas. Fuego aplica 3 segundos de ignición al golpear; Robo de vida cura
 1 punto de salud y tiene enfriamiento de 4 segundos; Aceleración suma 10 % a la velocidad de ataque o reduce
 2 ticks el enfriamiento del foco; Fuerza suma 1 punto de daño. Son valores fijos y no escalan con XP ni atributos.
+
+# Jefes propios (v33)
+
+Centinela de la Torre, Oráculo del Santuario y Campeón del Campamento aparecen en las estructuras actuales y conservan tres fases en sus etiquetas de entidad. Los tres comparten el escalado y la barra de campeón existente. En fase final, cada 3–4 s hacen un golpe de área telegráfico: 5, 4 o 4,5 puntos de daño respectivamente; el Oráculo también aplica lentitud.
+
+Cada jefe deja un núcleo distinto. Aplicar un núcleo en la Mesa del gremio añade +0,5 de daño a un arma de evolución. Cada arma acepta una vez cada uno de los tres núcleos, hasta +1,5 total; no cambia la potencia de armas que no sean evolutivas.

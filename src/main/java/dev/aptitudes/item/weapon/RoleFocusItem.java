@@ -75,7 +75,8 @@ public class RoleFocusItem extends Item {
 
 		if (target != null) {
 			float damage = (tier >= Evolution.ULTIMATE ? 10f : 7f) + data.level(role) * 0.2f
-					+ dev.aptitudes.rune.RuneSocketing.damageBonus(stack);
+					+ dev.aptitudes.rune.RuneSocketing.damageBonus(stack)
+					+ (float) dev.aptitudes.boss.BossManager.damageBonus(stack);
 			target.damage(player.getDamageSources().indirectMagic(player, player), damage);
 			if (role == Role.ELEMENTALIST) {
 				Element element = data.activeElement();

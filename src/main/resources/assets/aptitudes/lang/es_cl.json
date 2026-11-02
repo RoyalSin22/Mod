@@ -2532,5 +2532,19 @@
   "aptitudes.rune.hint": "Lleva el arma y una runa a la Mesa del gremio para engarzarla.",
   "aptitudes.rune.socketed": "Engarzaste %s en la ranura %s/%s.",
   "aptitudes.rune.full": "El arma ya tiene sus dos ranuras ocupadas.",
-  "aptitudes.rune.duplicate": "Esta arma ya tiene esa runa."
+  "aptitudes.rune.duplicate": "Esta arma ya tiene esa runa.",
+  "item.aptitudes.tower_core": "Núcleo del Centinela de la Torre",
+  "item.aptitudes.shrine_sigil": "Sello del Oráculo del Santuario",
+  "item.aptitudes.warlord_medallion": "Medallón del Campeón del Campamento",
+  "boss.aptitudes.tower_sentinel": "Centinela de la Torre",
+  "boss.aptitudes.shrine_oracle": "Oráculo del Santuario",
+  "boss.aptitudes.camp_champion": "Campeón del Campamento",
+  "boss.aptitudes.phase_two": "¡%s entra en la fase II!",
+  "boss.aptitudes.phase_three": "¡%s entra en su fase final!",
+  "boss.aptitudes.defeated": "¡%s derrotó a %s!",
+  "boss.aptitudes.weapon_cores": "Núcleos de despertar: %s/%s (+%s de daño)",
+  "boss.aptitudes.weapon_upgraded": "%s mejorada con +%s de daño.",
+  "boss.aptitudes.weapon_full": "Esta arma de evolución ya tiene los tres núcleos.",
+  "boss.aptitudes.weapon_duplicate": "Esta arma ya contiene ese núcleo.",
+  "boss.aptitudes.core_hint": "Úsalo en la Mesa del gremio con un arma de evolución en la otra mano."
 }

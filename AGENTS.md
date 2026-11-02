@@ -39,6 +39,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 | Filtro de objetivos: `MobEntityMixin` (setTarget) + `BrainTargetFilter` (mobs con IA Brain) | `ability/AbilityState.shouldBlockTarget` es la única regla: amplíala ahí |
 | Bloques temporales de habilidades (persistentes, sin drops) | `world/TemporaryBlocks.place(...)`; nunca `setBlockState` + `schedule` para bloques temporales |
 | Runas de armas v32 | `rune/RuneSocketing`, `rune/RuneRules`; hasta dos por arma, engarzadas en la Mesa del gremio |
+| Jefes propios v33 | `boss/BossManager` y `boss/BossRules`; fases guardadas en etiquetas del mob y tres núcleos que mejoran armas de evolución |
 
 Historial reciente en `main`: auditoría de seguridad y balance, v14 (grimorio, elementos y armas), v15
 (Pesca y rendimiento decreciente), v15.1 (árbol con legendarias exclusivas), v15.2 (grimorio tras la

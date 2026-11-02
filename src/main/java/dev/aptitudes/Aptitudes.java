@@ -52,6 +52,7 @@ public class Aptitudes implements ModInitializer {
 		dev.aptitudes.world.GuildCrafting.init();
 		dev.aptitudes.accessory.Accessories.init();
 		dev.aptitudes.elite.Elites.register();
+		dev.aptitudes.boss.BossManager.register();
 		ModAttachments.init();
 		ModNetworking.registerCommon();
 		dev.aptitudes.logic.PlacementTracker.register();

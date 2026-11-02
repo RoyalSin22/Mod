@@ -43,6 +43,8 @@ public class AptitudesClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> {
 			if (dev.aptitudes.rune.RuneSocketing.eligible(stack)) dev.aptitudes.rune.RuneSocketing.appendTooltip(stack, lines);
+			dev.aptitudes.boss.BossManager.appendTooltip(stack, lines);
+			if (stack.getItem() instanceof dev.aptitudes.boss.BossCoreItem) lines.add(net.minecraft.text.Text.translatable("boss.aptitudes.core_hint"));
 		});
 		openSkillsKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 				"key.aptitudes.open", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_K, CATEGORY));

@@ -75,7 +75,7 @@ public class GuideScreen extends Screen {
 			chapter("soul_items", ModItems.SOUL_PICKAXE,
 					() -> List.of(ModItems.SOUL_SHARD, ModItems.SOUL_PICKAXE, ModItems.SOUL_AXE, ModItems.SOUL_SHOVEL, ModItems.SOUL_HOE)),
 			chapter("accessories", Items.GOLD_INGOT, () -> List.copyOf(ModItems.ACCESSORIES.values())),
-			chapter("elites", ModItems.ELITE_ESSENCE, () -> List.of(ModItems.ELITE_ESSENCE, ModItems.CHAMPION_HEART)),
+			chapter("elites", ModItems.ELITE_ESSENCE, () -> List.of(ModItems.ELITE_ESSENCE, ModItems.CHAMPION_HEART, ModItems.TOWER_CORE, ModItems.SHRINE_SIGIL, ModItems.WARLORD_MEDALLION)),
 			chapter("structures", Items.SPAWNER, () -> List.of(Items.CHEST, Items.SPAWNER)),
 			chapter("guild", dev.aptitudes.world.GuildVillagers.GUILD_DESK_ITEM,
 					() -> List.of(dev.aptitudes.world.GuildVillagers.GUILD_DESK_ITEM, ModItems.GUILD_SEAL, ModItems.ARMORY_VOUCHER, ModItems.RUNE_FLAME, ModItems.RUNE_LEECH, ModItems.RUNE_SWIFT, ModItems.RUNE_FORCE)),

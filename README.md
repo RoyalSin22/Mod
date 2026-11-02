@@ -734,3 +734,5 @@ de jugador dentro de un hueco pequeño, el jugador puede asfixiarse como en vani
 - HUD opcional con una barra de XP de la última habilidad entrenada.
 
 **v32 (rama local):** cuatro runas engarzables en armas de rol, con dos ranuras persistentes y recetas en la Mesa del gremio. Ver `docs/BALANCE.md` y `docs/ROADMAP_APTITUDES.md`.
+
+**v33 (rama local):** tres jefes con fases en torres, santuarios y campamentos. Sus núcleos mejoran armas de evolución desde la Mesa del gremio. Ver `docs/BALANCE.md` y `docs/ROADMAP_APTITUDES.md`.
