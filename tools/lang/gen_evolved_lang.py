@@ -305,16 +305,15 @@ def write(lang):
     path = L + lang + '.json'
     data = json.load(open(path, encoding='utf-8'))
     new = build(lang)
-    for k in list(data):
-        if k in new:
-            del data[k]
     guide = 'guide.aptitudes.tree.body'
     extra = GUIDE[lang].encode().decode('unicode_escape')
     if extra.strip() not in data[guide]:
         data[guide] = data[guide] + extra
+    # Actualiza en su sitio las claves existentes y añade al final solo las nuevas:
+    # así regenerar no reordena el archivo ni produce diferencias innecesarias.
     data.update(new)
-    text = json.dumps(data, ensure_ascii=False, indent='\t')
-    open(path, 'w', encoding='utf-8').write(text + '\n')
+    text = json.dumps(data, ensure_ascii=False, indent=2)
+    open(path, 'w', encoding='utf-8', newline='\n').write(text + '\n')
     return len(new)
 
 
@@ -323,5 +322,5 @@ if __name__ == '__main__':
     n_es = write('es_es')
     src = open(L + 'es_es.json', encoding='utf-8').read()
     for v in ['es_mx', 'es_ar', 'es_cl', 'es_ec', 'es_uy', 'es_ve']:
-        open(L + v + '.json', 'w', encoding='utf-8').write(src)
+        open(L + v + '.json', 'w', encoding='utf-8', newline='\n').write(src)
     print(f'{n_en} claves en en_us, {n_es} en es_es (copiado a 6 variantes)')

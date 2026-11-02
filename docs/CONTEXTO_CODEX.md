@@ -61,6 +61,18 @@ explicando las decisiones, ventajas, limitaciones y riesgos. Si te falta informa
 - **Nunca** hagas `git push`, merge a `main` ni abras PR sin autorización explícita.
 - **Nunca** uses `reset`, `clean`, `checkout` ni `restore` para descartar cambios, ni sobrescribas
   trabajo existente. No reinicies el proyecto ni borres trabajo válido.
+- **Si `git commit` o `git push` fallan, no improvises**: no reintentes con otros comandos, no cambies la
+  configuración de Git ni amplíes permisos. Copia el error exacto, deja los cambios preparados (`git add`)
+  y avisa al autor, que hará el commit desde su terminal.
+- **Trabajas en un worktree propio** (la app de Codex lo crea en `%USERPROFILE%\.codex\worktrees\…`). Al
+  terminar, indica en el informe la **ruta del worktree** y la **rama**, para que el autor haga el commit
+  y el push ahí antes de cerrar la tarea (si la tarea se cierra sin commit, el trabajo se pierde).
+- **Una versión por tarea y por rama.** No mezcles en el mismo directorio cambios de dos versiones.
+- **Formato**: respeta `.editorconfig` y `.gitattributes` (LF; Java con tabulación; idiomas JSON con
+  2 espacios). **No reformatees archivos existentes**: un cambio de sangría convierte 17 claves nuevas en
+  5 000 líneas de diferencia y provoca conflictos al integrar.
+- GitHub Actions (`.github/workflows/build.yml`) compila y prueba cada push: una rama solo se integra en
+  `main` con la marca ✔.
 
 ## 5. Exclusiones absolutas (no negociables)
 
@@ -130,6 +142,8 @@ de armaduras, colisión de las transformaciones, Mesa del gremio, atributos −3
 9. **Idiomas**: cada texto visible es una clave traducible. Añádela en `en_us.json` y `es_es.json` y
    después **copia `es_es.json`** tal cual a `es_mx`, `es_ar`, `es_cl`, `es_ec`, `es_uy` y `es_ve` (son
    idénticos). Un `%` literal en un texto con argumentos se escribe `%%`. Valida que el JSON sea correcto.
+   **No reformatees** el archivo: se guarda con 2 espacios de sangría y LF (lo mismo que escribe
+   `tools/lang/gen_evolved_lang.py`).
 10. **Interfaz**:
     - La pantalla K mide 430×262 y tiene exactamente 10 tarjetas (5×2): una habilidad nueva rompe la simetría.
     - Comprueba que lo nuevo cabe con escala de interfaz 4 (1080p ⇒ unos 480×270 px útiles).
@@ -195,6 +209,8 @@ de armaduras, colisión de las transformaciones, Mesa del gremio, atributos −3
 - No duplicar efectos de lanzamiento en cada habilidad (ya los pone `CastFx`).
 - No reordenar ni renombrar los ids de los nodos evolucionados (`<rol>_m1..m5`, `<rol>_u1..u5`): se guardan en el mundo.
 - No afirmar resultados de compilación o pruebas que no hayas ejecutado.
+- No reformatear archivos existentes (sangría, finales de línea u orden de claves).
+- No cerrar una tarea con cambios sin commit: indica al autor la ruta del worktree y la rama.
 
 ## 12. Formato del informe al terminar cada tarea
 

@@ -1,0 +1,30 @@
+# Formato del proyecto para editores y agentes (Codex, IntelliJ, VS Code…).
+# Refleja el formato ACTUAL de cada tipo de archivo: no reformatees archivos existentes.
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+
+[*.{java,gradle}]
+indent_style = tab
+
+[*.py]
+indent_style = space
+indent_size = 4
+
+# Idiomas: 2 espacios (lo genera tools/lang/gen_evolved_lang.py con indent=2).
+[src/main/resources/assets/aptitudes/lang/*.json]
+indent_style = space
+indent_size = 2
+
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.bat]
+end_of_line = crlf

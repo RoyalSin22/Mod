@@ -1,0 +1,13 @@
+# Finales de línea del repositorio (evita diferencias fantasma entre Windows y Linux).
+# Todo el texto se guarda y se descarga con LF, también en Windows.
+* text=auto eol=lf
+
+# Scripts de Windows: se dejan tal cual (gradlew.bat se guarda con CRLF).
+*.bat -text
+*.cmd -text
+
+# Binarios: nunca se convierten ni se comparan como texto.
+*.png binary
+*.jar binary
+*.ogg binary
+*.zip binary
