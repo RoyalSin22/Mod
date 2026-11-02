@@ -81,6 +81,17 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 | Defensa (XP) | Daba XP con golpes bloqueados por el escudo y en ticks de invulnerabilidad | `AFTER_DAMAGE`: solo daño recibido de verdad (daño base, antes de armadura) |
 | Invocaciones | Un zombi esbirro bajo el agua junto a su dueño podía acabar como ahogado hostil | Se disuelve al empezar la conversión (`isConvertingInWater`), sin mixin |
 | Bombardeo orbital | Explosión real: dañaba al lanzador, jugadores, aldeanos y esbirros | Impactos que solo dañan y empujan a enemigos (7 + 1,5·rango en 3 bloques) |
+
+### v17 — anti-granjas de colocar y romper
+| Área | Antes | Ahora |
+|---|---|---|
+| XP de habilidades | Colocar y romper troncos, tierra o piedra daba XP sin límite | Los bloques colocados por jugadores no dan XP al romperse (`PlacementTracker` + `PlacedBlockLog`, puro y con 4 pruebas) |
+| Hitos | Veta rica (Minería 30) duplicaba minerales colocados con Toque de seda | Los bloques colocados no activan extras de hitos |
+| XP de Ingeniero/Druida | Se daba al hacer clic con el objeto, aunque la colocación fallara | Solo con colocación confirmada al final del tick; Ingeniero con rendimiento decreciente |
+
+Decisiones: sin mixins (se compara el bloque antes y después del clic); las plantas no se registran
+(un brote se convierte en el tronco de un árbol natural y los cultivos son el juego normal de Agricultura);
+registro en memoria con tope de 100 000 posiciones por mundo (FIFO).
 - ~~La pantalla del árbol no conoce `legendaryExclusive`~~ **Corregido (v15.1):** la sincronización de
   legendarias incluye el modo exclusivo; el botón Mejorar se desactiva y la ficha del nodo dice quién la
   tiene o que ya tienes otra. Al reservar o liberar una legendaria se avisa a todos los jugadores. El

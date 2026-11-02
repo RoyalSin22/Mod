@@ -19,6 +19,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 |---|---|
 | 9 habilidades por uso (Minería, Excavación, Tala, Agricultura, Combate, Tiro con arco, Defensa, Agilidad, Pesca) con hitos 10–50 | `data/Skill`, `logic/XpEvents`, `logic/SkillMilestones` |
 | Rendimiento decreciente de XP por fuente repetida | `logic/XpDiminishing` (puro, con pruebas) |
+| Bloques colocados por jugadores (sin XP al romperlos) y colocaciones confirmadas | `logic/PlacementTracker`, `logic/PlacedBlockLog` |
 | Atributos estilo Souls en la Hoguera, mancha de XP, frascos | `souls/`, `logic/AttributeApplier`, `logic/AttributeScaling` |
 | 20 roles, árbol de 23 nodos + legendario, sendas, evoluciones, armas de evolución | `role/`, `ability/`, `item/weapon/` |
 | Elementalista: 14 elementos y 10 fusiones | `role/Element`, `ability/ElementEffects`, `ability/ElementFusions` |
@@ -30,7 +31,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 Historial reciente en `main`: auditoría de seguridad y balance, v14 (grimorio, elementos y armas), v15
 (Pesca y rendimiento decreciente), v15.1 (árbol con legendarias exclusivas), v15.2 (grimorio tras la
 muerte y pruebas de configuración) y v16 (Defensa con `AFTER_DAMAGE`, esbirros sin conversión a
-ahogado, Bombardeo orbital sin fuego amigo).
+ahogado, Bombardeo orbital sin fuego amigo) y v17 (anti-granjas de colocar y romper).
 
 ## 3. Exclusiones absolutas (no negociables)
 
@@ -79,7 +80,8 @@ retematizaron (p. ej., «Talismán maldito»). **No cambies los ids de registro 
 - JUnit Platform con Jupiter (JUnit 5) y Vintage (JUnit 4): ambos estilos valen.
 - Pruebas existentes (no las sobrescribas ni crees otras con el **mismo nombre y paquete**):
   `souls/SoulsMathTest`, `logic/AttributeScalingTest`, `logic/XpDiminishingTest`,
-  `role/RoleRulesTest`, `data/ProgressRulesTest` y `config/AptitudesConfigValidationTest`.
+  `logic/PlacedBlockLogTest`, `role/RoleRulesTest`, `data/ProgressRulesTest` y
+  `config/AptitudesConfigValidationTest`.
 - **No escribas pruebas que llamen a métodos que no existen.** Si una prueba necesita una API nueva,
   impleméntala en el código principal en el mismo cambio y explícalo.
 - Prueba lógica pura; las clases que cargan registros de Minecraft no se prueban con JUnit simple.
@@ -88,8 +90,7 @@ retematizaron (p. ej., «Talismán maldito»). **No cambies los ids de registro 
 
 - Activar `attributeScaling = SOFTCAP` por defecto: **decisión del autor** tras probar en partida.
 - Pruebas en partida de la v15–v16 (`docs/TESTING.md`, puntos 6–9).
-- Limitaciones abiertas: tabla «Limitaciones conocidas» del `README.md` (XP por colocar y romper bloques,
-  IA de tipo Brain y Soborno, enfriamientos en memoria, muros temporales, colisión de transformaciones).
+- Limitaciones abiertas: tabla «Limitaciones conocidas» del `README.md` (IA de tipo Brain y Soborno, enfriamientos en memoria, muros temporales, colisión de transformaciones).
 
 ## 8. Al terminar una tarea
 

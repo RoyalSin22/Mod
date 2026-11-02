@@ -13,6 +13,7 @@ reescribir las existentes (JUnit 4):
 | `role/RoleRulesTest` | Puntos de árbol (31 a nivel 30), crecimiento de XP, intervalo 0 sin división por cero, niveles enormes sin desbordamiento |
 | `data/ProgressRulesTest` | Curva de XP de habilidades positiva y creciente; configuración extrema limitada al rango de `int` |
 | `config/AptitudesConfigValidationTest` | Valores por defecto intactos; negativos, NaN e infinitos vuelven al defecto; límites (probabilidades ≤ 1, divisores y ventanas ≥ 1, nivel máximo ≤ 1000); `attributeScaling` inválido → LINEAR y umbrales ordenados |
+| `logic/PlacedBlockLogTest` | Bloque colocado se consume una vez; mundos independientes; tope que olvida el más antiguo; tope inválido ≥ 1 |
 | `logic/XpDiminishingTest` | Multiplicador (completo hasta el umbral, decrece hasta el suelo), redondeo, ventana deslizante por jugador y fuente, granja frente a juego normal, memoria acotada |
 
 Ejecución: `.\gradlew.bat test` (también se ejecutan en `.\gradlew.bat build`).
@@ -58,3 +59,7 @@ calculadas), no del código; se corrigieron y se documentan en el informe del bl
 9. `legendaryExclusive = true` con 2 jugadores: A aprende la legendaria de su rol → en el árbol de B
    (mismo rol) el botón Mejorar queda inactivo y la ficha dice «La tiene A». A pierde el nodo (reinicio
    del árbol) → B puede aprenderla sin reabrir el juego.
+10. Colocar un tronco y romperlo → sin toast de XP de Tala; talar un árbol natural → XP normal.
+    Plantar un brote, dejar que crezca y talarlo → XP normal (el tronco de la base no cuenta como colocado).
+11. Colocar redstone sobre un bloque donde no se puede (p. ej., en el aire con clic en agua) → sin XP de
+    Ingeniero; colocarla bien → XP. Colocar y romper la misma pieza 40 veces en un minuto → la XP baja.

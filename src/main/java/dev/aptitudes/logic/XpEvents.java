@@ -138,6 +138,12 @@ public final class XpEvents {
 	private static void onBlockBroken(World world, PlayerEntity player, BlockPos pos, BlockState state,
 									  BlockEntity blockEntity) {
 		if (!(player instanceof ServerPlayerEntity sp)) return;
+		// Bloques colocados por jugadores: ni XP ni extras de hitos (evita "colocar y romper" y la
+		// duplicación de minerales colocados con Veta rica). Los cultivos nunca se registran.
+		if (PlacementTracker.consumePlaced(world, pos)) {
+			SoulTools.onBlockBroken(sp, world, pos, state);
+			return;
+		}
 		SkillMilestones.onBlockBroken(sp, world, pos, state, blockEntity);
 		SoulTools.onBlockBroken(sp, world, pos, state);
 		AptitudesConfig cfg = Aptitudes.config();

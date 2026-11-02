@@ -682,10 +682,8 @@ src/client/java/dev/aptitudes/client/   (solo cliente)
 
 | Limitación | Impacto | Posible mejora |
 |---|---|---|
-| Colocar y romper troncos o bloques de pala da XP | Se puede "farmear" XP | Registrar los bloques colocados por jugadores (attachment por chunk) |
 | Los textos del servidor son claves traducibles | Un cliente sin el mod ve las claves en vez del texto | Usar Server Translations API |
 | Cliente vanilla en un servidor con el mod | Sin GUI. El minado se ve más lento en el cliente, aunque el servidor lo acepta | — |
-| Colocar redstone da XP de Ingeniero aunque la colocación falle | Se puede "farmear" XP lentamente | Dar la XP en un evento de "bloque colocado" (requiere un mixin) |
 | Los enfriamientos están en memoria | Se reinician al reiniciar el servidor | Persistirlos con tiempo de mundo si se necesita |
 | Los mobs con IA de "Brain" (piglins, hoglins, warden) no siempre pasan por `setTarget` | El Soborno y el filtro de los esbirros pueden no afectarles | Mixin adicional sobre su `Brain` |
 | La pantalla de roles mide 286 px de alto | Con escala de interfaz 4 en 1080p no cabe entera | Añadir scroll o reducir la escala de interfaz |
@@ -701,6 +699,12 @@ src/client/java/dev/aptitudes/client/   (solo cliente)
 escudo ni ignorados por invulnerabilidad); un zombi esbirro que empieza a convertirse en ahogado se
 disuelve antes de volverse hostil; el Bombardeo orbital ya no daña al lanzador, a jugadores, aldeanos ni
 esbirros.
+
+**Resueltas en la v17 (anti-granjas de colocar y romper):** romper un bloque colocado por un jugador no
+da XP de habilidad ni activa los extras de los hitos (p. ej., Veta rica ya no duplica minerales colocados);
+la XP de Ingeniero y de Druida por colocar solo cuenta colocaciones confirmadas, y la del Ingeniero tiene
+rendimiento decreciente. Sin mixins (`logic/PlacementTracker`). El registro vive en memoria (100 000
+posiciones por mundo) y se pierde al reiniciar; un bloque movido con pistón deja de estar marcado.
 
 ### Siguientes pasos sugeridos
 

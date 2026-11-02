@@ -53,6 +53,7 @@ public class Aptitudes implements ModInitializer {
 		dev.aptitudes.elite.Elites.register();
 		ModAttachments.init();
 		ModNetworking.registerCommon();
+		dev.aptitudes.logic.PlacementTracker.register();
 		XpEvents.register();
 		RoleEvents.register();
 		dev.aptitudes.unique.UniqueEffects.register();

@@ -12,7 +12,6 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.block.CropBlock;
 import net.minecraft.block.SweetBerryBushBlock;
@@ -45,7 +44,15 @@ public final class RoleEvents {
 			Items.DETECTOR_RAIL, Items.ACTIVATOR_RAIL, Items.REDSTONE_TORCH, Items.TARGET, Items.DAYLIGHT_DETECTOR,
 			Items.CRAFTER, Items.LEVER, Items.TRIPWIRE_HOOK);
 
+	/** Rendimiento decreciente de la XP de Ingeniero por colocar piezas. */
+	private static final dev.aptitudes.logic.XpDiminishing PLACE_DIMINISHING = new dev.aptitudes.logic.XpDiminishing();
+
 	private RoleEvents() {
+	}
+
+	/** Libera la memoria del jugador al desconectarse. */
+	public static void forget(ServerPlayerEntity player) {
+		PLACE_DIMINISHING.forget(player.getUuid());
 	}
 
 	public static void register() {
@@ -163,17 +170,22 @@ public final class RoleEvents {
 			}
 		});
 
-		// Ingeniero: colocar redstone y mecanismos. Druida: plantar retoños.
-		UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
-			if (!world.isClient() && player instanceof ServerPlayerEntity sp) {
-				ItemStack stack = player.getStackInHand(hand);
-				if (TECH_ITEMS.contains(stack.getItem())) RoleManager.addRoleXp(sp, Role.ENGINEER, 1);
-				if (stack.isIn(ItemTags.SAPLINGS)) {
-					RoleManager.addRoleXp(sp, Role.DRUID, Aptitudes.config().roleXpPerAction);
-					RoleManager.recordTrial(sp, Role.DRUID, Evolution.TrialType.ROLE_ACTIONS, 1);
-				}
+		// Ingeniero: colocar redstone y mecanismos. Druida: plantar retoños. v17: solo colocaciones
+		// confirmadas (PlacementTracker), y el Ingeniero con rendimiento decreciente (colocar y romper
+		// la misma pieza en bucle deja de dar XP).
+		dev.aptitudes.logic.PlacementTracker.addListener((sp, item, pos) -> {
+			if (TECH_ITEMS.contains(item)) {
+				int xp = Aptitudes.config().xpDiminishingEnabled
+						? PLACE_DIMINISHING.scale(sp.getUuid(), "engineer/place", 1, sp.getServer().getTicks(),
+						Aptitudes.config().xpDiminishingWindowSeconds * 20L, Aptitudes.config().xpDiminishingThreshold,
+						Aptitudes.config().xpDiminishingFloor)
+						: 1;
+				if (xp > 0) RoleManager.addRoleXp(sp, Role.ENGINEER, xp);
 			}
-			return ActionResult.PASS;
+			if (item.getRegistryEntry().isIn(ItemTags.SAPLINGS)) {
+				RoleManager.addRoleXp(sp, Role.DRUID, Aptitudes.config().roleXpPerAction);
+				RoleManager.recordTrial(sp, Role.DRUID, Evolution.TrialType.ROLE_ACTIONS, 1);
+			}
 		});
 
 		// Mercader: el Sello del gremio repone las ofertas (antes de que se abra el comercio).
