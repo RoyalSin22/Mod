@@ -132,8 +132,8 @@ final class AbilitiesExtra {
 		Abilities.register("healing_rain", (p, r) -> {
 			Vec3d center = p.getPos();
 			AbilityState.repeat(server(p), 5, 20, i -> {
-				for (PlayerEntity ally : world(p).getEntitiesByClass(PlayerEntity.class,
-						new Box(center, center).expand(5 + r), PlayerEntity::isAlive)) {
+				for (PlayerEntity ally : Targeting.playersInSupportArea(p,
+						new Box(center, center).expand(5 + r))) {
 					ally.heal(1.0f + 0.5f * r);
 				}
 				world(p).spawnParticles(ParticleTypes.FALLING_WATER, center.x, center.y + 3, center.z, 40, 3, 0.2, 3, 0);

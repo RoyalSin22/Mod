@@ -183,26 +183,42 @@ public final class RoleManager {
 
 	/** @param force ignora el modo de juego y el multiplicador de secundario (comandos de admin). */
 	public static void addRoleXp(ServerPlayerEntity player, Role role, int baseAmount, boolean force) {
-		if (baseAmount <= 0) return;
+		int amount = scaledRoleXp(player, role, baseAmount, force);
+		if (amount <= 0) return;
+		grantRoleXp(player, role, amount, !force);
+	}
+
+	/** XP que recibiría el jugador por una concesión normal; se usa para calcular el reparto sin duplicarla. */
+	public static int scaledRoleXp(ServerPlayerEntity player, Role role, int baseAmount, boolean force) {
+		if (baseAmount <= 0) return 0;
 		AptitudesConfig cfg = Aptitudes.config();
 		RoleData data = get(player);
 		double multiplier;
 		if (force) {
 			multiplier = 1.0;
 		} else {
-			if (player.isSpectator() || (player.isCreative() && !cfg.awardXpInCreative)) return;
+			if (player.isSpectator() || (player.isCreative() && !cfg.awardXpInCreative)) return 0;
 			if (role == data.primary()) multiplier = 1.0;
 			else if (role == data.secondary()) multiplier = cfg.secondaryRoleXpMultiplier;
-			else return; // los roles no activos no progresan
+			else return 0; // los roles no activos no progresan
 		}
 		// Especialización: principal y secundario de la misma categoría.
 		if (!force && data.primary() != null && data.secondary() != null
 				&& data.primary().category() == data.secondary().category()) {
 			multiplier *= 1.0 + RoleCategory.SPECIALIZATION_XP_BONUS;
 		}
-		int amount = (int) Math.round(baseAmount * multiplier);
-		if (amount <= 0) return;
-		if (!force) RoleResources.gain(player, role, amount); // toda XP de rol carga su recurso
+		return (int) Math.min(Integer.MAX_VALUE, Math.max(0L, Math.round(baseAmount * multiplier)));
+	}
+
+	/** Concede XP compartida al mismo rol, aunque no esté activo; respeta creativo/espectador. */
+	public static void addSharedRoleXp(ServerPlayerEntity player, Role role, int amount) {
+		if (amount <= 0 || player.isSpectator() || (player.isCreative() && !Aptitudes.config().awardXpInCreative)) return;
+		grantRoleXp(player, role, amount, true);
+	}
+
+	private static void grantRoleXp(ServerPlayerEntity player, Role role, int amount, boolean chargeResource) {
+		RoleData data = get(player);
+		if (chargeResource) RoleResources.gain(player, role, amount); // toda XP normal o compartida carga el recurso
 
 		RoleRules rules = rules();
 		int level = data.level(role);

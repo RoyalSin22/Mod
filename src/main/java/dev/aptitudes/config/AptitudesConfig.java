@@ -123,6 +123,11 @@ public class AptitudesConfig {
 	public int comboFinisherHits = 5;
 	/** Espera mínima entre remates, en segundos. */
 	public double comboFinisherCooldownSeconds = 4.0;
+	// ---------- Grupos (v29) ----------
+	public int partyMaxSize = 5;
+	public double partyMaxXpShare = 0.5;
+	public double partyXpBonusPerMember = 0.05;
+	public double partyXpBonusMax = 0.20;
 
 	// ---------- Eclipse (v34) ----------
 	/** Evento del mundo: eclipse solar con oleadas, élites y el Heraldo del Eclipse. */
@@ -347,6 +352,10 @@ public class AptitudesConfig {
 		c.comboMaxBonus = Math.min(2.0, c.comboMaxBonus);
 		c.comboFinisherHits = clamp(c.comboFinisherHits, 2, 50);
 		c.comboFinisherCooldownSeconds = Math.min(600.0, c.comboFinisherCooldownSeconds);
+		c.partyMaxSize = clamp(c.partyMaxSize, 2, 5);
+		c.partyMaxXpShare = Math.max(0.0, Math.min(0.5, c.partyMaxXpShare));
+		c.partyXpBonusPerMember = Math.min(0.20, c.partyXpBonusPerMember);
+		c.partyXpBonusMax = Math.min(0.20, c.partyXpBonusMax);
 		c.ultimateBonusPoints = clamp(c.ultimateBonusPoints, 0, 100);
 		c.eclipseIntervalDays = clamp(c.eclipseIntervalDays, 1, 365);
 		c.eclipseFirstDay = clamp(c.eclipseFirstDay, 1, 3650);

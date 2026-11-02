@@ -31,6 +31,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 | Accesorios, élites/campeones, estructuras, grimorio (18 capítulos) | `accessory/`, `elite/`, `world/`, `item/GuideBookItem`, `client/screen/GuideScreen` |
 | Efectos de lanzamiento e impacto de TODAS las habilidades (sello animado, remate por categoría, gesto) | `ability/CastFx` (`onCast`, `impact`); no dupliques estos efectos en cada habilidad |
 | Combos de combate (contador, bonificación y remates por categoría) | `ability/Combos` + `logic/ComboCounter`; HUD `client/hud/ComboHud` |
+| Grupos (v29): invitaciones, reparto de XP, aliados y persistencia en Mundo Normal | `party/PartyState`, `party/PartyManager`, `party/PartyRules`; UI `client/screen/PartyScreen`, HUD `client/hud/PartyHud` |
 | Fabricación en la Mesa del gremio (armaduras de rol) | `world/GuildCrafting` (tipo `aptitudes:guild_crafting`), `GuildShapedRecipe`, `GuildDeskScreenHandler`, `GuildDeskBlock`; cliente `GuildDeskScreen` |
 | Configuración validada al cargar; pantalla de configuración con edición validada en el servidor (v40) | `config/AptitudesConfig.validated`, `config/ConfigSync`, `config/ConfigFieldRules`; cliente `ClientServerConfig`, `screen/ConfigScreen`, `compat/ModMenuCompat` |
 | Sonidos propios (v37, generados; no editar a mano los .ogg) | `sound/ModSounds`, `assets/aptitudes/sounds.json`; ejecuta `python3 tools/audio/gen_sounds.py src/main/resources/assets/aptitudes` |

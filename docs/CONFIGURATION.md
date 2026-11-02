@@ -177,3 +177,15 @@ mundo). `eclipseEnabled = false` equivale a peso 0 para el Eclipse.
 
 La Niebla de almas usa `eclipseWaveIntervalSeconds` para sus oleadas y la mitad de `eclipseMaxMobsPerPlayer`
 como tope por jugador.
+
+## Grupos (v29)
+
+| Campo | Defecto | Límites | Descripción |
+|---|---:|---:|---|
+| `partyMaxSize` | 5 | [2, 5] | Máximo de miembros por grupo, incluido el líder. |
+| `partyMaxXpShare` | 0.5 | [0, 0.5] | Porcentaje máximo que el líder puede compartir. El menú y `/party share` lo ajustan en pasos de 5 puntos. |
+| `partyXpBonusPerMember` | 0.05 | [0, 0.20] | Fracción de XP adicional por cada miembro conectado además del líder. |
+| `partyXpBonusMax` | 0.20 | [0, 0.20] | Tope de bonificación de XP de grupo. |
+
+La interfaz de configuración del servidor permite editar estos campos; sus valores pasan por `validated(...)` igual
+que los demás.

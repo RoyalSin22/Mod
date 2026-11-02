@@ -1,11 +1,11 @@
 # Roadmap de Aptitudes
 
-Estado sincronizado con el código de `main` (la v15 está en `feature/xp-diminishing-fishing`).
+Estado sincronizado con `main` (v41, base `a608131`) y la implementación v29 en `codex/v29-grupos-v2`.
 Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fabric API 0.116.6 · Loom 1.10 · Java 21**.
 
 ## Estado real
 
-### Implementado (compilado en el PC del autor hasta la v15 incluida)
+### Implementado (la base v41 fue compilada en el PC del autor; v29 en validación)
 - Habilidades por uso (10: Pesca desde la v15, Encantamiento desde la v21) con hitos cada 10 niveles.
 - Atributos Souls (8) comprados en la Hoguera con XP vanilla; afinidad por rol; mancha de XP al morir.
 - 20 roles en 5 categorías, principal + secundario, árbol de 23 nodos + legendario, 3 Sendas (2 elegibles),
@@ -106,7 +106,18 @@ del tope ×6). Con 5 golpes, el siguiente es un remate según la categoría del 
 ejecución, descarga en cadena, golpe sagrado que cura, sobrecarga eléctrica), con espera de 4 s. Un golpe
 recibido de más de 6 de daño rompe el combo. Cada golpe carga el recurso de rol (+2; Asesino +4). Sin combos
 en PvP. HUD: «×N» junto a la mira y «¡REMATE!». `ability/Combos` + `logic/ComboCounter` (puro, 4 pruebas).
-Grupos (v29) y contratos (v30): ver `docs/V28_PROPUESTA.md`.
+Contratos (v30): ver `docs/V28_PROPUESTA.md`.
+
+### v29 — grupos (implementación en la rama `codex/v29-grupos-v2`)
+
+- Menú en `P`, invitaciones clicables con expiración de 60 s y comandos `/party`.
+- Grupos de hasta cinco miembros persistidos en `PartyState` del Mundo Normal; el líder configura cuota de XP,
+  fuego amigo y expulsiones.
+- XP de combate y rol de combate compartida a miembros conectados, con bonificación de hasta 20 %; reglas puras
+  de límites en `PartyRules`.
+- La regla de aliados protege el fuego amigo, limita curas/aura a jugadores del grupo y alimenta el escalado de
+  oleadas y Heraldos. HUD indica rol, vida y estado de conexión/dimensión.
+- Build de esta rama pendiente de confirmación en el entorno (la base v41 está verificada por el autor).
 
 ### v27 — Mesa del gremio y atributos
 - **Armaduras de rol solo en la Mesa del gremio**: tipo de receta `aptitudes:guild_crafting`

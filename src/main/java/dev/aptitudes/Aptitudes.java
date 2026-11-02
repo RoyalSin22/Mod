@@ -75,11 +75,13 @@ public class Aptitudes implements ModInitializer {
 		dev.aptitudes.rune.RuneSocketing.register();
 		dev.aptitudes.event.EclipseManager.register();
 		dev.aptitudes.event.WorldEventManager.register();
+		dev.aptitudes.party.PartyManager.register();
 		dev.aptitudes.config.ConfigSync.register();
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			AptitudesCommand.register(dispatcher);
 			RoleCommand.register(dispatcher);
 			dev.aptitudes.command.UniqueCommand.register(dispatcher);
+			dev.aptitudes.command.PartyCommand.register(dispatcher);
 		});
 		LOGGER.info("Aptitudes inicializado");
 	}

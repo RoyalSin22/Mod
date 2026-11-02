@@ -247,14 +247,28 @@ public final class WorldEventManager {
 	// ------------------------------------------------------------------ Niebla de almas
 
 	private static void fogWave(ServerWorld world, AptitudesConfig cfg) {
-		int cap = Math.max(0, cfg.eclipseMaxMobsPerPlayer / 2);
+		int baseCap = Math.max(0, cfg.eclipseMaxMobsPerPlayer / 2);
+		java.util.Set<UUID> processed = new java.util.HashSet<>();
 		for (ServerPlayerEntity player : world.getPlayers()) {
-			if (!player.isAlive() || player.isSpectator() || player.isCreative()) continue;
-			int alive = world.getEntitiesByClass(MobEntity.class, player.getBoundingBox().expand(48),
-					m -> m.isAlive() && m.getCommandTags().contains(TAG)).size();
-			int count = EclipseRules.allowedSpawns(alive, cap, 2);
+			if (!player.isAlive() || player.isSpectator() || player.isCreative() || processed.contains(player.getUuid())) continue;
+			List<ServerPlayerEntity> group = dev.aptitudes.party.PartyManager.hasParty(player)
+					? dev.aptitudes.party.PartyManager.onlineMembers(player).stream()
+						.filter(member -> member.getWorld() == world && member.isAlive()
+								&& !member.isSpectator() && !member.isCreative()).toList()
+					: List.of(player);
+			if (group.isEmpty()) continue;
+			for (ServerPlayerEntity member : group) processed.add(member.getUuid());
+			java.util.Set<UUID> alive = new java.util.HashSet<>();
+			for (ServerPlayerEntity member : group) {
+				world.getEntitiesByClass(MobEntity.class, member.getBoundingBox().expand(48),
+						mob -> mob.isAlive() && mob.getCommandTags().contains(TAG)).forEach(mob -> alive.add(mob.getUuid()));
+			}
+			int groupSize = group.size();
+			int cap = Math.min(Integer.MAX_VALUE, baseCap * groupSize);
+			int count = EclipseRules.allowedSpawns(alive.size(), cap, 2 * groupSize);
 			for (int i = 0; i < count; i++) {
-				BlockPos pos = EclipseManager.findSpawn(world, player.getBlockPos(), 14, 28);
+				ServerPlayerEntity target = group.get(i % groupSize);
+				BlockPos pos = EclipseManager.findSpawn(world, target.getBlockPos(), 14, 28);
 				if (pos == null) continue;
 				EntityType<? extends MobEntity> type = FOG_TYPES.get(world.random.nextInt(FOG_TYPES.size()));
 				MobEntity mob = type.create(world);

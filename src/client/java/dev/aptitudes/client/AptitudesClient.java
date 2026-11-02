@@ -37,6 +37,7 @@ public class AptitudesClient implements ClientModInitializer {
 	private static KeyBinding cycleElementKey;
 	private static KeyBinding toggleHudKey;
 	private static KeyBinding accessoriesKey;
+	private static KeyBinding openPartyKey;
 	private static final KeyBinding[] abilityKeys = new KeyBinding[AbilityManager.SLOTS];
 
 	@Override
@@ -59,6 +60,8 @@ public class AptitudesClient implements ClientModInitializer {
 				"key.aptitudes.toggle_hud", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_O, CATEGORY));
 		accessoriesKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 				"key.aptitudes.accessories", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Y, CATEGORY));
+		openPartyKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+				"key.aptitudes.party", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_P, CATEGORY));
 		net.minecraft.client.gui.screen.ingame.HandledScreens.register(dev.aptitudes.accessory.AccessoryScreenHandler.TYPE,
 				dev.aptitudes.client.screen.AccessoryScreen::new);
 		net.minecraft.client.gui.screen.ingame.HandledScreens.register(dev.aptitudes.world.GuildCrafting.SCREEN,
@@ -91,6 +94,9 @@ public class AptitudesClient implements ClientModInitializer {
 					ClientPlayNetworking.send(new dev.aptitudes.network.OpenAccessoriesPayload());
 				}
 			}
+			while (openPartyKey.wasPressed()) {
+				if (client.player != null && client.currentScreen == null) client.setScreen(new dev.aptitudes.client.screen.PartyScreen());
+			}
 			while (openSkillsKey.wasPressed()) {
 				if (client.player != null && client.currentScreen == null) client.setScreen(new AptitudesScreen());
 			}
@@ -116,6 +122,8 @@ public class AptitudesClient implements ClientModInitializer {
 				(payload, context) -> ClientCache.update(context.player().getUuid(), payload));
 		ClientPlayNetworking.registerGlobalReceiver(RoleSyncPayload.ID,
 				(payload, context) -> ClientRoleState.onSync(payload));
+		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.PartySyncPayload.ID,
+				(payload, context) -> PartyClientState.onSync(payload));
 		ClientPlayNetworking.registerGlobalReceiver(EnergyPayload.ID,
 				(payload, context) -> ClientRoleState.onEnergy(payload));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.ResourcePayload.ID,
@@ -150,12 +158,14 @@ public class AptitudesClient implements ClientModInitializer {
 			AbilityHud.clear();
 			ClientEclipse.clear();
 			ClientServerConfig.clear();
+			PartyClientState.clear();
 		});
 
 		HudRenderCallback.EVENT.register(AbilityHud::render);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.ClientFx::renderHud);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.ComboHud::render);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.EclipseHud::render);
+		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.PartyHud::render);
 		net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents.AFTER_ENTITIES.register(
 				dev.aptitudes.client.hud.ClientFx::renderWorld);
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.MechanicPayload.ID,

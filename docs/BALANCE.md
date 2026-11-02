@@ -186,3 +186,26 @@ Cada jefe deja un núcleo distinto. Aplicar un núcleo en la Mesa del gremio añ
 
 Mismo calendario que antes (cada 10 días): la frecuencia total de eventos no cambia, pero el Eclipse pasa a ser
 uno de cada tres eventos de media.
+
+# Grupos (v29)
+
+- Máximo de cinco integrantes, contando al líder. La invitación caduca tras 1200 ticks (60 s).
+- En muertes que dan XP de Combate o Tiro con arco, el líder fija la fracción compartida del 0 al 50 % en pasos
+  de cinco. El atacante conserva el 100 % del importe ya reducido por rendimiento decreciente; cada otro integrante
+  conectado recibe además la fracción elegida. Esa XP adicional no vuelve a entrar en el reparto.
+- La bonificación adicional usa el número de integrantes conectados: `min(tope, (miembros − 1) × 0,05)`, con
+  máximo por defecto de 20 %. Se aplica a la XP de combate (Combate y Tiro con arco) y de rol de cada miembro
+  conectado, incluido quien obtuvo la baja. No afecta a otras habilidades ni fuentes de XP.
+- La XP de rol de combate se calcula después del multiplicador del rol principal/secundario y de especialización.
+  Los demás miembros reciben la misma fracción para ese rol aunque no lo tengan activo. Se respeta su modo de
+  juego y el tope de nivel del rol.
+- El fuego amigo está desactivado inicialmente. El líder puede habilitarlo; el servidor bloquea ataques directos,
+  proyectiles, habilidades y runas entre integrantes mediante la regla de aliados de `Targeting`.
+- El apoyo con objetivos de jugadores cercanos conserva su radio y limita los objetivos al grupo cuando el lanzador
+  pertenece a uno. Sin grupo, mantiene los objetivos anteriores.
+- El Heraldo del Eclipse usa el tamaño del grupo persistente para escalar su vida y aparece una sola vez por grupo.
+  Los grupos que no existen siguen agrupándose por cercanía de 64 bloques.
+
+Efecto de balance a vigilar: compartir XP de rol permite que integrantes avancen el rol del atacante aunque no lo
+tengan activo; es el comportamiento deliberado de la XP compartida. El rendimiento decreciente se calcula antes
+del reparto para que las bajas repetidas no eludan el límite.

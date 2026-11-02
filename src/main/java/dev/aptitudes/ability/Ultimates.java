@@ -105,8 +105,8 @@ public final class Ultimates {
 			AbilityState.repeat(server(p), 10, 20, i -> {
 				world.spawnParticles(ParticleTypes.HAPPY_VILLAGER, center.x, center.y + 0.5, center.z, 40, 4, 0.5, 4, 0);
 				world.spawnParticles(ParticleTypes.SPORE_BLOSSOM_AIR, center.x, center.y + 2, center.z, 20, 4, 1, 4, 0);
-				for (PlayerEntity ally : world.getEntitiesByClass(PlayerEntity.class,
-						new net.minecraft.util.math.Box(center, center).expand(8), PlayerEntity::isAlive)) {
+				for (PlayerEntity ally : Targeting.playersInSupportArea(p,
+						new net.minecraft.util.math.Box(center, center).expand(8))) {
 					quiet(ally, StatusEffects.REGENERATION, 40, 1);
 					ally.getStatusEffects().stream().filter(e -> !e.getEffectType().value().isBeneficial())
 							.map(StatusEffectInstance::getEffectType).toList().forEach(ally::removeStatusEffect);
@@ -189,8 +189,8 @@ public final class Ultimates {
 			sound(p, SoundEvents.BLOCK_BELL_RESONATE, 1.0f);
 			AbilityState.repeat(server(p), 8, 20, i -> {
 				world.spawnParticles(ParticleTypes.END_ROD, center.x, center.y + 0.2, center.z, 50, 6, 0.1, 6, 0.01);
-				for (PlayerEntity ally : world.getEntitiesByClass(PlayerEntity.class,
-						new net.minecraft.util.math.Box(center, center).expand(8), PlayerEntity::isAlive)) {
+				for (PlayerEntity ally : Targeting.playersInSupportArea(p,
+						new net.minecraft.util.math.Box(center, center).expand(8))) {
 					if (ally instanceof ServerPlayerEntity sp) AbilityState.setUndying(sp, 25);
 					quiet(ally, StatusEffects.RESISTANCE, 30, 1);
 				}

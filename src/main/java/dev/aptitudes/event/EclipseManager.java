@@ -256,13 +256,27 @@ public final class EclipseManager {
 	private static void waves(ServerWorld world, Phase phase, AptitudesConfig cfg) {
 		int wave = EclipseRules.waveSize(phase);
 		if (wave <= 0) return;
+		java.util.Set<UUID> processed = new java.util.HashSet<>();
 		for (ServerPlayerEntity player : world.getPlayers()) {
-			if (!player.isAlive() || player.isSpectator() || player.isCreative()) continue;
-			int alive = world.getEntitiesByClass(MobEntity.class, player.getBoundingBox().expand(COUNT_RADIUS),
-					m -> m.isAlive() && m.getCommandTags().contains(TAG)).size();
-			int count = EclipseRules.allowedSpawns(alive, cfg.eclipseMaxMobsPerPlayer, wave);
+			if (!player.isAlive() || player.isSpectator() || player.isCreative() || processed.contains(player.getUuid())) continue;
+			List<ServerPlayerEntity> group = dev.aptitudes.party.PartyManager.hasParty(player)
+					? dev.aptitudes.party.PartyManager.onlineMembers(player).stream()
+						.filter(member -> member.getWorld() == world && member.isAlive()
+								&& !member.isSpectator() && !member.isCreative()).toList()
+					: List.of(player);
+			if (group.isEmpty()) continue;
+			for (ServerPlayerEntity member : group) processed.add(member.getUuid());
+			java.util.Set<UUID> alive = new java.util.HashSet<>();
+			for (ServerPlayerEntity member : group) {
+				world.getEntitiesByClass(MobEntity.class, member.getBoundingBox().expand(COUNT_RADIUS),
+						mob -> mob.isAlive() && mob.getCommandTags().contains(TAG)).forEach(mob -> alive.add(mob.getUuid()));
+			}
+			int groupSize = group.size();
+			int cap = cfg.eclipseMaxMobsPerPlayer * groupSize;
+			int count = EclipseRules.allowedSpawns(alive.size(), cap, wave * groupSize);
 			for (int i = 0; i < count; i++) {
-				BlockPos pos = findSpawn(world, player.getBlockPos(), 16, 32);
+				ServerPlayerEntity target = group.get(i % groupSize);
+				BlockPos pos = findSpawn(world, target.getBlockPos(), 16, 32);
 				if (pos == null) continue;
 				spawnMob(world, WAVE_TYPES.get(world.random.nextInt(WAVE_TYPES.size())), pos, cfg);
 			}
@@ -318,10 +332,19 @@ public final class EclipseManager {
 		while (!pending.isEmpty()) {
 			ServerPlayerEntity leader = pending.remove(0);
 			int group = 1;
-			for (int i = pending.size() - 1; i >= 0; i--) {
-				if (pending.get(i).squaredDistanceTo(leader) <= GROUP_RADIUS * GROUP_RADIUS) {
-					pending.remove(i);
-					group++;
+			boolean hasParty = dev.aptitudes.party.PartyManager.hasParty(leader);
+			if (hasParty) {
+				group = (int) dev.aptitudes.party.PartyManager.onlineMembers(leader).stream()
+						.filter(p -> p.isAlive() && !p.isSpectator() && !p.isCreative()).count();
+				for (int i = pending.size() - 1; i >= 0; i--) {
+					if (dev.aptitudes.party.PartyManager.inSameParty(leader, pending.get(i))) pending.remove(i);
+				}
+			} else {
+				for (int i = pending.size() - 1; i >= 0; i--) {
+					if (pending.get(i).squaredDistanceTo(leader) <= GROUP_RADIUS * GROUP_RADIUS) {
+						pending.remove(i);
+						group++;
+					}
 				}
 			}
 			BlockPos pos = findSpawn(world, leader.getBlockPos(), 12, 20);

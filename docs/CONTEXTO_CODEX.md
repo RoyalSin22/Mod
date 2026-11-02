@@ -106,6 +106,7 @@ retematizaron (p. ej., «Talismán maldito»).
 | Pantalla K (atributos y habilidades, 10 tarjetas 5×2 animadas) | `client/screen/AptitudesScreen` |
 | Pantalla de roles (árbol con zoom, arrastre y desplazamiento) | `client/screen/RolesScreen` |
 | Combos de combate (contador, bonificación y remates por categoría) | `ability/Combos` + `logic/ComboCounter`; HUD `client/hud/ComboHud` |
+| Grupos (v29): invitaciones, reparto de XP de combate/rol, aliados, apoyo y HUD | `party/PartyState`, `party/PartyManager`, `party/PartyRules`, `ability/Targeting`, `client/screen/PartyScreen`, `client/hud/PartyHud` |
 | Runas para armas de rol (v32) | `rune/RuneSocketing`, `rune/RuneRules`, NBT persistente en `ItemStack.CUSTOM_DATA` |
 | Jefes propios en estructuras (v33) | `boss/BossManager`, `BossKind`, `BossRules`; etiquetas persistentes, barra de campeón existente y mejora de armas con núcleos |
 | Eclipse, evento del mundo (v34) | `event/EclipseManager`, `EclipseRules` (puro, con pruebas), `EclipseState`; cliente `ClientEclipse`, `hud/EclipseHud`, mixins `Eclipse*Mixin` con `require = 0` y sin `@Shadow`; diseño en `docs/V34_ECLIPSE.md` |

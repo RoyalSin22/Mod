@@ -516,8 +516,7 @@ public final class RoleMechanics {
 			s.stillSeconds = still ? s.stillSeconds + 1 : 0;
 			s.lastPos = p.getPos();
 			if (bloom > 0 && s.stillSeconds >= 3) {
-				for (PlayerEntity ally : p.getWorld().getEntitiesByClass(PlayerEntity.class,
-						p.getBoundingBox().expand(2 + bloom), PlayerEntity::isAlive)) {
+				for (PlayerEntity ally : Targeting.playersAround(p, 2 + bloom)) {
 					ally.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 50, 0, true, true));
 				}
 				if (s.stillSeconds % 2 == 1) {

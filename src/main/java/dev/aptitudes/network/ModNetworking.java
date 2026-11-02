@@ -38,6 +38,7 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playS2C().register(ScreenFxPayload.ID, ScreenFxPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(DamageNumberPayload.ID, DamageNumberPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(SkillXpPayload.ID, SkillXpPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(PartySyncPayload.ID, PartySyncPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(LevelUpPayload.ID, LevelUpPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(OpenAccessoriesPayload.ID, OpenAccessoriesPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(RequestStatsPayload.ID, RequestStatsPayload.CODEC);
@@ -45,6 +46,23 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playC2S().register(UseAbilityPayload.ID, UseAbilityPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(RoleActionPayload.ID, RoleActionPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(ConfigEditPayload.ID, ConfigEditPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(PartyActionPayload.ID, PartyActionPayload.CODEC);
+		ServerPlayNetworking.registerGlobalReceiver(PartyActionPayload.ID, (payload, context) -> {
+			var player = context.player();
+			switch (payload.action()) {
+				case PartyActionPayload.REQUEST_SYNC -> dev.aptitudes.party.PartyManager.requestSync(player);
+				case PartyActionPayload.INVITE -> {
+					if (payload.target() == null) return;
+					var target = player.getServer().getPlayerManager().getPlayer(payload.target());
+					if (target != null) dev.aptitudes.party.PartyManager.invite(player, target);
+				}
+				case PartyActionPayload.LEAVE -> dev.aptitudes.party.PartyManager.leave(player);
+				case PartyActionPayload.KICK -> dev.aptitudes.party.PartyManager.kick(player, payload.target());
+				case PartyActionPayload.TOGGLE_FRIENDLY_FIRE -> dev.aptitudes.party.PartyManager.toggleFriendlyFire(player);
+				case PartyActionPayload.SET_SHARE -> dev.aptitudes.party.PartyManager.setShare(player, payload.value());
+				default -> { }
+			}
+		});
 
 		// En 1.21 los handlers se ejecutan ya en el hilo del servidor.
 		ServerPlayNetworking.registerGlobalReceiver(AllocatePointsPayload.ID, (payload, context) -> {

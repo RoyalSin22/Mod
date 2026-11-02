@@ -126,6 +126,11 @@ public final class Combos {
 				case GUARDIAN -> { // Golpe sagrado: cura el 30 % del daño
 					target.damage(src, damage);
 					player.heal(damage * 0.3f);
+					for (ServerPlayerEntity ally : dev.aptitudes.party.PartyManager.onlineMembers(player)) {
+						if (ally != player && ally.getWorld() == world && ally.squaredDistanceTo(player) <= 9.0) {
+							ally.heal(damage * 0.3f);
+						}
+					}
 					world.spawnParticles(ParticleTypes.END_ROD, target.getX(), target.getBodyY(0.5), target.getZ(),
 							14, 0.3, 0.5, 0.3, 0.05);
 					world.spawnParticles(ParticleTypes.HEART, player.getX(), player.getBodyY(1.0), player.getZ(),

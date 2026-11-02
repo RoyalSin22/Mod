@@ -42,6 +42,19 @@ Para instalarlo, copia el JAR en `.minecraft/mods/` junto con Fabric API. **Serv
 
 ## Mecánicas
 
+### Grupos cooperativos (v29)
+
+Pulsa `P` (cambiable en Controles) para abrir el menú de grupo. Invita a jugadores conectados; las invitaciones
+caducan a los 60 segundos y se aceptan o rechazan desde el mensaje. También están `/party invite`, `/party accept`,
+`/party reject`, `/party leave`, `/party kick`, `/party list`, `/party pvp` y `/party share <0–50>`.
+
+El líder puede compartir del 0 al 50 % de la XP de combate y de rol de combate con cada integrante conectado,
+incluidos quienes estén en otra dimensión. Esa XP no se descuenta al atacante ni vuelve a repartirse. Los grupos
+dan además hasta un 20 % de XP adicional a todos, según sus miembros conectados. El grupo admite hasta cinco
+jugadores y se guarda en el estado del Mundo Normal. Los aliados no se dañan entre sí por defecto; el líder puede
+activar fuego amigo. Las habilidades de apoyo que seleccionan jugadores cercanos priorizan exclusivamente al grupo.
+El HUD muestra rol, salud y atenuación para integrantes desconectados o en otra dimensión.
+
 ### Habilidades: cómo se gana XP y qué bonificación dan
 
 | Habilidad | Fuente de XP | Bonificación pasiva por nivel (por defecto) |

@@ -21,6 +21,8 @@ reescribir las existentes (JUnit 4):
 | `role/LoadoutCodecTest` | Formato antiguo de 2 bits leído igual; formato nuevo con 8 activas; índices fuera de rango |
 | `role/EvolutionPointsTest` | Puntos extra por evolución (+10/+5), constructor antiguo sin extra, negativos ignorados, sin desbordamiento |
 | `logic/XpDiminishingTest` | Multiplicador (completo hasta el umbral, decrece hasta el suelo), redondeo, ventana deslizante por jugador y fuente, granja frente a juego normal, memoria acotada |
+| `party/PartyRulesTest` | Cuota de XP en pasos válidos, aritmética acotada, bonificación por integrantes conectados y valores corruptos |
+| `config/PartyConfigValidationTest` | Valores predeterminados y límites seguros de los cuatro campos de grupo |
 
 Ejecución: `.\gradlew.bat test` (también se ejecutan en `.\gradlew.bat build`).
 
@@ -198,3 +200,21 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
 7. Calendario natural: ve al día 9 al atardecer (`/time set`): la campana anuncia el evento elegido y al día
    siguiente empieza ese (la Niebla a las 18:00).
 8. Mundo con Eclipses anteriores (v34–v40): carga sin errores y el calendario continúa.
+
+# v29 — grupos (verificación manual)
+
+1. Con dos clientes, pulsa `P`, invita desde la lista y comprueba que el segundo recibe botones clicables Aceptar y
+   Rechazar. Rechaza una invitación; repite y acepta. Confirma que caduca tras 60 s.
+2. Forma un grupo de cinco; una sexta invitación debe rechazarse. Comprueba el líder marcado, salir y expulsar.
+   Reinicia el servidor y verifica que el grupo y sus opciones siguen guardados.
+3. Con el líder a 25 % y luego 50 % de XP compartida, mata criaturas cuerpo a cuerpo y con arco. Los miembros
+   conectados en otras dimensiones reciben XP de Combate/Tiro con arco y del rol de combate; el atacante conserva
+   su XP. Comprueba que `xpDiminishing` se aplica antes del reparto y que la XP recibida no se reparte otra vez.
+4. En un grupo de cinco conectados, comprueba el máximo de +20 %; desconecta integrantes y confirma que el extra
+   disminuye en pasos de 5 %. Cambia los campos `party*` desde la configuración del servidor y comprueba los límites.
+5. Con fuego amigo desactivado, golpea a un compañero con ataque, arco, habilidad y runa. No debe recibir daño;
+   activa `/party pvp` y repite. Prueba también las invocaciones del grupo.
+6. Lanza curas y auras con y sin grupo: con grupo no deben afectar a jugadores ajenos; sin grupo deben conservar
+   el comportamiento anterior. Verifica el HUD en la misma dimensión, en otra dimensión y tras desconectar.
+7. En Eclipse, confirma un Heraldo por grupo y escalado de vida hasta cinco integrantes; sin grupo, los jugadores
+   a menos de 64 bloques siguen compartiendo un Heraldo. En Niebla de almas comprueba oleadas y tope según grupo.

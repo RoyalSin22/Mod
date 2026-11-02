@@ -31,6 +31,7 @@ public final class Targeting {
 	}
 
 	public static boolean isHostileTo(ServerPlayerEntity player, Entity entity) {
+		if (dev.aptitudes.party.PartyManager.isAlly(player, entity)) return false;
 		if (!(entity instanceof LivingEntity living) || entity == player || !living.isAlive()) return false;
 		if (entity instanceof PlayerEntity || entity instanceof ArmorStandEntity) return false;
 		if (AbilityState.isSummon(entity)) return false; // esbirros y torretas son aliados
@@ -45,8 +46,16 @@ public final class Targeting {
 
 	public static List<PlayerEntity> playersAround(ServerPlayerEntity player, double radius) {
 		double r2 = radius * radius;
-		return player.getWorld().getEntitiesByClass(PlayerEntity.class, player.getBoundingBox().expand(radius),
-				p -> p.isAlive() && !p.isSpectator() && p.squaredDistanceTo(player) <= r2);
+		return playersInSupportArea(player, player.getBoundingBox().expand(radius)).stream()
+				.filter(p -> p.squaredDistanceTo(player) <= r2).toList();
+	}
+
+	/** Jugadores válidos para una cura, aura o escudo en una caja centrada en el efecto. */
+	public static List<PlayerEntity> playersInSupportArea(ServerPlayerEntity player, Box area) {
+		boolean grouped = dev.aptitudes.party.PartyManager.hasParty(player);
+		return player.getWorld().getEntitiesByClass(PlayerEntity.class, area,
+				p -> p.isAlive() && !p.isSpectator()
+						&& (!grouped || dev.aptitudes.party.PartyManager.isAlly(player, p)));
 	}
 
 	/** Primera entidad viva en la línea de visión, sin atravesar bloques. */

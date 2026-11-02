@@ -6,6 +6,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **v29 — Grupos**: menú con tecla P, invitaciones clicables con caducidad, XP compartida configurable,
+  bonificación de grupo, protección contra fuego amigo, apoyo a aliados, HUD y persistencia en el Mundo Normal.
 - **v41** — Eventos rotativos: Niebla de almas y Lluvia de brasas se alternan al azar con el Eclipse (sin
   repetir el anterior); `/aptitudes event`; pesos configurables.
 - **v40** — Pantalla de configuración (`/aptitudes config`, pestaña ⚙ de la pantalla K o Mod Menu opcional): los

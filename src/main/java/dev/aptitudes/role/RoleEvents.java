@@ -58,6 +58,8 @@ public final class RoleEvents {
 	public static void register() {
 		// Daño: primero se decide si se cancela (parada/contraataque); luego XP al atacante.
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> {
+			if (entity instanceof ServerPlayerEntity victim && source.getAttacker() != null
+					&& dev.aptitudes.party.PartyManager.blocksFriendlyDamage(source.getAttacker(), victim)) return false;
 			if (entity instanceof ServerPlayerEntity victim && (!RolePassives.allowIncomingDamage(victim, source, amount)
 					|| !MorphManager.allowIncomingDamage(victim, source)
 					|| !UniqueEffects.allowIncomingDamage(victim, source, amount)
@@ -94,10 +96,10 @@ public final class RoleEvents {
 			}
 			if (source.getAttacker() instanceof ServerPlayerEntity attacker && entity != attacker) {
 				Role role = combatRole(attacker, source.getSource());
-				if (role != null) RoleManager.addRoleXp(attacker, role, xp);
+				if (role != null) dev.aptitudes.party.PartyManager.awardCombatRoleXp(attacker, role, xp);
 				// Paladín: cualquier daño a no-muertos.
 				if (role != Role.PALADIN && entity.getType().isIn(EntityTypeTags.UNDEAD)) {
-					RoleManager.addRoleXp(attacker, Role.PALADIN, xp);
+					dev.aptitudes.party.PartyManager.awardCombatRoleXp(attacker, Role.PALADIN, xp);
 				}
 			}
 			return true;

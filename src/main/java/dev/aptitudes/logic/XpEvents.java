@@ -64,11 +64,11 @@ public final class XpEvents {
 			Entity direct = source.getSource();
 			String victim = net.minecraft.entity.EntityType.getId(entity.getType()).toString();
 			if (direct instanceof ProjectileEntity) {
-				ProgressManager.addXp(player, Skill.ARCHERY, diminished(player, "archery/" + victim,
-						scaled(entity.getMaxHealth(), cfg.archeryXpPerMaxHealth)));
+				dev.aptitudes.party.PartyManager.awardCombatXp(player, Skill.ARCHERY,
+						diminished(player, "archery/" + victim, scaled(entity.getMaxHealth(), cfg.archeryXpPerMaxHealth)));
 			} else if (direct == player) {
-				ProgressManager.addXp(player, Skill.COMBAT, diminished(player, "combat/" + victim,
-						scaled(entity.getMaxHealth(), cfg.combatXpPerMaxHealth)));
+				dev.aptitudes.party.PartyManager.awardCombatXp(player, Skill.COMBAT,
+						diminished(player, "combat/" + victim, scaled(entity.getMaxHealth(), cfg.combatXpPerMaxHealth)));
 			}
 		});
 
