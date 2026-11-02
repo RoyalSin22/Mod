@@ -49,6 +49,7 @@ public class Aptitudes implements ModInitializer {
 		ModItems.init();
 		dev.aptitudes.world.ModWorldGen.init();
 		dev.aptitudes.world.GuildVillagers.init();
+		dev.aptitudes.world.GuildCrafting.init();
 		dev.aptitudes.accessory.Accessories.init();
 		dev.aptitudes.elite.Elites.register();
 		ModAttachments.init();

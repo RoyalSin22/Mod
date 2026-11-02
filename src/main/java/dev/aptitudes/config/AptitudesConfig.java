@@ -90,16 +90,18 @@ public class AptitudesConfig {
 	public double enchantingManaPerLevel = 0.4;
 
 	// ---------- Valor de cada punto de atributo ----------
-	public double vigorHealthPerPoint = 1.0;
-	public double mindManaPerPoint = 5.0;
-	public double enduranceArmorPerPoint = 0.5;
-	public double strengthDamagePerPoint = 0.25;
-	public double dexterityAttackSpeedPerPoint = 0.01;
-	/** Inteligencia: +X de daño de hechizos por punto (0.02 = +2 %). */
-	public double intelligenceSpellDamagePerPoint = 0.02;
-	/** Fe: −X de enfriamiento por punto (0.01 = −1 %). La reducción total (Fe + Mente clara) se limita al 60 %. */
-	public double faithCooldownPerPoint = 0.01;
-	public double luckPerPoint = 0.2;
+	// v27: −30 % respecto a los valores anteriores (1,0 / 5 / 0,5 / 0,25 / 0,01 / 0,02 / 0,01 / 0,2) para que los
+	// atributos altos no rompan el balance. OJO: un config/aptitudes.json ya creado conserva sus valores.
+	public double vigorHealthPerPoint = 0.7;
+	public double mindManaPerPoint = 3.5;
+	public double enduranceArmorPerPoint = 0.35;
+	public double strengthDamagePerPoint = 0.175;
+	public double dexterityAttackSpeedPerPoint = 0.007;
+	/** Inteligencia: +X de daño de hechizos por punto (0.014 = +1,4 %). */
+	public double intelligenceSpellDamagePerPoint = 0.014;
+	/** Fe: −X de enfriamiento por punto (0.007 = −0,7 %). La reducción total (Fe + Mente clara) se limita al 60 %. */
+	public double faithCooldownPerPoint = 0.007;
+	public double luckPerPoint = 0.14;
 
 	// ---------- Roles ----------
 	public int maxRoleLevel = 30;

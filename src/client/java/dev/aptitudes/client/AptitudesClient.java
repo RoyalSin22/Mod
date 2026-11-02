@@ -55,6 +55,8 @@ public class AptitudesClient implements ClientModInitializer {
 				"key.aptitudes.accessories", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Y, CATEGORY));
 		net.minecraft.client.gui.screen.ingame.HandledScreens.register(dev.aptitudes.accessory.AccessoryScreenHandler.TYPE,
 				dev.aptitudes.client.screen.AccessoryScreen::new);
+		net.minecraft.client.gui.screen.ingame.HandledScreens.register(dev.aptitudes.world.GuildCrafting.SCREEN,
+				dev.aptitudes.client.screen.GuildDeskScreen::new);
 		for (int i = 0; i < abilityKeys.length; i++) {
 			abilityKeys[i] = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 					"key.aptitudes.ability_" + (i + 1), InputUtil.Type.KEYSYM, DEFAULT_ABILITY_KEYS[i], CATEGORY));

@@ -30,6 +30,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 | Esbirros y torretas | `ability/Minions`, `ability/MinionBrain`, `ability/AbilityState` |
 | Accesorios, élites/campeones, estructuras, grimorio (18 capítulos) | `accessory/`, `elite/`, `world/`, `item/GuideBookItem`, `client/screen/GuideScreen` |
 | Efectos de lanzamiento e impacto de TODAS las habilidades (sello animado, remate por categoría, gesto) | `ability/CastFx` (`onCast`, `impact`); no dupliques estos efectos en cada habilidad |
+| Fabricación en la Mesa del gremio (armaduras de rol) | `world/GuildCrafting` (tipo `aptitudes:guild_crafting`), `GuildShapedRecipe`, `GuildDeskScreenHandler`, `GuildDeskBlock`; cliente `GuildDeskScreen` |
 | Configuración validada al cargar | `config/AptitudesConfig.validated` |
 | Texturas de armas y objetos (generadas, no editar a mano los PNG de la lista) | `tools/textures/gen_items.py` (`ITEMS` y plantillas `T`); ejecuta `python3 tools/textures/gen_items.py src/main/resources/assets/aptitudes/textures/item` |
 | Texturas de armaduras de rol: iconos y capas del modelo (generadas) | `tools/textures/gen_armor.py`; ejecuta `python3 tools/textures/gen_armor.py src/main/resources/assets/aptitudes/textures` |
@@ -42,7 +43,7 @@ Historial reciente en `main`: auditoría de seguridad y balance, v14 (grimorio, 
 muerte y pruebas de configuración) y v16 (Defensa con `AFTER_DAMAGE`, esbirros sin conversión a
 ahogado, Bombardeo orbital sin fuego amigo), v17 (anti-granjas de colocar y romper), v18 (esperas y muros persistentes) y v19 (desplazamiento de la
 pantalla de roles y filtro para mobs con IA Brain), v20 (grimorio interactivo con recetas reales) y
-v21 (Encantamiento y pantalla K animada) , v22 (texturas de armas y objetos clave) , v23 (árbol que crece al evolucionar) , v24 (animaciones de habilidades), v25 (texturas de armaduras) y v26 (colisión de las transformaciones).
+v21 (Encantamiento y pantalla K animada) , v22 (texturas de armas y objetos clave) , v23 (árbol que crece al evolucionar) , v24 (animaciones de habilidades), v25 (texturas de armaduras) , v26 (colisión de las transformaciones) y v27 (Mesa del gremio y atributos −30 %).
 
 ## 3. Exclusiones absolutas (no negociables)
 

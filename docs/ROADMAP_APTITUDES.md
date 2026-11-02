@@ -100,6 +100,15 @@ Decisiones: tope de espera aceptado de 1 día real (datos corruptos o mundos con
 para siempre), máximo 256 esperas por jugador y 4096 bloques temporales por mundo; un bloque temporal
 solo se retira si en su posición sigue el mismo bloque.
 
+### v27 — Mesa del gremio y atributos
+- **Armaduras de rol solo en la Mesa del gremio**: tipo de receta `aptitudes:guild_crafting`
+  (`GuildShapedRecipe`, mismo JSON que una receta con forma), cuadrícula 3×3 propia (`GuildDeskScreenHandler`
+  y `GuildDeskScreen`) al hacer clic derecho en la mesa (`GuildDeskBlock`, mismo id). Las 80 recetas de
+  armadura cambian de tipo; la mesa de trabajo ya no las fabrica. El grimorio indica «Mesa del gremio».
+- **Atributos −30 %** por punto (ver `docs/BALANCE.md`). SOFTCAP sigue opcional.
+- Corrección de documentación: con `pointsPerSkillLevel = 0` (defecto), Pesca y Encantamiento no cambiaron
+  los puntos de atributo.
+
 ### v26 — colisión de las transformaciones
 Mixin `PlayerEntity#getBaseDimensions` (con `require = 0`: si no existiera el método, el juego arranca igual
 y se avisa una vez en el registro) + `morph/MorphSize` (servidor: forma guardada; cliente: forma recibida) +

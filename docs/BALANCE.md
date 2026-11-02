@@ -5,6 +5,23 @@ justificación, valores de ejemplo e impacto, como pide la política del proyect
 
 ## 1. Atributos (Souls): escalado de puntos
 
+**v27 — valores por punto −30 %** (decisión del autor: los atributos altos estaban demasiado fuertes):
+
+| Atributo | Antes | Ahora |
+|---|---|---|
+| Vigor (vida) | 1,0 | 0,7 |
+| Mente (maná) | 5 | 3,5 |
+| Aguante (armadura) | 0,5 | 0,35 |
+| Fuerza (daño) | 0,25 | 0,175 |
+| Destreza (vel. ataque) | 1 % | 0,7 % |
+| Inteligencia (daño de hechizos) | 2 % | 1,4 % |
+| Fe (espera) | −1 % | −0,7 % |
+| Suerte | 0,2 | 0,14 |
+
+`attributeScaling` sigue en LINEAR por defecto (SOFTCAP queda como opción). Un `config/aptitudes.json` ya
+existente conserva los valores antiguos: hay que borrar esas líneas (o el archivo) para recibir los nuevos.
+
+
 ### Estado actual medido (configuración por defecto, escalado LINEAR)
 
 | Atributo | Por punto | 20 pt | 40 pt | 60 pt | 99 pt | 99 pt con afinidad ×1,5 |
@@ -89,12 +106,13 @@ balance general sin validación). Para activarlo: `"attributeScaling": "SOFTCAP"
   limpieza al desconectar.
 - **Encantamiento (v21).** XP por objeto encantado (25), pasivas de reembolso de nivel y maná máximo, hitos
   10–50 (lapislázuli, +10 de maná, botellas de experiencia, −10 % de espera, reembolso garantizado). El
-  −10 % entra en el tope global de reducción de esperas (60 %). Con la 10.ª habilidad, los puntos de
-  atributo que se pueden ganar vuelven a subir en `maxSkillLevel × pointsPerSkillLevel`.
+  −10 % entra en el tope global de reducción de esperas (60 %). Por defecto las habilidades no dan puntos
+  de atributo (`pointsPerSkillLevel = 0`), así que la 10.ª habilidad no cambia los puntos; solo si un servidor
+  activa esa opción subirían en `maxSkillLevel × pointsPerSkillLevel`.
 - **Pesca (v15).** XP por pez (12), pasivas de suerte y captura doble, hitos 10–50. Lee la estadística
-  vanilla `FISH_CAUGHT` una vez por segundo (sin mixins). Efecto global: con una habilidad más, los puntos
-  de atributo que se pueden ganar suben en `maxSkillLevel × pointsPerSkillLevel`; el tope por atributo
-  (`maxPointsPerAttribute`) no cambia.
+  vanilla `FISH_CAUGHT` una vez por segundo (sin mixins). Por defecto no cambia los puntos de atributo
+  (`pointsPerSkillLevel = 0`); solo si un servidor activa esa opción subirían en
+  `maxSkillLevel × pointsPerSkillLevel`.
 
 ## 5. Árbol de roles
 

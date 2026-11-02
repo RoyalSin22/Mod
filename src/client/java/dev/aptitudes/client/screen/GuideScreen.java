@@ -395,7 +395,9 @@ public class GuideScreen extends Screen {
 			ctx.drawItem(result, rx + 5, ry + 5);
 			ctx.drawItemInSlot(textRenderer, result, rx + 5, ry + 5);
 			if (mouseX >= rx && mouseX < rx + 26 && mouseY >= ry && mouseY < ry + 26) tip.item(result);
-			Text where = Text.translatable("screen.aptitudes.guide.crafting_table");
+			// v27: las armaduras de rol se fabrican en la Mesa del gremio.
+			Text where = Text.translatable(recipe.getType() == dev.aptitudes.world.GuildCrafting.RECIPE_TYPE
+					? "screen.aptitudes.guide.guild_desk" : "screen.aptitudes.guide.crafting_table");
 			ctx.drawText(textRenderer, UiStyle.fit(textRenderer, where, px + pw - rx - 32), rx + 32, ry + 9, UiStyle.MUTED, false);
 			y += 3 * SLOT + 6;
 		}

@@ -86,6 +86,11 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
     baja; F3+B muestra una caja pequeña. Transfórmate en un mob grande → caja de 1,2 de ancho como máximo.
     Otro jugador ve la caja correcta. `logs/latest.log` no debe tener el aviso «La colisión de las
     transformaciones no se aplicó».
+20. Mesa del gremio v27: en la mesa de trabajo, el patrón de una pieza de armadura de rol no da nada.
+    Clic derecho en la Mesa del gremio → cuadrícula 3×3; el mismo patrón da la pieza; mayús+clic fabrica
+    varias; al cerrar, los ingredientes vuelven al inventario. Un aldeano sigue tomándola como bloque de
+    trabajo. En el grimorio, la receta dice «Mesa del gremio».
+21. Atributos v27 (con un `config/aptitudes.json` nuevo): 10 puntos en Vigor dan +7 de vida (antes +10).
 14. Escala de interfaz 4 (o ventana pequeña): abrir la pantalla de roles (J) → aparece una barra a la
     derecha; rueda fuera del árbol o RePág/AvPág hasta ver «Hecho»; el zoom del árbol no cambia.
 15. En el Nether, sobornar a un piglin (Soborno) → deja de atacar en menos de medio segundo. Con el

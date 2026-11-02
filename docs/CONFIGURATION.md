@@ -74,3 +74,20 @@ y recetas (`data/aptitudes/recipe/*.json`).
 |---|---|---|---|
 | `masterBonusPoints` | 10 | [0, 100] | Puntos de árbol extra al evolucionar un rol a Maestro. |
 | `ultimateBonusPoints` | 5 | [0, 100] | Puntos de árbol extra al evolucionar un rol a Definitivo. |
+
+## Valor de los atributos (v27)
+
+| Opción | Defecto (v27) | Antes |
+|---|---|---|
+| `vigorHealthPerPoint` | 0.7 | 1.0 |
+| `mindManaPerPoint` | 3.5 | 5.0 |
+| `enduranceArmorPerPoint` | 0.35 | 0.5 |
+| `strengthDamagePerPoint` | 0.175 | 0.25 |
+| `dexterityAttackSpeedPerPoint` | 0.007 | 0.01 |
+| `intelligenceSpellDamagePerPoint` | 0.014 | 0.02 |
+| `faithCooldownPerPoint` | 0.007 | 0.01 |
+| `luckPerPoint` | 0.14 | 0.2 |
+
+**Importante:** el archivo `config/aptitudes.json` se crea la primera vez con los valores de ese momento y
+no se actualiza solo. Para pasar a los valores nuevos, borra esas 8 líneas (o el archivo entero, perdiendo
+los ajustes propios) y usa `/aptitudes admin reload` o reinicia.

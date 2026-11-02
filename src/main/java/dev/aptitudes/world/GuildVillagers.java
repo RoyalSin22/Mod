@@ -35,7 +35,7 @@ import java.util.Optional;
  */
 public final class GuildVillagers {
 	public static final Block GUILD_DESK = Registry.register(Registries.BLOCK, Aptitudes.id("guild_desk"),
-			new Block(AbstractBlock.Settings.create().mapColor(MapColor.OAK_TAN).strength(2.5f)
+			new GuildDeskBlock(AbstractBlock.Settings.create().mapColor(MapColor.OAK_TAN).strength(2.5f)
 					.sounds(BlockSoundGroup.WOOD)));
 	public static final Item GUILD_DESK_ITEM = Registry.register(Registries.ITEM, Aptitudes.id("guild_desk"),
 			new BlockItem(GUILD_DESK, new Item.Settings()));

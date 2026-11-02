@@ -63,16 +63,19 @@ XP necesaria para pasar del nivel *L* al *L+1*: `xpBase · (L+1)^xpExponent` (20
 
 | Atributo | Efecto por punto |
 |---|---|
-| Vigor | +1 de vida máxima |
-| Mente | +5 de maná máximo y +0,05 de maná/s |
-| Aguante | +0,5 de armadura |
-| Fuerza | +0,25 de daño cuerpo a cuerpo |
-| Destreza | +1 % de velocidad de ataque |
-| Inteligencia | +2 % de daño de hechizos, explosiones y ataques a distancia de habilidades |
-| Fe | −1 % de enfriamiento (junto con Mente clara y Presteza, máximo −60 %) |
-| Suerte | +0,2 de suerte |
+| Vigor | +0,7 de vida máxima |
+| Mente | +3,5 de maná máximo y +0,05 de maná/s |
+| Aguante | +0,35 de armadura |
+| Fuerza | +0,175 de daño cuerpo a cuerpo |
+| Destreza | +0,7 % de velocidad de ataque |
+| Inteligencia | +1,4 % de daño de hechizos, explosiones y ataques a distancia de habilidades |
+| Fe | −0,7 % de enfriamiento (junto con Mente clara y Presteza, máximo −60 %) |
+| Suerte | +0,14 de suerte |
 
-Máximo 99 puntos por atributo. Las 8 habilidades por uso siguen subiendo y dando sus bonificaciones, pero ya **no dan puntos** (`pointsPerSkillLevel = 0`).
+(v27: valores −30 % respecto a versiones anteriores. Un `config/aptitudes.json` ya creado conserva los
+antiguos: borra esas líneas para recibir los nuevos.)
+
+Máximo 99 puntos por atributo. Las 10 habilidades por uso siguen subiendo y dando sus bonificaciones, pero ya **no dan puntos** (`pointsPerSkillLevel = 0`).
 
 ### Hoguera y subida de nivel
 
