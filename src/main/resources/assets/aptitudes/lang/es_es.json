@@ -2045,7 +2045,7 @@
 	"guide.aptitudes.attributes.title": "Atributos",
 	"guide.aptitudes.attributes.body": "Ocho atributos estilo Souls (pantalla K):\nVigor: vida máxima.\nMente: maná máximo y regeneración.\nAguante: armadura.\nFuerza: daño cuerpo a cuerpo.\nDestreza: velocidad de ataque.\nInteligencia: daño mágico.\nFe: menos enfriamiento en todas las habilidades (tope global del 60 %%).\nSuerte: botín y probabilidades.\n\nCada rol tiene 2 atributos afines (★): rinden +50 %% si es tu rol principal y +25 %% si es el secundario.",
 	"guide.aptitudes.skills.title": "Habilidades por uso",
-	"guide.aptitudes.skills.body": "Suben solas al jugar: Minería, Excavación, Tala, Agricultura, Combate, Tiro con arco, Defensa, Agilidad, Pesca y Encantamiento.\n\nCada nivel da una pequeña bonificación pasiva (velocidad de picado, armadura, daño de flechas…). Cada 10 niveles desbloqueas un HITO: visión nocturna al minar, replantado automático, talar el árbol entero, flechas perforantes, segunda oportunidad al morir… Los ves en la pantalla K con el ratón sobre cada habilidad.\n\nRepetir MUCHO la misma fuente (el mismo tipo de criatura, el mismo atacante, pescar sin parar) da cada vez menos XP: las granjas de mobs y la pesca AFK no salen a cuenta. El juego normal no se ve afectado.",
+	"guide.aptitudes.skills.body": "Suben solas al jugar: Minería, Excavación, Tala, Agricultura, Combate, Tiro con arco, Defensa, Agilidad, Pesca y Encantamiento.\n\nCada nivel da una pequeña bonificación pasiva (velocidad de picado, armadura, daño de flechas…). Cada 10 niveles desbloqueas un HITO: visión nocturna al minar, replantado automático, talar el árbol entero, flechas perforantes, segunda oportunidad al morir… Los ves en la pantalla K con el ratón sobre cada habilidad.\n\nRepetir MUCHO la misma fuente (el mismo tipo de criatura, el mismo atacante, pescar sin parar) da cada vez menos XP: las granjas de mobs y la pesca AFK no salen a cuenta. El juego normal no se ve afectado.\n\nCOMBOS: los golpes cuerpo a cuerpo encadenados a criaturas (en menos de 2,5 s) suman +3 %% de daño cada uno (máx. +15 %%). Con 5 golpes, el siguiente es un REMATE según la categoría de tu rol principal: golpe sísmico (marcial), ejecución (sombra), descarga en cadena (arcana), golpe sagrado que cura (guardián) o sobrecarga eléctrica (oficio). Recibir un golpe fuerte rompe el combo.",
 	"guide.aptitudes.roles.title": "Roles",
 	"guide.aptitudes.roles.body": "Hay 20 roles en 5 categorías (Marcial, Arcana, Sombras, Guardianes, Oficio). Eliges un rol PRINCIPAL y uno SECUNDARIO (pantalla J); el secundario gana XP a la mitad.\n\nCada rol tiene su ítem característico (que da XP al usarlo), su recurso propio (Furia, Concentración, Armonía…; al 50 %% potencia la siguiente habilidad), un set de armadura y una mecánica única.\n\nSinergia: dos roles de la misma categoría dan +15 %% de XP de rol; de categorías distintas, +15 de maná.\n\nElegir un rol en una ranura vacía es gratis. Para SUSTITUIR un rol ya elegido necesitas el ritual de la Hoguera con una Ofrenda de renacimiento.",
 	"guide.aptitudes.tree.title": "Árbol de talentos",
@@ -2513,5 +2513,7 @@
 	"screen.aptitudes.tree.tier_master": "Maestro",
 	"screen.aptitudes.tree.tier_ultimate": "Definitivo",
 	"screen.aptitudes.node.evolved": "%s · %s",
-	"aptitudes.role.upgrade.tier_too_low": "Este nodo requiere una evolución superior del rol."
+	"aptitudes.role.upgrade.tier_too_low": "Este nodo requiere una evolución superior del rol.",
+	"hud.aptitudes.combo.finisher": "¡REMATE!",
+	"hud.aptitudes.combo.ready": "remate listo"
 }

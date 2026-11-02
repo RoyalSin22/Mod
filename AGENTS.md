@@ -30,6 +30,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 | Esbirros y torretas | `ability/Minions`, `ability/MinionBrain`, `ability/AbilityState` |
 | Accesorios, élites/campeones, estructuras, grimorio (18 capítulos) | `accessory/`, `elite/`, `world/`, `item/GuideBookItem`, `client/screen/GuideScreen` |
 | Efectos de lanzamiento e impacto de TODAS las habilidades (sello animado, remate por categoría, gesto) | `ability/CastFx` (`onCast`, `impact`); no dupliques estos efectos en cada habilidad |
+| Combos de combate (contador, bonificación y remates por categoría) | `ability/Combos` + `logic/ComboCounter`; HUD `client/hud/ComboHud` |
 | Fabricación en la Mesa del gremio (armaduras de rol) | `world/GuildCrafting` (tipo `aptitudes:guild_crafting`), `GuildShapedRecipe`, `GuildDeskScreenHandler`, `GuildDeskBlock`; cliente `GuildDeskScreen` |
 | Configuración validada al cargar | `config/AptitudesConfig.validated` |
 | Texturas de armas y objetos (generadas, no editar a mano los PNG de la lista) | `tools/textures/gen_items.py` (`ITEMS` y plantillas `T`); ejecuta `python3 tools/textures/gen_items.py src/main/resources/assets/aptitudes/textures/item` |
@@ -43,7 +44,7 @@ Historial reciente en `main`: auditoría de seguridad y balance, v14 (grimorio, 
 muerte y pruebas de configuración) y v16 (Defensa con `AFTER_DAMAGE`, esbirros sin conversión a
 ahogado, Bombardeo orbital sin fuego amigo), v17 (anti-granjas de colocar y romper), v18 (esperas y muros persistentes) y v19 (desplazamiento de la
 pantalla de roles y filtro para mobs con IA Brain), v20 (grimorio interactivo con recetas reales) y
-v21 (Encantamiento y pantalla K animada) , v22 (texturas de armas y objetos clave) , v23 (árbol que crece al evolucionar) , v24 (animaciones de habilidades), v25 (texturas de armaduras) , v26 (colisión de las transformaciones) y v27 (Mesa del gremio y atributos −30 %).
+v21 (Encantamiento y pantalla K animada) , v22 (texturas de armas y objetos clave) , v23 (árbol que crece al evolucionar) , v24 (animaciones de habilidades), v25 (texturas de armaduras) , v26 (colisión de las transformaciones) , v27 (Mesa del gremio y atributos −30 %) y v28 (combos).
 
 ## 3. Exclusiones absolutas (no negociables)
 
@@ -94,7 +95,7 @@ retematizaron (p. ej., «Talismán maldito»). **No cambies los ids de registro 
 - Pruebas existentes (no las sobrescribas ni crees otras con el **mismo nombre y paquete**):
   `souls/SoulsMathTest`, `logic/AttributeScalingTest`, `logic/XpDiminishingTest`,
   `logic/PlacedBlockLogTest`, `ability/CooldownBookTest`, `world/TemporaryBlockScheduleTest`,
-  `role/LoadoutCodecTest`, `role/EvolutionPointsTest`, `morph/MorphSizeRulesTest`,
+  `role/LoadoutCodecTest`, `role/EvolutionPointsTest`, `morph/MorphSizeRulesTest`, `logic/ComboCounterTest`,
   `role/RoleRulesTest`, `data/ProgressRulesTest` y
   `config/AptitudesConfigValidationTest`.
 - **No escribas pruebas que llamen a métodos que no existen.** Si una prueba necesita una API nueva,
@@ -102,6 +103,9 @@ retematizaron (p. ej., «Talismán maldito»). **No cambies los ids de registro 
 - Prueba lógica pura; las clases que cargan registros de Minecraft no se prueban con JUnit simple.
 
 ## 7. Pendientes conocidos (consulta antes de empezar algo grande)
+
+- **Siguiente trabajo**: v29 (grupos) y v30 (contratos del gremio). Instrucciones completas, qué NO tocar
+  (dependencias de JUnit, versiones, ids…) y errores ya vistos en `docs/PROMPT_CODEX_v29_v30.md`.
 
 - Activar `attributeScaling = SOFTCAP` por defecto: **decisión del autor** tras probar en partida.
 - Pruebas en partida de la v15–v16 (`docs/TESTING.md`, puntos 6–9).

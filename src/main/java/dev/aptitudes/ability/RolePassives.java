@@ -234,6 +234,7 @@ public final class RolePassives {
 			if (charge > 0 && player.isSprinting()) multiplier += 0.15f * charge;
 			int edge = RoleManager.activeRank(player, "keen_edge");
 			if (edge > 0 && player.getMainHandStack().getItem() instanceof SwordItem) multiplier += 0.07f * edge;
+			multiplier += Combos.damageBonus(player, target); // v28: combo (+3 % por golpe, máx. +15 %)
 		}
 
 		multiplier *= RoleArmorSets.outgoingMultiplier(player, target, source, direct); // Set de rol y arma de rol

@@ -36,6 +36,7 @@ public final class ProgressManager {
 			dev.aptitudes.ability.RoleMechanics.forget(handler.getPlayer());
 			dev.aptitudes.accessory.Accessories.forget(handler.getPlayer());
 			dev.aptitudes.role.RoleEvents.forget(handler.getPlayer());
+			dev.aptitudes.ability.Combos.forget(handler.getPlayer());
 		});
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
 			// La entidad nueva no hereda modificadores de atributos: hay que reaplicarlos.

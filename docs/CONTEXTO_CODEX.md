@@ -92,17 +92,18 @@ retematizaron (p. ej., «Talismán maldito»).
 | Grimorio interactivo (lee las recetas reales del juego) | `item/GuideBookItem`, `client/screen/GuideScreen` |
 | Pantalla K (atributos y habilidades, 10 tarjetas 5×2 animadas) | `client/screen/AptitudesScreen` |
 | Pantalla de roles (árbol con zoom, arrastre y desplazamiento) | `client/screen/RolesScreen` |
+| Combos de combate (contador, bonificación y remates por categoría) | `ability/Combos` + `logic/ComboCounter`; HUD `client/hud/ComboHud` |
 | Fabricación en la Mesa del gremio (armaduras de rol) | `world/GuildCrafting` (tipo `aptitudes:guild_crafting`), `GuildShapedRecipe`, `GuildDeskScreenHandler`, `GuildDeskBlock`; cliente `GuildDeskScreen` |
 | Configuración validada al cargar | `config/AptitudesConfig.validated` |
 | Texturas de armas y objetos (generadas) | `tools/textures/gen_items.py` |
 | Texturas de armaduras: 80 iconos y 40 capas del modelo puesto (generadas) | `tools/textures/gen_armor.py` |
 | Textos de los 200 nodos evolucionados (generados) | `tools/lang/gen_evolved_lang.py` |
 
-Historial en `main`: auditoría de seguridad y balance, v14–v27 (grimorio,
+Historial en `main`: auditoría de seguridad y balance, v14–v28 (grimorio,
 elementos, armas de evolución, Pesca, rendimiento decreciente, anti-granjas, esperas y muros persistentes, IA
 Brain, pantalla de roles con desplazamiento, grimorio interactivo con recetas reales, Encantamiento, pantalla
 K animada, texturas de armas y objetos, árbol que crece al evolucionar, animaciones de habilidades, texturas
-de armaduras, colisión de las transformaciones, Mesa del gremio y atributos −30 %). **Todas las texturas de objetos del mod ya están rehechas con los generadores.**
+de armaduras, colisión de las transformaciones, Mesa del gremio, atributos −30 % y combos). **Todas las texturas de objetos del mod ya están rehechas con los generadores.**
 
 ## 7. Reglas técnicas
 
@@ -151,7 +152,7 @@ de armaduras, colisión de las transformaciones, Mesa del gremio y atributos −
 - Pruebas existentes (no las sobrescribas ni crees otras con el **mismo nombre y paquete**):
   `souls/SoulsMathTest`, `logic/AttributeScalingTest`, `logic/XpDiminishingTest`,
   `logic/PlacedBlockLogTest`, `ability/CooldownBookTest`, `world/TemporaryBlockScheduleTest`,
-  `role/RoleRulesTest`, `role/LoadoutCodecTest`, `role/EvolutionPointsTest`, `morph/MorphSizeRulesTest`, `data/ProgressRulesTest`,
+  `role/RoleRulesTest`, `role/LoadoutCodecTest`, `role/EvolutionPointsTest`, `morph/MorphSizeRulesTest`, `logic/ComboCounterTest`, `data/ProgressRulesTest`,
   `config/AptitudesConfigValidationTest`.
 - Puedes escribir pruebas en JUnit 5 o JUnit 4; ambos funcionan.
 - **No escribas pruebas que llamen a métodos que no existen.** Si una prueba necesita una API nueva,
@@ -167,6 +168,8 @@ de armaduras, colisión de las transformaciones, Mesa del gremio y atributos −
 **parcial** y **propuesto**.
 
 ## 10. Pendientes conocidos (consulta antes de empezar algo grande)
+
+**Siguiente trabajo**: v29 (grupos) y v30 (contratos). Lee `docs/PROMPT_CODEX_v29_v30.md`.
 
 | Pendiente | Estado |
 |---|---|

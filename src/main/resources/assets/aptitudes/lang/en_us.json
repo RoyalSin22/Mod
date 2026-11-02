@@ -2045,7 +2045,7 @@
 	"guide.aptitudes.attributes.title": "Attributes",
 	"guide.aptitudes.attributes.body": "Eight Souls-like attributes (K screen):\nVigor: max health.\nMind: max mana and regeneration.\nEndurance: armor.\nStrength: melee damage.\nDexterity: attack speed.\nIntelligence: magic damage.\nFaith: lower cooldown on every ability (global cap 60%%).\nLuck: loot and chances.\n\nEach role has 2 affine attributes (★): +50%% value if it is your primary role, +25%% if secondary.",
 	"guide.aptitudes.skills.title": "Skills by use",
-	"guide.aptitudes.skills.body": "They level up as you play: Mining, Excavation, Woodcutting, Farming, Combat, Archery, Defense, Agility, Fishing and Enchanting.\n\nEach level gives a small passive bonus (mining speed, armor, arrow damage…). Every 10 levels you unlock a MILESTONE: night vision while mining, auto-replanting, felling whole trees, piercing arrows, a second chance on death… Hover each skill on the K screen to see them.\n\nRepeating the SAME source too often (the same mob type, the same attacker, fishing nonstop) gives less and less XP: mob farms and AFK fishing are not efficient. Normal play is not affected.",
+	"guide.aptitudes.skills.body": "They level up as you play: Mining, Excavation, Woodcutting, Farming, Combat, Archery, Defense, Agility, Fishing and Enchanting.\n\nEach level gives a small passive bonus (mining speed, armor, arrow damage…). Every 10 levels you unlock a MILESTONE: night vision while mining, auto-replanting, felling whole trees, piercing arrows, a second chance on death… Hover each skill on the K screen to see them.\n\nRepeating the SAME source too often (the same mob type, the same attacker, fishing nonstop) gives less and less XP: mob farms and AFK fishing are not efficient. Normal play is not affected.\n\nCOMBOS: chained melee hits on creatures (within 2.5 s) add +3%% damage each (max +15%%). At 5 hits, your next hit is a FINISHER based on your main role's category: seismic strike (martial), execution (shadow), arcane chain (arcane), holy strike that heals (guardian) or electric overload (craft). Taking a heavy hit breaks the combo.",
 	"guide.aptitudes.roles.title": "Roles",
 	"guide.aptitudes.roles.body": "There are 20 roles in 5 categories (Martial, Arcane, Shadow, Guardian, Craft). You pick a PRIMARY and a SECONDARY role (J screen); the secondary gains XP at half rate.\n\nEach role has its signature item (using it grants XP), its own resource (Fury, Focus, Harmony…; at 50%% it empowers the next ability), an armor set and a unique mechanic.\n\nSynergy: two roles of the same category give +15%% role XP; different categories give +15 mana.\n\nFilling an empty slot is free. To REPLACE a chosen role you need the Bonfire ritual with a Rebirth Offering.",
 	"guide.aptitudes.tree.title": "Talent tree",
@@ -2513,5 +2513,7 @@
 	"screen.aptitudes.tree.tier_master": "Master",
 	"screen.aptitudes.tree.tier_ultimate": "Ultimate",
 	"screen.aptitudes.node.evolved": "%s · %s",
-	"aptitudes.role.upgrade.tier_too_low": "This node requires a higher evolution of the role."
+	"aptitudes.role.upgrade.tier_too_low": "This node requires a higher evolution of the role.",
+	"hud.aptitudes.combo.finisher": "FINISHER!",
+	"hud.aptitudes.combo.ready": "finisher ready"
 }

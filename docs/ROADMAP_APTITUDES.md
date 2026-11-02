@@ -100,6 +100,14 @@ Decisiones: tope de espera aceptado de 1 día real (datos corruptos o mundos con
 para siempre), máximo 256 esperas por jugador y 4096 bloques temporales por mundo; un bloque temporal
 solo se retira si en su posición sigue el mismo bloque.
 
+### v28 — sistema de combos
+Golpes cuerpo a cuerpo encadenados a criaturas (ventana 2,5 s): +3 % de daño por golpe (máx. +15 %, dentro
+del tope ×6). Con 5 golpes, el siguiente es un remate según la categoría del rol principal (golpe sísmico,
+ejecución, descarga en cadena, golpe sagrado que cura, sobrecarga eléctrica), con espera de 4 s. Un golpe
+recibido de más de 6 de daño rompe el combo. Cada golpe carga el recurso de rol (+2; Asesino +4). Sin combos
+en PvP. HUD: «×N» junto a la mira y «¡REMATE!». `ability/Combos` + `logic/ComboCounter` (puro, 4 pruebas).
+Grupos (v29) y contratos (v30): ver `docs/V28_PROPUESTA.md`.
+
 ### v27 — Mesa del gremio y atributos
 - **Armaduras de rol solo en la Mesa del gremio**: tipo de receta `aptitudes:guild_crafting`
   (`GuildShapedRecipe`, mismo JSON que una receta con forma), cuadrícula 3×3 propia (`GuildDeskScreenHandler`

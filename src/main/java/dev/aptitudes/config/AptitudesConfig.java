@@ -111,6 +111,19 @@ public class AptitudesConfig {
 	public double secondaryRoleXpMultiplier = 0.5;
 	/** Puntos de árbol de un rol = 1 + nivel / rolePointsEveryLevels. */
 	public int rolePointsEveryLevels = 3;
+	// ---------- Combos (v28) ----------
+	public boolean combosEnabled = true;
+	/** Segundos máximos entre golpes para mantener el combo. */
+	public double comboWindowSeconds = 2.5;
+	/** Daño extra por golpe de combo (0.03 = +3 %). */
+	public double comboDamagePerHit = 0.03;
+	/** Tope de la bonificación de combo (0.15 = +15 %). */
+	public double comboMaxBonus = 0.15;
+	/** Golpes necesarios para que el siguiente sea un remate. */
+	public int comboFinisherHits = 5;
+	/** Espera mínima entre remates, en segundos. */
+	public double comboFinisherCooldownSeconds = 4.0;
+
 	/** v23: puntos de árbol extra al evolucionar a Maestro (para la fila nueva de 5 nodos × 2 rangos). */
 	public int masterBonusPoints = 10;
 	/** v23: puntos de árbol extra al evolucionar a Definitivo (fila nueva de 5 nodos × 1 rango). */
@@ -274,6 +287,11 @@ public class AptitudesConfig {
 		c.secondaryRoleXpMultiplier = Math.max(0.0, Math.min(1.0, c.secondaryRoleXpMultiplier));
 		c.rolePointsEveryLevels = clamp(c.rolePointsEveryLevels, 1, 100);
 		c.masterBonusPoints = clamp(c.masterBonusPoints, 0, 100);
+		c.comboWindowSeconds = Math.max(0.25, Math.min(30.0, c.comboWindowSeconds));
+		c.comboDamagePerHit = Math.min(1.0, c.comboDamagePerHit);
+		c.comboMaxBonus = Math.min(2.0, c.comboMaxBonus);
+		c.comboFinisherHits = clamp(c.comboFinisherHits, 2, 50);
+		c.comboFinisherCooldownSeconds = Math.min(600.0, c.comboFinisherCooldownSeconds);
 		c.ultimateBonusPoints = clamp(c.ultimateBonusPoints, 0, 100);
 		c.roleChangeCooldownMinutes = clamp(c.roleChangeCooldownMinutes, 0, 100_000);
 		c.baseMaxEnergy = Math.max(1.0, c.baseMaxEnergy);

@@ -23,6 +23,7 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playS2C().register(RoleSyncPayload.ID, RoleSyncPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(EnergyPayload.ID, EnergyPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(CooldownPayload.ID, CooldownPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(ComboPayload.ID, ComboPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(MorphPayload.ID, MorphPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(FormSyncPayload.ID, FormSyncPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(UniqueSyncPayload.ID, UniqueSyncPayload.CODEC);

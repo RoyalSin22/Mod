@@ -17,6 +17,7 @@ reescribir las existentes (JUnit 4):
 | `ability/CooldownBookTest` | Cuenta atrás y caducidad; sobrevive a guardar/cargar; `tryStart`; valores corruptos no bloquean para siempre; tope de entradas |
 | `world/TemporaryBlockScheduleTest` | Caducidad por tiempo de juego (también tras reinicio); quitar/consultar; tope por mundo |
 | `morph/MorphSizeRulesTest` | Mob pequeño conserva su tamaño; mob enorme acotado; mínimos con valores diminutos o inválidos |
+| `logic/ComboCounterTest` | Cadena dentro de la ventana y caducidad; remate con umbral y espera; bonificación con tope; contador acotado |
 | `role/LoadoutCodecTest` | Formato antiguo de 2 bits leído igual; formato nuevo con 8 activas; índices fuera de rango |
 | `role/EvolutionPointsTest` | Puntos extra por evolución (+10/+5), constructor antiguo sin extra, negativos ignorados, sin desbordamiento |
 | `logic/XpDiminishingTest` | Multiplicador (completo hasta el umbral, decrece hasta el suelo), redondeo, ventana deslizante por jugador y fuente, granja frente a juego normal, memoria acotada |
@@ -91,6 +92,9 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
     varias; al cerrar, los ingredientes vuelven al inventario. Un aldeano sigue tomándola como bloque de
     trabajo. En el grimorio, la receta dice «Mesa del gremio».
 21. Atributos v27 (con un `config/aptitudes.json` nuevo): 10 puntos en Vigor dan +7 de vida (antes +10).
+22. Combos v28: golpea zombis seguidos → «×2…×5» junto a la mira y más daño; el 6.º golpe hace el remate de tu
+    categoría y aparece «¡REMATE!». Espera 3 s → el contador desaparece. Recibe un golpe fuerte → se rompe.
+    Contra otro jugador no cuenta. Con el Asesino, el recurso Combo sube el doble.
 14. Escala de interfaz 4 (o ventana pequeña): abrir la pantalla de roles (J) → aparece una barra a la
     derecha; rueda fuera del árbol o RePág/AvPág hasta ver «Hecho»; el zoom del árbol no cambia.
 15. En el Nether, sobornar a un piglin (Soborno) → deja de atacar en menos de medio segundo. Con el

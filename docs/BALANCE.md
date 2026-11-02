@@ -114,6 +114,12 @@ balance general sin validación). Para activarlo: `"attributeScaling": "SOFTCAP"
   (`pointsPerSkillLevel = 0`); solo si un servidor activa esa opción subirían en
   `maxSkillLevel × pointsPerSkillLevel`.
 
+## 4b. Combos (v28)
+
++3 % de daño por golpe de combo hasta +15 %, sumado al multiplicador del golpe directo y por tanto sujeto al
+tope global ×6. Remate: 6 + golpes del combo de daño (de 11 en adelante), ×1,5 en la ejecución bajo el 40 % de
+vida, ×0,6 a los objetivos secundarios. Espera de 4 s entre remates. No cuenta contra jugadores.
+
 ## 5. Árbol de roles
 
 **v23 — filas de evolución.** Pasivas: valor de senda ×1,5 por rango en Maestro (2 rangos ⇒ el de una senda

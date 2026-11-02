@@ -115,6 +115,8 @@ public class AptitudesClient implements ClientModInitializer {
 				(payload, context) -> ClientRoleState.onResources(payload));
 		ClientPlayNetworking.registerGlobalReceiver(CooldownPayload.ID,
 				(payload, context) -> ClientRoleState.onCooldown(payload));
+		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.ComboPayload.ID,
+				(payload, context) -> dev.aptitudes.client.hud.ComboHud.onCombo(payload));
 
 		ClientPlayNetworking.registerGlobalReceiver(MorphPayload.ID,
 				(payload, context) -> ClientMorphs.set(payload.player(), payload.typeId()));
@@ -136,6 +138,7 @@ public class AptitudesClient implements ClientModInitializer {
 
 		HudRenderCallback.EVENT.register(AbilityHud::render);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.ClientFx::renderHud);
+		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.ComboHud::render);
 		net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents.AFTER_ENTITIES.register(
 				dev.aptitudes.client.hud.ClientFx::renderWorld);
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.MechanicPayload.ID,

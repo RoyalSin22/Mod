@@ -91,3 +91,14 @@ y recetas (`data/aptitudes/recipe/*.json`).
 **Importante:** el archivo `config/aptitudes.json` se crea la primera vez con los valores de ese momento y
 no se actualiza solo. Para pasar a los valores nuevos, borra esas 8 líneas (o el archivo entero, perdiendo
 los ajustes propios) y usa `/aptitudes admin reload` o reinicia.
+
+## Combos (v28)
+
+| Opción | Defecto | Validación | Descripción |
+|---|---|---|---|
+| `combosEnabled` | true | — | Activa el sistema de combos. |
+| `comboWindowSeconds` | 2.5 | [0,25, 30] | Segundos máximos entre golpes para mantener el combo. |
+| `comboDamagePerHit` | 0.03 | [0, 1] | Daño extra por golpe de combo. |
+| `comboMaxBonus` | 0.15 | [0, 2] | Tope de la bonificación de combo (dentro del tope global `maxDamageMultiplier`). |
+| `comboFinisherHits` | 5 | [2, 50] | Golpes para que el siguiente sea un remate. |
+| `comboFinisherCooldownSeconds` | 4.0 | [0, 600] | Espera mínima entre remates. |
