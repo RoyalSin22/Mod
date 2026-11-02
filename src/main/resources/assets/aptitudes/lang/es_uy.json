@@ -1332,6 +1332,7 @@
 	"screen.aptitudes.node.mechanic": "Mecánica del rol",
 	"screen.aptitudes.node.reactive": "Pasiva reactiva",
 	"screen.aptitudes.node.needs": "Requiere: %s",
+	"screen.aptitudes.node.legend_taken": "La tiene %s (legendarias exclusivas)",
 	"aptitudes.role.equipped": "%s equipada en la ranura %s",
 	"aptitudes.mech.counter_ready": "¡Reflejos! Tu siguiente golpe hará +50 %%",
 	"aptitudes.mech.free_cast": "Cargas arcanas: hechizo gratis",

@@ -1332,6 +1332,7 @@
 	"screen.aptitudes.node.mechanic": "Role mechanic",
 	"screen.aptitudes.node.reactive": "Reactive passive",
 	"screen.aptitudes.node.needs": "Requires: %s",
+	"screen.aptitudes.node.legend_taken": "Taken by %s (exclusive legendaries)",
 	"aptitudes.role.equipped": "%s equipped in slot %s",
 	"aptitudes.mech.counter_ready": "Reflexes! Your next hit deals +50%%",
 	"aptitudes.mech.free_cast": "Arcane charges: free spell",

@@ -79,6 +79,8 @@ public final class UniqueManager {
 		UniqueSkill owned = state.skillOf(player.getUuid());
 		if (owned != null && owned != skill) return RoleManager.UpgradeResult.LEGEND_LIMIT;
 		state.assign(skill, player.getUuid(), player.getGameProfile().getName());
+		// Los demás jugadores deben ver en su árbol que la legendaria ya tiene dueño.
+		if (holder == null) syncAll(player.getServer());
 		return RoleManager.UpgradeResult.OK;
 	}
 
@@ -87,10 +89,15 @@ public final class UniqueManager {
 		if (!Aptitudes.config().legendaryExclusive || player.getServer() == null) return;
 		UniqueState state = UniqueState.get(player.getServer());
 		RoleData data = RoleManager.get(player);
+		boolean released = false;
 		for (UniqueSkill skill : UniqueSkill.values()) {
 			UniqueState.Holder h = state.holder(skill);
-			if (h != null && h.uuid().equals(player.getUuid()) && data.rank(legendNode(skill.role())) <= 0) state.release(skill);
+			if (h != null && h.uuid().equals(player.getUuid()) && data.rank(legendNode(skill.role())) <= 0) {
+				state.release(skill);
+				released = true;
+			}
 		}
+		if (released) syncAll(player.getServer()); // la legendaria vuelve a estar libre para todos
 	}
 
 	/** Id del nodo legendario de un rol. */
@@ -337,7 +344,8 @@ public final class UniqueManager {
 		}
 		UniqueSkill own = skillOf(player);
 		LAST_PROGRESS.put(player.getUuid(), progress);
-		ServerPlayNetworking.send(player, new UniqueSyncPayload(holders, progress, own == null ? -1 : own.ordinal()));
+		ServerPlayNetworking.send(player, new UniqueSyncPayload(holders, progress, own == null ? -1 : own.ordinal(),
+				Aptitudes.config().legendaryExclusive));
 	}
 
 	private static void sendProgressIfChanged(ServerPlayerEntity player) {

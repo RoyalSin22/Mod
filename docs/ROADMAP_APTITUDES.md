@@ -1,12 +1,12 @@
 # Roadmap de Aptitudes
 
-Estado sincronizado con el código de la rama `feature/aptitudes-mod`.
+Estado sincronizado con el código de `main` (la v15 está en `feature/xp-diminishing-fishing`).
 Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fabric API 0.116.6 · Loom 1.10 · Java 21**.
 
 ## Estado real
 
-### Implementado (compilado en el PC del autor hasta la v11; v12-v13 y este bloque pendientes de compilar)
-- Habilidades por uso (8) con hitos cada 10 niveles.
+### Implementado (compilado en el PC del autor hasta la v15 incluida)
+- Habilidades por uso (9, con Pesca desde la v15) con hitos cada 10 niveles.
 - Atributos Souls (8) comprados en la Hoguera con XP vanilla; afinidad por rol; mancha de XP al morir.
 - 20 roles en 5 categorías, principal + secundario, árbol de 23 nodos + legendario, 3 Sendas (2 elegibles),
   4 activas por rol (2 equipadas), mecánica propia, 2 reactivas, recurso de rol, evolución Maestro/Definitivo
@@ -17,7 +17,7 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
   estructuras (torres, santuarios, campamentos), aldeano de gremio.
 - HUD configurable, efectos visuales, árbol arrastrable con zoom.
 
-### Pedidos del usuario implementados en el bloque v14 (pendientes de compilar en el PC)
+### Pedidos del usuario implementados en el bloque v14 (compilado)
 - **Grimorio de Aptitudes**: guía con 18 capítulos (Hoguera, atributos, habilidades, roles, árbol,
   evolución, armas, Elementalista, armaduras, objetos de alma, accesorios, élites, estructuras, gremio,
   recetas, botín, teclas). Se entrega una vez al entrar; receta libro + pepita de oro.
@@ -70,9 +70,11 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 - **Fórmulas principales:** no se cambian por defecto; las alternativas quedan como opciones documentadas.
 
 ## Problemas conocidos / pendientes
-- Las v12, v13 y este bloque no se han compilado contra Minecraft: pueden aparecer errores de API.
-- La pantalla del árbol no conoce `legendaryExclusive`: el botón Mejorar se ve activo y el servidor
-  rechaza con mensaje si otro jugador ya la tiene.
+- Hasta la v15 todo compila en el PC del autor; falta probar en partida (ver docs/TESTING.md).
+- ~~La pantalla del árbol no conoce `legendaryExclusive`~~ **Corregido (v15.1):** la sincronización de
+  legendarias incluye el modo exclusivo; el botón Mejorar se desactiva y la ficha del nodo dice quién la
+  tiene o que ya tienes otra. Al reservar o liberar una legendaria se avisa a todos los jugadores. El
+  servidor sigue validando (`claimLegend`).
 - `UniqueState` puede contener dueños antiguos de antes de la v12: si se activa `legendaryExclusive`,
   liberar con `/unique revoke <legendaria>` los que sobren.
 - Clases grandes (`RolesScreen` 850 líneas, `NewRoles` 900): dividir solo cuando se toquen por otro motivo.

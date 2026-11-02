@@ -7,9 +7,10 @@ import net.minecraft.network.packet.CustomPayload;
 
 /**
  * Servidor → cliente: dueño de cada habilidad única ("" = libre), progreso propio
- * en cada gesta y la habilidad que posee el jugador (-1 = ninguna).
+ * en cada gesta, la habilidad que posee el jugador (-1 = ninguna) y si el servidor usa
+ * legendarias exclusivas ({@code legendaryExclusive}), para que el árbol muestre el bloqueo.
  */
-public record UniqueSyncPayload(String[] holders, int[] progress, int ownSkill) implements CustomPayload {
+public record UniqueSyncPayload(String[] holders, int[] progress, int ownSkill, boolean exclusive) implements CustomPayload {
 	public static final Id<UniqueSyncPayload> ID = new Id<>(Aptitudes.id("unique_sync"));
 	public static final PacketCodec<PacketByteBuf, UniqueSyncPayload> CODEC =
 			PacketCodec.of(UniqueSyncPayload::write, UniqueSyncPayload::read);
@@ -20,6 +21,7 @@ public record UniqueSyncPayload(String[] holders, int[] progress, int ownSkill) 
 		buf.writeVarInt(progress.length);
 		for (int p : progress) buf.writeVarInt(p);
 		buf.writeVarInt(ownSkill);
+		buf.writeBoolean(exclusive);
 	}
 
 	private static UniqueSyncPayload read(PacketByteBuf buf) {
@@ -31,7 +33,8 @@ public record UniqueSyncPayload(String[] holders, int[] progress, int ownSkill) 
 		if (m < 0 || m > 64) throw new IllegalArgumentException("Longitud inválida: " + m);
 		int[] progress = new int[m];
 		for (int i = 0; i < m; i++) progress[i] = buf.readVarInt();
-		return new UniqueSyncPayload(holders, progress, buf.readVarInt());
+		int own = buf.readVarInt();
+		return new UniqueSyncPayload(holders, progress, own, buf.readBoolean());
 	}
 
 	@Override

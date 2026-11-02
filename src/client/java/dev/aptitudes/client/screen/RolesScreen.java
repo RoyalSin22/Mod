@@ -254,7 +254,32 @@ public class RolesScreen extends Screen {
 		return active && rank < node.maxRank() && data.level(role) >= node.levelForRank(rank + 1)
 				&& (node.prerequisite() == null || data.rank(node.prerequisite()) > 0)
 				&& availablePoints(data, role) > 0
-				&& !pathLocked(data, node);
+				&& !pathLocked(data, node)
+				&& legendBlock(node) == null;
+	}
+
+	/**
+	 * Legendarias exclusivas: motivo por el que no se puede aprender (null si se puede). Solo es una
+	 * ayuda visual con los datos sincronizados; el servidor vuelve a validar al mejorar.
+	 */
+	@Nullable
+	private static Text legendBlock(RoleNode node) {
+		if (node.kind() != RoleNode.Kind.LEGENDARY) return null;
+		dev.aptitudes.network.UniqueSyncPayload uniques = ClientExtraState.uniques();
+		if (uniques == null || !uniques.exclusive()) return null;
+		dev.aptitudes.unique.UniqueSkill skill = dev.aptitudes.unique.UniqueSkill.forRole(node.role());
+		if (skill == null) return null;
+		int i = skill.ordinal();
+		String holder = i < uniques.holders().length ? uniques.holders()[i] : "";
+		var player = net.minecraft.client.MinecraftClient.getInstance().player;
+		String self = player != null ? player.getGameProfile().getName() : "";
+		if (!holder.isEmpty() && !holder.equals(self)) {
+			return Text.translatable("screen.aptitudes.node.legend_taken", holder);
+		}
+		if (uniques.ownSkill() >= 0 && uniques.ownSkill() != i) {
+			return Text.translatable("aptitudes.role.upgrade.legend_limit");
+		}
+		return null;
 	}
 
 	/** Solo 2 de las 3 sendas: un nodo de una tercera senda queda bloqueado. */
@@ -623,6 +648,10 @@ public class RolesScreen extends Screen {
 						RoleNode pre = RoleTree.get(v.node().prerequisite());
 						if (pre != null) lines.add(Text.translatable("screen.aptitudes.node.needs",
 								Text.translatable(pre.translationKey())).formatted(Formatting.RED));
+					}
+					if (data.rank(v.node().id()) <= 0) {
+						Text block = legendBlock(v.node());
+						if (block != null) lines.add(block.copy().formatted(Formatting.RED));
 					}
 				}
 				tooltip = lines;
