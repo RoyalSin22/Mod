@@ -29,11 +29,18 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 - **Efectos de impacto**: estallido del color del rol al golpear con habilidades, disparos y armas de rol;
   fogonazo e impacto en las armas de disparo.
 
+### v15 — Pesca y rendimiento decreciente (implementado)
+- **Pesca**: novena habilidad por uso. Sin mixins: se lee la estadística vanilla `FISH_CAUGHT`.
+  Pasivas: suerte y captura doble. Hitos: Paciencia (XP vanilla), Aletas (Gracia del delfín),
+  Tesoro hundido (5 %), Hijo del mar (Poder del conducto), Señor de las mareas (10 %, Corazón del mar).
+  Pantalla K: 5 filas de tarjetas de 40 px.
+- **Rendimiento decreciente de XP** por fuente repetida (Combate, Tiro con arco, Defensa y Pesca),
+  configurable y activo por defecto. Lógica pura en `XpDiminishing` con 5 pruebas.
+
 ### Propuestas (evaluadas, no implementadas)
-- Disciplinas nuevas: **Pesca** es la candidata (no hay ninguna habilidad equivalente). Requiere eventos de
-  pesca (mixin en `FishingBobberEntity`), curva, hitos y control anti-AFK.
-- Rendimiento decreciente de XP por fuente repetida (granjas de daño para Defensa).
 - Activar `attributeScaling = SOFTCAP` por defecto tras probarlo en el servidor.
+- Pesca: un hito que acorte el tiempo de picada requeriría un mixin en `FishingBobberEntity`; se descartó
+  en v15 para no añadir mixins.
 
 ## Cambios de este bloque (auditoría)
 

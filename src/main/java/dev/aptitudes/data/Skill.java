@@ -53,7 +53,12 @@ public enum Skill {
 			bonus("movement_speed", EntityAttributes.GENERIC_MOVEMENT_SPEED, Operation.ADD_MULTIPLIED_BASE,
 					c -> c.agilitySpeedPerLevel, true),
 			bonus("safe_fall", EntityAttributes.GENERIC_SAFE_FALL_DISTANCE, Operation.ADD_VALUE,
-					c -> c.agilitySafeFallPerLevel, false));
+					c -> c.agilitySafeFallPerLevel, false)),
+	// Al final del enum: los datos se guardan por nombre y la sincronización por orden, así que
+	// añadirla aquí no altera a las demás habilidades.
+	FISHING(Items.FISHING_ROD,
+			bonus("luck", EntityAttributes.GENERIC_LUCK, Operation.ADD_VALUE, c -> c.fishingLuckPerLevel, false),
+			bonus("double_catch", null, null, c -> c.fishingDoubleCatchPerLevel, true));
 
 	/**
 	 * Bonificación pasiva de una habilidad: {@code nivel × perLevel}. Si {@code attribute}

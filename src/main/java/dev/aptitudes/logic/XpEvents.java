@@ -43,6 +43,10 @@ public final class XpEvents {
 
 	/** Último valor de la estadística vanilla SPRINT_ONE_CM ya convertido en XP. */
 	private static final Map<UUID, Integer> sprintBaseline = new HashMap<>();
+	/** Último valor de la estadística vanilla FISH_CAUGHT ya convertido en XP. */
+	private static final Map<UUID, Integer> fishBaseline = new HashMap<>();
+	/** Rendimiento decreciente por fuente repetida. */
+	private static final XpDiminishing DIMINISHING = new XpDiminishing();
 
 	private XpEvents() {
 	}
@@ -56,19 +60,22 @@ public final class XpEvents {
 			if (entity instanceof PlayerEntity && !cfg.awardXpForPlayerKills) return;
 
 			Entity direct = source.getSource();
+			String victim = net.minecraft.entity.EntityType.getId(entity.getType()).toString();
 			if (direct instanceof ProjectileEntity) {
-				ProgressManager.addXp(player, Skill.ARCHERY,
-						scaled(entity.getMaxHealth(), cfg.archeryXpPerMaxHealth));
+				ProgressManager.addXp(player, Skill.ARCHERY, diminished(player, "archery/" + victim,
+						scaled(entity.getMaxHealth(), cfg.archeryXpPerMaxHealth)));
 			} else if (direct == player) {
-				ProgressManager.addXp(player, Skill.COMBAT,
-						scaled(entity.getMaxHealth(), cfg.combatXpPerMaxHealth));
+				ProgressManager.addXp(player, Skill.COMBAT, diminished(player, "combat/" + victim,
+						scaled(entity.getMaxHealth(), cfg.combatXpPerMaxHealth)));
 			}
 		});
 
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> {
 			if (entity instanceof ServerPlayerEntity player && amount > 0
 					&& source.getAttacker() instanceof LivingEntity attacker && attacker != player) {
-				ProgressManager.addXp(player, Skill.DEFENSE, scaled(amount, Aptitudes.config().defenseXpPerDamage));
+				ProgressManager.addXp(player, Skill.DEFENSE, diminished(player,
+						"defense/" + net.minecraft.entity.EntityType.getId(attacker.getType()).toString(),
+						scaled(amount, Aptitudes.config().defenseXpPerDamage)));
 			}
 			return true; // nunca cancelamos el daño
 		});
@@ -88,10 +95,41 @@ public final class XpEvents {
 		});
 
 		ServerTickEvents.END_SERVER_TICK.register(XpEvents::tickAgility);
+		ServerTickEvents.END_SERVER_TICK.register(XpEvents::tickFishing);
 	}
 
 	public static void forget(ServerPlayerEntity player) {
 		sprintBaseline.remove(player.getUuid());
+		fishBaseline.remove(player.getUuid());
+		DIMINISHING.forget(player.getUuid());
+	}
+
+	/** XP reducida si la misma fuente se repite demasiado en la ventana (ver {@link XpDiminishing}). */
+	static int diminished(ServerPlayerEntity player, String sourceKey, int amount) {
+		AptitudesConfig cfg = Aptitudes.config();
+		if (!cfg.xpDiminishingEnabled || amount <= 0) return amount;
+		long now = player.getServer() != null ? player.getServer().getTicks() : 0L;
+		return DIMINISHING.scale(player.getUuid(), sourceKey, amount, now,
+				cfg.xpDiminishingWindowSeconds * 20L, cfg.xpDiminishingThreshold, cfg.xpDiminishingFloor);
+	}
+
+	/**
+	 * Cada segundo convierte los peces capturados (estadística vanilla FISH_CAUGHT) en XP de Pesca.
+	 * Sin mixins: compatible con otros mods de pesca. La basura y los tesoros no suben la estadística.
+	 */
+	private static void tickFishing(MinecraftServer server) {
+		if (server.getTicks() % 20 != 10) return; // desfasado de la agilidad
+		int xpPerCatch = Aptitudes.config().fishingXpCatch;
+		for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+			int caught = player.getStatHandler().getStat(Stats.CUSTOM, Stats.FISH_CAUGHT);
+			Integer baseline = fishBaseline.put(player.getUuid(), caught);
+			if (baseline == null || caught <= baseline) continue; // primera lectura o estadística reseteada
+			int fish = Math.min(caught - baseline, 16); // tope defensivo por segundo
+			for (int i = 0; i < fish; i++) {
+				ProgressManager.addXp(player, Skill.FISHING, diminished(player, "fishing", xpPerCatch));
+				SkillMilestones.onFishCaught(player);
+			}
+		}
 	}
 
 	private static void onBlockBroken(World world, PlayerEntity player, BlockPos pos, BlockState state,

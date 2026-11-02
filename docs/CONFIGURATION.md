@@ -30,6 +30,22 @@ siempre muestra lo que valida el servidor aunque su archivo local sea distinto.
 | `maxDamageMultiplier` | 6.0 | Tope del multiplicador de daño combinado del mod (0 = sin tope). |
 | `legendaryExclusive` | false | true: cada legendaria solo la puede tener un jugador del servidor y cada jugador solo una. |
 
+## Opciones de Pesca y rendimiento decreciente (v15)
+
+| Opción | Defecto | Validación | Descripción |
+|---|---|---|---|
+| `fishingXpCatch` | 12 | ≥ 0 | XP de Pesca por pez capturado (basura y tesoros no cuentan). |
+| `fishingLuckPerLevel` | 0.02 | ≥ 0 | +suerte por nivel (+1 a nivel 50); mejora el botín de pesca vanilla. |
+| `fishingDoubleCatchPerLevel` | 0.004 | [0, 1] | Probabilidad de captura doble por nivel (20 % a nivel 50). |
+| `xpDiminishingEnabled` | true | — | Activa el rendimiento decreciente por fuente repetida. |
+| `xpDiminishingWindowSeconds` | 60 | [1, 86 400] | Ventana deslizante. |
+| `xpDiminishingThreshold` | 20 | [1, 100 000] | Eventos de la misma fuente con XP completa dentro de la ventana. |
+| `xpDiminishingFloor` | 0.1 | [0, 1] | Fracción mínima de XP por evento. |
+
+Fuentes afectadas: Combate y Tiro con arco (por tipo de criatura abatida), Defensa (por tipo de atacante)
+y Pesca. Minería, Excavación, Tala, Agricultura y Agilidad no se ven afectadas: repetir la misma acción es
+su forma normal de juego.
+
 ## Opciones de versiones anteriores (resumen)
 
 | Opción | Defecto | Descripción |

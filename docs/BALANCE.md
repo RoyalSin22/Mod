@@ -80,9 +80,17 @@ balance general sin validación). Para activarlo: `"attributeScaling": "SOFTCAP"
 
 - XP para subir: `xpBase · (nivel+1)^xpExponent` (20 · n^1,35), nivel máximo 50.
 - Las fuentes de XP son acciones reales (picar, talar, matar, recibir daño, esprintar…).
-  **Riesgo conocido:** recibir daño de un mob da XP de Defensa; una granja de daño controlado puede
-  subir Defensa sin riesgo real. Propuesta (no implementada): rendimientos decrecientes por fuente
-  repetida en una ventana de tiempo.
+- **Rendimiento decreciente por fuente repetida (v15, implementado).** Por jugador y fuente
+  (`combat/<criatura>`, `archery/<criatura>`, `defense/<atacante>`, `fishing`) se cuentan los eventos de
+  la ventana (60 s). Multiplicador: `m = 1` si `n ≤ U`; si no, `m = max(suelo, U / n)`, con U = 20 y
+  suelo = 0,1. Ejemplos: 20 eventos/min → 100 %; 40 → 50 %; 200 → 10 %. En una granja de 200 muertes
+  por minuto se obtiene aproximadamente un 33 % de la XP (medido en `XpDiminishingTest`). El juego normal
+  (menos de 20 muertes del mismo tipo por minuto) no cambia. Memoria acotada: 1024 eventos por fuente y
+  limpieza al desconectar.
+- **Pesca (v15).** XP por pez (12), pasivas de suerte y captura doble, hitos 10–50. Lee la estadística
+  vanilla `FISH_CAUGHT` una vez por segundo (sin mixins). Efecto global: con una habilidad más, los puntos
+  de atributo que se pueden ganar suben en `maxSkillLevel × pointsPerSkillLevel`; el tope por atributo
+  (`maxPointsPerAttribute`) no cambia.
 
 ## 5. Árbol de roles
 

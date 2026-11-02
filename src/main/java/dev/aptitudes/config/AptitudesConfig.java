@@ -50,6 +50,18 @@ public class AptitudesConfig {
 	public double archeryXpPerMaxHealth = 0.6;
 	public double defenseXpPerDamage = 1.0;
 	public int agilityXpPer10Blocks = 2;
+	/** Pesca: XP por cada pez capturado (estadística vanilla FISH_CAUGHT; basura y tesoros no cuentan). */
+	public int fishingXpCatch = 12;
+
+	// ---------- Rendimiento decreciente por fuente repetida (anti-granjas / anti-AFK) ----------
+	/** Si está activo, Combate/Tiro con arco (por tipo de criatura), Defensa (por tipo de atacante) y Pesca pierden XP al repetir la misma fuente. */
+	public boolean xpDiminishingEnabled = true;
+	/** Ventana deslizante en segundos. */
+	public int xpDiminishingWindowSeconds = 60;
+	/** Eventos de la misma fuente dentro de la ventana que dan XP completa. */
+	public int xpDiminishingThreshold = 20;
+	/** XP mínima (fracción) por evento aunque se repita mucho la fuente. */
+	public double xpDiminishingFloor = 0.1;
 
 	// ---------- Bonificaciones pasivas por nivel de habilidad ----------
 	/** Minería/Excavación/Tala/Agricultura: +X velocidad de rotura por nivel (0.02 = +2 %). */
@@ -66,6 +78,10 @@ public class AptitudesConfig {
 	public double farmingLuckPerLevel = 0.04;
 	public double defenseArmorPerLevel = 0.06;
 	public double defenseExplosionPerLevel = 0.01;
+	/** Pesca: +suerte por nivel (afecta al botín de pesca vanilla). */
+	public double fishingLuckPerLevel = 0.02;
+	/** Pesca: probabilidad de captura doble por nivel (0.004 = 20 % a nivel 50). */
+	public double fishingDoubleCatchPerLevel = 0.004;
 
 	// ---------- Valor de cada punto de atributo ----------
 	public double vigorHealthPerPoint = 1.0;
@@ -214,6 +230,10 @@ public class AptitudesConfig {
 		c.primaryAffinityBonus = Math.min(5.0, c.primaryAffinityBonus);
 		c.secondaryAffinityBonus = Math.min(5.0, c.secondaryAffinityBonus);
 		c.farmingExtraDropChancePerLevel = Math.min(1.0, c.farmingExtraDropChancePerLevel);
+		c.fishingDoubleCatchPerLevel = Math.min(1.0, c.fishingDoubleCatchPerLevel);
+		c.xpDiminishingWindowSeconds = clamp(c.xpDiminishingWindowSeconds, 1, 86_400);
+		c.xpDiminishingThreshold = clamp(c.xpDiminishingThreshold, 1, 100_000);
+		c.xpDiminishingFloor = Math.min(1.0, c.xpDiminishingFloor);
 		c.levelCostDivisor = Math.max(1, c.levelCostDivisor);
 		c.levelCostMax = Math.max(1, c.levelCostMax);
 		c.soulLevelsPerPoint = Math.max(1, c.soulLevelsPerPoint);

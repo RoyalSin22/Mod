@@ -378,8 +378,9 @@ public class AptitudesScreen extends Screen {
 		for (int i = 0; i < skills.length; i++) {
 			Skill skill = skills[i];
 			int x = left + 10 + (i % 2) * 210;
-			int y = top + 46 + (i / 2) * 46;
-			UiStyle.panel(ctx, x, y, 200, 42);
+			// 9 habilidades en 5 filas: paso 42 px y tarjetas de 40 px para caber en H = 262.
+			int y = top + 46 + (i / 2) * 42;
+			UiStyle.panel(ctx, x, y, 200, 40);
 			ctx.drawItem(skill.iconStack(), x + 5, y + 5);
 			int level = data.level(skill);
 			boolean maxed = level >= rules.maxLevel();
@@ -403,7 +404,7 @@ public class AptitudesScreen extends Screen {
 			ctx.fill(x + 26, y + 15, x + 26 + filled, y + 18, maxed ? UiStyle.GOLD : 0xFF4CAF50);
 			// Pasivas actuales
 			int bx = x + 6;
-			int by = y + 24;
+			int by = y + 23;
 			List<Skill.SkillBonus> bonuses = skill.bonuses();
 			for (int b = 0; b < bonuses.size(); b++) {
 				Skill.SkillBonus bonus = bonuses.get(b);
@@ -414,7 +415,7 @@ public class AptitudesScreen extends Screen {
 				ctx.drawText(textRenderer, line, bx, by, value > 0 ? UiStyle.UP : UiStyle.MUTED, false);
 				bx += w + 8;
 			}
-			if (mouseX >= x && mouseX < x + 200 && mouseY >= y && mouseY < y + 42) {
+			if (mouseX >= x && mouseX < x + 200 && mouseY >= y && mouseY < y + 40) {
 				List<Text> lines = new java.util.ArrayList<>();
 				lines.add(Text.translatable(skill.translationKey()));
 				lines.add(Text.translatable(skill.descriptionKey()).formatted(net.minecraft.util.Formatting.GRAY));

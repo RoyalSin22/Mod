@@ -12,6 +12,7 @@ reescribir las existentes (JUnit 4):
 | `logic/AttributeScalingTest` | LINEAR = original; SOFTCAP idéntico hasta 40; SATURATION con pendiente inicial ≈ 1 y asíntota; monotonía y nunca por encima del lineal; umbrales inválidos |
 | `role/RoleRulesTest` | Puntos de árbol (31 a nivel 30), crecimiento de XP, intervalo 0 sin división por cero, niveles enormes sin desbordamiento |
 | `data/ProgressRulesTest` | Curva de XP de habilidades positiva y creciente; configuración extrema limitada al rango de `int` |
+| `logic/XpDiminishingTest` | Multiplicador (completo hasta el umbral, decrece hasta el suelo), redondeo, ventana deslizante por jugador y fuente, granja frente a juego normal, memoria acotada |
 
 Ejecución: `.\gradlew.bat test` (también se ejecutan en `.\gradlew.bat build`).
 
@@ -48,3 +49,8 @@ calculadas), no del código; se corrigieron y se documentan en el informe del bl
 3. `legendaryExclusive = true`: dos jugadores intentan aprender la misma legendaria → solo uno.
 4. `attributeScaling = SOFTCAP`: con más de 40 puntos, la pantalla y el efecto real crecen más despacio.
 5. Romper bloques con niveles altos de Minería: sin bloques fantasma.
+6. Pesca: pescar peces sube Pesca (toast de XP); la basura no. `/aptitudes admin` para subir a 50 y
+   comprobar Gracia del delfín al nadar, Poder del conducto en el agua y tesoros.
+7. Rendimiento decreciente: matar más de 20 mobs del mismo tipo en un minuto → el toast de XP baja;
+   cambiar de tipo de mob → XP completa.
+8. Pantalla K: las 9 tarjetas caben sin salirse del panel (escalas de GUI 2, 3 y automática).

@@ -101,6 +101,7 @@ public final class SkillMilestones {
 			int combat = prog.getLevel(Skill.COMBAT);
 			int defense = prog.getLevel(Skill.DEFENSE);
 			int agility = prog.getLevel(Skill.AGILITY);
+			int fishing = prog.getLevel(Skill.FISHING);
 			boolean lowHealth = p.getHealth() < p.getMaxHealth() * 0.3f;
 
 			if (mining >= 10 && p.getBlockY() < 40) quiet(p, StatusEffects.NIGHT_VISION, 260, 0);
@@ -124,7 +125,56 @@ public final class SkillMilestones {
 			}
 			if (agility >= 10) quiet(p, StatusEffects.JUMP_BOOST, 40, 0);
 			if (agility >= 30 && p.isSprinting()) quiet(p, StatusEffects.SPEED, 40, 0);
+			if (fishing >= 20 && p.isSwimming()) quiet(p, StatusEffects.DOLPHINS_GRACE, 40, 0);
+			if (fishing >= 40 && p.isTouchingWater()) quiet(p, StatusEffects.CONDUIT_POWER, 260, 0);
 		}
+	}
+
+	// ------------------------------------------------------------- Pesca
+
+	/**
+	 * Llamado por cada pez capturado (ver XpEvents#tickFishing). Captura doble por nivel,
+	 * XP vanilla extra (10), tesoro hundido (30) y Señor de las mareas (50).
+	 */
+	public static void onFishCaught(ServerPlayerEntity p) {
+		PlayerProgress prog = ProgressManager.get(p);
+		int fishing = prog.getLevel(Skill.FISHING);
+		if (fishing <= 0) return;
+		World world = p.getWorld();
+		double doubleChance = Math.min(1.0, fishing * Aptitudes.config().fishingDoubleCatchPerLevel);
+		if (world.random.nextDouble() < doubleChance) give(p, randomFish(world));
+		if (fishing >= 10) p.addExperience(2 + world.random.nextInt(3));
+		if (fishing >= 30) {
+			float chance = fishing >= 50 ? 0.10f : 0.05f;
+			if (world.random.nextFloat() < chance) {
+				give(p, seaTreasure(world, fishing >= 50));
+				world.playSound(null, p.getX(), p.getY(), p.getZ(), SoundEvents.ENTITY_PLAYER_LEVELUP,
+						SoundCategory.PLAYERS, 0.5f, 1.8f);
+			}
+		}
+	}
+
+	/** Distribución aproximada de la pesca vanilla de peces (60/25/13/2). */
+	private static ItemStack randomFish(World world) {
+		int roll = world.random.nextInt(100);
+		if (roll < 60) return new ItemStack(Items.COD);
+		if (roll < 85) return new ItemStack(Items.SALMON);
+		if (roll < 98) return new ItemStack(Items.TROPICAL_FISH);
+		return new ItemStack(Items.PUFFERFISH);
+	}
+
+	private static ItemStack seaTreasure(World world, boolean lord) {
+		int roll = world.random.nextInt(100);
+		if (lord && roll < 3) return new ItemStack(Items.HEART_OF_THE_SEA);
+		if (roll < 20) return new ItemStack(Items.NAUTILUS_SHELL);
+		if (roll < 35) return new ItemStack(Items.NAME_TAG);
+		if (roll < 50) return new ItemStack(Items.SADDLE);
+		if (roll < 70) return new ItemStack(Items.PRISMARINE_CRYSTALS, 2 + world.random.nextInt(3));
+		return new ItemStack(Items.EMERALD);
+	}
+
+	private static void give(ServerPlayerEntity p, ItemStack stack) {
+		p.getInventory().offerOrDrop(stack);
 	}
 
 	/** Minería 40: resalta (solo para el jugador) los minerales en 5 bloques. */
