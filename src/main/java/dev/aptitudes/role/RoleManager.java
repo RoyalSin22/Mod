@@ -26,7 +26,7 @@ public final class RoleManager {
 
 	/** Resultado de intentar subir un rango. */
 	public enum UpgradeResult { OK, UNKNOWN_NODE, ROLE_NOT_ACTIVE, MAX_RANK, LEVEL_TOO_LOW, MISSING_PREREQUISITE, NO_POINTS,
-		PATH_LOCKED }
+		PATH_LOCKED, LEGEND_TAKEN, LEGEND_LIMIT }
 
 	private RoleManager() {
 	}
@@ -260,6 +260,11 @@ public final class RoleManager {
 		RoleTree.PathSpec path = RoleTree.pathSpec(nodeId);
 		if (path != null && RoleTree.pathLocked(data::rank, node.role(), path.path())) {
 			return UpgradeResult.PATH_LOCKED; // solo 2 de las 3 sendas
+		}
+		// Legendarias exclusivas (opcional): validación autoritativa en el servidor y registro del dueño.
+		if (node.kind() == RoleNode.Kind.LEGENDARY && Aptitudes.config().legendaryExclusive) {
+			UpgradeResult legend = dev.aptitudes.unique.UniqueManager.claimLegend(player, node.role());
+			if (legend != UpgradeResult.OK) return legend;
 		}
 		data.setRank(nodeId, rank + 1);
 		refresh(player);

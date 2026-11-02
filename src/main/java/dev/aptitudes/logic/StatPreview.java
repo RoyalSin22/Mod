@@ -51,7 +51,9 @@ public final class StatPreview {
 		PlayerAttribute[] attrs = PlayerAttribute.values();
 		double[] slopes = new double[attrs.length];
 		for (PlayerAttribute a : attrs) {
-			double perPoint = ProgressManager.effectivePerPoint(player, a);
+			// Valor del SIGUIENTE punto: con escalado no lineal deja de ser constante.
+			double perPoint = ProgressManager.effectivePerPoint(player, a)
+					* ProgressManager.marginalPoint(ProgressManager.get(player).getAllocated(a));
 			switch (a) {
 				case MIND -> { slopes[a.ordinal()] = perPoint; continue; }
 				case INTELLIGENCE, FAITH -> { slopes[a.ordinal()] = 100 * perPoint; continue; }

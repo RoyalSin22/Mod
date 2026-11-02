@@ -85,6 +85,7 @@ public final class Minions {
 							String path, double value) {
 		EntityAttributeInstance instance = minion.getAttributeInstance(attribute);
 		if (instance == null || value == 0) return;
+		instance.removeModifier(Aptitudes.id(path)); // idempotente: añadir un id repetido lanza excepción en 1.21
 		instance.addPersistentModifier(new EntityAttributeModifier(Aptitudes.id(path), value, Operation.ADD_VALUE));
 	}
 }

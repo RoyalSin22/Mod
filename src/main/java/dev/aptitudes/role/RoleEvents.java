@@ -95,7 +95,7 @@ public final class RoleEvents {
 			return true;
 		});
 
-		// Muertes: Pacto oscuro, pruebas de evolución y jefes.
+		// Muertes: Comunión oscura, pruebas de evolución y jefes.
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
 			RolePassives.onNearbyDeath(entity);
 			if (source.getAttacker() instanceof ServerPlayerEntity killer && entity != killer

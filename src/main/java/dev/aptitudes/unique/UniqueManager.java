@@ -65,6 +65,34 @@ public final class UniqueManager {
 		return null;
 	}
 
+	/**
+	 * Modo exclusivo ({@code legendaryExclusive}): reserva la legendaria de {@code role} para el jugador.
+	 * Falla si otro jugador la tiene o si este ya tiene otra. Se ejecuta en el hilo del servidor, así que
+	 * dos peticiones simultáneas se procesan en orden y nunca hay dos dueños.
+	 */
+	public static RoleManager.UpgradeResult claimLegend(ServerPlayerEntity player, Role role) {
+		UniqueSkill skill = UniqueSkill.forRole(role);
+		if (skill == null || player.getServer() == null) return RoleManager.UpgradeResult.UNKNOWN_NODE;
+		UniqueState state = UniqueState.get(player.getServer());
+		UniqueState.Holder holder = state.holder(skill);
+		if (holder != null && !holder.uuid().equals(player.getUuid())) return RoleManager.UpgradeResult.LEGEND_TAKEN;
+		UniqueSkill owned = state.skillOf(player.getUuid());
+		if (owned != null && owned != skill) return RoleManager.UpgradeResult.LEGEND_LIMIT;
+		state.assign(skill, player.getUuid(), player.getGameProfile().getName());
+		return RoleManager.UpgradeResult.OK;
+	}
+
+	/** Modo exclusivo: libera las legendarias registradas a nombre del jugador cuyo nodo ya no tiene. */
+	private static void releaseLostLegends(ServerPlayerEntity player) {
+		if (!Aptitudes.config().legendaryExclusive || player.getServer() == null) return;
+		UniqueState state = UniqueState.get(player.getServer());
+		RoleData data = RoleManager.get(player);
+		for (UniqueSkill skill : UniqueSkill.values()) {
+			UniqueState.Holder h = state.holder(skill);
+			if (h != null && h.uuid().equals(player.getUuid()) && data.rank(legendNode(skill.role())) <= 0) state.release(skill);
+		}
+	}
+
 	/** Id del nodo legendario de un rol. */
 	public static String legendNode(Role role) {
 		return role.key() + "_legend";
@@ -167,6 +195,22 @@ public final class UniqueManager {
 
 	/** Comando: concede el nodo legendario de {@code skill} (rango 1 en el árbol de su rol). */
 	public static boolean give(ServerPlayerEntity player, UniqueSkill skill) {
+		if (Aptitudes.config().legendaryExclusive && player.getServer() != null) {
+			// El comando de administrador fuerza la asignación: se la quita al dueño anterior.
+			UniqueState state = UniqueState.get(player.getServer());
+			UniqueState.Holder previous = state.holder(skill);
+			if (previous != null && !previous.uuid().equals(player.getUuid())) {
+				state.release(skill);
+				ServerPlayerEntity old = player.getServer().getPlayerManager().getPlayer(previous.uuid());
+				if (old != null) {
+					RoleManager.get(old).setRank(legendNode(skill.role()), 0);
+					RoleManager.refresh(old);
+				}
+			}
+			UniqueSkill own = state.skillOf(player.getUuid());
+			if (own != null && own != skill) state.release(own);
+			state.assign(skill, player.getUuid(), player.getGameProfile().getName());
+		}
 		RoleManager.get(player).setRank(legendNode(skill.role()), 1);
 		RoleManager.refresh(player);
 		return true;
@@ -270,6 +314,7 @@ public final class UniqueManager {
 	}
 
 	public static void refreshAttributes(ServerPlayerEntity player) {
+		releaseLostLegends(player);
 		UniqueEffects.applyAttributes(player, skillOf(player));
 	}
 

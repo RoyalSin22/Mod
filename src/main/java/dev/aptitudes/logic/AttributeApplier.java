@@ -45,7 +45,8 @@ public final class AttributeApplier {
 		for (PlayerAttribute a : PlayerAttribute.values()) {
 			if (a.attribute() == null) continue; // Mente, Inteligencia y Fe se aplican en su propia lógica
 			set(player, a.attribute(), a.modifierId(),
-					progress.getAllocated(a) * ProgressManager.effectivePerPoint(player, a), a.operation());
+					ProgressManager.effectivePoints(progress.getAllocated(a)) * ProgressManager.effectivePerPoint(player, a),
+					a.operation());
 		}
 		for (Skill s : Skill.values()) {
 			List<Skill.SkillBonus> bonuses = s.bonuses();
