@@ -58,6 +58,8 @@ retematizaron (p. ej., «Talismán maldito»). **No cambies los ids de registro 
 
 ## 4. Política de Git (obligatoria)
 
+Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
+
 - Puedes inspeccionar el repositorio, crear ramas, consultar el historial y usar `git add`.
 - **Commit solo con autorización explícita del autor**, una vez por commit. Antes de pedirla, informa:
   1) archivos incluidos, 2) resumen, 3) resultado REAL de compilación y pruebas, 4) mensaje propuesto
@@ -66,6 +68,18 @@ retematizaron (p. ej., «Talismán maldito»). **No cambies los ids de registro 
 - **Nunca** uses `reset`, `clean`, `checkout` ni `restore` para descartar cambios, ni sobrescribas
   trabajo existente sin autorización. No reinicies el proyecto ni borres trabajo válido.
 - Trabaja en una rama propia (p. ej., `codex/<tema>`), nunca directamente en `main`.
+- **Si `git commit` o `git push` fallan, no improvises**: no reintentes con otros comandos, no cambies la
+  configuración de Git ni amplíes permisos. Copia el error exacto, deja los cambios preparados (`git add`)
+  y avisa al autor, que hará el commit desde su terminal.
+- **Trabajas en un worktree propio** (la app de Codex lo crea en `%USERPROFILE%\.codex\worktrees\…`). Al
+  terminar, indica en el informe la **ruta del worktree** y la **rama**, para que el autor haga el commit
+  y el push ahí antes de cerrar la tarea (si la tarea se cierra sin commit, el trabajo se pierde).
+- **Una versión por tarea y por rama.** No mezcles en el mismo directorio cambios de dos versiones.
+- **Formato**: respeta `.editorconfig` y `.gitattributes` (LF; Java con tabulación; idiomas JSON con
+  2 espacios). **No reformatees archivos existentes**: un cambio de sangría convierte 17 claves nuevas en
+  5 000 líneas de diferencia y provoca conflictos al integrar.
+- GitHub Actions (`.github/workflows/build.yml`) compila y prueba cada push: una rama solo se integra en
+  `main` con la marca ✔.
 
 ## 5. Reglas técnicas
 
@@ -87,7 +101,7 @@ retematizaron (p. ej., «Talismán maldito»). **No cambies los ids de registro 
   una fila en `docs/CONFIGURATION.md`. No cambies valores por defecto de balance sin preguntar.
 - **Idiomas**: añade cada clave en `en_us.json` y `es_es.json`; después **copia `es_es.json`** a `es_mx`,
   `es_ar`, `es_cl`, `es_ec`, `es_uy` y `es_ve` (son idénticos). Un `%` literal en un texto con argumentos
-  se escribe `%%`.
+  se escribe `%%`. Añade las claves **sin reformatear** el archivo (2 espacios, como está).
 - **Interfaz**: la pantalla K (`AptitudesScreen`) mide 430×262 y tiene exactamente 10 tarjetas (5×2): una
   habilidad nueva rompe la simetría. El grimorio lee las recetas del juego: no las copies en los textos.
 
