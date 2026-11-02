@@ -63,7 +63,7 @@ public final class SoulsManager {
 	}
 
 	/** Coste en niveles de XP de pasar del nivel de alma {@code level} al siguiente. */
-	public static int levelCost(int level) {
+	public static int levelCost(long level) {
 		AptitudesConfig c = Aptitudes.config();
 		return SoulsMath.levelCost(level, c.levelCostBase, c.levelCostDivisor, c.levelCostMax);
 	}

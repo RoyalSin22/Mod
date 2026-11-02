@@ -64,4 +64,11 @@ public class SoulsMathTest {
 		assertEquals(-1, SoulsMath.validRequestTotal(requested, allocated, 99));
 		assertEquals(-1, SoulsMath.validRequestTotal(new int[]{Integer.MAX_VALUE}, new int[]{10}, 99));
 	}
+
+	@Test
+	public void levelCostNeverOverflowsOrGoesNegative() {
+		assertEquals(10, SoulsMath.levelCost(Long.MAX_VALUE, 1, 6, 10));
+		assertEquals(10, SoulsMath.levelCost(Integer.MAX_VALUE, Integer.MAX_VALUE, 1, 10));
+		assertEquals(1, SoulsMath.levelCost(-50, 1, 6, 10)); // nivel corrupto negativo → coste base
+	}
 }

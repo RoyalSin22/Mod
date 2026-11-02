@@ -17,8 +17,10 @@ public final class SoulsMath {
 	}
 
 	/** Coste en niveles de XP de pasar del nivel de alma {@code level} al siguiente. */
-	public static int levelCost(int level, int base, int divisor, int max) {
-		return Math.min(max, base + level / Math.max(1, divisor));
+	public static int levelCost(long level, int base, int divisor, int max) {
+		// Aritmética en long: un nivel enorme (o negativo por datos corruptos) no desborda ni da coste negativo.
+		long cost = (long) base + Math.max(0L, level) / Math.max(1, divisor);
+		return (int) Math.max(0L, Math.min((long) max, cost));
 	}
 
 	/**

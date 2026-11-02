@@ -201,8 +201,13 @@ public final class ProgressManager {
 
 	public static void addBonusPoints(ServerPlayerEntity player, int amount) {
 		PlayerProgress progress = get(player);
-		progress.setBonusPoints(Math.max(0, progress.getBonusPoints() + amount));
+		progress.setBonusPoints(adjustBonusPoints(progress.getBonusPoints(), amount));
 		refresh(player);
+	}
+
+	/** Suma saturada en [0, Integer.MAX_VALUE]: /aptitudes admin addpoints nunca desborda a negativo. */
+	public static int adjustBonusPoints(int current, int delta) {
+		return (int) Math.max(0L, Math.min(Integer.MAX_VALUE, (long) current + delta));
 	}
 
 	public static void reset(ServerPlayerEntity player) {
