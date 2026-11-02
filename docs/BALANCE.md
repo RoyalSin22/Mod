@@ -163,3 +163,15 @@ Cada jefe deja un núcleo distinto. Aplicar un núcleo en la Mesa del gremio añ
 
 «Morir es fácil» por diseño (decisión del autor). Para suavizarlo en un servidor: bajar
 `eclipseMobDamageMultiplier`, `eclipseEliteChance` o `eclipseMaxMobsPerPlayer`.
+
+# Runas+ (v35)
+
+| Runa | Efecto por defecto | Espera | Receta (Mesa del gremio) |
+|---|---|---|---|
+| Escarcha | Lentitud II 3 s al golpear | — | Hielo compacto ×4 + Fragmento de alma |
+| Trueno | 25 %: descarga a 2 monstruos a ≤4 bloques, 3 de daño cada uno | 3 s | Cobre ×4 + pararrayos ×4 + Fragmento de alma |
+| Guardia | +2 de absorción (tope 6) | 6 s | Escama de tortuga ×4 + Fragmento de alma |
+
+- La descarga del Trueno nunca salta a jugadores ni a invocaciones y no vuelve a activar runas (sin cadenas infinitas).
+- Quitar una runa cuesta 4 esmeraldas y la runa **se pierde**: cambiar de combinación tiene un coste real.
+- Todos los valores de las runas (también los de la v32) son ahora configurables (`docs/CONFIGURATION.md`).

@@ -133,3 +133,17 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
 8. En el Nether durante un eclipse: sin cielo rojo ni HUD; al volver, el estado se restablece.
 9. Mayús + O → «Cielo del Eclipse» desactivado: cielo normal, pero viñeta y ceniza visibles.
 10. Dificultad Pacífica: hay cielo y avisos, pero no aparecen criaturas ni Heraldo.
+
+# v35 — Runas+ (verificación manual)
+
+1. Fabrica Escarcha, Trueno y Guardia en la Mesa del gremio; no se fabrican en la mesa de trabajo.
+2. Escarcha: el objetivo queda con Lentitud II 3 s y salen copos de nieve.
+3. Trueno: contra un grupo de zombis, a veces salta una chispa a 2 cercanos (3 de daño). Nunca a otro jugador,
+   a tu lobo ni a tus esbirros. No se encadena sin fin.
+4. Guardia: corazones dorados al golpear, hasta 6 de absorción; una manzana de oro no se reduce.
+5. Robo de vida: el arma ya no «parpadea» en la mano al curar.
+6. Quitar runa: Mayús + clic derecho en la Mesa del gremio con el arma y la otra mano vacía. Sin esmeraldas →
+   aviso; con 4 → se quita la última, sonido de afilador y mensaje. Con Fuerza o Aceleración, el daño o la
+   velocidad del tooltip vuelven al valor sin runa. El foco no dispara al hacerlo.
+7. Sin agacharse, la Mesa sigue abriendo la fabricación y engarzando runas como antes.
+8. Cambia `runeThunderChance` a 1.0 y `/aptitudes admin reload`: la descarga sale en cada golpe (con su espera).

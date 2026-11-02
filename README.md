@@ -740,3 +740,6 @@ de jugador dentro de un hueco pequeño, el jugador puede asfixiarse como en vani
 **v34:** el Eclipse. Cada 10 días el sol se oscurece en el Mundo Normal: cielo rojo, oleadas de élites y
 campeones y el Heraldo del Eclipse a mediodía. Recompensas: Fragmentos, Núcleo y Runa del Eclipse. Comando
 `/aptitudes eclipse`. Ver `docs/V34_ECLIPSE.md`, `docs/BALANCE.md` y `docs/CONFIGURATION.md`.
+
+**v35 — Runas+:** runas de Escarcha, Trueno y Guardia; quitar la última runa en la Mesa del gremio
+(Mayús + clic derecho, cuesta esmeraldas y la runa se pierde) y valores de las runas configurables.

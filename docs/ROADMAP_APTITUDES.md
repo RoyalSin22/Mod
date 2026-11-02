@@ -196,3 +196,14 @@ registro en memoria con tope de 100 000 posiciones por mundo (FIFO).
 - Lógica pura `event/EclipseRules` con `event/EclipseRulesTest` (8 pruebas). Especificación: `docs/V34_ECLIPSE.md`.
 - Pendiente: integrar con grupos, contratos y logros cuando la v29–v31 estén en `main`; «Templado en la
   Hoguera» (trofeos ganados en combate), más adelante.
+
+### v35 — Runas+
+- Tres runas nuevas al final de `RuneKind`: Escarcha (Lentitud), Trueno (descarga en cadena a monstruos) y
+  Guardia (absorción). Recetas en la Mesa del gremio; texturas generadas con `gen_items.py`.
+- Quitar la última runa: Mayús + clic derecho en la Mesa del gremio con el arma en la mano y la otra vacía
+  (`UseBlockCallback`, porque al agacharse con objetos el juego no llama a `onUse`). Cuesta esmeraldas y la runa
+  se pierde; se retira también su modificador de atributo.
+- Valores de todas las runas configurables (17 campos con límites).
+- Las esperas de las runas pasan a memoria por jugador: antes se escribían en el arma en cada golpe y el
+  objeto se «re-equipaba» en la mano.
+- Prueba pura nueva: `rune/RuneBalanceTest` (6 pruebas).

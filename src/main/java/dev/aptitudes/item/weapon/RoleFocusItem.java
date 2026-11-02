@@ -59,7 +59,7 @@ public class RoleFocusItem extends Item {
 		double cost = tier >= Evolution.ULTIMATE ? 10 : 8;
 		if (!AbilityManager.tryConsume(player, cost)) return TypedActionResult.fail(stack);
 		int cooldown = tier >= Evolution.ULTIMATE ? 10 : 12;
-		if (dev.aptitudes.rune.RuneSocketing.has(stack, dev.aptitudes.rune.RuneKind.SWIFT)) cooldown = Math.max(4, cooldown - 2);
+		cooldown = Math.max(4, cooldown - dev.aptitudes.rune.RuneSocketing.focusCooldownReduction(stack)); // v35: configurable
 		player.getItemCooldownManager().set(this, cooldown);
 
 		LivingEntity target = Targeting.raycastLiving(player, 32);

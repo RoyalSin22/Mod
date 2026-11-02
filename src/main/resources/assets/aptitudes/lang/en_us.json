@@ -2067,7 +2067,7 @@
   "guide.aptitudes.structures.title": "Structures",
   "guide.aptitudes.structures.body": "RUINED TOWER: 4 floors with chests, monster spawners and a champion on the rooftop next to the best chest (role armor, soul tools, accessories).\nBONFIRE SHRINE: ruins with a lit Bonfire and a chest (shards, flasks, sometimes an Offering).\nCAMP: hunters, warlocks or bandits, with guards and themed loot.\n\nThey only generate in new terrain (unexplored chunks).",
   "guide.aptitudes.guild.title": "Guild villager",
-  "guide.aptitudes.guild.body": "Place a Guild Desk (gold + emerald on top and planks) next to a jobless villager to turn it into a Guildmaster.\n\nDepending on its level it sells: Soul Shards, Estus and Ether Flasks, role materials, Armory Vouchers, Rebirth Offerings, Mastery Emblems and Ultimate Cores. It buys leather and bones.\n\nThe desk is also a workshop: right-click it to craft role armor (it can only be made there).",
+  "guide.aptitudes.guild.body": "Place a Guild Desk (gold + emerald on top and planks) next to a jobless villager to turn it into a Guildmaster.\n\nDepending on its level it sells: Soul Shards, Estus and Ether Flasks, role materials, Armory Vouchers, Rebirth Offerings, Mastery Emblems and Ultimate Cores. It buys leather and bones.\n\nThe desk is also a workshop: right-click it to craft role armor (it can only be made there).\n\nRUNES: hold a role weapon in one hand and a rune in the other and use the Guild Desk to socket it (two per weapon, different ones). There are Flame, Leech, Swift, Force, Frost, Thunder, Guard and the Eclipse rune. To remove the last rune: Shift + right-click the Desk with the weapon in hand and the other hand empty; it costs emeralds and the rune is lost.",
   "guide.aptitudes.recipes.title": "Recipes",
   "guide.aptitudes.recipes.body": "Bonfire: iron sword / cobblestone + campfire + cobblestone.\nGrimoire: book + gold nugget.\nRebirth Offering: 3 Soul Shards + gold ingot + candle.\nEstus Flask: bottle + 2 shards + blaze powder + gold ingot.\nEther Flask: bottle + 2 shards + lapis lazuli + amethyst shard.\nSoul tool: diamond tool + 3 shards.\nRole armor: piece pattern with the role material + a shard in the center.\nMastery Emblem: gold, diamonds and an emerald block.\nUltimate Core: echo shards, dragon's breath, diamond blocks and a nether star.\nSoul Shard: 1 echo shard → 2.\nGuild Desk: 2 gold + emerald + 5 planks.\nAccessories: see the Accessories chapter.\nThe game's recipe book shows all the others.",
   "guide.aptitudes.drops.title": "Loot",
@@ -2576,5 +2576,18 @@
   "eclipse.aptitudes.command.not_active": "There is no Eclipse in progress.",
   "screen.aptitudes.hud.eclipse_sky": "Eclipse sky",
   "guide.aptitudes.eclipse.title": "The Eclipse",
-  "guide.aptitudes.eclipse.body": "Every 10 days (from day 10) the sun darkens in the Overworld. The evening before, a bell tolls: that is the warning.\n\nPENUMBRA (6:00–9:00): the sky turns red and the first creatures arrive.\nTOTALITY (9:00–15:00): the sun becomes a crimson ring, ash falls and the waves keep coming. Half of them are elites and some are champions.\nHERALD (12:00): a boss appears next to each group of players. The more of you, the tougher it is.\nRETREAT (15:00–18:00): no new waves; finish off the rest.\n\nEclipse creatures have more health and damage: dying is easy. They dissolve when it ends.\n\nREWARDS: Eclipse Fragments (elites, champions and the Herald), the Eclipse Core (Herald; upgrades an evolution weapon at the Guild Desk) and the Eclipse Rune (+15%% damage against elites and bosses). If you do not die during the event, you gain role and Combat experience.\n\nYou can turn off the red sky in the HUD settings (Shift + O)."
+  "guide.aptitudes.eclipse.body": "Every 10 days (from day 10) the sun darkens in the Overworld. The evening before, a bell tolls: that is the warning.\n\nPENUMBRA (6:00–9:00): the sky turns red and the first creatures arrive.\nTOTALITY (9:00–15:00): the sun becomes a crimson ring, ash falls and the waves keep coming. Half of them are elites and some are champions.\nHERALD (12:00): a boss appears next to each group of players. The more of you, the tougher it is.\nRETREAT (15:00–18:00): no new waves; finish off the rest.\n\nEclipse creatures have more health and damage: dying is easy. They dissolve when it ends.\n\nREWARDS: Eclipse Fragments (elites, champions and the Herald), the Eclipse Core (Herald; upgrades an evolution weapon at the Guild Desk) and the Eclipse Rune (+15%% damage against elites and bosses). If you do not die during the event, you gain role and Combat experience.\n\nYou can turn off the red sky in the HUD settings (Shift + O).",
+  "item.aptitudes.rune_frost": "Frost Rune",
+  "item.aptitudes.rune_thunder": "Thunder Rune",
+  "item.aptitudes.rune_guard": "Guard Rune",
+  "item.aptitudes.rune.frost": "Frost",
+  "item.aptitudes.rune.thunder": "Thunder",
+  "item.aptitudes.rune.guard": "Guard",
+  "item.aptitudes.rune.frost.desc": "On hit: Slowness II for 3 s.",
+  "item.aptitudes.rune.thunder.desc": "On hit: 25%% chance of a discharge that jumps to 2 nearby monsters (3 damage; 3 s cooldown).",
+  "item.aptitudes.rune.guard.desc": "On hit: +2 absorption (max 6; 6 s cooldown).",
+  "aptitudes.rune.none": "This weapon has no runes.",
+  "aptitudes.rune.remove_cost": "You need %s emeralds to remove a rune.",
+  "aptitudes.rune.removed": "You removed %s for %s emeralds. The rune is lost.",
+  "aptitudes.rune.remove_hint": "Shift + right-click the Guild Desk (other hand empty): removes the last rune for emeralds."
 }

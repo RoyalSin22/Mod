@@ -79,7 +79,8 @@ public class GuideScreen extends Screen {
 			chapter("eclipse", ModItems.ECLIPSE_FRAGMENT, () -> List.of(ModItems.ECLIPSE_FRAGMENT, ModItems.ECLIPSE_CORE, ModItems.RUNE_ECLIPSE)),
 			chapter("structures", Items.SPAWNER, () -> List.of(Items.CHEST, Items.SPAWNER)),
 			chapter("guild", dev.aptitudes.world.GuildVillagers.GUILD_DESK_ITEM,
-					() -> List.of(dev.aptitudes.world.GuildVillagers.GUILD_DESK_ITEM, ModItems.GUILD_SEAL, ModItems.ARMORY_VOUCHER, ModItems.RUNE_FLAME, ModItems.RUNE_LEECH, ModItems.RUNE_SWIFT, ModItems.RUNE_FORCE)),
+					() -> List.of(dev.aptitudes.world.GuildVillagers.GUILD_DESK_ITEM, ModItems.GUILD_SEAL, ModItems.ARMORY_VOUCHER, ModItems.RUNE_FLAME, ModItems.RUNE_LEECH, ModItems.RUNE_SWIFT, ModItems.RUNE_FORCE,
+						ModItems.RUNE_FROST, ModItems.RUNE_THUNDER, ModItems.RUNE_GUARD)),
 			chapter(RECIPES_CHAPTER, Items.CRAFTING_TABLE, List::of),
 			chapter("drops", Items.ZOMBIE_HEAD, () -> List.of(Items.ZOMBIE_HEAD, Items.SKELETON_SKULL, ModItems.ELITE_ESSENCE)));
 

@@ -891,6 +891,10 @@ ITEMS = {
     'eclipse_fragment': ('shard', {'A': '#8a1420'}),
     'eclipse_core': ('core', {'D': '#1c1012', 'J': '#e0242f'}),
     'rune_eclipse': ('sigil', {'G': '#2a1a1c', 'S': '#7a0f17', 'J': '#ff3b3b'}),
+    # v35: Runas+
+    'rune_frost': ('sigil', {'G': '#cfe8f5', 'S': '#4a8fc2', 'J': '#e8fbff'}),
+    'rune_thunder': ('sigil', {'G': '#3b3f52', 'S': '#d9b31e', 'J': '#fff59d'}),
+    'rune_guard': ('sigil', {'G': '#8c8f96', 'S': '#3f7d52', 'J': '#b9f6ca'}),
     'soul_pickaxe': ('pickaxe', {'A': '#8e7cf0', 'W': '#3a2f4a', 'J': '#d1c4ff'}),
     'soul_axe': ('axe', {'A': '#8e7cf0', 'W': '#3a2f4a', 'G': '#d1c4ff'}),
     'soul_shovel': ('shovel', {'A': '#8e7cf0', 'W': '#3a2f4a', 'L': '#2b2238', 'J': '#d1c4ff'}),

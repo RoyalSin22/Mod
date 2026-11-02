@@ -123,3 +123,30 @@ los ajustes propios) y usa `/aptitudes admin reload` o reinicia.
 Opción del cliente (`config/aptitudes-client.json`, también en Mayús + O): `eclipseSkyEffects` (true) tiñe el
 cielo, la niebla y las nubes y cambia la textura del sol. Desactívala si los efectos molestan; la viñeta y la
 ceniza se siguen viendo.
+
+## Runas (v35)
+
+Antes eran valores fijos en el código. Fuerza (en armas cuerpo a cuerpo) y Aceleración (velocidad de ataque)
+se **fijan en el arma al engarzar** la runa: cambiar el valor solo afecta a las runas engarzadas después.
+
+| Campo | Defecto | Límites | Descripción |
+|---|---|---|---|
+| `runeFlameSeconds` | 3 | [0, 20] | Segundos de fuego de la Runa de Fuego. |
+| `runeLeechAmount` | 1.0 | [0, 10] | Salud que cura el Robo de vida. |
+| `runeLeechCooldownSeconds` | 4.0 | [0,5, 60] | Espera del Robo de vida. |
+| `runeSwiftAttackSpeed` | 0.10 | [0, 1] | Velocidad de ataque de la Aceleración (al engarzar). |
+| `runeSwiftFocusTicks` | 2 | [0, 10] | Ticks menos de espera de los focos con Aceleración (mínimo 4 ticks). |
+| `runeForceDamage` | 1.0 | [0, 10] | Daño de la Fuerza (al engarzar en cuerpo a cuerpo; en cada disparo en focos). |
+| `runeEclipseBonus` | 0.15 | [0, 1] | Daño extra de la Runa del Eclipse contra élites, campeones y jefes. |
+| `runeFrostSeconds` | 3 | [0, 20] | Segundos de Lentitud de la Escarcha. |
+| `runeFrostLevel` | 1 | [0, 4] | Nivel de Lentitud (0 = I, 1 = II). |
+| `runeThunderChance` | 0.25 | [0, 1] | Probabilidad de descarga del Trueno. |
+| `runeThunderDamage` | 3.0 | [0, 20] | Daño de la descarga a cada objetivo extra. |
+| `runeThunderTargets` | 2 | [0, 5] | Monstruos a los que salta la descarga (4 bloques). |
+| `runeThunderCooldownSeconds` | 3.0 | [0,5, 60] | Espera entre descargas. |
+| `runeGuardAbsorption` | 2.0 | [0, 20] | Absorción que da la Guardia al golpear. |
+| `runeGuardMaxAbsorption` | 6.0 | [0, 40] | Tope de absorción de la Guardia (no reduce una absorción mayor). |
+| `runeGuardCooldownSeconds` | 6.0 | [0,5, 60] | Espera de la Guardia. |
+| `runeRemovalEmeraldCost` | 4 | [0, 64] | Esmeraldas para quitar la última runa (gratis en creativo). |
+
+Los textos de las runas muestran los valores por defecto: si un servidor los cambia, el tooltip no lo refleja.

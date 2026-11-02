@@ -4,7 +4,9 @@ package dev.aptitudes.rune;
 public enum RuneKind {
 	FLAME("flame"), LEECH("leech"), SWIFT("swift"), FORCE("force"),
 	/** v34: +daño contra élites, campeones y jefes. Añadida al final. */
-	ECLIPSE("eclipse");
+	ECLIPSE("eclipse"),
+	/** v35: Escarcha (lentitud), Trueno (descarga en cadena) y Guardia (absorción). Añadidas al final. */
+	FROST("frost"), THUNDER("thunder"), GUARD("guard");
 	private final String id;
 	RuneKind(String id) { this.id = id; }
 	public String id() { return id; }

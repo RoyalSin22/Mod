@@ -83,4 +83,20 @@ public class AptitudesConfigValidationTest {
 		assertEquals(5.0, v.eclipseMobDamageMultiplier, 0);
 		assertEquals(1.0, v.eclipseEliteChance, 0);
 	}
+
+	@Test
+	public void runeValuesAreClamped() {
+		AptitudesConfig c = new AptitudesConfig();
+		c.runeThunderChance = 9;
+		c.runeThunderTargets = 50;
+		c.runeLeechCooldownSeconds = 0.01;
+		c.runeRemovalEmeraldCost = 1000;
+		c.runeFrostLevel = 99;
+		AptitudesConfig v = AptitudesConfig.validated(c);
+		assertEquals(1.0, v.runeThunderChance, 0);
+		assertEquals(5, v.runeThunderTargets);
+		assertEquals(0.5, v.runeLeechCooldownSeconds, 0);
+		assertEquals(64, v.runeRemovalEmeraldCost);
+		assertEquals(4, v.runeFrostLevel);
+	}
 }

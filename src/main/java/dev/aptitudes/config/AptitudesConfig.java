@@ -149,6 +149,30 @@ public class AptitudesConfig {
 	public int eclipseSurvivorRoleXp = 300;
 	public int eclipseSurvivorCombatXp = 200;
 
+	// ---------- Runas (v35: antes eran valores fijos) ----------
+	public int runeFlameSeconds = 3;
+	public double runeLeechAmount = 1.0;
+	public double runeLeechCooldownSeconds = 4.0;
+	/** Aceleración: +velocidad de ataque (0.10 = +10 %). Se fija en el arma al engarzar la runa. */
+	public double runeSwiftAttackSpeed = 0.10;
+	/** Aceleración: ticks menos de espera de los focos. */
+	public int runeSwiftFocusTicks = 2;
+	/** Fuerza: +daño. En armas cuerpo a cuerpo se fija al engarzar; en focos se aplica en cada disparo. */
+	public double runeForceDamage = 1.0;
+	public double runeEclipseBonus = 0.15;
+	public int runeFrostSeconds = 3;
+	/** Nivel de Lentitud de la Escarcha (0 = Lentitud I, 1 = Lentitud II). */
+	public int runeFrostLevel = 1;
+	public double runeThunderChance = 0.25;
+	public double runeThunderDamage = 3.0;
+	public int runeThunderTargets = 2;
+	public double runeThunderCooldownSeconds = 3.0;
+	public double runeGuardAbsorption = 2.0;
+	public double runeGuardMaxAbsorption = 6.0;
+	public double runeGuardCooldownSeconds = 6.0;
+	/** Esmeraldas para quitar la última runa de un arma (la runa se pierde). */
+	public int runeRemovalEmeraldCost = 4;
+
 	/** v23: puntos de árbol extra al evolucionar a Maestro (para la fila nueva de 5 nodos × 2 rangos). */
 	public int masterBonusPoints = 10;
 	/** v23: puntos de árbol extra al evolucionar a Definitivo (fila nueva de 5 nodos × 1 rango). */
@@ -328,6 +352,23 @@ public class AptitudesConfig {
 		c.eclipseChampionChance = Math.min(1.0, c.eclipseChampionChance);
 		c.eclipseSurvivorRoleXp = clamp(c.eclipseSurvivorRoleXp, 0, 100_000);
 		c.eclipseSurvivorCombatXp = clamp(c.eclipseSurvivorCombatXp, 0, 100_000);
+		c.runeFlameSeconds = clamp(c.runeFlameSeconds, 0, 20);
+		c.runeLeechAmount = Math.min(10.0, c.runeLeechAmount);
+		c.runeLeechCooldownSeconds = Math.max(0.5, Math.min(60.0, c.runeLeechCooldownSeconds));
+		c.runeSwiftAttackSpeed = Math.min(1.0, c.runeSwiftAttackSpeed);
+		c.runeSwiftFocusTicks = clamp(c.runeSwiftFocusTicks, 0, 10);
+		c.runeForceDamage = Math.min(10.0, c.runeForceDamage);
+		c.runeEclipseBonus = Math.min(1.0, c.runeEclipseBonus);
+		c.runeFrostSeconds = clamp(c.runeFrostSeconds, 0, 20);
+		c.runeFrostLevel = clamp(c.runeFrostLevel, 0, 4);
+		c.runeThunderChance = Math.min(1.0, c.runeThunderChance);
+		c.runeThunderDamage = Math.min(20.0, c.runeThunderDamage);
+		c.runeThunderTargets = clamp(c.runeThunderTargets, 0, 5);
+		c.runeThunderCooldownSeconds = Math.max(0.5, Math.min(60.0, c.runeThunderCooldownSeconds));
+		c.runeGuardAbsorption = Math.min(20.0, c.runeGuardAbsorption);
+		c.runeGuardMaxAbsorption = Math.min(40.0, c.runeGuardMaxAbsorption);
+		c.runeGuardCooldownSeconds = Math.max(0.5, Math.min(60.0, c.runeGuardCooldownSeconds));
+		c.runeRemovalEmeraldCost = clamp(c.runeRemovalEmeraldCost, 0, 64);
 		c.roleChangeCooldownMinutes = clamp(c.roleChangeCooldownMinutes, 0, 100_000);
 		c.baseMaxEnergy = Math.max(1.0, c.baseMaxEnergy);
 		c.baseEnergyRegenPerSecond = Math.max(0.0, c.baseEnergyRegenPerSecond);
