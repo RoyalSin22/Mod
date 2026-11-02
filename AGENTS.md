@@ -27,11 +27,13 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 | Esbirros y torretas | `ability/Minions`, `ability/MinionBrain`, `ability/AbilityState` |
 | Accesorios, élites/campeones, estructuras, grimorio (18 capítulos) | `accessory/`, `elite/`, `world/`, `item/GuideBookItem`, `client/screen/GuideScreen` |
 | Configuración validada al cargar | `config/AptitudesConfig.validated` |
+| Tiempos de espera persistentes (habilidades, definitiva, firma, legendaria, Inmortalidad carmesí) | `ability/CooldownBook` + attachment `COOLDOWNS`; usa `AbilityManager.cooldowns(p)` y `gameTime(p)` |
+| Bloques temporales de habilidades (persistentes, sin drops) | `world/TemporaryBlocks.place(...)`; nunca `setBlockState` + `schedule` para bloques temporales |
 
 Historial reciente en `main`: auditoría de seguridad y balance, v14 (grimorio, elementos y armas), v15
 (Pesca y rendimiento decreciente), v15.1 (árbol con legendarias exclusivas), v15.2 (grimorio tras la
 muerte y pruebas de configuración) y v16 (Defensa con `AFTER_DAMAGE`, esbirros sin conversión a
-ahogado, Bombardeo orbital sin fuego amigo) y v17 (anti-granjas de colocar y romper).
+ahogado, Bombardeo orbital sin fuego amigo) v17 (anti-granjas de colocar y romper) y v18 (esperas y muros persistentes).
 
 ## 3. Exclusiones absolutas (no negociables)
 
@@ -80,7 +82,8 @@ retematizaron (p. ej., «Talismán maldito»). **No cambies los ids de registro 
 - JUnit Platform con Jupiter (JUnit 5) y Vintage (JUnit 4): ambos estilos valen.
 - Pruebas existentes (no las sobrescribas ni crees otras con el **mismo nombre y paquete**):
   `souls/SoulsMathTest`, `logic/AttributeScalingTest`, `logic/XpDiminishingTest`,
-  `logic/PlacedBlockLogTest`, `role/RoleRulesTest`, `data/ProgressRulesTest` y
+  `logic/PlacedBlockLogTest`, `ability/CooldownBookTest`, `world/TemporaryBlockScheduleTest`,
+  `role/RoleRulesTest`, `data/ProgressRulesTest` y
   `config/AptitudesConfigValidationTest`.
 - **No escribas pruebas que llamen a métodos que no existen.** Si una prueba necesita una API nueva,
   impleméntala en el código principal en el mismo cambio y explícalo.
@@ -90,7 +93,8 @@ retematizaron (p. ej., «Talismán maldito»). **No cambies los ids de registro 
 
 - Activar `attributeScaling = SOFTCAP` por defecto: **decisión del autor** tras probar en partida.
 - Pruebas en partida de la v15–v16 (`docs/TESTING.md`, puntos 6–9).
-- Limitaciones abiertas: tabla «Limitaciones conocidas» del `README.md` (IA de tipo Brain y Soborno, enfriamientos en memoria, muros temporales, colisión de transformaciones).
+- Limitaciones abiertas: tabla «Limitaciones conocidas» del `README.md` (IA de tipo Brain y Soborno,
+  colisión de transformaciones, altura de la pantalla de roles).
 
 ## 8. Al terminar una tarea
 

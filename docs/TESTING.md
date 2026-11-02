@@ -14,6 +14,8 @@ reescribir las existentes (JUnit 4):
 | `data/ProgressRulesTest` | Curva de XP de habilidades positiva y creciente; configuración extrema limitada al rango de `int` |
 | `config/AptitudesConfigValidationTest` | Valores por defecto intactos; negativos, NaN e infinitos vuelven al defecto; límites (probabilidades ≤ 1, divisores y ventanas ≥ 1, nivel máximo ≤ 1000); `attributeScaling` inválido → LINEAR y umbrales ordenados |
 | `logic/PlacedBlockLogTest` | Bloque colocado se consume una vez; mundos independientes; tope que olvida el más antiguo; tope inválido ≥ 1 |
+| `ability/CooldownBookTest` | Cuenta atrás y caducidad; sobrevive a guardar/cargar; `tryStart`; valores corruptos no bloquean para siempre; tope de entradas |
+| `world/TemporaryBlockScheduleTest` | Caducidad por tiempo de juego (también tras reinicio); quitar/consultar; tope por mundo |
 | `logic/XpDiminishingTest` | Multiplicador (completo hasta el umbral, decrece hasta el suelo), redondeo, ventana deslizante por jugador y fuente, granja frente a juego normal, memoria acotada |
 
 Ejecución: `.\gradlew.bat test` (también se ejecutan en `.\gradlew.bat build`).
@@ -63,3 +65,7 @@ calculadas), no del código; se corrigieron y se documentan en el informe del bl
     Plantar un brote, dejar que crezca y talarlo → XP normal (el tronco de la base no cuenta como colocado).
 11. Colocar redstone sobre un bloque donde no se puede (p. ej., en el aire con clic en agua) → sin XP de
     Ingeniero; colocarla bien → XP. Colocar y romper la misma pieza 40 veces en un minuto → la XP baja.
+12. Lanzar la definitiva, salir y volver a entrar → la espera sigue (HUD incluido). Repetir cerrando el
+    servidor: la espera continúa donde estaba.
+13. Levantar el Muro elemental y cerrar el servidor antes de 10 s → al volver, el muro desaparece en los
+    segundos que le quedaban. Picar un bloque del muro → no suelta nada ni da XP.

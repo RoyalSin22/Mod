@@ -684,12 +684,10 @@ src/client/java/dev/aptitudes/client/   (solo cliente)
 |---|---|---|
 | Los textos del servidor son claves traducibles | Un cliente sin el mod ve las claves en vez del texto | Usar Server Translations API |
 | Cliente vanilla en un servidor con el mod | Sin GUI. El minado se ve más lento en el cliente, aunque el servidor lo acepta | — |
-| Los enfriamientos están en memoria | Se reinician al reiniciar el servidor | Persistirlos con tiempo de mundo si se necesita |
 | Los mobs con IA de "Brain" (piglins, hoglins, warden) no siempre pasan por `setTarget` | El Soborno y el filtro de los esbirros pueden no afectarles | Mixin adicional sobre su `Brain` |
 | La pantalla de roles mide 286 px de alto | Con escala de interfaz 4 en 1080p no cabe entera | Añadir scroll o reducir la escala de interfaz |
 | El rango efectivo puede llegar a 5 con la evolución | Algunos valores (esquiva 35 %, Mente clara −50 %) pueden quedar fuertes | Ajustar tras probar; Mente clara está limitada a −60 % |
-| Los enfriamientos de la Inmortalidad carmesí y de las habilidades están en memoria | Se reinician al reiniciar el servidor | Persistirlos con el tiempo del mundo |
-| Muro elemental, fuego del Fuego del Averno y explosiones del Creeper modifican bloques | Si el servidor se cierra mientras el muro está levantado, el muro queda | Guardar los bloques temporales en el mundo |
+| Fuego del Averno y explosiones del Creeper modifican bloques | Cambios permanentes del mundo (según `uniqueGriefing`) | — |
 | Las transformaciones no cambian la caja de colisión | Un "murciélago" sigue ocupando lo que un jugador | Cambiar las dimensiones del jugador (mixin de `getDimensions`) |
 | Quietud Eterna usa `NoAI` | Se repara al cargar, pero otro mod que lea `NoAI` podría verse afectado | — |
 | Las texturas son placeholder | Aspecto básico | Sustituir los PNG en `assets/aptitudes/textures/item/` |
@@ -705,6 +703,13 @@ da XP de habilidad ni activa los extras de los hitos (p. ej., Veta rica ya no du
 la XP de Ingeniero y de Druida por colocar solo cuenta colocaciones confirmadas, y la del Ingeniero tiene
 rendimiento decreciente. Sin mixins (`logic/PlacementTracker`). El registro vive en memoria (100 000
 posiciones por mundo) y se pierde al reiniciar; un bloque movido con pistón deja de estar marcado.
+
+**Resueltas en la v18 (persistencia):** los tiempos de espera de habilidades, definitivas, firmas,
+legendaria e Inmortalidad carmesí se guardan con el jugador (tiempo de juego del mundo principal): ya no
+se reinician al reiniciar el servidor ni al salir y volver a entrar. Los bloques del Muro elemental se
+guardan por mundo con su hora de caducidad: se retiran aunque el servidor se cierre con el muro levantado,
+y romperlos no suelta objetos ni da XP. Limitación: una explosión que destruya el muro sí puede soltar
+algún bloque (comportamiento vanilla de las explosiones).
 
 ### Siguientes pasos sugeridos
 

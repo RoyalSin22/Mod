@@ -38,11 +38,12 @@ public final class AbilityManager {
 	public static final int SIGNATURE_SLOT = 6;
 	public static final int ULTIMATE_ENERGY = 80;
 	public static final int ULTIMATE_COOLDOWN_SECS = 180;
+	/** Clave de la espera de la legendaria activa (UniqueManager) en el almacén persistente. */
+	public static final String LEGENDARY_COOLDOWN_KEY = "legendary";
 	/** Magia de sangre: puntos de energía que cubre cada punto de vida. */
 	private static final double ENERGY_PER_HEALTH = 10.0;
 
 	/** jugador → (id de nodo → tick del servidor en que termina el enfriamiento). */
-	private static final Map<UUID, Map<String, Integer>> COOLDOWNS = new HashMap<>();
 	/** Último valor de energía enviado (redondeado) para no inundar la red. */
 	private static final Map<UUID, Integer> LAST_SENT_ENERGY = new HashMap<>();
 
@@ -51,7 +52,6 @@ public final class AbilityManager {
 
 	public static void forget(ServerPlayerEntity player) {
 		RoleResources.forget(player);
-		COOLDOWNS.remove(player.getUuid());
 		LAST_SENT_ENERGY.remove(player.getUuid());
 		AbilityState.forget(player);
 	}
@@ -138,10 +138,10 @@ public final class AbilityManager {
 			fail(player, Text.translatable("aptitudes.unique.negated"));
 			return;
 		}
-		int now = now(player);
-		Integer until = cooldowns(player).get(cooldownKey);
-		if (until != null && until > now) {
-			fail(player, Text.translatable("aptitudes.ability.cooldown", name, (until - now + 19) / 20));
+		long now = gameTime(player);
+		long left = cooldowns(player).remaining(cooldownKey, now);
+		if (left > 0) {
+			fail(player, Text.translatable("aptitudes.ability.cooldown", name, (left + 19) / 20));
 			return;
 		}
 		RoleData data = RoleManager.get(player);
@@ -179,7 +179,7 @@ public final class AbilityManager {
 		CastFx.onCast(player, role, slot == ULTIMATE_SLOT ? CastFx.Kind.ULTIMATE
 				: slot == SIGNATURE_SLOT ? CastFx.Kind.SIGNATURE : CastFx.Kind.ACTIVE);
 		if (empowered) RoleResources.consumeEmpower(player, role);
-		cooldowns(player).put(cooldownKey, now + cooldown);
+		cooldowns(player).start(cooldownKey, now, cooldown);
 		if (ServerPlayNetworking.canSend(player, CooldownPayload.ID)) {
 			ServerPlayNetworking.send(player, new CooldownPayload(slot, cooldown));
 		}
@@ -193,7 +193,7 @@ public final class AbilityManager {
 
 	/** Quita el enfriamiento de una habilidad (Bardo – Bis) y avisa al HUD. */
 	public static void resetCooldown(ServerPlayerEntity player, String cooldownKey, int slot) {
-		cooldowns(player).remove(cooldownKey);
+		cooldowns(player).clear(cooldownKey);
 		if (ServerPlayNetworking.canSend(player, CooldownPayload.ID)) {
 			ServerPlayNetworking.send(player, new CooldownPayload(slot, 0));
 		}
@@ -230,11 +230,11 @@ public final class AbilityManager {
 	public static int[] slotCooldowns(ServerPlayerEntity player) {
 		int[] out = new int[SLOTS];
 		RoleData data = RoleManager.get(player);
-		int now = now(player);
+		long now = gameTime(player);
 		for (int slot = 0; slot < SLOTS; slot++) {
 			String key;
 			if (slot == UNIQUE_SLOT) {
-				key = null; // la única tiene su propio enfriamiento (UniqueManager)
+				key = LEGENDARY_COOLDOWN_KEY; // la legendaria se gestiona en UniqueManager, mismo almacén
 			} else if (slot == SIGNATURE_SLOT) {
 				Role role = signatureRole(data);
 				key = role == null ? null : "signature." + role.key();
@@ -246,8 +246,7 @@ public final class AbilityManager {
 				RoleNode node = role == null ? null : RoleTree.active(role, data.equipped(role, slot % 2));
 				key = node == null ? null : node.id();
 			}
-			Integer until = key == null ? null : cooldowns(player).get(key);
-			out[slot] = until == null ? 0 : Math.max(0, until - now);
+			out[slot] = key == null ? 0 : (int) Math.min(Integer.MAX_VALUE, cooldowns(player).remaining(key, now));
 		}
 		return out;
 	}
@@ -325,8 +324,17 @@ public final class AbilityManager {
 
 	// ------------------------------------------------------------- Utilidades
 
-	private static Map<String, Integer> cooldowns(ServerPlayerEntity player) {
-		return COOLDOWNS.computeIfAbsent(player.getUuid(), k -> new HashMap<>());
+	/** Tiempos de espera persistentes del jugador (v18: Data Attachment, sobreviven a reinicios y desconexiones). */
+	public static CooldownBook cooldowns(ServerPlayerEntity player) {
+		return player.getAttachedOrCreate(dev.aptitudes.data.ModAttachments.COOLDOWNS);
+	}
+
+	/**
+	 * Tiempo de juego absoluto del mundo principal: se guarda con el mundo y no se reinicia con el servidor
+	 * (a diferencia de {@link #now}), por eso se usa para las esperas persistentes.
+	 */
+	public static long gameTime(ServerPlayerEntity player) {
+		return player.getServer() != null ? player.getServer().getOverworld().getTime() : player.getWorld().getTime();
 	}
 
 	public static int now(ServerPlayerEntity player) {

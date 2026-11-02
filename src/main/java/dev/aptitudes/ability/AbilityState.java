@@ -50,8 +50,6 @@ public final class AbilityState {
 	private static final Map<UUID, Integer> UNDYING = new HashMap<>();
 	/** jugador → tick hasta el que ignora todo ataque de criaturas. */
 	private static final Map<UUID, Integer> UNTOUCHABLE = new HashMap<>();
-	/** jugador → tick en el que vuelve a estar disponible la Inmortalidad carmesí. */
-	private static final Map<UUID, Integer> CRIMSON_READY = new HashMap<>();
 
 	private AbilityState() {
 	}
@@ -218,11 +216,8 @@ public final class AbilityState {
 
 	/** @return true si la Inmortalidad carmesí estaba lista (y la pone en enfriamiento). */
 	public static boolean tryCrimsonImmortality(ServerPlayerEntity player, int cooldownTicks) {
-		int now = AbilityManager.now(player);
-		Integer ready = CRIMSON_READY.get(player.getUuid());
-		if (ready != null && ready > now) return false;
-		CRIMSON_READY.put(player.getUuid(), now + cooldownTicks);
-		return true;
+		// v18: persistente (antes, en memoria: se reiniciaba al reconectar o reiniciar el servidor).
+		return AbilityManager.cooldowns(player).tryStart("crimson_immortality", AbilityManager.gameTime(player), cooldownTicks);
 	}
 
 	// ------------------------------------------------------------------- Tick

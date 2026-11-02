@@ -42,7 +42,6 @@ public final class UniqueManager {
 	private static final long DAY_MILLIS = 24L * 60 * 60 * 1000;
 	/** Jugadores ya avisados de que una gesta completada tiene dueño (evita spam). */
 	private static final Map<UUID, Set<UniqueSkill>> NOTIFIED = new HashMap<>();
-	private static final Map<UUID, Integer> COOLDOWNS = new HashMap<>();
 	private static final Map<UUID, int[]> LAST_PROGRESS = new HashMap<>();
 
 	private UniqueManager() {
@@ -270,11 +269,11 @@ public final class UniqueManager {
 			fail(player, Text.translatable("aptitudes.unique.negated"));
 			return;
 		}
-		int now = AbilityManager.now(player);
-		Integer until = COOLDOWNS.get(player.getUuid());
-		if (until != null && until > now) {
+		long now = AbilityManager.gameTime(player);
+		long left = AbilityManager.cooldowns(player).remaining(AbilityManager.LEGENDARY_COOLDOWN_KEY, now);
+		if (left > 0) {
 			fail(player, Text.translatable("aptitudes.ability.cooldown", Text.translatable(skill.translationKey()),
-					(until - now + 19) / 20));
+					(left + 19) / 20));
 			return;
 		}
 		RoleData data = RoleManager.get(player);
@@ -289,7 +288,7 @@ public final class UniqueManager {
 		dev.aptitudes.ability.CastFx.onCast(player, null, dev.aptitudes.ability.CastFx.Kind.UNIQUE);
 		if (!player.isCreative()) data.setEnergy(data.energy() - skill.energyCost());
 		int cooldown = skill.cooldownSecs() * 20;
-		COOLDOWNS.put(player.getUuid(), now + cooldown);
+		AbilityManager.cooldowns(player).start(AbilityManager.LEGENDARY_COOLDOWN_KEY, now, cooldown);
 		if (ServerPlayNetworking.canSend(player, CooldownPayload.ID)) {
 			ServerPlayNetworking.send(player, new CooldownPayload(AbilityManager.UNIQUE_SLOT, cooldown));
 		}

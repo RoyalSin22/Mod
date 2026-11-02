@@ -45,6 +45,19 @@ public final class ModAttachments {
 			.initializer(SoulsData::new)
 			.buildAndRegister(Aptitudes.id("souls"));
 
+	/**
+	 * Tiempos de espera de habilidades (v18): instante de juego en que vuelven a estar listas. Persisten
+	 * al desconectarse, al reiniciar el servidor y al morir (antes se perdían y salir/entrar los reiniciaba).
+	 */
+	public static final AttachmentType<dev.aptitudes.ability.CooldownBook> COOLDOWNS =
+			AttachmentRegistry.<dev.aptitudes.ability.CooldownBook>builder()
+					.persistent(com.mojang.serialization.Codec.unboundedMap(com.mojang.serialization.Codec.STRING,
+									com.mojang.serialization.Codec.LONG)
+							.xmap(dev.aptitudes.ability.CooldownBook::new, dev.aptitudes.ability.CooldownBook::raw))
+					.copyOnDeath()
+					.initializer(dev.aptitudes.ability.CooldownBook::new)
+					.buildAndRegister(Aptitudes.id("cooldowns"));
+
 	private ModAttachments() {
 	}
 

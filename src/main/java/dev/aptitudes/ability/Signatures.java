@@ -30,7 +30,6 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -286,7 +285,7 @@ public final class Signatures {
 			case FIRE, MAGMA -> Blocks.MAGMA_BLOCK.getDefaultState();
 			case ICE, WATER -> Blocks.PACKED_ICE.getDefaultState();
 			case EARTH -> Blocks.COBBLESTONE.getDefaultState();
-			case PLANT -> Blocks.OAK_LEAVES.getDefaultState();
+			case PLANT -> Blocks.OAK_LEAVES.getDefaultState().with(net.minecraft.block.LeavesBlock.PERSISTENT, true); // sin descomposición ni drops
 			case SHADOW -> Blocks.BLACKSTONE.getDefaultState();
 			case LIGHTNING -> Blocks.COPPER_BLOCK.getDefaultState();
 			case WIND -> Blocks.WHITE_STAINED_GLASS.getDefaultState();
@@ -299,29 +298,21 @@ public final class Signatures {
 	}
 
 	/**
-	 * Levanta un muro de 5×3 a 3 bloques delante. Solo ocupa aire y se retira
-	 * pasado el tiempo; si el servidor se cierra antes, el muro se queda.
+	 * Levanta un muro de 5×3 a 3 bloques delante. Solo ocupa aire. v18: los bloques se registran en
+	 * {@link dev.aptitudes.world.TemporaryBlocks} (persistente por mundo): se retiran a su hora aunque el
+	 * servidor se reinicie entretanto, y romperlos no suelta objetos.
 	 */
 	private static void raiseWall(ServerPlayerEntity p, BlockState state, int ticks) {
 		ServerWorld world = world(p);
 		Vec3d facing = Targeting.horizontalFacing(p);
 		Vec3d side = new Vec3d(-facing.z, 0, facing.x);
 		Vec3d base = p.getPos().add(facing.multiply(3));
-		List<BlockPos> placed = new ArrayList<>();
 		for (int w = -2; w <= 2; w++) {
 			for (int h = 0; h < 3; h++) {
 				BlockPos pos = BlockPos.ofFloored(base.add(side.multiply(w)).add(0, h, 0));
-				if (world.getBlockState(pos).isAir()) {
-					world.setBlockState(pos, state);
-					placed.add(pos);
-				}
+				if (world.getBlockState(pos).isAir()) dev.aptitudes.world.TemporaryBlocks.place(world, pos, state, ticks);
 			}
 		}
-		AbilityState.schedule(p.getServer(), ticks, () -> {
-			for (BlockPos pos : placed) {
-				if (world.getBlockState(pos).isOf(state.getBlock())) world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			}
-		});
 	}
 
 	// ----------------------------------------------------------- Utilidades

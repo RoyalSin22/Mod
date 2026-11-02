@@ -89,7 +89,18 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 | Hitos | Veta rica (Minería 30) duplicaba minerales colocados con Toque de seda | Los bloques colocados no activan extras de hitos |
 | XP de Ingeniero/Druida | Se daba al hacer clic con el objeto, aunque la colocación fallara | Solo con colocación confirmada al final del tick; Ingeniero con rendimiento decreciente |
 
-Decisiones: sin mixins (se compara el bloque antes y después del clic); las plantas no se registran
+### v18 — persistencia de esperas y muros temporales
+| Área | Antes | Ahora |
+|---|---|---|
+| Tiempos de espera | En memoria con `server.getTicks()`: se perdían al reiniciar **y al desconectarse** (salir y entrar recargaba la definitiva de 180 s) | `CooldownBook` en un Data Attachment (`aptitudes:cooldowns`, `copyOnDeath`) con tiempo de juego absoluto del mundo principal; 5 pruebas |
+| Legendaria e Inmortalidad carmesí | Mapas propios en memoria | Mismo almacén persistente (claves `legendary` y `crimson_immortality`); la espera de la legendaria también se ve en el HUD tras reconectar |
+| Muro elemental | Programado en memoria: si el servidor se cerraba, el muro quedaba para siempre; sus bloques (cobre, amatista, obsidiana llorosa…) se podían picar | `TemporaryBlocks` (estado persistente por mundo) + `TemporaryBlockSchedule` (puro, 4 pruebas): retirada a su hora tras reinicios, sin drops ni XP al romperlos; hojas persistentes |
+
+Decisiones: tope de espera aceptado de 1 día real (datos corruptos o mundos con otro reloj no bloquean
+para siempre), máximo 256 esperas por jugador y 4096 bloques temporales por mundo; un bloque temporal
+solo se retira si en su posición sigue el mismo bloque.
+
+Decisiones v17: sin mixins (se compara el bloque antes y después del clic); las plantas no se registran
 (un brote se convierte en el tronco de un árbol natural y los cultivos son el juego normal de Agricultura);
 registro en memoria con tope de 100 000 posiciones por mundo (FIFO).
 - ~~La pantalla del árbol no conoce `legendaryExclusive`~~ **Corregido (v15.1):** la sincronización de
