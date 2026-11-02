@@ -70,14 +70,17 @@ public final class XpEvents {
 			}
 		});
 
-		ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> {
-			if (entity instanceof ServerPlayerEntity player && amount > 0
+		// Defensa: solo el daño REALMENTE recibido. AFTER_DAMAGE no se dispara si el golpe se ignora por los
+		// ticks de invulnerabilidad, y "blocked" indica que lo paró el escudo (antes daba XP igualmente).
+		// Se usa el daño base (antes de armadura) para no penalizar a quien lleva buena armadura.
+		ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamageTaken, damageTaken, blocked) -> {
+			if (blocked || baseDamageTaken <= 0) return;
+			if (entity instanceof ServerPlayerEntity player
 					&& source.getAttacker() instanceof LivingEntity attacker && attacker != player) {
 				ProgressManager.addXp(player, Skill.DEFENSE, diminished(player,
 						"defense/" + net.minecraft.entity.EntityType.getId(attacker.getType()).toString(),
-						scaled(amount, Aptitudes.config().defenseXpPerDamage)));
+						scaled(baseDamageTaken, Aptitudes.config().defenseXpPerDamage)));
 			}
-			return true; // nunca cancelamos el daño
 		});
 
 		// Tiro con arco: aumenta el daño base de la flecha al aparecer en el mundo.

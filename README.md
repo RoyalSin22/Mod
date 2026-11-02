@@ -170,7 +170,7 @@ Se evoluciona con el botón **Evolucionar** de la pantalla de roles (su tooltip 
 | Mago | Archimago | Soberano Arcano | 300 usos de habilidades | Singularidad: agujero negro que atrae y daña durante 5 s |
 | Asesino | Maestro de las Sombras | Segador Silencioso | 150 muertes con daga | Ejecución sombría: salta tras 5 enemigos; mata a los que tienen menos del 30 % de vida |
 | Herbolista | Alquimista Verde | Guardián del Edén | 500 cosechas | Jardín del Edén: zona de regeneración y purificación |
-| Ingeniero | Maestro Ingeniero | Arquitecto del Mañana | 200 usos de habilidades | Bombardeo orbital: 12 explosiones sin romper bloques |
+| Ingeniero | Maestro Ingeniero | Arquitecto del Mañana | 200 usos de habilidades | Bombardeo orbital: 12 impactos que solo dañan a enemigos |
 | Lancero | Lancero Real | Lanza del Cielo | 150 muertes con lanza o tridente | Lanza celestial: salto y caída con onda de choque |
 | Espadachín | Maestro de la Espada | Santo de la Espada | 150 muertes con espada | Mil cortes: 15 tajos en 3 s |
 | Paladín | Cruzado | Rey Eterno | 150 no-muertos | Reino eterno: zona donde los aliados no pueden morir |
@@ -683,22 +683,24 @@ src/client/java/dev/aptitudes/client/   (solo cliente)
 | Limitación | Impacto | Posible mejora |
 |---|---|---|
 | Colocar y romper troncos o bloques de pala da XP | Se puede "farmear" XP | Registrar los bloques colocados por jugadores (attachment por chunk) |
-| La Defensa da XP por cada golpe recibido, aunque lo bloquee el escudo | Menor | Usar `AFTER_DAMAGE` y el daño realmente recibido |
 | Los textos del servidor son claves traducibles | Un cliente sin el mod ve las claves en vez del texto | Usar Server Translations API |
 | Cliente vanilla en un servidor con el mod | Sin GUI. El minado se ve más lento en el cliente, aunque el servidor lo acepta | — |
 | Colocar redstone da XP de Ingeniero aunque la colocación falle | Se puede "farmear" XP lentamente | Dar la XP en un evento de "bloque colocado" (requiere un mixin) |
 | Los enfriamientos están en memoria | Se reinician al reiniciar el servidor | Persistirlos con tiempo de mundo si se necesita |
 | Los mobs con IA de "Brain" (piglins, hoglins, warden) no siempre pasan por `setTarget` | El Soborno y el filtro de los esbirros pueden no afectarles | Mixin adicional sobre su `Brain` |
-| Un zombi esbirro que pasa mucho tiempo bajo el agua junto a su dueño podría convertirse en ahogado | El ahogado sería hostil | Hacer al esbirro inmune a la conversión (mixin) |
 | La pantalla de roles mide 286 px de alto | Con escala de interfaz 4 en 1080p no cabe entera | Añadir scroll o reducir la escala de interfaz |
 | El rango efectivo puede llegar a 5 con la evolución | Algunos valores (esquiva 35 %, Mente clara −50 %) pueden quedar fuertes | Ajustar tras probar; Mente clara está limitada a −60 % |
-| El Bombardeo orbital daña a todo lo que alcanza (también jugadores y aldeanos) | Fuego amigo | Filtrar el daño o usar daño propio en área |
 | Los enfriamientos de la Inmortalidad carmesí y de las habilidades están en memoria | Se reinician al reiniciar el servidor | Persistirlos con el tiempo del mundo |
 | Muro elemental, fuego del Fuego del Averno y explosiones del Creeper modifican bloques | Si el servidor se cierra mientras el muro está levantado, el muro queda | Guardar los bloques temporales en el mundo |
 | Las transformaciones no cambian la caja de colisión | Un "murciélago" sigue ocupando lo que un jugador | Cambiar las dimensiones del jugador (mixin de `getDimensions`) |
 | Quietud Eterna usa `NoAI` | Se repara al cargar, pero otro mod que lea `NoAI` podría verse afectado | — |
 | Las texturas son placeholder | Aspecto básico | Sustituir los PNG en `assets/aptitudes/textures/item/` |
 | No se ha compilado en el entorno donde se generó | Puede requerir algún ajuste menor de mappings | Ejecutar `./gradlew build` |
+
+**Resueltas en la v16:** la Defensa solo da XP por daño realmente recibido (no por golpes bloqueados con
+escudo ni ignorados por invulnerabilidad); un zombi esbirro que empieza a convertirse en ahogado se
+disuelve antes de volverse hostil; el Bombardeo orbital ya no daña al lanzador, a jugadores, aldeanos ni
+esbirros.
 
 ### Siguientes pasos sugeridos
 

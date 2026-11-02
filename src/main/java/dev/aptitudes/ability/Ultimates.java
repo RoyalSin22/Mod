@@ -27,7 +27,6 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -119,6 +118,8 @@ public final class Ultimates {
 		});
 
 		// Ingeniero – Bombardeo orbital: 12 impactos en 3 s alrededor del punto señalado (no rompen bloques).
+		// v16: ya no es una explosión real, que dañaba también al lanzador, a otros jugadores, aldeanos y
+		// esbirros. Cada impacto daña y empuja solo a los enemigos (Targeting.isHostileTo) en 3 bloques.
 		REGISTRY.put(Role.ENGINEER, (p, r) -> {
 			Vec3d center = Targeting.lookEnd(p, 40);
 			ServerWorld world = world(p);
@@ -126,8 +127,18 @@ public final class Ultimates {
 			AbilityState.repeat(server(p), 12, 5, i -> {
 				double x = center.x + (world.random.nextDouble() - 0.5) * 8;
 				double z = center.z + (world.random.nextDouble() - 0.5) * 8;
+				Vec3d hit = new Vec3d(x, center.y, z);
 				world.spawnParticles(ParticleTypes.END_ROD, x, center.y + 6, z, 15, 0.1, 3, 0.1, 0);
-				world.createExplosion(p, x, center.y, z, 2.5f, World.ExplosionSourceType.NONE);
+				world.spawnParticles(ParticleTypes.EXPLOSION, x, center.y + 0.5, z, 2, 0.4, 0.2, 0.4, 0);
+				world.playSound(null, x, center.y, z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 0.8f,
+						1.1f + world.random.nextFloat() * 0.2f);
+				if (!p.isAlive()) return;
+				for (LivingEntity e : hostilesNear(p, hit, 3.0)) {
+					e.damage(p.getDamageSources().explosion(p, p), 7.0f + r * 1.5f);
+					Vec3d push = e.getPos().subtract(hit).normalize();
+					e.addVelocity(push.x * 0.6, 0.35, push.z * 0.6);
+					e.velocityModified = true;
+				}
 			});
 			return true;
 		});

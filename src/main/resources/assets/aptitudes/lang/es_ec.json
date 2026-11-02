@@ -297,7 +297,7 @@
 	"title.aptitudes.engineer.1": "Maestro Ingeniero",
 	"title.aptitudes.engineer.2": "Arquitecto del Mañana",
 	"ultimate.aptitudes.engineer": "Bombardeo orbital",
-	"ultimate.aptitudes.engineer.desc": "12 impactos en 3 s alrededor del punto señalado. No rompen bloques, pero dañan a todo lo que alcanzan.",
+	"ultimate.aptitudes.engineer.desc": "12 impactos en 3 s alrededor del punto señalado. No rompen bloques y solo dañan y empujan a los enemigos.",
 	"title.aptitudes.lancer.1": "Lancero Real",
 	"title.aptitudes.lancer.2": "Lanza del Cielo",
 	"ultimate.aptitudes.lancer": "Lanza celestial",

@@ -297,7 +297,7 @@
 	"title.aptitudes.engineer.1": "Master Engineer",
 	"title.aptitudes.engineer.2": "Architect of Tomorrow",
 	"ultimate.aptitudes.engineer": "Orbital Strike",
-	"ultimate.aptitudes.engineer.desc": "12 impacts in 3 s around the target point. They don't break blocks, but hurt everything they hit.",
+	"ultimate.aptitudes.engineer.desc": "12 impacts in 3 s around the target point. They don't break blocks and only hurt and knock back enemies.",
 	"title.aptitudes.lancer.1": "Royal Lancer",
 	"title.aptitudes.lancer.2": "Lance of the Sky",
 	"ultimate.aptitudes.lancer": "Celestial Lance",

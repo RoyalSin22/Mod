@@ -28,6 +28,17 @@ final class MinionBrain {
 			minion.discard();
 			return;
 		}
+		// Salvaguarda final: si el dueño también está bajo el agua, teletransportarlo no lo saca. Cuando el
+		// zombi EMPIEZA a convertirse (todavía faltan 15 s para que sea un ahogado), se disuelve: así nunca
+		// aparece un ahogado hostil sin etiqueta de esbirro. Sin mixin, con el estado público de vanilla.
+		if (minion instanceof net.minecraft.entity.mob.ZombieEntity zombie && zombie.isConvertingInWater()) {
+			if (minion.getWorld() instanceof net.minecraft.server.world.ServerWorld sw) {
+				sw.spawnParticles(net.minecraft.particle.ParticleTypes.BUBBLE_POP, minion.getX(), minion.getBodyY(0.5),
+						minion.getZ(), 20, 0.3, 0.5, 0.3, 0.05);
+			}
+			minion.discard();
+			return;
+		}
 		double distance = minion.distanceTo(owner);
 		// Un zombi sumergido acabaría convirtiéndose en ahogado (entidad nueva, sin etiqueta de esbirro).
 		if (distance > TELEPORT_DISTANCE || minion.isSubmergedInWater()) {

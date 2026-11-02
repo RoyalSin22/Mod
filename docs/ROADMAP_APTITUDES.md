@@ -74,6 +74,13 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 - ~~La marca del grimorio podría perderse al morir~~ **Corregido (v15.2):** se copia en
   `ServerPlayerEvents.COPY_FROM`, así que nunca se entrega un segundo libro.
 - Pruebas JUnit 5 de Codex: siguen fuera del repositorio hasta que se compartan.
+
+### v16 — limitaciones conocidas resueltas
+| Área | Antes | Ahora |
+|---|---|---|
+| Defensa (XP) | Daba XP con golpes bloqueados por el escudo y en ticks de invulnerabilidad | `AFTER_DAMAGE`: solo daño recibido de verdad (daño base, antes de armadura) |
+| Invocaciones | Un zombi esbirro bajo el agua junto a su dueño podía acabar como ahogado hostil | Se disuelve al empezar la conversión (`isConvertingInWater`), sin mixin |
+| Bombardeo orbital | Explosión real: dañaba al lanzador, jugadores, aldeanos y esbirros | Impactos que solo dañan y empujan a enemigos (7 + 1,5·rango en 3 bloques) |
 - ~~La pantalla del árbol no conoce `legendaryExclusive`~~ **Corregido (v15.1):** la sincronización de
   legendarias incluye el modo exclusivo; el botón Mejorar se desactiva y la ficha del nodo dice quién la
   tiene o que ya tienes otra. Al reservar o liberar una legendaria se avisa a todos los jugadores. El
