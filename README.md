@@ -732,3 +732,5 @@ de jugador dentro de un hueco pequeño, el jugador puede asfixiarse como en vani
 - Más nodos por rol (por ejemplo, una habilidad "definitiva" al nivel 25).
 - Tests: `PlayerProgress`/`ProgressRules` son puros y testeables con JUnit; para la integración, Fabric GameTest.
 - HUD opcional con una barra de XP de la última habilidad entrenada.
+
+**v32 (rama local):** cuatro runas engarzables en armas de rol, con dos ranuras persistentes y recetas en la Mesa del gremio. Ver `docs/BALANCE.md` y `docs/ROADMAP_APTITUDES.md`.

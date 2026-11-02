@@ -99,3 +99,11 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
     derecha; rueda fuera del árbol o RePág/AvPág hasta ver «Hecho»; el zoom del árbol no cambia.
 15. En el Nether, sobornar a un piglin (Soborno) → deja de atacar en menos de medio segundo. Con el
     camuflaje del Cambiaformas, los piglins brutos y hoglins no te persiguen.
+
+# v32 — runas de armas (verificación manual)
+
+1. Fabrica las cuatro runas en la Mesa del gremio; verifica que no se fabriquen en mesa de trabajo.
+2. Sostén un arma de rol y una runa en manos opuestas, usa la Mesa del gremio y confirma consumo y mensaje de ranura.
+3. Engarza una segunda runa diferente; una tercera y un duplicado deben rechazarse. Cierra/abre el mundo y verifica persistencia.
+4. Prueba Fuego, Robo de vida, Aceleración y Fuerza; comprueba magnitudes y enfriamiento indicados en `docs/BALANCE.md`.
+5. Confirma que una espada vanilla no admite runas.

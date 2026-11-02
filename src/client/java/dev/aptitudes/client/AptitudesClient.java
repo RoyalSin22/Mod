@@ -16,6 +16,7 @@ import dev.aptitudes.network.UseAbilityPayload;
 import dev.aptitudes.sync.ClientCache;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -40,6 +41,9 @@ public class AptitudesClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+		ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> {
+			if (dev.aptitudes.rune.RuneSocketing.eligible(stack)) dev.aptitudes.rune.RuneSocketing.appendTooltip(stack, lines);
+		});
 		openSkillsKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 				"key.aptitudes.open", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_K, CATEGORY));
 		openRolesKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(

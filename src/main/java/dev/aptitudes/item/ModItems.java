@@ -154,6 +154,11 @@ public final class ModItems {
 	public static final Item CHAMPION_HEART = register("champion_heart",
 			new Item(new Item.Settings().rarity(Rarity.EPIC).fireproof()));
 
+	public static final Item RUNE_FLAME = register("rune_flame", new dev.aptitudes.rune.RuneItem(dev.aptitudes.rune.RuneKind.FLAME, new Item.Settings().rarity(Rarity.UNCOMMON)));
+	public static final Item RUNE_LEECH = register("rune_leech", new dev.aptitudes.rune.RuneItem(dev.aptitudes.rune.RuneKind.LEECH, new Item.Settings().rarity(Rarity.RARE)));
+	public static final Item RUNE_SWIFT = register("rune_swift", new dev.aptitudes.rune.RuneItem(dev.aptitudes.rune.RuneKind.SWIFT, new Item.Settings().rarity(Rarity.RARE)));
+	public static final Item RUNE_FORCE = register("rune_force", new dev.aptitudes.rune.RuneItem(dev.aptitudes.rune.RuneKind.FORCE, new Item.Settings().rarity(Rarity.UNCOMMON)));
+
 	public static final java.util.Map<dev.aptitudes.accessory.Accessory, Item> ACCESSORIES = registerAccessories();
 
 	private static java.util.Map<dev.aptitudes.accessory.Accessory, Item> registerAccessories() {
@@ -205,6 +210,10 @@ public final class ModItems {
 						entries.add(ARMORY_VOUCHER);
 						entries.add(ELITE_ESSENCE);
 						entries.add(CHAMPION_HEART);
+						entries.add(RUNE_FLAME);
+						entries.add(RUNE_LEECH);
+						entries.add(RUNE_SWIFT);
+						entries.add(RUNE_FORCE);
 						for (Item accessory : ACCESSORIES.values()) entries.add(accessory);
 						for (Item weapon : dev.aptitudes.item.weapon.RoleWeapons.all()) entries.add(weapon);
 						entries.add(dev.aptitudes.world.GuildVillagers.GUILD_DESK_ITEM);

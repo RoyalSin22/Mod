@@ -58,7 +58,9 @@ public class RoleFocusItem extends Item {
 		}
 		double cost = tier >= Evolution.ULTIMATE ? 10 : 8;
 		if (!AbilityManager.tryConsume(player, cost)) return TypedActionResult.fail(stack);
-		player.getItemCooldownManager().set(this, tier >= Evolution.ULTIMATE ? 10 : 12);
+		int cooldown = tier >= Evolution.ULTIMATE ? 10 : 12;
+		if (dev.aptitudes.rune.RuneSocketing.has(stack, dev.aptitudes.rune.RuneKind.SWIFT)) cooldown = Math.max(4, cooldown - 2);
+		player.getItemCooldownManager().set(this, cooldown);
 
 		LivingEntity target = Targeting.raycastLiving(player, 32);
 		Vec3d from = player.getEyePos().add(player.getRotationVec(1.0f).multiply(0.5)).add(0, -0.15, 0);
@@ -72,7 +74,8 @@ public class RoleFocusItem extends Item {
 				SoundCategory.PLAYERS, 0.8f, tier >= Evolution.ULTIMATE ? 0.9f : 1.3f);
 
 		if (target != null) {
-			float damage = (tier >= Evolution.ULTIMATE ? 10f : 7f) + data.level(role) * 0.2f;
+			float damage = (tier >= Evolution.ULTIMATE ? 10f : 7f) + data.level(role) * 0.2f
+					+ dev.aptitudes.rune.RuneSocketing.damageBonus(stack);
 			target.damage(player.getDamageSources().indirectMagic(player, player), damage);
 			if (role == Role.ELEMENTALIST) {
 				Element element = data.activeElement();

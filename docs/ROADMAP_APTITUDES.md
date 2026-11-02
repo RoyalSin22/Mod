@@ -170,3 +170,8 @@ registro en memoria con tope de 100 000 posiciones por mundo (FIFO).
 - `UniqueState` puede contener dueños antiguos de antes de la v12: si se activa `legendaryExclusive`,
   liberar con `/unique revoke <legendaria>` los que sobren.
 - Clases grandes (`RolesScreen` 850 líneas, `NewRoles` 900): dividir solo cuando se toquen por otro motivo.
+
+### v32 — Runas para armas (implementado en rama local)
+- Cuatro runas fabricables en la Mesa del gremio y engarzables al hacer clic en la mesa con un arma de rol en una mano y una runa en la otra.
+- Dos ranuras persistentes por arma; una runa de cada tipo como máximo. Efectos: Fuego (ignición 3 s), Robo de vida (1 salud/4 s), Aceleración (+10 % ataque; focos −2 ticks) y Fuerza (+1 daño).
+- Prueba pura: `rune/RuneRulesTest`. Build y pruebas pendientes.

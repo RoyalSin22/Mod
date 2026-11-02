@@ -26,6 +26,12 @@ public class GuildDeskBlock extends Block {
 	@Override
 	protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
 		if (world.isClient()) return ActionResult.SUCCESS;
+		if (player instanceof net.minecraft.server.network.ServerPlayerEntity serverPlayer) {
+			var main = player.getMainHandStack();
+			var off = player.getOffHandStack();
+			if (dev.aptitudes.rune.RuneSocketing.socket(serverPlayer, main, off)
+					|| dev.aptitudes.rune.RuneSocketing.socket(serverPlayer, off, main)) return ActionResult.CONSUME;
+		}
 		player.openHandledScreen(state.createScreenHandlerFactory(world, pos));
 		return ActionResult.CONSUME;
 	}

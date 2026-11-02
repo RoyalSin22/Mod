@@ -134,3 +134,9 @@ Presteza, Eficiencia y el tope del 60 %. Puntos: +10 con Maestro y +5 con Defini
   23 nodos (+1 legendario): obliga a elegir.
 - Sendas: 3 por rol, solo se pueden seguir 2 (validado en servidor y persistido en los rangos).
 - Rol secundario: gana XP al 50 % (`secondaryRoleXpMultiplier`) y sus activas ocupan las teclas N/M.
+
+# Runas para armas (v32)
+
+Cada arma de rol admite dos runas distintas. Fuego aplica 3 segundos de ignición al golpear; Robo de vida cura
+1 punto de salud y tiene enfriamiento de 4 segundos; Aceleración suma 10 % a la velocidad de ataque o reduce
+2 ticks el enfriamiento del foco; Fuerza suma 1 punto de daño. Son valores fijos y no escalan con XP ni atributos.

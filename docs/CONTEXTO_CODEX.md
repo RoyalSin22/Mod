@@ -93,6 +93,7 @@ retematizaron (p. ej., «Talismán maldito»).
 | Pantalla K (atributos y habilidades, 10 tarjetas 5×2 animadas) | `client/screen/AptitudesScreen` |
 | Pantalla de roles (árbol con zoom, arrastre y desplazamiento) | `client/screen/RolesScreen` |
 | Combos de combate (contador, bonificación y remates por categoría) | `ability/Combos` + `logic/ComboCounter`; HUD `client/hud/ComboHud` |
+| Runas para armas de rol (v32) | `rune/RuneSocketing`, `rune/RuneRules`, NBT persistente en `ItemStack.CUSTOM_DATA` |
 | Fabricación en la Mesa del gremio (armaduras de rol) | `world/GuildCrafting` (tipo `aptitudes:guild_crafting`), `GuildShapedRecipe`, `GuildDeskScreenHandler`, `GuildDeskBlock`; cliente `GuildDeskScreen` |
 | Configuración validada al cargar | `config/AptitudesConfig.validated` |
 | Texturas de armas y objetos (generadas) | `tools/textures/gen_items.py` |
