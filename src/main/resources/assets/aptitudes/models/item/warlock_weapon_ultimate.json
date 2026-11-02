@@ -1,0 +1,6 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "aptitudes:item/warlock_weapon_ultimate"
+  }
+}

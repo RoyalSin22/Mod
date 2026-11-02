@@ -17,11 +17,17 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
   estructuras (torres, santuarios, campamentos), aldeano de gremio.
 - HUD configurable, efectos visuales, árbol arrastrable con zoom.
 
-### Pedido por el usuario y aún NO implementado
-- Grimorio/guía del mod dentro del juego (Hoguera, roles, armaduras, recetas, drops).
-- Más elementos para el Elementalista y fusiones entre elementos.
-- Arma nueva al evolucionar el rol (Maestro y Definitivo), visible en el árbol.
-- Mejores efectos visuales de habilidades y armas.
+### Pedidos del usuario implementados en el bloque v14 (pendientes de compilar en el PC)
+- **Grimorio de Aptitudes**: guía con 18 capítulos (Hoguera, atributos, habilidades, roles, árbol,
+  evolución, armas, Elementalista, armaduras, objetos de alma, accesorios, élites, estructuras, gremio,
+  recetas, botín, teclas). Se entrega una vez al entrar; receta libro + pepita de oro.
+- **5 elementos nuevos** (Luz, Vacío, Veneno, Cristal, Sonido; 14 en total) con proyectil, estallido,
+  pasiva y muro, y **10 fusiones** que se activan con el Estallido si dominas la pareja.
+- **Armas de evolución**: 40 armas (hoja o foco según el rol) que se entregan al evolucionar a Maestro y
+  a Definitivo; casillas en la fila superior del árbol con botón Reclamar validado en el servidor
+  (sin duplicados: comprueba inventario y cofre de Ender).
+- **Efectos de impacto**: estallido del color del rol al golpear con habilidades, disparos y armas de rol;
+  fogonazo e impacto en las armas de disparo.
 
 ### Propuestas (evaluadas, no implementadas)
 - Disciplinas nuevas: **Pesca** es la candidata (no hay ninguna habilidad equivalente). Requiere eventos de

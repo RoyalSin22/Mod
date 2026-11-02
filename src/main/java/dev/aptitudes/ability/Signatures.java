@@ -290,6 +290,11 @@ public final class Signatures {
 			case SHADOW -> Blocks.BLACKSTONE.getDefaultState();
 			case LIGHTNING -> Blocks.COPPER_BLOCK.getDefaultState();
 			case WIND -> Blocks.WHITE_STAINED_GLASS.getDefaultState();
+			case LIGHT -> Blocks.GLOWSTONE.getDefaultState();
+			case VOID -> Blocks.CRYING_OBSIDIAN.getDefaultState();
+			case POISON -> Blocks.SLIME_BLOCK.getDefaultState();
+			case CRYSTAL -> Blocks.AMETHYST_BLOCK.getDefaultState();
+			case SOUND -> Blocks.SCULK.getDefaultState();
 		};
 	}
 

@@ -47,6 +47,8 @@ public class AptitudesClient implements ClientModInitializer {
 		cycleElementKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 				"key.aptitudes.cycle_element", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_G, CATEGORY));
 		ClientConfig.load();
+		dev.aptitudes.item.GuideBookItem.opener = () -> net.minecraft.client.MinecraftClient.getInstance()
+				.setScreen(new dev.aptitudes.client.screen.GuideScreen());
 		toggleHudKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 				"key.aptitudes.toggle_hud", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_O, CATEGORY));
 		accessoriesKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(

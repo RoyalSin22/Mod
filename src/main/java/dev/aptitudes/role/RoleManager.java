@@ -36,6 +36,12 @@ public final class RoleManager {
 			refresh(handler.getPlayer());
 			dev.aptitudes.morph.MorphManager.onJoin(handler.getPlayer());
 			dev.aptitudes.unique.UniqueManager.onJoin(handler.getPlayer());
+			// Grimorio: una sola vez por jugador (la etiqueta se guarda con el jugador).
+			var joined = handler.getPlayer();
+			if (joined.addCommandTag(dev.aptitudes.Aptitudes.MOD_ID + ".got_guide")) {
+				net.minecraft.item.ItemStack guide = new net.minecraft.item.ItemStack(dev.aptitudes.item.ModItems.GUIDE_BOOK);
+				if (!joined.getInventory().insertStack(guide)) joined.dropItem(guide, false);
+			}
 		});
 		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
 			AbilityManager.forget(handler.getPlayer());
@@ -122,6 +128,7 @@ public final class RoleManager {
 		if (!player.isCreative() && !consumeOne(player, item)) return EvolveResult.MISSING_ITEM;
 
 		data.setTier(role, tier + 1);
+		dev.aptitudes.item.weapon.RoleWeapons.give(player, role, tier + 1); // arma nueva de la evolución
 		player.getServer().getPlayerManager().broadcast(Text.translatable("aptitudes.evolve.broadcast",
 				player.getDisplayName(), Text.translatable(Evolution.titleKey(role, tier + 1)))
 				.formatted(Formatting.GOLD), false);
@@ -231,6 +238,24 @@ public final class RoleManager {
 		if (ritual) data.setRebirths(data.rebirths() - 1);
 		refresh(player);
 		return ChangeResult.OK;
+	}
+
+	/**
+	 * Reclamar de nuevo el arma de evolución (si se perdió). Validado en el servidor: el rol debe estar
+	 * activo, haber alcanzado esa evolución y no tener ya el arma (inventario o cofre de Ender).
+	 */
+	public static void claimWeapon(ServerPlayerEntity player, Role role, int tier) {
+		RoleData data = get(player);
+		net.minecraft.item.Item weapon = dev.aptitudes.item.weapon.RoleWeapons.get(role, tier);
+		if (weapon == null || !data.isActive(role) || data.tier(role) < tier) {
+			player.sendMessage(Text.translatable("aptitudes.weapon.locked").formatted(Formatting.RED), true);
+			return;
+		}
+		if (dev.aptitudes.item.weapon.RoleWeapons.owns(player, weapon)) {
+			player.sendMessage(Text.translatable("aptitudes.weapon.already").formatted(Formatting.RED), true);
+			return;
+		}
+		dev.aptitudes.item.weapon.RoleWeapons.give(player, role, tier);
 	}
 
 	/** Ritual completado en la Hoguera: concede un cambio de rol. */

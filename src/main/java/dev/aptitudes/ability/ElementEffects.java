@@ -18,6 +18,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
@@ -102,6 +103,36 @@ public final class ElementEffects {
 				effect(target, StatusEffects.WITHER, (2 + r) * 20, 0);
 				effect(target, StatusEffects.BLINDNESS, 40, 0);
 			}
+			case LIGHT -> {
+				// Doble contra no-muertos; marca al objetivo.
+				target.damage(source, target.getType().isIn(EntityTypeTags.UNDEAD) ? damage * 2 : damage);
+				effect(target, StatusEffects.GLOWING, 100, 0);
+			}
+			case VOID -> {
+				// Atrae al objetivo hacia ti.
+				target.damage(source, damage * 1.1f);
+				Vec3d pull = p.getPos().subtract(target.getPos()).normalize().multiply(0.9 + 0.15 * r);
+				target.addVelocity(pull.x, 0.25, pull.z);
+				target.velocityModified = true;
+			}
+			case POISON -> {
+				target.damage(source, damage * 0.7f);
+				effect(target, StatusEffects.POISON, 100, r >= 3 ? 1 : 0);
+				effect(target, StatusEffects.NAUSEA, 80, 0);
+			}
+			case CRYSTAL -> {
+				// Fragmentos: más daño y ralentiza.
+				target.damage(source, damage * 1.3f);
+				effect(target, StatusEffects.SLOWNESS, 40, 1);
+			}
+			case SOUND -> {
+				// Onda sónica: empuja y aturde.
+				target.damage(source, damage * 0.9f);
+				Vec3d dir = Targeting.horizontalFacing(p);
+				target.takeKnockback(1.2 + 0.2 * r, -dir.x, -dir.z);
+				effect(target, StatusEffects.NAUSEA, 60, 0);
+				effect(target, StatusEffects.SLOWNESS, 30, 2);
+			}
 		}
 		Targeting.burst(p.getServerWorld(), element.particle(), target, 10, 0.4);
 		return true;
@@ -174,7 +205,35 @@ public final class ElementEffects {
 				});
 				effect(p, StatusEffects.INVISIBILITY, 60, 0);
 			}
+			case LIGHT -> {
+				for (PlayerEntity ally : Targeting.playersAround(p, radius)) ally.heal(2 + r);
+				hostiles.forEach(e -> {
+					e.damage(source, e.getType().isIn(EntityTypeTags.UNDEAD) ? damage * 2 : damage);
+					effect(e, StatusEffects.GLOWING, 100, 0);
+				});
+			}
+			case VOID -> hostiles.forEach(e -> {
+				Vec3d pull = p.getPos().subtract(e.getPos()).normalize().multiply(0.8);
+				e.addVelocity(pull.x, 0.2, pull.z);
+				e.velocityModified = true;
+				e.damage(source, damage);
+				effect(e, StatusEffects.SLOWNESS, 60, 1);
+			});
+			case POISON -> hostiles.forEach(e -> {
+				effect(e, StatusEffects.POISON, 120, 1);
+				effect(e, StatusEffects.WEAKNESS, 100, 0);
+			});
+			case CRYSTAL -> {
+				hostiles.forEach(e -> e.damage(source, damage * 1.2f));
+				effect(p, StatusEffects.ABSORPTION, 200, Math.max(0, r - 1));
+			}
+			case SOUND -> hostiles.forEach(e -> {
+				e.damage(source, damage);
+				e.takeKnockback(1.8, p.getX() - e.getX(), p.getZ() - e.getZ());
+				effect(e, StatusEffects.NAUSEA, 100, 0);
+			});
 		}
+		ElementFusions.apply(p, element, r, hostiles);
 		return true;
 	}
 
@@ -197,7 +256,9 @@ public final class ElementEffects {
 			new ElementAttribute(Element.LIGHTNING, EntityAttributes.GENERIC_MOVEMENT_SPEED, Operation.ADD_MULTIPLIED_BASE, 0.03),
 			new ElementAttribute(Element.EARTH, EntityAttributes.GENERIC_ARMOR, Operation.ADD_VALUE, 1.0),
 			new ElementAttribute(Element.WIND, EntityAttributes.GENERIC_SAFE_FALL_DISTANCE, Operation.ADD_VALUE, 3.0),
-			new ElementAttribute(Element.MAGMA, EntityAttributes.GENERIC_ARMOR_TOUGHNESS, Operation.ADD_VALUE, 1.0));
+			new ElementAttribute(Element.MAGMA, EntityAttributes.GENERIC_ARMOR_TOUGHNESS, Operation.ADD_VALUE, 1.0),
+			new ElementAttribute(Element.VOID, EntityAttributes.GENERIC_GRAVITY, Operation.ADD_MULTIPLIED_BASE, -0.08),
+			new ElementAttribute(Element.CRYSTAL, EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, Operation.ADD_VALUE, 0.1));
 
 	public static void applyAttributes(ServerPlayerEntity player) {
 		for (ElementAttribute a : ATTRIBUTES) {
@@ -220,6 +281,17 @@ public final class ElementEffects {
 		if (plant > 0 && serverTicks % (Math.max(1, 10 - 2 * plant) * 20) == 0 && p.getHealth() < p.getMaxHealth()) {
 			var below = p.getWorld().getBlockState(p.getBlockPos().down());
 			if (below.isIn(BlockTags.DIRT) || below.isIn(BlockTags.LEAVES)) p.heal(1.0f);
+		}
+		if (passiveRank(p, Element.LIGHT) > 0) {
+			p.removeStatusEffect(StatusEffects.BLINDNESS);
+			p.removeStatusEffect(StatusEffects.DARKNESS);
+		}
+		if (passiveRank(p, Element.POISON) > 0) p.removeStatusEffect(StatusEffects.POISON);
+		int sound = passiveRank(p, Element.SOUND);
+		if (sound > 0 && serverTicks % 80 == 0) { // ecolocalización: los hostiles cercanos brillan
+			for (LivingEntity e : Targeting.hostilesAround(p, 8 + 4 * sound)) {
+				e.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 40, 0, true, false));
+			}
 		}
 		if (passiveRank(p, Element.SHADOW) > 0 && p.getWorld().getLightLevel(p.getBlockPos()) <= 7) {
 			quietEffect(p, StatusEffects.NIGHT_VISION, 260); // >200 ticks evita el parpadeo de pantalla

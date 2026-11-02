@@ -23,6 +23,8 @@ public record RoleActionPayload(int action, int roleIndex, String nodeId) implem
 	/** Equipar la activa {@code nodeId} en la ranura 1 / 2 de su rol. */
 	public static final int EQUIP_1 = 7;
 	public static final int EQUIP_2 = 8;
+	/** Volver a reclamar el arma de evolución del rol {@code roleIndex} (nodeId = "1" Maestro, "2" Definitivo). */
+	public static final int CLAIM_WEAPON = 9;
 
 	public static final Id<RoleActionPayload> ID = new Id<>(Aptitudes.id("role_action"));
 	public static final PacketCodec<RegistryByteBuf, RoleActionPayload> CODEC = PacketCodec.tuple(

@@ -88,6 +88,9 @@ public class HitscanWeaponItem extends Item {
 		Vec3d from = player.getEyePos().add(player.getRotationVec(1.0f).multiply(0.5)).add(0, -0.15, 0);
 		Vec3d to = target != null ? target.getPos().add(0, target.getHeight() / 2, 0) : Targeting.lookEnd(player, kind.range);
 		Targeting.particleLine(player.getServerWorld(), kind.particle, from, to);
+		// Fogonazo en la boca del arma y estallido en el punto de impacto
+		dev.aptitudes.ability.ParticleFx.ring(player.getServerWorld(), from, 0.3, kind.particle, 8);
+		player.getServerWorld().spawnParticles(kind.particle, to.x, to.y, to.z, 14, 0.25, 0.25, 0.25, 0.05);
 
 		if (target != null) {
 			var data = RoleManager.get(player);

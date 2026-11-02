@@ -376,6 +376,17 @@ A los 4 nodos propios de cada rol se suman 5:
 
 Comandos: `/unique` (lista) · `/unique admin give <jugador> <habilidad>` · `/unique admin revoke <habilidad>`.
 
+## v14: grimorio, elementos y fusiones, armas de evolución y efectos de impacto
+
+- **Grimorio de Aptitudes** (libro + pepita de oro; se regala al entrar): guía con 18 capítulos.
+- **Elementalista**: 14 elementos (nuevos: Luz, Vacío, Veneno, Cristal, Sonido) y 10 **fusiones**
+  (Tormenta ígnea, Electrocución, Ventisca, Erupción, Plaga, Eclipse, Singularidad cristalina,
+  Resonancia, Prisma, Choque térmico) que se añaden al Estallido si dominas los dos elementos.
+- **Armas de evolución**: al evolucionar a Maestro y a Definitivo recibes un arma nueva del rol
+  (hoja de diamante/netherita o foco mágico). Aparecen en la fila superior del árbol; si la pierdes,
+  botón **Reclamar**.
+- **Efectos**: estallidos del color del rol al impactar con habilidades, disparos y armas de rol.
+
 ## v13: élites, campeones y accesorios
 
 ### Élites y campeones
