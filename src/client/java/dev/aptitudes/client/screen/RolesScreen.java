@@ -545,7 +545,9 @@ public class RolesScreen extends Screen {
 		for (NodeView v : views) {
 			if (v.node() == null) continue;
 			String pre = v.node().prerequisite();
-			NodeView parent = pre == null ? core : nodeView(pre);
+			// Las raíces solo se unen al núcleo si están justo debajo (la mecánica); así ninguna línea
+			// cruza los títulos de las zonas.
+			NodeView parent = pre != null ? nodeView(pre) : v.x() == core.x() && v.node().kind() != RoleNode.Kind.LEGENDARY ? core : null;
 			if (parent == null) continue;
 			boolean on = data.rank(v.node().id()) > 0;
 			boolean open = !on && available(data, v);
@@ -618,8 +620,8 @@ public class RolesScreen extends Screen {
 		int cx = child.x() + 11;
 		int py = parent.y() + 24;
 		int cy = child.y();
-		int mid = cy - 7;
-		if (mid < py) mid = py + (cy - py) / 2;
+		// El tramo horizontal va justo debajo del padre: así no pasa por los nombres de las sendas.
+		int mid = Math.min(py + 5, cy - 4);
 		ctx.fill(px, py, px + 2, mid + 2, color);
 		ctx.fill(Math.min(px, cx), mid, Math.max(px, cx) + 2, mid + 2, color);
 		ctx.fill(cx, mid, cx + 2, cy, color);
@@ -676,6 +678,7 @@ public class RolesScreen extends Screen {
 			boolean started = RoleTree.pathStarted(data::rank, selected, path);
 			int color = locked ? UiStyle.DOWN : started ? PATH_COLORS[path - 1] : (PATH_COLORS[path - 1] & 0xFFFFFF) | 0xA0000000;
 			int w = (int) (textRenderer.getWidth(name) * 0.75f);
+			ctx.fill(cx - w / 2 - 2, y - 2, cx + w / 2 + 3, y + 8, 0xF0141820);
 			ctx.getMatrices().push();
 			ctx.getMatrices().translate(cx - w / 2f, y, 0);
 			ctx.getMatrices().scale(0.75f, 0.75f, 1f);

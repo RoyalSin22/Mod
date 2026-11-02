@@ -482,8 +482,8 @@ public final class RoleTree {
 			}
 		}
 		nodes.addAll(List.of(mech, r1, r2, aC, aD));
-		// Nodo legendario (antigua habilidad única): fila 6, centro; exige la mecánica y nivel 25.
-		nodes.add(at(new RoleNode(k + "_legend", role, RoleNode.Kind.LEGENDARY, 25, null, 0, 0), 4, 6, 25, mech.id()));
+		// Nodo legendario (antigua habilidad única): fila 6, centro; solo exige nivel 25.
+		nodes.add(at(new RoleNode(k + "_legend", role, RoleNode.Kind.LEGENDARY, 25, null, 0, 0), 4, 6, 25, null));
 		for (RoleNode n : nodes) {
 			if (BY_ID.put(n.id(), n) != null) throw new IllegalStateException("Nodo duplicado: " + n.id());
 		}
