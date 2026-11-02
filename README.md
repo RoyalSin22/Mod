@@ -11,6 +11,13 @@ Sistema RPG con tres capas que se combinan:
 - **17 ítems nuevos** con receta (uno por rol, el Ingeniero tiene dos, y 2 ítems de evolución).
 - **GUI** rediseñada (`K` atributos/habilidades, `J` roles, `U` únicas, `G` cambiar elemento), **HUD** de energía, enfriamientos y elemento activo, **comandos** y **configuración JSON**.
 
+## Documentación técnica
+
+- [docs/ROADMAP_APTITUDES.md](docs/ROADMAP_APTITUDES.md): estado real, cambios y pendientes.
+- [docs/BALANCE.md](docs/BALANCE.md): fórmulas, límites y decisiones de balance.
+- [docs/CONFIGURATION.md](docs/CONFIGURATION.md): todas las opciones y su validación.
+- [docs/TESTING.md](docs/TESTING.md): pruebas automatizadas y manuales.
+
 ## Requisitos
 
 | Componente | Versión |
@@ -96,7 +103,7 @@ Cada rango cuesta 1 punto del rol y exige 5 niveles más que el anterior. Puntos
 | Lancero | Golpes con lanza o tridente | Alcance (+alcance de ataque) | Embestida (carga con daño) | Carga (+daño al esprintar) | Barrido (daño circular) | Lanza (+1 de alcance) |
 | Espadachín | Golpes con espada | Filo (+daño con espadas) | Danza de espadas (Prisa + Velocidad) | Parada (probabilidad de anular golpes) | Contraataque (anula y devuelve el siguiente golpe) | Katana (rápida) |
 | Paladín | Martillo sagrado, dañar no-muertos, bloquear con escudo | Castigo sagrado (+daño a no-muertos) | Escudo divino (Absorción + Resistencia) | Aura protectora (Resistencia a aliados cercanos) | Juicio (daño en área, ×2 a no-muertos; cura aliados) | Martillo sagrado |
-| Nigromante | Tomo, drenaje y daño de sus esbirros | Pacto oscuro (energía y vida por muertes cercanas) | Alzar esbirros (zombis/esqueletos aliados) | Drenaje vital (robo de vida, también de esbirros) | Toque mortal (drenaje en área) | Tomo nigromántico (rayo que roba vida) |
+| Nigromante | Tomo, drenaje y daño de sus esbirros | Comunión oscura (energía y vida por muertes cercanas) | Alzar esbirros (zombis/esqueletos aliados) | Drenaje vital (robo de vida, también de esbirros) | Toque mortal (drenaje en área) | Tomo nigromántico (rayo que roba vida) |
 | Druida | Plantar retoños, criar animales, usar el cayado | Hijo del bosque (bonos en bosques) | Raíces (inmoviliza) | Crecimiento (los cultivos cercanos crecen solos) | Forma de oso | Cayado de roble (abona 3×3) |
 | Mercader | Comerciar con aldeanos | Regateo (Héroe de la aldea permanente) | Ojo del tasador (Suerte + revelar criaturas) | Bolsillos profundos (esmeralda extra al comerciar) | Soborno (1 esmeralda: los enemigos dejan de atacar) | Sello del gremio (repone ofertas de un aldeano) |
 | Monje | Golpes a mano vacía | Puños de hierro (+daño desarmado) | Palma de chi (golpe y empujón) | Esquiva (evita ataques) | Meditación (regeneración, resistencia y energía) | Vendas de puño (mano secundaria) |
@@ -369,6 +376,17 @@ A los 4 nodos propios de cada rol se suman 5:
 
 Comandos: `/unique` (lista) · `/unique admin give <jugador> <habilidad>` · `/unique admin revoke <habilidad>`.
 
+## v14: grimorio, elementos y fusiones, armas de evolución y efectos de impacto
+
+- **Grimorio de Aptitudes** (libro + pepita de oro; se regala al entrar): guía con 18 capítulos.
+- **Elementalista**: 14 elementos (nuevos: Luz, Vacío, Veneno, Cristal, Sonido) y 10 **fusiones**
+  (Tormenta ígnea, Electrocución, Ventisca, Erupción, Plaga, Eclipse, Singularidad cristalina,
+  Resonancia, Prisma, Choque térmico) que se añaden al Estallido si dominas los dos elementos.
+- **Armas de evolución**: al evolucionar a Maestro y a Definitivo recibes un arma nueva del rol
+  (hoja de diamante/netherita o foco mágico). Aparecen en la fila superior del árbol; si la pierdes,
+  botón **Reclamar**.
+- **Efectos**: estallidos del color del rol al impactar con habilidades, disparos y armas de rol.
+
 ## v13: élites, campeones y accesorios
 
 ### Élites y campeones
@@ -442,7 +460,7 @@ Emblemas de maestría y Núcleos definitivos.
 | Invocador de armas | Oficio | Sello de armas | Arsenal flotante (espadas que orbitan) | Andanada de espadas, Lluvia de espadas, Espadón espectral, Prisión de espadas |
 | Cazador | Sombras | Cuchillo de caza | La cacería (presa acumulada) | Marca del cazador, Trampa, Lluvia de flechas, Ataque del halcón |
 | Bardo | Guardianes | Laúd | Crescendo (4 notas → final) | Canción del valor, Disonancia, Balada protectora, Réquiem |
-| Brujo | Sombras | Talismán del pacto | Pacto demoníaco (vida → corrupción) | Maldición de agonía, Rayo del abismo, Invocar diablillos, Condena |
+| Brujo | Sombras | Talismán maldito | Corrupción (vida → daño mágico) | Maldición de agonía, Rayo del abismo, Invocar diablillos, Condena |
 | Domador | Oficio | Silbato del domador | Compañero (bonus si tu mascota ataca) | ¡A por él!, Vínculo vital, Estampida, Rugido alfa |
 
 Cada uno tiene 23 nodos, 3 Sendas, característica, definitiva, recurso propio, set de armadura con

@@ -22,7 +22,13 @@ public enum Element {
 	WATER(0x2196F3, ParticleTypes.SPLASH),
 	PLANT(0x66BB6A, ParticleTypes.HAPPY_VILLAGER),
 	MAGMA(0xBF360C, ParticleTypes.LAVA),
-	SHADOW(0x4A148C, ParticleTypes.SQUID_INK);
+	SHADOW(0x4A148C, ParticleTypes.SQUID_INK),
+	// v14: elementos nuevos
+	LIGHT(0xFFF59D, ParticleTypes.END_ROD),
+	VOID(0x5E35B1, ParticleTypes.REVERSE_PORTAL),
+	POISON(0x76FF03, ParticleTypes.ITEM_SLIME),
+	CRYSTAL(0xE1BEE7, ParticleTypes.GLOW),
+	SOUND(0x80DEEA, ParticleTypes.NOTE);
 
 	/** Nivel de Elementalista necesario para dominar el 1.º, 2.º y 3.º elemento. */
 	public static final int[] UNLOCK_LEVELS = {1, 10, 20};

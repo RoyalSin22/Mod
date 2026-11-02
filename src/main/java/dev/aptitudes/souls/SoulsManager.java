@@ -59,16 +59,13 @@ public final class SoulsManager {
 	 * {@code points} puntos nuevos (1 punto cada {@code soulLevelsPerPoint} niveles).
 	 */
 	public static int levelsForPoints(int soulLevel, int points) {
-		if (points <= 0) return 0;
-		int per = Math.max(1, Aptitudes.config().soulLevelsPerPoint);
-		int target = per * (soulLevel / per + points);
-		return target - soulLevel;
+		return SoulsMath.levelsForPoints(soulLevel, points, Aptitudes.config().soulLevelsPerPoint);
 	}
 
 	/** Coste en niveles de XP de pasar del nivel de alma {@code level} al siguiente. */
-	public static int levelCost(int level) {
+	public static int levelCost(long level) {
 		AptitudesConfig c = Aptitudes.config();
-		return Math.min(c.levelCostMax, c.levelCostBase + level / Math.max(1, c.levelCostDivisor));
+		return SoulsMath.levelCost(level, c.levelCostBase, c.levelCostDivisor, c.levelCostMax);
 	}
 
 	/**
@@ -182,16 +179,14 @@ public final class SoulsManager {
 		}
 		PlayerProgress progress = ProgressManager.get(player);
 		int max = Aptitudes.config().maxPointsPerAttribute;
-		int total = 0;
-		for (PlayerAttribute a : attrs) {
-			int n = requested[a.ordinal()];
-			if (n < 0 || progress.getAllocated(a) + n > max) return;
-			total += n;
-		}
-		if (total <= 0 || total > 1000) return;
+		int[] allocated = new int[attrs.length];
+		for (PlayerAttribute a : attrs) allocated[a.ordinal()] = progress.getAllocated(a);
+		// Validación con long (ver SoulsMath): evita el desbordamiento con valores cercanos a Integer.MAX_VALUE.
+		long total = SoulsMath.validRequestTotal(requested, allocated, max);
+		if (total < 0) return;
 
 		int free = Math.max(0, ProgressManager.availablePoints(progress));
-		int toBuy = levelsForPoints(progress.getSoulLevel(), Math.max(0, total - free));
+		int toBuy = levelsForPoints(progress.getSoulLevel(), (int) Math.max(0, total - free)); // total ≤ 1000
 		int cost = 0;
 		for (int i = 0; i < toBuy; i++) cost += levelCost(progress.getSoulLevel() + i);
 		if (!player.isCreative() && player.experienceLevel < cost) {

@@ -685,7 +685,7 @@ public final class NewRoles {
 
 	// ============================================================ Habilidades
 
-	/** Tras lanzar una habilidad: Crescendo y Bis (Bardo), Pacto demoníaco (Brujo). */
+	/** Tras lanzar una habilidad: Crescendo y Bis (Bardo), Corrupción (Brujo). */
 	static void onCast(ServerPlayerEntity p, Role role, String cooldownKey, int slot) {
 		State s = state(p);
 		if (role == Role.BARD) {

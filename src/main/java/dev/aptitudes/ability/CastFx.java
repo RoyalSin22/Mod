@@ -91,6 +91,46 @@ public final class CastFx {
 				target.getY() + target.getHeight() + 0.25, target.getZ() + jitter, amount, color));
 	}
 
+	/**
+	 * Impacto visible al golpear: estallido del color del rol en el objetivo, proporcional al daño.
+	 * Habilidades/disparos (daño indirecto) siempre; cuerpo a cuerpo solo con un arma de tu rol
+	 * (ítem característico o arma de evolución), para no recargar los golpes normales.
+	 */
+	public static void impact(ServerPlayerEntity hitter, LivingEntity target, net.minecraft.entity.damage.DamageSource source,
+							  float amount) {
+		if (amount <= 0) return;
+		var data = RoleManager.get(hitter);
+		boolean direct = source.getSource() == hitter;
+		Role role = null;
+		if (direct) {
+			var hand = hitter.getMainHandStack();
+			for (Role r : new Role[]{data.primary(), data.secondary()}) {
+				if (r == null) continue;
+				boolean roleWeapon = hand.isOf(r.iconStack().getItem())
+						|| (hand.getItem() instanceof dev.aptitudes.item.weapon.RoleBladeItem blade && blade.role() == r);
+				if (roleWeapon) {
+					role = r;
+					break;
+				}
+			}
+			if (role == null) return;
+		} else {
+			role = data.primary();
+		}
+		ServerWorld world = hitter.getServerWorld();
+		int color = colorOf(hitter, role);
+		int count = 6 + (int) Math.min(14, amount);
+		double y = target.getBodyY(0.55);
+		world.spawnParticles(ParticleFx.dust(color, 1.1f), target.getX(), y, target.getZ(), count, 0.3, 0.35, 0.3, 0.02);
+		if (!direct && amount >= 6) {
+			ParticleFx.ring(world, new net.minecraft.util.math.Vec3d(target.getX(), y, target.getZ()), 0.8,
+					ParticleFx.dust(lighten(color), 0.9f), 12);
+		}
+		if (amount >= 10) {
+			world.spawnParticles(net.minecraft.particle.ParticleTypes.CRIT, target.getX(), y, target.getZ(), 10, 0.3, 0.3, 0.3, 0.3);
+		}
+	}
+
 	private static int lighten(int rgb) {
 		int r = Math.min(255, (rgb >> 16 & 0xFF) + 80);
 		int g = Math.min(255, (rgb >> 8 & 0xFF) + 80);

@@ -66,6 +66,7 @@ public final class RoleEvents {
 			}
 			if (source.getAttacker() instanceof ServerPlayerEntity hitter && entity != hitter) {
 				dev.aptitudes.ability.CastFx.damageNumber(hitter, entity, amount);
+				dev.aptitudes.ability.CastFx.impact(hitter, entity, source, amount);
 				dev.aptitudes.logic.SkillMilestones.onOutgoing(hitter, entity, source);
 			}
 			int xp = (int) Math.max(1, Math.round(amount * Aptitudes.config().roleXpPerDamage));
@@ -95,7 +96,7 @@ public final class RoleEvents {
 			return true;
 		});
 
-		// Muertes: Pacto oscuro, pruebas de evolución y jefes.
+		// Muertes: Comunión oscura, pruebas de evolución y jefes.
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
 			RolePassives.onNearbyDeath(entity);
 			if (source.getAttacker() instanceof ServerPlayerEntity killer && entity != killer

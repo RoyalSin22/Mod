@@ -49,7 +49,7 @@ public class RolesScreen extends Screen {
 	private static final int ROLE_ROW_H = 18;
 
 	/** Tipo de casilla del lienzo: un nodo del árbol o una de las 3 especiales (núcleo, característica, definitiva). */
-	private enum NodeKind { CORE, NODE, SIGNATURE, ULTIMATE }
+	private enum NodeKind { CORE, NODE, SIGNATURE, ULTIMATE, WEAPON_MASTER, WEAPON_ULTIMATE }
 
 	private record NodeView(NodeKind kind, @Nullable RoleNode node, int x, int y) {
 		String key() {
@@ -81,6 +81,7 @@ public class RolesScreen extends Screen {
 	private ButtonWidget upgradeButton;
 	private ButtonWidget extraButton;
 	private ButtonWidget equip1Button;
+	private ButtonWidget claimButton;
 	private ButtonWidget equip2Button;
 
 	public RolesScreen() {
@@ -147,6 +148,12 @@ public class RolesScreen extends Screen {
 			NodeView v = nodeView(selectedNode);
 			if (v != null && v.node() != null) send(RoleActionPayload.UPGRADE_NODE, v.node().id());
 		}).dimensions(canvasX() + canvasW() - 76, top + H - 70, 70, 16).build());
+		claimButton = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.weapon.claim"), b -> {
+			NodeView v = nodeView(selectedNode);
+			if (v == null) return;
+			String tier = v.kind() == NodeKind.WEAPON_MASTER ? "1" : "2";
+			ClientPlayNetworking.send(new RoleActionPayload(RoleActionPayload.CLAIM_WEAPON, selected.ordinal(), tier));
+		}).dimensions(canvasX() + canvasW() - 76, top + H - 70, 70, 16).build());
 		equip1Button = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.equip", 1), b -> {
 			NodeView v = nodeView(selectedNode);
 			if (v != null && v.node() != null) send(RoleActionPayload.EQUIP_1, v.node().id());
@@ -185,6 +192,10 @@ public class RolesScreen extends Screen {
 		NodeView v = nodeView(selectedNode);
 		upgradeButton.visible = !extraView && v != null && v.node() != null;
 		upgradeButton.active = ready && v != null && v.node() != null && canUpgrade(data, v.node());
+		boolean weapon = !extraView && v != null && (v.kind() == NodeKind.WEAPON_MASTER || v.kind() == NodeKind.WEAPON_ULTIMATE);
+		claimButton.visible = weapon;
+		claimButton.active = weapon && ready && lit(data, v)
+				&& (selected == data.primaryRole() || selected == data.secondaryRole());
 		boolean equippable = !extraView && ready && v != null && v.node() != null && v.node().active()
 				&& data.rank(v.node().id()) > 0;
 		equip1Button.visible = equippable;
@@ -279,6 +290,9 @@ public class RolesScreen extends Screen {
 		out.add(new NodeView(NodeKind.CORE, null, COL_X[4], gridY()));
 		out.add(new NodeView(NodeKind.SIGNATURE, null, COL_X[3], gridY()));
 		out.add(new NodeView(NodeKind.ULTIMATE, null, COL_X[5], gridY()));
+		// Armas de evolución a los lados: Maestro (izquierda) y Definitivo (derecha).
+		out.add(new NodeView(NodeKind.WEAPON_MASTER, null, COL_X[2], gridY()));
+		out.add(new NodeView(NodeKind.WEAPON_ULTIMATE, null, COL_X[6], gridY()));
 		for (RoleNode node : RoleTree.nodes(selected)) {
 			RoleTree.GridPos pos = RoleTree.position(node.id());
 			if (pos == null) continue;
@@ -555,6 +569,8 @@ public class RolesScreen extends Screen {
 		}
 		hline(ctx, sig, core, tier >= Evolution.MASTER ? UiStyle.GOLD : 0xFF2C3044);
 		hline(ctx, core, ult, tier >= Evolution.ULTIMATE ? UiStyle.GOLD : 0xFF2C3044);
+		hline(ctx, views.get(3), sig, tier >= Evolution.MASTER ? UiStyle.GOLD : 0xFF2C3044);
+		hline(ctx, ult, views.get(4), tier >= Evolution.ULTIMATE ? UiStyle.GOLD : 0xFF2C3044);
 		renderPathLabels(ctx, data);
 
 		List<Text> tooltip = null;
@@ -563,7 +579,8 @@ public class RolesScreen extends Screen {
 			UiStyle.Frame frame = switch (v.kind()) {
 				case CORE -> UiStyle.Frame.CORE;
 				case SIGNATURE -> UiStyle.Frame.SIGNATURE;
-				case ULTIMATE -> UiStyle.Frame.ULTIMATE;
+				case ULTIMATE, WEAPON_ULTIMATE -> UiStyle.Frame.ULTIMATE;
+				case WEAPON_MASTER -> UiStyle.Frame.SIGNATURE;
 				case NODE -> v.node().kind() == RoleNode.Kind.LEGENDARY ? UiStyle.Frame.UNIQUE
 						: v.node().active() || v.node().kind() == RoleNode.Kind.HASTE
 						|| v.node().kind() == RoleNode.Kind.EFFICIENCY || v.node().kind() == RoleNode.Kind.MASTERY
@@ -664,6 +681,8 @@ public class RolesScreen extends Screen {
 			case CORE -> selected.iconStack();
 			case SIGNATURE -> dev.aptitudes.role.NodeIcons.signature(selected);
 			case ULTIMATE -> dev.aptitudes.role.NodeIcons.ultimate(selected);
+			case WEAPON_MASTER -> new net.minecraft.item.ItemStack(dev.aptitudes.item.weapon.RoleWeapons.get(selected, 1));
+			case WEAPON_ULTIMATE -> new net.minecraft.item.ItemStack(dev.aptitudes.item.weapon.RoleWeapons.get(selected, 2));
 			case NODE -> dev.aptitudes.role.NodeIcons.of(v.node());
 		};
 	}
@@ -691,7 +710,8 @@ public class RolesScreen extends Screen {
 		return switch (v.kind()) {
 			case CORE -> true;
 			case SIGNATURE -> data.tier(selected) >= Evolution.MASTER;
-			case ULTIMATE -> data.tier(selected) >= Evolution.ULTIMATE;
+			case ULTIMATE, WEAPON_ULTIMATE -> data.tier(selected) >= Evolution.ULTIMATE;
+			case WEAPON_MASTER -> data.tier(selected) >= Evolution.MASTER;
 			case NODE -> data.rank(v.node().id()) > 0;
 		};
 	}
@@ -701,6 +721,8 @@ public class RolesScreen extends Screen {
 			case CORE -> Text.translatable(selected.translationKey());
 			case SIGNATURE -> Text.translatable(Evolution.signatureKey(selected));
 			case ULTIMATE -> Text.translatable(Evolution.ultimateKey(selected));
+			case WEAPON_MASTER -> dev.aptitudes.item.weapon.RoleWeapons.get(selected, 1).getName();
+			case WEAPON_ULTIMATE -> dev.aptitudes.item.weapon.RoleWeapons.get(selected, 2).getName();
 			case NODE -> Text.translatable(v.node().translationKey());
 		};
 	}
@@ -710,6 +732,7 @@ public class RolesScreen extends Screen {
 			return Text.translatable(switch (v.kind()) {
 				case SIGNATURE -> "screen.aptitudes.node.signature";
 				case ULTIMATE -> "screen.aptitudes.node.ultimate";
+				case WEAPON_MASTER, WEAPON_ULTIMATE -> "screen.aptitudes.node.weapon";
 				default -> "screen.aptitudes.node.core";
 			});
 		}
@@ -753,6 +776,12 @@ public class RolesScreen extends Screen {
 			case ULTIMATE -> {
 				desc = Text.translatable(Evolution.ultimateKey(selected) + ".desc");
 				extra = Text.translatable("screen.aptitudes.node.ultimate_req");
+			}
+			case WEAPON_MASTER, WEAPON_ULTIMATE -> {
+				boolean master = v.kind() == NodeKind.WEAPON_MASTER;
+				desc = Text.translatable(dev.aptitudes.item.weapon.RoleWeapons.melee(selected)
+						? "screen.aptitudes.node.weapon_blade" : "screen.aptitudes.node.weapon_focus");
+				extra = Text.translatable(master ? "screen.aptitudes.node.weapon_master_req" : "screen.aptitudes.node.weapon_ultimate_req");
 			}
 			default -> {
 				RoleNode node = v.node();
@@ -799,8 +828,21 @@ public class RolesScreen extends Screen {
 					: own ? "screen.aptitudes.elements.mastered" : "screen.aptitudes.elements.available");
 			ctx.drawText(textRenderer, state, x + 6, y + 18, UiStyle.MUTED, false);
 			if (mouseX >= x && mouseX < x + 88 && mouseY >= y && mouseY < y + 30) {
-				tooltip = List.of(Text.translatable(e.translationKey()).withColor(e.color()),
-						Text.translatable(e.descriptionKey()).formatted(Formatting.GRAY));
+				List<Text> lines = new ArrayList<>();
+				lines.add(Text.translatable(e.translationKey()).withColor(e.color()));
+				lines.add(Text.translatable(e.descriptionKey()).formatted(Formatting.GRAY));
+				// Fusiones en las que participa este elemento
+				for (dev.aptitudes.ability.ElementFusions f : dev.aptitudes.ability.ElementFusions.values()) {
+					if (!f.involves(e)) continue;
+					Element partner = f.first() == e ? f.second() : f.first();
+					boolean on = f.unlocked(mastered);
+					lines.add(Text.literal(on ? "✔ " : "✦ ").formatted(on ? Formatting.GREEN : Formatting.DARK_GRAY)
+							.append(Text.translatable("screen.aptitudes.elements.fusion", Text.translatable(f.translationKey()),
+									Text.translatable(partner.translationKey()).withColor(partner.color())))
+							.formatted(on ? Formatting.WHITE : Formatting.GRAY));
+					lines.add(Text.literal("   ").append(Text.translatable(f.descriptionKey())).formatted(Formatting.DARK_GRAY));
+				}
+				tooltip = lines;
 			}
 		}
 		if (mastered.size() < Element.MAX_MASTERED) {

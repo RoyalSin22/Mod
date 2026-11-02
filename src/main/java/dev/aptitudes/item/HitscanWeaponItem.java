@@ -39,7 +39,7 @@ public class HitscanWeaponItem extends Item {
 		REVOLVER(Role.GUNSLINGER, 36.0, 5.0f, 6.0, 8, 0.0f, ParticleTypes.ELECTRIC_SPARK, SoundEvents.ENTITY_FIREWORK_ROCKET_BLAST),
 		/** Sello de armas (Invocador de armas): dispara una espada espectral. */
 		BLADE(Role.WEAPON_SUMMONER, 20.0, 5.0f, 8.0, 14, 0.0f, ParticleTypes.ENCHANTED_HIT, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP),
-		/** Talismán del pacto (Brujo): rayo maldito que roba un poco de vida. */
+		/** Talismán maldito (Brujo): rayo maldito que roba un poco de vida. */
 		CURSE(Role.WARLOCK, 22.0, 4.5f, 9.0, 16, 0.15f, ParticleTypes.CRIMSON_SPORE, SoundEvents.ENTITY_VEX_CHARGE);
 
 		final Role role;
@@ -88,6 +88,9 @@ public class HitscanWeaponItem extends Item {
 		Vec3d from = player.getEyePos().add(player.getRotationVec(1.0f).multiply(0.5)).add(0, -0.15, 0);
 		Vec3d to = target != null ? target.getPos().add(0, target.getHeight() / 2, 0) : Targeting.lookEnd(player, kind.range);
 		Targeting.particleLine(player.getServerWorld(), kind.particle, from, to);
+		// Fogonazo en la boca del arma y estallido en el punto de impacto
+		dev.aptitudes.ability.ParticleFx.ring(player.getServerWorld(), from, 0.3, kind.particle, 8);
+		player.getServerWorld().spawnParticles(kind.particle, to.x, to.y, to.z, 14, 0.25, 0.25, 0.25, 0.05);
 
 		if (target != null) {
 			var data = RoleManager.get(player);

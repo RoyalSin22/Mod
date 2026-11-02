@@ -357,7 +357,7 @@ public final class RoleTree {
 		paths(Role.WEAPON_SUMMONER, of(C, AS, L), of(R, T, HP), of(G, M, X));   // Espadas danzantes / Bastión / Forja rúnica
 		paths(Role.HUNTER, of(C, X, S), of(P, D, V), of(L, HP, K));            // Francotirador / Trampero / Bestia
 		paths(Role.BARD, of(G, M, LK), of(C, AS, F), of(H, R, HP));            // Juglar / Trovador de guerra / Cantor sagrado
-		paths(Role.WARLOCK, of(W, P, X), of(L, HP, H), of(C, M, G));           // Maldito / Pacto de sangre / Abismo
+		paths(Role.WARLOCK, of(W, P, X), of(L, HP, H), of(C, M, G));           // Maldito / Sangre maldita / Abismo
 		paths(Role.TAMER, of(K, HP, R), of(C, AS, L), of(H, LK, G));           // Jauría / Salvaje / Pastor
 		paths(Role.SHAPESHIFTER, of(C, L, V), of(D, G, M), of(HP, R, T));        // Depredador / Mimo
 	}

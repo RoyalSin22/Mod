@@ -91,6 +91,11 @@ public final class ModNetworking {
 					}
 				}
 				case RoleActionPayload.CYCLE_ELEMENT -> RoleManager.cycleElement(player);
+				case RoleActionPayload.CLAIM_WEAPON -> {
+					Role role = Role.byIndex(payload.roleIndex());
+					int tier = "2".equals(payload.nodeId()) ? 2 : 1;
+					if (role != null) RoleManager.claimWeapon(player, role, tier);
+				}
 				case RoleActionPayload.EQUIP_1, RoleActionPayload.EQUIP_2 ->
 						RoleManager.equip(player, payload.nodeId(), payload.action() == RoleActionPayload.EQUIP_1 ? 0 : 1);
 				case RoleActionPayload.SELECT_FORM -> {

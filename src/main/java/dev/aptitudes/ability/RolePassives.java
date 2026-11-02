@@ -46,7 +46,7 @@ import java.util.List;
  *   <li><b>Tick</b>: efectos periódicos (regeneración, inmunidades, auras, crecimiento).</li>
  *   <li><b>Daño saliente</b>: multiplicadores y robo de vida (mixin de {@code LivingEntity#damage}).</li>
  *   <li><b>Daño entrante</b>: parada, esquiva y contraataque (cancelan el golpe).</li>
- *   <li><b>Eventos</b>: muertes cercanas (Pacto oscuro) y comercio (Mercader).</li>
+ *   <li><b>Eventos</b>: muertes cercanas (Comunión oscura) y comercio (Mercader).</li>
  *   <li><b>Energía/enfriamiento</b>: en {@link AbilityManager} (afinidad arcana, batería, mente clara).</li>
  * </ul>
  */
@@ -240,6 +240,10 @@ public final class RolePassives {
 		multiplier *= RoleMechanics.outgoing(player, target, source, direct, amount); // Mecánica del rol
 		multiplier *= Signatures.markMultiplier(target, player); // Asesino: Marca de muerte
 		float result = PathEffects.outgoing(player, target, direct, amount * multiplier); // Sendas
+		// Tope del multiplicador combinado del mod (rol + set + mecánica + marca + críticos): evita remates
+		// de ×30 al apilar todas las fuentes. 0 = sin tope. Ver docs/BALANCE.md.
+		double cap = dev.aptitudes.Aptitudes.config().maxDamageMultiplier;
+		if (cap > 0) result = (float) Math.min(result, amount * cap);
 		// Nigromante Maestro+ (artes de sangre) – Sangrado: tus ataques desangran (Descomposición I, 3 s).
 		RoleData data = RoleManager.get(player);
 		if (data.isActive(Role.NECROMANCER) && data.tier(Role.NECROMANCER) >= Evolution.MASTER
@@ -323,12 +327,12 @@ public final class RolePassives {
 
 	// --------------------------------------------------------------- Eventos
 
-	/** Nigromante – Pacto oscuro: cada muerte en 16 bloques da 2/4/6 de energía y 1 de vida. */
+	/** Nigromante – Comunión oscura: cada muerte en 16 bloques da 2/4/6 de energía y 1 de vida. */
 	public static void onNearbyDeath(LivingEntity dead) {
 		if (dead instanceof PlayerEntity || AbilityState.isSummon(dead)) return;
 		for (ServerPlayerEntity player : dead.getWorld().getEntitiesByClass(ServerPlayerEntity.class,
 				dead.getBoundingBox().expand(16), PlayerEntity::isAlive)) {
-			RoleManager.recordTrial(player, Role.NECROMANCER, Evolution.TrialType.SOULS, 1); // con o sin Pacto oscuro
+			RoleManager.recordTrial(player, Role.NECROMANCER, Evolution.TrialType.SOULS, 1); // con o sin Comunión oscura
 			dev.aptitudes.role.RoleResources.gain(player, Role.NECROMANCER, 5); // Sangre
 			int rank = RoleManager.activeRank(player, "dark_pact");
 			if (rank <= 0) continue;

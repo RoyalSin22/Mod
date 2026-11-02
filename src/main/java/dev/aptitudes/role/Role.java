@@ -44,8 +44,8 @@ public enum Role {
 	HUNTER(RoleCategory.SHADOW, 0x7CB342, () -> ModItems.HUNTING_KNIFE),
 	/** Bardo: canciones de apoyo en área y notas que aturden. */
 	BARD(RoleCategory.GUARDIAN, 0xEC407A, () -> ModItems.LUTE),
-	/** Brujo: pactos demoníacos, maldiciones y diablillos. */
-	WARLOCK(RoleCategory.SHADOW, 0xAD1457, () -> ModItems.PACT_TALISMAN),
+	/** Brujo: hechicería oscura, maldiciones y diablillos. */
+	WARLOCK(RoleCategory.SHADOW, 0xAD1457, () -> ModItems.CURSED_TALISMAN),
 	/** Domador: potencia a sus mascotas y lucha junto a ellas. */
 	TAMER(RoleCategory.CRAFT, 0xA1887F, () -> ModItems.BEAST_WHISTLE);
 

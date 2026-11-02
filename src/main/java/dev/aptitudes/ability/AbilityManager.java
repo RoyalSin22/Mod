@@ -273,7 +273,8 @@ public final class AbilityManager {
 
 	/** Valor total de un atributo propio: puntos asignados × valor por punto. */
 	public static double attributeValue(ServerPlayerEntity player, dev.aptitudes.data.PlayerAttribute attribute) {
-		return dev.aptitudes.logic.ProgressManager.get(player).getAllocated(attribute)
+		return dev.aptitudes.logic.ProgressManager.effectivePoints(
+				dev.aptitudes.logic.ProgressManager.get(player).getAllocated(attribute))
 				* dev.aptitudes.logic.ProgressManager.effectivePerPoint(player, attribute);
 	}
 

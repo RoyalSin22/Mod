@@ -79,6 +79,8 @@ public final class RoleMechanics {
 	private static final Map<UUID, State> STATES = new HashMap<>();
 	/** Último estado enviado al HUD de cada jugador (para no reenviar lo mismo). */
 	private static final Map<UUID, List<MechanicPayload.Entry>> LAST_SENT = new HashMap<>();
+	/** Último tick en que se calculó el estado del HUD de cada jugador (como mucho una vez por tick). */
+	private static final Map<UUID, Integer> LAST_SYNC_TICK = new HashMap<>();
 	private static final Identifier MERCHANT_LUCK = Aptitudes.id("mech/compound_interest");
 
 	private RoleMechanics() {
@@ -109,6 +111,7 @@ public final class RoleMechanics {
 	public static void forget(ServerPlayerEntity p) {
 		STATES.remove(p.getUuid());
 		LAST_SENT.remove(p.getUuid());
+		LAST_SYNC_TICK.remove(p.getUuid());
 		NewRoles.forget(p);
 	}
 
@@ -123,6 +126,9 @@ public final class RoleMechanics {
 	/** Envía al HUD el estado de las mecánicas de los roles activos (solo si cambió). */
 	public static void sync(ServerPlayerEntity p) {
 		if (!ServerPlayNetworking.canSend(p, MechanicPayload.ID)) return;
+		// Un ataque en área llama a esto una vez por enemigo en el mismo tick: basta con calcularlo una vez.
+		Integer lastTick = LAST_SYNC_TICK.put(p.getUuid(), now(p));
+		if (lastTick != null && lastTick == now(p)) return;
 		State s = state(p);
 		int now = now(p);
 		RoleData data = RoleManager.get(p);
@@ -278,7 +284,7 @@ public final class RoleMechanics {
 	/** @return false si el golpe se anula (Monje: desviar proyectiles). */
 	public static boolean allowIncoming(ServerPlayerEntity p, DamageSource source) {
 		int deflect = rank(p, "deflect");
-		if (deflect > 0 && source.isIn(DamageTypeTags.IS_PROJECTILE) && p.getRandom().nextFloat() < 0.15f * deflect) {
+		if (deflect > 0 && source.isIn(DamageTypeTags.IS_PROJECTILE) && p.getRandom().nextFloat() < Math.min(0.5f, 0.15f * deflect)) { // tope 50 %
 			particles(p, p, ParticleTypes.CRIT, 8);
 			sound(p, SoundEvents.ITEM_SHIELD_BLOCK, 1.6f);
 			return false;

@@ -62,6 +62,19 @@ public final class ProgressManager {
 	}
 
 	/** Valor de un punto de atributo para este jugador (con afinidad de rol). */
+	/** Puntos efectivos tras el escalado configurado ({@code attributeScaling}). */
+	public static double effectivePoints(int points) {
+		AptitudesConfig c = Aptitudes.config();
+		AttributeScaling.Mode mode = AttributeScaling.Mode.parse(c.attributeScaling);
+		return AttributeScaling.effectivePoints(mode == null ? AttributeScaling.Mode.LINEAR : mode, points,
+				c.attributeSoftCapFirst, c.attributeSoftCapSecond, c.attributeSaturationPoints);
+	}
+
+	/** Valor marginal (en puntos efectivos) del siguiente punto invertido. */
+	public static double marginalPoint(int points) {
+		return effectivePoints(points + 1) - effectivePoints(points);
+	}
+
 	public static double effectivePerPoint(ServerPlayerEntity player, PlayerAttribute attribute) {
 		return attribute.perPoint(Aptitudes.config()) * affinityMultiplier(player, attribute);
 	}
@@ -188,8 +201,13 @@ public final class ProgressManager {
 
 	public static void addBonusPoints(ServerPlayerEntity player, int amount) {
 		PlayerProgress progress = get(player);
-		progress.setBonusPoints(Math.max(0, progress.getBonusPoints() + amount));
+		progress.setBonusPoints(adjustBonusPoints(progress.getBonusPoints(), amount));
 		refresh(player);
+	}
+
+	/** Suma saturada en [0, Integer.MAX_VALUE]: /aptitudes admin addpoints nunca desborda a negativo. */
+	public static int adjustBonusPoints(int current, int delta) {
+		return (int) Math.max(0L, Math.min(Integer.MAX_VALUE, (long) current + delta));
 	}
 
 	public static void reset(ServerPlayerEntity player) {

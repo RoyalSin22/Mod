@@ -94,7 +94,7 @@ public final class ModItems {
 
 	public static final Item LUTE = register("lute", new LuteItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
 
-	public static final Item PACT_TALISMAN = register("pact_talisman",
+	public static final Item CURSED_TALISMAN = register("pact_talisman",
 			new HitscanWeaponItem(HitscanWeaponItem.Kind.CURSE, new Item.Settings().maxCount(1).rarity(Rarity.RARE)));
 
 	public static final Item BEAST_WHISTLE = register("beast_whistle",
@@ -138,6 +138,10 @@ public final class ModItems {
 	public static final Item REBIRTH_OFFERING = register("rebirth_offering",
 			new RebirthOfferingItem(new Item.Settings().maxCount(16).rarity(Rarity.RARE)));
 
+	/** Grimorio de Aptitudes: guía del mod (se entrega al entrar por primera vez). */
+	public static final Item GUIDE_BOOK = register("guide_book",
+			new GuideBookItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
+
 	/** Vale de armería (aldeano de gremio): una pieza del set de tu rol principal. */
 	public static final Item ARMORY_VOUCHER = register("armory_voucher",
 			new ArmoryVoucherItem(new Item.Settings().maxCount(16).rarity(Rarity.UNCOMMON)));
@@ -163,6 +167,7 @@ public final class ModItems {
 
 	static {
 		RoleArmor.register(); // un set de 4 piezas por rol
+		dev.aptitudes.item.weapon.RoleWeapons.register(); // armas de evolución (Maestro y Definitivo)
 	}
 
 	public static final ItemGroup GROUP = Registry.register(Registries.ITEM_GROUP, Aptitudes.id("items"),
@@ -189,17 +194,19 @@ public final class ModItems {
 						entries.add(WEAPON_SIGIL);
 						entries.add(HUNTING_KNIFE);
 						entries.add(LUTE);
-						entries.add(PACT_TALISMAN);
+						entries.add(CURSED_TALISMAN);
 						entries.add(BEAST_WHISTLE);
 						entries.add(dev.aptitudes.block.ModBlocks.BONFIRE_ITEM);
 						entries.add(MASTERY_EMBLEM);
 						entries.add(ULTIMATE_CORE);
+						entries.add(GUIDE_BOOK);
 						entries.add(SOUL_SHARD);
 						entries.add(REBIRTH_OFFERING);
 						entries.add(ARMORY_VOUCHER);
 						entries.add(ELITE_ESSENCE);
 						entries.add(CHAMPION_HEART);
 						for (Item accessory : ACCESSORIES.values()) entries.add(accessory);
+						for (Item weapon : dev.aptitudes.item.weapon.RoleWeapons.all()) entries.add(weapon);
 						entries.add(dev.aptitudes.world.GuildVillagers.GUILD_DESK_ITEM);
 						entries.add(ESTUS_FLASK);
 						entries.add(ETHER_FLASK);
