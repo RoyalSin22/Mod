@@ -1,6 +1,7 @@
 # AGENTS.md — Instrucciones para agentes de código (Codex y similares)
 
-Lee este archivo completo antes de tocar nada. Resume el estado del proyecto, las reglas que el autor
+Lee este archivo completo antes de tocar nada (la versión extendida, con dependencias exactas y la
+carpeta local del autor, está en `docs/CONTEXTO_CODEX.md`). Resume el estado del proyecto, las reglas que el autor
 exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor técnico.
 
 ## 1. Proyecto
