@@ -29,12 +29,17 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	// Pruebas unitarias de las fórmulas puras (src/test/java). Se ejecutan con ./gradlew test (y en build).
+	// Pruebas unitarias (src/test/java). Se ejecutan con ./gradlew test (y en build).
+	// JUnit Platform con dos motores: Jupiter (JUnit 5) y Vintage (JUnit 4), así conviven pruebas de ambos tipos.
+	testImplementation platform("org.junit:junit-bom:5.10.2")
+	testImplementation "org.junit.jupiter:junit-jupiter"
 	testImplementation "junit:junit:4.13.2"
+	testRuntimeOnly "org.junit.vintage:junit-vintage-engine"
+	testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }
 
 test {
-	useJUnit()
+	useJUnitPlatform()
 }
 
 processResources {

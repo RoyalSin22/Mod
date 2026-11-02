@@ -2,7 +2,9 @@
 
 ## Pruebas automatizadas (nuevas)
 
-Pruebas unitarias JUnit 4 de las fórmulas en Java puro, en `src/test/java`:
+Pruebas unitarias de las fórmulas en Java puro, en `src/test/java`. Gradle usa **JUnit Platform** con dos
+motores: Jupiter (JUnit 5) y Vintage (JUnit 4), así que se pueden escribir pruebas nuevas con JUnit 5 sin
+reescribir las existentes (JUnit 4):
 
 | Clase | Qué comprueba |
 |---|---|
