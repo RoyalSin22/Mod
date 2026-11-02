@@ -20,7 +20,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 |---|---|
 | 10 habilidades por uso (Minería, Excavación, Tala, Agricultura, Combate, Tiro con arco, Defensa, Agilidad, Pesca, Encantamiento) con hitos 10–50; la pantalla K está diseñada para 5 filas × 2 | `data/Skill`, `logic/XpEvents`, `logic/SkillMilestones` |
 | Rendimiento decreciente de XP por fuente repetida | `logic/XpDiminishing` (puro, con pruebas) |
-| Bloques colocados por jugadores (sin XP al romperlos) y colocaciones confirmadas | `logic/PlacementTracker`, `logic/PlacedBlockLog` |
+| Bloques colocados por jugadores (sin XP al romperlos) y colocaciones confirmadas; guardado por mundo (v36) | `logic/PlacementTracker`, `logic/PlacedBlockLog`, `logic/PlacedBlocksState` |
 | Atributos estilo Souls en la Hoguera, mancha de XP, frascos | `souls/`, `logic/AttributeApplier`, `logic/AttributeScaling` |
 | 20 roles, árbol de 23 nodos + legendario + 10 de evolución (filas Maestro/Definitivo), sendas, evoluciones, armas de evolución | `role/`, `ability/`, `item/weapon/`; filas de evolución en `role/EvolvedTree` (datos) y `ability/EvolvedAbilities` (10 plantillas) |
 | Activas equipadas (8 por rol) | `role/LoadoutCodec` (3 bits + bit de formato; lee el formato antiguo) |
@@ -48,7 +48,7 @@ Historial reciente en `main`: auditoría de seguridad y balance, v14 (grimorio, 
 muerte y pruebas de configuración) y v16 (Defensa con `AFTER_DAMAGE`, esbirros sin conversión a
 ahogado, Bombardeo orbital sin fuego amigo), v17 (anti-granjas de colocar y romper), v18 (esperas y muros persistentes) y v19 (desplazamiento de la
 pantalla de roles y filtro para mobs con IA Brain), v20 (grimorio interactivo con recetas reales) y
-v21 (Encantamiento y pantalla K animada) , v22 (texturas de armas y objetos clave) , v23 (árbol que crece al evolucionar) , v24 (animaciones de habilidades), v25 (texturas de armaduras) , v26 (colisión de las transformaciones) , v27 (Mesa del gremio y atributos −30 %) y v28 (combos). Después: v32 (runas), v33 (jefes), v34 (Eclipse) y v35 (Runas+).
+v21 (Encantamiento y pantalla K animada) , v22 (texturas de armas y objetos clave) , v23 (árbol que crece al evolucionar) , v24 (animaciones de habilidades), v25 (texturas de armaduras) , v26 (colisión de las transformaciones) , v27 (Mesa del gremio y atributos −30 %) y v28 (combos). Después: v32 (runas), v33 (jefes), v34 (Eclipse), v35 (Runas+) y v36 (anti-granjas persistente).
 
 ## 3. Exclusiones absolutas (no negociables)
 
@@ -115,7 +115,7 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
   `logic/PlacedBlockLogTest`, `ability/CooldownBookTest`, `world/TemporaryBlockScheduleTest`,
   `role/LoadoutCodecTest`, `role/EvolutionPointsTest`, `morph/MorphSizeRulesTest`, `logic/ComboCounterTest`,
   `role/RoleRulesTest`, `data/ProgressRulesTest` y
-  `rune/RuneRulesTest`, `boss/BossRulesTest`, `event/EclipseRulesTest`, `rune/RuneBalanceTest`,
+  `rune/RuneRulesTest`, `boss/BossRulesTest`, `event/EclipseRulesTest`, `rune/RuneBalanceTest`, `logic/PlacedBlockPersistenceTest`,
   `config/AptitudesConfigValidationTest`.
 - **No escribas pruebas que llamen a métodos que no existen.** Si una prueba necesita una API nueva,
   impleméntala en el código principal en el mismo cambio y explícalo.

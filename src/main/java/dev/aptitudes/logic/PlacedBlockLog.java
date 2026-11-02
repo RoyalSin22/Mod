@@ -10,8 +10,10 @@ import java.util.Map;
  *
  * <p>Clase pura (sin Minecraft) para poder probarla. Las posiciones se guardan como el {@code long}
  * empaquetado de {@code BlockPos#asLong}. Cada mundo tiene un tope: al superarlo se olvidan las
- * posiciones más antiguas (orden de inserción). Vive en memoria: tras reiniciar el servidor los bloques
- * colocados antes vuelven a dar XP, lo que no compensa como granja.</p>
+ * posiciones más antiguas (orden de inserción).</p>
+ *
+ * <p>v36: se guarda con el mundo ({@code PlacedBlocksState}) mediante {@link #snapshot} y {@link #load}, así
+ * que reiniciar el servidor ya no vuelve a hacer que los bloques colocados den XP.</p>
  */
 public final class PlacedBlockLog {
 	private final int maxPerWorld;
@@ -42,6 +44,35 @@ public final class PlacedBlockLog {
 	public boolean contains(String world, long pos) {
 		LinkedHashSet<Long> set = placed.get(world);
 		return set != null && set.contains(pos);
+	}
+
+	/** Posiciones de un mundo en orden de inserción (de la más antigua a la más reciente), para guardarlas. */
+	public long[] snapshot(String world) {
+		LinkedHashSet<Long> set = placed.get(world);
+		if (set == null) return new long[0];
+		long[] out = new long[set.size()];
+		int i = 0;
+		for (long pos : set) out[i++] = pos;
+		return out;
+	}
+
+	/** Sustituye las posiciones de un mundo por las guardadas; si hay más que el tope, conserva las más recientes. */
+	public void load(String world, long[] positions) {
+		LinkedHashSet<Long> set = new LinkedHashSet<>();
+		if (positions != null) {
+			int start = Math.max(0, positions.length - maxPerWorld);
+			for (int i = start; i < positions.length; i++) {
+				set.remove(positions[i]);
+				set.add(positions[i]);
+			}
+		}
+		if (set.isEmpty()) placed.remove(world);
+		else placed.put(world, set);
+	}
+
+	/** Olvida un mundo (al descargarlo, para no mezclar partidas distintas en el mismo cliente). */
+	public void clear(String world) {
+		placed.remove(world);
 	}
 
 	public int size(String world) {

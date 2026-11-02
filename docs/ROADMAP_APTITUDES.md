@@ -207,3 +207,10 @@ registro en memoria con tope de 100 000 posiciones por mundo (FIFO).
 - Las esperas de las runas pasan a memoria por jugador: antes se escribían en el arma en cada golpe y el
   objeto se «re-equipaba» en la mano.
 - Prueba pura nueva: `rune/RuneBalanceTest` (6 pruebas).
+
+### v36 — Anti-granjas persistente
+- `logic/PlacedBlocksState` (`PersistentState` por mundo, `long[]` en orden de inserción) guarda el registro de
+  bloques colocados; se carga con `ServerWorldEvents.LOAD` y se olvida en `UNLOAD` (tras guardar), para no
+  mezclar partidas distintas abiertas en el mismo cliente (antes el registro estático se compartía).
+- `PlacedBlockLog` gana `snapshot`, `load` y `clear`; prueba nueva `logic/PlacedBlockPersistenceTest` (3 pruebas).
+- Limitación que sigue: un bloque movido con pistón deja de estar marcado.

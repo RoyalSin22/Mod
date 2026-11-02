@@ -147,3 +147,11 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
    velocidad del tooltip vuelven al valor sin runa. El foco no dispara al hacerlo.
 7. Sin agacharse, la Mesa sigue abriendo la fabricación y engarzando runas como antes.
 8. Cambia `runeThunderChance` a 1.0 y `/aptitudes admin reload`: la descarga sale en cada golpe (con su espera).
+
+# v36 — anti-granjas persistente (verificación manual)
+
+1. Coloca piedra, rómpela: sin XP de Minería (como antes).
+2. Coloca piedra, guarda y sal del mundo, vuelve a entrar y rómpela: **sigue sin dar XP** (antes sí daba).
+3. Reinicia el servidor dedicado y repite: tampoco da XP.
+4. Con dos partidas distintas en el mismo cliente: un bloque colocado en la primera no afecta a la misma
+   posición en la segunda.

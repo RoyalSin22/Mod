@@ -705,8 +705,8 @@ esbirros.
 **Resueltas en la v17 (anti-granjas de colocar y romper):** romper un bloque colocado por un jugador no
 da XP de habilidad ni activa los extras de los hitos (p. ej., Veta rica ya no duplica minerales colocados);
 la XP de Ingeniero y de Druida por colocar solo cuenta colocaciones confirmadas, y la del Ingeniero tiene
-rendimiento decreciente. Sin mixins (`logic/PlacementTracker`). El registro vive en memoria (100 000
-posiciones por mundo) y se pierde al reiniciar; un bloque movido con pistón deja de estar marcado.
+rendimiento decreciente. Sin mixins (`logic/PlacementTracker`). El registro (100 000
+posiciones por mundo) se guarda con el mundo desde la v36; un bloque movido con pistón deja de estar marcado.
 
 **Resueltas en la v18 (persistencia):** los tiempos de espera de habilidades, definitivas, firmas,
 legendaria e Inmortalidad carmesí se guardan con el jugador (tiempo de juego del mundo principal): ya no
@@ -743,3 +743,6 @@ campeones y el Heraldo del Eclipse a mediodía. Recompensas: Fragmentos, Núcleo
 
 **v35 — Runas+:** runas de Escarcha, Trueno y Guardia; quitar la última runa en la Mesa del gremio
 (Mayús + clic derecho, cuesta esmeraldas y la runa se pierde) y valores de las runas configurables.
+
+**v36:** el registro anti-granjas de bloques colocados se guarda con cada mundo: reiniciar el servidor ya no
+hace que los bloques colocados vuelvan a dar XP.

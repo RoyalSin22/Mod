@@ -2,6 +2,7 @@ package dev.aptitudes.logic;
 
 import dev.aptitudes.Aptitudes;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -62,6 +63,10 @@ public final class PlacementTracker {
 			return ActionResult.PASS; // nunca interfiere con la colocación
 		});
 		ServerTickEvents.END_SERVER_TICK.register(server -> confirm());
+		// v36: el registro se guarda con cada mundo. Al cargar se lee; al descargar (después de guardar) se
+		// olvida, para no mezclar partidas distintas abiertas en el mismo cliente.
+		ServerWorldEvents.LOAD.register((server, world) -> PlacedBlocksState.get(world).attach(key(world), LOG));
+		ServerWorldEvents.UNLOAD.register((server, world) -> LOG.clear(key(world)));
 	}
 
 	private static void confirm() {
@@ -74,7 +79,10 @@ public final class PlacementTracker {
 			if (p.player().isRemoved()) continue;
 			// Plantas (brotes, cultivos, hongos) no se registran: crecen y se transforman (un brote acaba
 			// siendo el tronco de un árbol natural), y plantar/cosechar es el juego normal de Agricultura.
-			if (!(p.block() instanceof net.minecraft.block.PlantBlock)) LOG.mark(key(p.world()), p.pos().asLong());
+			if (!(p.block() instanceof net.minecraft.block.PlantBlock)) {
+				LOG.mark(key(p.world()), p.pos().asLong());
+				PlacedBlocksState.get(p.world()).markDirty();
+			}
 			for (Listener l : LISTENERS) {
 				try {
 					l.onPlaced(p.player(), p.item(), p.pos());
@@ -87,7 +95,9 @@ public final class PlacementTracker {
 
 	/** ¿El bloque en {@code pos} lo colocó un jugador? Lo olvida (se está rompiendo). */
 	public static boolean consumePlaced(World world, BlockPos pos) {
-		return LOG.consume(key(world), pos.asLong());
+		boolean placed = LOG.consume(key(world), pos.asLong());
+		if (placed && world instanceof ServerWorld sw) PlacedBlocksState.get(sw).markDirty();
+		return placed;
 	}
 
 	private static String key(World world) {
