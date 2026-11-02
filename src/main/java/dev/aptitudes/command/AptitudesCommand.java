@@ -82,6 +82,8 @@ public final class AptitudesCommand {
 								.then(argument("amount", integer())
 										.executes(AptitudesCommand::adminAddPoints))))
 						.then(literal("reload").executes(AptitudesCommand::adminReload)))
+				// v40: pantalla de configuración (cualquiera puede verla; solo los operadores pueden cambiar valores).
+				.then(literal("config").executes(AptitudesCommand::openConfig))
 				// v34: el Eclipse. Consultar es libre; iniciar y detener exige permiso de administrador.
 				.then(literal("eclipse")
 						.executes(AptitudesCommand::eclipseStatus)
@@ -192,6 +194,7 @@ public final class AptitudesCommand {
 
 	private static int adminReload(CommandContext<ServerCommandSource> ctx) {
 		Aptitudes.reloadConfig();
+		dev.aptitudes.config.ConfigSync.syncAll(ctx.getSource().getServer()); // v40: los clientes ven los valores nuevos
 		ProgressManager.refreshAll(ctx.getSource().getServer());
 		ctx.getSource().getServer().getPlayerManager().getPlayerList().forEach(dev.aptitudes.role.RoleManager::refresh);
 		ctx.getSource().sendFeedback(() -> Text.translatable("aptitudes.cmd.reload"), true);
@@ -230,6 +233,15 @@ public final class AptitudesCommand {
 			return 0;
 		}
 		ctx.getSource().sendFeedback(() -> Text.translatable("eclipse.aptitudes.command.stopped"), true);
+		return 1;
+	}
+
+	private static int openConfig(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
+		ServerPlayerEntity player = ctx.getSource().getPlayerOrThrow();
+		dev.aptitudes.config.ConfigSync.sync(player);
+		if (net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.canSend(player, dev.aptitudes.network.OpenConfigPayload.ID)) {
+			net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.send(player, new dev.aptitudes.network.OpenConfigPayload());
+		}
 		return 1;
 	}
 }

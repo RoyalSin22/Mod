@@ -266,6 +266,34 @@ public final class RuneSocketing {
 		stack.set(DataComponentTypes.ATTRIBUTE_MODIFIERS, new AttributeModifiersComponent(kept, modifiers.showInTooltip()));
 	}
 
+	/** Valores que rellenan el texto de cada runa (en el mismo orden que los %s de su clave de idioma). */
+	private static Object[] descArgs(RuneKind kind, AptitudesConfig c) {
+		if (kind == null) return new Object[0];
+		return switch (kind) {
+			case FLAME -> new Object[] {c.runeFlameSeconds};
+			case LEECH -> new Object[] {num(c.runeLeechAmount), num(c.runeLeechCooldownSeconds)};
+			case SWIFT -> new Object[] {pct(c.runeSwiftAttackSpeed), c.runeSwiftFocusTicks};
+			case FORCE -> new Object[] {num(c.runeForceDamage)};
+			case ECLIPSE -> new Object[] {pct(c.runeEclipseBonus)};
+			case FROST -> new Object[] {roman(c.runeFrostLevel + 1), c.runeFrostSeconds};
+			case THUNDER -> new Object[] {pct(c.runeThunderChance), RuneRules.thunderTargets(c.runeThunderTargets),
+					num(c.runeThunderDamage), num(c.runeThunderCooldownSeconds)};
+			case GUARD -> new Object[] {num(c.runeGuardAbsorption), num(c.runeGuardMaxAbsorption), num(c.runeGuardCooldownSeconds)};
+		};
+	}
+
+	private static String num(double v) {
+		return dev.aptitudes.config.ConfigFieldRules.format(Math.round(v * 100.0) / 100.0);
+	}
+
+	private static String pct(double v) {
+		return Long.toString(Math.round(v * 100.0));
+	}
+
+	private static String roman(int n) {
+		return switch (n) { case 1 -> "I"; case 2 -> "II"; case 3 -> "III"; case 4 -> "IV"; case 5 -> "V"; default -> Integer.toString(n); };
+	}
+
 	public static boolean has(ItemStack stack, RuneKind kind) { return runes(stack).contains(kind.id()); }
 
 	/** Bonificación de la Runa del Eclipse contra élites, campeones y jefes (multiplicador aditivo). */
@@ -280,13 +308,17 @@ public final class RuneSocketing {
 	/** Ticks menos de espera de los focos con la Runa de Aceleración. */
 	public static int focusCooldownReduction(ItemStack stack) { return has(stack, RuneKind.SWIFT) ? Aptitudes.config().runeSwiftFocusTicks : 0; }
 
-	public static void appendTooltip(ItemStack stack, List<Text> tooltip) {
+	/**
+	 * Tooltip de las runas de un arma. v40: los números salen de {@code cfg}; en el cliente se pasa la configuración
+	 * sincronizada del servidor, así que el texto muestra los valores reales y no los de por defecto.
+	 */
+	public static void appendTooltip(ItemStack stack, List<Text> tooltip, AptitudesConfig cfg) {
 		List<String> ids = runes(stack);
 		tooltip.add(Text.translatable("aptitudes.rune.sockets", ids.size(), RuneRules.SOCKETS).formatted(Formatting.GRAY));
 		if (ids.isEmpty()) tooltip.add(Text.translatable("aptitudes.rune.hint").formatted(Formatting.DARK_GRAY));
 		for (String id : ids) {
 			tooltip.add(Text.translatable("item.aptitudes.rune." + id).formatted(Formatting.AQUA));
-			tooltip.add(Text.translatable("item.aptitudes.rune." + id + ".desc").formatted(Formatting.GRAY));
+			tooltip.add(Text.translatable("item.aptitudes.rune." + id + ".desc", descArgs(RuneKind.byId(id), cfg)).formatted(Formatting.GRAY));
 		}
 		if (!ids.isEmpty()) tooltip.add(Text.translatable("aptitudes.rune.remove_hint").formatted(Formatting.DARK_GRAY));
 	}

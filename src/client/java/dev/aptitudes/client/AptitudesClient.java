@@ -42,7 +42,7 @@ public class AptitudesClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		ItemTooltipCallback.EVENT.register((stack, context, type, lines) -> {
-			if (dev.aptitudes.rune.RuneSocketing.eligible(stack)) dev.aptitudes.rune.RuneSocketing.appendTooltip(stack, lines);
+			if (dev.aptitudes.rune.RuneSocketing.eligible(stack)) dev.aptitudes.rune.RuneSocketing.appendTooltip(stack, lines, ClientServerConfig.get());
 			dev.aptitudes.boss.BossManager.appendTooltip(stack, lines);
 			if (stack.getItem() instanceof dev.aptitudes.boss.BossCoreItem) lines.add(net.minecraft.text.Text.translatable("boss.aptitudes.core_hint"));
 		});
@@ -126,6 +126,11 @@ public class AptitudesClient implements ClientModInitializer {
 				(payload, context) -> dev.aptitudes.client.hud.ComboHud.onCombo(payload));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.EclipsePayload.ID,
 				(payload, context) -> ClientEclipse.onPayload(payload));
+		// v40: configuración del servidor (valores reales en tooltips y pantalla de configuración).
+		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.ConfigSyncPayload.ID,
+				(payload, context) -> ClientServerConfig.onSync(payload));
+		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.OpenConfigPayload.ID,
+				(payload, context) -> context.client().setScreen(new dev.aptitudes.client.screen.ConfigScreen(null)));
 
 		ClientPlayNetworking.registerGlobalReceiver(MorphPayload.ID,
 				(payload, context) -> ClientMorphs.set(payload.player(), payload.typeId()));
@@ -144,6 +149,7 @@ public class AptitudesClient implements ClientModInitializer {
 			dev.aptitudes.client.hud.ClientFx.clear();
 			AbilityHud.clear();
 			ClientEclipse.clear();
+			ClientServerConfig.clear();
 		});
 
 		HudRenderCallback.EVENT.register(AbilityHud::render);

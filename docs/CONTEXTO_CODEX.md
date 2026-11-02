@@ -24,6 +24,7 @@ explicando las decisiones, ventajas, limitaciones y riesgos. Si te falta informa
 | Java | **21** (`options.release = 21`) |
 | Fabric Loader | **0.16.14** |
 | Fabric API | **0.116.6+1.21.1** |
+| Mod Menu (v40, solo `modCompileOnly`, opcional) | **11.0.3** (repositorio `maven.terraformersmc.com/releases`) |
 | Mappings | **Yarn 1.21.1+build.3** (nombres Yarn, NO Mojang) |
 | Fabric Loom | 1.10 (`fabric-loom` `1.10-SNAPSHOT` en `build.gradle`) |
 | Gradle | **8.14.3** (wrapper incluido: usa siempre `gradlew`) |

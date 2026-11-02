@@ -8,7 +8,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 
 - Mod de Minecraft **Aptitudes**: Fabric, Minecraft **1.21.1**, Java **21**, paquete `dev.aptitudes`.
 - Versiones fijadas (no las cambies): Loom 1.10.5, Yarn `1.21.1+build.3`, Fabric Loader 0.16.14,
-  Fabric API `0.116.6+1.21.1`, Gradle 8.14.3.
+  Fabric API `0.116.6+1.21.1`, Gradle 8.14.3. Mod Menu `11.0.3` solo como `modCompileOnly` (v40, opcional).
 - Compilar y probar: `.\gradlew.bat build` en Windows (o `./gradlew build`). **Nunca digas que algo
   compila o que las pruebas pasan sin haberlo ejecutado**; si no pudiste ejecutarlo, dilo.
 - Documentación viva: `CHANGELOG.md` (añade una entrada por versión), `README.md`, `docs/ROADMAP_APTITUDES.md` (estado real y pendientes),
@@ -32,7 +32,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 | Efectos de lanzamiento e impacto de TODAS las habilidades (sello animado, remate por categoría, gesto) | `ability/CastFx` (`onCast`, `impact`); no dupliques estos efectos en cada habilidad |
 | Combos de combate (contador, bonificación y remates por categoría) | `ability/Combos` + `logic/ComboCounter`; HUD `client/hud/ComboHud` |
 | Fabricación en la Mesa del gremio (armaduras de rol) | `world/GuildCrafting` (tipo `aptitudes:guild_crafting`), `GuildShapedRecipe`, `GuildDeskScreenHandler`, `GuildDeskBlock`; cliente `GuildDeskScreen` |
-| Configuración validada al cargar | `config/AptitudesConfig.validated` |
+| Configuración validada al cargar; pantalla de configuración con edición validada en el servidor (v40) | `config/AptitudesConfig.validated`, `config/ConfigSync`, `config/ConfigFieldRules`; cliente `ClientServerConfig`, `screen/ConfigScreen`, `compat/ModMenuCompat` |
 | Sonidos propios (v37, generados; no editar a mano los .ogg) | `sound/ModSounds`, `assets/aptitudes/sounds.json`; ejecuta `python3 tools/audio/gen_sounds.py src/main/resources/assets/aptitudes` |
 | Texturas de armas y objetos (generadas, no editar a mano los PNG de la lista) | `tools/textures/gen_items.py` (`ITEMS` y plantillas `T`); ejecuta `python3 tools/textures/gen_items.py src/main/resources/assets/aptitudes/textures/item` |
 | Texturas de armaduras de rol: iconos y capas del modelo (generadas) | `tools/textures/gen_armor.py`; ejecuta `python3 tools/textures/gen_armor.py src/main/resources/assets/aptitudes/textures` |
@@ -49,7 +49,7 @@ Historial reciente en `main`: auditoría de seguridad y balance, v14 (grimorio, 
 muerte y pruebas de configuración) y v16 (Defensa con `AFTER_DAMAGE`, esbirros sin conversión a
 ahogado, Bombardeo orbital sin fuego amigo), v17 (anti-granjas de colocar y romper), v18 (esperas y muros persistentes) y v19 (desplazamiento de la
 pantalla de roles y filtro para mobs con IA Brain), v20 (grimorio interactivo con recetas reales) y
-v21 (Encantamiento y pantalla K animada) , v22 (texturas de armas y objetos clave) , v23 (árbol que crece al evolucionar) , v24 (animaciones de habilidades), v25 (texturas de armaduras) , v26 (colisión de las transformaciones) , v27 (Mesa del gremio y atributos −30 %) y v28 (combos). Después: v32 (runas), v33 (jefes), v34 (Eclipse), v35 (Runas+), v36 (anti-granjas persistente), v37 (sonidos), v38 (versión publicable 1.3.7; ver `CHANGELOG.md`) y v39 (interfaz con escala grande).
+v21 (Encantamiento y pantalla K animada) , v22 (texturas de armas y objetos clave) , v23 (árbol que crece al evolucionar) , v24 (animaciones de habilidades), v25 (texturas de armaduras) , v26 (colisión de las transformaciones) , v27 (Mesa del gremio y atributos −30 %) y v28 (combos). Después: v32 (runas), v33 (jefes), v34 (Eclipse), v35 (Runas+), v36 (anti-granjas persistente), v37 (sonidos), v38 (versión publicable 1.3.7; ver `CHANGELOG.md`), v39 (interfaz con escala grande) y v40 (pantalla de configuración).
 
 ## 3. Exclusiones absolutas (no negociables)
 
@@ -116,7 +116,7 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
   `logic/PlacedBlockLogTest`, `ability/CooldownBookTest`, `world/TemporaryBlockScheduleTest`,
   `role/LoadoutCodecTest`, `role/EvolutionPointsTest`, `morph/MorphSizeRulesTest`, `logic/ComboCounterTest`,
   `role/RoleRulesTest`, `data/ProgressRulesTest` y
-  `rune/RuneRulesTest`, `boss/BossRulesTest`, `event/EclipseRulesTest`, `rune/RuneBalanceTest`, `logic/PlacedBlockPersistenceTest`,
+  `rune/RuneRulesTest`, `boss/BossRulesTest`, `event/EclipseRulesTest`, `rune/RuneBalanceTest`, `logic/PlacedBlockPersistenceTest`, `config/ConfigFieldRulesTest`,
   `config/AptitudesConfigValidationTest`.
 - **No escribas pruebas que llamen a métodos que no existen.** Si una prueba necesita una API nueva,
   impleméntala en el código principal en el mismo cambio y explícalo.

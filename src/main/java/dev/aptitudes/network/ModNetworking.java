@@ -25,6 +25,8 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playS2C().register(CooldownPayload.ID, CooldownPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(ComboPayload.ID, ComboPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(EclipsePayload.ID, EclipsePayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(ConfigSyncPayload.ID, ConfigSyncPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(OpenConfigPayload.ID, OpenConfigPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(MorphPayload.ID, MorphPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(FormSyncPayload.ID, FormSyncPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(UniqueSyncPayload.ID, UniqueSyncPayload.CODEC);
@@ -42,6 +44,7 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playC2S().register(AllocatePointsPayload.ID, AllocatePointsPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(UseAbilityPayload.ID, UseAbilityPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(RoleActionPayload.ID, RoleActionPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(ConfigEditPayload.ID, ConfigEditPayload.CODEC);
 
 		// En 1.21 los handlers se ejecutan ya en el hilo del servidor.
 		ServerPlayNetworking.registerGlobalReceiver(AllocatePointsPayload.ID, (payload, context) -> {

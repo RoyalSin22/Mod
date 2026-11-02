@@ -38,6 +38,11 @@ public class Aptitudes implements ModInitializer {
 		config = AptitudesConfig.load();
 	}
 
+	/** v40: sustituye la configuración en memoria por una ya validada (edición desde la pantalla). */
+	public static void applyConfig(AptitudesConfig validated) {
+		config = validated;
+	}
+
 	public static Identifier id(String path) {
 		return Identifier.of(MOD_ID, path);
 	}
@@ -69,6 +74,7 @@ public class Aptitudes implements ModInitializer {
 		RoleManager.registerLifecycleEvents();
 		dev.aptitudes.rune.RuneSocketing.register();
 		dev.aptitudes.event.EclipseManager.register();
+		dev.aptitudes.config.ConfigSync.register();
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			AptitudesCommand.register(dispatcher);
 			RoleCommand.register(dispatcher);

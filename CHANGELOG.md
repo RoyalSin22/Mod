@@ -5,6 +5,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Añadido
+- **v40** — Pantalla de configuración (`/aptitudes config`, pestaña ⚙ de la pantalla K o Mod Menu opcional): los
+  operadores cambian la configuración del servidor en el juego; los tooltips de las runas muestran los valores reales.
+
 ### Cambiado
 - **v39** — La pantalla K se desplaza con la rueda cuando no cabe (escala de interfaz grande); la barra del
   Eclipse sube para no tapar los avisos de la barra de acción.

@@ -232,13 +232,14 @@ public class AptitudesScreen extends Screen {
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		// Pestañas
 		int tabX = left + W - 10;
-		String[] tabs = {"screen.aptitudes.tab.roles", "screen.aptitudes.tab.skills",
+		String[] tabs = {"screen.aptitudes.tab.config", "screen.aptitudes.tab.roles", "screen.aptitudes.tab.skills",
 				"screen.aptitudes.tab.attributes"};
 		for (String key : tabs) {
 			int w = textRenderer.getWidth(Text.translatable(key)) + 10;
 			tabX -= w;
 			if (mouseX >= tabX && mouseX < tabX + w && mouseY >= top + 6 && mouseY < top + 20) {
 				switch (key) {
+					case "screen.aptitudes.tab.config" -> client.setScreen(new ConfigScreen(this)); // v40
 					case "screen.aptitudes.tab.roles" -> client.setScreen(new RolesScreen());
 					case "screen.aptitudes.tab.skills" -> showSkills();
 					default -> tab = Tab.ATTRIBUTES;
@@ -304,7 +305,7 @@ public class AptitudesScreen extends Screen {
 
 	private void renderTabs(DrawContext ctx, int mouseX, int mouseY) {
 		int tabX = left + W - 10;
-		String[] tabs = {"screen.aptitudes.tab.roles", "screen.aptitudes.tab.skills",
+		String[] tabs = {"screen.aptitudes.tab.config", "screen.aptitudes.tab.roles", "screen.aptitudes.tab.skills",
 				"screen.aptitudes.tab.attributes"};
 		for (String key : tabs) {
 			Text label = Text.translatable(key);

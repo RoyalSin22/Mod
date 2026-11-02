@@ -150,3 +150,15 @@ se **fijan en el arma al engarzar** la runa: cambiar el valor solo afecta a las 
 | `runeRemovalEmeraldCost` | 4 | [0, 64] | Esmeraldas para quitar la última runa (gratis en creativo). |
 
 Los textos de las runas muestran los valores por defecto: si un servidor los cambia, el tooltip no lo refleja.
+
+## Pantalla de configuración (v40)
+
+- Se abre con `/aptitudes config`, con la pestaña ⚙ de la pantalla K o desde **Mod Menu** (si está instalado).
+- Lista **todas** las opciones de esta página, con buscador. Los valores son los del **servidor** (se sincronizan al
+  entrar y tras cada cambio).
+- **Solo un operador** (permiso 2) puede cambiarlos: ✔ o Intro envía el valor; el servidor lo interpreta, lo
+  limita con las mismas reglas que al cargar el archivo, lo guarda en `config/aptitudes.json` y lo reenvía a
+  todos. El mensaje de confirmación muestra el valor final (por si se limitó). Cada cambio queda en el registro.
+- Un jugador sin permiso la ve en solo lectura. El botón «HUD y efectos» abre las opciones del cliente.
+- Los tooltips de las runas muestran ahora los valores reales del servidor.
+- `/aptitudes admin reload` también reenvía la configuración a los clientes.

@@ -172,3 +172,15 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
    ventana y los botones Confirmar/Reiniciar siguen funcionando en su sitio. Con escala 2 no hay barra.
 3. Pantalla de roles, grimorio, Mesa del gremio y ajustes del HUD (Mayús + O): nada se sale ni se solapa.
 4. Durante un Eclipse, engarza una runa: el aviso de la barra de acción ya no queda tapado por la barra del Eclipse.
+
+# v40 — pantalla de configuración (verificación manual)
+
+1. Mundo de un jugador (con trucos): `/aptitudes config` → «Servidor · puedes editar». Busca `eclipse`.
+2. Cambia `eclipseIntervalDays` a 5 (✔): mensaje «Configuración: eclipseIntervalDays = 5»; `config/aptitudes.json`
+   lo guarda; `/aptitudes eclipse` cuenta con el nuevo intervalo.
+3. Escribe 9999 en `eclipseMaxMobsPerPlayer`: se aplica 40 (el tope). Escribe «abc» en un número: aviso en rojo.
+4. Botón de un booleano (`combosEnabled`): cambia Sí/No al momento.
+5. Servidor con un jugador no operador: la pantalla está en solo lectura y los botones desactivados.
+6. Cambia `runeThunderChance` a 0.5: el tooltip de un arma con Trueno muestra «50 %».
+7. Pestaña ⚙ en la pantalla K abre la configuración; «Hecho» vuelve a la pantalla K.
+8. Con Mod Menu instalado: Mods → Aptitudes → Configurar abre la misma pantalla. Sin Mod Menu, el juego arranca igual.

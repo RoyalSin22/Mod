@@ -755,3 +755,7 @@ combo y engarzar/quitar runas. Sintetizados por programa (`tools/audio/gen_sound
 
 **v39 — Interfaz con escala grande:** la pantalla K se desplaza con la rueda si no cabe (720p/768p a escala 3,
 1080p a escala 4) y la barra del Eclipse ya no tapa los avisos de la barra de acción.
+
+**v40 — Pantalla de configuración:** `/aptitudes config`, la pestaña ⚙ de la pantalla K o Mod Menu. Los operadores
+cambian la configuración del servidor en el juego (validada y guardada); los demás la ven en solo lectura. Los
+tooltips de las runas muestran los valores reales del servidor.

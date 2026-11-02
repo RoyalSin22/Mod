@@ -23,11 +23,21 @@ loom {
 	}
 }
 
+repositories {
+	// v40: Mod Menu (dependencia opcional, solo para compilar). Excepción aprobada por el autor; ver AGENTS.md.
+	maven {
+		name = "TerraformersMC"
+		url = "https://maven.terraformersmc.com/releases/"
+	}
+}
+
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	// v40: integración opcional con Mod Menu (no se incluye en el .jar ni es obligatoria).
+	modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 
 	// Pruebas unitarias (src/test/java). Se ejecutan con ./gradlew test (y en build).
 	// JUnit Platform con dos motores: Jupiter (JUnit 5) y Vintage (JUnit 4), así conviven pruebas de ambos tipos.

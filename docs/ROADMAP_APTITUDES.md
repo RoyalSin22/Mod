@@ -243,3 +243,13 @@ Revisión estática de tamaños (Minecraft garantiza al menos 320×240 de GUI; c
 | HUD de combos | junto a la mira | Sin cambios |
 
 Pendiente: comprobarlo en el juego (ver `docs/TESTING.md`, v39).
+
+### v40 — Pantalla de configuración
+- `client/screen/ConfigScreen`: todas las opciones (lista generada a partir de `AptitudesConfig`, con buscador
+  y desplazamiento), pestaña ⚙ en la pantalla K, `/aptitudes config` y Mod Menu (opcional, `modCompileOnly`
+  11.0.3, entrypoint `modmenu`).
+- Autoridad del servidor: `ConfigEditPayload` (C2S) → permiso 2 → `ConfigFieldRules.parse` → `validated` →
+  guardar → `ConfigSyncPayload` (S2C) a todos. Prueba pura: `config/ConfigFieldRulesTest` (4 pruebas).
+- `ClientServerConfig`: la configuración del servidor en el cliente; los tooltips de las runas la usan.
+- Limitaciones: las opciones se muestran con su nombre técnico (descritas en `docs/CONFIGURATION.md`); traducir
+  sus nombres queda para la v45.
