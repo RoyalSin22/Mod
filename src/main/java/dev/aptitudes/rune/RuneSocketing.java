@@ -191,6 +191,8 @@ public final class RuneSocketing {
 		store(weapon, updated);
 		applyAttributeRune(weapon, rune.kind());
 		if (!player.isCreative()) runeStack.decrement(1);
+		player.getServerWorld().playSound(null, player.getX(), player.getY(), player.getZ(), dev.aptitudes.sound.ModSounds.RUNE_SOCKET,
+				SoundCategory.PLAYERS, 0.9f, 1.0f);
 		player.sendMessage(Text.translatable("aptitudes.rune.socketed", Text.translatable("item.aptitudes.rune." + rune.kind().id()), updated.size(), RuneRules.SOCKETS).formatted(Formatting.GOLD), true);
 		return true;
 	}
@@ -213,7 +215,7 @@ public final class RuneSocketing {
 		RuneKind kind = RuneKind.byId(removed);
 		if (kind == RuneKind.FORCE) removeAttribute(weapon, FORCE_ID);
 		else if (kind == RuneKind.SWIFT) removeAttribute(weapon, SWIFT_ID);
-		player.getServerWorld().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BLOCK_GRINDSTONE_USE,
+		player.getServerWorld().playSound(null, player.getX(), player.getY(), player.getZ(), dev.aptitudes.sound.ModSounds.RUNE_REMOVE,
 				SoundCategory.PLAYERS, 0.8f, 1.0f);
 		player.sendMessage(Text.translatable("aptitudes.rune.removed", Text.translatable("item.aptitudes.rune." + removed), cost)
 				.formatted(Formatting.GOLD), true);

@@ -155,3 +155,12 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
 3. Reinicia el servidor dedicado y repite: tampoco da XP.
 4. Con dos partidas distintas en el mismo cliente: un bloque colocado en la primera no afecta a la misma
    posición en la segunda.
+
+# v37 — sonidos propios (verificación manual)
+
+1. Activa los subtítulos (Opciones → Accesibilidad). `/aptitudes eclipse start`: suena «El sol se apaga»;
+   en la totalidad, «Totalidad del Eclipse»; a mediodía, «Llega el Heraldo».
+2. Atardecer del día anterior a un eclipse: «Campana lejana del Eclipse».
+3. Remate de combo: el golpe común suena junto al sonido de la categoría.
+4. Engarzar una runa: campanilla. Quitarla (Mayús + clic en la Mesa): raspado y chasquido.
+5. Con el volumen de «Criaturas hostiles» a 0 no se oyen los sonidos del Eclipse (categoría Hostil).

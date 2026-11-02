@@ -2589,5 +2589,12 @@
   "aptitudes.rune.none": "This weapon has no runes.",
   "aptitudes.rune.remove_cost": "You need %s emeralds to remove a rune.",
   "aptitudes.rune.removed": "You removed %s for %s emeralds. The rune is lost.",
-  "aptitudes.rune.remove_hint": "Shift + right-click the Guild Desk (other hand empty): removes the last rune for emeralds."
+  "aptitudes.rune.remove_hint": "Shift + right-click the Guild Desk (other hand empty): removes the last rune for emeralds.",
+  "subtitles.aptitudes.eclipse_announce": "Distant Eclipse bell",
+  "subtitles.aptitudes.eclipse_start": "The sun fades",
+  "subtitles.aptitudes.eclipse_totality": "Eclipse totality",
+  "subtitles.aptitudes.herald_spawn": "The Herald arrives",
+  "subtitles.aptitudes.combo_finisher": "Combo finisher",
+  "subtitles.aptitudes.rune_socket": "Rune socketed",
+  "subtitles.aptitudes.rune_remove": "Rune removed"
 }

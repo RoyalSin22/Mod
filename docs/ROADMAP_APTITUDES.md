@@ -214,3 +214,11 @@ registro en memoria con tope de 100 000 posiciones por mundo (FIFO).
   mezclar partidas distintas abiertas en el mismo cliente (antes el registro estático se compartía).
 - `PlacedBlockLog` gana `snapshot`, `load` y `clear`; prueba nueva `logic/PlacedBlockPersistenceTest` (3 pruebas).
 - Limitación que sigue: un bloque movido con pistón deja de estar marcado.
+
+### v37 — Sonidos propios
+- 7 sonidos originales generados por síntesis con `tools/audio/gen_sounds.py` (numpy + ffmpeg/libvorbis,
+  mono 44,1 kHz, semilla fija: el resultado es idéntico en cada ejecución). Registro en `sound/ModSounds`,
+  declaración en `assets/aptitudes/sounds.json` y subtítulos traducidos.
+- Uso: aviso, inicio y totalidad del Eclipse y Heraldo (categoría Hostil), remate de combo (además del sonido
+  de cada categoría) y engarzar/quitar runas (antes, sin sonido / afilador vanilla).
+- Pendiente opcional: sustituirlos por grabaciones propias manteniendo los mismos nombres de archivo.

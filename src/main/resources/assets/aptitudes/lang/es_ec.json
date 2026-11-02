@@ -2589,5 +2589,12 @@
   "aptitudes.rune.none": "Esta arma no tiene runas.",
   "aptitudes.rune.remove_cost": "Necesitas %s esmeraldas para quitar una runa.",
   "aptitudes.rune.removed": "Quitaste %s por %s esmeraldas. La runa se ha perdido.",
-  "aptitudes.rune.remove_hint": "Mayús + clic derecho en la Mesa del gremio (la otra mano vacía): quita la última runa a cambio de esmeraldas."
+  "aptitudes.rune.remove_hint": "Mayús + clic derecho en la Mesa del gremio (la otra mano vacía): quita la última runa a cambio de esmeraldas.",
+  "subtitles.aptitudes.eclipse_announce": "Campana lejana del Eclipse",
+  "subtitles.aptitudes.eclipse_start": "El sol se apaga",
+  "subtitles.aptitudes.eclipse_totality": "Totalidad del Eclipse",
+  "subtitles.aptitudes.herald_spawn": "Llega el Heraldo",
+  "subtitles.aptitudes.combo_finisher": "Remate de combo",
+  "subtitles.aptitudes.rune_socket": "Runa engarzada",
+  "subtitles.aptitudes.rune_remove": "Runa extraída"
 }

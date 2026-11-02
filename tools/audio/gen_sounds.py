@@ -1,0 +1,167 @@
+#!/usr/bin/env python3
+"""
+Generador de los sonidos propios de Aptitudes (v37). Síntesis por programa, sin muestras externas:
+todos los sonidos son originales y reproducibles (semilla fija).
+
+Uso:  python3 tools/audio/gen_sounds.py <carpeta assets/aptitudes>
+Escribe <carpeta>/sounds/<nombre>.ogg (mono, 44,1 kHz, Vorbis). Requiere numpy y ffmpeg con libvorbis.
+Los sonidos son mono para que Minecraft los sitúe en el espacio (atenuación por distancia).
+"""
+import os
+import subprocess
+import sys
+import tempfile
+import wave
+
+import numpy as np
+
+RATE = 44_100
+SEED = 37_037
+
+
+def t_axis(seconds):
+    return np.arange(int(RATE * seconds)) / RATE
+
+
+def env(t, attack, decay):
+    """Envolvente: subida lineal de `attack` s y caída exponencial con constante `decay` s."""
+    a = np.clip(t / max(attack, 1e-4), 0, 1)
+    return a * np.exp(-np.maximum(t - attack, 0) / decay)
+
+
+def lowpass(x, cutoff):
+    """Filtro paso bajo de un polo (suficiente para suavizar ruido)."""
+    alpha = 1 - np.exp(-2 * np.pi * cutoff / RATE)
+    y = np.empty_like(x)
+    acc = 0.0
+    for i, v in enumerate(x):
+        acc += alpha * (v - acc)
+        y[i] = acc
+    return y
+
+
+def normalize(x, peak=0.85):
+    m = np.max(np.abs(x))
+    return x if m == 0 else x * (peak / m)
+
+
+def fade_out(x, seconds=0.05):
+    n = min(len(x), int(RATE * seconds))
+    x[-n:] *= np.linspace(1, 0, n)
+    return x
+
+
+# ----------------------------------------------------------------------------- Sonidos
+
+def eclipse_announce(rng):
+    """Campana grave y lejana: parciales inarmónicos con caídas distintas (aviso del día anterior)."""
+    t = t_axis(4.0)
+    base = 98.0
+    partials = [(0.5, 1.0, 2.8), (1.0, 0.8, 2.2), (1.19, 0.5, 1.6), (1.56, 0.35, 1.2), (2.0, 0.3, 1.0), (2.74, 0.15, 0.6)]
+    x = sum(a * np.sin(2 * np.pi * base * r * t) * env(t, 0.004, d) for r, a, d in partials)
+    x += 0.05 * lowpass(rng.standard_normal(len(t)), 900) * env(t, 0.002, 0.05)
+    return fade_out(normalize(x))
+
+
+def eclipse_start(rng):
+    """Retumbo que crece y un zumbido disonante: el sol empieza a apagarse."""
+    t = t_axis(5.0)
+    swell = np.clip(t / 2.5, 0, 1) ** 2 * np.exp(-np.maximum(t - 3.5, 0) / 0.6)
+    rumble = lowpass(rng.standard_normal(len(t)), 120) * 6
+    drone = np.sin(2 * np.pi * 55 * t) + 0.7 * np.sin(2 * np.pi * 58.3 * t) + 0.4 * np.sin(2 * np.pi * 82.4 * t)
+    x = (rumble + drone) * swell
+    return fade_out(normalize(x))
+
+
+def eclipse_totality(rng):
+    """Golpe grave seguido de un coro sintético que asciende (comienza la totalidad)."""
+    t = t_axis(4.5)
+    boom = np.sin(2 * np.pi * (60 - 25 * np.minimum(t, 1)) * t) * env(t, 0.005, 0.5)
+    boom += 0.5 * lowpass(rng.standard_normal(len(t)), 300) * env(t, 0.002, 0.25)
+    freq = 110 * (1 + 0.5 * np.clip((t - 0.6) / 3.0, 0, 1))
+    phase = 2 * np.pi * np.cumsum(freq) / RATE
+    choir = sum(np.sin(phase * k * (1 + d)) / k for k, d in [(1, 0), (1, 0.006), (2, -0.004), (3, 0.003), (4, 0)])
+    choir *= np.clip((t - 0.4) / 1.2, 0, 1) * np.exp(-np.maximum(t - 3.6, 0) / 0.3)
+    x = boom + 0.45 * choir
+    return fade_out(normalize(x))
+
+
+def herald_spawn(rng):
+    """Impacto pesado y un chirrido metálico que cae: llega el Heraldo."""
+    t = t_axis(2.6)
+    impact = lowpass(rng.standard_normal(len(t)), 400) * env(t, 0.002, 0.35) * 3
+    impact += np.sin(2 * np.pi * 45 * t) * env(t, 0.003, 0.6)
+    screech_f = 900 * np.exp(-t * 0.9) + 180
+    screech = np.sin(2 * np.pi * np.cumsum(screech_f) / RATE)
+    screech = np.sign(screech) * np.abs(screech) ** 0.6  # timbre áspero
+    screech *= np.clip((t - 0.15) / 0.2, 0, 1) * np.exp(-np.maximum(t - 0.4, 0) / 0.7) * 0.35
+    return fade_out(normalize(impact + screech))
+
+
+def combo_finisher(rng):
+    """Silbido rápido y golpe seco para el remate del combo."""
+    t = t_axis(0.65)
+    whoosh = rng.standard_normal(len(t))
+    whoosh = lowpass(whoosh, 2500) * np.sin(np.pi * np.clip(t / 0.25, 0, 1)) * (t < 0.25)
+    hit = (lowpass(rng.standard_normal(len(t)), 1200) * 1.5 + np.sin(2 * np.pi * 80 * t)) * env(np.maximum(t - 0.22, 0), 0.002, 0.12) * (t >= 0.22)
+    return fade_out(normalize(0.6 * whoosh + hit))
+
+
+def rune_socket(rng):
+    """Campanilla cristalina en dos notas: la runa encaja en el arma."""
+    t = t_axis(1.0)
+    x = np.zeros_like(t)
+    for start, f in ((0.0, 1318.5), (0.09, 1975.5)):
+        tt = np.maximum(t - start, 0)
+        note = (np.sin(2 * np.pi * f * tt) + 0.3 * np.sin(2 * np.pi * f * 2.76 * tt)) * env(tt, 0.002, 0.28)
+        x += note * (t >= start)
+    return fade_out(normalize(x, 0.7))
+
+
+def rune_remove(rng):
+    """Raspado de piedra con un chasquido final: la runa se rompe al extraerla."""
+    t = t_axis(0.9)
+    grit = lowpass(rng.standard_normal(len(t)), 1800) * (0.6 + 0.4 * np.sin(2 * np.pi * 28 * t)) * env(t, 0.03, 0.4)
+    crack_t = np.maximum(t - 0.62, 0)
+    crack = rng.standard_normal(len(t)) * env(crack_t, 0.001, 0.04) * (t >= 0.62) * 1.5
+    return fade_out(normalize(grit + crack, 0.75))
+
+
+SOUNDS = {
+    'eclipse_announce': eclipse_announce,
+    'eclipse_start': eclipse_start,
+    'eclipse_totality': eclipse_totality,
+    'herald_spawn': herald_spawn,
+    'combo_finisher': combo_finisher,
+    'rune_socket': rune_socket,
+    'rune_remove': rune_remove,
+}
+
+
+def write_ogg(samples, path):
+    pcm = (np.clip(samples, -1, 1) * 32767).astype('<i2')
+    with tempfile.TemporaryDirectory() as tmp:
+        wav = os.path.join(tmp, 'in.wav')
+        with wave.open(wav, 'wb') as w:
+            w.setnchannels(1)
+            w.setsampwidth(2)
+            w.setframerate(RATE)
+            w.writeframes(pcm.tobytes())
+        subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', wav, '-c:a', 'libvorbis', '-q:a', '4',
+                        '-map_metadata', '-1', '-fflags', '+bitexact', path], check=True)
+
+
+def main():
+    if len(sys.argv) < 2:
+        print(__doc__)
+        sys.exit(1)
+    out = os.path.join(sys.argv[1], 'sounds')
+    os.makedirs(out, exist_ok=True)
+    for name, fn in SOUNDS.items():
+        rng = np.random.default_rng(SEED + sum(map(ord, name)))
+        write_ogg(fn(rng), os.path.join(out, name + '.ogg'))
+        print(name + '.ogg')
+
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,44 @@
+{
+  "eclipse_announce": {
+    "subtitle": "subtitles.aptitudes.eclipse_announce",
+    "sounds": [
+      "aptitudes:eclipse_announce"
+    ]
+  },
+  "eclipse_start": {
+    "subtitle": "subtitles.aptitudes.eclipse_start",
+    "sounds": [
+      "aptitudes:eclipse_start"
+    ]
+  },
+  "eclipse_totality": {
+    "subtitle": "subtitles.aptitudes.eclipse_totality",
+    "sounds": [
+      "aptitudes:eclipse_totality"
+    ]
+  },
+  "herald_spawn": {
+    "subtitle": "subtitles.aptitudes.herald_spawn",
+    "sounds": [
+      "aptitudes:herald_spawn"
+    ]
+  },
+  "combo_finisher": {
+    "subtitle": "subtitles.aptitudes.combo_finisher",
+    "sounds": [
+      "aptitudes:combo_finisher"
+    ]
+  },
+  "rune_socket": {
+    "subtitle": "subtitles.aptitudes.rune_socket",
+    "sounds": [
+      "aptitudes:rune_socket"
+    ]
+  },
+  "rune_remove": {
+    "subtitle": "subtitles.aptitudes.rune_remove",
+    "sounds": [
+      "aptitudes:rune_remove"
+    ]
+  }
+}

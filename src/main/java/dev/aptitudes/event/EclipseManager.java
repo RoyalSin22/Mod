@@ -148,7 +148,7 @@ public final class EclipseManager {
 				state.announcedDay = day + 1;
 				state.markDirty();
 				broadcast(server, Text.translatable("eclipse.aptitudes.announce").formatted(Formatting.DARK_RED, Formatting.ITALIC));
-				playToAll(world, SoundEvents.BLOCK_BELL_RESONATE, 0.6f);
+				playToAll(world, dev.aptitudes.sound.ModSounds.ECLIPSE_ANNOUNCE, 1.0f);
 			}
 			return;
 		}
@@ -202,7 +202,7 @@ public final class EclipseManager {
 		lastPhase = Phase.PENUMBRA;
 		nextWaveTick = server.getTicks() + 100;
 		broadcast(server, Text.translatable("eclipse.aptitudes.start").formatted(Formatting.DARK_RED, Formatting.BOLD));
-		playToAll(world, SoundEvents.BLOCK_END_PORTAL_SPAWN, 0.5f);
+		playToAll(world, dev.aptitudes.sound.ModSounds.ECLIPSE_START, 1.0f);
 		long eventTime = forced ? 0 : EclipseRules.timeInDay(world.getTimeOfDay());
 		syncAll(server, eventTime);
 	}
@@ -342,7 +342,7 @@ public final class EclipseManager {
 			world.spawnParticles(ParticleTypes.SOUL_FIRE_FLAME, herald.getX(), herald.getBodyY(0.5), herald.getZ(), 60, 0.6, 1.2, 0.6, 0.05);
 		}
 		broadcast(server, Text.translatable("eclipse.aptitudes.herald").formatted(Formatting.DARK_RED, Formatting.BOLD));
-		playToAll(world, SoundEvents.ENTITY_WITHER_SPAWN, 0.6f);
+		playToAll(world, dev.aptitudes.sound.ModSounds.HERALD_SPAWN, 1.0f);
 	}
 
 	/** Busca suelo firme con 2 bloques libres a {@code min}–{@code max} bloques del centro (6 intentos). */
@@ -389,7 +389,7 @@ public final class EclipseManager {
 		};
 		if (key == null) return;
 		broadcast(server, Text.translatable(key).formatted(Formatting.RED));
-		if (phase == Phase.TOTALITY) playToAll(world, SoundEvents.ENTITY_WITHER_AMBIENT, 0.5f);
+		if (phase == Phase.TOTALITY) playToAll(world, dev.aptitudes.sound.ModSounds.ECLIPSE_TOTALITY, 1.0f);
 	}
 
 	private static void broadcast(MinecraftServer server, Text text) {
@@ -398,7 +398,7 @@ public final class EclipseManager {
 
 	private static void playToAll(ServerWorld world, SoundEvent sound, float pitch) {
 		for (ServerPlayerEntity p : world.getPlayers()) {
-			world.playSound(null, p.getX(), p.getY(), p.getZ(), sound, SoundCategory.AMBIENT, 1.0f, pitch);
+			world.playSound(null, p.getX(), p.getY(), p.getZ(), sound, SoundCategory.HOSTILE, 1.0f, pitch);
 		}
 	}
 

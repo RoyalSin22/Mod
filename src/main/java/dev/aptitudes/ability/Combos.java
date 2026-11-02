@@ -99,6 +99,7 @@ public final class Combos {
 		float damage = 6f + combo;
 		DamageSource src = player.getDamageSources().playerAttack(player);
 		finishing = true;
+		sound(player, dev.aptitudes.sound.ModSounds.COMBO_FINISHER, 0.9f, 1.0f); // v37: golpe común del remate
 		try {
 			switch (category) {
 				case MARTIAL -> { // Golpe sísmico: área de 3 bloques y lentitud

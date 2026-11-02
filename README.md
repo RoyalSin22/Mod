@@ -746,3 +746,6 @@ campeones y el Heraldo del Eclipse a mediodía. Recompensas: Fragmentos, Núcleo
 
 **v36:** el registro anti-granjas de bloques colocados se guarda con cada mundo: reiniciar el servidor ya no
 hace que los bloques colocados vuelvan a dar XP.
+
+**v37 — Sonidos propios:** campana de aviso, inicio y totalidad del Eclipse, llegada del Heraldo, remate de
+combo y engarzar/quitar runas. Sintetizados por programa (`tools/audio/gen_sounds.py`), con subtítulos.
