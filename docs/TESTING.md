@@ -69,3 +69,7 @@ calculadas), no del código; se corrigieron y se documentan en el informe del bl
     servidor: la espera continúa donde estaba.
 13. Levantar el Muro elemental y cerrar el servidor antes de 10 s → al volver, el muro desaparece en los
     segundos que le quedaban. Picar un bloque del muro → no suelta nada ni da XP.
+14. Escala de interfaz 4 (o ventana pequeña): abrir la pantalla de roles (J) → aparece una barra a la
+    derecha; rueda fuera del árbol o RePág/AvPág hasta ver «Hecho»; el zoom del árbol no cambia.
+15. En el Nether, sobornar a un piglin (Soborno) → deja de atacar en menos de medio segundo. Con el
+    camuflaje del Cambiaformas, los piglins brutos y hoglins no te persiguen.

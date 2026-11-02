@@ -69,6 +69,13 @@ public class RolesScreen extends Screen {
 
 	private int left;
 	private int top;
+	/**
+	 * Desplazamiento vertical de la ventana cuando no cabe (p. ej., escala de interfaz 4 en 1080p: 270 px
+	 * útiles frente a 322 de ventana). 0 si cabe. Se cambia con la rueda fuera del lienzo o RePág/AvPág.
+	 */
+	private int pageScroll;
+	/** true mientras se reconstruye la pantalla por desplazamiento: conserva zoom y posición del árbol. */
+	private boolean keepView;
 	private RoleCategory category = RoleCategory.MARTIAL;
 	private Role selected = Role.BERSERKER;
 	/** Clave de la casilla seleccionada: id del nodo o nombre de {@link NodeKind}. */
@@ -135,7 +142,8 @@ public class RolesScreen extends Screen {
 		W = MathHelper.clamp(width - 20, 440, 760);
 		H = MathHelper.clamp(height - 16, 322, 480);
 		left = (width - W) / 2;
-		top = (height - H) / 2;
+		pageScroll = MathHelper.clamp(pageScroll, 0, maxPageScroll());
+		top = maxPageScroll() > 0 ? 8 - pageScroll : (height - H) / 2;
 		int lx = left + 8;
 		primaryButton = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.roles.set_primary"),
 				b -> send(RoleActionPayload.SET_PRIMARY, "")).dimensions(lx, top + 182, LIST_W, 16).build());
@@ -143,7 +151,8 @@ public class RolesScreen extends Screen {
 				b -> send(RoleActionPayload.SET_SECONDARY, "")).dimensions(lx, top + 200, LIST_W, 16).build());
 		evolveButton = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.evolve"),
 				b -> send(RoleActionPayload.EVOLVE, "")).dimensions(lx, top + 218, LIST_W, 16).build());
-		resetView();
+		if (!keepView) resetView();
+		keepView = false;
 		upgradeButton = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.roles.upgrade"), b -> {
 			NodeView v = nodeView(selectedNode);
 			if (v != null && v.node() != null) send(RoleActionPayload.UPGRADE_NODE, v.node().id());
@@ -170,6 +179,21 @@ public class RolesScreen extends Screen {
 		addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, b -> close())
 				.dimensions(width / 2 + 2, top + H - 26, 100, 18).build());
 		updateButtons();
+	}
+
+	/** Cuánto se puede desplazar la ventana (0 si cabe con 8 px de margen arriba y abajo). */
+	private int maxPageScroll() {
+		return Math.max(0, H + 16 - height);
+	}
+
+	/** Desplaza la ventana y recoloca los botones sin perder el zoom ni la posición del árbol. */
+	private boolean scrollPage(int amount) {
+		int target = MathHelper.clamp(pageScroll + amount, 0, maxPageScroll());
+		if (target == pageScroll) return false;
+		pageScroll = target;
+		keepView = true;
+		clearAndInit();
+		return true;
 	}
 
 	private void send(int action, String nodeId) {
@@ -404,6 +428,8 @@ public class RolesScreen extends Screen {
 			panY = ay - (ay - panY) * zoom / old;
 			return true;
 		}
+		// Fuera del lienzo: desplaza la ventana si no cabe en la pantalla.
+		if (verticalAmount != 0 && maxPageScroll() > 0 && scrollPage(verticalAmount > 0 ? -24 : 24)) return true;
 		return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
 	}
 
@@ -417,6 +443,8 @@ public class RolesScreen extends Screen {
 			client.setScreen(new AptitudesScreen());
 			return true;
 		}
+		if (keyCode == GLFW.GLFW_KEY_PAGE_DOWN && scrollPage(80)) return true;
+		if (keyCode == GLFW.GLFW_KEY_PAGE_UP && scrollPage(-80)) return true;
 		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
 
@@ -471,6 +499,15 @@ public class RolesScreen extends Screen {
 	@Override
 	public void render(DrawContext ctx, int mouseX, int mouseY, float delta) {
 		super.render(ctx, mouseX, mouseY, delta);
+		// Barra de desplazamiento de la ventana (solo si no cabe en la pantalla).
+		int maxScroll = maxPageScroll();
+		if (maxScroll > 0) {
+			int trackH = height - 16;
+			int thumbH = Math.max(20, trackH * height / (H + 16));
+			int thumbY = 8 + (trackH - thumbH) * pageScroll / maxScroll;
+			ctx.fill(width - 5, 8, width - 2, 8 + trackH, 0x60000000);
+			ctx.fill(width - 5, thumbY, width - 2, thumbY + thumbH, UiStyle.GOLD);
+		}
 		ctx.drawTextWithShadow(textRenderer, title.copy().formatted(Formatting.BOLD), left + 12, top + 9, UiStyle.GOLD);
 		RoleSyncPayload data = ClientRoleState.data();
 		if (data == null) {
@@ -567,7 +604,8 @@ public class RolesScreen extends Screen {
 		List<Text> tooltip = renderTreeLocal(ctx, data, mouseX, mouseY);
 		ctx.getMatrices().pop();
 		ctx.disableScissor();
-		Text hint = Text.translatable("screen.aptitudes.tree.hint");
+		// Si la ventana se puede desplazar, una pista corta que lo indica (la normal no cabría).
+		Text hint = Text.translatable(maxPageScroll() > 0 ? "screen.aptitudes.tree.hint_scroll" : "screen.aptitudes.tree.hint");
 		UiStyle.label(ctx, textRenderer, hint, viewX2() - 4 - Math.min(textRenderer.getWidth(hint), canvasW() - 10),
 				viewY2() - 10, canvasW() - 10, 0xFF5A6078);
 		return tooltip;

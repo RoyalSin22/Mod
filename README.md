@@ -684,8 +684,7 @@ src/client/java/dev/aptitudes/client/   (solo cliente)
 |---|---|---|
 | Los textos del servidor son claves traducibles | Un cliente sin el mod ve las claves en vez del texto | Usar Server Translations API |
 | Cliente vanilla en un servidor con el mod | Sin GUI. El minado se ve más lento en el cliente, aunque el servidor lo acepta | — |
-| Los mobs con IA de "Brain" (piglins, hoglins, warden) no siempre pasan por `setTarget` | El Soborno y el filtro de los esbirros pueden no afectarles | Mixin adicional sobre su `Brain` |
-| La pantalla de roles mide 286 px de alto | Con escala de interfaz 4 en 1080p no cabe entera | Añadir scroll o reducir la escala de interfaz |
+| Mobs con IA de "Brain" (piglins, hoglins, warden) | Se corrigen cada 5 ticks (v19): entre dos revisiones pueden iniciar un ataque; el warden, muy agresivo, puede llegar a golpear | Mixin sobre sus tareas de ataque si hiciera falta |
 | El rango efectivo puede llegar a 5 con la evolución | Algunos valores (esquiva 35 %, Mente clara −50 %) pueden quedar fuertes | Ajustar tras probar; Mente clara está limitada a −60 % |
 | Fuego del Averno y explosiones del Creeper modifican bloques | Cambios permanentes del mundo (según `uniqueGriefing`) | — |
 | Las transformaciones no cambian la caja de colisión | Un "murciélago" sigue ocupando lo que un jugador | Cambiar las dimensiones del jugador (mixin de `getDimensions`) |
@@ -710,6 +709,11 @@ se reinician al reiniciar el servidor ni al salir y volver a entrar. Los bloques
 guardan por mundo con su hora de caducidad: se retiran aunque el servidor se cierre con el muro levantado,
 y romperlos no suelta objetos ni da XP. Limitación: una explosión que destruya el muro sí puede soltar
 algún bloque (comportamiento vanilla de las explosiones).
+
+**Resueltas en la v19:** la pantalla de roles (mínimo 322 px de alto) se desplaza con la rueda fuera del
+árbol o con RePág/AvPág cuando no cabe (p. ej., escala de interfaz 4 en 1080p) y muestra una barra; el zoom
+y la posición del árbol se conservan. Los mobs con IA de tipo Brain respetan el Soborno, el camuflaje del
+Cambiaformas y el Heraldo de la Muerte (`BrainTargetFilter`, sin mixins).
 
 ### Siguientes pasos sugeridos
 

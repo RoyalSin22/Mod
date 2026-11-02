@@ -28,12 +28,14 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 | Accesorios, élites/campeones, estructuras, grimorio (18 capítulos) | `accessory/`, `elite/`, `world/`, `item/GuideBookItem`, `client/screen/GuideScreen` |
 | Configuración validada al cargar | `config/AptitudesConfig.validated` |
 | Tiempos de espera persistentes (habilidades, definitiva, firma, legendaria, Inmortalidad carmesí) | `ability/CooldownBook` + attachment `COOLDOWNS`; usa `AbilityManager.cooldowns(p)` y `gameTime(p)` |
+| Filtro de objetivos: `MobEntityMixin` (setTarget) + `BrainTargetFilter` (mobs con IA Brain) | `ability/AbilityState.shouldBlockTarget` es la única regla: amplíala ahí |
 | Bloques temporales de habilidades (persistentes, sin drops) | `world/TemporaryBlocks.place(...)`; nunca `setBlockState` + `schedule` para bloques temporales |
 
 Historial reciente en `main`: auditoría de seguridad y balance, v14 (grimorio, elementos y armas), v15
 (Pesca y rendimiento decreciente), v15.1 (árbol con legendarias exclusivas), v15.2 (grimorio tras la
 muerte y pruebas de configuración) y v16 (Defensa con `AFTER_DAMAGE`, esbirros sin conversión a
-ahogado, Bombardeo orbital sin fuego amigo) v17 (anti-granjas de colocar y romper) y v18 (esperas y muros persistentes).
+ahogado, Bombardeo orbital sin fuego amigo), v17 (anti-granjas de colocar y romper), v18 (esperas y muros persistentes) y v19 (desplazamiento de la
+pantalla de roles y filtro para mobs con IA Brain).
 
 ## 3. Exclusiones absolutas (no negociables)
 
@@ -93,8 +95,8 @@ retematizaron (p. ej., «Talismán maldito»). **No cambies los ids de registro 
 
 - Activar `attributeScaling = SOFTCAP` por defecto: **decisión del autor** tras probar en partida.
 - Pruebas en partida de la v15–v16 (`docs/TESTING.md`, puntos 6–9).
-- Limitaciones abiertas: tabla «Limitaciones conocidas» del `README.md` (IA de tipo Brain y Soborno,
-  colisión de transformaciones, altura de la pantalla de roles).
+- Limitaciones abiertas: tabla «Limitaciones conocidas» del `README.md` (colisión de
+  transformaciones; el filtro Brain actúa cada 5 ticks).
 
 ## 8. Al terminar una tarea
 

@@ -100,6 +100,15 @@ Decisiones: tope de espera aceptado de 1 día real (datos corruptos o mundos con
 para siempre), máximo 256 esperas por jugador y 4096 bloques temporales por mundo; un bloque temporal
 solo se retira si en su posición sigue el mismo bloque.
 
+### v19 — interfaz y mobs con IA Brain
+| Área | Antes | Ahora |
+|---|---|---|
+| Pantalla de roles | Mínimo 322 px de alto: con escala 4 en 1080p (270 px útiles) los botones inferiores quedaban fuera | Desplazamiento vertical (rueda fuera del árbol, RePág/AvPág) con barra; conserva zoom y posición del árbol |
+| Mobs con IA Brain (piglins, brutos, hoglins, zoglins, warden) | Ignoraban el Soborno y el camuflaje: no usan `setTarget` | `BrainTargetFilter`: cada 5 ticks borra `ATTACK_TARGET` (y `ANGRY_AT` contra esa víctima) si `shouldBlockTarget` protege al objetivo |
+
+Decisión: sin mixin sobre el cerebro (no sabe a qué entidad pertenece y un nombre equivocado impediría
+arrancar). Coste: un barrido de 32 bloques por jugador cada 5 ticks, solo mobs con memoria de objetivo.
+
 Decisiones v17: sin mixins (se compara el bloque antes y después del clic); las plantas no se registran
 (un brote se convierte en el tronco de un árbol natural y los cultivos son el juego normal de Agricultura);
 registro en memoria con tope de 100 000 posiciones por mundo (FIFO).
