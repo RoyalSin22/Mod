@@ -109,6 +109,10 @@ public class AptitudesConfig {
 	public double secondaryRoleXpMultiplier = 0.5;
 	/** Puntos de árbol de un rol = 1 + nivel / rolePointsEveryLevels. */
 	public int rolePointsEveryLevels = 3;
+	/** v23: puntos de árbol extra al evolucionar a Maestro (para la fila nueva de 5 nodos × 2 rangos). */
+	public int masterBonusPoints = 10;
+	/** v23: puntos de árbol extra al evolucionar a Definitivo (fila nueva de 5 nodos × 1 rango). */
+	public int ultimateBonusPoints = 5;
 	/** Obsoleto: ya no se usa (el cambio de rol se hace con el ritual de la Hoguera). */
 	public int roleChangeCooldownMinutes = 0;
 	/**
@@ -267,6 +271,8 @@ public class AptitudesConfig {
 		c.roleXpExponent = Math.max(0.0, Math.min(4.0, c.roleXpExponent));
 		c.secondaryRoleXpMultiplier = Math.max(0.0, Math.min(1.0, c.secondaryRoleXpMultiplier));
 		c.rolePointsEveryLevels = clamp(c.rolePointsEveryLevels, 1, 100);
+		c.masterBonusPoints = clamp(c.masterBonusPoints, 0, 100);
+		c.ultimateBonusPoints = clamp(c.ultimateBonusPoints, 0, 100);
 		c.roleChangeCooldownMinutes = clamp(c.roleChangeCooldownMinutes, 0, 100_000);
 		c.baseMaxEnergy = Math.max(1.0, c.baseMaxEnergy);
 		c.baseEnergyRegenPerSecond = Math.max(0.0, c.baseEnergyRegenPerSecond);

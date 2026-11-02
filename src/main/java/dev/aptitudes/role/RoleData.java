@@ -102,12 +102,11 @@ public final class RoleData {
 	public int rebirths() { return rebirths; }
 	public void setRebirths(int value) { this.rebirths = Math.max(0, Math.min(9, value)); }
 
-	/** Índice (0-3) de la activa equipada en la ranura {@code which} (0 o 1) del rol. Por defecto A y B. */
+	/** Índice (0-7) de la activa equipada en la ranura {@code which} (0 o 1) del rol. Por defecto A y B. */
 	public int equipped(Role role, int which) {
 		Integer packed = loadout.get(role);
 		if (packed == null) return which;
-		int value = which == 0 ? packed & 3 : (packed >> 2) & 3;
-		return value;
+		return LoadoutCodec.decode(packed, which);
 	}
 
 	/** Equipa la activa {@code index} en la ranura {@code which}; si ya estaba en la otra, se intercambian. */
@@ -121,7 +120,7 @@ public final class RoleData {
 			if (first == index) first = second;
 			second = index;
 		}
-		loadout.put(role, (first & 3) | ((second & 3) << 2));
+		loadout.put(role, LoadoutCodec.encode(first, second));
 	}
 
 	public int tier(Role role) { return tiers.getOrDefault(role, Evolution.BASE); }

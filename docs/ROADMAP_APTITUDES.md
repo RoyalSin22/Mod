@@ -100,6 +100,13 @@ Decisiones: tope de espera aceptado de 1 día real (datos corruptos o mundos con
 para siempre), máximo 256 esperas por jugador y 4096 bloques temporales por mundo; un bloque temporal
 solo se retira si en su posición sigue el mismo bloque.
 
+### v23 — el árbol crece al evolucionar
++5 nodos con Maestro y +5 con Definitivo en cada rol (200 en total): 120 pasivas sobre `PathEffect`
+(×1,5 por rango en Maestro, ×3 en Definitivo) y 80 activas sobre 10 plantillas (`EvolvedAbilities`). Filas
+bloqueadas visibles con candado hasta evolucionar; +10/+5 puntos de talento; 8 activas por rol con un
+formato de equipamiento de 3 bits compatible con los mundos guardados (`LoadoutCodec`). Detalle en
+`docs/V23_DISENO_ARBOL.md`.
+
 ### v22 — texturas de armas y objetos clave
 86 texturas nuevas de 16×16 generadas con `tools/textures/gen_items.py`: plantillas a mano por arquetipo
 (espada, mandoble, katana, daga, hacha, lanza, martillo, bastones, focos, armas de fuego, tomo, anillos,

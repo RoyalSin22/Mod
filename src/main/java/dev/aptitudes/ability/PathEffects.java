@@ -2,6 +2,7 @@ package dev.aptitudes.ability;
 
 import dev.aptitudes.Aptitudes;
 import dev.aptitudes.logic.AttributeApplier;
+import dev.aptitudes.role.EvolvedTree;
 import dev.aptitudes.role.PathEffect;
 import dev.aptitudes.role.RoleData;
 import dev.aptitudes.role.RoleManager;
@@ -30,6 +31,11 @@ public final class PathEffects {
 		for (Map.Entry<String, RoleTree.PathSpec> e : RoleTree.pathSpecs().entrySet()) {
 			int rank = RoleManager.activeRank(player, e.getKey());
 			if (rank > 0) out.merge(e.getValue().effect(), rank * e.getValue().effect().perRank(), Double::sum);
+		}
+		// v23: pasivas de las filas de Maestro y Definitivo (mismo efecto, más valor por rango).
+		for (EvolvedTree.Passive p : EvolvedTree.passives().values()) {
+			int rank = RoleManager.learnedRank(player, p.id());
+			if (rank > 0) out.merge(p.effect(), rank * p.perRank(), Double::sum);
 		}
 		return out;
 	}

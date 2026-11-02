@@ -98,6 +98,14 @@ balance general sin validación). Para activarlo: `"attributeScaling": "SOFTCAP"
 
 ## 5. Árbol de roles
 
+**v23 — filas de evolución.** Pasivas: valor de senda ×1,5 por rango en Maestro (2 rangos ⇒ el de una senda
+completa) y ×3 en Definitivo (1 rango), sin el extra por evolución de `activeRank` (usan `learnedRank`). Los
+topes globales siguen vigentes (reducción de daño ≤ 40 %, multiplicador de daño ≤ 6). Activas: daño base 6
+(Maestro) / 10 (Definitivo) + 1,5 por rango efectivo (incluye Maestría y evolución, tope 6); coste 35/50 de
+maná (+10 en invocaciones); espera 16/30 s (×2 en auras, escudos y curas; ×3 en invocaciones), afectadas por
+Presteza, Eficiencia y el tope del 60 %. Puntos: +10 con Maestro y +5 con Definitivo.
+
+
 - Puntos: `1 + nivel·3 / rolePointsEveryLevels` → 31 a nivel 30, frente a 69 rangos posibles en
   23 nodos (+1 legendario): obliga a elegir.
 - Sendas: 3 por rol, solo se pueden seguir 2 (validado en servidor y persistido en los rangos).

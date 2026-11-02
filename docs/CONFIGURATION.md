@@ -67,3 +67,10 @@ su forma normal de juego.
 Datos editables por datapack (sin recompilar): rareza de estructuras
 (`data/aptitudes/worldgen/placed_feature/*.json`), botín (`data/aptitudes/loot_table/chests/*.json`)
 y recetas (`data/aptitudes/recipe/*.json`).
+
+## Árbol de evolución (v23)
+
+| Opción | Defecto | Validación | Descripción |
+|---|---|---|---|
+| `masterBonusPoints` | 10 | [0, 100] | Puntos de árbol extra al evolucionar un rol a Maestro. |
+| `ultimateBonusPoints` | 5 | [0, 100] | Puntos de árbol extra al evolucionar un rol a Definitivo. |

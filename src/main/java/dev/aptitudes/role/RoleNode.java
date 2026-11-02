@@ -10,9 +10,22 @@ import org.jetbrains.annotations.Nullable;
  * @param kind         tipo de nodo (ver {@link Kind})
  * @param energyCost   coste de maná por uso (solo activas)
  * @param cooldownSecs enfriamiento base en segundos (solo activas)
+ * @param requiredTier evolución mínima del rol (0 = base, 1 = Maestro, 2 = Definitivo; v23)
+ * @param rankCap      rangos máximos si es &gt; 0 (los nodos evolucionados tienen 2 o 1)
  */
 public record RoleNode(String id, Role role, Kind kind, int requiredLevel,
-					   @Nullable String prerequisite, int energyCost, int cooldownSecs) {
+					   @Nullable String prerequisite, int energyCost, int cooldownSecs, int requiredTier, int rankCap) {
+
+	/** Nodo sin requisito de evolución (todos los anteriores a la v23). */
+	public RoleNode(String id, Role role, Kind kind, int requiredLevel, @Nullable String prerequisite, int energyCost,
+					int cooldownSecs) {
+		this(id, role, kind, requiredLevel, prerequisite, energyCost, cooldownSecs, 0, 0);
+	}
+
+	/** ¿Es un nodo de las filas de Maestro o Definitivo? */
+	public boolean evolved() {
+		return requiredTier > 0;
+	}
 
 	public enum Kind {
 		/** Pasiva con mecánica propia. */
@@ -42,6 +55,7 @@ public record RoleNode(String id, Role role, Kind kind, int requiredLevel,
 
 	/** Rangos máximos de este nodo (el legendario tiene uno). */
 	public int maxRank() {
+		if (rankCap > 0) return rankCap;
 		return kind == Kind.LEGENDARY ? 1 : MAX_RANK;
 	}
 	/** Niveles de rol adicionales que exige cada rango después del primero. */

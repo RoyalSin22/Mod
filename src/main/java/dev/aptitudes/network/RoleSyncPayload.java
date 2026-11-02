@@ -46,7 +46,7 @@ public record RoleSyncPayload(int primary, int secondary, int[] levels, int[] xp
 				levels, xp, new HashMap<>(data.ranks()), rules, slotCooldowns, rebirths,
 				data.elements().stream().mapToInt(Element::ordinal).toArray(), data.activeElementIndex(),
 				perRole(data::tier), perRole(data::trialProgress), bossMask(data),
-				perRole(r -> data.equipped(r, 0) | (data.equipped(r, 1) << 2)));
+				perRole(r -> dev.aptitudes.role.LoadoutCodec.encode(data.equipped(r, 0), data.equipped(r, 1))));
 	}
 
 	private static int[] perRole(java.util.function.ToIntFunction<Role> f) {
@@ -87,10 +87,10 @@ public record RoleSyncPayload(int primary, int secondary, int[] levels, int[] xp
 	public int xp(Role r) { return r.ordinal() < xp.length ? xp[r.ordinal()] : 0; }
 	public int rank(String nodeId) { return ranks.getOrDefault(nodeId, 0); }
 
-	/** Índice (0-3) de la activa equipada en la ranura {@code which} (0/1) del rol. */
+	/** Índice (0-7) de la activa equipada en la ranura {@code which} (0/1) del rol. */
 	public int equipped(Role r, int which) {
-		int packed = r.ordinal() < loadout.length ? loadout[r.ordinal()] : (which == 0 ? 0 : 4);
-		return which == 0 ? packed & 3 : (packed >> 2) & 3;
+		if (r.ordinal() >= loadout.length) return which; // por defecto A y B
+		return dev.aptitudes.role.LoadoutCodec.decode(loadout[r.ordinal()], which);
 	}
 
 	private void write(PacketByteBuf buf) {
@@ -107,6 +107,8 @@ public record RoleSyncPayload(int primary, int secondary, int[] levels, int[] xp
 		buf.writeDouble(rules.xpBase());
 		buf.writeDouble(rules.xpExponent());
 		buf.writeVarInt(rules.pointsEveryLevels());
+		buf.writeVarInt(rules.masterBonusPoints());
+		buf.writeVarInt(rules.ultimateBonusPoints());
 		writeArray(buf, slotCooldowns);
 		buf.writeVarInt(rebirths);
 		writeArray(buf, elements);
@@ -126,7 +128,8 @@ public record RoleSyncPayload(int primary, int secondary, int[] levels, int[] xp
 		if (count < 0 || count > MAX_ENTRIES) throw new IllegalArgumentException("Demasiados rangos: " + count);
 		Map<String, Integer> ranks = new HashMap<>();
 		for (int i = 0; i < count; i++) ranks.put(buf.readString(64), buf.readVarInt());
-		RoleRules rules = new RoleRules(buf.readVarInt(), buf.readDouble(), buf.readDouble(), buf.readVarInt());
+		RoleRules rules = new RoleRules(buf.readVarInt(), buf.readDouble(), buf.readDouble(), buf.readVarInt(),
+				buf.readVarInt(), buf.readVarInt());
 		int[] cooldowns = readArray(buf);
 		int roleChange = buf.readVarInt();
 		int[] elements = readArray(buf);

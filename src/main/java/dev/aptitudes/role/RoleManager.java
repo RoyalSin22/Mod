@@ -26,7 +26,7 @@ public final class RoleManager {
 
 	/** Resultado de intentar subir un rango. */
 	public enum UpgradeResult { OK, UNKNOWN_NODE, ROLE_NOT_ACTIVE, MAX_RANK, LEVEL_TOO_LOW, MISSING_PREREQUISITE, NO_POINTS,
-		PATH_LOCKED, LEGEND_TAKEN, LEGEND_LIMIT }
+		PATH_LOCKED, LEGEND_TAKEN, LEGEND_LIMIT, TIER_TOO_LOW }
 
 	private RoleManager() {
 	}
@@ -83,6 +83,19 @@ public final class RoleManager {
 		if (data == null || !data.isActive(node.role())) return 0;
 		int rank = data.rank(nodeId);
 		return rank > 0 ? rank + data.tier(node.role()) : 0;
+	}
+
+	/**
+	 * Rango aprendido de un nodo si su rol está activo, SIN el extra por evolución. Lo usan las pasivas
+	 * evolucionadas (v23): ya exigen la evolución y llevan su propio multiplicador; sumarle el extra
+	 * duplicaría la recompensa (un nodo de Definitivo valdría ×9 en vez de ×3).
+	 */
+	public static int learnedRank(ServerPlayerEntity player, String nodeId) {
+		RoleNode node = RoleTree.get(nodeId);
+		if (node == null) return 0;
+		RoleData data = player.getAttached(ModAttachments.ROLES);
+		if (data == null || !data.isActive(node.role())) return 0;
+		return data.rank(nodeId);
 	}
 
 	// ------------------------------------------------------------- Evolución
@@ -159,7 +172,7 @@ public final class RoleManager {
 	}
 
 	public static int availablePoints(RoleData data, Role role) {
-		return rules().earnedPoints(data.level(role)) - data.spentPoints(role);
+		return rules().earnedPoints(data.level(role), data.tier(role)) - data.spentPoints(role);
 	}
 
 	// ------------------------------------------------------------------- XP
@@ -285,6 +298,8 @@ public final class RoleManager {
 		if (!data.isActive(node.role())) return UpgradeResult.ROLE_NOT_ACTIVE;
 		int rank = data.rank(nodeId);
 		if (rank >= node.maxRank()) return UpgradeResult.MAX_RANK;
+		// v23: las filas de Maestro y Definitivo exigen esa evolución del rol.
+		if (data.tier(node.role()) < node.requiredTier()) return UpgradeResult.TIER_TOO_LOW;
 		if (data.level(node.role()) < node.levelForRank(rank + 1)) return UpgradeResult.LEVEL_TOO_LOW;
 		if (node.prerequisite() != null && data.rank(node.prerequisite()) <= 0) return UpgradeResult.MISSING_PREREQUISITE;
 		if (availablePoints(data, node.role()) <= 0) return UpgradeResult.NO_POINTS;
@@ -396,6 +411,12 @@ public final class RoleManager {
 		RoleRules rules = rules();
 		for (Role role : Role.values()) {
 			if (data.level(role) > rules.maxLevel()) data.setLevel(role, rules.maxLevel());
+			// v23: si se perdió la evolución (p. ej., /roles admin settier), se devuelven los nodos evolucionados.
+			for (RoleNode node : RoleTree.nodes(role)) {
+				if (node.evolved() && data.tier(role) < node.requiredTier() && data.rank(node.id()) > 0) {
+					data.setRank(node.id(), 0);
+				}
+			}
 			// Si la configuración redujo los puntos, se devuelven los del árbol afectado.
 			if (availablePoints(data, role) < 0
 					|| (role == Role.ELEMENTALIST && data.elements().size() > Element.allowedCount(data.level(role)))) {

@@ -21,7 +21,9 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 | Rendimiento decreciente de XP por fuente repetida | `logic/XpDiminishing` (puro, con pruebas) |
 | Bloques colocados por jugadores (sin XP al romperlos) y colocaciones confirmadas | `logic/PlacementTracker`, `logic/PlacedBlockLog` |
 | Atributos estilo Souls en la Hoguera, mancha de XP, frascos | `souls/`, `logic/AttributeApplier`, `logic/AttributeScaling` |
-| 20 roles, árbol de 23 nodos + legendario, sendas, evoluciones, armas de evolución | `role/`, `ability/`, `item/weapon/` |
+| 20 roles, árbol de 23 nodos + legendario + 10 de evolución (filas Maestro/Definitivo), sendas, evoluciones, armas de evolución | `role/`, `ability/`, `item/weapon/`; filas de evolución en `role/EvolvedTree` (datos) y `ability/EvolvedAbilities` (10 plantillas) |
+| Activas equipadas (8 por rol) | `role/LoadoutCodec` (3 bits + bit de formato; lee el formato antiguo) |
+| Textos de los 200 nodos evolucionados (generados) | `tools/lang/gen_evolved_lang.py` (no los edites a mano en los JSON) |
 | Elementalista: 14 elementos y 10 fusiones | `role/Element`, `ability/ElementEffects`, `ability/ElementFusions` |
 | Legendarias (exclusividad opcional `legendaryExclusive`) | `unique/` |
 | Esbirros y torretas | `ability/Minions`, `ability/MinionBrain`, `ability/AbilityState` |
@@ -37,7 +39,7 @@ Historial reciente en `main`: auditoría de seguridad y balance, v14 (grimorio, 
 muerte y pruebas de configuración) y v16 (Defensa con `AFTER_DAMAGE`, esbirros sin conversión a
 ahogado, Bombardeo orbital sin fuego amigo), v17 (anti-granjas de colocar y romper), v18 (esperas y muros persistentes) y v19 (desplazamiento de la
 pantalla de roles y filtro para mobs con IA Brain), v20 (grimorio interactivo con recetas reales) y
-v21 (Encantamiento y pantalla K animada) y v22 (texturas de armas y objetos clave).
+v21 (Encantamiento y pantalla K animada) , v22 (texturas de armas y objetos clave) y v23 (árbol que crece al evolucionar).
 
 ## 3. Exclusiones absolutas (no negociables)
 
@@ -88,6 +90,7 @@ retematizaron (p. ej., «Talismán maldito»). **No cambies los ids de registro 
 - Pruebas existentes (no las sobrescribas ni crees otras con el **mismo nombre y paquete**):
   `souls/SoulsMathTest`, `logic/AttributeScalingTest`, `logic/XpDiminishingTest`,
   `logic/PlacedBlockLogTest`, `ability/CooldownBookTest`, `world/TemporaryBlockScheduleTest`,
+  `role/LoadoutCodecTest`, `role/EvolutionPointsTest`,
   `role/RoleRulesTest`, `data/ProgressRulesTest` y
   `config/AptitudesConfigValidationTest`.
 - **No escribas pruebas que llamen a métodos que no existen.** Si una prueba necesita una API nueva,

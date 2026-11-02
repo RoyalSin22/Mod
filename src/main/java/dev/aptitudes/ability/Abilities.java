@@ -352,6 +352,8 @@ public final class Abilities {
 		AbilitiesExtra.registerAll();
 		// Roles nuevos (v11): Mago pistolero, Invocador de armas, Cazador, Bardo, Brujo y Domador.
 		NewRoles.registerActives();
+		// v23: activas de las filas de Maestro y Definitivo (plantillas parametrizadas).
+		EvolvedAbilities.registerAll();
 	}
 
 	private Abilities() {

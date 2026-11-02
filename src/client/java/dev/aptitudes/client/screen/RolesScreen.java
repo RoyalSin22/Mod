@@ -107,7 +107,11 @@ public class RolesScreen extends Screen {
 	private int gridX() { return 40; }
 	private int gridY() { return 8; }
 	private static final int CONTENT_W = 416;
-	private static final int CONTENT_H = 8 + ROW_H * 6 + 24 + 14;
+	/** v23: separación extra antes de las filas de evolución (deja sitio a sus cabeceras). */
+	private static final int EVOLVED_GAP = 16;
+	private static final int CONTENT_H = 8 + ROW_H * 8 + EVOLVED_GAP + 24 + 14;
+	/** Momento en que se vio desbloqueada por primera vez cada fila (rol:evolución): brillo de despliegue. */
+	private static final java.util.Map<String, Long> ROW_UNLOCK_SEEN = new java.util.HashMap<>();
 
 	// Vista del árbol: desplazamiento (arrastrar) y zoom (rueda).
 	private double panX;
@@ -275,7 +279,8 @@ public class RolesScreen extends Screen {
 		Role role = node.role();
 		boolean active = role == data.primaryRole() || role == data.secondaryRole();
 		int rank = data.rank(node.id());
-		return active && rank < node.maxRank() && data.level(role) >= node.levelForRank(rank + 1)
+		return active && rank < node.maxRank() && data.tier(role) >= node.requiredTier()
+				&& data.level(role) >= node.levelForRank(rank + 1)
 				&& (node.prerequisite() == null || data.rank(node.prerequisite()) > 0)
 				&& availablePoints(data, role) > 0
 				&& !pathLocked(data, node)
@@ -316,7 +321,7 @@ public class RolesScreen extends Screen {
 	private static int availablePoints(RoleSyncPayload data, Role role) {
 		int spent = 0;
 		for (RoleNode n : RoleTree.nodes(role)) spent += data.rank(n.id());
-		return data.rules().earnedPoints(data.level(role)) - spent;
+		return data.rules().earnedPoints(data.level(role), data.tier(role)) - spent;
 	}
 
 	@Override
@@ -345,7 +350,8 @@ public class RolesScreen extends Screen {
 		for (RoleNode node : RoleTree.nodes(selected)) {
 			RoleTree.GridPos pos = RoleTree.position(node.id());
 			if (pos == null) continue;
-			out.add(new NodeView(NodeKind.NODE, node, COL_X[Math.min(8, pos.col())], gridY() + pos.row() * ROW_H));
+			int y = gridY() + pos.row() * ROW_H + (pos.row() >= 7 ? EVOLVED_GAP : 0);
+			out.add(new NodeView(NodeKind.NODE, node, COL_X[Math.min(8, pos.col())], y));
 		}
 		return out;
 	}
@@ -624,7 +630,8 @@ public class RolesScreen extends Screen {
 			String pre = v.node().prerequisite();
 			// Las raíces solo se unen al núcleo si están justo debajo (la mecánica); así ninguna línea
 			// cruza los títulos de las zonas.
-			NodeView parent = pre != null ? nodeView(pre) : v.x() == core.x() && v.node().kind() != RoleNode.Kind.LEGENDARY ? core : null;
+			NodeView parent = pre != null ? nodeView(pre) : v.x() == core.x() && v.node().kind() != RoleNode.Kind.LEGENDARY
+					&& !v.node().evolved() ? core : null;
 			if (parent == null) continue;
 			boolean on = data.rank(v.node().id()) > 0;
 			boolean open = !on && available(data, v);
@@ -635,6 +642,7 @@ public class RolesScreen extends Screen {
 		hline(ctx, views.get(3), sig, tier >= Evolution.MASTER ? UiStyle.GOLD : 0xFF2C3044);
 		hline(ctx, ult, views.get(4), tier >= Evolution.ULTIMATE ? UiStyle.GOLD : 0xFF2C3044);
 		renderPathLabels(ctx, data);
+		renderEvolvedBands(ctx, tier);
 
 		List<Text> tooltip = null;
 		for (NodeView v : views) {
@@ -654,13 +662,20 @@ public class RolesScreen extends Screen {
 			ctx.drawItem(nodeIcon(v), v.x() + 4, v.y() + 4);
 			if (!lit) ctx.fill(v.x() + 2, v.y() + 2, v.x() + 22, v.y() + 22, available(data, v) ? 0x60101018 : 0x90101018);
 			if (pathLocked(data, v.node())) ctx.fill(v.x() + 2, v.y() + 2, v.x() + 22, v.y() + 22, 0x90801010);
+			boolean tierLocked = v.node() != null && tier < v.node().requiredTier();
+			if (tierLocked) {
+				ctx.fill(v.x() + 2, v.y() + 2, v.x() + 22, v.y() + 22, 0xC0101018);
+				lockIcon(ctx, v.x() + 8, v.y() + 6);
+			}
 			ctx.getMatrices().push();
 			ctx.getMatrices().translate(0, 0, 200);
 			if (v.node() != null) {
 				RoleTree.PathSpec spec = RoleTree.pathSpec(v.node().id());
 				if (spec != null) ctx.fill(v.x() + 2, v.y() + 2, v.x() + 5, v.y() + 5, PATH_COLORS[spec.path() - 1]);
 				int rank = data.rank(v.node().id());
-				String r = rank + (rank > 0 && tier > 0 ? "+" + tier : "");
+				// Las pasivas evolucionadas no reciben el extra por evolución (ya lo llevan en su valor).
+				boolean bonus = !(v.node().evolved() && !v.node().active());
+				String r = rank + (rank > 0 && tier > 0 && bonus ? "+" + tier : "");
 				ctx.drawTextWithShadow(textRenderer, r, v.x() + 22 - textRenderer.getWidth(r), v.y() + 15,
 						rank >= v.node().maxRank() ? UiStyle.GOLD : rank > 0 ? UiStyle.TEXT : UiStyle.MUTED);
 				// Activas equipadas: "1" / "2" en la esquina superior derecha.
@@ -691,11 +706,66 @@ public class RolesScreen extends Screen {
 						Text block = legendBlock(v.node());
 						if (block != null) lines.add(block.copy().formatted(Formatting.RED));
 					}
+					if (tier < v.node().requiredTier()) {
+						lines.add(Text.translatable(v.node().requiredTier() >= Evolution.ULTIMATE
+								? "screen.aptitudes.tree.requires_ultimate" : "screen.aptitudes.tree.requires_master")
+								.formatted(Formatting.RED));
+					}
 				}
 				tooltip = lines;
 			}
 		}
 		return tooltip;
+	}
+
+	/**
+	 * v23: bandas de las filas de Maestro y Definitivo. Bloqueadas: grises con candado. La primera vez que
+	 * se ven desbloqueadas brillan unos segundos (el árbol «se expande»).
+	 */
+	private void renderEvolvedBands(DrawContext ctx, int tier) {
+		long now = net.minecraft.util.Util.getMeasuringTimeMs();
+		for (int t = Evolution.MASTER; t <= Evolution.ULTIMATE; t++) {
+			int rowY = gridY() + (6 + t) * ROW_H + EVOLVED_GAP;
+			int top = rowY - 13;
+			int bottom = rowY + 28;
+			boolean unlocked = tier >= t;
+			int x1 = ZONES[0][0];
+			int x2 = ZONES[2][1];
+			ctx.fill(x1, top, x2, bottom, unlocked ? 0x1CC9A54C : 0x22101018);
+			int border = unlocked ? 0x80C9A54C : 0x50606880;
+			if (unlocked) {
+				String key = selected.key() + ":" + t;
+				long since = now - ROW_UNLOCK_SEEN.computeIfAbsent(key, k -> now);
+				if (since < 2500) { // despliegue: el borde late en dorado
+					int a = (int) (140 + 110 * Math.sin(since / 110.0));
+					border = (Math.max(0, Math.min(255, a)) << 24) | 0xE6C36A;
+					int grow = (int) Math.max(0, 6 - since / 60);
+					ctx.fill(x1, top + grow, x2, top + grow + 1, 0x80FFF3B0);
+				}
+			}
+			ctx.drawBorder(x1, top, x2 - x1, bottom - top, border);
+			Text title = Text.translatable(t == Evolution.MASTER
+					? (unlocked ? "screen.aptitudes.tree.row_master" : "screen.aptitudes.tree.requires_master")
+					: (unlocked ? "screen.aptitudes.tree.row_ultimate" : "screen.aptitudes.tree.requires_ultimate"));
+			int tw = (int) (textRenderer.getWidth(title) * 0.75f);
+			int cx = (x1 + x2) / 2;
+			ctx.fill(cx - tw / 2 - 3, top - 3, cx + tw / 2 + 4, top + 7, 0xF0141820);
+			ctx.getMatrices().push();
+			ctx.getMatrices().translate(cx - tw / 2f, top - 1, 0);
+			ctx.getMatrices().scale(0.75f, 0.75f, 1f);
+			ctx.drawText(textRenderer, title, 0, 0, unlocked ? UiStyle.GOLD : UiStyle.MUTED, false);
+			ctx.getMatrices().pop();
+		}
+	}
+
+	/** Candado de 8×10 px dibujado con rectángulos. */
+	private static void lockIcon(DrawContext ctx, int x, int y) {
+		int c = 0xFFB0B4C0;
+		ctx.fill(x + 2, y, x + 6, y + 1, c);
+		ctx.fill(x + 1, y + 1, x + 2, y + 5, c);
+		ctx.fill(x + 6, y + 1, x + 7, y + 5, c);
+		ctx.fill(x, y + 5, x + 8, y + 11, c);
+		ctx.fill(x + 3, y + 7, x + 5, y + 9, 0xFF303440);
 	}
 
 	/** Conector en ángulo recto de 2 px: baja desde el padre, cruza en horizontal a media altura y baja al hijo. */
@@ -739,7 +809,8 @@ public class RolesScreen extends Screen {
 	private boolean available(RoleSyncPayload data, NodeView v) {
 		if (v.node() == null) return false;
 		String pre = v.node().prerequisite();
-		return (pre == null || data.rank(pre) > 0) && data.level(selected) >= v.node().requiredLevel();
+		return (pre == null || data.rank(pre) > 0) && data.level(selected) >= v.node().requiredLevel()
+				&& data.tier(selected) >= v.node().requiredTier();
 	}
 
 	/** Icono de cada nodo: el del rol para los propios y uno genérico para los comunes. */
@@ -804,6 +875,12 @@ public class RolesScreen extends Screen {
 			});
 		}
 		RoleNode node = v.node();
+		if (node.evolved()) { // v23: «Maestro · Activa», «Definitivo · Pasiva»…
+			return Text.translatable("screen.aptitudes.node.evolved",
+					Text.translatable(node.requiredTier() >= Evolution.ULTIMATE ? "screen.aptitudes.tree.tier_ultimate"
+							: "screen.aptitudes.tree.tier_master"),
+					Text.translatable(node.active() ? "screen.aptitudes.roles.active" : "screen.aptitudes.roles.passive"));
+		}
 		List<RoleNode> tree = RoleTree.nodes(selected);
 		int index = tree.indexOf(node);
 		// Los 5 últimos de la lista: mecánica, reactiva 1, reactiva 2 y las activas C/D.
@@ -857,6 +934,9 @@ public class RolesScreen extends Screen {
 				Text rankText = Text.translatable("screen.aptitudes.node.rank", rank, node.maxRank(),
 						data.tier(selected));
 				Text req = rank >= node.maxRank() ? Text.empty()
+						: data.tier(selected) < node.requiredTier()
+						? Text.translatable(node.requiredTier() >= Evolution.ULTIMATE
+						? "screen.aptitudes.tree.requires_ultimate" : "screen.aptitudes.tree.requires_master")
 						: Text.translatable("screen.aptitudes.roles.requires", node.levelForRank(rank + 1));
 				extra = node.active()
 						? rankText.copy().append(" · ").append(Text.translatable("screen.aptitudes.node.cost",

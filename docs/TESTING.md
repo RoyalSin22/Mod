@@ -16,6 +16,8 @@ reescribir las existentes (JUnit 4):
 | `logic/PlacedBlockLogTest` | Bloque colocado se consume una vez; mundos independientes; tope que olvida el más antiguo; tope inválido ≥ 1 |
 | `ability/CooldownBookTest` | Cuenta atrás y caducidad; sobrevive a guardar/cargar; `tryStart`; valores corruptos no bloquean para siempre; tope de entradas |
 | `world/TemporaryBlockScheduleTest` | Caducidad por tiempo de juego (también tras reinicio); quitar/consultar; tope por mundo |
+| `role/LoadoutCodecTest` | Formato antiguo de 2 bits leído igual; formato nuevo con 8 activas; índices fuera de rango |
+| `role/EvolutionPointsTest` | Puntos extra por evolución (+10/+5), constructor antiguo sin extra, negativos ignorados, sin desbordamiento |
 | `logic/XpDiminishingTest` | Multiplicador (completo hasta el umbral, decrece hasta el suelo), redondeo, ventana deslizante por jugador y fuente, granja frente a juego normal, memoria acotada |
 
 Ejecución: `.\gradlew.bat test` (también se ejecutan en `.\gradlew.bat build`).
@@ -71,6 +73,11 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
     servidor: la espera continúa donde estaba.
 13. Levantar el Muro elemental y cerrar el servidor antes de 10 s → al volver, el muro desaparece en los
     segundos que le quedaban. Picar un bloque del muro → no suelta nada ni da XP.
+16. Árbol v23: un rol base muestra al final del árbol las filas «Maestro» y «Definitivo» bloqueadas (velo,
+    candado, ficha «Bloqueado…»). `/roles admin settier J <rol> 1` → la fila Maestro brilla y se puede aprender
+    (2 rangos, puntos +10). Equipa una activa nueva (índice 5-8) y úsala; sal y entra: sigue equipada.
+    `/roles admin settier J <rol> 0` → los nodos evolucionados vuelven a 0.
+17. Mundo guardado antes de la v23 con activas equipadas en V/B → siguen siendo las mismas tras actualizar.
 14. Escala de interfaz 4 (o ventana pequeña): abrir la pantalla de roles (J) → aparece una barra a la
     derecha; rueda fuera del árbol o RePág/AvPág hasta ver «Hecho»; el zoom del árbol no cambia.
 15. En el Nether, sobornar a un piglin (Soborno) → deja de atacar en menos de medio segundo. Con el

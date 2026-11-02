@@ -427,7 +427,7 @@ public final class RoleTree {
 
 	private static RoleNode at(RoleNode node, int col, int row, int level, @Nullable String prerequisite) {
 		RoleNode placed = new RoleNode(node.id(), node.role(), node.kind(), level, prerequisite, node.energyCost(),
-				node.cooldownSecs());
+				node.cooldownSecs(), node.requiredTier(), node.rankCap());
 		POSITIONS.put(placed.id(), new GridPos(col, row));
 		return placed;
 	}
@@ -484,11 +484,32 @@ public final class RoleTree {
 		nodes.addAll(List.of(mech, r1, r2, aC, aD));
 		// Nodo legendario (antigua habilidad única): fila 6, centro; solo exige nivel 25.
 		nodes.add(at(new RoleNode(k + "_legend", role, RoleNode.Kind.LEGENDARY, 25, null, 0, 0), 4, 6, 25, null));
+		// v23: filas de evolución, al final de la lista (no cambia el índice de los nodos anteriores).
+		// Fila 7 = Maestro, fila 8 = Definitivo; columnas 0, 2, 4 (pasivas) y 6, 8 (activas).
+		List<RoleNode> evolvedActives = new ArrayList<>();
+		int[] cols = {0, 2, 4, 6, 8};
+		List<String> evolved = EvolvedTree.ids(role);
+		for (int i = 0; i < evolved.size(); i++) {
+			String id = evolved.get(i);
+			int tier = i < 5 ? Evolution.MASTER : Evolution.ULTIMATE;
+			int level = tier == Evolution.MASTER ? EvolvedTree.MASTER_LEVEL : EvolvedTree.ULTIMATE_LEVEL;
+			int cap = tier == Evolution.MASTER ? 2 : 1;
+			EvolvedTree.Active spec = EvolvedTree.active(id);
+			RoleNode node = spec != null
+					? new RoleNode(id, role, RoleNode.Kind.ACTIVE, level, null, spec.energyCost(), spec.cooldownSecs(), tier, cap)
+					: new RoleNode(id, role, RoleNode.Kind.PASSIVE, level, null, 0, 0, tier, cap);
+			RoleNode placed = at(node, cols[i % 5], tier == Evolution.MASTER ? 7 : 8, level, null);
+			nodes.add(placed);
+			if (spec != null) evolvedActives.add(placed);
+		}
 		for (RoleNode n : nodes) {
 			if (BY_ID.put(n.id(), n) != null) throw new IllegalStateException("Nodo duplicado: " + n.id());
 		}
 		BY_ROLE.put(role, List.copyOf(nodes));
-		ACTIVES.put(role, new RoleNode[]{aA, aB, aC, aD});
+		// Activas: A, B, C, D (índices 0-3, como antes) + Maestro 1-2 y Definitivo 1-2 (índices 4-7).
+		List<RoleNode> allActives = new ArrayList<>(List.of(aA, aB, aC, aD));
+		allActives.addAll(evolvedActives);
+		ACTIVES.put(role, allActives.toArray(new RoleNode[0]));
 	}
 
 	/** Posición del nodo en la cuadrícula (o null si no es un nodo del árbol). */
@@ -497,13 +518,13 @@ public final class RoleTree {
 		return POSITIONS.get(nodeId);
 	}
 
-	/** Las 4 activas del rol (A, B, C, D). */
+	/** Las 8 activas del rol (A, B, C, D, Maestro 1-2, Definitivo 1-2). */
 	public static List<RoleNode> actives(Role role) {
 		RoleNode[] actives = ACTIVES.get(role);
 		return actives == null ? List.of() : List.of(actives);
 	}
 
-	/** Índice (0-3) de una activa dentro de su rol, o -1. */
+	/** Índice (0-7) de una activa dentro de su rol, o -1. */
 	public static int activeIndex(RoleNode node) {
 		List<RoleNode> list = actives(node.role());
 		return list.indexOf(node);
@@ -522,7 +543,7 @@ public final class RoleTree {
 		return Collections.unmodifiableList(new ArrayList<>(BY_ID.values()));
 	}
 
-	/** @param index 0-3 = activa A, B, C, D */
+	/** @param index 0-3 = activa A, B, C, D; 4-7 = activas evolucionadas */
 	@Nullable
 	public static RoleNode active(Role role, int index) {
 		RoleNode[] actives = ACTIVES.get(role);

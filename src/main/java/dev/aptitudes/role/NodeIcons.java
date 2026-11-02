@@ -164,6 +164,24 @@ public final class NodeIcons {
 			if (legend != null) return legend.iconStack();
 		}
 		Item item = BY_NODE.get(node.id());
+		if (item == null && node.evolved()) { // v23: por efecto (pasivas) o por plantilla (activas)
+			EvolvedTree.Passive p = EvolvedTree.passive(node.id());
+			EvolvedTree.Active a = EvolvedTree.active(node.id());
+			if (p != null) item = BY_EFFECT.get(p.effect());
+			else if (a != null) item = switch (a.template()) {
+				case NOVA -> Items.FIRE_CHARGE;
+				case BEAM -> Items.END_ROD;
+				case CONE -> Items.NETHERITE_SWORD;
+				case DASH -> Items.RABBIT_FOOT;
+				case ZONE -> Items.LIGHTNING_ROD;
+				case VORTEX -> Items.ENDER_EYE;
+				case AURA -> Items.BEACON;
+				case HEAL -> Items.GLISTERING_MELON_SLICE;
+				case SHIELD -> Items.SHIELD;
+				case SUMMON -> a.extra() == EvolvedTree.Extra.ZOMBIES ? Items.ROTTEN_FLESH
+						: a.extra() == EvolvedTree.Extra.VEXES ? Items.TOTEM_OF_UNDYING : Items.BONE;
+			};
+		}
 		if (item == null) {
 			item = switch (node.kind()) {
 				case STAT -> Items.IRON_CHESTPLATE;
