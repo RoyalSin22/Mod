@@ -47,6 +47,8 @@ calculadas), no del código; se corrigieron y se documentan en el informe del bl
 
 ## Pruebas manuales recomendadas (no automatizables aquí)
 
+Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLAYTEST_v15-v19.md](PLAYTEST_v15-v19.md).
+
 1. Servidor dedicado + 2 clientes: subir de nivel en la Hoguera, desconectar y reconectar → atributos
    iguales y sin modificadores duplicados (`/attribute @s minecraft:generic.max_health get`).
 2. Morir y reaparecer: roles, árbol, accesorios y almas se conservan.
@@ -57,7 +59,7 @@ calculadas), no del código; se corrigieron y se documentan en el informe del bl
    comprobar Gracia del delfín al nadar, Poder del conducto en el agua y tesoros.
 7. Rendimiento decreciente: matar más de 20 mobs del mismo tipo en un minuto → el toast de XP baja;
    cambiar de tipo de mob → XP completa.
-8. Pantalla K: las 9 tarjetas caben sin salirse del panel (escalas de GUI 2, 3 y automática).
+8. Pantalla K: las 10 tarjetas (5×2) caben sin salirse del panel (escalas de GUI 2, 3 y automática).
 9. `legendaryExclusive = true` con 2 jugadores: A aprende la legendaria de su rol → en el árbol de B
    (mismo rol) el botón Mejorar queda inactivo y la ficha dice «La tiene A». A pierde el nodo (reinicio
    del árbol) → B puede aprenderla sin reabrir el juego.

@@ -37,13 +37,16 @@ siempre muestra lo que valida el servidor aunque su archivo local sea distinto.
 | `fishingXpCatch` | 12 | ≥ 0 | XP de Pesca por pez capturado (basura y tesoros no cuentan). |
 | `fishingLuckPerLevel` | 0.02 | ≥ 0 | +suerte por nivel (+1 a nivel 50); mejora el botín de pesca vanilla. |
 | `fishingDoubleCatchPerLevel` | 0.004 | [0, 1] | Probabilidad de captura doble por nivel (20 % a nivel 50). |
+| `enchantingXpPerEnchant` | 25 | ≥ 0 | XP de Encantamiento por objeto encantado en la mesa (el yunque no cuenta). |
+| `enchantingRefundChancePerLevel` | 0.01 | [0, 1] | Probabilidad por nivel de recuperar 1 nivel al encantar (50 % a nivel 50; 100 % con el hito 50). |
+| `enchantingManaPerLevel` | 0.4 | [0, 10] | +maná máximo por nivel (+20 a nivel 50; +10 más con el hito 20). |
 | `xpDiminishingEnabled` | true | — | Activa el rendimiento decreciente por fuente repetida. |
 | `xpDiminishingWindowSeconds` | 60 | [1, 86 400] | Ventana deslizante. |
 | `xpDiminishingThreshold` | 20 | [1, 100 000] | Eventos de la misma fuente con XP completa dentro de la ventana. |
 | `xpDiminishingFloor` | 0.1 | [0, 1] | Fracción mínima de XP por evento. |
 
-Fuentes afectadas: Combate y Tiro con arco (por tipo de criatura abatida), Defensa (por tipo de atacante)
-y Pesca. Minería, Excavación, Tala, Agricultura y Agilidad no se ven afectadas: repetir la misma acción es
+Fuentes afectadas: Combate y Tiro con arco (por tipo de criatura abatida), Defensa (por tipo de atacante),
+Pesca y Encantamiento. Minería, Excavación, Tala, Agricultura y Agilidad no se ven afectadas: repetir la misma acción es
 su forma normal de juego.
 
 ## Opciones de versiones anteriores (resumen)

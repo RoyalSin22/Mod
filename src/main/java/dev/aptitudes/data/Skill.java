@@ -58,7 +58,11 @@ public enum Skill {
 	// añadirla aquí no altera a las demás habilidades.
 	FISHING(Items.FISHING_ROD,
 			bonus("luck", EntityAttributes.GENERIC_LUCK, Operation.ADD_VALUE, c -> c.fishingLuckPerLevel, false),
-			bonus("double_catch", null, null, c -> c.fishingDoubleCatchPerLevel, true));
+			bonus("double_catch", null, null, c -> c.fishingDoubleCatchPerLevel, true)),
+	// v21: 10.ª habilidad (al final del enum, igual que Pesca).
+	ENCHANTING(Items.ENCHANTING_TABLE,
+			bonus("enchant_refund", null, null, c -> c.enchantingRefundChancePerLevel, true),
+			bonus("max_mana", null, null, c -> c.enchantingManaPerLevel, false));
 
 	/**
 	 * Bonificación pasiva de una habilidad: {@code nivel × perLevel}. Si {@code attribute}

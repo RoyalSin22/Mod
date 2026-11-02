@@ -130,6 +130,36 @@ public final class SkillMilestones {
 		}
 	}
 
+	// ------------------------------------------------------- Encantamiento
+
+	/**
+	 * Llamado por cada objeto encantado en la mesa (ver XpEvents). Pasiva: probabilidad de recuperar 1 nivel
+	 * (garantizado a nivel 50). Hitos: 10 recupera lapislázuli (25 %), 30 botellas de experiencia (20 %).
+	 */
+	public static void onEnchanted(ServerPlayerEntity p) {
+		int level = ProgressManager.get(p).getLevel(Skill.ENCHANTING);
+		if (level <= 0) return;
+		World world = p.getWorld();
+		double refund = Math.min(1.0, level * Aptitudes.config().enchantingRefundChancePerLevel);
+		if (level >= 50 || world.random.nextDouble() < refund) {
+			p.addExperienceLevels(1);
+			p.getServerWorld().spawnParticles(ParticleTypes.ENCHANT, p.getX(), p.getBodyY(0.8), p.getZ(), 30, 0.5, 0.5, 0.5, 0.6);
+		}
+		if (level >= 10 && world.random.nextFloat() < 0.25f) give(p, new ItemStack(Items.LAPIS_LAZULI));
+		if (level >= 30 && world.random.nextFloat() < 0.20f) give(p, new ItemStack(Items.EXPERIENCE_BOTTLE, 2));
+	}
+
+	/** Maná máximo extra por Encantamiento: pasiva por nivel + 10 con el hito 20 («Mente arcana»). */
+	public static double bonusMana(ServerPlayerEntity p) {
+		int level = ProgressManager.get(p).getLevel(Skill.ENCHANTING);
+		return level * Aptitudes.config().enchantingManaPerLevel + (level >= 20 ? 10.0 : 0.0);
+	}
+
+	/** Encantamiento 40 («Flujo arcano»): −10 % de espera de habilidades (dentro del tope global del 60 %). */
+	public static double cooldownReduction(ServerPlayerEntity p) {
+		return ProgressManager.get(p).getLevel(Skill.ENCHANTING) >= 40 ? 0.10 : 0.0;
+	}
+
 	// ------------------------------------------------------------- Pesca
 
 	/**

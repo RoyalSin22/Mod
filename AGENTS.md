@@ -17,7 +17,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 
 | Sistema | Dónde |
 |---|---|
-| 9 habilidades por uso (Minería, Excavación, Tala, Agricultura, Combate, Tiro con arco, Defensa, Agilidad, Pesca) con hitos 10–50 | `data/Skill`, `logic/XpEvents`, `logic/SkillMilestones` |
+| 10 habilidades por uso (Minería, Excavación, Tala, Agricultura, Combate, Tiro con arco, Defensa, Agilidad, Pesca, Encantamiento) con hitos 10–50; la pantalla K está diseñada para 5 filas × 2 | `data/Skill`, `logic/XpEvents`, `logic/SkillMilestones` |
 | Rendimiento decreciente de XP por fuente repetida | `logic/XpDiminishing` (puro, con pruebas) |
 | Bloques colocados por jugadores (sin XP al romperlos) y colocaciones confirmadas | `logic/PlacementTracker`, `logic/PlacedBlockLog` |
 | Atributos estilo Souls en la Hoguera, mancha de XP, frascos | `souls/`, `logic/AttributeApplier`, `logic/AttributeScaling` |
@@ -35,7 +35,8 @@ Historial reciente en `main`: auditoría de seguridad y balance, v14 (grimorio, 
 (Pesca y rendimiento decreciente), v15.1 (árbol con legendarias exclusivas), v15.2 (grimorio tras la
 muerte y pruebas de configuración) y v16 (Defensa con `AFTER_DAMAGE`, esbirros sin conversión a
 ahogado, Bombardeo orbital sin fuego amigo), v17 (anti-granjas de colocar y romper), v18 (esperas y muros persistentes) y v19 (desplazamiento de la
-pantalla de roles y filtro para mobs con IA Brain).
+pantalla de roles y filtro para mobs con IA Brain), v20 (grimorio interactivo con recetas reales) y
+v21 (Encantamiento y pantalla K animada).
 
 ## 3. Exclusiones absolutas (no negociables)
 
@@ -77,7 +78,8 @@ retematizaron (p. ej., «Talismán maldito»). **No cambies los ids de registro 
 - **Idiomas**: añade cada clave en `en_us.json` y `es_es.json`; después **copia `es_es.json`** a `es_mx`,
   `es_ar`, `es_cl`, `es_ec`, `es_uy` y `es_ve` (son idénticos). Un `%` literal en un texto con argumentos
   se escribe `%%`.
-- **Interfaz**: la pantalla K (`AptitudesScreen`) mide 430×262; comprueba que lo nuevo cabe.
+- **Interfaz**: la pantalla K (`AptitudesScreen`) mide 430×262 y tiene exactamente 10 tarjetas (5×2): una
+  habilidad nueva rompe la simetría. El grimorio lee las recetas del juego: no las copies en los textos.
 
 ## 6. Pruebas
 

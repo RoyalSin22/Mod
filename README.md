@@ -54,6 +54,8 @@ Para instalarlo, copia el JAR en `.minecraft/mods/` junto con Fabric API. **Serv
 | Tiro con arco | Muertes con proyectil (vida máx. × 0,6) | +1,5 % de daño de flecha |
 | Defensa | Daño recibido de entidades (× 1,0) | +0,1 de dureza de armadura |
 | Agilidad | Cada 10 bloques esprintados (2) | +0,2 % de velocidad de movimiento |
+| Pesca | Cada pez capturado (12) | +0,02 de suerte, +0,4 % de captura doble |
+| Encantamiento | Cada objeto encantado en la mesa (25) | +1 % de reembolso de 1 nivel, +0,4 de maná máximo |
 
 XP necesaria para pasar del nivel *L* al *L+1*: `xpBase · (L+1)^xpExponent` (20 · (L+1)^1,35 por defecto). El nivel máximo por defecto es 50.
 
@@ -223,8 +225,10 @@ Las artes de sangre se integran en la evolución del Nigromante (Nigromante → 
 | Tiro con arco | +75 % de daño de flechas |
 | Defensa | **+3 de armadura, +5 de dureza, +50 % de resistencia a explosiones** |
 | Agilidad | +10 % de velocidad, +3 bloques de caída segura |
+| Pesca | +1 de suerte, 20 % de captura doble |
+| Encantamiento | 50 % de reembolso de nivel (100 % con el hito 50), +20 de maná máximo |
 
-La pestaña *Habilidades* muestra cada una como tarjeta con su barra de XP y sus pasivas actuales.
+La pestaña *Habilidades* muestra las 10 como tarjetas animadas (5 filas × 2): barra de XP que se llena, brillo dorado si subieron de nivel desde la última vez, resumen de pasivas en una línea y ficha completa (pasivas e hitos) al pasar el ratón.
 
 **Sendas excluyentes.** Cada rol tiene **2 sendas de 3 nodos** (niveles 10, 14 y 20). Al aprender un nodo de una senda, la otra queda bloqueada; para cambiar hay que reiniciar el árbol. Cada nodo aplica un efecto: robo de vida, crítico, ejecución, espinas, reducción de daño, esquiva, regeneración de vida o de maná, carga de recurso, efectos al golpear (veneno, lentitud, fuego, descomposición), poder de esbirros, antiempuje, velocidad, vida, velocidad de ataque o suerte.
 

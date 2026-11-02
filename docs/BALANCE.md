@@ -87,6 +87,10 @@ balance general sin validación). Para activarlo: `"attributeScaling": "SOFTCAP"
   por minuto se obtiene aproximadamente un 33 % de la XP (medido en `XpDiminishingTest`). El juego normal
   (menos de 20 muertes del mismo tipo por minuto) no cambia. Memoria acotada: 1024 eventos por fuente y
   limpieza al desconectar.
+- **Encantamiento (v21).** XP por objeto encantado (25), pasivas de reembolso de nivel y maná máximo, hitos
+  10–50 (lapislázuli, +10 de maná, botellas de experiencia, −10 % de espera, reembolso garantizado). El
+  −10 % entra en el tope global de reducción de esperas (60 %). Con la 10.ª habilidad, los puntos de
+  atributo que se pueden ganar vuelven a subir en `maxSkillLevel × pointsPerSkillLevel`.
 - **Pesca (v15).** XP por pez (12), pasivas de suerte y captura doble, hitos 10–50. Lee la estadística
   vanilla `FISH_CAUGHT` una vez por segundo (sin mixins). Efecto global: con una habilidad más, los puntos
   de atributo que se pueden ganar suben en `maxSkillLevel × pointsPerSkillLevel`; el tope por atributo

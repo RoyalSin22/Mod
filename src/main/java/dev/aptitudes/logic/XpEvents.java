@@ -45,6 +45,8 @@ public final class XpEvents {
 	private static final Map<UUID, Integer> sprintBaseline = new HashMap<>();
 	/** Último valor de la estadística vanilla FISH_CAUGHT ya convertido en XP. */
 	private static final Map<UUID, Integer> fishBaseline = new HashMap<>();
+	/** Último valor de la estadística vanilla ENCHANT_ITEM ya convertido en XP. */
+	private static final Map<UUID, Integer> enchantBaseline = new HashMap<>();
 	/** Rendimiento decreciente por fuente repetida. */
 	private static final XpDiminishing DIMINISHING = new XpDiminishing();
 
@@ -104,6 +106,7 @@ public final class XpEvents {
 	public static void forget(ServerPlayerEntity player) {
 		sprintBaseline.remove(player.getUuid());
 		fishBaseline.remove(player.getUuid());
+		enchantBaseline.remove(player.getUuid());
 		DIMINISHING.forget(player.getUuid());
 	}
 
@@ -123,7 +126,18 @@ public final class XpEvents {
 	private static void tickFishing(MinecraftServer server) {
 		if (server.getTicks() % 20 != 10) return; // desfasado de la agilidad
 		int xpPerCatch = Aptitudes.config().fishingXpCatch;
+		int xpPerEnchant = Aptitudes.config().enchantingXpPerEnchant;
 		for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+			// Encantamiento: objetos encantados en la mesa (el yunque no cuenta: no tiene estadística).
+			int enchanted = player.getStatHandler().getStat(Stats.CUSTOM, Stats.ENCHANT_ITEM);
+			Integer enchantPrev = enchantBaseline.put(player.getUuid(), enchanted);
+			if (enchantPrev != null && enchanted > enchantPrev) {
+				int n = Math.min(enchanted - enchantPrev, 8);
+				for (int i = 0; i < n; i++) {
+					ProgressManager.addXp(player, Skill.ENCHANTING, diminished(player, "enchanting", xpPerEnchant));
+					SkillMilestones.onEnchanted(player);
+				}
+			}
 			int caught = player.getStatHandler().getStat(Stats.CUSTOM, Stats.FISH_CAUGHT);
 			Integer baseline = fishBaseline.put(player.getUuid(), caught);
 			if (baseline == null || caught <= baseline) continue; // primera lectura o estadística reseteada

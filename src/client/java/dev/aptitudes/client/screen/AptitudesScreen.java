@@ -14,7 +14,9 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.OrderedText;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.MathHelper;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
@@ -42,6 +44,17 @@ public class AptitudesScreen extends Screen {
 	private enum Tab { ATTRIBUTES, SKILLS }
 
 	private Tab tab = Tab.ATTRIBUTES;
+
+	// ---- Animaciones de la pestaña de habilidades (v21) ----
+	/** Momento en que se mostró la pestaña (entrada en cascada de las tarjetas). */
+	private long skillsShownAt;
+	/** Relleno mostrado de cada barra de XP (se acerca al real fotograma a fotograma). */
+	private final float[] shownFill = new float[Skill.values().length];
+	private long lastFrame;
+	/** Último nivel visto de cada habilidad (entre aperturas) y fin del brillo de subida de nivel. */
+	private static final int[] LAST_SEEN_LEVEL = new int[Skill.values().length];
+	private static final long[] GLOW_UNTIL = new long[Skill.values().length];
+	private static boolean seenInitialized;
 	private final int[] staged = new int[PlayerAttribute.values().length];
 	private int selected = 0;
 	private int left;
@@ -174,7 +187,7 @@ public class AptitudesScreen extends Screen {
 			if (hasShiftDown()) {
 				client.setScreen(new RolesScreen());
 			} else if (tab == Tab.ATTRIBUTES) {
-				tab = Tab.SKILLS;
+				showSkills();
 			} else {
 				client.setScreen(new RolesScreen());
 			}
@@ -206,7 +219,7 @@ public class AptitudesScreen extends Screen {
 			if (mouseX >= tabX && mouseX < tabX + w && mouseY >= top + 6 && mouseY < top + 20) {
 				switch (key) {
 					case "screen.aptitudes.tab.roles" -> client.setScreen(new RolesScreen());
-					case "screen.aptitudes.tab.skills" -> tab = Tab.SKILLS;
+					case "screen.aptitudes.tab.skills" -> showSkills();
 					default -> tab = Tab.ATTRIBUTES;
 				}
 				updateButtons();
@@ -370,23 +383,68 @@ public class AptitudesScreen extends Screen {
 				UiStyle.TEXT, false);
 	}
 
+	private void showSkills() {
+		if (tab != Tab.SKILLS) {
+			tab = Tab.SKILLS;
+			skillsShownAt = net.minecraft.util.Util.getMeasuringTimeMs();
+			java.util.Arrays.fill(shownFill, 0f); // las barras se llenan al entrar
+		}
+	}
+
+	/** Suavizado: 0→1 con desaceleración. */
+	private static float easeOut(float t) {
+		t = MathHelper.clamp(t, 0f, 1f);
+		return 1f - (1f - t) * (1f - t) * (1f - t);
+	}
+
 	private void renderSkills(DrawContext ctx, SyncProgressPayload data, int mouseX, int mouseY) {
 		ProgressRules rules = data.rules();
 		UiStyle.header(ctx, textRenderer, Text.translatable("screen.aptitudes.skills_passives"), left + 10, top + 30, W - 20);
 		Skill[] skills = Skill.values();
+		long now = net.minecraft.util.Util.getMeasuringTimeMs();
+		float dt = lastFrame == 0 ? 0f : Math.min(0.1f, (now - lastFrame) / 1000f);
+		lastFrame = now;
+		// Subidas de nivel desde la última vez: brillo dorado durante 2,5 s.
+		for (Skill s : skills) {
+			int lvl = data.level(s);
+			if (seenInitialized && lvl > LAST_SEEN_LEVEL[s.ordinal()]) GLOW_UNTIL[s.ordinal()] = now + 2500;
+			LAST_SEEN_LEVEL[s.ordinal()] = lvl;
+		}
+		seenInitialized = true;
+
 		List<Text> tooltip = null;
+		final int cardW = 200;
+		final int cardH = 37;
 		for (int i = 0; i < skills.length; i++) {
 			Skill skill = skills[i];
-			int x = left + 10 + (i % 2) * 210;
-			// 9 habilidades en 5 filas: paso 42 px y tarjetas de 40 px para caber en H = 262.
-			int y = top + 46 + (i / 2) * 42;
-			UiStyle.panel(ctx, x, y, 200, 40);
-			ctx.drawItem(skill.iconStack(), x + 5, y + 5);
+			int col = i % 2;
+			// 10 habilidades en 5 filas: paso 40 px, tarjetas de 37 px (caben en H = 262 con la línea de ayuda).
+			int baseX = left + 10 + col * 210;
+			int baseY = top + 44 + (i / 2) * 40;
+			float enter = easeOut((now - skillsShownAt - i * 35L) / 260f);
+			int x = baseX + Math.round((1f - enter) * (col == 0 ? -14 : 14));
+			boolean hover = mouseX >= baseX && mouseX < baseX + cardW && mouseY >= baseY && mouseY < baseY + cardH;
+			int y = baseY - (hover ? 1 : 0);
 			int level = data.level(skill);
 			boolean maxed = level >= rules.maxLevel();
-			ctx.drawTextWithShadow(textRenderer, Text.translatable(skill.translationKey()), x + 26, y + 4, UiStyle.TEXT);
+
+			UiStyle.panel(ctx, x, y, cardW, cardH);
+			long glow = GLOW_UNTIL[i] - now;
+			if (glow > 0) {
+				int a = (int) (110 + 110 * Math.sin(now / 120.0));
+				ctx.drawBorder(x, y, cardW, cardH, (MathHelper.clamp(a, 0, 255) << 24) | 0xE6C36A);
+			} else if (hover) {
+				ctx.drawBorder(x, y, cardW, cardH, UiStyle.GOLD_DARK);
+			}
+			// Icono enmarcado
+			ctx.fill(x + 3, y + 3, x + 23, y + 23, 0xFF1B1F2B);
+			ctx.drawBorder(x + 3, y + 3, 20, 20, maxed ? UiStyle.GOLD : UiStyle.BORDER);
+			ctx.drawItem(skill.iconStack(), x + 5, y + 5);
+
+			Text name = Text.translatable(skill.translationKey());
+			ctx.drawTextWithShadow(textRenderer, name, x + 28, y + 4, UiStyle.TEXT);
 			// Hitos (10/20/30/40/50): rombos dorados si se alcanzaron.
-			int px = x + 26 + textRenderer.getWidth(Text.translatable(skill.translationKey())) + 6;
+			int px = x + 28 + textRenderer.getWidth(name) + 5;
 			for (int m : dev.aptitudes.logic.SkillMilestones.THRESHOLDS) {
 				boolean got = level >= m;
 				ctx.fill(px + 1, y + 5, px + 4, y + 10, got ? UiStyle.GOLD : 0xFF3A3427);
@@ -395,31 +453,49 @@ public class AptitudesScreen extends Screen {
 				px += 7;
 			}
 			Text lv = maxed ? Text.translatable("screen.aptitudes.max") : Text.translatable("screen.aptitudes.level", level);
-			ctx.drawTextWithShadow(textRenderer, lv, x + 194 - textRenderer.getWidth(lv), y + 4, maxed ? UiStyle.GOLD : UiStyle.TEXT);
-			// Barra de XP
+			ctx.drawTextWithShadow(textRenderer, lv, x + cardW - 6 - textRenderer.getWidth(lv), y + 4, maxed ? UiStyle.GOLD : UiStyle.TEXT);
+
+			// Barra de XP animada
 			int need = rules.xpToNext(level);
-			int barW = 168;
-			ctx.fill(x + 26, y + 15, x + 26 + barW, y + 18, 0xFF202433);
-			int filled = maxed ? barW : (int) (barW * Math.min(1.0, data.xp(skill) / (double) need));
-			ctx.fill(x + 26, y + 15, x + 26 + filled, y + 18, maxed ? UiStyle.GOLD : 0xFF4CAF50);
-			// Pasivas actuales
-			int bx = x + 6;
-			int by = y + 23;
+			float target = maxed ? 1f : (float) Math.min(1.0, data.xp(skill) / (double) Math.max(1, need));
+			shownFill[i] += (target - shownFill[i]) * Math.min(1f, dt * 6f);
+			if (Math.abs(target - shownFill[i]) < 0.002f) shownFill[i] = target;
+			int barX = x + 28;
+			int barW = cardW - 34;
+			ctx.fill(barX, y + 15, barX + barW, y + 19, 0xFF202433);
+			int filled = Math.round(barW * shownFill[i]);
+			ctx.fill(barX, y + 15, barX + filled, y + 19, maxed ? UiStyle.GOLD : 0xFF4CAF50);
+			ctx.fill(barX, y + 15, barX + filled, y + 16, maxed ? 0xFFFFF3B0 : 0xFF8BE08F); // reflejo superior
+			if (maxed) { // destello que recorre la barra
+				int sx = barX + (int) ((now / 6) % (barW + 20)) - 20;
+				ctx.fill(Math.max(barX, sx), y + 15, Math.min(barX + barW, sx + 8), y + 19, 0x90FFFFFF);
+			}
+
+			// Pasivas: una línea resumida (el detalle completo, en la ficha)
+			MutableText summary = Text.empty();
 			List<Skill.SkillBonus> bonuses = skill.bonuses();
+			boolean anyActive = false;
 			for (int b = 0; b < bonuses.size(); b++) {
 				Skill.SkillBonus bonus = bonuses.get(b);
 				double value = data.skillBonus(skill, b) * (bonus.percent() ? 100 : 1);
-				Text line = Text.translatable(bonus.translationKey(), UiStyle.fmt(value));
-				int w = textRenderer.getWidth(line);
-				if (bx + w > x + 196) { bx = x + 6; by += 9; }
-				ctx.drawText(textRenderer, line, bx, by, value > 0 ? UiStyle.UP : UiStyle.MUTED, false);
-				bx += w + 8;
+				if (b > 0) summary.append(Text.literal(" · ").formatted(net.minecraft.util.Formatting.DARK_GRAY));
+				summary.append(Text.translatable(bonus.translationKey(), UiStyle.fmt(value)));
+				anyActive |= value > 0;
 			}
-			if (mouseX >= x && mouseX < x + 200 && mouseY >= y && mouseY < y + 40) {
+			UiStyle.label(ctx, textRenderer, summary, x + 6, y + 26, cardW - 12, anyActive ? UiStyle.UP : UiStyle.MUTED);
+
+			if (hover) {
 				List<Text> lines = new java.util.ArrayList<>();
-				lines.add(Text.translatable(skill.translationKey()));
+				lines.add(Text.translatable(skill.translationKey()).formatted(net.minecraft.util.Formatting.GOLD));
 				lines.add(Text.translatable(skill.descriptionKey()).formatted(net.minecraft.util.Formatting.GRAY));
 				lines.add(Text.translatable("screen.aptitudes.xp", data.xp(skill), need));
+				lines.add(Text.translatable("screen.aptitudes.passives").formatted(net.minecraft.util.Formatting.AQUA));
+				for (int b = 0; b < bonuses.size(); b++) {
+					Skill.SkillBonus bonus = bonuses.get(b);
+					double value = data.skillBonus(skill, b) * (bonus.percent() ? 100 : 1);
+					lines.add(Text.literal(" • ").append(Text.translatable(bonus.translationKey(), UiStyle.fmt(value)))
+							.formatted(value > 0 ? net.minecraft.util.Formatting.BLUE : net.minecraft.util.Formatting.GRAY));
+				}
 				lines.add(Text.translatable("screen.aptitudes.milestones").formatted(net.minecraft.util.Formatting.GOLD));
 				for (int m : dev.aptitudes.logic.SkillMilestones.THRESHOLDS) {
 					boolean got = level >= m;

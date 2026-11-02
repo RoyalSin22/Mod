@@ -52,6 +52,8 @@ public class AptitudesConfig {
 	public int agilityXpPer10Blocks = 2;
 	/** Pesca: XP por cada pez capturado (estadística vanilla FISH_CAUGHT; basura y tesoros no cuentan). */
 	public int fishingXpCatch = 12;
+	/** Encantamiento: XP por cada objeto encantado en la mesa (estadística vanilla ENCHANT_ITEM). */
+	public int enchantingXpPerEnchant = 25;
 
 	// ---------- Rendimiento decreciente por fuente repetida (anti-granjas / anti-AFK) ----------
 	/** Si está activo, Combate/Tiro con arco (por tipo de criatura), Defensa (por tipo de atacante) y Pesca pierden XP al repetir la misma fuente. */
@@ -82,6 +84,10 @@ public class AptitudesConfig {
 	public double fishingLuckPerLevel = 0.02;
 	/** Pesca: probabilidad de captura doble por nivel (0.004 = 20 % a nivel 50). */
 	public double fishingDoubleCatchPerLevel = 0.004;
+	/** Encantamiento: probabilidad por nivel de recuperar 1 nivel de XP al encantar (0.01 = 50 % a nivel 50). */
+	public double enchantingRefundChancePerLevel = 0.01;
+	/** Encantamiento: +maná máximo por nivel (0.4 = +20 a nivel 50). */
+	public double enchantingManaPerLevel = 0.4;
 
 	// ---------- Valor de cada punto de atributo ----------
 	public double vigorHealthPerPoint = 1.0;
@@ -233,6 +239,8 @@ public class AptitudesConfig {
 		c.secondaryAffinityBonus = Math.min(5.0, c.secondaryAffinityBonus);
 		c.farmingExtraDropChancePerLevel = Math.min(1.0, c.farmingExtraDropChancePerLevel);
 		c.fishingDoubleCatchPerLevel = Math.min(1.0, c.fishingDoubleCatchPerLevel);
+		c.enchantingRefundChancePerLevel = Math.min(1.0, c.enchantingRefundChancePerLevel);
+		c.enchantingManaPerLevel = Math.min(10.0, c.enchantingManaPerLevel);
 		c.xpDiminishingWindowSeconds = clamp(c.xpDiminishingWindowSeconds, 1, 86_400);
 		c.xpDiminishingThreshold = clamp(c.xpDiminishingThreshold, 1, 100_000);
 		c.xpDiminishingFloor = Math.min(1.0, c.xpDiminishingFloor);

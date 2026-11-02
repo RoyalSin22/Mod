@@ -6,7 +6,7 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 ## Estado real
 
 ### Implementado (compilado en el PC del autor hasta la v15 incluida)
-- Habilidades por uso (9, con Pesca desde la v15) con hitos cada 10 niveles.
+- Habilidades por uso (10: Pesca desde la v15, Encantamiento desde la v21) con hitos cada 10 niveles.
 - Atributos Souls (8) comprados en la Hoguera con XP vanilla; afinidad por rol; mancha de XP al morir.
 - 20 roles en 5 categorías, principal + secundario, árbol de 23 nodos + legendario, 3 Sendas (2 elegibles),
   4 activas por rol (2 equipadas), mecánica propia, 2 reactivas, recurso de rol, evolución Maestro/Definitivo

@@ -222,7 +222,8 @@ public final class AbilityManager {
 		double reduction = Math.min(0.6, 0.10 * RoleManager.activeRank(player, "clear_mind")
 				+ attributeValue(player, dev.aptitudes.data.PlayerAttribute.FAITH) + haste
 				+ RoleArmorSets.cooldownReduction(player)
-				+ dev.aptitudes.accessory.Accessories.cooldownReduction(player)); // Amuleto arcano
+				+ dev.aptitudes.accessory.Accessories.cooldownReduction(player) // Amuleto arcano
+				+ dev.aptitudes.logic.SkillMilestones.cooldownReduction(player)); // Encantamiento 40
 		return (int) Math.max(10, Math.round(seconds * 20 * (1.0 - reduction)));
 	}
 
@@ -266,6 +267,7 @@ public final class AbilityManager {
 		return versatility + trained + attributeValue(player, dev.aptitudes.data.PlayerAttribute.MIND) // Mente
 				+ Aptitudes.config().baseMaxEnergy
 				+ dev.aptitudes.accessory.Accessories.bonusMana(player) // Anillo de maná
+				+ dev.aptitudes.logic.SkillMilestones.bonusMana(player) // Encantamiento (pasiva + hito 20)
 				+ 25.0 * RoleManager.activeRank(player, "arcane_affinity")
 				+ 25.0 * RoleManager.activeRank(player, "battery");
 	}
