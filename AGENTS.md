@@ -127,6 +127,8 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
 - **Siguiente trabajo**: v29 (grupos) y v30 (contratos del gremio). Instrucciones completas, qué NO tocar
   (dependencias de JUnit, versiones, ids…) y errores ya vistos en `docs/PROMPT_CODEX_v29_v30.md`.
 
+- **Plan aprobado v40–v45** (configuración, eventos rotativos, alquimia, maestría y amenaza, tutorial,
+  traducciones): `docs/PLAN_v40_v45.md`. Excepción a «sin dependencias»: Mod Menu como `modCompileOnly` (v40).
 - Activar `attributeScaling = SOFTCAP` por defecto: **decisión del autor** tras probar en partida.
 - Pruebas en partida de la v15–v16 (`docs/TESTING.md`, puntos 6–9).
 - Limitaciones abiertas: tabla «Limitaciones conocidas» del `README.md` (el filtro Brain actúa cada 5 ticks).
