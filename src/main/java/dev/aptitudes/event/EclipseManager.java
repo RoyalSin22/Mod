@@ -140,15 +140,11 @@ public final class EclipseManager {
 
 		if (!state.active) {
 			if (!cfg.eclipseEnabled) return;
-			if (EclipseRules.isEclipseDay(day, cfg.eclipseIntervalDays, cfg.eclipseFirstDay)
-					&& inDay < EclipseRules.END && state.lastDay != day) {
+			// v41: el día de evento solo hay Eclipse si la rotación lo eligió (el aviso lo da WorldEventManager).
+			if (inDay < EclipseRules.END && state.lastDay != day
+					&& WorldEventManager.kindForDay(world, day) == WorldEventKind.ECLIPSE && !WorldEventManager.active(server)) {
 				start(server, world, state, false, day);
-			} else if (EclipseRules.isEclipseDay(day + 1, cfg.eclipseIntervalDays, cfg.eclipseFirstDay)
-					&& inDay >= EclipseRules.ANNOUNCE_TIME && state.announcedDay != day + 1) {
-				state.announcedDay = day + 1;
-				state.markDirty();
-				broadcast(server, Text.translatable("eclipse.aptitudes.announce").formatted(Formatting.DARK_RED, Formatting.ITALIC));
-				playToAll(world, dev.aptitudes.sound.ModSounds.ECLIPSE_ANNOUNCE, 1.0f);
+				WorldEventManager.markStarted(world, day, WorldEventKind.ECLIPSE);
 			}
 			return;
 		}
@@ -236,7 +232,7 @@ public final class EclipseManager {
 		syncAll(server, -1L);
 	}
 
-	private static void dissolve(ServerWorld world, Entity entity) {
+	static void dissolve(ServerWorld world, Entity entity) {
 		world.spawnParticles(ParticleTypes.LARGE_SMOKE, entity.getX(), entity.getBodyY(0.5), entity.getZ(), 12, 0.3, 0.5, 0.3, 0.02);
 		entity.discard();
 	}
@@ -296,7 +292,7 @@ public final class EclipseManager {
 	}
 
 	/** Casco oscuro e irrompible: los no muertos del eclipse no arden con la luz del día ni lo sueltan. */
-	private static void darkHelmet(MobEntity mob) {
+	static void darkHelmet(MobEntity mob) {
 		if (!mob.getEquippedStack(EquipmentSlot.HEAD).isEmpty()) return;
 		ItemStack helmet = new ItemStack(Items.LEATHER_HELMET);
 		helmet.set(DataComponentTypes.DYED_COLOR, new DyedColorComponent(HELMET_COLOR, false));
@@ -346,7 +342,7 @@ public final class EclipseManager {
 	}
 
 	/** Busca suelo firme con 2 bloques libres a {@code min}–{@code max} bloques del centro (6 intentos). */
-	private static BlockPos findSpawn(ServerWorld world, BlockPos center, int min, int max) {
+	static BlockPos findSpawn(ServerWorld world, BlockPos center, int min, int max) {
 		Random random = world.random;
 		for (int attempt = 0; attempt < 6; attempt++) {
 			double angle = random.nextDouble() * Math.PI * 2;
@@ -392,11 +388,11 @@ public final class EclipseManager {
 		if (phase == Phase.TOTALITY) playToAll(world, dev.aptitudes.sound.ModSounds.ECLIPSE_TOTALITY, 1.0f);
 	}
 
-	private static void broadcast(MinecraftServer server, Text text) {
+	static void broadcast(MinecraftServer server, Text text) {
 		for (ServerPlayerEntity player : server.getOverworld().getPlayers()) player.sendMessage(text, false);
 	}
 
-	private static void playToAll(ServerWorld world, SoundEvent sound, float pitch) {
+	static void playToAll(ServerWorld world, SoundEvent sound, float pitch) {
 		for (ServerPlayerEntity p : world.getPlayers()) {
 			world.playSound(null, p.getX(), p.getY(), p.getZ(), sound, SoundCategory.HOSTILE, 1.0f, pitch);
 		}
@@ -416,7 +412,11 @@ public final class EclipseManager {
 		if (server == null) return;
 		ServerWorld world = server.getOverworld();
 		EclipseState state = EclipseState.get(world);
-		if (!state.active || player.getWorld().getRegistryKey() != World.OVERWORLD) {
+		if (!state.active) {
+			WorldEventManager.sync(player); // v41: si no hay Eclipse, el estado lo da el evento en curso (o ninguno)
+			return;
+		}
+		if (player.getWorld().getRegistryKey() != World.OVERWORLD) {
 			send(player, -1L);
 			return;
 		}
@@ -427,7 +427,7 @@ public final class EclipseManager {
 		if (!ServerPlayNetworking.canSend(player, EclipsePayload.ID)) return;
 		Phase phase = EclipseRules.phase(eventTime);
 		float progress = phase == Phase.NONE ? 0f : Math.min(1f, Math.max(0f, eventTime / (float) EclipseRules.END));
-		ServerPlayNetworking.send(player, new EclipsePayload(phase.ordinal(), EclipseRules.intensity(eventTime), progress));
+		ServerPlayNetworking.send(player, new EclipsePayload(phase.ordinal(), EclipseRules.intensity(eventTime), progress, WorldEventKind.ECLIPSE.ordinal()));
 	}
 
 	// ------------------------------------------------------------------ Comando
@@ -442,17 +442,15 @@ public final class EclipseManager {
 			return Text.translatable("eclipse.aptitudes.status.active",
 					Text.translatable("eclipse.aptitudes.phase_name." + EclipseRules.phase(eventTime).name().toLowerCase(java.util.Locale.ROOT)));
 		}
-		long timeOfDay = world.getTimeOfDay();
-		long days = EclipseRules.daysUntilNext(EclipseRules.dayOf(timeOfDay), EclipseRules.timeInDay(timeOfDay),
-				cfg.eclipseIntervalDays, cfg.eclipseFirstDay);
-		return Text.translatable(cfg.eclipseEnabled ? "eclipse.aptitudes.status.next" : "eclipse.aptitudes.status.disabled", days);
+		// v41: sin Eclipse en curso, informa del próximo evento de la rotación (puede no ser un Eclipse).
+		return WorldEventManager.status(server);
 	}
 
 	/** {@code /aptitudes eclipse start}: devuelve false si ya hay uno en curso. */
 	public static boolean forceStart(MinecraftServer server) {
 		ServerWorld world = server.getOverworld();
 		EclipseState state = EclipseState.get(world);
-		if (state.active) return false;
+		if (state.active || WorldEventManager.active(server)) return false; // v41: un evento a la vez
 		start(server, world, state, true, EclipseRules.dayOf(world.getTimeOfDay()));
 		return true;
 	}

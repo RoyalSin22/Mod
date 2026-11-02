@@ -148,6 +148,12 @@ public class AptitudesConfig {
 	/** XP de rol principal y de Combate para quien sobrevive al eclipse sin morir. */
 	public int eclipseSurvivorRoleXp = 300;
 	public int eclipseSurvivorCombatXp = 200;
+	// ---------- Eventos rotativos (v41) ----------
+	// El calendario es el de eclipseIntervalDays / eclipseFirstDay: cada fecha toca un evento al azar, sin repetir
+	// el anterior. El peso es la probabilidad relativa; 0 desactiva ese evento.
+	public int worldEventWeightEclipse = 1;
+	public int worldEventWeightSoulFog = 1;
+	public int worldEventWeightEmberRain = 1;
 
 	// ---------- Runas (v35: antes eran valores fijos) ----------
 	public int runeFlameSeconds = 3;
@@ -352,6 +358,9 @@ public class AptitudesConfig {
 		c.eclipseChampionChance = Math.min(1.0, c.eclipseChampionChance);
 		c.eclipseSurvivorRoleXp = clamp(c.eclipseSurvivorRoleXp, 0, 100_000);
 		c.eclipseSurvivorCombatXp = clamp(c.eclipseSurvivorCombatXp, 0, 100_000);
+		c.worldEventWeightEclipse = clamp(c.worldEventWeightEclipse, 0, 100);
+		c.worldEventWeightSoulFog = clamp(c.worldEventWeightSoulFog, 0, 100);
+		c.worldEventWeightEmberRain = clamp(c.worldEventWeightEmberRain, 0, 100);
 		c.runeFlameSeconds = clamp(c.runeFlameSeconds, 0, 20);
 		c.runeLeechAmount = Math.min(10.0, c.runeLeechAmount);
 		c.runeLeechCooldownSeconds = Math.max(0.5, Math.min(60.0, c.runeLeechCooldownSeconds));

@@ -13,6 +13,9 @@ import net.minecraft.util.Formatting;
  */
 public final class EclipseHud {
 	private static final String[] PHASES = {"none", "penumbra", "totality", "retreat"};
+	private static final int[] VIGNETTE = {0x3A0000, 0x1A2630, 0x3A1A00};
+	private static final String[] EVENT_KEYS = {"event.aptitudes.eclipse.name", "event.aptitudes.soul_fog.name",
+			"event.aptitudes.ember_rain.name"};
 
 	private EclipseHud() {
 	}
@@ -27,14 +30,15 @@ public final class EclipseHud {
 		// Viñeta: degradados desde cada borde hacia el centro.
 		int alpha = (int) (110 * intensity);
 		if (alpha > 0) {
-			int edge = (alpha << 24) | 0x3A0000;
-			int clear = 0x003A0000;
+			int tint = VIGNETTE[Math.min(VIGNETTE.length - 1, ClientEclipse.kind())]; // v41: color por evento
+			int edge = (alpha << 24) | tint;
+			int clear = tint;
 			int band = Math.max(24, h / 5);
 			ctx.fillGradient(0, 0, w, band, edge, clear);
 			ctx.fillGradient(0, h - band, w, h, clear, edge);
 			for (int i = 0; i < band; i += 2) {
 				int a = (int) (alpha * (1f - i / (float) band));
-				int c = (a << 24) | 0x3A0000;
+				int c = (a << 24) | tint;
 				ctx.fill(i, 0, i + 2, h, c);
 				ctx.fill(w - i - 2, 0, w - i, h, c);
 			}
@@ -42,8 +46,10 @@ public final class EclipseHud {
 
 		int phase = ClientEclipse.phase();
 		if (phase <= 0 || phase >= PHASES.length) return;
-		Text label = Text.translatable("eclipse.aptitudes.hud",
-				Text.translatable("eclipse.aptitudes.phase_name." + PHASES[phase])).formatted(Formatting.RED);
+		// v41: el Eclipse muestra su fase; los demás eventos, su nombre.
+		Text label = ClientEclipse.kind() == 0
+				? Text.translatable("eclipse.aptitudes.hud", Text.translatable("eclipse.aptitudes.phase_name." + PHASES[phase])).formatted(Formatting.RED)
+				: Text.translatable(EVENT_KEYS[Math.min(EVENT_KEYS.length - 1, ClientEclipse.kind())]).formatted(Formatting.GOLD);
 		int barWidth = 120;
 		int x = w / 2 - barWidth / 2;
 		// v39: por encima de la barra de acción (h − 72) y del nombre del objeto en mano (h − 59), para no tapar los

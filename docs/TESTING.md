@@ -184,3 +184,17 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
 6. Cambia `runeThunderChance` a 0.5: el tooltip de un arma con Trueno muestra «50 %».
 7. Pestaña ⚙ en la pantalla K abre la configuración; «Hecho» vuelve a la pantalla K.
 8. Con Mod Menu instalado: Mods → Aptitudes → Configurar abre la misma pantalla. Sin Mod Menu, el juego arranca igual.
+
+# v41 — eventos rotativos (verificación manual)
+
+1. `/aptitudes event`: «Próximo evento: X, dentro de N días».
+2. `/aptitudes event start soul_fog`: cielo gris azulado, almas y ceniza blanca, barra «Niebla de almas»;
+   oleadas pequeñas (zombis, esqueletos, fantasmas) que sueltan Fragmentos de alma. `/aptitudes event stop`: se disuelven.
+3. `/aptitudes event start ember_rain`: cielo anaranjado; cada ~25 s una estela de fuego cae cerca y explota
+   sin romper bloques, dejando lingotes. Recibir el impacto hace daño.
+4. `/aptitudes event start eclipse`: igual que antes (sol con anillo rojo).
+5. Con un evento en curso, `start` de otro → «Ya hay un evento en curso».
+6. Pon `worldEventWeightEmberRain = 0` en la configuración (v40): `/aptitudes event` nunca anuncia la Lluvia de brasas.
+7. Calendario natural: ve al día 9 al atardecer (`/time set`): la campana anuncia el evento elegido y al día
+   siguiente empieza ese (la Niebla a las 18:00).
+8. Mundo con Eclipses anteriores (v34–v40): carga sin errores y el calendario continúa.

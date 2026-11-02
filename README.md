@@ -759,3 +759,6 @@ combo y engarzar/quitar runas. Sintetizados por programa (`tools/audio/gen_sound
 **v40 — Pantalla de configuración:** `/aptitudes config`, la pestaña ⚙ de la pantalla K o Mod Menu. Los operadores
 cambian la configuración del servidor en el juego (validada y guardada); los demás la ven en solo lectura. Los
 tooltips de las runas muestran los valores reales del servidor.
+
+**v41 — Eventos rotativos:** cada 10 días, un evento al azar sin repetir el anterior: el Eclipse, la **Niebla de
+almas** (noche de criaturas de alma) o la **Lluvia de brasas** (meteoritos con minerales). `/aptitudes event`.

@@ -162,3 +162,18 @@ Los textos de las runas muestran los valores por defecto: si un servidor los cam
 - Un jugador sin permiso la ve en solo lectura. El botón «HUD y efectos» abre las opciones del cliente.
 - Los tooltips de las runas muestran ahora los valores reales del servidor.
 - `/aptitudes admin reload` también reenvía la configuración a los clientes.
+
+## Eventos rotativos (v41)
+
+El calendario es el de `eclipseIntervalDays` y `eclipseFirstDay` (nombres históricos): cada fecha toca **un**
+evento elegido al azar entre los que tienen peso > 0, sin repetir el anterior (reproducible con la semilla del
+mundo). `eclipseEnabled = false` equivale a peso 0 para el Eclipse.
+
+| Campo | Defecto | Límites | Descripción |
+|---|---|---|---|
+| `worldEventWeightEclipse` | 1 | [0, 100] | Peso del Eclipse. |
+| `worldEventWeightSoulFog` | 1 | [0, 100] | Peso de la Niebla de almas (0 = nunca). |
+| `worldEventWeightEmberRain` | 1 | [0, 100] | Peso de la Lluvia de brasas (0 = nunca). |
+
+La Niebla de almas usa `eclipseWaveIntervalSeconds` para sus oleadas y la mitad de `eclipseMaxMobsPerPlayer`
+como tope por jugador.

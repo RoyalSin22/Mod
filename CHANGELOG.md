@@ -6,6 +6,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **v41** — Eventos rotativos: Niebla de almas y Lluvia de brasas se alternan al azar con el Eclipse (sin
+  repetir el anterior); `/aptitudes event`; pesos configurables.
 - **v40** — Pantalla de configuración (`/aptitudes config`, pestaña ⚙ de la pantalla K o Mod Menu opcional): los
   operadores cambian la configuración del servidor en el juego; los tooltips de las runas muestran los valores reales.
 

@@ -99,4 +99,14 @@ public class AptitudesConfigValidationTest {
 		assertEquals(64, v.runeRemovalEmeraldCost);
 		assertEquals(4, v.runeFrostLevel);
 	}
+
+	@Test
+	public void worldEventWeightsAreClamped() {
+		AptitudesConfig c = new AptitudesConfig();
+		c.worldEventWeightSoulFog = 500;
+		c.worldEventWeightEmberRain = -3;
+		AptitudesConfig v = AptitudesConfig.validated(c);
+		assertEquals(100, v.worldEventWeightSoulFog);
+		assertEquals(new AptitudesConfig().worldEventWeightEmberRain, v.worldEventWeightEmberRain); // negativo → por defecto
+	}
 }

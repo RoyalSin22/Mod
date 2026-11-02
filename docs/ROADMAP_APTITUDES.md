@@ -253,3 +253,12 @@ Pendiente: comprobarlo en el juego (ver `docs/TESTING.md`, v39).
 - `ClientServerConfig`: la configuración del servidor en el cliente; los tooltips de las runas la usan.
 - Limitaciones: las opciones se muestran con su nombre técnico (descritas en `docs/CONFIGURATION.md`); traducir
   sus nombres queda para la v45.
+
+### v41 — Eventos rotativos
+- `event/WorldEventManager`: cada fecha de evento elige uno al azar (pesos configurables, sin repetir el
+  anterior, reproducible con la semilla del mundo; `event/WorldEventRules` con 5 pruebas) y da el aviso de la
+  tarde anterior para cualquier evento. El Eclipse solo empieza si la rotación lo eligió; su estado guardado no cambia.
+- **Niebla de almas** (noche) y **Lluvia de brasas** (día), con estado propio (`WorldEventState`).
+- Cliente: colores de cielo, niebla, nubes y viñeta por evento; partículas propias; el sol eclipsado solo en el Eclipse.
+  `EclipsePayload` lleva el tipo de evento.
+- Comando `/aptitudes event [status|start <evento>|stop]`; `/aptitudes eclipse` informa del próximo evento.

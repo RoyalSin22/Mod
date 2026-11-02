@@ -16,12 +16,21 @@ import net.minecraft.util.math.random.Random;
 public final class ClientEclipse {
 	/** Textura del sol eclipsado (generada por tools/textures/gen_eclipse.py). */
 	public static final Identifier ECLIPSE_SUN = Aptitudes.id("textures/environment/eclipse_sun.png");
-	/** Color del cielo en plena totalidad (carmesí oscuro) y de la niebla y las nubes. */
-	private static final Vec3d SKY = new Vec3d(0x5A / 255.0, 0x0A / 255.0, 0x0A / 255.0);
-	private static final Vec3d FOG = new Vec3d(0x3C / 255.0, 0x08 / 255.0, 0x08 / 255.0);
-	private static final Vec3d CLOUDS = new Vec3d(0x4A / 255.0, 0x12 / 255.0, 0x14 / 255.0);
+	/**
+	 * Colores de cielo, niebla y nubes por evento (v41), en el orden de {@code WorldEventKind}: Eclipse (carmesí),
+	 * Niebla de almas (gris azulado) y Lluvia de brasas (naranja ceniza).
+	 */
+	private static final Vec3d[] SKY = {rgb(0x5A0A0A), rgb(0x2E3A44), rgb(0x8A4A22)};
+	private static final Vec3d[] FOG = {rgb(0x3C0808), rgb(0x56646E), rgb(0x6A3A1E)};
+	private static final Vec3d[] CLOUDS = {rgb(0x4A1214), rgb(0x46525A), rgb(0x5E3A2A)};
+
+	private static Vec3d rgb(int c) {
+		return new Vec3d(((c >> 16) & 0xFF) / 255.0, ((c >> 8) & 0xFF) / 255.0, (c & 0xFF) / 255.0);
+	}
 
 	private static int phase;
+	/** Evento en curso ({@code WorldEventKind#ordinal()}); 0 = Eclipse. */
+	private static int kind;
 	private static float target;
 	private static float current;
 	private static float previous;
@@ -32,6 +41,7 @@ public final class ClientEclipse {
 
 	public static void onPayload(EclipsePayload payload) {
 		phase = Math.max(0, payload.phase());
+		if (phase != 0) kind = MathHelper.clamp(payload.kind(), 0, SKY.length - 1);
 		target = MathHelper.clamp(payload.intensity(), 0f, 1f);
 		progress = MathHelper.clamp(payload.progress(), 0f, 1f);
 		if (phase == 0) target = 0f;
@@ -53,7 +63,17 @@ public final class ClientEclipse {
 			double x = client.player.getX() + (random.nextDouble() - 0.5) * 24;
 			double y = client.player.getY() + random.nextDouble() * 10;
 			double z = client.player.getZ() + (random.nextDouble() - 0.5) * 24;
-			client.world.addParticle(random.nextInt(3) == 0 ? ParticleTypes.WHITE_ASH : ParticleTypes.ASH, x, y, z, 0, -0.02, 0);
+			switch (kind) {
+				case 1 -> { // Niebla de almas: velo blanco y alguna llama de alma
+					if (random.nextInt(4) == 0) client.world.addParticle(ParticleTypes.SOUL, x, y, z, 0, 0.01, 0);
+					else client.world.addParticle(ParticleTypes.WHITE_ASH, x, y, z, 0, -0.01, 0);
+				}
+				case 2 -> { // Lluvia de brasas: chispas que caen
+					if (random.nextInt(3) == 0) client.world.addParticle(ParticleTypes.LAVA, x, y + 6, z, 0, 0, 0);
+					else client.world.addParticle(ParticleTypes.ASH, x, y, z, 0, -0.02, 0);
+				}
+				default -> client.world.addParticle(random.nextInt(3) == 0 ? ParticleTypes.WHITE_ASH : ParticleTypes.ASH, x, y, z, 0, -0.02, 0);
+			}
 		}
 	}
 
@@ -63,6 +83,16 @@ public final class ClientEclipse {
 
 	public static int phase() {
 		return phase;
+	}
+
+	/** Evento en curso ({@code WorldEventKind#ordinal()}). */
+	public static int kind() {
+		return kind;
+	}
+
+	/** ¿Se debe dibujar el sol eclipsado? Solo durante el Eclipse. */
+	public static boolean eclipsedSun() {
+		return kind == 0 && skyIntensity(1f) >= 0.5f;
 	}
 
 	public static float progress() {
@@ -80,20 +110,20 @@ public final class ClientEclipse {
 	}
 
 	public static Vec3d tintSky(Vec3d original, float tickDelta) {
-		return blend(original, SKY, skyIntensity(tickDelta));
+		return blend(original, SKY[kind], skyIntensity(tickDelta));
 	}
 
 	public static Vec3d tintClouds(Vec3d original, float tickDelta) {
-		return blend(original, CLOUDS, skyIntensity(tickDelta));
+		return blend(original, CLOUDS[kind], skyIntensity(tickDelta));
 	}
 
 	/** Color de la niebla (componentes 0–1) mezclado hacia rojo oscuro. */
 	public static float[] tintFog(float red, float green, float blue, float tickDelta) {
 		float t = skyIntensity(tickDelta);
 		return new float[] {
-				MathHelper.lerp(t, red, (float) FOG.x),
-				MathHelper.lerp(t, green, (float) FOG.y),
-				MathHelper.lerp(t, blue, (float) FOG.z)};
+				MathHelper.lerp(t, red, (float) FOG[kind].x),
+				MathHelper.lerp(t, green, (float) FOG[kind].y),
+				MathHelper.lerp(t, blue, (float) FOG[kind].z)};
 	}
 
 	private static Vec3d blend(Vec3d from, Vec3d to, float t) {

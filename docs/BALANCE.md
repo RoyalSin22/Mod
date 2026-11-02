@@ -175,3 +175,14 @@ Cada jefe deja un núcleo distinto. Aplicar un núcleo en la Mesa del gremio añ
 - La descarga del Trueno nunca salta a jugadores ni a invocaciones y no vuelve a activar runas (sin cadenas infinitas).
 - Quitar una runa cuesta 4 esmeraldas y la runa **se pierde**: cambiar de combinación tiene un coste real.
 - Todos los valores de las runas (también los de la v32) son ahora configurables (`docs/CONFIGURATION.md`).
+
+# Eventos rotativos (v41)
+
+| Evento | Horario | Amenaza | Recompensa |
+|---|---|---|---|
+| Eclipse | 6:00–18:00 | Ver «Eclipse (v34)» | Fragmentos, Núcleo y Runa del Eclipse; XP de superviviente |
+| Niebla de almas | 18:00–6:00 | Oleadas de 2 por jugador cada 30 s (zombi, esqueleto, esqueleto glacial, fantasma); 15 % élites; tope = mitad del del Eclipse | 1 Fragmento de alma por criatura (25 %: 2) |
+| Lluvia de brasas | 6:00–18:00 | Meteoritos cerca de cada jugador (≈ uno cada 25 s): explosión de potencia 1,5 que hiere pero no rompe bloques, aviso de 2 s (estela y sonido); 30 % de cubo de magma | Lingotes de hierro (50 %), cobre (30 %), oro (15 %) o un diamante (5 %) por meteorito |
+
+Mismo calendario que antes (cada 10 días): la frecuencia total de eventos no cambia, pero el Eclipse pasa a ser
+uno de cada tres eventos de media.

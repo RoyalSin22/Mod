@@ -82,6 +82,15 @@ public final class AptitudesCommand {
 								.then(argument("amount", integer())
 										.executes(AptitudesCommand::adminAddPoints))))
 						.then(literal("reload").executes(AptitudesCommand::adminReload)))
+				// v41: eventos rotativos (consultar es libre; iniciar y detener exige permiso de administrador).
+				.then(literal("event")
+						.executes(ctx -> eventStatus(ctx))
+						.then(literal("status").executes(ctx -> eventStatus(ctx)))
+						.then(literal("stop").requires(src -> src.hasPermissionLevel(2)).executes(ctx -> eventStop(ctx)))
+						.then(literal("start").requires(src -> src.hasPermissionLevel(2))
+								.then(argument("event", word()).suggests((c, b) -> CommandSource.suggestMatching(
+										java.util.Arrays.stream(dev.aptitudes.event.WorldEventKind.values()).map(dev.aptitudes.event.WorldEventKind::id), b))
+										.executes(ctx -> eventStart(ctx, getString(ctx, "event"))))))
 				// v40: pantalla de configuración (cualquiera puede verla; solo los operadores pueden cambiar valores).
 				.then(literal("config").executes(AptitudesCommand::openConfig))
 				// v34: el Eclipse. Consultar es libre; iniciar y detener exige permiso de administrador.
@@ -242,6 +251,37 @@ public final class AptitudesCommand {
 		if (net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.canSend(player, dev.aptitudes.network.OpenConfigPayload.ID)) {
 			net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.send(player, new dev.aptitudes.network.OpenConfigPayload());
 		}
+		return 1;
+	}
+
+	// ------------------------------------------------------------------ Eventos rotativos (v41)
+
+	private static int eventStatus(CommandContext<ServerCommandSource> ctx) {
+		ctx.getSource().sendFeedback(() -> dev.aptitudes.event.WorldEventManager.status(ctx.getSource().getServer()), false);
+		return 1;
+	}
+
+	private static int eventStart(CommandContext<ServerCommandSource> ctx, String id) {
+		dev.aptitudes.event.WorldEventKind kind = dev.aptitudes.event.WorldEventKind.byId(id);
+		if (kind == null) {
+			ctx.getSource().sendError(Text.translatable("event.aptitudes.command.unknown", id));
+			return 0;
+		}
+		if (!dev.aptitudes.event.WorldEventManager.forceStart(ctx.getSource().getServer(), kind)) {
+			ctx.getSource().sendError(Text.translatable("event.aptitudes.command.busy"));
+			return 0;
+		}
+		ctx.getSource().sendFeedback(() -> Text.translatable("event.aptitudes.command.started",
+				Text.translatable("event.aptitudes." + kind.id() + ".name")), true);
+		return 1;
+	}
+
+	private static int eventStop(CommandContext<ServerCommandSource> ctx) {
+		if (!dev.aptitudes.event.WorldEventManager.forceStop(ctx.getSource().getServer())) {
+			ctx.getSource().sendError(Text.translatable("event.aptitudes.command.none"));
+			return 0;
+		}
+		ctx.getSource().sendFeedback(() -> Text.translatable("event.aptitudes.command.stopped"), true);
 		return 1;
 	}
 }

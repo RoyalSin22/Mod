@@ -18,6 +18,6 @@ public abstract class EclipseSunMixin {
 			target = "Lcom/mojang/blaze3d/systems/RenderSystem;setShaderTexture(ILnet/minecraft/util/Identifier;)V",
 			ordinal = 0), index = 1, require = 0)
 	private Identifier aptitudes$eclipseSun(Identifier texture) {
-		return ClientEclipse.skyIntensity(1f) >= 0.5f ? ClientEclipse.ECLIPSE_SUN : texture;
+		return ClientEclipse.eclipsedSun() ? ClientEclipse.ECLIPSE_SUN : texture;
 	}
 }
