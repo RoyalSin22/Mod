@@ -21,7 +21,7 @@ public final class NodeIcons {
 	static {
 		put("tough_skin", Items.LEATHER_CHESTPLATE); put("rage", Items.BLAZE_POWDER);
 		put("bloodlust", Items.REDSTONE); put("war_cry", Items.GOAT_HORN);
-		put("arcane_affinity", Items.LAPIS_LAZULI); put("fireball", Items.FIRE_CHARGE);
+		put("arcane_affinity", Items.LAPIS_LAZULI); put("fireball", Items.AMETHYST_SHARD);
 		put("clear_mind", Items.CLOCK); put("blink", Items.ENDER_PEARL);
 		put("shadow", Items.BLACK_DYE); put("vanish", Items.GLASS_BOTTLE);
 		put("backstab", Items.IRON_SWORD); put("shadow_step", Items.ENDER_EYE);
@@ -47,6 +47,70 @@ public final class NodeIcons {
 		put("elemental_dominion", Items.HEART_OF_THE_SEA); put("elemental_burst", Items.FIRE_CHARGE);
 		put("mimicry", Items.SLIME_BALL); put("transform", Items.CREEPER_HEAD);
 		put("trickster", Items.JACK_O_LANTERN); put("form_power", Items.GUNPOWDER);
+		// Roles nuevos (v11)
+		put("quickdraw", Items.FEATHER); put("arcane_shot", Items.PRISMARINE_CRYSTALS);
+		put("eagle_eye", Items.SPYGLASS); put("fan_the_hammer", Items.FIREWORK_STAR);
+		put("arcane_cylinder", Items.HEART_OF_THE_SEA); put("dodge_roll", Items.RABBIT_FOOT);
+		put("reload", Items.GUNPOWDER); put("ricochet", Items.AMETHYST_SHARD);
+		put("deadeye", Items.ENDER_EYE); put("armory", Items.IRON_SWORD);
+		put("blade_volley", Items.GOLDEN_SWORD); put("blade_guard", Items.IRON_CHESTPLATE);
+		put("sword_rain", Items.DIAMOND_SWORD); put("floating_arsenal", Items.NETHERITE_SWORD);
+		put("intercepting_blade", Items.SHIELD); put("reforge", Items.ANVIL);
+		put("spectral_greatsword", Items.STONE_SWORD); put("blade_prison", Items.CHAIN);
+		put("predator", Items.BOW); put("hunters_mark", Items.TARGET);
+		put("tracker", Items.COMPASS); put("bear_trap", Items.TRIPWIRE_HOOK);
+		put("the_hunt", Items.CROSSBOW); put("camouflage", Items.FERN);
+		put("trophy", Items.LEATHER); put("arrow_volley", Items.SPECTRAL_ARROW);
+		put("falcon_strike", Items.FEATHER); put("inspiring_presence", Items.BELL);
+		put("song_of_valor", Items.GOAT_HORN); put("soothing_melody", Items.NOTE_BLOCK);
+		put("dissonance", Items.JUKEBOX); put("crescendo", Items.MUSIC_DISC_CAT);
+		put("encore", Items.MUSIC_DISC_13); put("lullaby", Items.WHITE_WOOL);
+		put("ballad_of_shielding", Items.SHIELD); put("requiem", Items.MUSIC_DISC_11);
+		put("dark_bargain", Items.NETHER_WART); put("curse_of_agony", Items.CRIMSON_FUNGUS);
+		put("soul_link", Items.CHAIN); put("abyssal_bolt", Items.ENDER_PEARL);
+		put("demonic_pact", Items.REDSTONE); put("demonic_ward", Items.CRYING_OBSIDIAN);
+		put("soul_feast", Items.SOUL_TORCH); put("summon_imps", Items.VEX_ARMOR_TRIM_SMITHING_TEMPLATE);
+		put("doom", Items.WITHER_SKELETON_SKULL); put("beast_bond", Items.LEAD);
+		put("sic_em", Items.BONE); put("pack_leader", Items.WOLF_ARMOR);
+		put("vital_bond", Items.GOLDEN_CARROT); put("companion", Items.NAME_TAG);
+		put("protective_instinct", Items.TURTLE_HELMET); put("feral_feast", Items.MUTTON);
+		put("stampede", Items.GOAT_HORN); put("alpha_roar", Items.SADDLE);
+		// Mecánicas, reactivas y activas C/D
+		put("frenzy", Items.REDSTONE_TORCH); put("unbreakable", Items.OBSIDIAN);
+		put("carnage", Items.BEEF); put("leap_slam", Items.ANVIL);
+		put("whirlwind", Items.IRON_AXE); put("arcane_charges", Items.AMETHYST_CLUSTER);
+		put("mana_shield", Items.LAPIS_BLOCK); put("spell_echo", Items.ECHO_SHARD);
+		put("time_warp", Items.CLOCK); put("arcane_missiles", Items.END_ROD);
+		put("lethal_tempo", Items.IRON_SWORD); put("smoke_escape", Items.GRAY_DYE);
+		put("vanish_on_kill", Items.FERMENTED_SPIDER_EYE); put("fan_of_knives", Items.SHEARS);
+		put("shuriken", Items.NETHER_STAR); put("bloom", Items.PINK_PETALS);
+		put("antidote", Items.MILK_BUCKET); put("thorny_skin", Items.SWEET_BERRIES);
+		put("healing_rain", Items.WATER_BUCKET); put("spore_cloud", Items.SPORE_BLOSSOM);
+		put("overdrive", Items.BLAZE_POWDER); put("auto_shield", Items.SHIELD);
+		put("field_repair", Items.ANVIL); put("grapple", Items.FISHING_ROD);
+		put("pulse_grenade", Items.FIRE_CHARGE); put("impetus", Items.FEATHER);
+		put("brace", Items.IRON_BLOCK); put("dragoon_fall", Items.PHANTOM_MEMBRANE);
+		put("dragon_leap", Items.DRAGON_BREATH); put("piercing_thrust", Items.ARROW);
+		put("kata", Items.GOLDEN_SWORD); put("reflexes", Items.CLOCK);
+		put("flurry", Items.SUGAR); put("iaido", Items.DIAMOND_SWORD);
+		put("thousand_cuts", Items.NETHERITE_SWORD); put("holy_light", Items.GLOWSTONE_DUST);
+		put("intercession", Items.GOLDEN_CARROT); put("purifying_light", Items.GHAST_TEAR);
+		put("consecration", Items.BEACON); put("hammer_of_justice", Items.MACE);
+		put("soul_harvest", Items.SOUL_LANTERN); put("bone_shield", Items.BONE_BLOCK);
+		put("corpse_burst", Items.ROTTEN_FLESH); put("bone_spear", Items.BONE);
+		put("soul_siphon", Items.SCULK); put("day_night_cycle", Items.DAYLIGHT_DETECTOR);
+		put("barkskin", Items.OAK_LOG); put("bramble", Items.SWEET_BERRIES);
+		put("summon_wolves", Items.WOLF_ARMOR); put("thorn_storm", Items.CACTUS);
+		put("compound_interest", Items.EMERALD_BLOCK); put("insurance", Items.PAPER);
+		put("bounty", Items.GOLD_NUGGET); put("coin_toss", Items.EMERALD);
+		put("golden_guard", Items.GOLDEN_CHESTPLATE); put("stances", Items.BAMBOO);
+		put("deflect", Items.SHIELD); put("inner_peace", Items.LILY_PAD);
+		put("flying_kick", Items.LEATHER_BOOTS); put("hundred_fists", Items.IRON_INGOT);
+		put("elemental_reaction", Items.REDSTONE); put("elemental_ward", Items.PRISMARINE_SHARD);
+		put("resonant_kill", Items.AMETHYST_SHARD); put("elemental_barrage", Items.BLAZE_ROD);
+		put("elemental_aura", Items.CONDUIT); put("instinct", Items.RABBIT_FOOT);
+		put("slippery", Items.SLIME_BALL); put("devour", Items.COOKED_BEEF);
+		put("pounce", Items.LEAD); put("beast_howl", Items.GOAT_HORN);
 
 		BY_EFFECT.put(PathEffect.LIFESTEAL, Items.GHAST_TEAR); BY_EFFECT.put(PathEffect.CRIT, Items.DIAMOND_SWORD);
 		BY_EFFECT.put(PathEffect.EXECUTE, Items.WITHER_SKELETON_SKULL); BY_EFFECT.put(PathEffect.THORNS, Items.CACTUS);
@@ -60,7 +124,7 @@ public final class NodeIcons {
 		BY_EFFECT.put(PathEffect.LUCK, Items.RABBIT_FOOT);
 
 		sig(Role.BERSERKER, Items.GOAT_HORN, Items.NETHERITE_AXE);
-		sig(Role.MAGE, Items.FIRE_CHARGE, Items.END_CRYSTAL);
+		sig(Role.MAGE, Items.AMETHYST_CLUSTER, Items.END_CRYSTAL);
 		sig(Role.ASSASSIN, Items.SKELETON_SKULL, Items.WITHER_SKELETON_SKULL);
 		sig(Role.HERBALIST, Items.HONEY_BOTTLE, Items.FLOWERING_AZALEA);
 		sig(Role.ENGINEER, Items.LODESTONE, Items.TNT);
@@ -73,6 +137,12 @@ public final class NodeIcons {
 		sig(Role.MONK, Items.GOLDEN_APPLE, Items.ENCHANTED_GOLDEN_APPLE);
 		sig(Role.ELEMENTALIST, Items.COBBLESTONE_WALL, Items.NETHER_STAR);
 		sig(Role.SHAPESHIFTER, Items.EGG, Items.SCULK_SHRIEKER);
+		sig(Role.GUNSLINGER, Items.FIREWORK_ROCKET, Items.CLOCK);
+		sig(Role.WEAPON_SUMMONER, Items.DIAMOND_SWORD, Items.NETHERITE_SWORD);
+		sig(Role.HUNTER, Items.CROSSBOW, Items.SPECTRAL_ARROW);
+		sig(Role.BARD, Items.NOTE_BLOCK, Items.JUKEBOX);
+		sig(Role.WARLOCK, Items.END_PORTAL_FRAME, Items.WITHER_SKELETON_SKULL);
+		sig(Role.TAMER, Items.BONE, Items.IRON_BLOCK);
 	}
 
 	private NodeIcons() {
@@ -89,6 +159,10 @@ public final class NodeIcons {
 
 	/** Icono de un nodo del árbol. */
 	public static ItemStack of(RoleNode node) {
+		if (node.kind() == RoleNode.Kind.LEGENDARY) {
+			dev.aptitudes.unique.UniqueSkill legend = dev.aptitudes.unique.UniqueSkill.forRole(node.role());
+			if (legend != null) return legend.iconStack();
+		}
 		Item item = BY_NODE.get(node.id());
 		if (item == null) {
 			item = switch (node.kind()) {

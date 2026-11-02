@@ -20,19 +20,19 @@ import java.util.Map;
  * GUI calcule puntos y XP con los valores del servidor.
  *
  * @param slotCooldowns ticks restantes de enfriamiento de cada ranura (0-3)
- * @param roleChangeCooldown ticks restantes hasta poder cambiar un rol ocupado
+ * @param rebirths cambios de rol concedidos por el ritual de la Hoguera y aún no usados
  */
 public record RoleSyncPayload(int primary, int secondary, int[] levels, int[] xp, Map<String, Integer> ranks,
-							  RoleRules rules, int[] slotCooldowns, int roleChangeCooldown,
+							  RoleRules rules, int[] slotCooldowns, int rebirths,
 							  int[] elements, int activeElement,
-							  int[] tiers, int[] trials, int bossMask) implements CustomPayload {
+							  int[] tiers, int[] trials, int bossMask, int[] loadout) implements CustomPayload {
 
 	public static final Id<RoleSyncPayload> ID = new Id<>(Aptitudes.id("role_sync"));
 	public static final PacketCodec<PacketByteBuf, RoleSyncPayload> CODEC =
 			PacketCodec.of(RoleSyncPayload::write, RoleSyncPayload::read);
-	private static final int MAX_ENTRIES = 256;
+	private static final int MAX_ENTRIES = 512;
 
-	public static RoleSyncPayload of(RoleData data, RoleRules rules, int[] slotCooldowns, int roleChangeCooldown) {
+	public static RoleSyncPayload of(RoleData data, RoleRules rules, int[] slotCooldowns, int rebirths) {
 		Role[] roles = Role.values();
 		int[] levels = new int[roles.length];
 		int[] xp = new int[roles.length];
@@ -43,9 +43,10 @@ public record RoleSyncPayload(int primary, int secondary, int[] levels, int[] xp
 		return new RoleSyncPayload(
 				data.primary() == null ? -1 : data.primary().ordinal(),
 				data.secondary() == null ? -1 : data.secondary().ordinal(),
-				levels, xp, new HashMap<>(data.ranks()), rules, slotCooldowns, roleChangeCooldown,
+				levels, xp, new HashMap<>(data.ranks()), rules, slotCooldowns, rebirths,
 				data.elements().stream().mapToInt(Element::ordinal).toArray(), data.activeElementIndex(),
-				perRole(data::tier), perRole(data::trialProgress), bossMask(data));
+				perRole(data::tier), perRole(data::trialProgress), bossMask(data),
+				perRole(r -> data.equipped(r, 0) | (data.equipped(r, 1) << 2)));
 	}
 
 	private static int[] perRole(java.util.function.ToIntFunction<Role> f) {
@@ -86,6 +87,12 @@ public record RoleSyncPayload(int primary, int secondary, int[] levels, int[] xp
 	public int xp(Role r) { return r.ordinal() < xp.length ? xp[r.ordinal()] : 0; }
 	public int rank(String nodeId) { return ranks.getOrDefault(nodeId, 0); }
 
+	/** Índice (0-3) de la activa equipada en la ranura {@code which} (0/1) del rol. */
+	public int equipped(Role r, int which) {
+		int packed = r.ordinal() < loadout.length ? loadout[r.ordinal()] : (which == 0 ? 0 : 4);
+		return which == 0 ? packed & 3 : (packed >> 2) & 3;
+	}
+
 	private void write(PacketByteBuf buf) {
 		buf.writeVarInt(primary);
 		buf.writeVarInt(secondary);
@@ -101,12 +108,13 @@ public record RoleSyncPayload(int primary, int secondary, int[] levels, int[] xp
 		buf.writeDouble(rules.xpExponent());
 		buf.writeVarInt(rules.pointsEveryLevels());
 		writeArray(buf, slotCooldowns);
-		buf.writeVarInt(roleChangeCooldown);
+		buf.writeVarInt(rebirths);
 		writeArray(buf, elements);
 		buf.writeVarInt(activeElement);
 		writeArray(buf, tiers);
 		writeArray(buf, trials);
 		buf.writeVarInt(bossMask);
+		writeArray(buf, loadout);
 	}
 
 	private static RoleSyncPayload read(PacketByteBuf buf) {
@@ -126,8 +134,9 @@ public record RoleSyncPayload(int primary, int secondary, int[] levels, int[] xp
 		int[] tiers = readArray(buf);
 		int[] trials = readArray(buf);
 		int bossMask = buf.readVarInt();
+		int[] loadout = readArray(buf);
 		return new RoleSyncPayload(primary, secondary, levels, xp, ranks, rules, cooldowns, roleChange,
-				elements, activeElement, tiers, trials, bossMask);
+				elements, activeElement, tiers, trials, bossMask, loadout);
 	}
 
 	private static void writeArray(PacketByteBuf buf, int[] values) {

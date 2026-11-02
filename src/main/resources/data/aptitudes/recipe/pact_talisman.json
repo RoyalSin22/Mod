@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    " S ",
+    "NRN",
+    " N "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:string"
+    },
+    "N": {
+      "item": "minecraft:nether_wart"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "result": {
+    "id": "aptitudes:pact_talisman",
+    "count": 1
+  }
+}

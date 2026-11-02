@@ -193,6 +193,7 @@ public final class RolePassives {
 			amount = PathEffects.incoming(victim, source, amount);
 			amount = dev.aptitudes.logic.SkillMilestones.modifyIncoming(victim, source, amount);
 			amount = RoleArmorSets.modifyIncoming(victim, source, amount);
+			amount = RoleMechanics.incoming(victim, source, amount);
 		}
 
 		// Nigromante – Drenaje vital también funciona con el daño de sus esbirros.
@@ -236,6 +237,7 @@ public final class RolePassives {
 		}
 
 		multiplier *= RoleArmorSets.outgoingMultiplier(player, target, source, direct); // Set de rol y arma de rol
+		multiplier *= RoleMechanics.outgoing(player, target, source, direct, amount); // Mecánica del rol
 		multiplier *= Signatures.markMultiplier(target, player); // Asesino: Marca de muerte
 		float result = PathEffects.outgoing(player, target, direct, amount * multiplier); // Sendas
 		// Nigromante Maestro+ (artes de sangre) – Sangrado: tus ataques desangran (Descomposición I, 3 s).
@@ -252,6 +254,7 @@ public final class RolePassives {
 		}
 		drain(player, result);
 		RoleArmorSets.afterOutgoing(player, result);
+		NewRoles.afterOutgoing(player, result, direct);
 		return result;
 	}
 

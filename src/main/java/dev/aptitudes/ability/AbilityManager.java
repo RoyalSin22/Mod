@@ -76,7 +76,7 @@ public final class AbilityManager {
 			fail(player, Text.translatable(slot < 2 ? "aptitudes.ability.no_primary" : "aptitudes.ability.no_secondary"));
 			return;
 		}
-		RoleNode node = RoleTree.active(role, slot % 2);
+		RoleNode node = RoleTree.active(role, data.equipped(role, slot % 2));
 		int learned = node == null ? 0 : RoleManager.activeRank(player, node.id()); // incluye la bonificación de evolución
 		if (node == null || learned <= 0) {
 			fail(player, Text.translatable("aptitudes.ability.not_learned"));
@@ -183,10 +183,20 @@ public final class AbilityManager {
 		if (ServerPlayNetworking.canSend(player, CooldownPayload.ID)) {
 			ServerPlayNetworking.send(player, new CooldownPayload(slot, cooldown));
 		}
+		RoleMechanics.onCast(player, role, energyCost);
+		NewRoles.onCast(player, role, cooldownKey, slot);
 		sendEnergy(player, false);
 		RoleManager.addRoleXp(player, role, Aptitudes.config().roleXpPerAbilityUse);
 		RoleManager.recordTrial(player, role, Evolution.TrialType.ABILITY_USES, 1);
 		dev.aptitudes.unique.UniqueEffects.recordAbility(player, cooldownKey);
+	}
+
+	/** Quita el enfriamiento de una habilidad (Bardo – Bis) y avisa al HUD. */
+	public static void resetCooldown(ServerPlayerEntity player, String cooldownKey, int slot) {
+		cooldowns(player).remove(cooldownKey);
+		if (ServerPlayNetworking.canSend(player, CooldownPayload.ID)) {
+			ServerPlayNetworking.send(player, new CooldownPayload(slot, 0));
+		}
 	}
 
 	/** Tope del rango efectivo de las activas (evolución + recurso): evita valores absurdos en las fórmulas. */
@@ -211,7 +221,8 @@ public final class AbilityManager {
 		// Mente clara (Mago) + Fe (atributo) + Presteza; máximo −60 %.
 		double reduction = Math.min(0.6, 0.10 * RoleManager.activeRank(player, "clear_mind")
 				+ attributeValue(player, dev.aptitudes.data.PlayerAttribute.FAITH) + haste
-				+ RoleArmorSets.cooldownReduction(player));
+				+ RoleArmorSets.cooldownReduction(player)
+				+ dev.aptitudes.accessory.Accessories.cooldownReduction(player)); // Amuleto arcano
 		return (int) Math.max(10, Math.round(seconds * 20 * (1.0 - reduction)));
 	}
 
@@ -232,7 +243,7 @@ public final class AbilityManager {
 				key = role == null ? null : "ultimate." + role.key();
 			} else {
 				Role role = RoleManager.roleInSlot(data, slot);
-				RoleNode node = role == null ? null : RoleTree.active(role, slot % 2);
+				RoleNode node = role == null ? null : RoleTree.active(role, data.equipped(role, slot % 2));
 				key = node == null ? null : node.id();
 			}
 			Integer until = key == null ? null : cooldowns(player).get(key);
@@ -255,6 +266,7 @@ public final class AbilityManager {
 		}
 		return versatility + trained + attributeValue(player, dev.aptitudes.data.PlayerAttribute.MIND) // Mente
 				+ Aptitudes.config().baseMaxEnergy
+				+ dev.aptitudes.accessory.Accessories.bonusMana(player) // Anillo de maná
 				+ 25.0 * RoleManager.activeRank(player, "arcane_affinity")
 				+ 25.0 * RoleManager.activeRank(player, "battery");
 	}

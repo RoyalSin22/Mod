@@ -80,6 +80,26 @@ public final class ModItems {
 	public static final Item MIMIC_MASK = register("mimic_mask",
 			new MimicMaskItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE)));
 
+	// ------------------------------------------------- Ítems de los roles nuevos
+
+	public static final Item ARCANE_REVOLVER = register("arcane_revolver",
+			new HitscanWeaponItem(HitscanWeaponItem.Kind.REVOLVER, new Item.Settings().maxCount(1).rarity(Rarity.RARE)));
+
+	public static final Item WEAPON_SIGIL = register("weapon_sigil",
+			new HitscanWeaponItem(HitscanWeaponItem.Kind.BLADE, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
+
+	/** Cuchillo de caza (Cazador): rápido y ligero. */
+	public static final Item HUNTING_KNIFE = register("hunting_knife", new SwordItem(ToolMaterials.IRON,
+			new Item.Settings().attributeModifiers(SwordItem.createAttributeModifiers(ToolMaterials.IRON, 2, -1.8f))));
+
+	public static final Item LUTE = register("lute", new LuteItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
+
+	public static final Item PACT_TALISMAN = register("pact_talisman",
+			new HitscanWeaponItem(HitscanWeaponItem.Kind.CURSE, new Item.Settings().maxCount(1).rarity(Rarity.RARE)));
+
+	public static final Item BEAST_WHISTLE = register("beast_whistle",
+			new BeastWhistleItem(new Item.Settings().maxCount(1)));
+
 	/** Requisito para evolucionar un rol a Maestro (se consume). */
 	public static final Item MASTERY_EMBLEM = register("mastery_emblem",
 			new Item(new Item.Settings().maxCount(16).rarity(Rarity.RARE)));
@@ -114,8 +134,35 @@ public final class ModItems {
 			.rarity(Rarity.RARE).attributeModifiers(net.minecraft.item.HoeItem.createAttributeModifiers(
 					ToolMaterials.DIAMOND, -3.0f, 0.0f))));
 
+	/** Se quema en una Hoguera para poder cambiar un rol ya elegido. */
+	public static final Item REBIRTH_OFFERING = register("rebirth_offering",
+			new RebirthOfferingItem(new Item.Settings().maxCount(16).rarity(Rarity.RARE)));
+
+	/** Vale de armería (aldeano de gremio): una pieza del set de tu rol principal. */
+	public static final Item ARMORY_VOUCHER = register("armory_voucher",
+			new ArmoryVoucherItem(new Item.Settings().maxCount(16).rarity(Rarity.UNCOMMON)));
+
+	// ---------------------------------------------------- Élites y accesorios
+
+	/** Esencia de élite: la sueltan élites y campeones; material de los accesorios. */
+	public static final Item ELITE_ESSENCE = register("elite_essence", new Item(new Item.Settings().rarity(Rarity.UNCOMMON)));
+	/** Corazón de campeón: solo lo sueltan los campeones. */
+	public static final Item CHAMPION_HEART = register("champion_heart",
+			new Item(new Item.Settings().rarity(Rarity.EPIC).fireproof()));
+
+	public static final java.util.Map<dev.aptitudes.accessory.Accessory, Item> ACCESSORIES = registerAccessories();
+
+	private static java.util.Map<dev.aptitudes.accessory.Accessory, Item> registerAccessories() {
+		java.util.Map<dev.aptitudes.accessory.Accessory, Item> map = new java.util.EnumMap<>(dev.aptitudes.accessory.Accessory.class);
+		for (dev.aptitudes.accessory.Accessory a : dev.aptitudes.accessory.Accessory.values()) {
+			map.put(a, register(a.key(), new dev.aptitudes.accessory.AccessoryItem(a,
+					new Item.Settings().rarity(a.ring() ? Rarity.RARE : Rarity.EPIC))));
+		}
+		return map;
+	}
+
 	static {
-		RoleArmor.register(); // 14 sets × 4 piezas
+		RoleArmor.register(); // un set de 4 piezas por rol
 	}
 
 	public static final ItemGroup GROUP = Registry.register(Registries.ITEM_GROUP, Aptitudes.id("items"),
@@ -138,10 +185,22 @@ public final class ModItems {
 						entries.add(HAND_WRAPS);
 						entries.add(ELEMENTAL_ORB);
 						entries.add(MIMIC_MASK);
+						entries.add(ARCANE_REVOLVER);
+						entries.add(WEAPON_SIGIL);
+						entries.add(HUNTING_KNIFE);
+						entries.add(LUTE);
+						entries.add(PACT_TALISMAN);
+						entries.add(BEAST_WHISTLE);
 						entries.add(dev.aptitudes.block.ModBlocks.BONFIRE_ITEM);
 						entries.add(MASTERY_EMBLEM);
 						entries.add(ULTIMATE_CORE);
 						entries.add(SOUL_SHARD);
+						entries.add(REBIRTH_OFFERING);
+						entries.add(ARMORY_VOUCHER);
+						entries.add(ELITE_ESSENCE);
+						entries.add(CHAMPION_HEART);
+						for (Item accessory : ACCESSORIES.values()) entries.add(accessory);
+						entries.add(dev.aptitudes.world.GuildVillagers.GUILD_DESK_ITEM);
 						entries.add(ESTUS_FLASK);
 						entries.add(ETHER_FLASK);
 						entries.add(SOUL_PICKAXE);

@@ -35,7 +35,9 @@ public final class RoleData {
 			INT_MAP.optionalFieldOf("tiers", Map.of()).forGetter(d -> toNames(d.tiers)),
 			INT_MAP.optionalFieldOf("trials", Map.of()).forGetter(d -> toNames(d.trials)),
 			Codec.STRING.listOf().optionalFieldOf("boss_slain", List.of())
-					.forGetter(d -> d.bossSlain.stream().map(Role::key).toList())
+					.forGetter(d -> d.bossSlain.stream().map(Role::key).toList()),
+			INT_MAP.optionalFieldOf("loadout", Map.of()).forGetter(d -> toNames(d.loadout)),
+			Codec.INT.optionalFieldOf("rebirths", 0).forGetter(d -> d.rebirths)
 	).apply(instance, RoleData::new));
 
 	@Nullable private Role primary;
@@ -56,15 +58,21 @@ public final class RoleData {
 	private final EnumMap<Role, Integer> trials;
 	/** Roles con los que se ha derrotado a un jefe (requisito del Definitivo). */
 	private final EnumSet<Role> bossSlain;
+	/** Activas equipadas por rol, empaquetadas: ranura 1 + ranura 2 × 4 (índices 0-3 de {@code RoleTree.actives}). */
+	private final EnumMap<Role, Integer> loadout;
+	/** Cambios de rol concedidos por el ritual de la Ofrenda de renacimiento y aún no usados. */
+	private int rebirths;
 
 	public RoleData() {
-		this("", "", Map.of(), Map.of(), Map.of(), 0.0, Long.MIN_VALUE, List.of(), 0, Map.of(), Map.of(), List.of());
+		this("", "", Map.of(), Map.of(), Map.of(), 0.0, Long.MIN_VALUE, List.of(), 0, Map.of(), Map.of(), List.of(),
+				Map.of(), 0);
 	}
 
 	private RoleData(String primary, String secondary, Map<String, Integer> levels, Map<String, Integer> xp,
 					 Map<String, Integer> ranks, double energy, long lastRoleChange,
 					 List<String> elements, int activeElement, Map<String, Integer> tiers,
-					 Map<String, Integer> trials, List<String> bossSlain) {
+					 Map<String, Integer> trials, List<String> bossSlain, Map<String, Integer> loadout,
+					 int rebirths) {
 		this.primary = Role.byKey(primary).orElse(null);
 		this.secondary = Role.byKey(secondary).orElse(null);
 		if (this.secondary == this.primary) this.secondary = null;
@@ -72,7 +80,7 @@ public final class RoleData {
 		this.xp = fromNames(xp);
 		this.ranks = new HashMap<>();
 		ranks.forEach((id, r) -> {
-			if (RoleTree.get(id) != null && r > 0) this.ranks.put(id, Math.min(r, RoleNode.MAX_RANK));
+			if (RoleTree.get(id) != null && r > 0) this.ranks.put(id, Math.min(r, RoleTree.get(id).maxRank()));
 		});
 		this.energy = Math.max(0.0, energy);
 		this.lastRoleChange = lastRoleChange;
@@ -87,6 +95,33 @@ public final class RoleData {
 		this.trials = fromNames(trials);
 		this.bossSlain = EnumSet.noneOf(Role.class);
 		for (String key : bossSlain) Role.byKey(key).ifPresent(this.bossSlain::add);
+		this.loadout = fromNames(loadout);
+		this.rebirths = Math.max(0, Math.min(9, rebirths));
+	}
+
+	public int rebirths() { return rebirths; }
+	public void setRebirths(int value) { this.rebirths = Math.max(0, Math.min(9, value)); }
+
+	/** Índice (0-3) de la activa equipada en la ranura {@code which} (0 o 1) del rol. Por defecto A y B. */
+	public int equipped(Role role, int which) {
+		Integer packed = loadout.get(role);
+		if (packed == null) return which;
+		int value = which == 0 ? packed & 3 : (packed >> 2) & 3;
+		return value;
+	}
+
+	/** Equipa la activa {@code index} en la ranura {@code which}; si ya estaba en la otra, se intercambian. */
+	public void equip(Role role, int which, int index) {
+		int first = equipped(role, 0);
+		int second = equipped(role, 1);
+		if (which == 0) {
+			if (second == index) second = first;
+			first = index;
+		} else {
+			if (first == index) first = second;
+			second = index;
+		}
+		loadout.put(role, (first & 3) | ((second & 3) << 2));
 	}
 
 	public int tier(Role role) { return tiers.getOrDefault(role, Evolution.BASE); }
@@ -114,7 +149,8 @@ public final class RoleData {
 
 	public int rank(String nodeId) { return ranks.getOrDefault(nodeId, 0); }
 	public void setRank(String nodeId, int rank) {
-		if (rank <= 0) ranks.remove(nodeId); else ranks.put(nodeId, Math.min(rank, RoleNode.MAX_RANK));
+		if (rank <= 0) ranks.remove(nodeId);
+		else ranks.put(nodeId, Math.min(rank, RoleTree.get(nodeId) != null ? RoleTree.get(nodeId).maxRank() : RoleNode.MAX_RANK));
 	}
 	public Map<String, Integer> ranks() { return ranks; }
 

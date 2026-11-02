@@ -15,10 +15,10 @@ public record RoleRules(int maxLevel, double xpBase, double xpExponent, int poin
 	}
 
 	/**
-	 * Puntos de árbol ganados con un nivel de rol: 1 al nivel 1 y 2 cada N niveles
-	 * (con N = 3, 21 puntos al nivel 30 para 27 rangos posibles: hay que elegir).
+	 * Puntos de árbol ganados con un nivel de rol: 1 al nivel 1 y 3 cada N niveles
+	 * (con N = 3, 31 puntos al nivel 30 para 69 rangos posibles en 23 nodos: hay que elegir).
 	 */
 	public int earnedPoints(int level) {
-		return level <= 0 ? 0 : 1 + (level * 2) / Math.max(1, pointsEveryLevels);
+		return level <= 0 ? 0 : 1 + (level * 3) / Math.max(1, pointsEveryLevels);
 	}
 }

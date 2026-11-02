@@ -19,6 +19,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.world.World;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -27,7 +28,6 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -151,14 +151,23 @@ public final class Signatures {
 			return true;
 		});
 
-		// Mago – Lluvia de meteoros: 8 impactos explosivos en el punto señalado (no rompen bloques).
+		// Mago – Lluvia rúnica: 8 runas arcanas caen sobre el punto señalado (daño mágico, sin fuego ni explosiones).
 		REGISTRY.put(Role.MAGE, (p, r) -> {
 			Vec3d target = Targeting.lookEnd(p, 40);
 			AbilityState.repeat(p.getServer(), 8, 6, i -> {
 				double x = target.x + (p.getRandom().nextDouble() - 0.5) * 7;
 				double z = target.z + (p.getRandom().nextDouble() - 0.5) * 7;
-				world(p).spawnParticles(ParticleTypes.FLAME, x, target.y + 8, z, 30, 0.2, 4, 0.2, 0);
-				p.getWorld().createExplosion(p, x, target.y, z, 2.5f, World.ExplosionSourceType.NONE);
+				Vec3d hit = new Vec3d(x, target.y, z);
+				Targeting.particleLine(world(p), ParticleFx.dust(0xB388FF, 1.4f), hit.add(0, 8, 0), hit);
+				ParticleFx.runeCircle(world(p), hit, 1.6, ParticleFx.dust(0xE1BEE7, 1.0f));
+				world(p).spawnParticles(ParticleTypes.WITCH, x, target.y + 0.5, z, 20, 0.6, 0.4, 0.6, 0.1);
+				for (LivingEntity e : p.getWorld().getEntitiesByClass(LivingEntity.class,
+						new net.minecraft.util.math.Box(hit, hit).expand(2.2), e -> Targeting.isHostileTo(p, e))) {
+					e.damage(p.getDamageSources().indirectMagic(p, p), 5 + r);
+					e.takeKnockback(0.4, x - e.getX(), z - e.getZ());
+				}
+				world(p).playSound(null, x, target.y, z, SoundEvents.BLOCK_AMETHYST_BLOCK_RESONATE,
+						net.minecraft.sound.SoundCategory.PLAYERS, 1.0f, 0.8f + 0.1f * i);
 			});
 			return true;
 		});
@@ -243,8 +252,14 @@ public final class Signatures {
 	private Signatures() {
 	}
 
+	/** Registro desde otras clases del paquete (roles nuevos, ver {@link NewRoles}). */
+	static void register(Role role, Ability ability) {
+		REGISTRY.put(role, ability);
+	}
+
 	@Nullable
 	public static Ability get(Role role) {
+		if (REGISTRY.get(role) == null) NewRoles.ensureRegistered();
 		return REGISTRY.get(role);
 	}
 

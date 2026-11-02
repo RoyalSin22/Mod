@@ -146,9 +146,8 @@ public final class RoleCommand {
 					primary ? "aptitudes.cmd.primary_set" : "aptitudes.cmd.secondary_set",
 					Text.translatable(role.translationKey())), false);
 			case SAME -> ctx.getSource().sendError(Text.translatable("aptitudes.cmd.role_same"));
-			case ON_COOLDOWN -> {
-				int minutes = (RoleManager.changeCooldownRemaining(player, RoleManager.get(player)) + 1199) / 1200;
-				ctx.getSource().sendError(Text.translatable("aptitudes.role.change_cooldown", minutes));
+			case NEEDS_RITUAL -> {
+				ctx.getSource().sendError(Text.translatable("aptitudes.role.needs_ritual"));
 				return 0;
 			}
 		}

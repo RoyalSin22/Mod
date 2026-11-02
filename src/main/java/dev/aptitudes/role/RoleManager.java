@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public final class RoleManager {
 	/** Resultado de intentar cambiar un rol (para mostrar mensajes concretos). */
-	public enum ChangeResult { OK, SAME, ON_COOLDOWN }
+	public enum ChangeResult { OK, SAME, NEEDS_RITUAL }
 
 	/** Resultado de intentar subir un rango. */
 	public enum UpgradeResult { OK, UNKNOWN_NODE, ROLE_NOT_ACTIVE, MAX_RANK, LEVEL_TOO_LOW, MISSING_PREREQUISITE, NO_POINTS,
@@ -204,19 +204,20 @@ public final class RoleManager {
 	// ---------------------------------------------------------- Elección
 
 	/**
-	 * Asigna {@code role} como principal o secundario. Ocupar una ranura vacía es
-	 * gratis; sustituir un rol ya elegido activa el enfriamiento de cambio. Si el
-	 * rol ya estaba en la otra ranura, se intercambian.
+	 * Asigna {@code role} como principal o secundario. Ocupar una ranura vacía o
+	 * intercambiar principal y secundario es gratis; sustituir un rol ya elegido
+	 * exige el ritual de la Hoguera (Ofrenda de renacimiento), que concede un cambio.
 	 */
 	public static ChangeResult setRole(ServerPlayerEntity player, Role role, boolean primary) {
 		RoleData data = get(player);
 		Role current = primary ? data.primary() : data.secondary();
 		if (current == role) return ChangeResult.SAME;
 
-		boolean replacing = current != null;
-		if (replacing && changeCooldownRemaining(player, data) > 0) return ChangeResult.ON_COOLDOWN;
-
 		Role other = primary ? data.secondary() : data.primary();
+		boolean replacing = current != null && other != role;
+		boolean ritual = replacing && Aptitudes.config().roleChangeRequiresRitual && !player.isCreative();
+		if (ritual && data.rebirths() <= 0) return ChangeResult.NEEDS_RITUAL;
+
 		if (other == role) { // intercambio
 			if (primary) { data.setSecondary(current); data.setPrimary(role); }
 			else { data.setPrimary(current); data.setSecondary(role); }
@@ -227,16 +228,16 @@ public final class RoleManager {
 		}
 		if (data.level(role) == 0) data.setLevel(role, 1); // permite aprender el primer nodo al instante
 		if (replacing) data.setLastRoleChange(worldTime(player));
+		if (ritual) data.setRebirths(data.rebirths() - 1);
 		refresh(player);
 		return ChangeResult.OK;
 	}
 
-	/** @return ticks restantes hasta poder sustituir un rol ya elegido. */
-	public static int changeCooldownRemaining(ServerPlayerEntity player, RoleData data) {
-		if (data.lastRoleChange() == Long.MIN_VALUE) return 0;
-		long cooldown = Aptitudes.config().roleChangeCooldownMinutes * 60L * 20L;
-		long remaining = data.lastRoleChange() + cooldown - worldTime(player);
-		return (int) Math.max(0, Math.min(Integer.MAX_VALUE, remaining));
+	/** Ritual completado en la Hoguera: concede un cambio de rol. */
+	public static void grantRebirth(ServerPlayerEntity player) {
+		RoleData data = get(player);
+		data.setRebirths(data.rebirths() + 1);
+		sync(player);
 	}
 
 	private static long worldTime(ServerPlayerEntity player) {
@@ -252,18 +253,35 @@ public final class RoleManager {
 		RoleData data = get(player);
 		if (!data.isActive(node.role())) return UpgradeResult.ROLE_NOT_ACTIVE;
 		int rank = data.rank(nodeId);
-		if (rank >= RoleNode.MAX_RANK) return UpgradeResult.MAX_RANK;
+		if (rank >= node.maxRank()) return UpgradeResult.MAX_RANK;
 		if (data.level(node.role()) < node.levelForRank(rank + 1)) return UpgradeResult.LEVEL_TOO_LOW;
 		if (node.prerequisite() != null && data.rank(node.prerequisite()) <= 0) return UpgradeResult.MISSING_PREREQUISITE;
 		if (availablePoints(data, node.role()) <= 0) return UpgradeResult.NO_POINTS;
 		RoleTree.PathSpec path = RoleTree.pathSpec(nodeId);
-		if (path != null) {
-			int chosen = RoleTree.chosenPath(data, node.role());
-			if (chosen != 0 && chosen != path.path()) return UpgradeResult.PATH_LOCKED; // sendas excluyentes
+		if (path != null && RoleTree.pathLocked(data::rank, node.role(), path.path())) {
+			return UpgradeResult.PATH_LOCKED; // solo 2 de las 3 sendas
 		}
 		data.setRank(nodeId, rank + 1);
 		refresh(player);
 		return UpgradeResult.OK;
+	}
+
+	/**
+	 * Equipa una activa aprendida del rol en su ranura 1 o 2 ({@code which} 0/1).
+	 * @return false si el nodo no es una activa del rol o no está aprendida.
+	 */
+	public static boolean equip(ServerPlayerEntity player, String nodeId, int which) {
+		RoleNode node = RoleTree.get(nodeId);
+		if (node == null || !node.active() || which < 0 || which > 1) return false;
+		RoleData data = get(player);
+		if (data.rank(nodeId) <= 0) return false;
+		int index = RoleTree.activeIndex(node);
+		if (index < 0) return false;
+		data.equip(node.role(), which, index);
+		player.sendMessage(Text.translatable("aptitudes.role.equipped", Text.translatable(node.translationKey()),
+				which + 1).formatted(net.minecraft.util.Formatting.GOLD), true);
+		refresh(player);
+		return true;
 	}
 
 	// ------------------------------------------------------------- Elementos
@@ -286,6 +304,7 @@ public final class RoleManager {
 		RoleData data = get(player);
 		if (!data.isActive(Role.ELEMENTALIST) || data.elements().size() < 2) return;
 		data.cycleElement();
+		dev.aptitudes.ability.RoleMechanics.onElementSwitch(player);
 		Element active = data.activeElement();
 		if (active != null) {
 			player.sendMessage(Text.translatable("aptitudes.element.switched",
@@ -331,6 +350,10 @@ public final class RoleManager {
 		sync(player);
 		AbilityManager.sendEnergy(player, true);
 		RoleResources.send(player, true);
+		// Legendarias: dependen de los nodos aprendidos y de los roles activos.
+		dev.aptitudes.unique.UniqueManager.refreshAttributes(player);
+		dev.aptitudes.accessory.Accessories.apply(player);
+		dev.aptitudes.unique.UniqueManager.sync(player);
 	}
 
 	private static void ensureConsistent(ServerPlayerEntity player, RoleData data) {
@@ -351,7 +374,7 @@ public final class RoleManager {
 		if (!ServerPlayNetworking.canSend(player, RoleSyncPayload.ID)) return;
 		RoleData data = get(player);
 		ServerPlayNetworking.send(player, RoleSyncPayload.of(data, rules(),
-				AbilityManager.slotCooldowns(player), changeCooldownRemaining(player, data)));
+				AbilityManager.slotCooldowns(player), data.rebirths()));
 	}
 
 	@Nullable

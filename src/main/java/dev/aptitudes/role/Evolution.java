@@ -63,6 +63,12 @@ public final class Evolution {
 		TRIALS.put(Role.MONK, new Trial(TrialType.WEAPON_KILLS, 150));
 		TRIALS.put(Role.ELEMENTALIST, new Trial(TrialType.ABILITY_USES, 300));
 		TRIALS.put(Role.SHAPESHIFTER, new Trial(TrialType.ABILITY_USES, 250));
+		TRIALS.put(Role.GUNSLINGER, new Trial(TrialType.WEAPON_KILLS, 150));
+		TRIALS.put(Role.WEAPON_SUMMONER, new Trial(TrialType.ABILITY_USES, 300));
+		TRIALS.put(Role.HUNTER, new Trial(TrialType.WEAPON_KILLS, 150));
+		TRIALS.put(Role.BARD, new Trial(TrialType.ROLE_ACTIONS, 300));
+		TRIALS.put(Role.WARLOCK, new Trial(TrialType.ABILITY_USES, 300));
+		TRIALS.put(Role.TAMER, new Trial(TrialType.ROLE_ACTIONS, 300));
 	}
 
 	private Evolution() {

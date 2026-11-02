@@ -258,7 +258,9 @@ public final class SkillMilestones {
 			p.getInventory().insertStack(new ItemStack(Items.ARROW));
 		}
 		if (archery >= 30) arrow.setVelocity(arrow.getVelocity().multiply(1.3));
-		if (archery >= 50) arrow.setPierceLevel((byte) 2);
+		if (archery >= 50) {
+			((dev.aptitudes.mixin.PersistentProjectileAccessor) arrow).aptitudes$setPierceLevel((byte) 2);
+		}
 	}
 
 	/** Combate 50: cada muerte da Velocidad y Regeneración breves. */

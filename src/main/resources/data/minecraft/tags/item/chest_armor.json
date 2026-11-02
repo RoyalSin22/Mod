@@ -14,6 +14,12 @@
     "aptitudes:merchant_chestplate",
     "aptitudes:monk_chestplate",
     "aptitudes:elementalist_chestplate",
-    "aptitudes:shapeshifter_chestplate"
+    "aptitudes:shapeshifter_chestplate",
+    "aptitudes:gunslinger_chestplate",
+    "aptitudes:weapon_summoner_chestplate",
+    "aptitudes:hunter_chestplate",
+    "aptitudes:bard_chestplate",
+    "aptitudes:warlock_chestplate",
+    "aptitudes:tamer_chestplate"
   ]
 }

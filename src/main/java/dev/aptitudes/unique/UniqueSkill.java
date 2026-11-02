@@ -10,9 +10,8 @@ import java.util.Locale;
 import java.util.Optional;
 
 /**
- * Habilidades únicas: cada una existe UNA sola vez por servidor y cada jugador
- * puede tener como máximo una. Se obtienen siendo el primero en cumplir su gesta
- * ({@link #target}); el progreso se calcula en {@link UniqueManager#progress}.
+ * Habilidades legendarias (antes "únicas"): una por rol, como nodo final de su
+ * árbol ({@code <rol>_legend}, nivel 25). Ya no hay límite por servidor ni gestas.
  *
  * <p>Los nombres y efectos son originales; algunos arquetipos se inspiran en la
  * lista de referencia del usuario. Pendragón usa la leyenda artúrica, de dominio público.</p>
@@ -33,7 +32,12 @@ public enum UniqueSkill {
 	PENDRAGON(Items.GOLDEN_SWORD, 0xFFF59D, 60, 45, 2),
 	SKY_LORD(Items.ELYTRA, 0x90CAF9, 50, 120, 100),
 	STILLNESS(Items.ICE, 0x80DEEA, 60, 90, 30),
-	HARBINGER(Items.WITHER_SKELETON_SKULL, 0x37474F, 50, 40, 50);
+	HARBINGER(Items.WITHER_SKELETON_SKULL, 0x37474F, 50, 40, 50),
+	// Legendarias nuevas (v12) para los roles que no tenían una única temática.
+	SKYPIERCER(Items.TRIDENT, 0x64B5F6, 45, 45, 1),
+	WORLD_TREE(Items.FLOWERING_AZALEA, 0x66BB6A, 50, 60, 1),
+	LAST_BULLET(Items.FIREWORK_STAR, 0xFFD54F, 40, 40, 1),
+	GATE_OF_ARMS(Items.NETHERITE_SWORD, 0xB0BEC5, 55, 60, 1);
 
 	private final Item icon;
 	private final int color;
@@ -50,6 +54,39 @@ public enum UniqueSkill {
 	}
 
 	public ItemStack iconStack() { return new ItemStack(icon); }
+
+	/** Rol en cuyo árbol aparece como nodo legendario. */
+	public dev.aptitudes.role.Role role() {
+		return switch (this) {
+			case ADAPTATION -> dev.aptitudes.role.Role.BERSERKER;
+			case GREED -> dev.aptitudes.role.Role.MERCHANT;
+			case VOID_ARCHIVE -> dev.aptitudes.role.Role.MAGE;
+			case FUNGAL -> dev.aptitudes.role.Role.HERBALIST;
+			case PARASITE -> dev.aptitudes.role.Role.ASSASSIN;
+			case HELLFIRE -> dev.aptitudes.role.Role.WARLOCK;
+			case CHOSEN_KING -> dev.aptitudes.role.Role.PALADIN;
+			case SPACETIME -> dev.aptitudes.role.Role.ENGINEER;
+			case NEGATION -> dev.aptitudes.role.Role.BARD;
+			case GENETICIST -> dev.aptitudes.role.Role.TAMER;
+			case MIRROR -> dev.aptitudes.role.Role.SHAPESHIFTER;
+			case EXPLOITER -> dev.aptitudes.role.Role.HUNTER;
+			case PENDRAGON -> dev.aptitudes.role.Role.SWORDSMAN;
+			case SKY_LORD -> dev.aptitudes.role.Role.ELEMENTALIST;
+			case STILLNESS -> dev.aptitudes.role.Role.MONK;
+			case HARBINGER -> dev.aptitudes.role.Role.NECROMANCER;
+			case SKYPIERCER -> dev.aptitudes.role.Role.LANCER;
+			case WORLD_TREE -> dev.aptitudes.role.Role.DRUID;
+			case LAST_BULLET -> dev.aptitudes.role.Role.GUNSLINGER;
+			case GATE_OF_ARMS -> dev.aptitudes.role.Role.WEAPON_SUMMONER;
+		};
+	}
+
+	/** Legendaria del árbol de {@code role}. */
+	@org.jetbrains.annotations.Nullable
+	public static UniqueSkill forRole(dev.aptitudes.role.Role role) {
+		for (UniqueSkill s : values()) if (s.role() == role) return s;
+		return null;
+	}
 	public int color() { return color; }
 	public int energyCost() { return energyCost; }
 	public int cooldownSecs() { return cooldownSecs; }

@@ -35,7 +35,19 @@ public enum Role {
 	MONK(RoleCategory.MARTIAL, 0xE67E22, () -> ModItems.HAND_WRAPS),
 	ELEMENTALIST(RoleCategory.ARCANE, 0x3498DB, () -> ModItems.ELEMENTAL_ORB),
 	/** Se transforma en mobs vanilla y usa sus poderes. */
-	SHAPESHIFTER(RoleCategory.SHADOW, 0x9B59B6, () -> ModItems.MIMIC_MASK);
+	SHAPESHIFTER(RoleCategory.SHADOW, 0x9B59B6, () -> ModItems.MIMIC_MASK),
+	/** Mago pistolero: revólver arcano, disparos encadenados y balas explosivas. */
+	GUNSLINGER(RoleCategory.ARCANE, 0x00BCD4, () -> ModItems.ARCANE_REVOLVER),
+	/** Invocador de armas: arsenal de espadas espectrales que orbitan y se disparan. */
+	WEAPON_SUMMONER(RoleCategory.CRAFT, 0x90A4AE, () -> ModItems.WEAPON_SIGIL),
+	/** Cazador: marcas, trampas, flechas y un halcón. */
+	HUNTER(RoleCategory.SHADOW, 0x7CB342, () -> ModItems.HUNTING_KNIFE),
+	/** Bardo: canciones de apoyo en área y notas que aturden. */
+	BARD(RoleCategory.GUARDIAN, 0xEC407A, () -> ModItems.LUTE),
+	/** Brujo: pactos demoníacos, maldiciones y diablillos. */
+	WARLOCK(RoleCategory.SHADOW, 0xAD1457, () -> ModItems.PACT_TALISMAN),
+	/** Domador: potencia a sus mascotas y lucha junto a ellas. */
+	TAMER(RoleCategory.CRAFT, 0xA1887F, () -> ModItems.BEAST_WHISTLE);
 
 	private final RoleCategory category;
 	private final int color;
@@ -70,6 +82,12 @@ public enum Role {
 			case MONK -> attrs(PlayerAttribute.DEXTERITY, PlayerAttribute.VIGOR);
 			case ELEMENTALIST -> attrs(PlayerAttribute.INTELLIGENCE, PlayerAttribute.FAITH);
 			case SHAPESHIFTER -> attrs(PlayerAttribute.DEXTERITY, PlayerAttribute.MIND);
+			case GUNSLINGER -> attrs(PlayerAttribute.DEXTERITY, PlayerAttribute.INTELLIGENCE);
+			case WEAPON_SUMMONER -> attrs(PlayerAttribute.STRENGTH, PlayerAttribute.INTELLIGENCE);
+			case HUNTER -> attrs(PlayerAttribute.DEXTERITY, PlayerAttribute.LUCK);
+			case BARD -> attrs(PlayerAttribute.FAITH, PlayerAttribute.LUCK);
+			case WARLOCK -> attrs(PlayerAttribute.INTELLIGENCE, PlayerAttribute.VIGOR);
+			case TAMER -> attrs(PlayerAttribute.VIGOR, PlayerAttribute.MIND);
 		};
 	}
 

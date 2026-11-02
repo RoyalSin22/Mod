@@ -1,0 +1,675 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 3,
+        "max": 5
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:soul_shard",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:diamond",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:gold_ingot",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 5
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:estus_flask",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:ether_flask",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:mastery_emblem",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:experience_bottle",
+          "weight": 6,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 5
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 1,
+        "max": 1
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:berserker_axe",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:arcane_staff",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:dagger",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:herb_pouch",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:wrench",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:spear",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:katana",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:holy_hammer",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:necro_tome",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:oak_staff",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:guild_seal",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:hand_wraps",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:elemental_orb",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:mimic_mask",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:arcane_revolver",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:weapon_sigil",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:hunting_knife",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:lute",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:pact_talisman",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:beast_whistle",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 0,
+        "max": 1
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:berserker_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:berserker_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:berserker_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:berserker_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:mage_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:mage_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:mage_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:mage_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:assassin_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:assassin_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:assassin_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:assassin_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:herbalist_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:herbalist_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:herbalist_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:herbalist_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:engineer_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:engineer_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:engineer_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:engineer_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:lancer_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:lancer_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:lancer_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:lancer_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:swordsman_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:swordsman_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:swordsman_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:swordsman_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:paladin_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:paladin_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:paladin_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:paladin_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:necromancer_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:necromancer_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:necromancer_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:necromancer_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:druid_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:druid_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:druid_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:druid_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:merchant_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:merchant_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:merchant_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:merchant_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:monk_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:monk_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:monk_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:monk_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:elementalist_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:elementalist_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:elementalist_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:elementalist_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:shapeshifter_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:shapeshifter_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:shapeshifter_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:shapeshifter_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:gunslinger_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:gunslinger_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:gunslinger_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:gunslinger_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:weapon_summoner_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:weapon_summoner_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:weapon_summoner_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:weapon_summoner_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:hunter_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:hunter_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:hunter_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:hunter_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:bard_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:bard_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:bard_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:bard_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:warlock_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:warlock_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:warlock_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:warlock_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:tamer_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:tamer_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:tamer_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:tamer_boots",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 0,
+        "max": 1
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:ring_of_strength",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:ring_of_vitality",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:ring_of_swiftness",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:ring_of_mana",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:ring_of_the_vampire",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:ring_of_fortune",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:amulet_of_the_guardian",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:amulet_of_the_phoenix",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:arcane_amulet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:amulet_of_the_grove",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:hunters_trophy",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 10
+        }
+      ]
+    }
+  ]
+}

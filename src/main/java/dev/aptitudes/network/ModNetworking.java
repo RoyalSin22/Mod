@@ -28,11 +28,14 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playS2C().register(UniqueSyncPayload.ID, UniqueSyncPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(StatsPayload.ID, StatsPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(OpenBonfirePayload.ID, OpenBonfirePayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(OpenRolesPayload.ID, OpenRolesPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(MechanicPayload.ID, MechanicPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(ResourcePayload.ID, ResourcePayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(ScreenFxPayload.ID, ScreenFxPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(DamageNumberPayload.ID, DamageNumberPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(SkillXpPayload.ID, SkillXpPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(LevelUpPayload.ID, LevelUpPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(OpenAccessoriesPayload.ID, OpenAccessoriesPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(RequestStatsPayload.ID, RequestStatsPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(AllocatePointsPayload.ID, AllocatePointsPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(UseAbilityPayload.ID, UseAbilityPayload.CODEC);
@@ -57,6 +60,8 @@ public final class ModNetworking {
 		ServerPlayNetworking.registerGlobalReceiver(UseAbilityPayload.ID,
 				(payload, context) -> AbilityManager.use(context.player(), payload.slot()));
 
+		ServerPlayNetworking.registerGlobalReceiver(OpenAccessoriesPayload.ID,
+				(payload, context) -> dev.aptitudes.accessory.Accessories.open(context.player()));
 		ServerPlayNetworking.registerGlobalReceiver(RoleActionPayload.ID, (payload, context) -> {
 			var player = context.player();
 			switch (payload.action()) {
@@ -65,10 +70,8 @@ public final class ModNetworking {
 					if (role == null) return;
 					RoleManager.ChangeResult result =
 							RoleManager.setRole(player, role, payload.action() == RoleActionPayload.SET_PRIMARY);
-					if (result == RoleManager.ChangeResult.ON_COOLDOWN) {
-						int minutes = (RoleManager.changeCooldownRemaining(player, RoleManager.get(player)) + 1199) / 1200;
-						player.sendMessage(Text.translatable("aptitudes.role.change_cooldown", minutes)
-								.formatted(Formatting.RED), true);
+					if (result == RoleManager.ChangeResult.NEEDS_RITUAL) {
+						player.sendMessage(Text.translatable("aptitudes.role.needs_ritual").formatted(Formatting.RED), true);
 					}
 				}
 				case RoleActionPayload.UPGRADE_NODE -> {
@@ -88,6 +91,8 @@ public final class ModNetworking {
 					}
 				}
 				case RoleActionPayload.CYCLE_ELEMENT -> RoleManager.cycleElement(player);
+				case RoleActionPayload.EQUIP_1, RoleActionPayload.EQUIP_2 ->
+						RoleManager.equip(player, payload.nodeId(), payload.action() == RoleActionPayload.EQUIP_1 ? 0 : 1);
 				case RoleActionPayload.SELECT_FORM -> {
 					dev.aptitudes.morph.MorphForm form = dev.aptitudes.morph.MorphForm.byIndex(payload.roleIndex());
 					if (form != null) dev.aptitudes.morph.MorphManager.select(player, form);

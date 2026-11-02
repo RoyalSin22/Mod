@@ -55,7 +55,8 @@ public final class RoleEvents {
 					|| !MorphManager.allowIncomingDamage(victim, source)
 					|| !UniqueEffects.allowIncomingDamage(victim, source, amount)
 					|| !dev.aptitudes.logic.SkillMilestones.allowIncomingDamage(victim, source)
-					|| !dev.aptitudes.ability.RoleArmorSets.allowIncoming(victim, source))) {
+					|| !dev.aptitudes.ability.RoleArmorSets.allowIncoming(victim, source)
+					|| !dev.aptitudes.ability.RoleMechanics.allowIncoming(victim, source))) {
 				return false;
 			}
 			if (amount <= 0 || entity instanceof ArmorStandEntity) return true;
@@ -72,6 +73,11 @@ public final class RoleEvents {
 			// Paladín: bloquear golpes con el escudo.
 			if (entity instanceof ServerPlayerEntity victim && victim.isBlocking() && source.getAttacker() != null) {
 				RoleManager.addRoleXp(victim, Role.PALADIN, xp);
+			}
+			// Domador: el daño de tus mascotas te da XP.
+			if (source.getAttacker() instanceof net.minecraft.entity.passive.TameableEntity pet
+					&& pet.getOwner() instanceof ServerPlayerEntity owner && !AbilityState.isSummon(pet)) {
+				RoleManager.addRoleXp(owner, Role.TAMER, xp);
 			}
 			// Nigromante: el daño de tus esbirros te da XP.
 			if (source.getAttacker() != null && AbilityState.isMinion(source.getAttacker())) {
@@ -97,6 +103,7 @@ public final class RoleEvents {
 				MorphManager.onKill(killer, entity.getType());
 				dev.aptitudes.logic.SkillMilestones.onKill(killer, entity);
 				dev.aptitudes.logic.SoulTools.onKill(killer, entity);
+				dev.aptitudes.ability.RoleMechanics.onKill(killer, entity, source);
 				UniqueEffects.onKill(killer, entity, source);
 				Role role = combatRole(killer, source.getSource());
 				if (role != null) RoleManager.recordTrial(killer, role, Evolution.TrialType.WEAPON_KILLS, 1);
@@ -122,12 +129,14 @@ public final class RoleEvents {
 				return false;
 			}
 			return !RolePassives.tryCrimsonImmortality(player) && !RolePassives.tryForestRebirth(player)
-					&& !dev.aptitudes.logic.SkillMilestones.trySecondChance(player);
+					&& !dev.aptitudes.logic.SkillMilestones.trySecondChance(player)
+					&& !dev.aptitudes.accessory.Accessories.tryPhoenix(player);
 		});
 
 		// Las invocaciones mueren sin soltar botín ni XP (evita granjas de hierro o huesos).
 		ServerLivingEntityEvents.ALLOW_DEATH.register((entity, source, amount) -> {
 			if (AbilityState.isSummon(entity)) {
+				dev.aptitudes.ability.RoleMechanics.onSummonDeath(entity);
 				entity.discard();
 				return false;
 			}
@@ -195,6 +204,8 @@ public final class RoleEvents {
 				UniqueEffects.tick(server);
 				dev.aptitudes.logic.SkillMilestones.tick(server);
 				dev.aptitudes.ability.RoleArmorSets.tick(server);
+				dev.aptitudes.ability.RoleMechanics.tick(server);
+				dev.aptitudes.accessory.Accessories.tick(server);
 			}
 			if (ticks % 100 == 0) dev.aptitudes.unique.UniqueManager.checkAll(server);
 			AbilityState.tick(server);
@@ -205,11 +216,14 @@ public final class RoleEvents {
 	@Nullable
 	private static Role combatRole(ServerPlayerEntity attacker, @Nullable Entity direct) {
 		if (direct instanceof TridentEntity) return Role.LANCER;
+		// Flechas (arco o ballesta): Cazador.
+		if (direct instanceof net.minecraft.entity.projectile.PersistentProjectileEntity) return Role.HUNTER;
 		if (direct != attacker) return null;
 		ItemStack stack = attacker.getMainHandStack();
 		if (stack.isEmpty()) return Role.MONK;
 		if (stack.isOf(ModItems.HOLY_HAMMER)) return Role.PALADIN;
 		if (stack.isOf(ModItems.DAGGER)) return Role.ASSASSIN;
+		if (stack.isOf(ModItems.HUNTING_KNIFE)) return Role.HUNTER;
 		if (stack.isOf(ModItems.SPEAR) || stack.isOf(Items.TRIDENT)) return Role.LANCER;
 		if (stack.getItem() instanceof AxeItem) return Role.BERSERKER;
 		if (stack.getItem() instanceof SwordItem) return Role.SWORDSMAN;

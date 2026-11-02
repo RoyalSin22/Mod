@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "SSS",
+    "SES",
+    " G "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:string"
+    },
+    "E": {
+      "item": "aptitudes:elite_essence"
+    },
+    "G": {
+      "item": "aptitudes:champion_heart"
+    }
+  },
+  "result": {
+    "id": "aptitudes:amulet_of_the_phoenix",
+    "count": 1
+  }
+}

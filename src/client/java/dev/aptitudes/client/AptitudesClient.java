@@ -4,7 +4,6 @@ import dev.aptitudes.ability.AbilityManager;
 import dev.aptitudes.client.hud.AbilityHud;
 import dev.aptitudes.client.screen.AptitudesScreen;
 import dev.aptitudes.client.screen.RolesScreen;
-import dev.aptitudes.client.screen.UniquesScreen;
 import dev.aptitudes.network.FormSyncPayload;
 import dev.aptitudes.network.MorphPayload;
 import dev.aptitudes.network.UniqueSyncPayload;
@@ -35,8 +34,8 @@ public class AptitudesClient implements ClientModInitializer {
 	private static KeyBinding openSkillsKey;
 	private static KeyBinding openRolesKey;
 	private static KeyBinding cycleElementKey;
-	private static KeyBinding openUniquesKey;
 	private static KeyBinding toggleHudKey;
+	private static KeyBinding accessoriesKey;
 	private static final KeyBinding[] abilityKeys = new KeyBinding[AbilityManager.SLOTS];
 
 	@Override
@@ -50,8 +49,10 @@ public class AptitudesClient implements ClientModInitializer {
 		ClientConfig.load();
 		toggleHudKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 				"key.aptitudes.toggle_hud", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_O, CATEGORY));
-		openUniquesKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-				"key.aptitudes.uniques", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_U, CATEGORY));
+		accessoriesKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+				"key.aptitudes.accessories", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Y, CATEGORY));
+		net.minecraft.client.gui.screen.ingame.HandledScreens.register(dev.aptitudes.accessory.AccessoryScreenHandler.TYPE,
+				dev.aptitudes.client.screen.AccessoryScreen::new);
 		for (int i = 0; i < abilityKeys.length; i++) {
 			abilityKeys[i] = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 					"key.aptitudes.ability_" + (i + 1), InputUtil.Type.KEYSYM, DEFAULT_ABILITY_KEYS[i], CATEGORY));
@@ -61,6 +62,11 @@ public class AptitudesClient implements ClientModInitializer {
 			ClientRoleState.tick();
 			ClientMorphs.tick(client);
 			while (toggleHudKey.wasPressed()) {
+				// Mayús + O: configuración del HUD (posición, escala, qué se muestra).
+				if (net.minecraft.client.gui.screen.Screen.hasShiftDown()) {
+					if (client.currentScreen == null) client.setScreen(new dev.aptitudes.client.screen.HudConfigScreen());
+					continue;
+				}
 				ClientConfig.get().hudVisible = !ClientConfig.get().hudVisible;
 				ClientConfig.save();
 				if (client.player != null) {
@@ -68,8 +74,11 @@ public class AptitudesClient implements ClientModInitializer {
 							? "aptitudes.hud.shown" : "aptitudes.hud.hidden"), true);
 				}
 			}
-			while (openUniquesKey.wasPressed()) {
-				if (client.player != null && client.currentScreen == null) client.setScreen(new UniquesScreen());
+			while (accessoriesKey.wasPressed()) {
+				if (client.player != null && client.currentScreen == null
+						&& ClientPlayNetworking.canSend(dev.aptitudes.network.OpenAccessoriesPayload.ID)) {
+					ClientPlayNetworking.send(new dev.aptitudes.network.OpenAccessoriesPayload());
+				}
 			}
 			while (openSkillsKey.wasPressed()) {
 				if (client.player != null && client.currentScreen == null) client.setScreen(new AptitudesScreen());
@@ -118,12 +127,15 @@ public class AptitudesClient implements ClientModInitializer {
 			ClientMorphs.clear();
 			ClientExtraState.clear();
 			dev.aptitudes.client.hud.ClientFx.clear();
+			AbilityHud.clear();
 		});
 
 		HudRenderCallback.EVENT.register(AbilityHud::render);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.ClientFx::renderHud);
 		net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents.AFTER_ENTITIES.register(
 				dev.aptitudes.client.hud.ClientFx::renderWorld);
+		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.MechanicPayload.ID,
+				(payload, context) -> AbilityHud.onMechanics(payload));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.ScreenFxPayload.ID,
 				(payload, context) -> dev.aptitudes.client.hud.ClientFx.onScreenFx(payload));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.DamageNumberPayload.ID,
@@ -134,6 +146,8 @@ public class AptitudesClient implements ClientModInitializer {
 		// Hoguera: modelo con planos de fuego recortados.
 		net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap.INSTANCE.putBlock(
 				dev.aptitudes.block.ModBlocks.BONFIRE, net.minecraft.client.render.RenderLayer.getCutout());
+		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.OpenRolesPayload.ID,
+				(payload, context) -> context.client().setScreen(new RolesScreen()));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.OpenBonfirePayload.ID,
 				(payload, context) -> context.client().setScreen(new AptitudesScreen(true)));
 	}

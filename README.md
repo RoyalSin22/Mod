@@ -369,6 +369,161 @@ A los 4 nodos propios de cada rol se suman 5:
 
 Comandos: `/unique` (lista) · `/unique admin give <jugador> <habilidad>` · `/unique admin revoke <habilidad>`.
 
+## v13: élites, campeones y accesorios
+
+### Élites y campeones
+- **Élite** (5 % de los monstruos, `eliteChance` en la config): 1-2 modificadores, ×2 de vida,
+  nombre visible. Suelta Fragmentos de alma, **Esencia de élite** (50 %) y más XP.
+- **Campeón** (10 % de las élites, y siempre uno en la azotea de cada torre): 3 modificadores,
+  ×4 de vida y **barra de jefe**. Suelta un **Corazón de campeón**, esencias y una pieza de armadura
+  de rol; se anuncia en el chat quién lo derrota.
+- Modificadores: Veloz, Blindado, Vampírico, Brutal, Regenerante, Explosivo (sin romper bloques),
+  Gélido, Escurridizo (se teletransporta al recibir golpes) y Gigante.
+
+### Accesorios (tecla **Y**)
+2 ranuras de anillo y 1 de amuleto; se conservan al morir.
+
+| Anillo | Efecto | Amuleto | Efecto |
+|---|---|---|---|
+| Fuerza | +1,5 de daño | Guardián | +3 de armadura |
+| Vitalidad | +4 de vida | Fénix | te salva de la muerte (cada 10 min) |
+| Celeridad | +8 % velocidad | Arcano | −10 % enfriamientos |
+| Maná | +30 de maná | Arboleda | regeneración fuera de combate |
+| Vampiro | robo de vida 5 % | Trofeo del cazador | +25 % de daño a élites |
+| Fortuna | +2 de suerte | | |
+
+Recetas: anillo = 4 pepitas de oro + gema + Esencia de élite; amuleto = cuerda + Esencia + gema
+(el del Fénix usa un Corazón de campeón). También aparecen en los cofres de las torres.
+
+## v12: legendarias en el árbol, estructuras y aldeano de gremio
+
+### Habilidades legendarias (antes "únicas")
+Cada rol tiene un **nodo legendario** al final de su árbol (fila 6, centro; nivel 25, exige la
+mecánica). Se aprende con 1 punto y se activa con **H**. Sin límite por servidor ni gestas.
+Si tienes las dos, cuenta la del rol principal.
+
+| Rol | Legendaria | Rol | Legendaria |
+|---|---|---|---|
+| Bersérker | Rueda de la Adaptación | Mercader | Corona de la Codicia |
+| Mago | Archivo del Vacío | Herbolista | Plaga Fúngica |
+| Asesino | Parásito | Brujo | Fuego del Averno |
+| Paladín | Rey Elegido | Ingeniero | Señor del Espacio-Tiempo |
+| Bardo | Dominio de la Negación | Domador | Genetista |
+| Cambiaformas | Espejo Perfecto | Cazador | Explotador |
+| Espadachín | Pendragón | Elementalista | Señor de los Cielos |
+| Monje | Quietud Eterna | Nigromante | Heraldo de la Muerte |
+| Lancero | **Atravesacielos** (nueva) | Druida | **Árbol del Mundo** (nueva) |
+| Mago pistolero | **La Última Bala** (nueva) | Invocador de armas | **Puerta del Arsenal** (nueva) |
+
+`/unique give <jugador> <legendaria>` concede el nodo; la pantalla de Únicas desaparece.
+
+### Estructuras (Overworld)
+| Estructura | Rareza (1 de cada N chunks) | Contenido |
+|---|---|---|
+| Torre en ruinas | 240 | 4 pisos, cofre por piso, generadores (zombi/esqueleto/araña), cofre de azotea con armaduras de rol y herramientas de alma |
+| Santuario de Hoguera | 150 | Hoguera encendida, cofre con fragmentos, frascos y a veces una Ofrenda |
+| Campamento | 200 | Cazadores (pillagers), brujos (brujas) o bandidos (vindicadores); botín temático |
+
+Las tablas de botín están en `data/aptitudes/loot_table/chests/` y la rareza en
+`data/aptitudes/worldgen/placed_feature/` (editables con un datapack).
+
+### Aldeano de gremio
+Coloca una **Mesa del gremio** (oro + esmeralda + tablones) junto a un aldeano sin profesión.
+Vende Fragmentos de alma, frascos de Estus y Éter, materiales de rol, **Vales de armería**
+(dan una pieza del set de tu rol principal, primero las que te faltan), Ofrendas de renacimiento,
+Emblemas de maestría y Núcleos definitivos.
+
+## v11: 6 roles nuevos, árbol rediseñado y barras nuevas
+
+### Roles nuevos (20 en total, 4 por categoría)
+| Rol | Categoría | Ítem | Mecánica | Activas |
+|---|---|---|---|---|
+| Mago pistolero | Arcana | Revólver arcano | Tambor arcano (6.ª bala explosiva) | Disparo arcano, Vaciar el tambor, Rebote, Ojo de la muerte |
+| Invocador de armas | Oficio | Sello de armas | Arsenal flotante (espadas que orbitan) | Andanada de espadas, Lluvia de espadas, Espadón espectral, Prisión de espadas |
+| Cazador | Sombras | Cuchillo de caza | La cacería (presa acumulada) | Marca del cazador, Trampa, Lluvia de flechas, Ataque del halcón |
+| Bardo | Guardianes | Laúd | Crescendo (4 notas → final) | Canción del valor, Disonancia, Balada protectora, Réquiem |
+| Brujo | Sombras | Talismán del pacto | Pacto demoníaco (vida → corrupción) | Maldición de agonía, Rayo del abismo, Invocar diablillos, Condena |
+| Domador | Oficio | Silbato del domador | Compañero (bonus si tu mascota ataca) | ¡A por él!, Vínculo vital, Estampida, Rugido alfa |
+
+Cada uno tiene 23 nodos, 3 Sendas, característica, definitiva, recurso propio, set de armadura con
+bonificación y prueba de evolución. XP: Cazador con flechas y cuchillo; Domador con el daño de sus
+mascotas; Bardo con el Laúd; el resto con su ítem y sus habilidades.
+
+### Árbol
+Tres zonas (Pasivas · Sendas · Activas), conectores en ángulo recto, núcleo/característica/definitiva
+arriba en el centro y el nombre de cada senda sobre su columna. Las líneas se iluminan en dorado
+al aprender y en gris claro cuando el nodo ya está disponible.
+
+### Barras
+Icono pixel art + barra redondeada con degradado y brillo, valor dentro de la barra; la vida late en
+rojo con menos del 25 %; los recursos de rol parpadean cuando pueden potenciar una habilidad.
+
+## Cambios v10 (tras la prueba de la v8)
+
+- **Textos**: las etiquetas largas se recortan con "…" en lugar de pisar los valores; nivel y puntos
+  del rol en dos líneas; columna de estadísticas más ancha.
+- **Árbol**: se arrastra con el ratón (clic en vacío o botón derecho), la rueda acerca/aleja y `C` lo
+  centra. La ventana crece con la pantalla (hasta 760×480).
+- **Cambio de rol**: ya no hay espera de 30 min. Ocupar una ranura vacía o intercambiar principal y
+  secundario es gratis; **sustituir** un rol exige quemar una **Ofrenda de renacimiento** en una Hoguera
+  (clic derecho con ella en la mano). Receta: 3 Fragmentos de alma + lingote de oro + vela.
+  `roleChangeRequiresRitual` en `config/aptitudes.json` lo desactiva.
+- **Mago arcano**: sin fuego ni hielo. Proyectil arcano, Distorsión temporal, Lluvia rúnica
+  (característica) y Senda Arcanista (crítico, ejecución, marchitar).
+- **HUD**: barras estilo Souls arriba a la izquierda (vida con trozo retrasado y absorción, maná,
+  aguante, recursos), indicador de la mecánica del rol sobre la barra de habilidades, ranuras con
+  esquinas doradas y destello al quedar listas. **Mayús + O** abre la configuración: arrastrar la
+  barra, escala 50–200 %, y activar/desactivar cada elemento.
+
+## Árbol ramificado y mecánicas de rol (v9, fase 1)
+
+### Árbol con requisitos (23 nodos por rol)
+```
+fila 0:          [Pasiva A]       [MECÁNICA]        [Activa A]
+fila 1:  [Entr.1]      [Pasiva B]           [Presteza]     [Activa B]
+fila 2:      [Reactiva 1]  [A1]  [B1]  [C1]   [Eficiencia]
+fila 3:  [Entr.2]          [A2]  [B2]  [C2]                [Activa C]
+fila 4:      [Reactiva 2]  [A3]  [B3]  [C3]   [Maestría]
+fila 5:                                                    [Activa D]
+```
+- Cada nodo exige al menos 1 rango de su padre (línea en el árbol).
+- **3 Sendas** por rol que nacen de la mecánica; solo puedes seguir **2**.
+- Puntos de árbol: 1 + 3 cada 3 niveles (31 al nivel 30) para 69 rangos posibles.
+
+### 4 activas por rol, 2 equipadas
+Cada rol tiene 4 activas (A, B, C, D). En la ficha de una activa aprendida, los botones
+**Ran. 1 / Ran. 2** la equipan en las teclas V/B (principal) o N/M (secundario).
+En el árbol, el número en la esquina indica la ranura.
+
+### Mecánica propia y pasivas reactivas
+| Rol | Mecánica | Reactivas |
+|---|---|---|
+| Bersérker | Frenesí (golpes seguidos acumulan daño) | Inquebrantable, Carnicería |
+| Mago | Cargas arcanas (hechizo gratis cada N) | Escudo de maná, Eco arcano |
+| Asesino | Ritmo letal (3.er golpe = remate) | Huida en humo, Desvanecerse |
+| Herbolista | Floración (quieto = regeneración en área) | Antídoto, Piel espinosa |
+| Ingeniero | Sobrecarga (calor → modo potenciado) | Escudo automático, Reparación de campo |
+| Lancero | Ímpetu (esprintar carga el golpe) | Afianzarse, Caída del dragontino |
+| Espadachín | Kata (3.er golpe barre) | Reflejos, Ráfaga |
+| Paladín | Luz sagrada (5 cargas → explosión) | Intercesión, Luz purificadora |
+| Nigromante | Cosecha de almas | Escudo de hueso, Estallido de cadáver |
+| Druida | Ciclo natural (día cura / noche daño) | Piel de corteza, Zarzas |
+| Mercader | Interés compuesto (esmeraldas) | Seguro, Recompensa |
+| Monje | Posturas Tigre / Grulla | Desviar, Paz interior |
+| Elementalista | Reacción (cambiar de elemento potencia) | Guarda elemental, Muerte resonante |
+| Cambiaformas | Instinto (transformado acumula daño) | Escurridizo, Devorar |
+
+Activas nuevas: Salto demoledor, Torbellino, Nova de escarcha, Misiles arcanos, Abanico de cuchillas,
+Shuriken, Lluvia sanadora, Nube de esporas, Garfio, Granada de pulso, Salto del dragón, Estocada
+perforante, Iaido, Mil cortes, Consagración, Martillo de la justicia, Lanza de hueso, Sifón de almas,
+Manada, Tormenta de espinas, Lanzamiento de moneda, Guardia dorada, Patada voladora, Cien puños,
+Ráfaga elemental, Aura elemental, Abalanzarse, Aullido de la bestia.
+
+### Hoja de ruta
+- **Fase 2**: nuevos elementos (Luz, Vacío, Veneno, Cristal, Sonido) y fusiones entre elementos.
+- **Fase 3**: armas mejoradas, accesorios, consumibles, materiales y enemigos élite/jefes.
+- **Fase 4**: sinergias entre rol principal y secundario.
+
 ## Equipo, objetos y efectos visuales (v8)
 
 ### Sets de armadura por rol

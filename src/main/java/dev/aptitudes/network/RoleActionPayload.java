@@ -20,6 +20,9 @@ public record RoleActionPayload(int action, int roleIndex, String nodeId) implem
 	public static final int CYCLE_ELEMENT = 4;
 	public static final int EVOLVE = 5;
 	public static final int SELECT_FORM = 6;
+	/** Equipar la activa {@code nodeId} en la ranura 1 / 2 de su rol. */
+	public static final int EQUIP_1 = 7;
+	public static final int EQUIP_2 = 8;
 
 	public static final Id<RoleActionPayload> ID = new Id<>(Aptitudes.id("role_action"));
 	public static final PacketCodec<RegistryByteBuf, RoleActionPayload> CODEC = PacketCodec.tuple(

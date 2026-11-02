@@ -1,0 +1,173 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 3,
+        "max": 6
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:arrow",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 6,
+                "max": 16
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:leather",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 5
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:cooked_beef",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 5
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:rabbit_hide",
+          "weight": 6,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bow",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:crossbow",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:spectral_arrow",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 6
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:hunting_knife",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:beast_whistle",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:soul_shard",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 0,
+        "max": 1
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:hunter_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:hunter_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:hunter_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:hunter_boots",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:tamer_helmet",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:tamer_chestplate",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:tamer_leggings",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "aptitudes:tamer_boots",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

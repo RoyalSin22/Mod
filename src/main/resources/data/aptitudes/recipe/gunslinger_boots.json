@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "XSX",
+    "X X"
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "S": {
+      "item": "aptitudes:soul_shard"
+    }
+  },
+  "result": {
+    "id": "aptitudes:gunslinger_boots",
+    "count": 1
+  }
+}
