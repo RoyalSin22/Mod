@@ -274,6 +274,12 @@ Pendiente: comprobarlo en el juego (ver `docs/TESTING.md`, v39).
   `EclipsePayload` lleva el tipo de evento.
 - Comando `/aptitudes event [status|start <evento>|stop]`; `/aptitudes eclipse` informa del próximo evento.
 
+### v41.1 — Corrección del HUD y Niebla de no muertos
+- `HudConfigScreen`: distribución calculada por filas (título, escala entre − y +, 6 interruptores, ayuda y
+  Restablecer/Hecho); antes las posiciones eran fijas desde el centro y se solapaban.
+- Niebla de almas: `event/SoulFogRules` (puro) elige la criatura por clima del bioma (agua, cálido, frío,
+  templado); solo zombis, esqueletos y sus variantes (sin fantasmas). `event/SoulFogRulesTest` (5 pruebas).
+
 ### v31 — Logros
 - Pestaña de avances «Aptitudes» (18 avances: la raíz y 17 logros) en `data/aptitudes/advancement/aptitudes/`,
   generados por `tools/advancements/gen_advancements.py`. Criterio `minecraft:impossible` («done») que concede el

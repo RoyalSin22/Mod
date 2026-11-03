@@ -7,6 +7,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 Compilado y probado en partida por el autor (v15–v19 y v29–v41 ✔).
 
+### Corregido
+- **v41.1** — Ajustes del HUD (Mayús + O): el texto de escala y la ayuda ya no se montan sobre los botones (la
+  distribución se calcula por filas).
+
 ### Añadido
 - **v31 — Logros**: pestaña «Aptitudes» en la pantalla de avances con 17 logros (Hoguera, roles y evoluciones,
   combos, habilidades, runas, jefes, eventos del mundo, grupos y contratos). Los logros de estado se conceden también
@@ -23,6 +27,9 @@ Compilado y probado en partida por el autor (v15–v19 y v29–v41 ✔).
   operadores cambian la configuración del servidor en el juego; los tooltips de las runas muestran los valores reales.
 
 ### Cambiado
+- **v41.1** — La Niebla de almas solo trae no muertos a pie: zombis, zombis aldeanos, esqueletos y, según el
+  bioma, ahogados y esqueletos pantanosos junto al agua, momias en climas cálidos y errantes en los fríos (ya no
+  aparecen fantasmas).
 - **v39** — La pantalla K se desplaza con la rueda cuando no cabe (escala de interfaz grande); la barra del
   Eclipse sube para no tapar los avisos de la barra de acción.
 

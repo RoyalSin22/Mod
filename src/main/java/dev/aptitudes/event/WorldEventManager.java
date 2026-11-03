@@ -54,8 +54,6 @@ public final class WorldEventManager {
 	private static final long EMBER_START = 0L;
 	private static final int METEOR_FALL_TICKS = 40;
 
-	private static final List<EntityType<? extends MobEntity>> FOG_TYPES = List.of(EntityType.ZOMBIE, EntityType.STRAY,
-			EntityType.SKELETON, EntityType.PHANTOM);
 
 	private record Meteor(ServerWorld world, Vec3d from, Vec3d to, long impactTick) {}
 
@@ -274,11 +272,10 @@ public final class WorldEventManager {
 				ServerPlayerEntity target = group.get(i % groupSize);
 				BlockPos pos = EclipseManager.findSpawn(world, target.getBlockPos(), 14, 28);
 				if (pos == null) continue;
-				EntityType<? extends MobEntity> type = FOG_TYPES.get(world.random.nextInt(FOG_TYPES.size()));
+				EntityType<? extends MobEntity> type = fogType(world, pos);
 				MobEntity mob = type.create(world);
 				if (mob == null) continue;
-				double y = type == EntityType.PHANTOM ? pos.getY() + 12 : pos.getY();
-				mob.refreshPositionAndAngles(pos.getX() + 0.5, y, pos.getZ() + 0.5, world.random.nextFloat() * 360f, 0);
+				mob.refreshPositionAndAngles(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, world.random.nextFloat() * 360f, 0);
 				mob.initialize(world, world.getLocalDifficulty(pos), SpawnReason.EVENT, null);
 				mob.addCommandTag(TAG);
 				mob.addCommandTag(Elites.CHECKED);
@@ -289,6 +286,27 @@ public final class WorldEventManager {
 				ALIVE.add(mob.getUuid());
 			}
 		}
+	}
+
+	/** v41.1: solo no muertos a pie; la variante depende del clima del bioma ({@link SoulFogRules}). */
+	private static EntityType<? extends MobEntity> fogType(ServerWorld world, BlockPos pos) {
+		var biome = world.getBiome(pos);
+		boolean water = world.getFluidState(pos).isIn(net.minecraft.registry.tag.FluidTags.WATER)
+				|| biome.isIn(net.minecraft.registry.tag.BiomeTags.IS_OCEAN)
+				|| biome.isIn(net.minecraft.registry.tag.BiomeTags.IS_RIVER)
+				|| biome.isIn(net.minecraft.registry.tag.BiomeTags.IS_BEACH)
+				|| biome.matchesKey(net.minecraft.world.biome.BiomeKeys.SWAMP)
+				|| biome.matchesKey(net.minecraft.world.biome.BiomeKeys.MANGROVE_SWAMP);
+		SoulFogRules.Climate climate = SoulFogRules.climate(water, biome.value().getTemperature());
+		return switch (SoulFogRules.choose(climate, world.random.nextInt(100))) {
+			case ZOMBIE -> EntityType.ZOMBIE;
+			case ZOMBIE_VILLAGER -> EntityType.ZOMBIE_VILLAGER;
+			case DROWNED -> EntityType.DROWNED;
+			case HUSK -> EntityType.HUSK;
+			case SKELETON -> EntityType.SKELETON;
+			case STRAY -> EntityType.STRAY;
+			case BOGGED -> EntityType.BOGGED;
+		};
 	}
 
 	// ------------------------------------------------------------------ Lluvia de brasas

@@ -177,7 +177,7 @@ de armaduras, colisión de las transformaciones, Mesa del gremio, atributos −3
   `role/RoleRulesTest`, `role/LoadoutCodecTest`, `role/EvolutionPointsTest`, `morph/MorphSizeRulesTest`, `logic/ComboCounterTest`, `data/ProgressRulesTest`,
   `rune/RuneRulesTest`, `boss/BossRulesTest`, `event/EclipseRulesTest`, `rune/RuneBalanceTest`, `logic/PlacedBlockPersistenceTest`,
   `config/ConfigFieldRulesTest`, `event/WorldEventRulesTest`, `party/PartyRulesTest`, `contract/ContractRulesTest`,
-  `achievement/AchievementCatalogTest`, `config/AptitudesConfigValidationTest`.
+  `achievement/AchievementCatalogTest`, `event/SoulFogRulesTest`, `config/AptitudesConfigValidationTest`.
 - Puedes escribir pruebas en JUnit 5 o JUnit 4; ambos funcionan.
 - **No escribas pruebas que llamen a métodos que no existen.** Si una prueba necesita una API nueva,
   impleméntala en el código principal en el mismo cambio y explícalo (ya pasó una vez y rompió el build).
@@ -198,7 +198,7 @@ de armaduras, colisión de las transformaciones, Mesa del gremio, atributos −3
 | Pendiente | Estado |
 |---|---|
 | `attributeScaling = SOFTCAP` por defecto | Decisión del autor tras probar en partida |
-| Pruebas en partida | v15–v19 y v29–v41 ✔ (autor, 2026-11-03); defecto abierto: solapamiento en `HudConfigScreen` |
+| Pruebas en partida | v15–v19 y v29–v41 ✔ (autor, 2026-11-03); v41.1 corrige el solapamiento de `HudConfigScreen` |
 | Filtro de mobs con IA Brain | Actúa cada 5 ticks (limitación documentada) |
 | Diseño de cualquier contenido grande nuevo | Proponer primero al autor (como se hizo en `docs/V23_DISENO_ARBOL.md`) |
 

@@ -45,7 +45,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 | Runas de armas v32 | `rune/RuneSocketing`, `rune/RuneRules`; hasta dos por arma, engarzadas en la Mesa del gremio |
 | Runas+ v35 (Escarcha, Trueno, Guardia; quitar runas; valores configurables) | `rune/RuneSocketing` (esperas en memoria, `UseBlockCallback` para Mayús + clic en la Mesa), `rune/RuneRules` |
 | Jefes propios v33 | `boss/BossManager` y `boss/BossRules`; fases guardadas en etiquetas del mob y tres núcleos que mejoran armas de evolución |
-| Eventos rotativos v41 (Eclipse, Niebla de almas, Lluvia de brasas; uno al azar por fecha) | `event/WorldEventManager`, `event/WorldEventRules` (puro), `event/WorldEventState`, `event/WorldEventKind`; `EclipsePayload` lleva el tipo de evento |
+| Eventos rotativos v41 (Eclipse, Niebla de almas, Lluvia de brasas; uno al azar por fecha) | `event/WorldEventManager`, `event/WorldEventRules` (puro), `event/SoulFogRules` (criaturas de la Niebla, puro), `event/WorldEventState`, `event/WorldEventKind`; `EclipsePayload` lleva el tipo de evento |
 | Eclipse v34 (evento del mundo cada 10 días) | `event/EclipseManager`, `event/EclipseRules` (puro), `event/EclipseState`; cliente `ClientEclipse`, `hud/EclipseHud` y mixins `Eclipse*Mixin` (`require = 0`). Textura del sol: `tools/textures/gen_eclipse.py` |
 
 Historial reciente en `main`: auditoría de seguridad y balance, v14 (grimorio, elementos y armas), v15
@@ -120,7 +120,7 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
   `logic/PlacedBlockLogTest`, `ability/CooldownBookTest`, `world/TemporaryBlockScheduleTest`,
   `role/LoadoutCodecTest`, `role/EvolutionPointsTest`, `morph/MorphSizeRulesTest`, `logic/ComboCounterTest`,
   `role/RoleRulesTest`, `data/ProgressRulesTest` y
-  `rune/RuneRulesTest`, `boss/BossRulesTest`, `event/EclipseRulesTest`, `rune/RuneBalanceTest`, `logic/PlacedBlockPersistenceTest`, `config/ConfigFieldRulesTest`, `event/WorldEventRulesTest`, `party/PartyRulesTest`, `contract/ContractRulesTest`, `achievement/AchievementCatalogTest`,
+  `rune/RuneRulesTest`, `boss/BossRulesTest`, `event/EclipseRulesTest`, `rune/RuneBalanceTest`, `logic/PlacedBlockPersistenceTest`, `config/ConfigFieldRulesTest`, `event/WorldEventRulesTest`, `party/PartyRulesTest`, `contract/ContractRulesTest`, `achievement/AchievementCatalogTest`, `event/SoulFogRulesTest`,
   `config/AptitudesConfigValidationTest`.
 - **No escribas pruebas que llamen a métodos que no existen.** Si una prueba necesita una API nueva,
   impleméntala en el código principal en el mismo cambio y explícalo.
@@ -133,7 +133,7 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
 - **Plan aprobado v40–v45** (configuración, eventos rotativos, alquimia, maestría y amenaza, tutorial,
   traducciones): `docs/PLAN_v40_v45.md`. Excepción a «sin dependencias»: Mod Menu como `modCompileOnly` (v40).
 - Activar `attributeScaling = SOFTCAP` por defecto: **decisión del autor** tras probar en partida.
-- Pruebas en partida: v15–v19 y v29–v41 ✔ (autor, 2026-11-03). Defecto abierto: solapamiento en `HudConfigScreen`.
+- Pruebas en partida: v15–v19 y v29–v41 ✔ (autor, 2026-11-03). v41.1 corrige el solapamiento de `HudConfigScreen`.
 - Limitaciones abiertas: tabla «Limitaciones conocidas» del `README.md` (el filtro Brain actúa cada 5 ticks).
 
 ## 8. Al terminar una tarea

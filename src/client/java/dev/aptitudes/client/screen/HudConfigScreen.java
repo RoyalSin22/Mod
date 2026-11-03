@@ -22,26 +22,42 @@ public class HudConfigScreen extends Screen {
 		super(Text.translatable("screen.aptitudes.hud_config"));
 	}
 
+	/** Alto de una fila (botón de 18 + 4 de separación). */
+	private static final int ROW = 22;
+	/** Título + fila de escala + 6 interruptores + ayuda + Restablecer/Hecho. */
+	private static final int CONTENT_HEIGHT = 12 + ROW + 6 * ROW + 6 + 12 + 18;
+	private int titleY;
+	private int scaleY;
+	private int hintY;
+
 	@Override
 	protected void init() {
 		ClientConfig cfg = ClientConfig.get();
 		int cx = width / 2;
-		int y = height / 2 - 80;
+		// v41.1: la distribución se calcula por filas (antes eran posiciones fijas desde el centro y, al añadir
+		// «Cielo del Eclipse», el texto de escala y la ayuda quedaron encima de los botones).
+		int y = Math.max(4, (height - CONTENT_HEIGHT) / 2);
+		titleY = y;
+		y += 12;
+		// Fila de escala: − [texto] +, todo en la misma fila.
 		addDrawableChild(ButtonWidget.builder(Text.literal("−"), b -> scale(-0.1f)).dimensions(cx - 100, y, 20, 18).build());
 		addDrawableChild(ButtonWidget.builder(Text.literal("+"), b -> scale(0.1f)).dimensions(cx + 80, y, 20, 18).build());
-		y += 22;
+		scaleY = y + 5;
+		y += ROW;
 		addDrawableChild(toggle(cx - 100, y, "screen.aptitudes.hud.souls_bars", () -> cfg.soulsBars, v -> cfg.soulsBars = v));
-		y += 22;
+		y += ROW;
 		addDrawableChild(toggle(cx - 100, y, "screen.aptitudes.hud.mechanic", () -> cfg.showMechanic, v -> cfg.showMechanic = v));
-		y += 22;
+		y += ROW;
 		addDrawableChild(toggle(cx - 100, y, "screen.aptitudes.hud.damage_numbers", () -> cfg.damageNumbers, v -> cfg.damageNumbers = v));
-		y += 22;
+		y += ROW;
 		addDrawableChild(toggle(cx - 100, y, "screen.aptitudes.hud.screen_effects", () -> cfg.screenEffects, v -> cfg.screenEffects = v));
-		y += 22;
+		y += ROW;
 		addDrawableChild(toggle(cx - 100, y, "screen.aptitudes.hud.eclipse_sky", () -> cfg.eclipseSkyEffects, v -> cfg.eclipseSkyEffects = v));
-		y += 22;
+		y += ROW;
 		addDrawableChild(toggle(cx - 100, y, "screen.aptitudes.hud.visible", () -> cfg.hudVisible, v -> cfg.hudVisible = v));
-		y += 26;
+		y += ROW + 6;
+		hintY = y;
+		y += 12;
 		addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.hud.reset"), b -> {
 			cfg.hudOffsetX = 0;
 			cfg.hudOffsetY = 0;
@@ -73,11 +89,11 @@ public class HudConfigScreen extends Screen {
 	public void render(DrawContext ctx, int mouseX, int mouseY, float delta) {
 		super.render(ctx, mouseX, mouseY, delta);
 		ClientConfig cfg = ClientConfig.get();
-		ctx.drawCenteredTextWithShadow(textRenderer, title, width / 2, height / 2 - 92, UiStyle.GOLD);
+		ctx.drawCenteredTextWithShadow(textRenderer, title, width / 2, titleY, UiStyle.GOLD);
 		ctx.drawCenteredTextWithShadow(textRenderer, Text.translatable("screen.aptitudes.hud.scale",
-				Math.round(cfg.hudScale * 100)), width / 2, height / 2 - 65, UiStyle.TEXT);
+				Math.round(cfg.hudScale * 100)), width / 2, scaleY, UiStyle.TEXT);
 		ctx.drawCenteredTextWithShadow(textRenderer, Text.translatable("screen.aptitudes.hud.drag"),
-				width / 2, height / 2 + 82, UiStyle.MUTED);
+				width / 2, hintY, UiStyle.MUTED);
 		// Vista previa de la barra con su marco de arrastre.
 		RoleSyncPayload data = ClientRoleState.data();
 		int[] o = AbilityHud.barOrigin(width, height);

@@ -25,6 +25,7 @@ reescribir las existentes (JUnit 4):
 | `config/PartyConfigValidationTest` | Valores predeterminados y límites seguros de los cuatro campos de grupo |
 | `contract/ContractRulesTest` | Ofertas fijas por jugador y día, oferta destacada, límites por reputación y evolución, tipos por dificultad, objetivos alcanzables y entregas completas |
 | `achievement/AchievementCatalogTest` | Árbol de logros (ids únicos, padres declarados), JSON de avances coherentes con el enum y sin sobrantes, traducciones en los 8 idiomas |
+| `event/SoulFogRulesTest` | Pesos que suman 100 por clima, clima por agua y temperatura, distribución exacta de las tiradas, variantes por clima y tiradas fuera de rango |
 
 Ejecución: `.\gradlew.bat test` (también se ejecutan en `.\gradlew.bat build`).
 
@@ -199,7 +200,7 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
 
 1. `/aptitudes event`: «Próximo evento: X, dentro de N días».
 2. `/aptitudes event start soul_fog`: cielo gris azulado, almas y ceniza blanca, barra «Niebla de almas»;
-   oleadas pequeñas (zombis, esqueletos, fantasmas) que sueltan Fragmentos de alma. `/aptitudes event stop`: se disuelven.
+   oleadas pequeñas de no muertos a pie (zombis, esqueletos y sus variantes; sin fantasmas) que sueltan Fragmentos de alma. `/aptitudes event stop`: se disuelven.
 3. `/aptitudes event start ember_rain`: cielo anaranjado; cada ~25 s una estela de fuego cae cerca y explota
    sin romper bloques, dejando lingotes. Recibir el impacto hace daño.
 4. `/aptitudes event start eclipse`: igual que antes (sol con anillo rojo).
@@ -226,6 +227,14 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
    el comportamiento anterior. Verifica el HUD en la misma dimensión, en otra dimensión y tras desconectar.
 7. En Eclipse, confirma un Heraldo por grupo y escalado de vida hasta cinco integrantes; sin grupo, los jugadores
    a menos de 64 bloques siguen compartiendo un Heraldo. En Niebla de almas comprueba oleadas y tope según grupo.
+
+# v41.1 — HUD y Niebla de no muertos (verificación manual)
+
+1. Mayús + O con escala de interfaz 2, 3 y 4: el título, «Escala: N %» (entre − y +), los 6 botones, la ayuda y
+   Restablecer/Hecho no se solapan.
+2. `/aptitudes event start soul_fog` en una llanura: zombis, zombis aldeanos y esqueletos; ningún fantasma.
+3. Repite junto a un río o en la playa (ahogados y esqueletos pantanosos), en un desierto (momias) y en una
+   llanura nevada (errantes).
 
 # v31 — logros (verificación manual)
 
