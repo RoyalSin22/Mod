@@ -149,10 +149,11 @@ public final class PartyManager {
 				Aptitudes.config().partyXpBonusMax);
 		int bonusXp = PartyRules.bonusXp(earned, bonus);
 		for (ServerPlayerEntity member : members) {
-			Role primary = RoleManager.get(member).primary();
-			if (primary == null) continue;
-			int amount = PartyRules.memberXp(earned, party.sharePercent, member == killer, bonusXp);
-			RoleManager.addSharedRoleXp(member, primary, amount);
+			Role target = member == killer ? role : RoleManager.get(member).primary();
+			if (target == null) continue;
+			int amount = member == killer ? PartyRules.sourceXp(earned, bonusXp)
+					: PartyRules.memberXp(earned, party.sharePercent, false, bonusXp);
+			RoleManager.addSharedRoleXp(member, target, amount);
 		}
 	}
 
