@@ -99,9 +99,10 @@ public final class ProgressManager {
 	/** @param force si es {@code true} ignora las restricciones de modo de juego (comandos de admin). */
 	public static void addXp(ServerPlayerEntity player, Skill skill, int amount, boolean force) {
 		if (amount <= 0) return;
-		dev.aptitudes.contract.ContractManager.professionXp(player, amount);
 		AptitudesConfig cfg = Aptitudes.config();
 		if (!force && (player.isSpectator() || (player.isCreative() && !cfg.awardXpInCreative))) return;
+		// v30: contratos de Oficio (solo XP ganada jugando, no la de comandos de administrador).
+		if (!force) dev.aptitudes.contract.ContractManager.skillXp(player, skill, amount);
 
 		PlayerProgress progress = get(player);
 		ProgressRules rules = rules();

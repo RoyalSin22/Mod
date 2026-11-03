@@ -6,6 +6,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **v30 — Contratos del gremio**: Tablón de contratos con 3 ofertas diarias por jugador (fijas por día), 2–3
+  activos, 8 tipos (Caza, Entrega, Pesca, Encantamiento, Oficio, Forja, Evento y Jefe), dificultad por
+  reputación y por evolución (Élite y Legendario) y recompensas con reputación. La Caza y los Jefes cuentan
+  también para el grupo.
 - **v29 — Grupos**: menú con tecla P, invitaciones clicables con caducidad, XP compartida configurable,
   bonificación de grupo, protección contra fuego amigo, apoyo a aliados, HUD y persistencia en el Mundo Normal.
 - **v41** — Eventos rotativos: Niebla de almas y Lluvia de brasas se alternan al azar con el Eclipse (sin

@@ -273,3 +273,15 @@ Pendiente: comprobarlo en el juego (ver `docs/TESTING.md`, v39).
 - Cliente: colores de cielo, niebla, nubes y viñeta por evento; partículas propias; el sol eclipsado solo en el Eclipse.
   `EclipsePayload` lleva el tipo de evento.
 - Comando `/aptitudes event [status|start <evento>|stop]`; `/aptitudes eclipse` informa del próximo evento.
+
+### v30 — Contratos del gremio (Codex, revisado y corregido)
+- Bloque `aptitudes:contract_board`, pantalla (420×230), payloads `ContractActionPayload` (C2S) y
+  `ContractViewPayload` (S2C), attachment `aptitudes:contracts` con `copyOnDeath`.
+- `ContractRules` (puro): ofertas deterministas por jugador y día (la primera, de la dificultad máxima), tipos por
+  dificultad (Jefe solo Legendario; Evento desde Difícil), objetivos alcanzables, rangos de reputación.
+  `contract/ContractRulesTest` (7 pruebas).
+- Correcciones de la revisión: un contrato aceptado guarda la oferta completa (no cambia al subir la reputación
+  ni caduca al cambiar de día); cada oferta solo se acepta una vez al día (antes se podía aceptar y cobrar sin
+  límite); las entregas no quitan objetos si no llegas a la cantidad; objetivos de Evento, Jefe y Forja
+  alcanzables; la Caza solo cuenta criaturas objetivo; el Oficio no cuenta XP de comandos; textos traducibles y
+  nombres de objetivo en la pantalla.

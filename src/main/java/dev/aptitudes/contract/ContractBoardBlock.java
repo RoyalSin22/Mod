@@ -19,6 +19,6 @@ public final class ContractBoardBlock extends Block {
 		return ActionResult.CONSUME;
 	}
 	@Override protected NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
-		return new SimpleNamedScreenHandlerFactory((id, inv, player) -> new ContractBoardScreenHandler(id), Text.translatable("contract.board.title"));
+		return new SimpleNamedScreenHandlerFactory((id, inv, player) -> new ContractBoardScreenHandler(id), Text.translatable("container.aptitudes.contract_board"));
 	}
 }

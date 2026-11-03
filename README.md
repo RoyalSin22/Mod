@@ -775,3 +775,7 @@ tooltips de las runas muestran los valores reales del servidor.
 
 **v41 — Eventos rotativos:** cada 10 días, un evento al azar sin repetir el anterior: el Eclipse, la **Niebla de
 almas** (noche de criaturas de alma) o la **Lluvia de brasas** (meteoritos con minerales). `/aptitudes event`.
+
+**v30 — Contratos del gremio:** fabrica un Tablón de contratos (papel y tablones). Cada día ofrece 3 contratos
+(Caza, Entrega, Pesca, Encantamiento, Oficio, Forja, Evento o Jefe). Cóbralos para ganar esmeraldas, XP de rol
+y reputación (Aprendiz → Oficial → Veterano → Maestro). Ver el capítulo «Contratos del gremio» del grimorio.

@@ -49,8 +49,9 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playC2S().register(PartyActionPayload.ID, PartyActionPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(ContractActionPayload.ID, ContractActionPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(ContractViewPayload.ID, ContractViewPayload.CODEC);
+		// v30: el índice es la oferta (aceptar) o la ranura activa (abandonar, entregar, cobrar); se valida en ContractManager.
 		ServerPlayNetworking.registerGlobalReceiver(ContractActionPayload.ID, (payload, context) -> {
-			if (payload.offer() < 0 || payload.offer() >= 3) return;
+			if (payload.offer() < 0 || payload.offer() >= dev.aptitudes.contract.ContractRules.OFFERS_PER_DAY) return;
 			var player = context.player();
 			if (payload.action() == ContractActionPayload.REQUEST) { dev.aptitudes.contract.ContractManager.sync(player); return; }
 			switch (payload.action()) {
@@ -60,6 +61,7 @@ public final class ModNetworking {
 				case ContractActionPayload.CLAIM -> dev.aptitudes.contract.ContractManager.claim(player, payload.offer());
 				default -> { }
 			}
+			dev.aptitudes.contract.ContractManager.sync(player); // la pantalla ve el resultado al momento
 		});
 		ServerPlayNetworking.registerGlobalReceiver(PartyActionPayload.ID, (payload, context) -> {
 			var player = context.player();

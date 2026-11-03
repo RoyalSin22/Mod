@@ -218,3 +218,16 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
    el comportamiento anterior. Verifica el HUD en la misma dimensión, en otra dimensión y tras desconectar.
 7. En Eclipse, confirma un Heraldo por grupo y escalado de vida hasta cinco integrantes; sin grupo, los jugadores
    a menos de 64 bloques siguen compartiendo un Heraldo. En Niebla de almas comprueba oleadas y tope según grupo.
+
+# v30 — contratos del gremio (verificación manual)
+
+1. Fabrica un Tablón (3 papel arriba, 3 tablones en medio y 1 tablón abajo en el centro) y úsalo: 3 ofertas con
+   objetivo y recompensa legibles; cerrar y abrir no las cambia.
+2. Acepta una de Caza y mata a la criatura indicada: progreso en la barra; al completarla, aviso «¡Contrato
+   completado!». Cóbrala: esmeraldas, XP de rol y reputación. Esa oferta ya no se puede volver a aceptar hoy.
+3. Entrega sin llevar suficiente: aviso y **no** se quita nada. Con la cantidad completa: se entrega.
+4. Pasa al día siguiente (`/time add 24000`): ofertas nuevas; el contrato que tenías en curso sigue igual.
+5. En grupo: la Caza de un miembro avanza el contrato del otro (conectado).
+6. Con el rol en Maestro: aparecen ofertas Élite; en Definitivo, Legendarias (Jefe o Evento).
+7. `/aptitudes event start soul_fog` y espera al final (o detenlo con `stop`: no cuenta); un contrato de Evento
+   de Niebla avanza al terminar el evento con éxito.

@@ -110,6 +110,7 @@ retematizaron (p. ej., «Talismán maldito»).
 | Runas para armas de rol (v32) | `rune/RuneSocketing`, `rune/RuneRules`, NBT persistente en `ItemStack.CUSTOM_DATA` |
 | Jefes propios en estructuras (v33) | `boss/BossManager`, `BossKind`, `BossRules`; etiquetas persistentes, barra de campeón existente y mejora de armas con núcleos |
 | Eclipse, evento del mundo (v34) | `event/EclipseManager`, `EclipseRules` (puro, con pruebas), `EclipseState`; cliente `ClientEclipse`, `hud/EclipseHud`, mixins `Eclipse*Mixin` con `require = 0` y sin `@Shadow`; diseño en `docs/V34_ECLIPSE.md` |
+| Contratos del gremio (v30) | `contract/ContractRules` (puro), `ContractData`, `ContractManager`, `ContractTargets`; tablón `aptitudes:contract_board`; pantalla `ContractBoardScreen` |
 | Runas+ (v35) | `rune/RuneSocketing`: 8 runas, extracción con Mayús + clic en la Mesa del gremio (`UseBlockCallback`), esperas en memoria; valores en la configuración (`rune*`) |
 | Fabricación en la Mesa del gremio (armaduras de rol) | `world/GuildCrafting` (tipo `aptitudes:guild_crafting`), `GuildShapedRecipe`, `GuildDeskScreenHandler`, `GuildDeskBlock`; cliente `GuildDeskScreen` |
 | Configuración validada al cargar | `config/AptitudesConfig.validated` |

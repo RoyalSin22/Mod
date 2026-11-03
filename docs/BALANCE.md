@@ -209,3 +209,20 @@ uno de cada tres eventos de media.
 Efecto de balance a vigilar: compartir XP de rol permite que integrantes avancen el rol del atacante aunque no lo
 tengan activo; es el comportamiento deliberado de la XP compartida. El rendimiento decreciente se calcula antes
 del reparto para que las bajas repetidas no eludan el límite.
+
+# Contratos del gremio (v30)
+
+| Tipo | Objetivo por dificultad (s = 1 Fácil … 5 Legendario) | Desde |
+|---|---|---|
+| Caza (zombi, esqueleto, creeper, araña, enderman) | 6 + 4·s (+0–2) | Fácil |
+| Entrega (hierro, trigo, zanahoria, bacalao, salmón, patata) | 16·s objetos, de golpe | Fácil |
+| Pesca | 3 + 2·s (+0–2) | Fácil |
+| Oficio (XP de una habilidad) | 150·s | Fácil |
+| Encantamiento | 1 + s | Normal |
+| Forja (Mesa del gremio) | 1 (2 en Élite y Legendario) | Normal |
+| Evento (sobrevivir) | 1 | Difícil |
+| Jefe | 1 | Legendario |
+
+Recompensas: 2 + 2·s esmeraldas (+6 los de Jefe), 15 + 10·s XP de rol, +10 + 10·s reputación; Élite y
+Legendario dan además Fragmentos de alma (1 + s/2), y a veces un vale de armería (Élite, 1/3) o un emblema de
+maestría (Legendario, 1/4). Activos: 2 (3 desde Veterano, 300 de reputación).
