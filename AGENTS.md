@@ -126,8 +126,8 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
 
 ## 7. Pendientes conocidos (consulta antes de empezar algo grande)
 
-- **Siguiente trabajo**: v29 (grupos) y v30 (contratos del gremio). Instrucciones completas, qué NO tocar
-  (dependencias de JUnit, versiones, ids…) y errores ya vistos en `docs/PROMPT_CODEX_v29_v30.md`.
+- **Siguiente trabajo de Codex**: v29 (grupos), v30 (contratos) y v31 (logros) sobre el `main` actual.
+  Instrucciones completas, qué NO tocar e integraciones: `docs/PROMPT_CODEX_v29_v31.md` (sustituye al de v29–v30).
 
 - **Plan aprobado v40–v45** (configuración, eventos rotativos, alquimia, maestría y amenaza, tutorial,
   traducciones): `docs/PLAN_v40_v45.md`. Excepción a «sin dependencias»: Mod Menu como `modCompileOnly` (v40).
