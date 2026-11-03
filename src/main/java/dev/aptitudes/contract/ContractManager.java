@@ -9,7 +9,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.server.world.ServerWorld;
 import java.util.List;
 
 /** Progreso de Caza individual y sincronizado con los miembros conectados del grupo v29. */
@@ -25,6 +24,18 @@ public final class ContractManager {
 		ContractData data = data(p); data.refreshDay(day);
 		return ContractRules.dailyOffers(p.getUuid(), day, data.reputation(), evolution(p));
 	}
+	public static void sync(ServerPlayerEntity p) {
+		var data=data(p); var offers=offers(p); var active=data.active();
+		java.util.List<dev.aptitudes.network.ContractViewPayload.Row> all=new java.util.ArrayList<>(), running=new java.util.ArrayList<>();
+		for(int i=0;i<offers.size();i++){var o=offers.get(i);all.add(row(i,o,0));}
+		for(var a:active){var o=offers.get(a.offer());running.add(row(a.offer(),o,a.progress()));}
+		net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.send(p,new dev.aptitudes.network.ContractViewPayload(
+				ContractRules.rank(data.reputation()),data.reputation(),all,running));
+	}
+	private static dev.aptitudes.network.ContractViewPayload.Row row(int i,ContractRules.Offer o,int progress){
+		return new dev.aptitudes.network.ContractViewPayload.Row(i,o.kind().ordinal(),o.difficulty().ordinal(),o.target(),o.goal(),progress,
+				o.emeralds(),o.fragments(),o.roleXp(),o.voucher(),o.emblem());
+	}
 	public static boolean accept(ServerPlayerEntity p, int offerIndex) {
 		List<ContractRules.Offer> offers = offers(p);
 		boolean accepted = offerIndex >= 0 && offerIndex < offers.size() && data(p).accept(offerIndex);
@@ -36,6 +47,16 @@ public final class ContractManager {
 	public static void fish(ServerPlayerEntity p, int amount) { progressKind(p, ContractRules.Kind.FISHING, amount); }
 	public static void enchant(ServerPlayerEntity p, int amount) { progressKind(p, ContractRules.Kind.ENCHANTING, amount); }
 	public static void forge(ServerPlayerEntity p) { progressKind(p, ContractRules.Kind.FORGE, 1); }
+	public static void onEventSurvived(ServerPlayerEntity p, dev.aptitudes.event.WorldEventKind kind) {
+		progressTarget(p, ContractRules.Kind.EVENT, kind.ordinal());
+	}
+	public static void onBossKilled(ServerPlayerEntity p, dev.aptitudes.boss.BossKind kind) {
+		for (ServerPlayerEntity member : PartyManager.onlineMembers(p)) progressTarget(member, ContractRules.Kind.BOSS, kind.ordinal());
+	}
+	private static void progressTarget(ServerPlayerEntity p, ContractRules.Kind kind, int target) {
+		List<ContractRules.Offer> offers=offers(p); ContractData d=data(p);
+		for (ContractData.Active a:d.active()) { var o=offers.get(a.offer()); if(o.kind()==kind && o.target()==target) d.progress(a.offer(),1,o.goal()); }
+	}
 	private static void progressKind(ServerPlayerEntity p, ContractRules.Kind kind, int amount) {
 		List<ContractRules.Offer> offers=offers(p); ContractData d=data(p);
 		for (ContractData.Active a:d.active()) { var o=offers.get(a.offer()); if(o.kind()==kind) d.progress(a.offer(),amount,o.goal()); }
@@ -43,6 +64,7 @@ public final class ContractManager {
 	public static void deliver(ServerPlayerEntity p, int index) {
 		List<ContractRules.Offer> offers=offers(p); if(index>=offers.size()) return;
 		var o=offers.get(index); if(o.kind()!=ContractRules.Kind.DELIVERY) return;
+		if (data(p).active().stream().noneMatch(a -> a.offer() == index)) return;
 		var inv=p.getInventory(); int need=o.goal();
 		for(int slot=0;slot<inv.size()&&need>0;slot++) { ItemStack stack=inv.getStack(slot); if(matches(o.target(),stack)) { int take=Math.min(need,stack.getCount()); stack.decrement(take); need-=take; } }
 		if(need==0) data(p).progress(index,o.goal(),o.goal());

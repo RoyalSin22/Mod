@@ -213,6 +213,7 @@ public final class ModItems {
 						entries.add(CURSED_TALISMAN);
 						entries.add(BEAST_WHISTLE);
 						entries.add(dev.aptitudes.block.ModBlocks.BONFIRE_ITEM);
+						entries.add(dev.aptitudes.block.ModBlocks.CONTRACT_BOARD_ITEM);
 						entries.add(MASTERY_EMBLEM);
 						entries.add(ULTIMATE_CORE);
 						entries.add(GUIDE_BOOK);

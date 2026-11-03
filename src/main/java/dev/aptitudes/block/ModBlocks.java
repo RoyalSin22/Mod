@@ -22,6 +22,11 @@ public final class ModBlocks {
 
 	public static final Item BONFIRE_ITEM = Registry.register(Registries.ITEM, Aptitudes.id("bonfire"),
 			new BlockItem(BONFIRE, new Item.Settings().rarity(Rarity.UNCOMMON)));
+	public static final Block CONTRACT_BOARD = Registry.register(Registries.BLOCK, Aptitudes.id("contract_board"),
+			new dev.aptitudes.contract.ContractBoardBlock(AbstractBlock.Settings.create().mapColor(MapColor.BROWN)
+					.strength(2.0f).sounds(BlockSoundGroup.WOOD)));
+	public static final Item CONTRACT_BOARD_ITEM = Registry.register(Registries.ITEM, Aptitudes.id("contract_board"),
+			new BlockItem(CONTRACT_BOARD, new Item.Settings()));
 
 	private ModBlocks() {
 	}

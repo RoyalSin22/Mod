@@ -221,6 +221,9 @@ public final class WorldEventManager {
 			EclipseManager.broadcast(server, Text.translatable("event.aptitudes." + kind.id() + (completed ? ".end" : ".stopped"))
 					.formatted(Formatting.GOLD));
 		}
+		if (completed && kind != null) for (ServerPlayerEntity player : world.getPlayers()) {
+			dev.aptitudes.contract.ContractManager.onEventSurvived(player, kind);
+		}
 		syncAll(server, null, -1);
 	}
 

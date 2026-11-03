@@ -20,4 +20,9 @@ public class ContractRulesTest {
 		assertEquals(8, ContractRules.progress(7, 9, 8));
 		assertEquals(2, ContractRules.progress(-2, 2, 8));
 	}
+	@Test public void eliteAndLegendaryRequireTheMatchingEvolution() {
+		assertEquals(ContractRules.Difficulty.EASY, ContractRules.maxDifficulty(0, 0));
+		assertEquals(ContractRules.Difficulty.ELITE, ContractRules.maxDifficulty(0, 1));
+		assertEquals(ContractRules.Difficulty.LEGENDARY, ContractRules.maxDifficulty(0, 2));
+	}
 }

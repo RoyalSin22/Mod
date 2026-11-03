@@ -178,6 +178,7 @@ public final class BossManager {
 		});
 		mob.dropStack(reward);
 		if (attacker instanceof ServerPlayerEntity killer) {
+			dev.aptitudes.contract.ContractManager.onBossKilled(killer, kind.get());
 			world.getServer().getPlayerManager().broadcast(Text.translatable("boss.aptitudes.defeated",
 					killer.getDisplayName(), mob.getDisplayName()).formatted(Formatting.GOLD), false);
 		}

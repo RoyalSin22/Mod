@@ -51,6 +51,7 @@ public class Aptitudes implements ModInitializer {
 	public void onInitialize() {
 		reloadConfig();
 		dev.aptitudes.block.ModBlocks.init();
+		dev.aptitudes.contract.ContractBoardScreenHandler.init();
 		dev.aptitudes.sound.ModSounds.init();
 		ModItems.init();
 		dev.aptitudes.world.ModWorldGen.init();
