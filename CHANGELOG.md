@@ -5,6 +5,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+Compilado y probado en partida por el autor (v15–v19 y v29–v41 ✔).
+
 ### Añadido
 - **v31 — Logros**: pestaña «Aptitudes» en la pantalla de avances con 17 logros (Hoguera, roles y evoluciones,
   combos, habilidades, runas, jefes, eventos del mundo, grupos y contratos). Los logros de estado se conceden también

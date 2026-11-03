@@ -28,6 +28,12 @@ reescribir las existentes (JUnit 4):
 
 Ejecución: `.\gradlew.bat test` (también se ejecutan en `.\gradlew.bat build`).
 
+### Prueba en partida (autor, 2026-11-03)
+
+`main` en `6c709f9` compilado y probado en partida por el autor: **v15–v19 y v29–v41 ✔ según lo esperado**
+(guías `docs/PLAYTEST_v15-v19.md` y `docs/PLAYTEST_v29-v41.md`). Defecto encontrado: la pantalla de ajustes
+del HUD solapa el texto de escala con el primer botón y la ayuda con Restablecer/Hecho.
+
 ### Resultado real en este bloque
 
 En el entorno de desarrollo (sin acceso a los repositorios de Minecraft/Fabric) se compilaron las

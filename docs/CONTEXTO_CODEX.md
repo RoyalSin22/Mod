@@ -198,7 +198,7 @@ de armaduras, colisión de las transformaciones, Mesa del gremio, atributos −3
 | Pendiente | Estado |
 |---|---|
 | `attributeScaling = SOFTCAP` por defecto | Decisión del autor tras probar en partida |
-| Pruebas en partida de la v15–v25 | `docs/TESTING.md`, puntos 6–18 |
+| Pruebas en partida | v15–v19 y v29–v41 ✔ (autor, 2026-11-03); defecto abierto: solapamiento en `HudConfigScreen` |
 | Filtro de mobs con IA Brain | Actúa cada 5 ticks (limitación documentada) |
 | Diseño de cualquier contenido grande nuevo | Proponer primero al autor (como se hizo en `docs/V23_DISENO_ARBOL.md`) |
 

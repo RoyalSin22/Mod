@@ -1,6 +1,10 @@
 # Protocolo de prueba en partida (v29 → v41)
 
-Guía del **bloque 1** (verificar antes de publicar la 1.4.0). **No está ejecutada**: rellena la columna
+**Resultado (2026-11-03): ✔ todo según lo esperado** — probado en partida por el autor (v29–v41, con
+`main` en `6c709f9`). Único defecto visto: la pantalla de ajustes del HUD (Mayús + O) solapa textos y botones
+(no es de la v29–v41; pendiente de corregir).
+
+Guía del **bloque 1** (verificar antes de publicar la 1.4.0). Rellena la columna
 «Resultado» con ✔, ✘ o una nota, y devuelve la tabla (o solo los fallos, con captura o el texto del error).
 Los pasos detallados de cada versión están en `docs/TESTING.md`; aquí van en orden de riesgo.
 

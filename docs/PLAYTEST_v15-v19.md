@@ -1,7 +1,8 @@
 # Protocolo de prueba en partida (v15 → v19)
 
-Pruebas manuales de lo añadido desde la v15. **No están ejecutadas**: este documento es la guía para
-hacerlas. Rellena la columna «Resultado» y devuelve la tabla final (o los fallos) para corregirlos.
+**Resultado (2026-11-03): ✔ todo según lo esperado** — probado en partida por el autor (v15–v19).
+
+Pruebas manuales de lo añadido desde la v15. Este documento es la guía para hacerlas. Rellena la columna «Resultado» y devuelve la tabla final (o los fallos) para corregirlos.
 
 ## Preparación (una vez)
 

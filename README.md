@@ -708,7 +708,7 @@ src/client/java/dev/aptitudes/client/   (solo cliente)
 | El rango efectivo puede llegar a 5 con la evolución | Algunos valores (esquiva 35 %, Mente clara −50 %) pueden quedar fuertes | Ajustar tras probar; Mente clara está limitada a −60 % |
 | Fuego del Averno y explosiones del Creeper modifican bloques | Cambios permanentes del mundo (según `uniqueGriefing`) | — |
 | Quietud Eterna usa `NoAI` | Se repara al cargar, pero otro mod que lea `NoAI` podría verse afectado | — |
-| No se ha compilado en el entorno donde se generó | Puede requerir algún ajuste menor de mappings | Ejecutar `./gradlew build` |
+| Ajustes del HUD (Mayús + O): el texto de escala y la ayuda se solapan con los botones | Solo visual | Distribución calculada por filas (pendiente) |
 
 **Resueltas en la v16:** la Defensa solo da XP por daño realmente recibido (no por golpes bloqueados con
 escudo ni ignorados por invulnerabilidad); un zombi esbirro que empieza a convertirse en ahogado se
