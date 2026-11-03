@@ -58,6 +58,12 @@ public final class ModAttachments {
 					.initializer(dev.aptitudes.ability.CooldownBook::new)
 					.buildAndRegister(Aptitudes.id("cooldowns"));
 
+	public static final AttachmentType<dev.aptitudes.contract.ContractData> CONTRACTS =
+			AttachmentRegistry.<dev.aptitudes.contract.ContractData>builder()
+				.persistent(dev.aptitudes.contract.ContractData.CODEC).copyOnDeath()
+				.initializer(dev.aptitudes.contract.ContractData::new)
+				.buildAndRegister(Aptitudes.id("contracts"));
+
 	private ModAttachments() {
 	}
 

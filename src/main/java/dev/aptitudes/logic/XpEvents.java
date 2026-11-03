@@ -58,6 +58,7 @@ public final class XpEvents {
 
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
 			if (!(source.getAttacker() instanceof ServerPlayerEntity player) || entity == player) return;
+			dev.aptitudes.contract.ContractManager.onKill(player, entity.getType());
 			AptitudesConfig cfg = Aptitudes.config();
 			if (entity instanceof PlayerEntity && !cfg.awardXpForPlayerKills) return;
 
