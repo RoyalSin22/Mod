@@ -24,6 +24,12 @@ public final class PartyRules {
 		return (int) Math.min(Integer.MAX_VALUE, personal + Math.max(0, bonusXp));
 	}
 
+	/** Suma XP base y bonificación para el origen, sin contar dos veces la XP base. */
+	public static int sourceXp(int amount, int bonusXp) {
+		if (amount <= 0) return 0;
+		return (int) Math.min(Integer.MAX_VALUE, (long) amount + Math.max(0, bonusXp));
+	}
+
 	/** Fracción extra por cada miembro conectado además del líder, limitada por la configuración. */
 	public static double bonus(int connectedMembers, double perMember, double maximum) {
 		if (!Double.isFinite(perMember) || perMember < 0) perMember = 0;

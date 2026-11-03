@@ -116,11 +116,11 @@ public final class PartyManager {
 			dev.aptitudes.logic.ProgressManager.addXp(killer, skill, baseAmount);
 			return;
 		}
-		if (dev.aptitudes.logic.ProgressManager.get(killer).getLevel(skill)
-				>= dev.aptitudes.logic.ProgressManager.rules().maxLevel()) return;
+		boolean sourceAtCap = dev.aptitudes.logic.ProgressManager.get(killer).getLevel(skill)
+				>= dev.aptitudes.logic.ProgressManager.rules().maxLevel();
 		PartyState.Party party = killer.getServer() == null ? null : findParty(killer.getServer(), killer.getUuid());
 		if (party == null) {
-			dev.aptitudes.logic.ProgressManager.addXp(killer, skill, baseAmount);
+			if (!sourceAtCap) dev.aptitudes.logic.ProgressManager.addXp(killer, skill, baseAmount);
 			return;
 		}
 		List<ServerPlayerEntity> members = onlineMembers(killer);
@@ -128,6 +128,7 @@ public final class PartyManager {
 				Aptitudes.config().partyXpBonusMax);
 		int bonusXp = PartyRules.bonusXp(baseAmount, bonus);
 		for (ServerPlayerEntity member : members) {
+			if (member == killer && sourceAtCap) continue;
 			int amount = PartyRules.memberXp(baseAmount, party.sharePercent, member == killer, bonusXp);
 			if (amount > 0) dev.aptitudes.logic.ProgressManager.addXp(member, skill, amount);
 		}
@@ -137,20 +138,21 @@ public final class PartyManager {
 	public static void awardCombatRoleXp(ServerPlayerEntity killer, Role role, int baseAmount) {
 		if (baseAmount <= 0) return;
 		PartyState.Party party = killer.getServer() == null ? null : findParty(killer.getServer(), killer.getUuid());
-		if (RoleManager.get(killer).level(role) >= RoleManager.rules().maxLevel()) {
-			RoleManager.addRoleXp(killer, role, baseAmount); // conserva la carga de recurso, pero no comparte XP ya capada
+		int earned = RoleManager.scaledRoleXp(killer, role, baseAmount, false);
+		if (party == null) {
+			RoleManager.addRoleXp(killer, role, baseAmount);
 			return;
 		}
-		int earned = RoleManager.scaledRoleXp(killer, role, baseAmount, false);
-		RoleManager.addRoleXp(killer, role, baseAmount);
-		if (party == null || earned <= 0) return;
+		if (earned <= 0) return;
 		List<ServerPlayerEntity> members = onlineMembers(killer);
 		double bonus = PartyRules.bonus(members.size(), Aptitudes.config().partyXpBonusPerMember,
 				Aptitudes.config().partyXpBonusMax);
 		int bonusXp = PartyRules.bonusXp(earned, bonus);
 		for (ServerPlayerEntity member : members) {
+			Role primary = RoleManager.get(member).primary();
+			if (primary == null) continue;
 			int amount = PartyRules.memberXp(earned, party.sharePercent, member == killer, bonusXp);
-			RoleManager.addSharedRoleXp(member, role, amount);
+			RoleManager.addSharedRoleXp(member, primary, amount);
 		}
 	}
 
@@ -190,7 +192,8 @@ public final class PartyManager {
 		}
 		PartyState state = state(player.getServer());
 		PartyState.Party party = findParty(player.getServer(), invite.inviter());
-		if (party == null || findParty(player.getServer(), player.getUuid()) != null
+		ServerPlayerEntity inviter = player.getServer().getPlayerManager().getPlayer(invite.inviter());
+		if (party == null || inviter == null || findParty(player.getServer(), player.getUuid()) != null
 				|| party.members.size() >= Aptitudes.config().partyMaxSize) {
 			player.sendMessage(Text.translatable("party.error.party_full").formatted(Formatting.RED), false);
 			return false;
@@ -198,8 +201,7 @@ public final class PartyManager {
 		party.members.add(player.getUuid());
 		party.names.put(player.getUuid(), player.getGameProfile().getName());
 		state.markDirty();
-		player.getServer().getPlayerManager().getPlayer(invite.inviter()).sendMessage(
-				Text.translatable("party.joined.other", player.getDisplayName()).formatted(Formatting.GREEN), false);
+		inviter.sendMessage(Text.translatable("party.joined.other", player.getDisplayName()).formatted(Formatting.GREEN), false);
 		player.sendMessage(Text.translatable("party.joined.self").formatted(Formatting.GREEN), false);
 		return true;
 	}

@@ -27,6 +27,13 @@ public class PartyRulesTest {
 	}
 
 	@Test
+	public void sourceXpAddsTheGroupBonusExactlyOnce() {
+		assertEquals(125, PartyRules.sourceXp(100, 25));
+		assertEquals(Integer.MAX_VALUE, PartyRules.sourceXp(Integer.MAX_VALUE, 25));
+		assertEquals(0, PartyRules.sourceXp(-1, 25));
+	}
+
+	@Test
 	public void partyBonusCountsConnectedMembersBeyondTheLeaderAndCaps() {
 		assertEquals(0.0, PartyRules.bonus(0, 0.05, 0.20), 1e-9);
 		assertEquals(0.0, PartyRules.bonus(1, 0.05, 0.20), 1e-9);
