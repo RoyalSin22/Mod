@@ -7,6 +7,9 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.server.world.ServerWorld;
 import java.util.List;
 
 /** Progreso de Caza individual y sincronizado con los miembros conectados del grupo v29. */
@@ -24,9 +27,40 @@ public final class ContractManager {
 	}
 	public static boolean accept(ServerPlayerEntity p, int offerIndex) {
 		List<ContractRules.Offer> offers = offers(p);
-		return offerIndex >= 0 && offerIndex < offers.size() && data(p).accept(offerIndex);
+		boolean accepted = offerIndex >= 0 && offerIndex < offers.size() && data(p).accept(offerIndex);
+		if (accepted) p.sendMessage(Text.translatable("contract.accepted").formatted(Formatting.GREEN), true);
+		return accepted;
 	}
-	public static void abandon(ServerPlayerEntity p, int offerIndex) { data(p).abandon(offerIndex); }
+	public static void abandon(ServerPlayerEntity p, int offerIndex) { data(p).abandon(offerIndex); p.sendMessage(Text.translatable("contract.abandoned").formatted(Formatting.GRAY), true); }
+	public static void professionXp(ServerPlayerEntity p, int amount) { progressKind(p, ContractRules.Kind.PROFESSION, amount); }
+	public static void fish(ServerPlayerEntity p, int amount) { progressKind(p, ContractRules.Kind.FISHING, amount); }
+	public static void enchant(ServerPlayerEntity p, int amount) { progressKind(p, ContractRules.Kind.ENCHANTING, amount); }
+	public static void forge(ServerPlayerEntity p) { progressKind(p, ContractRules.Kind.FORGE, 1); }
+	private static void progressKind(ServerPlayerEntity p, ContractRules.Kind kind, int amount) {
+		List<ContractRules.Offer> offers=offers(p); ContractData d=data(p);
+		for (ContractData.Active a:d.active()) { var o=offers.get(a.offer()); if(o.kind()==kind) d.progress(a.offer(),amount,o.goal()); }
+	}
+	public static void deliver(ServerPlayerEntity p, int index) {
+		List<ContractRules.Offer> offers=offers(p); if(index>=offers.size()) return;
+		var o=offers.get(index); if(o.kind()!=ContractRules.Kind.DELIVERY) return;
+		var inv=p.getInventory(); int need=o.goal();
+		for(int slot=0;slot<inv.size()&&need>0;slot++) { ItemStack stack=inv.getStack(slot); if(matches(o.target(),stack)) { int take=Math.min(need,stack.getCount()); stack.decrement(take); need-=take; } }
+		if(need==0) data(p).progress(index,o.goal(),o.goal());
+		else p.sendMessage(Text.translatable("contract.delivery.missing",need).formatted(Formatting.RED),true);
+	}
+	private static boolean matches(int target, ItemStack stack) {
+		return switch(target) { case 0 -> stack.isOf(Items.IRON_INGOT); case 1 -> stack.isOf(Items.WHEAT); case 2 -> stack.isOf(Items.CARROT); case 3 -> stack.isOf(Items.COD); case 4 -> stack.isOf(Items.SALMON); default -> stack.isOf(Items.POTATO); };
+	}
+	public static void claim(ServerPlayerEntity p,int index) {
+		List<ContractRules.Offer> offers=offers(p); ContractData d=data(p); if(index>=offers.size()||!d.complete(index,offers.get(index).goal())) return;
+		var o=offers.get(index);
+		p.getInventory().offerOrDrop(new ItemStack(Items.EMERALD,o.emeralds()));
+		if(o.fragments()>0) p.getInventory().offerOrDrop(new ItemStack(dev.aptitudes.item.ModItems.SOUL_SHARD,o.fragments()));
+		var primary=RoleManager.get(p).primary(); if(primary!=null) RoleManager.addRoleXp(p,primary,o.roleXp());
+		if(o.voucher()) p.getInventory().offerOrDrop(new ItemStack(dev.aptitudes.item.ModItems.ARMORY_VOUCHER));
+		if(o.emblem()) p.getInventory().offerOrDrop(new ItemStack(dev.aptitudes.item.ModItems.MASTERY_EMBLEM));
+		d.completeAndReward(index,o.reputation()); p.sendMessage(Text.translatable("contract.claimed",o.reputation()).formatted(Formatting.GOLD),true);
+	}
 	public static boolean huntProgress(ServerPlayerEntity player, EntityType<?> victim) {
 		List<ContractRules.Offer> offers = offers(player);
 		ContractData data = data(player); boolean changed = false;

@@ -105,6 +105,7 @@ public class GuildDeskScreenHandler extends ScreenHandler {
 
 		@Override
 		public void onTakeItem(PlayerEntity player, ItemStack stack) {
+			if (player instanceof net.minecraft.server.network.ServerPlayerEntity serverPlayer) dev.aptitudes.contract.ContractManager.forge(serverPlayer);
 			stack.onCraftByPlayer(player.getWorld(), player, stack.getCount());
 			// Las recetas del gremio no usan ingredientes con «resto» (cubos, botellas): se gastan sin más.
 			for (int i = 0; i < input.size(); i++) {

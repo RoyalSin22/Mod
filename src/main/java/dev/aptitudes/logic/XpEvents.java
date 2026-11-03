@@ -134,6 +134,7 @@ public final class XpEvents {
 			Integer enchantPrev = enchantBaseline.put(player.getUuid(), enchanted);
 			if (enchantPrev != null && enchanted > enchantPrev) {
 				int n = Math.min(enchanted - enchantPrev, 8);
+				dev.aptitudes.contract.ContractManager.enchant(player, n);
 				for (int i = 0; i < n; i++) {
 					ProgressManager.addXp(player, Skill.ENCHANTING, diminished(player, "enchanting", xpPerEnchant));
 					SkillMilestones.onEnchanted(player);
@@ -143,6 +144,7 @@ public final class XpEvents {
 			Integer baseline = fishBaseline.put(player.getUuid(), caught);
 			if (baseline == null || caught <= baseline) continue; // primera lectura o estadística reseteada
 			int fish = Math.min(caught - baseline, 16); // tope defensivo por segundo
+			dev.aptitudes.contract.ContractManager.fish(player, fish);
 			for (int i = 0; i < fish; i++) {
 				ProgressManager.addXp(player, Skill.FISHING, diminished(player, "fishing", xpPerCatch));
 				SkillMilestones.onFishCaught(player);

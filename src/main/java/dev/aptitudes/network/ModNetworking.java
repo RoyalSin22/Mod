@@ -47,6 +47,18 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playC2S().register(RoleActionPayload.ID, RoleActionPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(ConfigEditPayload.ID, ConfigEditPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(PartyActionPayload.ID, PartyActionPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(ContractActionPayload.ID, ContractActionPayload.CODEC);
+		ServerPlayNetworking.registerGlobalReceiver(ContractActionPayload.ID, (payload, context) -> {
+			if (payload.offer() < 0 || payload.offer() >= 3) return;
+			var player = context.player();
+			switch (payload.action()) {
+				case ContractActionPayload.ACCEPT -> dev.aptitudes.contract.ContractManager.accept(player, payload.offer());
+				case ContractActionPayload.ABANDON -> dev.aptitudes.contract.ContractManager.abandon(player, payload.offer());
+				case ContractActionPayload.DELIVER -> dev.aptitudes.contract.ContractManager.deliver(player, payload.offer());
+				case ContractActionPayload.CLAIM -> dev.aptitudes.contract.ContractManager.claim(player, payload.offer());
+				default -> { }
+			}
+		});
 		ServerPlayNetworking.registerGlobalReceiver(PartyActionPayload.ID, (payload, context) -> {
 			var player = context.player();
 			switch (payload.action()) {
