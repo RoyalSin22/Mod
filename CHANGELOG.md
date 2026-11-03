@@ -6,6 +6,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **v31 — Logros**: pestaña «Aptitudes» en la pantalla de avances con 17 logros (Hoguera, roles y evoluciones,
+  combos, habilidades, runas, jefes, eventos del mundo, grupos y contratos). Los logros de estado se conceden también
+  al entrar, así que los mundos anteriores no pierden lo ya conseguido.
 - **v30 — Contratos del gremio**: Tablón de contratos con 3 ofertas diarias por jugador (fijas por día), 2–3
   activos, 8 tipos (Caza, Entrega, Pesca, Encantamiento, Oficio, Forja, Evento y Jefe), dificultad por
   reputación y por evolución (Élite y Legendario) y recompensas con reputación. La Caza y los Jefes cuentan
@@ -65,5 +68,4 @@ Primera versión preparada para publicar. Las etapas v34–v37 aún no se han pr
 - v15.1–v15.2: bloqueo de legendarias exclusivas en el árbol; la marca del grimorio sobrevive a la muerte.
 
 ### Pendiente
-- Grupos, contratos del gremio y logros (en desarrollo aparte).
 - Decidir si `attributeScaling = SOFTCAP` pasa a ser el valor por defecto.

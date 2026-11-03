@@ -223,6 +223,7 @@ public final class WorldEventManager {
 		}
 		if (completed && kind != null) for (ServerPlayerEntity player : world.getPlayers()) {
 			dev.aptitudes.contract.ContractManager.onEventSurvived(player, kind);
+			dev.aptitudes.achievement.Achievements.survived(player, kind); // v31
 		}
 		syncAll(server, null, -1);
 	}

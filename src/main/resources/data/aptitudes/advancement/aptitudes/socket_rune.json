@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "aptitudes:rune_force"
+    },
+    "title": {
+      "translate": "advancement.aptitudes.socket_rune.title"
+    },
+    "description": {
+      "translate": "advancement.aptitudes.socket_rune.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "aptitudes:aptitudes/root",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ]
+}

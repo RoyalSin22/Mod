@@ -204,6 +204,8 @@ public final class PartyManager {
 		state.markDirty();
 		inviter.sendMessage(Text.translatable("party.joined.other", player.getDisplayName()).formatted(Formatting.GREEN), false);
 		player.sendMessage(Text.translatable("party.joined.self").formatted(Formatting.GREEN), false);
+		dev.aptitudes.achievement.Achievements.grant(player, dev.aptitudes.achievement.Achievement.JOIN_PARTY); // v31
+		dev.aptitudes.achievement.Achievements.grant(inviter, dev.aptitudes.achievement.Achievement.JOIN_PARTY);
 		return true;
 	}
 

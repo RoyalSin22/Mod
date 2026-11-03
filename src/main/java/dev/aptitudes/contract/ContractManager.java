@@ -109,6 +109,7 @@ public final class ContractManager {
 		if (o.voucher()) inv.offerOrDrop(new ItemStack(ModItems.ARMORY_VOUCHER));
 		if (o.emblem()) inv.offerOrDrop(new ItemStack(ModItems.MASTERY_EMBLEM));
 		p.sendMessage(Text.translatable("contract.aptitudes.claimed", o.reputation()).formatted(Formatting.GOLD), true);
+		dev.aptitudes.achievement.Achievements.checkContracts(p); // v31
 	}
 
 	// ------------------------------------------------------------------ Progreso (llamadas desde otros sistemas)
@@ -162,6 +163,11 @@ public final class ContractManager {
 	/** Contratos cobrados en total (para logros). */
 	public static int completed(ServerPlayerEntity p) {
 		return data(p).completed();
+	}
+
+	/** Reputación actual en el gremio (para logros). */
+	public static int reputation(ServerPlayerEntity p) {
+		return data(p).reputation();
 	}
 
 	// ------------------------------------------------------------------ Vista (S2C)

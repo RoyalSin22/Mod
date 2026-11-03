@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "aptitudes:eclipse_fragment"
+    },
+    "title": {
+      "translate": "advancement.aptitudes.survive_eclipse.title"
+    },
+    "description": {
+      "translate": "advancement.aptitudes.survive_eclipse.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "aptitudes:aptitudes/survive_ember_rain",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ]
+}

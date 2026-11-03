@@ -224,6 +224,7 @@ public final class EclipseManager {
 			for (ServerPlayerEntity player : world.getPlayers()) {
 				if (player.isSpectator() || fallen.contains(player.getUuid())) continue;
 				dev.aptitudes.contract.ContractManager.onEventSurvived(player, WorldEventKind.ECLIPSE);
+				dev.aptitudes.achievement.Achievements.survived(player, WorldEventKind.ECLIPSE); // v31
 				Role primary = RoleManager.get(player).primary();
 				if (primary != null && cfg.eclipseSurvivorRoleXp > 0) RoleManager.addRoleXp(player, primary, cfg.eclipseSurvivorRoleXp);
 				if (cfg.eclipseSurvivorCombatXp > 0) ProgressManager.addXp(player, Skill.COMBAT, cfg.eclipseSurvivorCombatXp);

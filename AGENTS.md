@@ -31,6 +31,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 | Accesorios, élites/campeones, estructuras, grimorio (18 capítulos) | `accessory/`, `elite/`, `world/`, `item/GuideBookItem`, `client/screen/GuideScreen` |
 | Efectos de lanzamiento e impacto de TODAS las habilidades (sello animado, remate por categoría, gesto) | `ability/CastFx` (`onCast`, `impact`); no dupliques estos efectos en cada habilidad |
 | Combos de combate (contador, bonificación y remates por categoría) | `ability/Combos` + `logic/ComboCounter`; HUD `client/hud/ComboHud` |
+| Logros (v31): pestaña de avances «Aptitudes», 17 logros concedidos por el servidor y revisados al entrar | `achievement/Achievement` (catálogo puro), `achievement/Achievements` (`grant`, `checkState`); JSON generados por `tools/advancements/gen_advancements.py` (no editar a mano) |
 | Contratos del gremio (v30): tablón, ofertas diarias deterministas, reputación | `contract/ContractRules` (puro), `ContractData` (attachment `aptitudes:contracts`), `ContractManager`, `ContractTargets`; cliente `screen/ContractBoardScreen` |
 | Grupos (v29): invitaciones, reparto de XP, aliados y persistencia en Mundo Normal | `party/PartyState`, `party/PartyManager`, `party/PartyRules`; UI `client/screen/PartyScreen`, HUD `client/hud/PartyHud` |
 | Fabricación en la Mesa del gremio (armaduras de rol) | `world/GuildCrafting` (tipo `aptitudes:guild_crafting`), `GuildShapedRecipe`, `GuildDeskScreenHandler`, `GuildDeskBlock`; cliente `GuildDeskScreen` |
@@ -52,7 +53,7 @@ Historial reciente en `main`: auditoría de seguridad y balance, v14 (grimorio, 
 muerte y pruebas de configuración) y v16 (Defensa con `AFTER_DAMAGE`, esbirros sin conversión a
 ahogado, Bombardeo orbital sin fuego amigo), v17 (anti-granjas de colocar y romper), v18 (esperas y muros persistentes) y v19 (desplazamiento de la
 pantalla de roles y filtro para mobs con IA Brain), v20 (grimorio interactivo con recetas reales) y
-v21 (Encantamiento y pantalla K animada) , v22 (texturas de armas y objetos clave) , v23 (árbol que crece al evolucionar) , v24 (animaciones de habilidades), v25 (texturas de armaduras) , v26 (colisión de las transformaciones) , v27 (Mesa del gremio y atributos −30 %) y v28 (combos). Después: v32 (runas), v33 (jefes), v34 (Eclipse), v35 (Runas+), v36 (anti-granjas persistente), v37 (sonidos), v38 (versión publicable 1.3.7; ver `CHANGELOG.md`), v39 (interfaz con escala grande), v40 (pantalla de configuración), v41 (eventos rotativos), v29 (grupos) y v30 (contratos).
+v21 (Encantamiento y pantalla K animada) , v22 (texturas de armas y objetos clave) , v23 (árbol que crece al evolucionar) , v24 (animaciones de habilidades), v25 (texturas de armaduras) , v26 (colisión de las transformaciones) , v27 (Mesa del gremio y atributos −30 %) y v28 (combos). Después: v32 (runas), v33 (jefes), v34 (Eclipse), v35 (Runas+), v36 (anti-granjas persistente), v37 (sonidos), v38 (versión publicable 1.3.7; ver `CHANGELOG.md`), v39 (interfaz con escala grande), v40 (pantalla de configuración), v41 (eventos rotativos), v29 (grupos), v30 (contratos) y v31 (logros).
 
 ## 3. Exclusiones absolutas (no negociables)
 
@@ -119,7 +120,7 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
   `logic/PlacedBlockLogTest`, `ability/CooldownBookTest`, `world/TemporaryBlockScheduleTest`,
   `role/LoadoutCodecTest`, `role/EvolutionPointsTest`, `morph/MorphSizeRulesTest`, `logic/ComboCounterTest`,
   `role/RoleRulesTest`, `data/ProgressRulesTest` y
-  `rune/RuneRulesTest`, `boss/BossRulesTest`, `event/EclipseRulesTest`, `rune/RuneBalanceTest`, `logic/PlacedBlockPersistenceTest`, `config/ConfigFieldRulesTest`, `event/WorldEventRulesTest`, `party/PartyRulesTest`, `contract/ContractRulesTest`,
+  `rune/RuneRulesTest`, `boss/BossRulesTest`, `event/EclipseRulesTest`, `rune/RuneBalanceTest`, `logic/PlacedBlockPersistenceTest`, `config/ConfigFieldRulesTest`, `event/WorldEventRulesTest`, `party/PartyRulesTest`, `contract/ContractRulesTest`, `achievement/AchievementCatalogTest`,
   `config/AptitudesConfigValidationTest`.
 - **No escribas pruebas que llamen a métodos que no existen.** Si una prueba necesita una API nueva,
   impleméntala en el código principal en el mismo cambio y explícalo.
@@ -127,8 +128,7 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
 
 ## 7. Pendientes conocidos (consulta antes de empezar algo grande)
 
-- **Siguiente trabajo de Codex**: v29 (grupos), v30 (contratos) y v31 (logros) sobre el `main` actual.
-  Instrucciones completas, qué NO tocar e integraciones: `docs/PROMPT_CODEX_v29_v31.md` (sustituye al de v29–v30).
+- v29 (grupos), v30 (contratos) y v31 (logros) ya están hechos. Siguiente: v42–v45 de `docs/PLAN_v40_v45.md`.
 
 - **Plan aprobado v40–v45** (configuración, eventos rotativos, alquimia, maestría y amenaza, tutorial,
   traducciones): `docs/PLAN_v40_v45.md`. Excepción a «sin dependencias»: Mod Menu como `modCompileOnly` (v40).

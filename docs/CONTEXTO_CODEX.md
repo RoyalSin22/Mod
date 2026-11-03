@@ -110,6 +110,7 @@ retematizaron (p. ej., «Talismán maldito»).
 | Runas para armas de rol (v32) | `rune/RuneSocketing`, `rune/RuneRules`, NBT persistente en `ItemStack.CUSTOM_DATA` |
 | Jefes propios en estructuras (v33) | `boss/BossManager`, `BossKind`, `BossRules`; etiquetas persistentes, barra de campeón existente y mejora de armas con núcleos |
 | Eclipse, evento del mundo (v34) | `event/EclipseManager`, `EclipseRules` (puro, con pruebas), `EclipseState`; cliente `ClientEclipse`, `hud/EclipseHud`, mixins `Eclipse*Mixin` con `require = 0` y sin `@Shadow`; diseño en `docs/V34_ECLIPSE.md` |
+| Logros (v31) | `achievement/Achievement` (catálogo puro, con prueba), `achievement/Achievements` (`grant`, `checkState` al entrar); avances en `data/aptitudes/advancement/aptitudes/`, generados por `tools/advancements/gen_advancements.py` |
 | Contratos del gremio (v30) | `contract/ContractRules` (puro), `ContractData`, `ContractManager`, `ContractTargets`; tablón `aptitudes:contract_board`; pantalla `ContractBoardScreen` |
 | Runas+ (v35) | `rune/RuneSocketing`: 8 runas, extracción con Mayús + clic en la Mesa del gremio (`UseBlockCallback`), esperas en memoria; valores en la configuración (`rune*`) |
 | Fabricación en la Mesa del gremio (armaduras de rol) | `world/GuildCrafting` (tipo `aptitudes:guild_crafting`), `GuildShapedRecipe`, `GuildDeskScreenHandler`, `GuildDeskBlock`; cliente `GuildDeskScreen` |
@@ -174,7 +175,9 @@ de armaduras, colisión de las transformaciones, Mesa del gremio, atributos −3
   `souls/SoulsMathTest`, `logic/AttributeScalingTest`, `logic/XpDiminishingTest`,
   `logic/PlacedBlockLogTest`, `ability/CooldownBookTest`, `world/TemporaryBlockScheduleTest`,
   `role/RoleRulesTest`, `role/LoadoutCodecTest`, `role/EvolutionPointsTest`, `morph/MorphSizeRulesTest`, `logic/ComboCounterTest`, `data/ProgressRulesTest`,
-  `config/AptitudesConfigValidationTest`.
+  `rune/RuneRulesTest`, `boss/BossRulesTest`, `event/EclipseRulesTest`, `rune/RuneBalanceTest`, `logic/PlacedBlockPersistenceTest`,
+  `config/ConfigFieldRulesTest`, `event/WorldEventRulesTest`, `party/PartyRulesTest`, `contract/ContractRulesTest`,
+  `achievement/AchievementCatalogTest`, `config/AptitudesConfigValidationTest`.
 - Puedes escribir pruebas en JUnit 5 o JUnit 4; ambos funcionan.
 - **No escribas pruebas que llamen a métodos que no existen.** Si una prueba necesita una API nueva,
   impleméntala en el código principal en el mismo cambio y explícalo (ya pasó una vez y rompió el build).
@@ -190,7 +193,7 @@ de armaduras, colisión de las transformaciones, Mesa del gremio, atributos −3
 
 ## 10. Pendientes conocidos (consulta antes de empezar algo grande)
 
-**Siguiente trabajo**: v29 (grupos) y v30 (contratos). Lee `docs/PROMPT_CODEX_v29_v30.md`.
+**Siguiente trabajo**: v29–v31 ya están en `main`. Siguiente: v42–v45 (`docs/PLAN_v40_v45.md`).
 
 | Pendiente | Estado |
 |---|---|

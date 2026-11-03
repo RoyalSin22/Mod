@@ -156,6 +156,8 @@ public final class RoleManager {
 		player.getServerWorld().spawnParticles(net.minecraft.particle.ParticleTypes.TOTEM_OF_UNDYING,
 				player.getX(), player.getBodyY(0.5), player.getZ(), 60, 0.6, 1.0, 0.6, 0.3);
 		refresh(player);
+		dev.aptitudes.achievement.Achievements.grant(player, tier + 1 >= Evolution.ULTIMATE
+				? dev.aptitudes.achievement.Achievement.EVOLVE_ULTIMATE : dev.aptitudes.achievement.Achievement.EVOLVE_MASTER); // v31
 		return EvolveResult.OK;
 	}
 
@@ -272,6 +274,7 @@ public final class RoleManager {
 		if (replacing) data.setLastRoleChange(worldTime(player));
 		if (ritual) data.setRebirths(data.rebirths() - 1);
 		refresh(player);
+		dev.aptitudes.achievement.Achievements.grant(player, dev.aptitudes.achievement.Achievement.CHOOSE_ROLE); // v31
 		return ChangeResult.OK;
 	}
 

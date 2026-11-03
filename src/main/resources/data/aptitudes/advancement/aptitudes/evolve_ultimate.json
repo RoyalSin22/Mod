@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "aptitudes:ultimate_core"
+    },
+    "title": {
+      "translate": "advancement.aptitudes.evolve_ultimate.title"
+    },
+    "description": {
+      "translate": "advancement.aptitudes.evolve_ultimate.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "aptitudes:aptitudes/evolve_master",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ]
+}

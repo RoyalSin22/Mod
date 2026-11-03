@@ -154,6 +154,7 @@ public final class SoulsManager {
 				30, 0.3, 0.5, 0.3, 0.02);
 		player.getWorld().playSound(null, pos, SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.BLOCKS, 0.8f, 0.7f);
 		player.sendMessage(Text.translatable("aptitudes.souls.rested").formatted(Formatting.GOLD), true);
+		dev.aptitudes.achievement.Achievements.grant(player, dev.aptitudes.achievement.Achievement.REST_BONFIRE); // v31
 		ProgressManager.sync(player);
 		if (ServerPlayNetworking.canSend(player, OpenBonfirePayload.ID)) {
 			ServerPlayNetworking.send(player, new OpenBonfirePayload());
@@ -200,6 +201,9 @@ public final class SoulsManager {
 			progress.setAllocated(a, progress.getAllocated(a) + requested[a.ordinal()]);
 		}
 		ProgressManager.refresh(player);
+		if (progress.getSoulLevel() >= dev.aptitudes.achievement.Achievement.SOUL_LEVEL_TARGET) {
+			dev.aptitudes.achievement.Achievements.grant(player, dev.aptitudes.achievement.Achievement.SOUL_LEVEL); // v31
+		}
 		if (toBuy > 0) {
 			player.sendMessage(Text.translatable("aptitudes.souls.leveled", progress.getSoulLevel(), cost)
 					.formatted(Formatting.GOLD), false);

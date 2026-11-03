@@ -194,6 +194,7 @@ public final class RuneSocketing {
 		player.getServerWorld().playSound(null, player.getX(), player.getY(), player.getZ(), dev.aptitudes.sound.ModSounds.RUNE_SOCKET,
 				SoundCategory.PLAYERS, 0.9f, 1.0f);
 		player.sendMessage(Text.translatable("aptitudes.rune.socketed", Text.translatable("item.aptitudes.rune." + rune.kind().id()), updated.size(), RuneRules.SOCKETS).formatted(Formatting.GOLD), true);
+		dev.aptitudes.achievement.Achievements.grant(player, dev.aptitudes.achievement.Achievement.SOCKET_RUNE); // v31
 		return true;
 	}
 

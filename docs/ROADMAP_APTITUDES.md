@@ -205,7 +205,7 @@ registro en memoria con tope de 100 000 posiciones por mundo (FIFO).
   viñeta, ceniza y relámpagos visuales sin mixins. Opción de cliente `eclipseSkyEffects`.
 - Comando `/aptitudes eclipse [status|next|start|stop]` (iniciar y detener: permiso 2).
 - Lógica pura `event/EclipseRules` con `event/EclipseRulesTest` (8 pruebas). Especificación: `docs/V34_ECLIPSE.md`.
-- Pendiente: integrar con grupos, contratos y logros cuando la v29–v31 estén en `main`; «Templado en la
+- Integrado con grupos (v29), contratos (v30) y logros (v31); «Templado en la
   Hoguera» (trofeos ganados en combate), más adelante.
 
 ### v35 — Runas+
@@ -273,6 +273,18 @@ Pendiente: comprobarlo en el juego (ver `docs/TESTING.md`, v39).
 - Cliente: colores de cielo, niebla, nubes y viñeta por evento; partículas propias; el sol eclipsado solo en el Eclipse.
   `EclipsePayload` lleva el tipo de evento.
 - Comando `/aptitudes event [status|start <evento>|stop]`; `/aptitudes eclipse` informa del próximo evento.
+
+### v31 — Logros
+- Pestaña de avances «Aptitudes» (18 avances: la raíz y 17 logros) en `data/aptitudes/advancement/aptitudes/`,
+  generados por `tools/advancements/gen_advancements.py`. Criterio `minecraft:impossible` («done») que concede el
+  servidor con `achievement/Achievements.grant`; la raíz usa `minecraft:tick` para que la pestaña aparezca al entrar.
+- Catálogo puro `achievement/Achievement` (ids, padres, marcos, iconos y umbrales) y
+  `achievement/AchievementCatalogTest` (3 pruebas: árbol, JSON y traducciones en los 8 idiomas).
+- Ganchos: `SoulsManager.rest/levelUp`, `RoleManager.setRole/evolve`, `Combos` (remate), `RuneSocketing.socket`,
+  `BossManager.onDeath` (rematador y grupo conectado), fin con éxito de `WorldEventManager`/`EclipseManager`,
+  `PartyManager.accept` (los dos jugadores), `ContractManager.claim` y `ProgressManager` (nivel 50).
+- Retroactivo: al entrar se revisan rol, evolución, nivel de alma, habilidades y contratos (`Achievements.checkState`).
+- Los ids de los logros forman parte del progreso guardado: no se renombran ni se borran.
 
 ### v30 — Contratos del gremio (Codex, revisado y corregido)
 - Bloque `aptitudes:contract_board`, pantalla (420×230), payloads `ContractActionPayload` (C2S) y

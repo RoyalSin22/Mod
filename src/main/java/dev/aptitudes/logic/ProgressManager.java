@@ -143,6 +143,9 @@ public final class ProgressManager {
 	private static void onLevelUp(ServerPlayerEntity player, Skill skill, int oldLevel, int newLevel, int pointsGained) {
 		// Hito alcanzado (10, 20, 30, 40, 50): aviso propio con la ventaja desbloqueada.
 		int milestone = SkillMilestones.crossed(oldLevel, newLevel);
+		if (newLevel >= dev.aptitudes.achievement.Achievement.SKILL_LEVEL_TARGET) {
+			dev.aptitudes.achievement.Achievements.grant(player, dev.aptitudes.achievement.Achievement.SKILL_MASTERY); // v31
+		}
 		if (Aptitudes.config().levelUpTitles) {
 			Text title = Text.translatable("title.aptitudes.skill_up", Text.translatable(skill.translationKey()), newLevel)
 					.formatted(Formatting.GOLD);

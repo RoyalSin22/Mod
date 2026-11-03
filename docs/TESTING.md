@@ -23,6 +23,8 @@ reescribir las existentes (JUnit 4):
 | `logic/XpDiminishingTest` | Multiplicador (completo hasta el umbral, decrece hasta el suelo), redondeo, ventana deslizante por jugador y fuente, granja frente a juego normal, memoria acotada |
 | `party/PartyRulesTest` | Cuota de XP en pasos válidos, aritmética acotada, bonificación por integrantes conectados y valores corruptos |
 | `config/PartyConfigValidationTest` | Valores predeterminados y límites seguros de los cuatro campos de grupo |
+| `contract/ContractRulesTest` | Ofertas fijas por jugador y día, oferta destacada, límites por reputación y evolución, tipos por dificultad, objetivos alcanzables y entregas completas |
+| `achievement/AchievementCatalogTest` | Árbol de logros (ids únicos, padres declarados), JSON de avances coherentes con el enum y sin sobrantes, traducciones en los 8 idiomas |
 
 Ejecución: `.\gradlew.bat test` (también se ejecutan en `.\gradlew.bat build`).
 
@@ -218,6 +220,20 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
    el comportamiento anterior. Verifica el HUD en la misma dimensión, en otra dimensión y tras desconectar.
 7. En Eclipse, confirma un Heraldo por grupo y escalado de vida hasta cinco integrantes; sin grupo, los jugadores
    a menos de 64 bloques siguen compartiendo un Heraldo. En Niebla de almas comprueba oleadas y tope según grupo.
+
+# v31 — logros (verificación manual)
+
+Prueba automática: `achievement/AchievementCatalogTest` (enum, JSON y traducciones coherentes).
+
+1. Entra en un mundo nuevo y abre los avances (L): aparece la pestaña «Aptitudes» con el grimorio de icono y los
+   17 logros bloqueados (en gris los que dependen de otro).
+2. Descansa en una Hoguera, elige un rol, haz un remate de combo y engarza una runa: un aviso por cada uno, y su
+   mensaje en el chat.
+3. `/aptitudes event start soul_fog` y espera al final: «A través de la bruma». Si lo detienes con `stop`, no cuenta.
+4. Forma un grupo: el logro lo reciben quien invita y quien acepta.
+5. Mundo anterior a la v31 con un rol en Maestro y un contrato cobrado: al entrar se conceden «Vocación», «Maestro
+   del oficio» y «Firmado y sellado» sin hacer nada más.
+6. Con un datapack que borre un avance de la pestaña, el juego no falla (el logro simplemente no se concede).
 
 # v30 — contratos del gremio (verificación manual)
 

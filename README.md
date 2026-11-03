@@ -779,3 +779,8 @@ almas** (noche de criaturas de alma) o la **Lluvia de brasas** (meteoritos con m
 **v30 — Contratos del gremio:** fabrica un Tablón de contratos (papel y tablones). Cada día ofrece 3 contratos
 (Caza, Entrega, Pesca, Encantamiento, Oficio, Forja, Evento o Jefe). Cóbralos para ganar esmeraldas, XP de rol
 y reputación (Aprendiz → Oficial → Veterano → Maestro). Ver el capítulo «Contratos del gremio» del grimorio.
+
+**v31 — Logros:** pestaña «Aptitudes» en la pantalla de avances (tecla L) con 17 logros: descansar en una Hoguera,
+nivel de alma 10, elegir rol, evolucionar a Maestro y a Definitivo, remate de combo, nivel 50 en una habilidad,
+engarzar una runa, derrotar a un jefe y al Heraldo del Eclipse, sobrevivir a cada evento del mundo, formar un grupo,
+cobrar 1 y 10 contratos y llegar a Maestro del gremio. Lo que ya habías conseguido antes se reconoce al entrar.

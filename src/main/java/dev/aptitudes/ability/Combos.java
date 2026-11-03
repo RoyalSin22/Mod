@@ -81,6 +81,7 @@ public final class Combos {
 		if (consumed > 0) {
 			finisher(player, target, consumed);
 			send(player, 0, true);
+			dev.aptitudes.achievement.Achievements.grant(player, dev.aptitudes.achievement.Achievement.COMBO_FINISHER); // v31
 			return;
 		}
 		int count = c.hit(now, window(cfg));

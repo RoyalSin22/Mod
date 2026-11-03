@@ -179,6 +179,13 @@ public final class BossManager {
 		mob.dropStack(reward);
 		if (attacker instanceof ServerPlayerEntity killer) {
 			dev.aptitudes.contract.ContractManager.onBossKilled(killer, kind.get());
+			// v31: el logro es para el que remata y para su grupo conectado (como los contratos de Jefe).
+			for (ServerPlayerEntity member : dev.aptitudes.party.PartyManager.onlineMembers(killer)) {
+				dev.aptitudes.achievement.Achievements.grant(member, dev.aptitudes.achievement.Achievement.SLAY_BOSS);
+				if (kind.get() == BossKind.ECLIPSE_HERALD) {
+					dev.aptitudes.achievement.Achievements.grant(member, dev.aptitudes.achievement.Achievement.SLAY_HERALD);
+				}
+			}
 			world.getServer().getPlayerManager().broadcast(Text.translatable("boss.aptitudes.defeated",
 					killer.getDisplayName(), mob.getDisplayName()).formatted(Formatting.GOLD), false);
 		}
