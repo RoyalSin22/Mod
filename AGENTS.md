@@ -130,6 +130,9 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
 ## 7. Pendientes conocidos (consulta antes de empezar algo grande)
 
 - v29 (grupos), v30 (contratos) y v31 (logros) ya están hechos. Siguiente: v42–v45 de `docs/PLAN_v40_v45.md`.
+- **Siguiente trabajo de Codex**: iconos propios de los nodos de las Sendas, en la rama `codex/iconos-sendas`.
+  Instrucciones completas: `docs/PROMPT_CODEX_ICONOS_SENDAS.md`. Claude hace en paralelo la v46.1 (piedras
+  angulares): no toques `PathsScreen`, `RolesScreen`, `RoleTree`, `PathRules` ni `NodeIcons`.
 
 - **Plan aprobado v40–v45** (configuración, eventos rotativos, alquimia, maestría y amenaza, tutorial,
   traducciones): `docs/PLAN_v40_v45.md`. Excepción a «sin dependencias»: Mod Menu como `modCompileOnly` (v40).
