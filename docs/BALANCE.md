@@ -164,6 +164,18 @@ Cada jefe deja un núcleo distinto. Aplicar un núcleo en la Mesa del gremio añ
 «Morir es fácil» por diseño (decisión del autor). Para suavizarlo en un servidor: bajar
 `eclipseMobDamageMultiplier`, `eclipseEliteChance` o `eclipseMaxMobsPerPlayer`.
 
+**v41.2 — criaturas más fuertes** (`event/StrongEventRules`, configurable):
+
+| Fase | Criaturas (pesos) | Vida y daño | Armadura |
+|---|---|---|---|
+| Penumbra | zombi 25, esqueleto 25, araña 15, creeper 15, vindicador 10, bruja 10 (las de siempre) | ×1,5 (sin cambio) | +4 puntos; piezas de malla (35 % c/u) |
+| Totalidad | zombi 20, esqueleto 15, araña 10, creeper 10, vindicador 20, bruja 10, **esqueleto wither 15** | ×1,5 × 1,25 = ×1,875 | +4 puntos; piezas de hierro (35 % c/u); +25 % resistencia al empuje |
+| Campeones | — | escalado de campeón | piezas de diamante |
+
+Efecto de balance: en la Totalidad las criaturas resisten ≈ +25 % más y la armadura (+4, ≈ 14 % menos daño
+recibido sin contar las piezas) alarga los combates. Para volver a la v41: `eclipseTotalityBonus = 0`,
+`eclipseMobArmor = 0`, `eclipseArmorChance = 0`.
+
 # Runas+ (v35)
 
 | Runa | Efecto por defecto | Espera | Receta (Mesa del gremio) |
@@ -182,7 +194,7 @@ Cada jefe deja un núcleo distinto. Aplicar un núcleo en la Mesa del gremio añ
 |---|---|---|---|
 | Eclipse | 6:00–18:00 | Ver «Eclipse (v34)» | Fragmentos, Núcleo y Runa del Eclipse; XP de superviviente |
 | Niebla de almas | 18:00–6:00 | Oleadas de 2 por jugador cada 30 s (solo no muertos a pie según el clima del bioma: templado 40 % zombi, 20 % zombi aldeano, 40 % esqueleto; agua 50 % ahogado, 20 % esqueleto pantanoso, 15 % zombi, 15 % esqueleto; cálido 50 % momia; frío 50 % errante — `event/SoulFogRules`); 15 % élites; tope = mitad del del Eclipse | 1 Fragmento de alma por criatura (25 %: 2) |
-| Lluvia de brasas | 6:00–18:00 | Meteoritos cerca de cada jugador (≈ uno cada 25 s): explosión de potencia 1,5 que hiere pero no rompe bloques, aviso de 2 s (estela y sonido); 30 % de cubo de magma | Lingotes de hierro (50 %), cobre (30 %), oro (15 %) o un diamante (5 %) por meteorito |
+| Lluvia de brasas | 6:00–18:00 | Meteoritos cerca de cada jugador (≈ uno cada 25 s), sin romper bloques. v41.2: pequeño 70 % (potencia 1,5, aviso 2 s), grande 25 % (potencia 3, aviso 3 s, magma temporal radio 1) y enorme 5 % (potencia 4,5, aviso 4 s, magma radio 2); los grandes caen a 14–32 bloques del jugador. Criaturas del Nether con probabilidad 50 % (25 % en los pequeños): 1/2/3 según tamaño — pequeño: cubo de magma 70 %, blaze 30 %; grande: magma 35 %, blaze 35 %, piglin bruto 15 %, hoglin 15 %; enorme: blaze 30 %, esqueleto wither 25 %, piglin bruto 25 %, hoglin 20 % (25 % élites). Tope por zona = mitad del del Eclipse | Por tirada: hierro (50 %), cobre (30 %), oro (15 %) o diamante (5 %); 1 / 3 / 6 tiradas según tamaño; en los enormes, 8 % de chatarra de netherita por tirada |
 
 Mismo calendario que antes (cada 10 días): la frecuencia total de eventos no cambia, pero el Eclipse pasa a ser
 uno de cada tres eventos de media.

@@ -45,7 +45,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 | Runas de armas v32 | `rune/RuneSocketing`, `rune/RuneRules`; hasta dos por arma, engarzadas en la Mesa del gremio |
 | Runas+ v35 (Escarcha, Trueno, Guardia; quitar runas; valores configurables) | `rune/RuneSocketing` (esperas en memoria, `UseBlockCallback` para Mayús + clic en la Mesa), `rune/RuneRules` |
 | Jefes propios v33 | `boss/BossManager` y `boss/BossRules`; fases guardadas en etiquetas del mob y tres núcleos que mejoran armas de evolución |
-| Eventos rotativos v41 (Eclipse, Niebla de almas, Lluvia de brasas; uno al azar por fecha) | `event/WorldEventManager`, `event/WorldEventRules` (puro), `event/SoulFogRules` (criaturas de la Niebla, puro), `event/WorldEventState`, `event/WorldEventKind`; `EclipsePayload` lleva el tipo de evento |
+| Eventos rotativos v41 (Eclipse, Niebla de almas, Lluvia de brasas; uno al azar por fecha) | `event/WorldEventManager`, `event/WorldEventRules` (puro), `event/SoulFogRules` (criaturas de la Niebla, puro), `event/StrongEventRules` (v41.2: Eclipse y meteoritos más fuertes, puro), `event/WorldEventState`, `event/WorldEventKind`; `EclipsePayload` lleva el tipo de evento |
 | Eclipse v34 (evento del mundo cada 10 días) | `event/EclipseManager`, `event/EclipseRules` (puro), `event/EclipseState`; cliente `ClientEclipse`, `hud/EclipseHud` y mixins `Eclipse*Mixin` (`require = 0`). Textura del sol: `tools/textures/gen_eclipse.py` |
 
 Historial reciente en `main`: auditoría de seguridad y balance, v14 (grimorio, elementos y armas), v15
@@ -120,7 +120,7 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
   `logic/PlacedBlockLogTest`, `ability/CooldownBookTest`, `world/TemporaryBlockScheduleTest`,
   `role/LoadoutCodecTest`, `role/EvolutionPointsTest`, `morph/MorphSizeRulesTest`, `logic/ComboCounterTest`,
   `role/RoleRulesTest`, `data/ProgressRulesTest` y
-  `rune/RuneRulesTest`, `boss/BossRulesTest`, `event/EclipseRulesTest`, `rune/RuneBalanceTest`, `logic/PlacedBlockPersistenceTest`, `config/ConfigFieldRulesTest`, `event/WorldEventRulesTest`, `party/PartyRulesTest`, `contract/ContractRulesTest`, `achievement/AchievementCatalogTest`, `event/SoulFogRulesTest`,
+  `rune/RuneRulesTest`, `boss/BossRulesTest`, `event/EclipseRulesTest`, `rune/RuneBalanceTest`, `logic/PlacedBlockPersistenceTest`, `config/ConfigFieldRulesTest`, `event/WorldEventRulesTest`, `party/PartyRulesTest`, `contract/ContractRulesTest`, `achievement/AchievementCatalogTest`, `event/SoulFogRulesTest`, `event/StrongEventRulesTest`,
   `config/AptitudesConfigValidationTest`.
 - **No escribas pruebas que llamen a métodos que no existen.** Si una prueba necesita una API nueva,
   impleméntala en el código principal en el mismo cambio y explícalo.

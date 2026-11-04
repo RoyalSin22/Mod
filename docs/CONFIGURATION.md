@@ -119,6 +119,9 @@ los ajustes propios) y usa `/aptitudes admin reload` o reinicia.
 | `eclipseHeraldEnabled` | true | — | Aparición del Heraldo del Eclipse a mediodía. |
 | `eclipseSurvivorRoleXp` | 300 | [0, 100 000] | XP del rol principal para quien no muere durante el eclipse. |
 | `eclipseSurvivorCombatXp` | 200 | [0, 100 000] | XP de Combate para quien no muere durante el eclipse. |
+| `eclipseTotalityBonus` | 0.25 | [0, 2] | v41.2: vida y daño extra en la Totalidad, multiplicando a los dos anteriores (0,25 → ×1,875). 0 = como antes. |
+| `eclipseMobArmor` | 4.0 | [0, 20] | v41.2: puntos de armadura extra de cada criatura del eclipse. 0 = como antes. |
+| `eclipseArmorChance` | 0.35 | [0, 1] | v41.2: probabilidad de cada pieza visible (pecho, piernas, botas) en zombis, esqueletos, esqueletos wither y vindicadores: malla, hierro en la Totalidad, diamante los campeones. No se sueltan. |
 
 Opción del cliente (`config/aptitudes-client.json`, también en Mayús + O): `eclipseSkyEffects` (true) tiñe el
 cielo, la niebla y las nubes y cambia la textura del sol. Desactívala si los efectos molestan; la viñeta y la
@@ -174,6 +177,9 @@ mundo). `eclipseEnabled = false` equivale a peso 0 para el Eclipse.
 | `worldEventWeightEclipse` | 1 | [0, 100] | Peso del Eclipse. |
 | `worldEventWeightSoulFog` | 1 | [0, 100] | Peso de la Niebla de almas (0 = nunca). |
 | `worldEventWeightEmberRain` | 1 | [0, 100] | Peso de la Lluvia de brasas (0 = nunca). |
+| `emberRainLargeChance` | 0.25 | [0, 1] | v41.2: probabilidad de meteorito grande. |
+| `emberRainHugeChance` | 0.05 | [0, 1] | v41.2: probabilidad de meteorito enorme (se comprueba antes que la de grande). Con ambas a 0, todos pequeños como antes. |
+| `emberRainMobChance` | 0.5 | [0, 1] | v41.2: probabilidad de que un impacto traiga criaturas del Nether (la mitad en los pequeños); 0 = ninguna. |
 
 La Niebla de almas usa `eclipseWaveIntervalSeconds` para sus oleadas y la mitad de `eclipseMaxMobsPerPlayer`
 como tope por jugador.

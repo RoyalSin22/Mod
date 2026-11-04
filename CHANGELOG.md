@@ -27,6 +27,10 @@ Compilado y probado en partida por el autor (v15–v19 y v29–v41 ✔).
   operadores cambian la configuración del servidor en el juego; los tooltips de las runas muestran los valores reales.
 
 ### Cambiado
+- **v41.2** — Eclipse más duro: armadura (+4 y piezas de malla, hierro en la Totalidad y diamante los campeones),
+  +25 % de vida y daño en la Totalidad y esqueletos wither en sus oleadas. Lluvia de brasas con meteoritos
+  pequeños, grandes y enormes (más explosión, más botín, restos de magma temporales) y criaturas del Nether
+  (cubos de magma, blazes, piglins brutos, hoglins y esqueletos wither). Todo configurable.
 - **v41.1** — La Niebla de almas solo trae no muertos a pie: zombis, zombis aldeanos, esqueletos y, según el
   bioma, ahogados y esqueletos pantanosos junto al agua, momias en climas cálidos y errantes en los fríos (ya no
   aparecen fantasmas).

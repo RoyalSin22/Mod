@@ -274,6 +274,17 @@ Pendiente: comprobarlo en el juego (ver `docs/TESTING.md`, v39).
   `EclipsePayload` lleva el tipo de evento.
 - Comando `/aptitudes event [status|start <evento>|stop]`; `/aptitudes eclipse` informa del próximo evento.
 
+### v41.2 — Eclipse y Lluvia de brasas más fuertes
+- `event/StrongEventRules` (puro) + `event/StrongEventRulesTest` (5 pruebas): criaturas del Eclipse por fase,
+  bonificación de la Totalidad, armadura por fase, tamaño de meteorito, potencia, caída, botín, restos y
+  criaturas del Nether.
+- `EclipseManager`: armadura (modificador `aptitudes:eclipse/armor` y piezas visibles sin soltar),
+  resistencia al empuje en la Totalidad (`aptitudes:eclipse/knockback`), esqueletos wither.
+- `WorldEventManager`: meteoritos con tamaño, magma temporal con `TemporaryBlocks` (nunca sustituye bloques),
+  piglins y hoglins inmunes a la zombificación, tope por zona.
+- 6 campos de configuración nuevos (`eclipseTotalityBonus`, `eclipseMobArmor`, `eclipseArmorChance`,
+  `emberRainLargeChance`, `emberRainHugeChance`, `emberRainMobChance`).
+
 ### v41.1 — Corrección del HUD y Niebla de no muertos
 - `HudConfigScreen`: distribución calculada por filas (título, escala entre − y +, 6 interruptores, ayuda y
   Restablecer/Hecho); antes las posiciones eran fijas desde el centro y se solapaban.

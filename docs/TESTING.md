@@ -26,6 +26,7 @@ reescribir las existentes (JUnit 4):
 | `contract/ContractRulesTest` | Ofertas fijas por jugador y día, oferta destacada, límites por reputación y evolución, tipos por dificultad, objetivos alcanzables y entregas completas |
 | `achievement/AchievementCatalogTest` | Árbol de logros (ids únicos, padres declarados), JSON de avances coherentes con el enum y sin sobrantes, traducciones en los 8 idiomas |
 | `event/SoulFogRulesTest` | Pesos que suman 100 por clima, clima por agua y temperatura, distribución exacta de las tiradas, variantes por clima y tiradas fuera de rango |
+| `event/StrongEventRulesTest` | Pesos del Eclipse por fase y del Nether por tamaño (suman 100 y siguen las tiradas), bonificación y armadura acotadas, material por fase, tamaños crecientes en potencia/caída/botín/restos, criaturas por tamaño y probabilidad |
 
 Ejecución: `.\gradlew.bat test` (también se ejecutan en `.\gradlew.bat build`).
 
@@ -227,6 +228,20 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
    el comportamiento anterior. Verifica el HUD en la misma dimensión, en otra dimensión y tras desconectar.
 7. En Eclipse, confirma un Heraldo por grupo y escalado de vida hasta cinco integrantes; sin grupo, los jugadores
    a menos de 64 bloques siguen compartiendo un Heraldo. En Niebla de almas comprueba oleadas y tope según grupo.
+
+# v41.2 — Eclipse y Lluvia de brasas más fuertes (verificación manual)
+
+1. `/aptitudes event start eclipse` en supervivencia. En la Penumbra: zombis y esqueletos con algunas piezas de
+   malla (y el casco oscuro); ninguna se suelta al matarlos.
+2. `/time set 3000` durante el evento (Totalidad): piezas de hierro, esqueletos wither en las oleadas y criaturas
+   que aguantan más golpes y apenas retroceden. Un campeón con piezas de diamante.
+3. `/aptitudes event start ember_rain`: la mayoría de meteoritos son como antes; algunos tienen estela más gruesa,
+   bramido de aviso y una explosión mayor que no rompe bloques. Alrededor quedan bloques de magma que
+   desaparecen a los 30 s sin dejar agujeros. Más lingotes en el suelo.
+4. Tras los impactos aparecen cubos de magma y blazes; en los grandes, piglins brutos y hoglins que **no** se
+   convierten en zombis pasados 15 s; en los enormes, esqueletos wither. `/aptitudes event stop`: se disuelven.
+5. `/aptitudes config`: `eclipseMobArmor = 0`, `eclipseArmorChance = 0`, `eclipseTotalityBonus = 0`,
+   `emberRainLargeChance = 0`, `emberRainHugeChance = 0` y `emberRainMobChance = 0` → comportamiento de la v41.1.
 
 # v41.1 — HUD y Niebla de no muertos (verificación manual)
 

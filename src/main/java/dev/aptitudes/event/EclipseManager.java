@@ -71,12 +71,15 @@ public final class EclipseManager {
 	private static final Identifier HEALTH_ID = Aptitudes.id("eclipse/health");
 	private static final Identifier DAMAGE_ID = Aptitudes.id("eclipse/damage");
 	private static final Identifier HERALD_HEALTH_ID = Aptitudes.id("eclipse/herald_health");
+	private static final Identifier ARMOR_ID = Aptitudes.id("eclipse/armor");
+	private static final Identifier KNOCKBACK_ID = Aptitudes.id("eclipse/knockback");
 	private static final int HELMET_COLOR = 0x2A0707;
 	private static final double GROUP_RADIUS = 64.0;
 	private static final double COUNT_RADIUS = 48.0;
 
-	private static final List<EntityType<? extends MobEntity>> WAVE_TYPES = List.of(EntityType.ZOMBIE,
-			EntityType.SKELETON, EntityType.SPIDER, EntityType.CREEPER, EntityType.VINDICATOR, EntityType.WITCH);
+	/** Criaturas que muestran armadura puesta (las demás solo reciben los puntos de armadura). */
+	private static final Set<EntityType<?>> ARMORED_TYPES = Set.of(EntityType.ZOMBIE, EntityType.SKELETON,
+			EntityType.WITHER_SKELETON, EntityType.VINDICATOR);
 
 	/** Criaturas del eclipse vivas y cargadas (para disolverlas al terminar). */
 	private static final Set<UUID> ALIVE = new HashSet<>();
@@ -280,26 +283,46 @@ public final class EclipseManager {
 				ServerPlayerEntity target = group.get(i % groupSize);
 				BlockPos pos = findSpawn(world, target.getBlockPos(), 16, 32);
 				if (pos == null) continue;
-				spawnMob(world, WAVE_TYPES.get(world.random.nextInt(WAVE_TYPES.size())), pos, cfg);
+				spawnMob(world, waveType(phase, world.random.nextInt(100)), pos, cfg, phase);
 			}
 		}
 	}
 
-	private static void spawnMob(ServerWorld world, EntityType<? extends MobEntity> type, BlockPos pos, AptitudesConfig cfg) {
+	/** v41.2: tipo de criatura por fase ({@link StrongEventRules#eclipseMob}); la Totalidad trae esqueletos wither. */
+	private static EntityType<? extends MobEntity> waveType(Phase phase, int roll) {
+		return switch (StrongEventRules.eclipseMob(phase, roll)) {
+			case ZOMBIE -> EntityType.ZOMBIE;
+			case SKELETON -> EntityType.SKELETON;
+			case SPIDER -> EntityType.SPIDER;
+			case CREEPER -> EntityType.CREEPER;
+			case VINDICATOR -> EntityType.VINDICATOR;
+			case WITCH -> EntityType.WITCH;
+			case WITHER_SKELETON -> EntityType.WITHER_SKELETON;
+		};
+	}
+
+	private static void spawnMob(ServerWorld world, EntityType<? extends MobEntity> type, BlockPos pos, AptitudesConfig cfg,
+								 Phase phase) {
 		MobEntity mob = type.create(world);
 		if (mob == null) return;
 		mob.refreshPositionAndAngles(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, world.random.nextFloat() * 360f, 0);
 		mob.initialize(world, world.getLocalDifficulty(pos), SpawnReason.EVENT, null);
 		mob.addCommandTag(TAG);
 		mob.addCommandTag(Elites.CHECKED); // la tirada de élite la hace el eclipse, no la aparición normal
+		// v41.2: en la Totalidad, vida y daño extra sobre los multiplicadores de siempre; armadura y aguante.
+		double phaseBonus = 1.0 + StrongEventRules.phaseBonus(phase, cfg.eclipseTotalityBonus);
 		modifier(mob, EntityAttributes.GENERIC_MAX_HEALTH, HEALTH_ID,
-				EclipseRules.boundedMultiplier(cfg.eclipseMobHealthMultiplier, 1.0, 5.0) - 1.0);
+				EclipseRules.boundedMultiplier(cfg.eclipseMobHealthMultiplier, 1.0, 5.0) * phaseBonus - 1.0);
 		modifier(mob, EntityAttributes.GENERIC_ATTACK_DAMAGE, DAMAGE_ID,
-				EclipseRules.boundedMultiplier(cfg.eclipseMobDamageMultiplier, 1.0, 5.0) - 1.0);
+				EclipseRules.boundedMultiplier(cfg.eclipseMobDamageMultiplier, 1.0, 5.0) * phaseBonus - 1.0);
+		flatModifier(mob, EntityAttributes.GENERIC_ARMOR, ARMOR_ID, StrongEventRules.armorPoints(cfg.eclipseMobArmor));
+		flatModifier(mob, EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, KNOCKBACK_ID, phase == Phase.TOTALITY ? 0.25 : 0.0);
 		mob.setHealth(mob.getMaxHealth());
 		darkHelmet(mob);
 		float roll = world.random.nextFloat();
-		if (roll < cfg.eclipseChampionChance) Elites.makeElite(mob, true, world.random);
+		boolean champion = roll < cfg.eclipseChampionChance;
+		equipArmor(mob, StrongEventRules.armorTier(phase, champion), cfg.eclipseArmorChance, world.random);
+		if (champion) Elites.makeElite(mob, true, world.random);
 		else if (roll < cfg.eclipseChampionChance + cfg.eclipseEliteChance) Elites.makeElite(mob, false, world.random);
 		mob.setPersistent();
 		world.spawnEntityAndPassengers(mob);
@@ -315,6 +338,31 @@ public final class EclipseManager {
 		helmet.set(DataComponentTypes.UNBREAKABLE, new UnbreakableComponent(false));
 		mob.equipStack(EquipmentSlot.HEAD, helmet);
 		mob.setEquipmentDropChance(EquipmentSlot.HEAD, 0.0f);
+	}
+
+	/** v41.2: piezas de armadura visibles (pecho, piernas y botas; el casco oscuro ya está), sin soltarlas al morir. */
+	private static void equipArmor(MobEntity mob, StrongEventRules.ArmorTier tier, double chance, Random random) {
+		if (!ARMORED_TYPES.contains(mob.getType())) return;
+		EquipmentSlot[] slots = {EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
+		net.minecraft.item.Item[][] items = {
+				{Items.CHAINMAIL_CHESTPLATE, Items.CHAINMAIL_LEGGINGS, Items.CHAINMAIL_BOOTS},
+				{Items.IRON_CHESTPLATE, Items.IRON_LEGGINGS, Items.IRON_BOOTS},
+				{Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS},
+		};
+		for (int i = 0; i < slots.length; i++) {
+			if (!mob.getEquippedStack(slots[i]).isEmpty() || random.nextDouble() >= chance) continue;
+			mob.equipStack(slots[i], new ItemStack(items[tier.ordinal()][i]));
+			mob.setEquipmentDropChance(slots[i], 0.0f);
+		}
+	}
+
+	/** Suma un valor fijo a un atributo (quita antes el modificador anterior con el mismo id). */
+	private static void flatModifier(MobEntity mob, RegistryEntry<EntityAttribute> attribute, Identifier id, double value) {
+		EntityAttributeInstance instance = mob.getAttributeInstance(attribute);
+		if (instance == null) return;
+		instance.removeModifier(id);
+		if (value > 0) instance.addPersistentModifier(new EntityAttributeModifier(id, value,
+				EntityAttributeModifier.Operation.ADD_VALUE));
 	}
 
 	private static void modifier(MobEntity mob, RegistryEntry<EntityAttribute> attribute, Identifier id, double value) {

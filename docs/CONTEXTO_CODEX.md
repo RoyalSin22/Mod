@@ -177,7 +177,7 @@ de armaduras, colisión de las transformaciones, Mesa del gremio, atributos −3
   `role/RoleRulesTest`, `role/LoadoutCodecTest`, `role/EvolutionPointsTest`, `morph/MorphSizeRulesTest`, `logic/ComboCounterTest`, `data/ProgressRulesTest`,
   `rune/RuneRulesTest`, `boss/BossRulesTest`, `event/EclipseRulesTest`, `rune/RuneBalanceTest`, `logic/PlacedBlockPersistenceTest`,
   `config/ConfigFieldRulesTest`, `event/WorldEventRulesTest`, `party/PartyRulesTest`, `contract/ContractRulesTest`,
-  `achievement/AchievementCatalogTest`, `event/SoulFogRulesTest`, `config/AptitudesConfigValidationTest`.
+  `achievement/AchievementCatalogTest`, `event/SoulFogRulesTest`, `event/StrongEventRulesTest`, `config/AptitudesConfigValidationTest`.
 - Puedes escribir pruebas en JUnit 5 o JUnit 4; ambos funcionan.
 - **No escribas pruebas que llamen a métodos que no existen.** Si una prueba necesita una API nueva,
   impleméntala en el código principal en el mismo cambio y explícalo (ya pasó una vez y rompió el build).

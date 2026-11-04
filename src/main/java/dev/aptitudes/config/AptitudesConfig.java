@@ -153,12 +153,23 @@ public class AptitudesConfig {
 	/** XP de rol principal y de Combate para quien sobrevive al eclipse sin morir. */
 	public int eclipseSurvivorRoleXp = 300;
 	public int eclipseSurvivorCombatXp = 200;
+	/** v41.2: vida y daño extra en la Totalidad, sobre los multiplicadores anteriores (0,25 = +25 %). */
+	public double eclipseTotalityBonus = 0.25;
+	/** v41.2: puntos de armadura extra de cada criatura del eclipse (0 = como antes). */
+	public double eclipseMobArmor = 4.0;
+	/** v41.2: probabilidad de cada pieza de armadura visible (malla, hierro en la Totalidad, diamante los campeones). */
+	public double eclipseArmorChance = 0.35;
 	// ---------- Eventos rotativos (v41) ----------
 	// El calendario es el de eclipseIntervalDays / eclipseFirstDay: cada fecha toca un evento al azar, sin repetir
 	// el anterior. El peso es la probabilidad relativa; 0 desactiva ese evento.
 	public int worldEventWeightEclipse = 1;
 	public int worldEventWeightSoulFog = 1;
 	public int worldEventWeightEmberRain = 1;
+	/** v41.2: probabilidad de meteorito grande y enorme en la Lluvia de brasas (el resto, pequeños como antes). */
+	public double emberRainLargeChance = 0.25;
+	public double emberRainHugeChance = 0.05;
+	/** v41.2: probabilidad de que un impacto traiga criaturas del Nether (la mitad en los pequeños). */
+	public double emberRainMobChance = 0.5;
 
 	// ---------- Runas (v35: antes eran valores fijos) ----------
 	public int runeFlameSeconds = 3;
@@ -370,6 +381,12 @@ public class AptitudesConfig {
 		c.worldEventWeightEclipse = clamp(c.worldEventWeightEclipse, 0, 100);
 		c.worldEventWeightSoulFog = clamp(c.worldEventWeightSoulFog, 0, 100);
 		c.worldEventWeightEmberRain = clamp(c.worldEventWeightEmberRain, 0, 100);
+		c.eclipseTotalityBonus = Math.min(2.0, c.eclipseTotalityBonus);
+		c.eclipseMobArmor = Math.min(20.0, c.eclipseMobArmor);
+		c.eclipseArmorChance = Math.min(1.0, c.eclipseArmorChance);
+		c.emberRainLargeChance = Math.min(1.0, c.emberRainLargeChance);
+		c.emberRainHugeChance = Math.min(1.0, c.emberRainHugeChance);
+		c.emberRainMobChance = Math.min(1.0, c.emberRainMobChance);
 		c.runeFlameSeconds = clamp(c.runeFlameSeconds, 0, 20);
 		c.runeLeechAmount = Math.min(10.0, c.runeLeechAmount);
 		c.runeLeechCooldownSeconds = Math.max(0.5, Math.min(60.0, c.runeLeechCooldownSeconds));

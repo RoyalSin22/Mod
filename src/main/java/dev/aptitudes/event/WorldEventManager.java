@@ -52,10 +52,9 @@ public final class WorldEventManager {
 	/** La Niebla de almas empieza a las 18:00 (tick 12 000 del día); la Lluvia de brasas a las 6:00 (tick 0). */
 	private static final long FOG_START = 12_000L;
 	private static final long EMBER_START = 0L;
-	private static final int METEOR_FALL_TICKS = 40;
 
 
-	private record Meteor(ServerWorld world, Vec3d from, Vec3d to, long impactTick) {}
+	private record Meteor(ServerWorld world, Vec3d from, Vec3d to, long impactTick, StrongEventRules.MeteorSize size) {}
 
 	private static final Set<UUID> ALIVE = new HashSet<>();
 	private static final Set<UUID> LEFTOVERS = new HashSet<>();
@@ -315,12 +314,22 @@ public final class WorldEventManager {
 	private static void emberRain(ServerWorld world) {
 		for (ServerPlayerEntity player : world.getPlayers()) {
 			if (!player.isAlive() || player.isSpectator() || world.random.nextFloat() >= 0.04f || METEORS.size() > 32) continue;
-			BlockPos target = EclipseManager.findSpawn(world, player.getBlockPos(), 8, 28);
+			AptitudesConfig cfg = Aptitudes.config();
+			StrongEventRules.MeteorSize size = StrongEventRules.meteorSize(world.random.nextDouble(),
+					cfg.emberRainLargeChance, cfg.emberRainHugeChance);
+			// Los grandes caen más lejos del jugador: se ven venir y la onda no le alcanza de lleno.
+			int min = size == StrongEventRules.MeteorSize.SMALL ? 8 : 14;
+			BlockPos target = EclipseManager.findSpawn(world, player.getBlockPos(), min, 32);
 			if (target == null) continue;
 			Vec3d to = Vec3d.ofBottomCenter(target);
-			Vec3d from = to.add((world.random.nextDouble() - 0.5) * 40, 45, (world.random.nextDouble() - 0.5) * 40);
-			METEORS.add(new Meteor(world, from, to, world.getTime() + METEOR_FALL_TICKS));
-			world.playSound(null, from.x, from.y, from.z, SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.WEATHER, 2.0f, 0.5f);
+			Vec3d from = to.add((world.random.nextDouble() - 0.5) * 40, 45 + 15 * size.ordinal(), (world.random.nextDouble() - 0.5) * 40);
+			METEORS.add(new Meteor(world, from, to, world.getTime() + StrongEventRules.fallTicks(size), size));
+			world.playSound(null, from.x, from.y, from.z, SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.WEATHER,
+					2.0f + size.ordinal(), 0.5f - 0.1f * size.ordinal());
+			if (size != StrongEventRules.MeteorSize.SMALL) {
+				// Aviso: ruido grave hacia el punto de impacto.
+				world.playSound(null, to.x, to.y, to.z, SoundEvents.ENTITY_GHAST_WARN, SoundCategory.WEATHER, 1.5f, 0.5f);
+			}
 		}
 	}
 
@@ -332,37 +341,93 @@ public final class WorldEventManager {
 			Meteor m = it.next();
 			long left = m.impactTick() - m.world().getTime();
 			if (left > 0) {
-				double t = 1.0 - left / (double) METEOR_FALL_TICKS;
+				double t = 1.0 - left / (double) StrongEventRules.fallTicks(m.size());
 				Vec3d p = m.from().lerp(m.to(), Math.max(0, Math.min(1, t)));
-				m.world().spawnParticles(ParticleTypes.FLAME, p.x, p.y, p.z, 6, 0.25, 0.25, 0.25, 0.02);
-				m.world().spawnParticles(ParticleTypes.LARGE_SMOKE, p.x, p.y, p.z, 2, 0.2, 0.2, 0.2, 0.01);
+				int s = m.size().ordinal(); // 0 pequeño, 1 grande, 2 enorme: estela más ancha y densa
+				double spread = 0.25 + 0.35 * s;
+				m.world().spawnParticles(ParticleTypes.FLAME, p.x, p.y, p.z, 6 + 8 * s, spread, spread, spread, 0.02);
+				m.world().spawnParticles(ParticleTypes.LARGE_SMOKE, p.x, p.y, p.z, 2 + 3 * s, spread, spread, spread, 0.01);
+				if (s > 0) m.world().spawnParticles(ParticleTypes.LAVA, p.x, p.y, p.z, s, spread, spread, spread, 0.0);
 				continue;
 			}
 			it.remove();
-			impact(m.world(), m.to());
+			impact(m.world(), m.to(), m.size());
 		}
 	}
 
-	private static void impact(ServerWorld world, Vec3d at) {
-		world.createExplosion(null, at.x, at.y, at.z, 1.5f, World.ExplosionSourceType.NONE);
-		world.spawnParticles(ParticleTypes.LAVA, at.x, at.y + 0.3, at.z, 20, 0.6, 0.3, 0.6, 0.1);
+	/** Bloques de magma temporales alrededor del impacto (30 s); solo en huecos de aire sobre suelo firme. */
+	private static final long CRATER_TICKS = 600;
+
+	private static void impact(ServerWorld world, Vec3d at, StrongEventRules.MeteorSize size) {
+		// Explosión sin romper bloques (como antes), más potente según el tamaño.
+		world.createExplosion(null, at.x, at.y, at.z, StrongEventRules.explosionPower(size), World.ExplosionSourceType.NONE);
+		int s = size.ordinal();
+		world.spawnParticles(ParticleTypes.LAVA, at.x, at.y + 0.3, at.z, 20 + 20 * s, 0.6 + s, 0.3, 0.6 + s, 0.1);
+		if (s > 0) world.spawnParticles(ParticleTypes.EXPLOSION_EMITTER, at.x, at.y + 0.5, at.z, 1, 0, 0, 0, 0);
 		BlockPos pos = BlockPos.ofFloored(at);
+		crater(world, pos, StrongEventRules.craterRadius(size));
+		for (int i = 0; i < StrongEventRules.lootRolls(size); i++) Block.dropStack(world, pos, meteorLoot(world, size));
+		netherMobs(world, at, pos, size);
+	}
+
+	private static ItemStack meteorLoot(ServerWorld world, StrongEventRules.MeteorSize size) {
 		float roll = world.random.nextFloat();
-		ItemStack loot = roll < 0.05f ? new ItemStack(Items.DIAMOND)
+		if (size == StrongEventRules.MeteorSize.HUGE && roll < 0.08f) return new ItemStack(Items.NETHERITE_SCRAP);
+		return roll < 0.05f ? new ItemStack(Items.DIAMOND)
 				: roll < 0.20f ? new ItemStack(Items.GOLD_INGOT, 1 + world.random.nextInt(2))
 				: roll < 0.50f ? new ItemStack(Items.COPPER_INGOT, 2 + world.random.nextInt(3))
 				: new ItemStack(Items.IRON_INGOT, 1 + world.random.nextInt(3));
-		Block.dropStack(world, pos, loot);
-		if (world.getDifficulty() != Difficulty.PEACEFUL && world.random.nextFloat() < 0.3f) {
-			MobEntity cube = EntityType.MAGMA_CUBE.create(world);
-			if (cube != null) {
-				cube.refreshPositionAndAngles(at.x, at.y, at.z, world.random.nextFloat() * 360f, 0);
-				cube.initialize(world, world.getLocalDifficulty(pos), SpawnReason.EVENT, null);
-				cube.addCommandTag(TAG);
-				cube.addCommandTag(Elites.CHECKED);
-				world.spawnEntity(cube);
-				ALIVE.add(cube.getUuid());
+	}
+
+	/** Restos ardientes: magma temporal (vuelve a ser aire). Nunca sustituye bloques existentes. */
+	private static void crater(ServerWorld world, BlockPos center, int radius) {
+		if (radius <= 0) return;
+		for (int dx = -radius; dx <= radius; dx++) {
+			for (int dz = -radius; dz <= radius; dz++) {
+				if (dx * dx + dz * dz > radius * radius || world.random.nextFloat() < 0.35f) continue;
+				for (int dy = 1; dy >= -2; dy--) {
+					BlockPos p = center.add(dx, dy, dz);
+					if (world.getBlockState(p).isAir() && world.getBlockState(p.down()).isSolidBlock(world, p.down())) {
+						dev.aptitudes.world.TemporaryBlocks.place(world, p, net.minecraft.block.Blocks.MAGMA_BLOCK.getDefaultState(), CRATER_TICKS);
+						break;
+					}
+				}
 			}
+		}
+	}
+
+	/** Criaturas del Nether del impacto ({@link StrongEventRules#netherMob}), con el tope de la Niebla por zona. */
+	private static void netherMobs(ServerWorld world, Vec3d at, BlockPos pos, StrongEventRules.MeteorSize size) {
+		if (world.getDifficulty() == Difficulty.PEACEFUL) return;
+		AptitudesConfig cfg = Aptitudes.config();
+		int count = StrongEventRules.netherMobCount(size, world.random.nextDouble(), cfg.emberRainMobChance);
+		if (count <= 0) return;
+		int alive = world.getEntitiesByClass(MobEntity.class, new net.minecraft.util.math.Box(pos).expand(48),
+				mob -> mob.isAlive() && mob.getCommandTags().contains(TAG)).size();
+		count = EclipseRules.allowedSpawns(alive, Math.max(0, cfg.eclipseMaxMobsPerPlayer / 2), count);
+		for (int i = 0; i < count; i++) {
+			EntityType<? extends MobEntity> type = switch (StrongEventRules.netherMob(size, world.random.nextInt(100))) {
+				case MAGMA_CUBE -> EntityType.MAGMA_CUBE;
+				case BLAZE -> EntityType.BLAZE;
+				case PIGLIN_BRUTE -> EntityType.PIGLIN_BRUTE;
+				case HOGLIN -> EntityType.HOGLIN;
+				case WITHER_SKELETON -> EntityType.WITHER_SKELETON;
+			};
+			MobEntity mob = type.create(world);
+			if (mob == null) continue;
+			double ox = (world.random.nextDouble() - 0.5) * 3, oz = (world.random.nextDouble() - 0.5) * 3;
+			mob.refreshPositionAndAngles(at.x + ox, at.y, at.z + oz, world.random.nextFloat() * 360f, 0);
+			mob.initialize(world, world.getLocalDifficulty(pos), SpawnReason.EVENT, null);
+			// Fuera del Nether, piglins y hoglins se convertirían en zombis (y dejarían de ser del evento).
+			if (mob instanceof net.minecraft.entity.mob.AbstractPiglinEntity piglin) piglin.setImmuneToZombification(true);
+			if (mob instanceof net.minecraft.entity.mob.HoglinEntity hoglin) hoglin.setImmuneToZombification(true);
+			mob.addCommandTag(TAG);
+			mob.addCommandTag(Elites.CHECKED);
+			if (size == StrongEventRules.MeteorSize.HUGE && world.random.nextFloat() < 0.25f) Elites.makeElite(mob, false, world.random);
+			mob.setPersistent();
+			world.spawnEntityAndPassengers(mob);
+			world.spawnParticles(ParticleTypes.FLAME, mob.getX(), mob.getBodyY(0.5), mob.getZ(), 16, 0.3, 0.6, 0.3, 0.02);
+			ALIVE.add(mob.getUuid());
 		}
 	}
 
