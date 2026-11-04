@@ -12,9 +12,11 @@ Compilado y probado en partida por el autor (v15–v19 y v29–v41 ✔).
   distribución se calcula por filas).
 
 ### Añadido
-- **Iconos de Sendas — fase 1**: 240 iconos originales de 16×16 RGBA para S4, S5x, S5y y S6,
+- **Iconos de Sendas — fases 1–2**: 300 iconos originales de 16×16 RGBA para S4, S5x, S5y, S6 y S7,
   generados con Pillow desde los efectos de `RoleTree`. Incluye 19 glifos, marcos por escalón y color de
-  senda, hoja de vista previa ×4 y comprobación `--check`. Pendientes los 60 S7 y el dibujado en cliente.
+  senda, hoja de vista previa ×4 y comprobación `--check`. Los 60 S7 usan 10 glifos de piedra angular,
+  emblema morado de borde dorado y franja de senda; asignaciones de la tabla de diseño §10 validadas.
+  Pendiente el dibujado en cliente.
 - **v46.1 — Piedras angulares**: el escalón S7 (nivel 50, 1 rango) de cada senda, con 10 plantillas (Carnicería,
   Baluarte, Sobrecarga, Detonación, Contagio, Legión, Espectro, Fortuna, Tempestad y Santuario), un sonido propio
   para cada una e indicador en el HUD (encima de la barra de habilidades). Todos los valores son configurables.

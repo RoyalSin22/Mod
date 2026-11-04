@@ -44,6 +44,77 @@ EFFECT_COLORS = {
     'MAX_HEALTH': '#E3536C', 'ATTACK_SPEED': '#CADDE8', 'LUCK': '#64C779',
 }
 
+# Copia de docs/V46_DISENO_SENDAS.md §10: (clave de rol, senda) -> plantilla.
+# Las claves usan los nombres ingleses estables; no se deducen de los títulos de los nodos.
+KEYSTONES = {
+    ('berserker', 'a'): 'CARNAGE',
+    ('berserker', 'b'): 'BULWARK',
+    ('berserker', 'c'): 'TEMPEST',
+    ('mage', 'a'): 'TEMPEST',
+    ('mage', 'b'): 'OVERLOAD',
+    ('mage', 'c'): 'SPECTER',
+    ('assassin', 'a'): 'SPECTER',
+    ('assassin', 'b'): 'DETONATION',
+    ('assassin', 'c'): 'CONTAGION',
+    ('herbalist', 'a'): 'SANCTUARY',
+    ('herbalist', 'b'): 'CONTAGION',
+    ('herbalist', 'c'): 'FORTUNE',
+    ('engineer', 'a'): 'DETONATION',
+    ('engineer', 'b'): 'BULWARK',
+    ('engineer', 'c'): 'OVERLOAD',
+    ('lancer', 'a'): 'TEMPEST',
+    ('lancer', 'b'): 'BULWARK',
+    ('lancer', 'c'): 'CARNAGE',
+    ('swordsman', 'a'): 'SPECTER',
+    ('swordsman', 'b'): 'CARNAGE',
+    ('swordsman', 'c'): 'BULWARK',
+    ('paladin', 'a'): 'DETONATION',
+    ('paladin', 'b'): 'BULWARK',
+    ('paladin', 'c'): 'SANCTUARY',
+    ('necromancer', 'a'): 'LEGION',
+    ('necromancer', 'b'): 'CONTAGION',
+    ('necromancer', 'c'): 'DETONATION',
+    ('druid', 'a'): 'SANCTUARY',
+    ('druid', 'b'): 'CARNAGE',
+    ('druid', 'c'): 'CONTAGION',
+    ('merchant', 'a'): 'FORTUNE',
+    ('merchant', 'b'): 'DETONATION',
+    ('merchant', 'c'): 'SPECTER',
+    ('monk', 'a'): 'TEMPEST',
+    ('monk', 'b'): 'SANCTUARY',
+    ('monk', 'c'): 'CARNAGE',
+    ('elementalist', 'a'): 'DETONATION',
+    ('elementalist', 'b'): 'OVERLOAD',
+    ('elementalist', 'c'): 'TEMPEST',
+    ('gunslinger', 'a'): 'TEMPEST',
+    ('gunslinger', 'b'): 'OVERLOAD',
+    ('gunslinger', 'c'): 'SPECTER',
+    ('weapon_summoner', 'a'): 'TEMPEST',
+    ('weapon_summoner', 'b'): 'BULWARK',
+    ('weapon_summoner', 'c'): 'OVERLOAD',
+    ('hunter', 'a'): 'CONTAGION',
+    ('hunter', 'b'): 'FORTUNE',
+    ('hunter', 'c'): 'CARNAGE',
+    ('bard', 'a'): 'SANCTUARY',
+    ('bard', 'b'): 'TEMPEST',
+    ('bard', 'c'): 'BULWARK',
+    ('warlock', 'a'): 'CONTAGION',
+    ('warlock', 'b'): 'CARNAGE',
+    ('warlock', 'c'): 'OVERLOAD',
+    ('tamer', 'a'): 'LEGION',
+    ('tamer', 'b'): 'CARNAGE',
+    ('tamer', 'c'): 'SANCTUARY',
+    ('shapeshifter', 'a'): 'SPECTER',
+    ('shapeshifter', 'b'): 'FORTUNE',
+    ('shapeshifter', 'c'): 'BULWARK',
+}
+KEYSTONE_COLORS = {
+    'CARNAGE': '#E45168', 'BULWARK': '#B8D0DC', 'OVERLOAD': '#FFD260',
+    'DETONATION': '#FFA559', 'CONTAGION': '#A2D764', 'LEGION': '#E4D7B9',
+    'SPECTER': '#BCEAF4', 'FORTUNE': '#F0C25B', 'TEMPEST': '#9DE6FF',
+    'SANCTUARY': '#E4F7E9',
+}
+
 
 def glyph(*rows):
     """Núcleo de 10×10 centrado en una plantilla de letras de 16×16."""
@@ -122,6 +193,68 @@ GLYPHS = {
         '..AAAAAA..', '.aAAAAAAA.', '.AAAAAAA..', '....AW....', '.....WW...'),
 }
 
+# Diez glifos originales de piedra angular. En S7 el núcleo sube un píxel para
+# dejar espacio a la franja de senda y a la punta inferior del emblema.
+KEYSTONE_GLYPHS = {
+    # Carnicería: colmillo curvo claro, con una gota roja separada.
+    'CARNAGE': glyph(
+        '.bbbbBB...', '.bBBBBB...', '..bBBBB...', '..bBBB....', '...BBB..a.',
+        '...BB..aAA', '..BB...AAA', '..B....AAA', '.B......A.', '..........'),
+    # Baluarte: almenas, torre de piedra y puerta oscura.
+    'BULWARK': glyph(
+        'aA.aA.aA..', 'aA.aA.aA..', 'aAAAAAAA..', '.aAAAAA...', '.aAKAKA...',
+        '.aAAAAA...', '.aAAAAA...', '.aAKKAA...', '.aAKKAA...', 'aAAAAAAA..'),
+    # Sobrecarga: rayo dorado por encima de un engranaje de acero.
+    'OVERLOAD': glyph(
+        '....aAAA..', '.II.aAAII.', '.IIaAA.II.', 'IIIaAAAAII', '.II..AAII.',
+        '.I..AA..I.', 'III.AA.III', '.IIAA..II.', '.IIA...II.', '....II....'),
+    'DETONATION': glyph(
+        'a...a...A.', '.a..a..A..', '..aAAA.A..', '.AaAAAaA..', 'AAaGgGAAAA',
+        '..AG*GAA..', '.AAAaAAA..', '..AA.AAA..', '.AA...AA..', 'A......AA.'),
+    # Contagio: tres esporas con filamentos y motas desprendidas.
+    'CONTAGION': glyph(
+        '....a.....', '...aaA..a.', '....AA....', '.a...A....', 'aaA..A..a.',
+        '.AA..A.aAA', '..A..A..AA', '...AAAA.A.', '.a..AAA...', '....A..a..'),
+    # Legión: una calavera arriba y dos abajo, con ojos oscuros.
+    'LEGION': glyph(
+        '...aaaA...', '...AKAK...', '...AAAA...', '....AA....', '..........',
+        'aaaA..aaaA', 'AKAK..AKAK', 'AAAA..AAAA', '.AA....AA.', '..........'),
+    # Espectro: cabeza velada y túnica que se desvanece en jirones.
+    'SPECTER': glyph(
+        '....aa....', '...aAAA...', '...AKKA...', '...AAAA...', '..aAAAAA..',
+        '.aaAAAAAA.', '.A.AAAA.A.', '...AAAA...', '..AA.AAA..', '..A...A...'),
+    # Fortuna: moneda con relieve geométrico propio.
+    'FORTUNE': glyph(
+        '...aaaA...', '..aaAAAA..', '.aaAAAAAA.', '.aAAKKAAA.', '.aAKAAKAA.',
+        '.AAKAAKAA.', '.AAAKKAAA.', '.AAAAAAAA.', '..AAAAAA..', '...AAAA...'),
+    'TEMPEST': glyph(
+        '.....aaaa.', '....aAAA..', '...aAAA...', '..aAAA....', '.aAAAAAAA.',
+        '.....AAA..', '....AAA...', '...AAA....', '..AA......', '.A........'),
+    # Santuario: halo dorado suspendido sobre una cruz luminosa.
+    'SANCTUARY': glyph(
+        '..ggGGGG..', '.gG....GG.', '..GGGGGG..', '..........', '....aa....',
+        '....AA....', '..aaAAAA..', '..AAAAAA..', '....AA....', '....AA....'),
+}
+
+KEYSTONE_FRAME = (
+    '......GGGG......',
+    '...GGGMMMMGGG...',
+    '.GGMMMMMMMMMMGG.',
+    '.GMMMMMMMMMMMMG.',
+    'GMMMMMMMMMMMMMMG',
+    'GMMMMMMMMMMMMMMG',
+    'GMMMMMMMMMMMMMMG',
+    'GMMMMMMMMMMMMMMG',
+    '.GMMMMMMMMMMMMG.',
+    '.GMMMMMMMMMMMMG.',
+    '.GMMMMMMMMMMMMG.',
+    '..GMMMMMMMMMMG..',
+    '...GPPPPPPPPG...',
+    '....GPPPPPPG....',
+    '.....GGMMGG.....',
+    '.......GG.......',
+)
+
 
 def ramp(base):
     """Cinco tonos: contorno, sombra, base, luz y reflejo (luz arriba-izquierda)."""
@@ -189,6 +322,8 @@ def frame(step):
 
 
 def render(effect, path, step):
+    if step == '7':
+        return render_keystone(effect, path)
     icon = Image.new('RGBA', (16, 16))
     ImageDraw.Draw(icon).rectangle((2, 2, 13, 13), fill=(27, 30, 43, 255))
     border = frame(step)
@@ -196,6 +331,27 @@ def render(effect, path, step):
     icon.alpha_composite(paint(border, colors))
     icon.alpha_composite(paint(GLYPHS[effect], {**MATERIALS, 'A': EFFECT_COLORS[effect]}))
     icon.alpha_composite(paint(border, colors, outline=False))
+    return icon
+
+
+def render_keystone(template, path):
+    """Emblema morado de borde dorado, franja de senda y glifo propio de S7."""
+    background = paint(KEYSTONE_FRAME, {'M': '#7E57C2', 'G': '#E8BC52', 'P': PATH_COLORS[path]})
+    icon = background.copy()
+    art = KEYSTONE_GLYPHS[template][1:] + ('................',)
+    layer = paint(art, {**MATERIALS, 'A': KEYSTONE_COLORS[template]})
+    if template == 'SPECTER':
+        # Mezcla real de alfa con el emblema: velo translúcido, sin suavizado.
+        layer.putalpha(layer.getchannel('A').point(lambda alpha: alpha * 160 // 255))
+    icon.alpha_composite(layer)
+    # El contorno del glifo no debe cortar el borde dorado ni la franja de color exacto.
+    stripe = ramp(PATH_COLORS[path])[2]
+    for y, row in enumerate(KEYSTONE_FRAME):
+        for x, letter in enumerate(row):
+            if letter == 'P':
+                icon.putpixel((x, y), stripe)
+            elif letter == 'G':
+                icon.putpixel((x, y), background.getpixel((x, y)))
     return icon
 
 
@@ -236,9 +392,23 @@ def java_effects(source=JAVA):
 
 
 def catalog(effects):
+    validate_keystones()
     return [(f'{role}_{path}{step}', effect, path, step)
             for role in ROLES for path, values in zip('abc', effects[role])
-            for step, effect in zip(STEPS, (*values, values[0]))]
+            for step, effect in zip((*STEPS, '7'), (*values, values[0], KEYSTONES[role, path]))]
+
+
+def validate_keystones():
+    """Exige las 60 combinaciones rol/senda y un glifo/color para cada plantilla."""
+    expected = {(role, path) for role in ROLES for path in 'abc'}
+    if KEYSTONES.keys() != expected:
+        missing = ', '.join(f'{r}/{p}' for r, p in sorted(expected - KEYSTONES.keys())) or 'ninguna'
+        extra = ', '.join(f'{r}/{p}' for r, p in sorted(KEYSTONES.keys() - expected)) or 'ninguna'
+        raise ValueError(f'Piedras angulares: se requieren 60 entradas; faltan: {missing}; sobran: {extra}')
+    templates = set(KEYSTONES.values())
+    if (len(templates) != 10 or templates != KEYSTONE_GLYPHS.keys()
+            or templates != KEYSTONE_COLORS.keys()):
+        raise ValueError('Piedras angulares: la tabla, los glifos y los colores deben cubrir las 10 plantillas')
 
 
 def check(output, entries):
@@ -256,21 +426,21 @@ def check(output, entries):
             errors.append(f'{path.name}: {exc}')
     if errors:
         raise ValueError('Comprobación fallida:\n' + '\n'.join(errors))
-    print(f'OK: {len(entries)} PNG de 16×16 RGBA (20 roles × 3 sendas × 4 escalones).')
+    print(f'OK: {len(entries)} PNG de 16×16 RGBA (20 roles × 3 sendas × 5 iconos).')
 
 
 def preview(output, entries, destination):
-    """Una fila por rol: A/B/C, cada una con S4, S5x, S5y y S6; ampliación ×4."""
+    """Una fila por rol: A/B/C, cada una con S4, S5x, S5y, S6 y S7; ampliación ×4."""
     font = ImageFont.load_default(size=11)
     cell_w = max(100, max(round(font.getlength(entry[0])) for entry in entries) + 12)
     cell_h, header = 96, 40
-    sheet = Image.new('RGB', (cell_w * 12, header + cell_h * 20), '#151923')
+    sheet = Image.new('RGB', (cell_w * 15, header + cell_h * 20), '#151923')
     draw = ImageDraw.Draw(sheet)
-    draw.text((10, 8), 'APTITUDES | SENDAS | S4 / S5x / S5y / S6 | 16x16 -> x4',
+    draw.text((10, 8), 'APTITUDES | SENDAS | S4 / S5x / S5y / S6 / S7 | 16x16 -> x4',
               font=font, fill='#E8BC52')
     for index, (node_id, _, path, step) in enumerate(entries):
-        x, y = index % 12 * cell_w, header + index // 12 * cell_h
-        if index % 4 == 0:
+        x, y = index % 15 * cell_w, header + index // 15 * cell_h
+        if index % 5 == 0:
             draw.line((x, y, x, y + cell_h - 6), fill=PATH_COLORS[path])
         with Image.open(output / f'{node_id}.png') as icon:
             enlarged = icon.resize((64, 64), Image.Resampling.NEAREST)

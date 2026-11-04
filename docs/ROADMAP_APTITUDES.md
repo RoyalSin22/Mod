@@ -276,7 +276,7 @@ Pendiente: comprobarlo en el juego (ver `docs/TESTING.md`, v39).
 
 ### v46.1 — Piedras angulares
 
-- Iconos propios de Sendas, fase 1: generador y 240 PNG S4/S5x/S5y/S6 con vista previa y `--check`; pendientes los 60 S7, la clase de cliente y la integración en pantallas.
+- Iconos propios de Sendas, fases 1–2: generador y 300 PNG S4/S5x/S5y/S6/S7, con 10 glifos S7, diccionario de las 60 piedras angulares de §10, vista previa y `--check`; pendientes la clase de cliente y la integración en pantallas.
 - `role/KeystoneRules` (puro) + `role/KeystoneRulesTest` (5 pruebas): tabla rol/senda → plantilla, Sobrecarga,
   Baluarte, esperas y valores acotados. `PathRules.Step.S7` (nivel 50, 1 rango); `PathRulesTest` ampliada.
 - `RoleTree`: nodo S7 de tipo `PATH` con 1 rango (sin tipo nuevo para no romper los `switch` sobre
