@@ -250,7 +250,9 @@ La pestaña *Habilidades* muestra las 10 como tarjetas animadas (5 filas × 2): 
 
 Los 300 iconos propios de S4/S5x/S5y/S6/S7 están generados en `assets/aptitudes/textures/gui/node/` con
 `tools/textures/gen_node_icons.py` (Pillow; `--preview` y `--check`). Los 60 S7 tienen emblema morado con
-borde dorado, franja de senda y un glifo de las 10 plantillas. Su dibujado en las pantallas sigue pendiente.
+borde dorado, franja de senda y un glifo de las 10 plantillas. La clase de cliente `NodeIconRenderer` dibuja
+el PNG o el objeto actual si falta (también S7); la caché se vacía al recargar recursos. La integración en
+las pantallas sigue pendiente.
 
 | Rol | Senda A | Senda B |
 |---|---|---|

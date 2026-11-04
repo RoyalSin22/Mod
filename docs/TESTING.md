@@ -2,7 +2,7 @@
 
 ## Pruebas automatizadas (nuevas)
 
-Iconos de Sendas (fases 1–2; Python 3 + Pillow, sin dependencias Java nuevas):
+Iconos de Sendas (fases 1–3; Python 3 + Pillow, sin dependencias Java nuevas):
 
 ```sh
 python3 tools/textures/gen_node_icons.py src/main/resources/assets/aptitudes/textures/gui/node --preview build/previews/node-icons-phase2.png
@@ -17,6 +17,13 @@ Revisar en la hoja ×4 los colores A/B/C, las muescas opuestas de S5x/S5y y el m
 y glifos/colores para las 10 plantillas. Cotejar sus asignaciones con la columna «Piedra angular» de
 `docs/V46_DISENO_SENDAS.md` §10 (antes de los dos puntos). Revisar el emblema morado, borde dorado y
 franja A/B/C; Espectro usa una capa translúcida. Los recursos aún no están integrados en las pantallas.
+
+`client/screen/NodeIconRenderer` se verifica al compilar el cliente con `gradlew build`: usa la firma
+Yarn 1.21.1 de `drawTexture` con tamaño de textura 16×16. S7 es un `RoleNode`; `drawKeystone` lo busca
+mediante `RoleTree.get(PathRules.nodeId(..., S7))` y delega en `draw`, incluido el respaldo `NodeIcons.of`.
+Tras integrar las pantallas, comprobar en partida el PNG, un nodo sin PNG (icono de objeto), el respaldo
+de S7 (objeto de su plantilla) y la recarga F3+T/cambio de paquete (la caché debe vaciarse). Estas pruebas
+visuales siguen pendientes; no se prueban registros de Minecraft con JUnit simple.
 
 Pruebas unitarias de las fórmulas en Java puro, en `src/test/java`. Gradle usa **JUnit Platform** con dos
 motores: Jupiter (JUnit 5) y Vintage (JUnit 4), así que se pueden escribir pruebas nuevas con JUnit 5 sin
