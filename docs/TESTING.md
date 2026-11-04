@@ -2,6 +2,19 @@
 
 ## Pruebas automatizadas (nuevas)
 
+Iconos de Sendas (fase 1; Python 3 + Pillow, sin dependencias Java nuevas):
+
+```sh
+python3 tools/textures/gen_node_icons.py src/main/resources/assets/aptitudes/textures/gui/node --preview build/previews/node-icons-phase1.png
+python3 tools/textures/gen_node_icons.py src/main/resources/assets/aptitudes/textures/gui/node --check
+```
+
+En Windows puede usarse `python` si el alias `python3` no está disponible. `--check` es de solo lectura:
+exige los 240 PNG RGBA de 16×16 y falla ante archivos faltantes, ilegibles o con tamaño/modo incorrecto.
+El generador exige los 20 roles en `paths(...)` y `deeper(...)`, sin duplicados ni efectos desconocidos.
+Revisar en la hoja ×4 los colores A/B/C, las muescas opuestas de S5x/S5y y el marco doble dorado de S6
+(mismo glifo que S4, con destello adicional). Los recursos aún no están integrados en las pantallas.
+
 Pruebas unitarias de las fórmulas en Java puro, en `src/test/java`. Gradle usa **JUnit Platform** con dos
 motores: Jupiter (JUnit 5) y Vintage (JUnit 4), así que se pueden escribir pruebas nuevas con JUnit 5 sin
 reescribir las existentes (JUnit 4):

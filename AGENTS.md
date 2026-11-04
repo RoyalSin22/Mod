@@ -41,6 +41,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 | Sonidos propios (v37, generados; no editar a mano los .ogg) | `sound/ModSounds`, `assets/aptitudes/sounds.json`; ejecuta `python3 tools/audio/gen_sounds.py src/main/resources/assets/aptitudes` |
 | Texturas de armas y objetos (generadas, no editar a mano los PNG de la lista) | `tools/textures/gen_items.py` (`ITEMS` y plantillas `T`); ejecuta `python3 tools/textures/gen_items.py src/main/resources/assets/aptitudes/textures/item` |
 | Texturas de armaduras de rol: iconos y capas del modelo (generadas) | `tools/textures/gen_armor.py`; ejecuta `python3 tools/textures/gen_armor.py src/main/resources/assets/aptitudes/textures` |
+| Iconos de Sendas (fase 1): 240 PNG S4/S5x/S5y/S6 generados, no editar a mano; pendientes S7 y dibujado en cliente | `tools/textures/gen_node_icons.py` (lee `RoleTree`); ejecuta `python3 tools/textures/gen_node_icons.py src/main/resources/assets/aptitudes/textures/gui/node` (`--preview hoja.png`, `--check`) |
 | Tiempos de espera persistentes (habilidades, definitiva, firma, legendaria, Inmortalidad carmesí) | `ability/CooldownBook` + attachment `COOLDOWNS`; usa `AbilityManager.cooldowns(p)` y `gameTime(p)` |
 | Filtro de objetivos: `MobEntityMixin` (setTarget) + `BrainTargetFilter` (mobs con IA Brain) | `ability/AbilityState.shouldBlockTarget` es la única regla: amplíala ahí |
 | Bloques temporales de habilidades (persistentes, sin drops) | `world/TemporaryBlocks.place(...)`; nunca `setBlockState` + `schedule` para bloques temporales |

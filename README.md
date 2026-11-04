@@ -248,6 +248,10 @@ La pestaña *Habilidades* muestra las 10 como tarjetas animadas (5 filas × 2): 
 
 **Sendas excluyentes.** Cada rol tiene **3 sendas** y desde la v46 solo puedes seguir **una**: al aprender un nodo de una senda, las otras quedan bloqueadas; para cambiar hay que reiniciar el árbol. Cada senda tiene 7 escalones (niveles 10, 14, 20, 26, una bifurcación de dos ramas en el 32 y 40, más la piedra angular del nivel 50) y se ve en la vista «Sendas» de la pantalla de roles. Cada nodo aplica un efecto: robo de vida, crítico, ejecución, espinas, reducción de daño, esquiva, regeneración de vida o de maná, carga de recurso, efectos al golpear (veneno, lentitud, fuego, descomposición), poder de esbirros, antiempuje, velocidad, vida, velocidad de ataque o suerte.
 
+Los 240 iconos propios de S4/S5x/S5y/S6 están generados en `assets/aptitudes/textures/gui/node/` con
+`tools/textures/gen_node_icons.py` (Pillow; `--preview` y `--check`). Esta primera fase prepara los recursos;
+su dibujado en las pantallas y los 60 iconos S7 siguen pendientes.
+
 | Rol | Senda A | Senda B |
 |---|---|---|
 | Bersérker | Carnicero (robo de vida, crítico, ejecución) | Coloso (espinas, antiempuje, reducción) |
