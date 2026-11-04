@@ -12,6 +12,10 @@ Compilado y probado en partida por el autor (v15–v19 y v29–v41 ✔).
   distribución se calcula por filas).
 
 ### Añadido
+- **T1 — Iconos S1–S3, fase 1**: 180 PNG nuevos para las 60 sendas, con los efectos de `paths(...)`
+  y un marco de esquinas más sencillo que S4. El generador, `--check` y la hoja `--preview` cubren
+  ahora los 480 iconos. Los 300 S4–S7 conservan sus píxeles. La integración en `RolesScreen` queda
+  pendiente de la fase 2.
 - **Iconos de Sendas — fases 1–3**: 300 iconos originales de 16×16 RGBA para S4, S5x, S5y, S6 y S7,
   generados con Pillow desde los efectos de `RoleTree`. Incluye 19 glifos, marcos por escalón y color de
   senda, hoja de vista previa ×4 y comprobación `--check`. Los 60 S7 usan 10 glifos de piedra angular,

@@ -2,21 +2,31 @@
 
 ## Pruebas automatizadas (nuevas)
 
-Iconos de Sendas (fases 1–3; Python 3 + Pillow, sin dependencias Java nuevas):
+Iconos de Sendas (incluida T1 fase 1, S1–S3; Python 3 + Pillow, sin dependencias Java nuevas):
 
 ```sh
-python3 tools/textures/gen_node_icons.py src/main/resources/assets/aptitudes/textures/gui/node --preview build/previews/node-icons-phase2.png
+python3 tools/textures/gen_node_icons.py src/main/resources/assets/aptitudes/textures/gui/node --preview build/previews/node-icons-s1-s7.png
 python3 tools/textures/gen_node_icons.py src/main/resources/assets/aptitudes/textures/gui/node --check
 ```
 
 En Windows puede usarse `python` si el alias `python3` no está disponible. `--check` es de solo lectura:
-exige los 300 PNG RGBA de 16×16 y falla ante archivos faltantes, ilegibles o con tamaño/modo incorrecto.
+exige los 480 PNG RGBA de 16×16 y falla ante archivos faltantes, ilegibles o con tamaño/modo incorrecto.
 El generador exige los 20 roles en `paths(...)` y `deeper(...)`, sin duplicados ni efectos desconocidos.
-Revisar en la hoja ×4 los colores A/B/C, las muescas opuestas de S5x/S5y y el marco doble dorado de S6
+Comprobar que hay 180 ids `<rol>_<a|b|c><1|2|3>` nuevos y que sus efectos proceden de `paths(...)`,
+no de `deeper(...)` (por ejemplo, `berserker_b1` es Espinas y `berserker_b4` es Reducción de daño).
+La hoja ×4 tiene 20 filas y 24 columnas: ocho iconos por senda, en orden S1/S2/S3/S4/S5x/S5y/S6/S7.
+Revisar los colores A/B/C, el marco de solo esquinas de S1–S3, las muescas opuestas de S5x/S5y y el marco doble dorado de S6
 (mismo glifo que S4, con destello adicional). Para S7, exige un diccionario completo de 60 pares rol/senda
 y glifos/colores para las 10 plantillas. Cotejar sus asignaciones con la columna «Piedra angular» de
 `docs/V46_DISENO_SENDAS.md` §10 (antes de los dos puntos). Revisar el emblema morado, borde dorado y
-franja A/B/C; Espectro usa una capa translúcida. Los recursos aún no están integrados en las pantallas.
+franja A/B/C; Espectro usa una capa translúcida. S4–S7 ya se dibujan en `PathsScreen`; integrar S1–S3
+en la cuadrícula de `RolesScreen` queda pendiente de T1 fase 2.
+
+Para revisar T1 fase 1 antes del commit, comparar con Pillow los 300 PNG de `HEAD` (extraídos con
+`git archive --format=zip HEAD src/main/resources/assets/aptitudes/textures/gui/node`) con los regenerados:
+las dimensiones, modo RGBA y todos los bytes de píxeles (`Image.tobytes()`) deben coincidir. Confirmar
+también que `--check` no cambia archivos y que detecta en una carpeta temporal un PNG faltante, corrupto,
+RGB o de tamaño incorrecto. La hoja va en `build/previews/` y no se incluye en Git.
 
 `client/screen/NodeIconRenderer` se verifica al compilar el cliente con `gradlew build`: usa la firma
 Yarn 1.21.1 de `drawTexture` con tamaño de textura 16×16. S7 es un `RoleNode`; `drawKeystone` lo busca

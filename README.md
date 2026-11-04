@@ -248,11 +248,12 @@ La pestaña *Habilidades* muestra las 10 como tarjetas animadas (5 filas × 2): 
 
 **Sendas excluyentes.** Cada rol tiene **3 sendas** y desde la v46 solo puedes seguir **una**: al aprender un nodo de una senda, las otras quedan bloqueadas; para cambiar hay que reiniciar el árbol. Cada senda tiene 7 escalones (niveles 10, 14, 20, 26, una bifurcación de dos ramas en el 32 y 40, más la piedra angular del nivel 50) y se ve en la vista «Sendas» de la pantalla de roles. Cada nodo aplica un efecto: robo de vida, crítico, ejecución, espinas, reducción de daño, esquiva, regeneración de vida o de maná, carga de recurso, efectos al golpear (veneno, lentitud, fuego, descomposición), poder de esbirros, antiempuje, velocidad, vida, velocidad de ataque o suerte.
 
-Los 300 iconos propios de S4/S5x/S5y/S6/S7 están generados en `assets/aptitudes/textures/gui/node/` con
-`tools/textures/gen_node_icons.py` (Pillow; `--preview` y `--check`). Los 60 S7 tienen emblema morado con
+Los 480 iconos propios de S1/S2/S3/S4/S5x/S5y/S6/S7 están generados en `assets/aptitudes/textures/gui/node/` con
+`tools/textures/gen_node_icons.py` (Pillow; `--preview` y `--check`). S1–S3 usan los efectos de `paths(...)`
+y un marco de esquinas, más sencillo que S4. Los 60 S7 tienen emblema morado con
 borde dorado, franja de senda y un glifo de las 10 plantillas. La clase de cliente `NodeIconRenderer` dibuja
-el PNG o el objeto actual si falta (también S7); la caché se vacía al recargar recursos. La integración en
-las pantallas sigue pendiente.
+el PNG o el objeto actual si falta (también S7); la caché se vacía al recargar recursos. `PathsScreen` ya
+usa este dibujado; integrar los nuevos iconos en la cuadrícula de `RolesScreen` es la fase 2 pendiente de T1.
 
 | Rol | Senda A | Senda B |
 |---|---|---|

@@ -26,7 +26,7 @@ ROLES = (
     'warlock', 'tamer', 'shapeshifter',
 )
 PATH_COLORS = {'a': '#E57373', 'b': '#64B5F6', 'c': '#81C784'}
-STEPS = ('4', '5x', '5y', '6')
+STEPS = ('1', '2', '3', '4', '5x', '5y', '6', '7')
 MATERIALS = {
     'B': '#DED7BD',  # hueso y colmillos
     'W': '#98704B',  # mangos y cuero
@@ -295,8 +295,16 @@ def paint(template, materials, outline=True):
 
 
 def frame(step):
-    """Marco de letras: muesca lateral para S5, doble aro y cantoneras en S6."""
+    """Esquinas en S1–S3, aro en S4, muesca en S5 y doble aro en S6."""
     grid = [['.'] * 16 for _ in range(16)]
+    if step in ('1', '2', '3'):
+        for x, y, dx, dy in ((1, 1, 1, 1), (14, 1, -1, 1),
+                              (1, 14, 1, -1), (14, 14, -1, -1)):
+            grid[y][x] = 'A'
+            for offset in (1, 2):
+                grid[y][x + dx * offset] = 'a' if y == 1 else 'A'
+                grid[y + dy * offset][x] = 'a' if x == 1 else 'A'
+        return tuple(''.join(row) for row in grid)
     for i in range(2, 14):
         grid[1][i] = grid[i][1] = 'a'
         grid[14][i] = grid[i][14] = 'A'
@@ -388,14 +396,15 @@ def java_effects(source=JAVA):
             extra = ', '.join(sorted(roles.keys() - set(ROLES))) or 'ninguno'
             raise ValueError(f'RoleTree: {method} necesita los 20 roles; faltan: {missing}; sobran: {extra}')
         result[method] = roles
-    return result['deeper']
+    return result
 
 
 def catalog(effects):
     validate_keystones()
     return [(f'{role}_{path}{step}', effect, path, step)
-            for role in ROLES for path, values in zip('abc', effects[role])
-            for step, effect in zip((*STEPS, '7'), (*values, values[0], KEYSTONES[role, path]))]
+            for role in ROLES
+            for path, early, deeper in zip('abc', effects['paths'][role], effects['deeper'][role])
+            for step, effect in zip(STEPS, (*early, *deeper, deeper[0], KEYSTONES[role, path]))]
 
 
 def validate_keystones():
@@ -426,21 +435,22 @@ def check(output, entries):
             errors.append(f'{path.name}: {exc}')
     if errors:
         raise ValueError('Comprobación fallida:\n' + '\n'.join(errors))
-    print(f'OK: {len(entries)} PNG de 16×16 RGBA (20 roles × 3 sendas × 5 iconos).')
+    print(f'OK: {len(entries)} PNG de 16×16 RGBA (20 roles × 3 sendas × {len(STEPS)} iconos).')
 
 
 def preview(output, entries, destination):
-    """Una fila por rol: A/B/C, cada una con S4, S5x, S5y, S6 y S7; ampliación ×4."""
+    """Una fila por rol: A/B/C, cada una con sus ocho iconos S1–S7; ampliación ×4."""
     font = ImageFont.load_default(size=11)
     cell_w = max(100, max(round(font.getlength(entry[0])) for entry in entries) + 12)
     cell_h, header = 96, 40
-    sheet = Image.new('RGB', (cell_w * 15, header + cell_h * 20), '#151923')
+    columns = 3 * len(STEPS)
+    sheet = Image.new('RGB', (cell_w * columns, header + cell_h * len(ROLES)), '#151923')
     draw = ImageDraw.Draw(sheet)
-    draw.text((10, 8), 'APTITUDES | SENDAS | S4 / S5x / S5y / S6 / S7 | 16x16 -> x4',
+    draw.text((10, 8), 'APTITUDES | SENDAS | S1 / S2 / S3 / S4 / S5x / S5y / S6 / S7 | 16x16 -> x4',
               font=font, fill='#E8BC52')
     for index, (node_id, _, path, step) in enumerate(entries):
-        x, y = index % 15 * cell_w, header + index // 15 * cell_h
-        if index % 5 == 0:
+        x, y = index % columns * cell_w, header + index // columns * cell_h
+        if index % len(STEPS) == 0:
             draw.line((x, y, x, y + cell_h - 6), fill=PATH_COLORS[path])
         with Image.open(output / f'{node_id}.png') as icon:
             enlarged = icon.resize((64, 64), Image.Resampling.NEAREST)
