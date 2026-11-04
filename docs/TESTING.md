@@ -19,8 +19,8 @@ Revisar los colores A/B/C, el marco de solo esquinas de S1–S3, las muescas opu
 (mismo glifo que S4, con destello adicional). Para S7, exige un diccionario completo de 60 pares rol/senda
 y glifos/colores para las 10 plantillas. Cotejar sus asignaciones con la columna «Piedra angular» de
 `docs/V46_DISENO_SENDAS.md` §10 (antes de los dos puntos). Revisar el emblema morado, borde dorado y
-franja A/B/C; Espectro usa una capa translúcida. S4–S7 ya se dibujan en `PathsScreen`; integrar S1–S3
-en la cuadrícula de `RolesScreen` queda pendiente de T1 fase 2.
+franja A/B/C; Espectro usa una capa translúcida. `PathsScreen` dibuja todos los escalones con el renderizador;
+la cuadrícula de `RolesScreen` lo usa para S1–S3 desde T1 fase 2.
 
 Para revisar T1 fase 1 antes del commit, comparar con Pillow los 300 PNG de `HEAD` (extraídos con
 `git archive --format=zip HEAD src/main/resources/assets/aptitudes/textures/gui/node`) con los regenerados:
@@ -31,9 +31,19 @@ RGB o de tamaño incorrecto. La hoja va en `build/previews/` y no se incluye en 
 `client/screen/NodeIconRenderer` se verifica al compilar el cliente con `gradlew build`: usa la firma
 Yarn 1.21.1 de `drawTexture` con tamaño de textura 16×16. S7 es un `RoleNode`; `drawKeystone` lo busca
 mediante `RoleTree.get(PathRules.nodeId(..., S7))` y delega en `draw`, incluido el respaldo `NodeIcons.of`.
-Tras integrar las pantallas, comprobar en partida el PNG, un nodo sin PNG (icono de objeto), el respaldo
+Comprobar en partida el PNG, un nodo sin PNG (icono de objeto), el respaldo
 de S7 (objeto de su plantilla) y la recarga F3+T/cambio de paquete (la caché debe vaciarse). Estas pruebas
 visuales siguen pendientes; no se prueban registros de Minecraft con JUnit simple.
+
+T1 fase 2 — comprobación manual pendiente en `RolesScreen` (tecla J):
+
+1. Recorrer los 20 roles y comprobar los nueve nodos S1–S3 de A/B/C: PNG de 16×16 en la misma casilla
+   de 24×24, con desplazamiento interior de 4 px. El resto de nodos conserva sus iconos de objeto.
+2. Revisar nodos aprendidos, disponibles y bloqueados: marcos, oscurecimiento, color de senda, rangos,
+   selección y tooltip deben conservarse. Probar zoom, arrastre y desplazamiento a escala de interfaz 4.
+3. En una copia de desarrollo, mover temporalmente un PNG S1–S3 fuera de los recursos del cliente,
+   recargar con F3+T y comprobar el respaldo al objeto. Devolver el PNG, recargar y comprobar que reaparece.
+4. Abrir «Sendas» y volver al árbol; repetir al reconectar para comprobar la presentación.
 
 Pruebas unitarias de las fórmulas en Java puro, en `src/test/java`. Gradle usa **JUnit Platform** con dos
 motores: Jupiter (JUnit 5) y Vintage (JUnit 4), así que se pueden escribir pruebas nuevas con JUnit 5 sin

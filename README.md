@@ -253,7 +253,7 @@ Los 480 iconos propios de S1/S2/S3/S4/S5x/S5y/S6/S7 están generados en `assets/
 y un marco de esquinas, más sencillo que S4. Los 60 S7 tienen emblema morado con
 borde dorado, franja de senda y un glifo de las 10 plantillas. La clase de cliente `NodeIconRenderer` dibuja
 el PNG o el objeto actual si falta (también S7); la caché se vacía al recargar recursos. `PathsScreen` ya
-usa este dibujado; integrar los nuevos iconos en la cuadrícula de `RolesScreen` es la fase 2 pendiente de T1.
+usa este dibujado; la cuadrícula de `RolesScreen` también lo usa para S1–S3, manteniendo su distribución (T1).
 
 | Rol | Senda A | Senda B |
 |---|---|---|

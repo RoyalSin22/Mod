@@ -275,10 +275,10 @@ Pendiente: comprobarlo en el juego (ver `docs/TESTING.md`, v39).
 - Comando `/aptitudes event [status|start <evento>|stop]`; `/aptitudes eclipse` informa del próximo evento.
 
 ### v46.2 — Iconos propios de las Sendas (Codex) integrados
-- T1, fase 1 implementada: 180 PNG S1–S3 desde `paths(...)`, marco de esquinas y catálogo/`--check`/hoja de 480 iconos; los 300 anteriores conservan sus píxeles. Fase 2 pendiente: dibujado en `RolesScreen`.
+- T1 implementada: fase 1, 180 PNG S1–S3 desde `paths(...)`, marco de esquinas y catálogo/`--check`/hoja de 480 iconos; los 300 anteriores conservan sus píxeles. Fase 2, `RolesScreen` dibuja S1–S3 con `NodeIconRenderer.draw` sin cambiar la distribución; comprobación visual en partida pendiente.
 - 300 iconos generados (`tools/textures/gen_node_icons.py`, revisados: regenerados aquí, idénticos píxel a píxel;
   tabla de plantillas igual a `KeystoneRules`) y `client/screen/NodeIconRenderer` (respaldo al icono de objeto).
-- `PathsScreen` dibuja los escalones con `NodeIconRenderer.draw` (S1–S3 siguen con el icono de objeto).
+- `PathsScreen` dibuja los escalones con `NodeIconRenderer.draw` (S1–S3 disponen de PNG desde T1 fase 1).
 
 ### v46.1 — Piedras angulares
 

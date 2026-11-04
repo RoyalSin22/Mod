@@ -680,7 +680,11 @@ public class RolesScreen extends Screen {
 				ctx.fill(v.x() - 2, v.y() - 2, v.x() + 26, v.y() + 26, ((int) (120 * (1f - t)) << 24) | 0xFFF3B0);
 			}
 			UiStyle.frame(ctx, v.x(), v.y(), frame, lit, hover || v.key().equals(selectedNode));
-			ctx.drawItem(nodeIcon(v), v.x() + 4, v.y() + 4);
+			if (v.node() != null && v.node().kind() == RoleNode.Kind.PATH) {
+				NodeIconRenderer.draw(ctx, v.node(), v.x() + 4, v.y() + 4);
+			} else {
+				ctx.drawItem(nodeIcon(v), v.x() + 4, v.y() + 4);
+			}
 			if (!lit) ctx.fill(v.x() + 2, v.y() + 2, v.x() + 22, v.y() + 22, available(data, v) ? 0x60101018 : 0x90101018);
 			if (pathLocked(data, v.node())) ctx.fill(v.x() + 2, v.y() + 2, v.x() + 22, v.y() + 22, 0x90801010);
 			boolean tierLocked = v.node() != null && tier < v.node().requiredTier();
