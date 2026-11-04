@@ -171,6 +171,38 @@ public class AptitudesConfig {
 	public double emberRainHugeChance = 0.05;
 	/** v41.2: probabilidad de que un impacto traiga criaturas del Nether (la mitad en los pequeños). */
 	public double emberRainMobChance = 0.5;
+	// ---------- Piedras angulares de las Sendas (v46.1) ----------
+	/** Carnicería: vida curada al matar (fracción de la vida máxima) y segundos de Prisa II. */
+	public double keystoneCarnageHeal = 0.10;
+	public double keystoneCarnageHasteSeconds = 5.0;
+	/** Baluarte: umbral de vida (fracción), puntos de absorción, duración y espera en segundos. */
+	public double keystoneBulwarkThreshold = 0.30;
+	public double keystoneBulwarkAbsorption = 8.0;
+	public double keystoneBulwarkSeconds = 6.0;
+	public double keystoneBulwarkCooldownSeconds = 60.0;
+	/** Sobrecarga: cada cuántas habilidades llega una gratuita con media espera. */
+	public int keystoneOverloadEvery = 4;
+	/** Detonación: daño de la explosión al matar (radio 3, sin romper bloques ni dañar aliados). */
+	public double keystoneDetonationDamage = 4.0;
+	/** Contagio: enemigos cercanos (radio 4) que reciben los efectos del objetivo muerto. */
+	public int keystoneContagionTargets = 2;
+	/** Legión: fracción del daño de los esbirros que cura al dueño. */
+	public double keystoneLegionLifesteal = 0.10;
+	/** Espectro: segundos tras esquivar en los que el siguiente golpe es crítico seguro. */
+	public double keystoneSpecterSeconds = 3.0;
+	/** Espectro: esquiva propia (fracción) para que funcione en sendas sin esquiva. */
+	public double keystoneSpecterDodge = 0.05;
+	/** Fortuna: probabilidad de una tirada de botín extra al matar y de esmeralda al matar élites. */
+	public double keystoneFortuneChance = 0.25;
+	public double keystoneFortuneEliteEmerald = 0.10;
+	/** Tempestad: daño de la chispa (radio 5) y espera en segundos. */
+	public double keystoneTempestDamage = 3.0;
+	public double keystoneTempestCooldownSeconds = 1.0;
+	/** Tempestad: probabilidad de chispa en golpes directos sin crítico (para sendas sin crítico). */
+	public double keystoneTempestChance = 0.15;
+	/** Santuario: vida curada a ti y a tus aliados a 8 bloques, cada cuántos segundos. */
+	public double keystoneSanctuaryHeal = 2.0;
+	public double keystoneSanctuaryIntervalSeconds = 5.0;
 
 	// ---------- Runas (v35: antes eran valores fijos) ----------
 	public int runeFlameSeconds = 3;
@@ -408,6 +440,25 @@ public class AptitudesConfig {
 		c.emberRainLargeChance = Math.min(1.0, c.emberRainLargeChance);
 		c.emberRainHugeChance = Math.min(1.0, c.emberRainHugeChance);
 		c.emberRainMobChance = Math.min(1.0, c.emberRainMobChance);
+		c.keystoneCarnageHeal = Math.min(1.0, c.keystoneCarnageHeal);
+		c.keystoneCarnageHasteSeconds = Math.min(60.0, c.keystoneCarnageHasteSeconds);
+		c.keystoneBulwarkThreshold = Math.min(1.0, c.keystoneBulwarkThreshold);
+		c.keystoneBulwarkAbsorption = Math.min(40.0, c.keystoneBulwarkAbsorption);
+		c.keystoneBulwarkSeconds = Math.min(60.0, c.keystoneBulwarkSeconds);
+		c.keystoneBulwarkCooldownSeconds = Math.max(5.0, Math.min(600.0, c.keystoneBulwarkCooldownSeconds));
+		c.keystoneOverloadEvery = clamp(c.keystoneOverloadEvery, 2, 20);
+		c.keystoneDetonationDamage = Math.min(40.0, c.keystoneDetonationDamage);
+		c.keystoneContagionTargets = clamp(c.keystoneContagionTargets, 0, 8);
+		c.keystoneLegionLifesteal = Math.min(1.0, c.keystoneLegionLifesteal);
+		c.keystoneSpecterSeconds = Math.max(0.5, Math.min(30.0, c.keystoneSpecterSeconds));
+		c.keystoneSpecterDodge = Math.min(0.5, c.keystoneSpecterDodge);
+		c.keystoneFortuneChance = Math.min(1.0, c.keystoneFortuneChance);
+		c.keystoneFortuneEliteEmerald = Math.min(1.0, c.keystoneFortuneEliteEmerald);
+		c.keystoneTempestDamage = Math.min(40.0, c.keystoneTempestDamage);
+		c.keystoneTempestCooldownSeconds = Math.max(0.25, Math.min(60.0, c.keystoneTempestCooldownSeconds));
+		c.keystoneTempestChance = Math.min(1.0, c.keystoneTempestChance);
+		c.keystoneSanctuaryHeal = Math.min(20.0, c.keystoneSanctuaryHeal);
+		c.keystoneSanctuaryIntervalSeconds = Math.max(1.0, Math.min(60.0, c.keystoneSanctuaryIntervalSeconds));
 		c.runeFlameSeconds = clamp(c.runeFlameSeconds, 0, 20);
 		c.runeLeechAmount = Math.min(10.0, c.runeLeechAmount);
 		c.runeLeechCooldownSeconds = Math.max(0.5, Math.min(60.0, c.runeLeechCooldownSeconds));

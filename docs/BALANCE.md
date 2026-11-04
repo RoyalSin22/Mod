@@ -145,6 +145,26 @@ Presteza, Eficiencia y el tope del 60 %. Puntos: +10 con Maestro y +5 con Defini
 | Coste de una build completa | 43 (nodos base) + 18 (S1–S6 de una senda) + 15 (filas de evolución) = 76 rangos para 66 puntos |
 | Migración | Quien tenía 2 sendas conserva la de más rangos (empate: A, luego B) y recupera los puntos de la otra, con aviso en el chat |
 
+**v46.1 — piedras angulares** (`role/KeystoneRules`, `ability/Keystones`; valores por defecto, configurables):
+
+| Plantilla | Efecto | Sendas |
+|---|---|---|
+| Carnicería | Al matar: +10 % de la vida máxima y Prisa II 5 s | 8 |
+| Baluarte | Con < 30 % de vida: Absorción II (8) y Resistencia I 6 s; espera 60 s | 8 |
+| Tempestad | Críticos y 15 % de los golpes directos: chispa de 3 a otro enemigo a 5 bloques; espera 1 s | 8 |
+| Sobrecarga | Cada 4.ª habilidad sin maná y con la mitad de espera | 6 |
+| Espectro | +5 % de esquiva; tras esquivar, crítico seguro en 3 s | 6 |
+| Detonación | Al matar: 4 de daño mágico a 3 bloques (sin cadenas, sin bloques, sin aliados) | 6 |
+| Contagio | Al matar: veneno, lentitud, marchitamiento y fuego pasan a 2 enemigos a 4 bloques | 6 |
+| Santuario | Cada 5 s: +2 de vida a ti y a los aliados a 8 bloques | 6 |
+| Fortuna | 25 % de tirada de botín extra al matar; 10 % de esmeralda en élites | 4 |
+| Legión | +1 esbirro máximo; los esbirros curan al dueño un 10 % de su daño | 2 (Nigromante, Domador) |
+
+Notas: Tempestad y Espectro se ajustaron para que funcionen en sendas sin crítico o sin esquiva (chispa
+también en el 15 % de los golpes; esquiva propia del +5 %). Fortuna aumenta el botín de las granjas de criaturas
+(+25 % de media); si molesta en un servidor, baja `keystoneFortuneChance`. Con rol principal y secundario en el
+nivel 50 se pueden tener dos piedras angulares a la vez.
+
 Efecto de balance: con una sola senda, la suma de efectos de senda de un jugador al nivel 30 baja (antes 2
 sendas × 9 rangos = 18; ahora 1 senda, 9 rangos hasta S3); a partir del 26 la profundidad lo compensa y en el 50
 la senda completa da 18 rangos, con S6 al ×1,5. La piedra angular (S7) llega en la v46.1.

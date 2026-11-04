@@ -411,6 +411,7 @@ public final class RoleTree {
 				PathEffect[] more = deep[path - 1];
 				PathEffect[] byStep = {base[0], base[1], base[2], more[0], more[1], more[2], more[0]};
 				for (PathRules.Step step : PathRules.Step.values()) {
+					if (step == PathRules.Step.S7) continue; // la piedra angular no es un PathEffect (ver keystone())
 					String id = PathRules.nodeId(role.key(), path, step);
 					PATH_SPECS.put(id, new PathSpec(role, path, byStep[step.ordinal()], step));
 				}
@@ -448,13 +449,34 @@ public final class RoleTree {
 		return PathRules.pathLocked(rankOf, role.key(), path);
 	}
 
+	/** v46.1: piedra angular (S7) de una senda: rol, senda (1–3) y plantilla. */
+	public record KeystoneSpec(Role role, int path, KeystoneRules.Template template) {}
+
+	/** Piedra angular del nodo, o null si no es un S7. */
+	@Nullable
+	public static KeystoneSpec keystone(String nodeId) {
+		for (Role role : Role.values()) {
+			if (!nodeId.startsWith(role.key() + "_")) continue;
+			for (int path = 1; path <= 3; path++) {
+				if (nodeId.equals(PathRules.nodeId(role.key(), path, PathRules.Step.S7))) {
+					KeystoneRules.Template t = KeystoneRules.template(role.key(), path);
+					return t == null ? null : new KeystoneSpec(role, path, t);
+				}
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * v46: ¿el nodo está bloqueado por la exclusividad? (senda distinta de la elegida o la otra rama de la
 	 * bifurcación). Lo usan el servidor (validación) y la pantalla (solo para mostrarlo).
 	 */
 	public static boolean nodeLocked(java.util.function.ToIntFunction<String> rankOf, RoleNode node) {
 		PathSpec spec = pathSpec(node.id());
-		if (spec == null) return false;
+		if (spec == null) {
+			KeystoneSpec key = keystone(node.id());
+			return key != null && PathRules.pathLocked(rankOf, node.role().key(), key.path());
+		}
 		return PathRules.pathLocked(rankOf, node.role().key(), spec.path())
 				|| PathRules.branchLocked(rankOf, node.role().key(), spec.path(), spec.step());
 	}
@@ -465,6 +487,8 @@ public final class RoleTree {
 		if (spec != null && spec.step().added()) {
 			return PathRules.prerequisiteMet(rankOf, node.role().key(), spec.path(), spec.step());
 		}
+		KeystoneSpec key = keystone(node.id());
+		if (key != null) return PathRules.prerequisiteMet(rankOf, node.role().key(), key.path(), PathRules.Step.S7);
 		return node.prerequisite() == null || rankOf.applyAsInt(node.prerequisite()) > 0;
 	}
 
@@ -583,6 +607,9 @@ public final class RoleTree {
 			nodes.add(RoleNode.extraNode(s5x, role, RoleNode.Kind.PATH, PathRules.Step.S5X.level(), s4));
 			nodes.add(RoleNode.extraNode(s5y, role, RoleNode.Kind.PATH, PathRules.Step.S5Y.level(), s4));
 			nodes.add(RoleNode.extraNode(s6, role, RoleNode.Kind.PATH, PathRules.Step.S6.level(), s5x));
+			// v46.1: piedra angular, 1 rango (tipo PATH para no tocar los switch sobre RoleNode.Kind).
+			nodes.add(new RoleNode(PathRules.nodeId(k, path, PathRules.Step.S7), role, RoleNode.Kind.PATH,
+					PathRules.Step.S7.level(), s6, 0, 0, 0, 1));
 		}
 		for (RoleNode n : nodes) {
 			if (BY_ID.put(n.id(), n) != null) throw new IllegalStateException("Nodo duplicado: " + n.id());

@@ -28,6 +28,7 @@ reescribir las existentes (JUnit 4):
 | `event/SoulFogRulesTest` | Pesos que suman 100 por clima, clima por agua y temperatura, distribución exacta de las tiradas, variantes por clima y tiradas fuera de rango |
 | `event/StrongEventRulesTest` | Pesos del Eclipse por fase y del Nether por tamaño (suman 100 y siguen las tiradas), bonificación y armadura acotadas, material por fase, tamaños crecientes en potencia/caída/botín/restos, criaturas por tamaño y probabilidad |
 | `role/PathRulesTest` | Ids de los escalones, niveles aprobados y multiplicador de S6, exclusividad de sendas, bifurcación (una rama; S6 acepta cualquiera), migración (conserva la de más rangos; empate A) y rangos corruptos |
+| `role/KeystoneRulesTest` | Tabla de piedras angulares (3 distintas por rol, Legión solo con esbirros), Sobrecarga cada 4.ª, Baluarte (umbral y espera), esperas acotadas y progreso, valores acotados |
 | `config/ConfigMigrationTest` | El nivel máximo antiguo (30) pasa a 50 una sola vez; los valores elegidos a mano se respetan |
 
 Ejecución: `.\gradlew.bat test` (también se ejecutan en `.\gradlew.bat build`).
@@ -230,6 +231,24 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
    el comportamiento anterior. Verifica el HUD en la misma dimensión, en otra dimensión y tras desconectar.
 7. En Eclipse, confirma un Heraldo por grupo y escalado de vida hasta cinco integrantes; sin grupo, los jugadores
    a menos de 64 bloques siguen compartiendo un Heraldo. En Niebla de almas comprueba oleadas y tope según grupo.
+
+# v46.1 — Piedras angulares (verificación manual)
+
+Preparación: `/roles admin setlevel J <rol> 50`, aprende la senda hasta S6 y la piedra angular S7 en la vista de
+sendas. Activa los subtítulos para oír cada sonido.
+
+1. Encima de la barra de habilidades aparece el icono de la plantilla (borde morado).
+2. Carnicería: al matar, corazones y Prisa II. Detonación: al matar junto a un grupo, los cercanos reciben daño;
+   no se encadena sin fin y no daña a compañeros de grupo ni rompe bloques.
+3. Baluarte: baja del 30 % de vida → absorción y Resistencia; el icono se oscurece 60 s.
+4. Sobrecarga: la 4.ª habilidad no gasta maná y su espera es la mitad; el icono late en dorado antes de ella.
+5. Contagio (Herbolista B): envenena a un zombi y mátalo junto a otros: los cercanos quedan envenenados.
+6. Legión (Nigromante A): 5 esbirros a la vez; al golpear, curan al jugador.
+7. Espectro: tras una esquiva (nube), el icono late; el siguiente golpe es crítico.
+8. Fortuna: matar criaturas suelta más botín de media; las élites a veces sueltan esmeralda.
+9. Tempestad: chispas a enemigos cercanos al hacer críticos (y a veces sin crítico).
+10. Santuario: en grupo, cada 5 s te curas tú y los compañeros cercanos.
+11. `/aptitudes config`: cambia un campo `keystone*` (p. ej., `keystoneOverloadEvery = 2`) y comprueba el efecto.
 
 # v46.0 — Nivel 50 y Sendas exclusivas (verificación manual)
 

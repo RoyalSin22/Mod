@@ -78,6 +78,7 @@ public class Aptitudes implements ModInitializer {
 		dev.aptitudes.event.WorldEventManager.register();
 		dev.aptitudes.party.PartyManager.register();
 		dev.aptitudes.achievement.Achievements.register();
+		dev.aptitudes.ability.Keystones.register();
 		dev.aptitudes.config.ConfigSync.register();
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			AptitudesCommand.register(dispatcher);

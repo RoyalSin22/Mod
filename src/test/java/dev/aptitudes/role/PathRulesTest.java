@@ -29,13 +29,14 @@ public class PathRulesTest {
 	}
 
 	@Test public void stepsHaveTheApprovedLevelsAndOnlyS6IsBoosted() {
-		int[] levels = {10, 14, 20, 26, 32, 32, 40};
+		int[] levels = {10, 14, 20, 26, 32, 32, 40, 50};
 		for (Step s : Step.values()) {
 			assertEquals(s.name(), levels[s.ordinal()], s.level());
 			assertEquals(s == Step.S6 ? 1.5 : 1.0, s.multiplier(), 1e-9);
-			// Con 3 rangos y +5 niveles por rango, el último rango cabe en el nivel 50.
-			assertTrue(s.level() + 10 <= 50);
+			// Con 3 rangos y +5 niveles por rango, el último rango cabe en el nivel 50 (S7 tiene 1 rango).
+			if (s != Step.S7) assertTrue(s.level() + 10 <= 50);
 		}
+		assertEquals("berserker_a7", PathRules.nodeId("berserker", 1, Step.S7));
 		assertEquals(Step.S5Y, Step.S5X.otherBranch());
 		assertNull(Step.S4.otherBranch());
 		assertFalse(Step.S3.added());

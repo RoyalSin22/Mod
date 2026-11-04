@@ -35,7 +35,8 @@ public final class Minions {
 	public static MobEntity spawn(ServerPlayerEntity owner, EntityType<? extends MobEntity> type, int index) {
 		// Respeta el máximo: retira el esbirro más antiguo.
 		List<MobEntity> existing = AbilityState.minionsOf(owner);
-		if (existing.size() >= MAX_MINIONS) existing.get(0).discard();
+		// v46.1 Legión: +1 esbirro máximo.
+		if (existing.size() >= Keystones.maxMinions(owner, MAX_MINIONS)) existing.get(0).discard();
 
 		MobEntity minion = type.create(owner.getWorld());
 		if (minion == null) return null;

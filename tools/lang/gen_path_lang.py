@@ -123,6 +123,74 @@ ROWS = [
     ('shapeshifter', 3, ('Constitución Monstruosa', 'Piel Acorazada', 'Espinas Naturales', 'Constitución Primordial'), 'Absorbe impactos', ('Monstrous Constitution', 'Armoured Hide', 'Natural Thorns', 'Primal Constitution'), 'Absorbs impacts'),
 ]
 
+# v46.1: piedras angulares (S7), en el mismo orden que ROWS: (nombre es, nombre en).
+KEYSTONES = [
+    ('Furia Insaciable', 'Insatiable Fury'), ('Último Bastión', 'Last Bastion'), ('Tormenta de Hachas', 'Axe Storm'),
+    ('Tormenta Arcana', 'Arcane Storm'), ('Flujo Perpetuo', 'Perpetual Flow'), ('Reflejo Arcano', 'Arcane Reflex'),
+    ('Muerte Silenciosa', 'Silent Death'), ('Ruptura Sombría', 'Shadow Rupture'), ('Peste Silenciosa', 'Silent Blight'),
+    ('Jardín Vital', 'Vital Garden'), ('Floración Tóxica', 'Toxic Bloom'), ('Cosecha Dorada', 'Golden Harvest'),
+    ('Núcleo Explosivo', 'Explosive Core'), ('Fortaleza Industrial', 'Industrial Fortress'), ('Reactor Central', 'Central Reactor'),
+    ('Lanza Relámpago', 'Lightning Lance'), ('Formación Imbatible', 'Unbeatable Formation'), ('Cosecha de Guerra', 'War Harvest'),
+    ('Réplica Perfecta', 'Perfect Riposte'), ('Danza Carmesí', 'Crimson Dance'), ('Juramento de Acero', 'Steel Oath'),
+    ('Juicio Radiante', 'Radiant Judgement'), ('Fortaleza Consagrada', 'Hallowed Fortress'), ('Gracia Compartida', 'Shared Grace'),
+    ('Ejército Sepulcral', 'Sepulchral Host'), ('Maldición Funeraria', 'Funeral Curse'), ('Sepulcro Profanado', 'Defiled Tomb'),
+    ('Bosque Protector', 'Sheltering Grove'), ('Caza Salvaje', 'Wild Hunt'), ('Zarzal Invasor', 'Creeping Thicket'),
+    ('Mercado Dorado', 'Golden Market'), ('Quiebra Explosiva', 'Explosive Bankruptcy'), ('Escape Calculado', 'Calculated Escape'),
+    ('Puños del Trueno', 'Thunder Fists'), ('Serenidad Compartida', 'Shared Serenity'), ('Camino del Destructor', "Destroyer's Way"),
+    ('Cataclismo Ígneo', 'Igneous Cataclysm'), ('Corazón Elemental', 'Elemental Heart'), ('Tormenta Cristalina', 'Crystal Storm'),
+    ('Munición Fulminante', 'Thunderbolt Rounds'), ('Arsenal Inagotable', 'Endless Arsenal'), ('Bala Fantasma', 'Phantom Bullet'),
+    ('Tormenta de Filos', 'Storm of Blades'), ('Forja Imperturbable', 'Unshakable Forge'), ('Núcleo de Invocación', 'Summoning Core'),
+    ('Marca del Rastreador', "Tracker's Mark"), ('Botín del Explorador', "Explorer's Spoils"), ('Trofeo Supremo', 'Supreme Trophy'),
+    ('Sinfonía Vital', 'Vital Symphony'), ('Sinfonía del Trueno', 'Thunder Symphony'), ('Última Estrofa', 'Final Verse'),
+    ('Maldición Infinita', 'Endless Curse'), ('Festín Sombrío', 'Grim Feast'), ('Abismo Inagotable', 'Bottomless Abyss'),
+    ('Manada Suprema', 'Supreme Pack'), ('Cacería Dominante', 'Dominant Hunt'), ('Refugio de la Manada', 'Pack Refuge'),
+    ('Reflejo Depredador', 'Predator Reflex'), ('Metamorfosis Afortunada', 'Lucky Metamorphosis'), ('Forma Imparable', 'Unstoppable Form'),
+]
+# Plantilla de cada senda: se lee de src/main/java/dev/aptitudes/role/KeystoneRules.java (entry(...)).
+KS_JAVA = os.path.join(ROOT, 'src/main/java/dev/aptitudes/role/KeystoneRules.java')
+# Nombre y efecto de cada plantilla con los valores por defecto de la configuración (keystone*).
+TEMPLATE = {
+    'es': {
+        'carnage': ('Carnicería', 'Al matar: recuperas el 10 % de tu vida máxima y ganas Prisa II durante 5 s.'),
+        'bulwark': ('Baluarte', 'Al bajar del 30 % de vida: 8 de absorción y Resistencia I durante 6 s (espera de 60 s).'),
+        'overload': ('Sobrecarga', 'Cada 4.ª habilidad no gasta maná y su espera se reduce a la mitad.'),
+        'detonation': ('Detonación', 'Al matar: explosión de 4 de daño a 3 bloques (no rompe bloques ni daña aliados).'),
+        'contagion': ('Contagio', 'Al matar: el veneno, la lentitud, el marchitamiento y el fuego del objetivo pasan a 2 enemigos cercanos.'),
+        'legion': ('Legión', '+1 esbirro máximo; tus esbirros te curan con el 10 % del daño que hacen.'),
+        'specter': ('Espectro', '+5 % de esquiva. Tras esquivar, tu siguiente golpe en 3 s es un crítico seguro.'),
+        'fortune': ('Fortuna', '25 % de una tirada de botín extra al matar criaturas y 10 % de esmeralda al matar élites.'),
+        'tempest': ('Tempestad', 'Tus críticos (y el 15 % de tus golpes) lanzan una chispa de 3 de daño a otro enemigo cercano (espera de 1 s).'),
+        'sanctuary': ('Santuario', 'Cada 5 s curas 2 de vida a ti y a tus aliados del grupo a 8 bloques.'),
+    },
+    'en': {
+        'carnage': ('Carnage', 'On kill: heal 10% of your max health and gain Haste II for 5 s.'),
+        'bulwark': ('Bulwark', 'Dropping below 30% health: 8 absorption and Resistance I for 6 s (60 s cooldown).'),
+        'overload': ('Overload', 'Every 4th ability costs no mana and its cooldown is halved.'),
+        'detonation': ('Detonation', 'On kill: 4-damage explosion within 3 blocks (no block damage, never hits allies).'),
+        'contagion': ('Contagion', "On kill: the target's poison, slowness, wither and fire spread to 2 nearby enemies."),
+        'legion': ('Legion', '+1 max minion; your minions heal you for 10% of the damage they deal.'),
+        'specter': ('Specter', '+5% dodge. After a dodge, your next hit within 3 s is a guaranteed critical.'),
+        'fortune': ('Fortune', '25% chance of an extra loot roll on kill and 10% chance of an emerald from elites.'),
+        'tempest': ('Tempest', 'Your criticals (and 15% of your hits) throw a 3-damage spark at another nearby enemy (1 s cooldown).'),
+        'sanctuary': ('Sanctuary', 'Every 5 s you heal yourself and party allies within 8 blocks for 2 health.'),
+    },
+}
+KS_NOTE = {'es': 'Piedra angular (nivel 50, 1 rango). Los valores son los de la configuración por defecto.',
+           'en': 'Keystone (level 50, 1 rank). Values are the default configuration ones.'}
+KS_CAMEL = {'CARNAGE': 'carnage', 'BULWARK': 'bulwark', 'OVERLOAD': 'overload', 'DETONATION': 'detonation',
+            'CONTAGION': 'contagion', 'LEGION': 'legion', 'SPECTER': 'specter', 'FORTUNE': 'fortune',
+            'TEMPEST': 'tempest', 'SANCTUARY': 'sanctuary'}
+SUBTITLES = {
+    'es': {'carnage': 'Carnicería: latido', 'bulwark': 'Baluarte: escudo', 'overload': 'Sobrecarga: descarga',
+           'detonation': 'Detonación: estallido', 'contagion': 'Contagio: burbujeo', 'legion': 'Legión: coro',
+           'specter': 'Espectro: susurro', 'fortune': 'Fortuna: monedas', 'tempest': 'Tempestad: chispa',
+           'sanctuary': 'Santuario: cura'},
+    'en': {'carnage': 'Carnage: heartbeat', 'bulwark': 'Bulwark: shield', 'overload': 'Overload: discharge',
+           'detonation': 'Detonation: blast', 'contagion': 'Contagion: bubbling', 'legion': 'Legion: choir',
+           'specter': 'Specter: whisper', 'fortune': 'Fortune: coins', 'tempest': 'Tempest: spark',
+           'sanctuary': 'Sanctuary: healing'},
+}
+
 UI = {
     'es_es': {
         'aptitudes.role.upgrade.path_locked': 'Ya sigues otra senda en este rol (las sendas son exclusivas)',
@@ -137,7 +205,6 @@ UI = {
         'screen.aptitudes.paths.locked': 'Bloqueada: ya sigues %s',
         'screen.aptitudes.paths.branch': 'Bifurcación: elige una',
         'screen.aptitudes.paths.keystone': 'Piedra angular (nivel 50)',
-        'screen.aptitudes.paths.keystone_soon': 'Llega en la próxima actualización (v46.1).',
         'screen.aptitudes.paths.learn': 'Aprender',
         'screen.aptitudes.paths.back': 'Árbol',
         'screen.aptitudes.paths.confirm_title': '¿Elegir esta opción?',
@@ -157,7 +224,6 @@ UI = {
         'screen.aptitudes.paths.locked': 'Locked: you already follow %s',
         'screen.aptitudes.paths.branch': 'Fork: choose one',
         'screen.aptitudes.paths.keystone': 'Keystone (level 50)',
-        'screen.aptitudes.paths.keystone_soon': 'Coming in the next update (v46.1).',
         'screen.aptitudes.paths.learn': 'Learn',
         'screen.aptitudes.paths.back': 'Tree',
         'screen.aptitudes.paths.confirm_title': 'Choose this option?',
@@ -207,11 +273,32 @@ def desc(effect, mult, lang, extra):
     return ' '.join([text] + extra + [EXCLUSIVE[lang]])
 
 
+def keystone_templates():
+    """{rol: [plantilla A, B, C]} leído de KeystoneRules.java."""
+    src = open(KS_JAVA, encoding='utf-8').read()
+    out = {m.group(1): [KS_CAMEL[x] for x in m.groups()[1:]]
+           for m in re.finditer(r'entry\("(\w+)", Template\.(\w+), Template\.(\w+), Template\.(\w+)\)', src)}
+    assert len(out) == 20, 'KeystoneRules: faltan roles'
+    return out
+
+
 def build(lang, data):
     code = 'es' if lang == 'es_es' else 'en'
     effects = java_effects()
+    templates = keystone_templates()
+    assert len(KEYSTONES) == len(ROWS)
     out = {}
-    for role, path, es_names, es_flavor, en_names, en_flavor in ROWS:
+    for t, (name, desc_) in TEMPLATE[code].items():
+        out[f'keystone.aptitudes.{t}'] = name
+        out[f'keystone.aptitudes.{t}.desc'] = desc_
+        out[f'subtitles.aptitudes.keystone_{t}'] = SUBTITLES[code][t]
+    for index, (role, path, es_names, es_flavor, en_names, en_flavor) in enumerate(ROWS):
+        tpl = templates[role][path - 1]
+        ks_name = KEYSTONES[index][0 if code == 'es' else 1]
+        key = f'node.aptitudes.{role}_{LETTERS[path - 1]}7'
+        out[key] = ks_name
+        out[key + '.desc'] = f'{TEMPLATE[code][tpl][0]}: {TEMPLATE[code][tpl][1]} {KS_NOTE[code]}'
+
         names = es_names if code == 'es' else en_names
         effs = effects[role][path - 1]
         base = f'{role}_{LETTERS[path - 1]}'
@@ -239,6 +326,7 @@ def write(lang):
     old, repl = GUIDE[lang]
     if old in data[guide]:
         data[guide] = data[guide].replace(old, repl)
+    data.pop('screen.aptitudes.paths.keystone_soon', None)  # v46.0: aviso provisional, ya no se usa
     # Actualiza en su sitio las claves existentes y añade al final solo las nuevas.
     data.update(new)
     open(path, 'w', encoding='utf-8', newline='\n').write(json.dumps(data, ensure_ascii=False, indent=2) + '\n')

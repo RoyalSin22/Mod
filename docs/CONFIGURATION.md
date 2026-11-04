@@ -65,6 +65,30 @@ su forma normal de juego.
 | `secondaryRoleXpMultiplier` | 0.5 | XP del rol secundario respecto al principal. |
 | `damageNumbers`, `levelUpTitles` | true | Efectos visuales enviados desde el servidor. |
 
+### Piedras angulares (v46.1)
+
+| Campo | Defecto | Límites | Descripción |
+|---|---|---|---|
+| `keystoneCarnageHeal` | 0.10 | [0, 1] | Carnicería: fracción de la vida máxima curada al matar. |
+| `keystoneCarnageHasteSeconds` | 5.0 | [0, 60] | Carnicería: segundos de Prisa II. |
+| `keystoneBulwarkThreshold` | 0.30 | [0, 1] | Baluarte: umbral de vida. |
+| `keystoneBulwarkAbsorption` | 8.0 | [0, 40] | Baluarte: puntos de absorción (4 por nivel de Absorción). |
+| `keystoneBulwarkSeconds` | 6.0 | [0, 60] | Baluarte: duración. |
+| `keystoneBulwarkCooldownSeconds` | 60.0 | [5, 600] | Baluarte: espera. |
+| `keystoneOverloadEvery` | 4 | [2, 20] | Sobrecarga: cada cuántas habilidades llega la gratuita. |
+| `keystoneDetonationDamage` | 4.0 | [0, 40] | Detonación: daño (radio 3). |
+| `keystoneContagionTargets` | 2 | [0, 8] | Contagio: enemigos que reciben los efectos (radio 4). |
+| `keystoneLegionLifesteal` | 0.10 | [0, 1] | Legión: fracción del daño de los esbirros que cura al dueño. |
+| `keystoneSpecterSeconds` | 3.0 | [0.5, 30] | Espectro: ventana de crítico seguro tras esquivar. |
+| `keystoneSpecterDodge` | 0.05 | [0, 0.5] | Espectro: esquiva propia. |
+| `keystoneFortuneChance` | 0.25 | [0, 1] | Fortuna: probabilidad de una tirada de botín extra. |
+| `keystoneFortuneEliteEmerald` | 0.10 | [0, 1] | Fortuna: probabilidad de esmeralda al matar élites. |
+| `keystoneTempestDamage` | 3.0 | [0, 40] | Tempestad: daño de la chispa (radio 5). |
+| `keystoneTempestCooldownSeconds` | 1.0 | [0.25, 60] | Tempestad: espera. |
+| `keystoneTempestChance` | 0.15 | [0, 1] | Tempestad: probabilidad en golpes directos sin crítico. |
+| `keystoneSanctuaryHeal` | 2.0 | [0, 20] | Santuario: vida curada (radio 8). |
+| `keystoneSanctuaryIntervalSeconds` | 5.0 | [1, 60] | Santuario: cada cuántos segundos. |
+
 Datos editables por datapack (sin recompilar): rareza de estructuras
 (`data/aptitudes/worldgen/placed_feature/*.json`), botín (`data/aptitudes/loot_table/chests/*.json`)
 y recetas (`data/aptitudes/recipe/*.json`).

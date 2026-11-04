@@ -12,11 +12,14 @@ Compilado y probado en partida por el autor (v15–v19 y v29–v41 ✔).
   distribución se calcula por filas).
 
 ### Añadido
+- **v46.1 — Piedras angulares**: el escalón S7 (nivel 50, 1 rango) de cada senda, con 10 plantillas (Carnicería,
+  Baluarte, Sobrecarga, Detonación, Contagio, Legión, Espectro, Fortuna, Tempestad y Santuario), un sonido propio
+  para cada una e indicador en el HUD (encima de la barra de habilidades). Todos los valores son configurables.
 - **v46 — Nivel 50 y Sendas exclusivas**: el nivel máximo de rol sube a 50; las sendas pasan a ser exclusivas
   (una por rol) y cada una crece con S4 (nivel 26), una bifurcación de dos ramas en el 32 (se elige una) y S6
   (40, ×1,5): 240 nodos nuevos. Vista de sendas (botón «Sendas» en la pantalla de roles) con pestañas A/B/C,
   raíl de niveles, bifurcación y confirmación al elegir. Quien tenía dos sendas conserva la de más rangos y
-  recupera los puntos de la otra. Las piedras angulares del nivel 50 llegan en la v46.1.
+  recupera los puntos de la otra. Las piedras angulares del nivel 50 llegan en la v46.1 (ver arriba).
 - **v31 — Logros**: pestaña «Aptitudes» en la pantalla de avances con 17 logros (Hoguera, roles y evoluciones,
   combos, habilidades, runas, jefes, eventos del mundo, grupos y contratos). Los logros de estado se conceden también
   al entrar, así que los mundos anteriores no pierden lo ya conseguido.

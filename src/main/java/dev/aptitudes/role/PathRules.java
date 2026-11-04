@@ -11,12 +11,12 @@ import java.util.function.ToIntFunction;
  *   <li>Cada rol tiene 3 sendas (A, B, C) y desde la v46 son <b>exclusivas</b>: el primer rango en una la elige y
  *       bloquea las otras dos ({@link #MAX_PATHS} = 1).</li>
  *   <li>Cada senda tiene escalones ({@link Step}): S1–S3 (los de antes), S4, una <b>bifurcación</b> S5x/S5y
- *       (se elige una) y S6. La piedra angular S7 llega en la v46.1.</li>
+ *       (se elige una), S6 y la piedra angular S7 (v46.1).</li>
  *   <li>Migración: quien tenga rangos en más de una senda conserva la que tiene más rangos (empate: A, luego B) y
  *       recupera los puntos de las demás ({@link #refunds}).</li>
  * </ul>
  *
- * <p>Ids estables (se guardan en el mundo): {@code <rol>_<a|b|c><1|2|3|4|5x|5y|6>}.</p>
+ * <p>Ids estables (se guardan en el mundo): {@code <rol>_<a|b|c><1|2|3|4|5x|5y|6|7>}.</p>
  */
 public final class PathRules {
 	/** Sendas por rol. */
@@ -24,10 +24,12 @@ public final class PathRules {
 	/** Sendas que se pueden seguir a la vez (v46: exclusivas; antes 2). */
 	public static final int MAX_PATHS = 1;
 
-	/** Escalones de una senda. Solo se añade al final (S7 en la v46.1). */
+	/** Escalones de una senda. Solo se añade al final. */
 	public enum Step {
 		S1("1", 10, 1.0), S2("2", 14, 1.0), S3("3", 20, 1.0), S4("4", 26, 1.0),
-		S5X("5x", 32, 1.0), S5Y("5y", 32, 1.0), S6("6", 40, 1.5);
+		S5X("5x", 32, 1.0), S5Y("5y", 32, 1.0), S6("6", 40, 1.5),
+		/** v46.1: piedra angular (1 rango, efecto propio de {@link KeystoneRules}); no es un {@code PathEffect}. */
+		S7("7", 50, 1.0);
 
 		private final String suffix;
 		private final int level;
@@ -113,6 +115,7 @@ public final class PathRules {
 			case S5X, S5Y -> rankOf.applyAsInt(nodeId(roleKey, path, Step.S4)) > 0;
 			case S6 -> rankOf.applyAsInt(nodeId(roleKey, path, Step.S5X)) > 0
 					|| rankOf.applyAsInt(nodeId(roleKey, path, Step.S5Y)) > 0;
+			case S7 -> rankOf.applyAsInt(nodeId(roleKey, path, Step.S6)) > 0;
 		};
 	}
 

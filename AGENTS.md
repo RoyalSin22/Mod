@@ -32,6 +32,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 | Efectos de lanzamiento e impacto de TODAS las habilidades (sello animado, remate por categoría, gesto) | `ability/CastFx` (`onCast`, `impact`); no dupliques estos efectos en cada habilidad |
 | Combos de combate (contador, bonificación y remates por categoría) | `ability/Combos` + `logic/ComboCounter`; HUD `client/hud/ComboHud` |
 | Nivel 50 y Sendas exclusivas (v46): una senda por rol, escalones S4–S6 con bifurcación (S5x/S5y), vista de sendas | `role/PathRules` (puro), `RoleTree` (`deeper(...)`, `nodeLocked`, `prerequisiteMet`, nodos nuevos **al final** de la lista), `RoleManager` (migración); cliente `screen/PathsScreen`; textos con `tools/lang/gen_path_lang.py` (no editar a mano); migración de configuración en `config/ConfigMigration` |
+| Piedras angulares (v46.1): S7 de cada senda, 10 plantillas, sonidos e indicador en el HUD | `role/KeystoneRules` (puro, tabla rol/senda → plantilla), `ability/Keystones` (ganchos y estado en memoria), `network/KeystonePayload`, cliente `hud/KeystoneHud`; campos `keystone*` |
 | Logros (v31): pestaña de avances «Aptitudes», 17 logros concedidos por el servidor y revisados al entrar | `achievement/Achievement` (catálogo puro), `achievement/Achievements` (`grant`, `checkState`); JSON generados por `tools/advancements/gen_advancements.py` (no editar a mano) |
 | Contratos del gremio (v30): tablón, ofertas diarias deterministas, reputación | `contract/ContractRules` (puro), `ContractData` (attachment `aptitudes:contracts`), `ContractManager`, `ContractTargets`; cliente `screen/ContractBoardScreen` |
 | Grupos (v29): invitaciones, reparto de XP, aliados y persistencia en Mundo Normal | `party/PartyState`, `party/PartyManager`, `party/PartyRules`; UI `client/screen/PartyScreen`, HUD `client/hud/PartyHud` |
@@ -121,7 +122,7 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
   `logic/PlacedBlockLogTest`, `ability/CooldownBookTest`, `world/TemporaryBlockScheduleTest`,
   `role/LoadoutCodecTest`, `role/EvolutionPointsTest`, `morph/MorphSizeRulesTest`, `logic/ComboCounterTest`,
   `role/RoleRulesTest`, `data/ProgressRulesTest` y
-  `rune/RuneRulesTest`, `boss/BossRulesTest`, `event/EclipseRulesTest`, `rune/RuneBalanceTest`, `logic/PlacedBlockPersistenceTest`, `config/ConfigFieldRulesTest`, `event/WorldEventRulesTest`, `party/PartyRulesTest`, `contract/ContractRulesTest`, `achievement/AchievementCatalogTest`, `event/SoulFogRulesTest`, `event/StrongEventRulesTest`, `role/PathRulesTest`, `config/ConfigMigrationTest`,
+  `rune/RuneRulesTest`, `boss/BossRulesTest`, `event/EclipseRulesTest`, `rune/RuneBalanceTest`, `logic/PlacedBlockPersistenceTest`, `config/ConfigFieldRulesTest`, `event/WorldEventRulesTest`, `party/PartyRulesTest`, `contract/ContractRulesTest`, `achievement/AchievementCatalogTest`, `event/SoulFogRulesTest`, `event/StrongEventRulesTest`, `role/PathRulesTest`, `config/ConfigMigrationTest`, `role/KeystoneRulesTest`,
   `config/AptitudesConfigValidationTest`.
 - **No escribas pruebas que llamen a métodos que no existen.** Si una prueba necesita una API nueva,
   impleméntala en el código principal en el mismo cambio y explícalo.

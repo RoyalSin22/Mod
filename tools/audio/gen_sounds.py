@@ -3,7 +3,8 @@
 Generador de los sonidos propios de Aptitudes (v37). Síntesis por programa, sin muestras externas:
 todos los sonidos son originales y reproducibles (semilla fija).
 
-Uso:  python3 tools/audio/gen_sounds.py <carpeta assets/aptitudes>
+Uso:  python3 tools/audio/gen_sounds.py <carpeta assets/aptitudes> [nombre ...]
+Sin nombres genera todos; con nombres, solo esos (p. ej. los nuevos, sin reescribir los demás).
 Escribe <carpeta>/sounds/<nombre>.ogg (mono, 44,1 kHz, Vorbis). Requiere numpy y ffmpeg con libvorbis.
 Los sonidos son mono para que Minecraft los sitúe en el espacio (atenuación por distancia).
 """
@@ -127,6 +128,96 @@ def rune_remove(rng):
     return fade_out(normalize(grit + crack, 0.75))
 
 
+# ---------------------------------------------------------------- Piedras angulares (v46.1)
+
+def _tone(t, f, attack, decay, harm=0.0):
+    return (np.sin(2 * np.pi * f * t) + harm * np.sin(2 * np.pi * f * 2 * t)) * env(t, attack, decay)
+
+
+def keystone_carnage(rng):
+    """Latido grave y rasgueo: al matar, la sangre devuelve fuerza."""
+    t = t_axis(0.8)
+    beat = sum(_tone(np.maximum(t - s, 0), 62, 0.005, 0.09) * (t >= s) for s in (0.0, 0.18))
+    rasp = lowpass(rng.standard_normal(len(t)), 900) * env(t, 0.01, 0.2) * 0.5
+    return fade_out(normalize(beat + rasp, 0.8))
+
+
+def keystone_bulwark(rng):
+    """Golpe metálico de escudo con zumbido protector."""
+    t = t_axis(1.4)
+    clang = sum(_tone(t, f, 0.002, d) * a for f, a, d in ((523, 1.0, 0.5), (1047, 0.5, 0.3), (1568, 0.3, 0.2)))
+    hum = np.sin(2 * np.pi * 110 * t) * env(t, 0.15, 0.6) * 0.4
+    return fade_out(normalize(clang + hum, 0.75))
+
+
+def keystone_overload(rng):
+    """Barrido eléctrico ascendente: habilidad sin coste."""
+    t = t_axis(0.7)
+    f = 300 + 1500 * (t / t[-1]) ** 2
+    zap = np.sign(np.sin(2 * np.pi * np.cumsum(f) / RATE)) * env(t, 0.01, 0.25) * 0.4
+    crackle = rng.standard_normal(len(t)) * (rng.random(len(t)) < 0.02) * env(t, 0.01, 0.3)
+    return fade_out(normalize(lowpass(zap, 4000) + crackle, 0.7))
+
+
+def keystone_detonation(rng):
+    """Estallido sordo con cola grave."""
+    t = t_axis(1.2)
+    boom = lowpass(rng.standard_normal(len(t)), 400) * env(t, 0.003, 0.25) * 2.0
+    sub = np.sin(2 * np.pi * (55 - 20 * t) * t) * env(t, 0.003, 0.4)
+    return fade_out(normalize(boom + sub, 0.9))
+
+
+def keystone_contagion(rng):
+    """Burbujeo viscoso que se extiende."""
+    t = t_axis(1.0)
+    x = np.zeros_like(t)
+    for _ in range(9):
+        s0 = rng.uniform(0, 0.7)
+        f0 = rng.uniform(180, 420)
+        tt = np.maximum(t - s0, 0)
+        x += np.sin(2 * np.pi * (f0 + 600 * tt) * tt) * env(tt, 0.004, 0.06) * (t >= s0)
+    return fade_out(normalize(lowpass(x, 2200), 0.6))
+
+
+def keystone_legion(rng):
+    """Coro grave de voces sin palabras (acorde menor con vibrato)."""
+    t = t_axis(1.5)
+    x = sum(np.sin(2 * np.pi * f * t + 0.4 * np.sin(2 * np.pi * 5 * t)) for f in (98, 116.5, 146.8))
+    return fade_out(normalize(lowpass(x * env(t, 0.25, 0.7), 1500), 0.6))
+
+
+def keystone_specter(rng):
+    """Susurro que se desvanece."""
+    t = t_axis(0.9)
+    air = lowpass(rng.standard_normal(len(t)), 3000) - lowpass(rng.standard_normal(len(t)), 600)
+    return fade_out(normalize(air * env(t, 0.08, 0.3), 0.55))
+
+
+def keystone_fortune(rng):
+    """Tintineo de monedas."""
+    t = t_axis(0.9)
+    x = np.zeros_like(t)
+    for s0, f in ((0.0, 2637), (0.07, 3136), (0.15, 2794), (0.22, 3520)):
+        tt = np.maximum(t - s0, 0)
+        x += _tone(tt, f, 0.001, 0.12, 0.3) * (t >= s0)
+    return fade_out(normalize(x, 0.6))
+
+
+def keystone_tempest(rng):
+    """Chasquido de chispa eléctrica."""
+    t = t_axis(0.35)
+    snap = rng.standard_normal(len(t)) * env(t, 0.0005, 0.03) * 1.5
+    buzz = np.sign(np.sin(2 * np.pi * 180 * t)) * env(t, 0.002, 0.08) * 0.3
+    return fade_out(normalize(snap + buzz, 0.7))
+
+
+def keystone_sanctuary(rng):
+    """Acorde mayor luminoso y suave (cura)."""
+    t = t_axis(1.6)
+    x = sum(_tone(t, f, 0.12, 0.7) for f in (523.3, 659.3, 784.0, 1046.5))
+    return fade_out(normalize(x, 0.5))
+
+
 SOUNDS = {
     'eclipse_announce': eclipse_announce,
     'eclipse_start': eclipse_start,
@@ -135,6 +226,16 @@ SOUNDS = {
     'combo_finisher': combo_finisher,
     'rune_socket': rune_socket,
     'rune_remove': rune_remove,
+    'keystone_carnage': keystone_carnage,
+    'keystone_bulwark': keystone_bulwark,
+    'keystone_overload': keystone_overload,
+    'keystone_detonation': keystone_detonation,
+    'keystone_contagion': keystone_contagion,
+    'keystone_legion': keystone_legion,
+    'keystone_specter': keystone_specter,
+    'keystone_fortune': keystone_fortune,
+    'keystone_tempest': keystone_tempest,
+    'keystone_sanctuary': keystone_sanctuary,
 }
 
 
@@ -157,7 +258,13 @@ def main():
         sys.exit(1)
     out = os.path.join(sys.argv[1], 'sounds')
     os.makedirs(out, exist_ok=True)
+    only = set(sys.argv[2:])
+    unknown = only - set(SOUNDS)
+    if unknown:
+        sys.exit('Sonidos desconocidos: ' + ', '.join(sorted(unknown)))
     for name, fn in SOUNDS.items():
+        if only and name not in only:
+            continue
         rng = np.random.default_rng(SEED + sum(map(ord, name)))
         write_ogg(fn(rng), os.path.join(out, name + '.ogg'))
         print(name + '.ogg')

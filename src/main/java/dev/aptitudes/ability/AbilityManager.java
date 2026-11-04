@@ -145,8 +145,10 @@ public final class AbilityManager {
 			return;
 		}
 		RoleData data = RoleManager.get(player);
-		boolean free = player.isCreative();
-		double missingEnergy = Math.max(0, energyCost - data.energy());
+		// v46.1 Sobrecarga: la N-ésima habilidad no gasta maná y su espera se reduce a la mitad.
+		boolean overload = Keystones.overloadReady(player);
+		boolean free = player.isCreative() || overload;
+		double missingEnergy = free ? 0 : Math.max(0, energyCost - data.energy());
 		float bloodCost = 0;
 		if (!free && missingEnergy > 0) {
 			// Nigromante Maestro+: la magia de sangre cubre la energía que falta con vida.
@@ -179,6 +181,8 @@ public final class AbilityManager {
 		CastFx.onCast(player, role, slot == ULTIMATE_SLOT ? CastFx.Kind.ULTIMATE
 				: slot == SIGNATURE_SLOT ? CastFx.Kind.SIGNATURE : CastFx.Kind.ACTIVE);
 		if (empowered) RoleResources.consumeEmpower(player, role);
+		if (overload) cooldown = cooldown / 2;
+		Keystones.afterCast(player, overload);
 		cooldowns(player).start(cooldownKey, now, cooldown);
 		if (ServerPlayNetworking.canSend(player, CooldownPayload.ID)) {
 			ServerPlayNetworking.send(player, new CooldownPayload(slot, cooldown));

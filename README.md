@@ -246,7 +246,7 @@ Las artes de sangre se integran en la evolución del Nigromante (Nigromante → 
 
 La pestaña *Habilidades* muestra las 10 como tarjetas animadas (5 filas × 2): barra de XP que se llena, brillo dorado si subieron de nivel desde la última vez, resumen de pasivas en una línea y ficha completa (pasivas e hitos) al pasar el ratón.
 
-**Sendas excluyentes.** Cada rol tiene **3 sendas** y desde la v46 solo puedes seguir **una**: al aprender un nodo de una senda, las otras quedan bloqueadas; para cambiar hay que reiniciar el árbol. Cada senda tiene 7 escalones (niveles 10, 14, 20, 26, una bifurcación de dos ramas en el 32 y 40; la piedra angular del 50 llega en la v46.1) y se ve en la vista «Sendas» de la pantalla de roles. Cada nodo aplica un efecto: robo de vida, crítico, ejecución, espinas, reducción de daño, esquiva, regeneración de vida o de maná, carga de recurso, efectos al golpear (veneno, lentitud, fuego, descomposición), poder de esbirros, antiempuje, velocidad, vida, velocidad de ataque o suerte.
+**Sendas excluyentes.** Cada rol tiene **3 sendas** y desde la v46 solo puedes seguir **una**: al aprender un nodo de una senda, las otras quedan bloqueadas; para cambiar hay que reiniciar el árbol. Cada senda tiene 7 escalones (niveles 10, 14, 20, 26, una bifurcación de dos ramas en el 32 y 40, más la piedra angular del nivel 50) y se ve en la vista «Sendas» de la pantalla de roles. Cada nodo aplica un efecto: robo de vida, crítico, ejecución, espinas, reducción de daño, esquiva, regeneración de vida o de maná, carga de recurso, efectos al golpear (veneno, lentitud, fuego, descomposición), poder de esbirros, antiempuje, velocidad, vida, velocidad de ataque o suerte.
 
 | Rol | Senda A | Senda B |
 |---|---|---|
@@ -778,6 +778,12 @@ almas** (noche de criaturas de alma) o la **Lluvia de brasas** (meteoritos con m
 **v30 — Contratos del gremio:** fabrica un Tablón de contratos (papel y tablones). Cada día ofrece 3 contratos
 (Caza, Entrega, Pesca, Encantamiento, Oficio, Forja, Evento o Jefe). Cóbralos para ganar esmeraldas, XP de rol
 y reputación (Aprendiz → Oficial → Veterano → Maestro). Ver el capítulo «Contratos del gremio» del grimorio.
+
+**v46.1 — Piedras angulares:** al nivel 50 cada senda termina en una piedra angular con efecto propio:
+Carnicería (curas y Prisa al matar), Baluarte (absorción y resistencia con poca vida), Sobrecarga (cada 4.ª
+habilidad gratis), Detonación (explosión al matar), Contagio (los efectos pasan a enemigos cercanos), Legión (+1
+esbirro), Espectro (crítico seguro tras esquivar), Fortuna (más botín), Tempestad (chispas) o Santuario (cura al
+grupo). Un icono encima de la barra de habilidades muestra si está lista.
 
 **v46 — Nivel 50 y Sendas exclusivas:** el nivel máximo de rol sube a 50. Cada rol sigue **una** senda de las
 tres; cada senda crece hasta el nivel 40 con una **bifurcación** en el 32 (eliges una de dos ramas) y un último

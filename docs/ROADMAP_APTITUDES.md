@@ -274,6 +274,21 @@ Pendiente: comprobarlo en el juego (ver `docs/TESTING.md`, v39).
   `EclipsePayload` lleva el tipo de evento.
 - Comando `/aptitudes event [status|start <evento>|stop]`; `/aptitudes eclipse` informa del próximo evento.
 
+### v46.1 — Piedras angulares
+- `role/KeystoneRules` (puro) + `role/KeystoneRulesTest` (5 pruebas): tabla rol/senda → plantilla, Sobrecarga,
+  Baluarte, esperas y valores acotados. `PathRules.Step.S7` (nivel 50, 1 rango); `PathRulesTest` ampliada.
+- `RoleTree`: nodo S7 de tipo `PATH` con 1 rango (sin tipo nuevo para no romper los `switch` sobre
+  `RoleNode.Kind`), al final de la lista; `keystone(id)` y exclusividad/requisito del S7.
+- `ability/Keystones`: ganchos en muertes (Carnicería, Detonación, Contagio, Fortuna), daño recibido (Baluarte),
+  daño de esbirros (Legión), `AbilityManager.execute` (Sobrecarga), `PathEffects` (Espectro y Tempestad),
+  `Minions.spawn` (Legión) y un tick cada 10 (Santuario y HUD). Estados en memoria, como las runas.
+- `KeystonePayload` + `client/hud/KeystoneHud`; iconos por plantilla en `NodeIcons.keystone`.
+- 10 sonidos (`tools/audio/gen_sounds.py`, ahora acepta nombres para generar solo los nuevos), 19 campos
+  `keystone*` y textos (`tools/lang/gen_path_lang.py`).
+- Ajuste de diseño: Tempestad salta también en el 15 % de los golpes y Espectro da +5 % de esquiva, para que
+  funcionen en las sendas sin crítico o sin esquiva. Cambiaformas B: «Metamorfosis Afortunada» (antes repetía el
+  nombre de un nodo del Domador).
+
 ### v46.0 — Nivel 50 y Sendas exclusivas
 - `role/PathRules` (puro) + `role/PathRulesTest` (7 pruebas): escalones, exclusividad, bifurcación (S6 acepta
   cualquiera de las dos ramas) y migración.
@@ -287,7 +302,6 @@ Pendiente: comprobarlo en el juego (ver `docs/TESTING.md`, v39).
 - Cliente: `screen/PathsScreen` (vista de sendas, 426×232, desplazable) y botón «Sendas» en `RolesScreen`.
 - Textos: `tools/lang/gen_path_lang.py` (240 nodos, 60 frases de senda, interfaz; lee los efectos de
   `RoleTree.java`).
-- Pendiente: v46.1 (piedras angulares S7, con sonido e indicador en el HUD).
 
 ### v41.2 — Eclipse y Lluvia de brasas más fuertes
 - `event/StrongEventRules` (puro) + `event/StrongEventRulesTest` (5 pruebas): criaturas del Eclipse por fase,

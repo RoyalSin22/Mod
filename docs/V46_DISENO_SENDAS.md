@@ -1,7 +1,9 @@
 # v46 — Nivel 50 y Sendas exclusivas (diseño para aprobar)
 
 Estado: **aprobado** por el autor (2026-11-04). **v46.0 implementada** (nivel 50, exclusividad, S4–S6 con
-bifurcación, migración, vista de sendas); pendiente la v46.1 (piedras angulares). Decisiones: nivel máximo de rol
+bifurcación, migración, vista de sendas). **v46.1 implementada** (piedras angulares, sonidos e indicador en el
+HUD). Ajustes en la v46.1: Tempestad salta también en el 15 % de los golpes y Espectro da +5 % de esquiva (si no,
+no funcionarían en las sendas sin crítico o sin esquiva); Cambiaformas B se llama «Metamorfosis Afortunada». Decisiones: nivel máximo de rol
 **50**, **sendas exclusivas**, estructura de **7 escalones con bifurcación**, las **10 plantillas** de piedra
 angular, el ejemplo del Bersérker como patrón para los 20 roles, **reembolso automático** de la senda con menos
 rangos para quien tenga dos y **curva de XP sin cambios**.
@@ -239,7 +241,7 @@ distintas en cada rol y ninguna palabra excluida.
 | Domador | B Salvaje | Ataques coordinados | Instinto Alfa (crítico) | Ataque Coordinado (vel. ataque) | Colmillo Voraz (robo de vida) | Instinto Alfa Supremo (crítico) | Carnicería: Cacería Dominante |
 | Domador | C Pastor | Supervivencia y recursos | Vínculo Vital (regeneración) | Instinto Afortunado (suerte) | Reserva Animal (recurso) | Vínculo Eterno (regeneración) | Santuario: Refugio de la Manada |
 | Cambiaformas | A Depredador | Persigue y elimina | Instinto Letal (crítico) | Hambre Salvaje (robo de vida) | Carrera Feral (velocidad) | Instinto Supremo (crítico) | Espectro: Reflejo Depredador |
-| Cambiaformas | B Mimo | Movilidad y energía | Reflejos Salvajes (esquiva) | Instinto Adaptativo (recurso) | Flujo Metamórfico (maná) | Reflejos Primordiales (esquiva) | Fortuna: Instinto Afortunado |
+| Cambiaformas | B Mimo | Movilidad y energía | Reflejos Salvajes (esquiva) | Instinto Adaptativo (recurso) | Flujo Metamórfico (maná) | Reflejos Primordiales (esquiva) | Fortuna: Metamorfosis Afortunada |
 | Cambiaformas | C Coloso bestial | Absorbe impactos | Constitución Monstruosa (vida máx.) | Piel Acorazada (reducción de daño) | Espinas Naturales (espinas) | Constitución Primordial (vida máx.) | Baluarte: Forma Imparable |
 
 Reparto de plantillas: Carnicería 8, Baluarte 8, Tempestad 8, Sobrecarga 6, Espectro 6, Detonación 6, Contagio 6, Santuario 6, Fortuna 4, Legión 2.

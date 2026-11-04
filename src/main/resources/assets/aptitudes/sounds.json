@@ -40,5 +40,65 @@
     "sounds": [
       "aptitudes:rune_remove"
     ]
+  },
+  "keystone_carnage": {
+    "subtitle": "subtitles.aptitudes.keystone_carnage",
+    "sounds": [
+      "aptitudes:keystone_carnage"
+    ]
+  },
+  "keystone_bulwark": {
+    "subtitle": "subtitles.aptitudes.keystone_bulwark",
+    "sounds": [
+      "aptitudes:keystone_bulwark"
+    ]
+  },
+  "keystone_overload": {
+    "subtitle": "subtitles.aptitudes.keystone_overload",
+    "sounds": [
+      "aptitudes:keystone_overload"
+    ]
+  },
+  "keystone_detonation": {
+    "subtitle": "subtitles.aptitudes.keystone_detonation",
+    "sounds": [
+      "aptitudes:keystone_detonation"
+    ]
+  },
+  "keystone_contagion": {
+    "subtitle": "subtitles.aptitudes.keystone_contagion",
+    "sounds": [
+      "aptitudes:keystone_contagion"
+    ]
+  },
+  "keystone_legion": {
+    "subtitle": "subtitles.aptitudes.keystone_legion",
+    "sounds": [
+      "aptitudes:keystone_legion"
+    ]
+  },
+  "keystone_specter": {
+    "subtitle": "subtitles.aptitudes.keystone_specter",
+    "sounds": [
+      "aptitudes:keystone_specter"
+    ]
+  },
+  "keystone_fortune": {
+    "subtitle": "subtitles.aptitudes.keystone_fortune",
+    "sounds": [
+      "aptitudes:keystone_fortune"
+    ]
+  },
+  "keystone_tempest": {
+    "subtitle": "subtitles.aptitudes.keystone_tempest",
+    "sounds": [
+      "aptitudes:keystone_tempest"
+    ]
+  },
+  "keystone_sanctuary": {
+    "subtitle": "subtitles.aptitudes.keystone_sanctuary",
+    "sounds": [
+      "aptitudes:keystone_sanctuary"
+    ]
   }
 }

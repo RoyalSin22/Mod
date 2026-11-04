@@ -157,8 +157,27 @@ public final class NodeIcons {
 		ULTIMATES.put(role, ultimate);
 	}
 
+	/** v46.1: icono de cada plantilla de piedra angular (nodo S7 e indicador del HUD). */
+	public static ItemStack keystone(KeystoneRules.Template template) {
+		Item item = switch (template) {
+			case CARNAGE -> Items.REDSTONE;
+			case BULWARK -> Items.SHIELD;
+			case OVERLOAD -> Items.LIGHTNING_ROD;
+			case DETONATION -> Items.TNT;
+			case CONTAGION -> Items.FERMENTED_SPIDER_EYE;
+			case LEGION -> Items.SKELETON_SKULL;
+			case SPECTER -> Items.PHANTOM_MEMBRANE;
+			case FORTUNE -> Items.EMERALD;
+			case TEMPEST -> Items.BLAZE_ROD;
+			case SANCTUARY -> Items.GLISTERING_MELON_SLICE;
+		};
+		return new ItemStack(item);
+	}
+
 	/** Icono de un nodo del árbol. */
 	public static ItemStack of(RoleNode node) {
+		RoleTree.KeystoneSpec key = RoleTree.keystone(node.id());
+		if (key != null) return keystone(key.template());
 		if (node.kind() == RoleNode.Kind.LEGENDARY) {
 			dev.aptitudes.unique.UniqueSkill legend = dev.aptitudes.unique.UniqueSkill.forRole(node.role());
 			if (legend != null) return legend.iconStack();

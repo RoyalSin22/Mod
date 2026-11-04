@@ -136,6 +136,8 @@ public class AptitudesClient implements ClientModInitializer {
 				(payload, context) -> ClientRoleState.onCooldown(payload));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.ComboPayload.ID,
 				(payload, context) -> dev.aptitudes.client.hud.ComboHud.onCombo(payload));
+		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.KeystonePayload.ID,
+				(payload, context) -> dev.aptitudes.client.hud.KeystoneHud.onPayload(payload)); // v46.1
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.EclipsePayload.ID,
 				(payload, context) -> ClientEclipse.onPayload(payload));
 		// v40: configuración del servidor (valores reales en tooltips y pantalla de configuración).
@@ -168,6 +170,7 @@ public class AptitudesClient implements ClientModInitializer {
 		HudRenderCallback.EVENT.register(AbilityHud::render);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.ClientFx::renderHud);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.ComboHud::render);
+		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.KeystoneHud::render);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.EclipseHud::render);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.PartyHud::render);
 		net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents.AFTER_ENTITIES.register(

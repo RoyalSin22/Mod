@@ -18,8 +18,17 @@ public final class ModSounds {
 	public static final SoundEvent COMBO_FINISHER = register("combo_finisher");
 	public static final SoundEvent RUNE_SOCKET = register("rune_socket");
 	public static final SoundEvent RUNE_REMOVE = register("rune_remove");
+	/** v46.1: un sonido por plantilla de piedra angular ({@code keystone_<plantilla>}). */
+	public static final SoundEvent[] KEYSTONE = keystones();
 
 	private ModSounds() {
+	}
+
+	private static SoundEvent[] keystones() {
+		dev.aptitudes.role.KeystoneRules.Template[] all = dev.aptitudes.role.KeystoneRules.Template.values();
+		SoundEvent[] out = new SoundEvent[all.length];
+		for (int i = 0; i < all.length; i++) out[i] = register("keystone_" + all[i].key());
+		return out;
 	}
 
 	private static SoundEvent register(String name) {

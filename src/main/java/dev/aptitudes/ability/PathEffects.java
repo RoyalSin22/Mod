@@ -57,9 +57,13 @@ public final class PathEffects {
 	/** Daño saliente del jugador: críticos, ejecución, robo de vida y efectos al golpear. */
 	public static float outgoing(ServerPlayerEntity player, LivingEntity target, boolean direct, float amount) {
 		EnumMap<PathEffect, Double> v = all(player);
-		if (v.isEmpty()) return amount;
+		// v46.1 Espectro: tras esquivar, el siguiente golpe es crítico seguro (aunque no haya otros efectos de senda).
+		boolean specter = direct && Keystones.consumeSpecter(player);
+		if (v.isEmpty() && !specter) return amount;
 		float result = amount;
-		if (player.getRandom().nextDouble() < v.getOrDefault(PathEffect.CRIT, 0.0)) {
+		boolean crit = specter || player.getRandom().nextDouble() < v.getOrDefault(PathEffect.CRIT, 0.0);
+		if (direct) Keystones.onStrike(player, target, crit); // v46.1 Tempestad
+		if (crit) {
 			result *= 1.5f;
 			player.getServerWorld().spawnParticles(ParticleTypes.CRIT, target.getX(), target.getBodyY(0.6), target.getZ(),
 					10, 0.3, 0.3, 0.3, 0.2);
@@ -102,10 +106,11 @@ public final class PathEffects {
 
 	/** @return true si el jugador esquiva el ataque de una criatura. */
 	public static boolean dodges(ServerPlayerEntity player) {
-		double dodge = value(player, PathEffect.DODGE);
+		double dodge = value(player, PathEffect.DODGE) + Keystones.specterDodge(player); // v46.1 Espectro
 		if (dodge <= 0 || player.getRandom().nextDouble() >= dodge) return false;
 		player.getServerWorld().spawnParticles(ParticleTypes.CLOUD, player.getX(), player.getBodyY(0.5), player.getZ(),
 				6, 0.3, 0.3, 0.3, 0.02);
+		Keystones.onDodge(player); // v46.1 Espectro
 		return true;
 	}
 

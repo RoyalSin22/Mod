@@ -45,7 +45,6 @@ public class PathsScreen extends Screen {
 	private final Role role;
 	private int path;
 	@Nullable private Step selected = Step.S1;
-	private boolean keystoneSelected;
 	private int left;
 	private int top;
 	private int scroll;
@@ -75,7 +74,6 @@ public class PathsScreen extends Screen {
 			tabs[p - 1] = addDrawableChild(ButtonWidget.builder(Text.literal(String.valueOf((char) ('A' + p - 1))), b -> {
 				path = target;
 				selected = Step.S1;
-				keystoneSelected = false;
 				updateButtons();
 			}).dimensions(left + W - 112 + (p - 1) * 36, top + 6, 32, 16).build());
 		}
@@ -92,7 +90,7 @@ public class PathsScreen extends Screen {
 			tabs[p - 1].active = p != path;
 		}
 		RoleNode node = selectedNode();
-		learnButton.visible = !keystoneSelected && node != null;
+		learnButton.visible = node != null;
 		learnButton.active = data != null && node != null && canLearn(data, node);
 	}
 
@@ -103,7 +101,7 @@ public class PathsScreen extends Screen {
 
 	@Nullable
 	private RoleNode selectedNode() {
-		return selected == null || keystoneSelected ? null : node(selected);
+		return selected == null ? null : node(selected);
 	}
 
 	/** Misma comprobación que el servidor, con los datos sincronizados (solo para activar el botón). */
@@ -169,6 +167,7 @@ public class PathsScreen extends Screen {
 			case S4 -> 3;
 			case S5X, S5Y -> 4;
 			case S6 -> 5;
+			case S7 -> 6;
 		};
 	}
 
@@ -222,8 +221,6 @@ public class PathsScreen extends Screen {
 				UiStyle.line(ctx, x1, y1, x2, y2, lit ? color : 0xFF3A3F55);
 			}
 		}
-		int keyY = rowY(6);
-		UiStyle.line(ctx, left + NODE_X + 9, rowY(5) + 18, left + NODE_X + 9, keyY + 2, 0xFF3A3F55);
 
 		// Escalones.
 		RoleNode hovered = null;
@@ -235,9 +232,11 @@ public class PathsScreen extends Screen {
 			boolean locked = RoleTree.nodeLocked(data::rank, node);
 			boolean hover = mouseX >= x && mouseX < x + 20 && mouseY >= y && mouseY < y + 20;
 			if (hover) hovered = node;
-			boolean isSelected = !keystoneSelected && step == selected;
+			boolean isSelected = step == selected;
+			boolean keystone = step == Step.S7; // v46.1: piedra angular, marco morado
 			ctx.fill(x, y, x + 20, y + 20, rank > 0 ? 0xF0262A3A : 0xF0151722);
-			ctx.drawBorder(x, y, 20, 20, isSelected ? 0xFFFFFFFF : rank > 0 ? color : locked ? 0xFF5A2A2A : 0xFF50546A);
+			ctx.drawBorder(x, y, 20, 20, isSelected ? 0xFFFFFFFF : rank > 0 ? color : locked ? 0xFF5A2A2A
+					: keystone ? 0xFF7E57C2 : 0xFF50546A);
 			ctx.drawItem(NodeIcons.of(node), x + 2, y + 2);
 			if (locked) {
 				ctx.fill(x + 1, y + 1, x + 19, y + 19, 0x90401010);
@@ -251,21 +250,11 @@ public class PathsScreen extends Screen {
 		}
 		ctx.drawText(textRenderer, Text.translatable("screen.aptitudes.paths.branch"), left + BRANCH_X2 + 24,
 				rowY(4) + 12, UiStyle.MUTED, false);
-		// Piedra angular (v46.1): candado.
-		int kx = left + NODE_X;
-		boolean keyHover = mouseX >= kx && mouseX < kx + 20 && mouseY >= keyY && mouseY < keyY + 20;
-		ctx.fill(kx, keyY, kx + 20, keyY + 20, 0xF0151722);
-		ctx.drawBorder(kx, keyY, 20, 20, keystoneSelected ? 0xFFFFFFFF : 0xFF7E57C2);
-		lockIcon(ctx, kx + 6, keyY + 5);
-		UiStyle.label(ctx, textRenderer, Text.translatable("screen.aptitudes.paths.keystone"), kx + 24, keyY + 6,
-				PANEL_X - NODE_X - 30, 0xFFB39DDB);
 
 		renderPanel(ctx, data);
 		if (hovered != null) {
 			ctx.drawTooltip(textRenderer, List.of(Text.translatable(hovered.translationKey()).formatted(Formatting.GOLD),
 					Text.translatable(hovered.descriptionKey()).formatted(Formatting.GRAY)), mouseX, mouseY);
-		} else if (keyHover) {
-			ctx.drawTooltip(textRenderer, Text.translatable("screen.aptitudes.paths.keystone_soon"), mouseX, mouseY);
 		}
 	}
 
@@ -287,6 +276,7 @@ public class PathsScreen extends Screen {
 			case S4 -> List.of(Step.S3);
 			case S5X, S5Y -> List.of(Step.S4);
 			case S6 -> List.of(Step.S5X, Step.S5Y);
+			case S7 -> List.of(Step.S6);
 			default -> List.of();
 		};
 	}
@@ -298,18 +288,18 @@ public class PathsScreen extends Screen {
 		return Text.translatable("screen.aptitudes.paths.locked", Text.translatable(RoleTree.pathKey(role, chosen)));
 	}
 
-	/** Panel derecho: detalle del escalón elegido (o de la piedra angular). */
+	/** Panel derecho: detalle del escalón elegido (también la piedra angular). */
 	private void renderPanel(DrawContext ctx, RoleSyncPayload data) {
 		int x = left + PANEL_X, y = top + ROWS_Y, w = W - PANEL_X - 8, h = H - ROWS_Y - 56;
 		UiStyle.panel(ctx, x, y, w, h);
 		List<Text> lines = new ArrayList<>();
-		if (keystoneSelected) {
-			lines.add(Text.translatable("screen.aptitudes.paths.keystone").formatted(Formatting.LIGHT_PURPLE));
-			lines.add(Text.translatable("screen.aptitudes.paths.keystone_soon").formatted(Formatting.GRAY));
-		} else {
+		{
 			RoleNode node = selectedNode();
 			if (node == null) return;
 			int rank = data.rank(node.id());
+			if (selected == Step.S7) {
+				lines.add(Text.translatable("screen.aptitudes.paths.keystone").formatted(Formatting.LIGHT_PURPLE));
+			}
 			lines.add(Text.translatable(node.translationKey()).formatted(Formatting.GOLD));
 			lines.add(Text.translatable(node.descriptionKey()).formatted(Formatting.GRAY));
 			int next = Math.min(node.maxRank(), rank + 1);
@@ -338,16 +328,9 @@ public class PathsScreen extends Screen {
 			int x = nodeX(step), y = rowY(rowOf(step));
 			if (mouseX >= x && mouseX < x + 20 && mouseY >= y && mouseY < y + 20) {
 				selected = step;
-				keystoneSelected = false;
 				updateButtons();
 				return true;
 			}
-		}
-		int kx = left + NODE_X, ky = rowY(6);
-		if (mouseX >= kx && mouseX < kx + 20 && mouseY >= ky && mouseY < ky + 20) {
-			keystoneSelected = true;
-			updateButtons();
-			return true;
 		}
 		return false;
 	}
