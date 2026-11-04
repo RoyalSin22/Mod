@@ -320,10 +320,24 @@ public final class RoleTree {
 	// ---------------------------------------------------------------- Sendas
 
 	/** Nodo de senda: rol, senda (1 = A, 2 = B) y efecto. */
-	public record PathSpec(Role role, int path, PathEffect effect) {}
+	/**
+	 * Escalón de una senda: rol, senda (1 = A, 2 = B, 3 = C), efecto y escalón (v46). El valor por rango es el del
+	 * efecto × {@link PathRules.Step#multiplier()} (S6 vale ×1,5).
+	 */
+	public record PathSpec(Role role, int path, PathEffect effect, PathRules.Step step) {
+		public double perRank() {
+			return effect.perRank() * step.multiplier();
+		}
+	}
 
 	private static final Map<String, PathSpec> PATH_SPECS = new LinkedHashMap<>();
 	private static final Map<Role, PathEffect[][]> PATHS = new EnumMap<>(Role.class);
+	/** v46: efectos de S4, S5x y S5y de cada senda (S6 repite el de S4 ×1,5). */
+	private static final Map<Role, PathEffect[][]> DEEPER = new EnumMap<>(Role.class);
+
+	private static void deeper(Role role, PathEffect[] a, PathEffect[] b, PathEffect[] c) {
+		DEEPER.put(role, new PathEffect[][]{a, b, c});
+	}
 
 	private static void paths(Role role, PathEffect[] a, PathEffect[] b, PathEffect[] c) {
 		PATHS.put(role, new PathEffect[][]{a, b, c});
@@ -360,6 +374,27 @@ public final class RoleTree {
 		paths(Role.WARLOCK, of(W, P, X), of(L, HP, H), of(C, M, G));           // Maldito / Sangre maldita / Abismo
 		paths(Role.TAMER, of(K, HP, R), of(C, AS, L), of(H, LK, G));           // Jauría / Salvaje / Pastor
 		paths(Role.SHAPESHIFTER, of(C, L, V), of(D, G, M), of(HP, R, T));        // Depredador / Mimo
+		// v46: escalones S4, S5x y S5y de cada senda (A, B, C), según docs/V46_DISENO_SENDAS.md §10.
+		deeper(Role.BERSERKER, of(L, C, X), of(R, T, K), of(AS, V, H));
+		deeper(Role.MAGE, of(C, X, W), of(M, G, R), of(S, D, M));
+		deeper(Role.ASSASSIN, of(X, C, P), of(D, V, S), of(W, L, AS));
+		deeper(Role.HERBALIST, of(H, HP, R), of(P, S, X), of(G, M, LK));
+		deeper(Role.ENGINEER, of(C, X, M), of(R, K, HP), of(AS, V, G));
+		deeper(Role.LANCER, of(C, V, S), of(T, K, R), of(L, HP, X));
+		deeper(Role.SWORDSMAN, of(C, AS, D), of(L, X, S), of(R, T, HP));
+		deeper(Role.PALADIN, of(X, C, F), of(R, T, H), of(C, AS, G));
+		deeper(Role.NECROMANCER, of(N, G, M), of(L, W, HP), of(P, S, X));
+		deeper(Role.DRUID, of(HP, R, H), of(C, V, P), of(T, K, S));
+		deeper(Role.MERCHANT, of(G, M, LK), of(C, L, X), of(D, V, R));
+		deeper(Role.MONK, of(C, AS, D), of(H, D, M), of(L, K, X));
+		deeper(Role.ELEMENTALIST, of(F, C, X), of(M, G, R), of(S, D, V));
+		deeper(Role.GUNSLINGER, of(C, X, AS), of(M, G, D), of(L, V, S));
+		deeper(Role.WEAPON_SUMMONER, of(AS, C, L), of(R, T, HP), of(G, M, X));
+		deeper(Role.HUNTER, of(X, C, P), of(D, V, S), of(L, HP, K));
+		deeper(Role.BARD, of(G, M, LK), of(C, AS, F), of(H, R, HP));
+		deeper(Role.WARLOCK, of(W, P, X), of(L, HP, H), of(C, M, G));
+		deeper(Role.TAMER, of(R, HP, K), of(C, AS, L), of(H, LK, G));
+		deeper(Role.SHAPESHIFTER, of(C, L, V), of(D, G, M), of(HP, R, T));
 	}
 
 	/**
@@ -369,10 +404,15 @@ public final class RoleTree {
 	private static synchronized void ensurePathSpecs() {
 		if (!PATH_SPECS.isEmpty()) return;
 		PATHS.forEach((role, sets) -> {
+			PathEffect[][] deep = DEEPER.get(role);
+			if (deep == null) throw new IllegalStateException("Faltan los escalones v46 de " + role);
 			for (int path = 1; path <= 3; path++) {
-				for (int i = 0; i < 3; i++) {
-					String id = role.key() + PATH_LETTERS[path - 1] + (i + 1);
-					PATH_SPECS.put(id, new PathSpec(role, path, sets[path - 1][i]));
+				PathEffect[] base = sets[path - 1];
+				PathEffect[] more = deep[path - 1];
+				PathEffect[] byStep = {base[0], base[1], base[2], more[0], more[1], more[2], more[0]};
+				for (PathRules.Step step : PathRules.Step.values()) {
+					String id = PathRules.nodeId(role.key(), path, step);
+					PATH_SPECS.put(id, new PathSpec(role, path, byStep[step.ordinal()], step));
 				}
 			}
 		});
@@ -390,25 +430,53 @@ public final class RoleTree {
 	}
 
 	private static final String[] PATH_LETTERS = {"_a", "_b", "_c"};
-	/** Sendas que se pueden seguir a la vez en un rol (de las 3). */
-	public static final int MAX_PATHS = 2;
+	/** Sendas que se pueden seguir a la vez en un rol (v46: 1, exclusivas). */
+	public static final int MAX_PATHS = PathRules.MAX_PATHS;
 
-	/** ¿Tiene algún rango en la senda {@code path} (1 = A, 2 = B, 3 = C)? */
+	/** ¿Tiene algún rango en la senda {@code path} (1 = A, 2 = B, 3 = C), en cualquier escalón? */
 	public static boolean pathStarted(java.util.function.ToIntFunction<String> rankOf, Role role, int path) {
-		for (int i = 1; i <= 3; i++) if (rankOf.applyAsInt(role.key() + PATH_LETTERS[path - 1] + i) > 0) return true;
-		return false;
+		return PathRules.pathStarted(rankOf, role.key(), path);
 	}
 
 	/** Número de sendas iniciadas en un rol. */
 	public static int pathsStarted(java.util.function.ToIntFunction<String> rankOf, Role role) {
-		int n = 0;
-		for (int path = 1; path <= 3; path++) if (pathStarted(rankOf, role, path)) n++;
-		return n;
+		return PathRules.pathsStarted(rankOf, role.key());
 	}
 
-	/** ¿La senda está bloqueada porque ya se siguen otras dos? */
+	/** ¿La senda está bloqueada porque ya se sigue otra? */
 	public static boolean pathLocked(java.util.function.ToIntFunction<String> rankOf, Role role, int path) {
-		return !pathStarted(rankOf, role, path) && pathsStarted(rankOf, role) >= MAX_PATHS;
+		return PathRules.pathLocked(rankOf, role.key(), path);
+	}
+
+	/**
+	 * v46: ¿el nodo está bloqueado por la exclusividad? (senda distinta de la elegida o la otra rama de la
+	 * bifurcación). Lo usan el servidor (validación) y la pantalla (solo para mostrarlo).
+	 */
+	public static boolean nodeLocked(java.util.function.ToIntFunction<String> rankOf, RoleNode node) {
+		PathSpec spec = pathSpec(node.id());
+		if (spec == null) return false;
+		return PathRules.pathLocked(rankOf, node.role().key(), spec.path())
+				|| PathRules.branchLocked(rankOf, node.role().key(), spec.path(), spec.step());
+	}
+
+	/** ¿Se cumple el requisito del nodo? S6 acepta cualquiera de las dos ramas de la bifurcación. */
+	public static boolean prerequisiteMet(java.util.function.ToIntFunction<String> rankOf, RoleNode node) {
+		PathSpec spec = pathSpec(node.id());
+		if (spec != null && spec.step().added()) {
+			return PathRules.prerequisiteMet(rankOf, node.role().key(), spec.path(), spec.step());
+		}
+		return node.prerequisite() == null || rankOf.applyAsInt(node.prerequisite()) > 0;
+	}
+
+	/** v46: ids de los escalones nuevos (S4–S6) de una senda, en orden; no están en la cuadrícula del árbol. */
+	public static List<RoleNode> deeperNodes(Role role, int path) {
+		List<RoleNode> out = new ArrayList<>();
+		for (PathRules.Step step : PathRules.Step.values()) {
+			if (!step.added()) continue;
+			RoleNode n = BY_ID.get(PathRules.nodeId(role.key(), path, step));
+			if (n != null) out.add(n);
+		}
+		return out;
 	}
 
 	/** Clave de texto del nombre de una senda ({@code path.aptitudes.<rol>_a|b|c}). */
@@ -501,6 +569,20 @@ public final class RoleTree {
 			RoleNode placed = at(node, cols[i % 5], tier == Evolution.MASTER ? 7 : 8, level, null);
 			nodes.add(placed);
 			if (spec != null) evolvedActives.add(placed);
+		}
+		// v46, al final de la lista (no cambia el índice de los nodos anteriores): escalones S4, S5x, S5y y S6 de
+		// cada senda. No tienen posición en la cuadrícula: se ven en la vista de sendas. El requisito de S6
+		// (cualquiera de las dos ramas) lo resuelve PathRules; aquí se guarda S5x solo para dibujar la línea.
+		for (int path = 1; path <= 3; path++) {
+			String s3 = PathRules.nodeId(k, path, PathRules.Step.S3);
+			String s4 = PathRules.nodeId(k, path, PathRules.Step.S4);
+			String s5x = PathRules.nodeId(k, path, PathRules.Step.S5X);
+			String s5y = PathRules.nodeId(k, path, PathRules.Step.S5Y);
+			String s6 = PathRules.nodeId(k, path, PathRules.Step.S6);
+			nodes.add(RoleNode.extraNode(s4, role, RoleNode.Kind.PATH, PathRules.Step.S4.level(), s3));
+			nodes.add(RoleNode.extraNode(s5x, role, RoleNode.Kind.PATH, PathRules.Step.S5X.level(), s4));
+			nodes.add(RoleNode.extraNode(s5y, role, RoleNode.Kind.PATH, PathRules.Step.S5Y.level(), s4));
+			nodes.add(RoleNode.extraNode(s6, role, RoleNode.Kind.PATH, PathRules.Step.S6.level(), s5x));
 		}
 		for (RoleNode n : nodes) {
 			if (BY_ID.put(n.id(), n) != null) throw new IllegalStateException("Nodo duplicado: " + n.id());

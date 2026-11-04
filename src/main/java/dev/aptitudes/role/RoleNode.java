@@ -40,7 +40,7 @@ public record RoleNode(String id, Role role, Kind kind, int requiredLevel,
 		EFFICIENCY,
 		/** Maestría: +1 rango efectivo por rango en las activas del rol. */
 		MASTERY,
-		/** Nodo de Senda: aplica un {@link PathEffect}. Solo se siguen 2 de las 3 sendas de un rol. */
+		/** Nodo de Senda: aplica un {@link PathEffect}. v46: sendas exclusivas (una por rol), ver {@link PathRules}. */
 		PATH,
 		/** Nodo legendario (antigua habilidad única): 1 rango; se activa con la tecla H. */
 		LEGENDARY

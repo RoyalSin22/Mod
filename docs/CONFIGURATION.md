@@ -60,7 +60,8 @@ su forma normal de juego.
 | `soulLevelsPerPoint` | 3 | Niveles de alma por punto de atributo. |
 | `levelCostBase/Divisor/Max` | 1 / 6 / 10 | Coste en XP de cada nivel de alma: `min(Max, Base + nivel/Divisor)`. |
 | `primaryAffinityBonus` / `secondaryAffinityBonus` | 0.5 / 0.25 | Bonificación de los atributos afines al rol. |
-| `maxRoleLevel` / `rolePointsEveryLevels` | 30 / 3 | Nivel máximo de rol y frecuencia de puntos de árbol. |
+| `maxRoleLevel` / `rolePointsEveryLevels` | 50 / 3 | Nivel máximo de rol y frecuencia de puntos de árbol. v46: el valor por defecto pasa de 30 a 50; un archivo anterior con 30 se migra solo a 50 (un valor distinto, elegido a mano, se respeta). |
+| `configRevision` | 46 | Interno: revisión del archivo para las migraciones (`config/ConfigMigration`). No aparece en la pantalla de configuración; no lo edites. |
 | `secondaryRoleXpMultiplier` | 0.5 | XP del rol secundario respecto al principal. |
 | `damageNumbers`, `levelUpTitles` | true | Efectos visuales enviados desde el servidor. |
 

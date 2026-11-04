@@ -1,6 +1,7 @@
 # v46 — Nivel 50 y Sendas exclusivas (diseño para aprobar)
 
-Estado: **aprobado** por el autor (2026-11-04); pendiente de implementar. Decisiones: nivel máximo de rol
+Estado: **aprobado** por el autor (2026-11-04). **v46.0 implementada** (nivel 50, exclusividad, S4–S6 con
+bifurcación, migración, vista de sendas); pendiente la v46.1 (piedras angulares). Decisiones: nivel máximo de rol
 **50**, **sendas exclusivas**, estructura de **7 escalones con bifurcación**, las **10 plantillas** de piedra
 angular, el ejemplo del Bersérker como patrón para los 20 roles, **reembolso automático** de la senda con menos
 rangos para quien tenga dos y **curva de XP sin cambios**.

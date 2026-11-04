@@ -274,6 +274,21 @@ Pendiente: comprobarlo en el juego (ver `docs/TESTING.md`, v39).
   `EclipsePayload` lleva el tipo de evento.
 - Comando `/aptitudes event [status|start <evento>|stop]`; `/aptitudes eclipse` informa del próximo evento.
 
+### v46.0 — Nivel 50 y Sendas exclusivas
+- `role/PathRules` (puro) + `role/PathRulesTest` (7 pruebas): escalones, exclusividad, bifurcación (S6 acepta
+  cualquiera de las dos ramas) y migración.
+- `RoleTree`: escalones S4, S5x, S5y y S6 de las 60 sendas (`deeper(...)`), **añadidos al final** de la lista de
+  nodos de cada rol (hay código que usa el índice: la mecánica es el 18); sin posición en la cuadrícula.
+  `PathSpec` lleva el escalón y su multiplicador (S6 ×1,5, aplicado en `PathEffects`).
+- `RoleManager.upgrade`: requisito con `RoleTree.prerequisiteMet`, `PATH_LOCKED` (otra senda) y
+  `BRANCH_LOCKED` (otra rama). `ensureConsistent`: reembolso automático de las sendas sobrantes con aviso.
+- Configuración: `maxRoleLevel` 50 y `configRevision` (`config/ConfigMigration` + `ConfigMigrationTest`): los
+  archivos anteriores con 30 pasan a 50.
+- Cliente: `screen/PathsScreen` (vista de sendas, 426×232, desplazable) y botón «Sendas» en `RolesScreen`.
+- Textos: `tools/lang/gen_path_lang.py` (240 nodos, 60 frases de senda, interfaz; lee los efectos de
+  `RoleTree.java`).
+- Pendiente: v46.1 (piedras angulares S7, con sonido e indicador en el HUD).
+
 ### v41.2 — Eclipse y Lluvia de brasas más fuertes
 - `event/StrongEventRules` (puro) + `event/StrongEventRulesTest` (5 pruebas): criaturas del Eclipse por fase,
   bonificación de la Totalidad, armadura por fase, tamaño de meteorito, potencia, caída, botín, restos y

@@ -26,7 +26,7 @@ public final class RoleManager {
 
 	/** Resultado de intentar subir un rango. */
 	public enum UpgradeResult { OK, UNKNOWN_NODE, ROLE_NOT_ACTIVE, MAX_RANK, LEVEL_TOO_LOW, MISSING_PREREQUISITE, NO_POINTS,
-		PATH_LOCKED, LEGEND_TAKEN, LEGEND_LIMIT, TIER_TOO_LOW }
+		PATH_LOCKED, LEGEND_TAKEN, LEGEND_LIMIT, TIER_TOO_LOW, BRANCH_LOCKED }
 
 	private RoleManager() {
 	}
@@ -320,11 +320,15 @@ public final class RoleManager {
 		// v23: las filas de Maestro y Definitivo exigen esa evolución del rol.
 		if (data.tier(node.role()) < node.requiredTier()) return UpgradeResult.TIER_TOO_LOW;
 		if (data.level(node.role()) < node.levelForRank(rank + 1)) return UpgradeResult.LEVEL_TOO_LOW;
-		if (node.prerequisite() != null && data.rank(node.prerequisite()) <= 0) return UpgradeResult.MISSING_PREREQUISITE;
+		// v46: S6 acepta cualquiera de las dos ramas de la bifurcación (RoleTree.prerequisiteMet).
+		if (!RoleTree.prerequisiteMet(data::rank, node)) return UpgradeResult.MISSING_PREREQUISITE;
 		if (availablePoints(data, node.role()) <= 0) return UpgradeResult.NO_POINTS;
 		RoleTree.PathSpec path = RoleTree.pathSpec(nodeId);
 		if (path != null && RoleTree.pathLocked(data::rank, node.role(), path.path())) {
-			return UpgradeResult.PATH_LOCKED; // solo 2 de las 3 sendas
+			return UpgradeResult.PATH_LOCKED; // v46: sendas exclusivas (una por rol)
+		}
+		if (path != null && PathRules.branchLocked(data::rank, node.role().key(), path.path(), path.step())) {
+			return UpgradeResult.BRANCH_LOCKED; // v46: una sola rama de la bifurcación
 		}
 		// Legendarias exclusivas (opcional): validación autoritativa en el servidor y registro del dueño.
 		if (node.kind() == RoleNode.Kind.LEGENDARY && Aptitudes.config().legendaryExclusive) {
@@ -429,6 +433,19 @@ public final class RoleManager {
 	private static void ensureConsistent(ServerPlayerEntity player, RoleData data) {
 		RoleRules rules = rules();
 		for (Role role : Role.values()) {
+			// v46: sendas exclusivas. Quien tenía dos conserva la de más rangos y recupera los puntos de la otra.
+			java.util.List<String> refunds = PathRules.refunds(data::rank, role.key());
+			if (!refunds.isEmpty()) {
+				int refunded = 0;
+				for (String id : refunds) {
+					refunded += data.rank(id);
+					data.setRank(id, 0);
+				}
+				int kept = PathRules.chosenPath(data::rank, role.key());
+				player.sendMessage(Text.translatable("aptitudes.paths.migrated", Text.translatable(role.translationKey()),
+						kept > 0 ? Text.translatable(RoleTree.pathKey(role, kept)) : Text.empty(), refunded)
+						.formatted(Formatting.GOLD), false);
+			}
 			if (data.level(role) > rules.maxLevel()) data.setLevel(role, rules.maxLevel());
 			// v23: si se perdió la evolución (p. ej., /roles admin settier), se devuelven los nodos evolucionados.
 			for (RoleNode node : RoleTree.nodes(role)) {

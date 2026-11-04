@@ -182,9 +182,12 @@ public class RolesScreen extends Screen {
 				.dimensions(canvasX() + canvasW() - 150, top + H - 70, 70, 16).build());
 
 		addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.tab.attributes"),
-				b -> client.setScreen(new AptitudesScreen())).dimensions(width / 2 - 102, top + H - 26, 100, 18).build());
+				b -> client.setScreen(new AptitudesScreen())).dimensions(width / 2 - 154, top + H - 26, 100, 18).build());
+		// v46: vista de sendas del rol seleccionado (escalones S4–S6 y bifurcación).
+		addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.paths.button"),
+				b -> client.setScreen(new PathsScreen(this, selected))).dimensions(width / 2 - 50, top + H - 26, 100, 18).build());
 		addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, b -> close())
-				.dimensions(width / 2 + 2, top + H - 26, 100, 18).build());
+				.dimensions(width / 2 + 54, top + H - 26, 100, 18).build());
 		updateButtons();
 	}
 
@@ -284,7 +287,7 @@ public class RolesScreen extends Screen {
 		int rank = data.rank(node.id());
 		return active && rank < node.maxRank() && data.tier(role) >= node.requiredTier()
 				&& data.level(role) >= node.levelForRank(rank + 1)
-				&& (node.prerequisite() == null || data.rank(node.prerequisite()) > 0)
+				&& RoleTree.prerequisiteMet(data::rank, node)
 				&& availablePoints(data, role) > 0
 				&& !pathLocked(data, node)
 				&& legendBlock(node) == null;
@@ -314,11 +317,9 @@ public class RolesScreen extends Screen {
 		return null;
 	}
 
-	/** Solo 2 de las 3 sendas: un nodo de una tercera senda queda bloqueado. */
+	/** v46: sendas exclusivas (y una sola rama de la bifurcación): el nodo queda bloqueado. */
 	private static boolean pathLocked(RoleSyncPayload data, @Nullable RoleNode node) {
-		if (node == null) return false;
-		RoleTree.PathSpec spec = RoleTree.pathSpec(node.id());
-		return spec != null && RoleTree.pathLocked(data::rank, node.role(), spec.path());
+		return node != null && RoleTree.nodeLocked(data::rank, node);
 	}
 
 	private static int availablePoints(RoleSyncPayload data, Role role) {

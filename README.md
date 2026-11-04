@@ -246,7 +246,7 @@ Las artes de sangre se integran en la evolución del Nigromante (Nigromante → 
 
 La pestaña *Habilidades* muestra las 10 como tarjetas animadas (5 filas × 2): barra de XP que se llena, brillo dorado si subieron de nivel desde la última vez, resumen de pasivas en una línea y ficha completa (pasivas e hitos) al pasar el ratón.
 
-**Sendas excluyentes.** Cada rol tiene **2 sendas de 3 nodos** (niveles 10, 14 y 20). Al aprender un nodo de una senda, la otra queda bloqueada; para cambiar hay que reiniciar el árbol. Cada nodo aplica un efecto: robo de vida, crítico, ejecución, espinas, reducción de daño, esquiva, regeneración de vida o de maná, carga de recurso, efectos al golpear (veneno, lentitud, fuego, descomposición), poder de esbirros, antiempuje, velocidad, vida, velocidad de ataque o suerte.
+**Sendas excluyentes.** Cada rol tiene **3 sendas** y desde la v46 solo puedes seguir **una**: al aprender un nodo de una senda, las otras quedan bloqueadas; para cambiar hay que reiniciar el árbol. Cada senda tiene 7 escalones (niveles 10, 14, 20, 26, una bifurcación de dos ramas en el 32 y 40; la piedra angular del 50 llega en la v46.1) y se ve en la vista «Sendas» de la pantalla de roles. Cada nodo aplica un efecto: robo de vida, crítico, ejecución, espinas, reducción de daño, esquiva, regeneración de vida o de maná, carga de recurso, efectos al golpear (veneno, lentitud, fuego, descomposición), poder de esbirros, antiempuje, velocidad, vida, velocidad de ataque o suerte.
 
 | Rol | Senda A | Senda B |
 |---|---|---|
@@ -525,7 +525,7 @@ fila 4:      [Reactiva 2]  [A3]  [B3]  [C3]   [Maestría]
 fila 5:                                                    [Activa D]
 ```
 - Cada nodo exige al menos 1 rango de su padre (línea en el árbol).
-- **3 Sendas** por rol que nacen de la mecánica; solo puedes seguir **2**.
+- **3 Sendas** por rol que nacen de la mecánica; desde la v46 solo puedes seguir **una** (son exclusivas).
 - Puntos de árbol: 1 + 3 cada 3 niveles (31 al nivel 30) para 69 rangos posibles.
 
 ### 4 activas por rol, 2 equipadas
@@ -778,6 +778,11 @@ almas** (noche de criaturas de alma) o la **Lluvia de brasas** (meteoritos con m
 **v30 — Contratos del gremio:** fabrica un Tablón de contratos (papel y tablones). Cada día ofrece 3 contratos
 (Caza, Entrega, Pesca, Encantamiento, Oficio, Forja, Evento o Jefe). Cóbralos para ganar esmeraldas, XP de rol
 y reputación (Aprendiz → Oficial → Veterano → Maestro). Ver el capítulo «Contratos del gremio» del grimorio.
+
+**v46 — Nivel 50 y Sendas exclusivas:** el nivel máximo de rol sube a 50. Cada rol sigue **una** senda de las
+tres; cada senda crece hasta el nivel 40 con una **bifurcación** en el 32 (eliges una de dos ramas) y un último
+escalón ×1,5. Ábrelas con el botón «Sendas» de la pantalla de roles (J). Si tenías dos sendas, conservas la de
+más rangos y recuperas los puntos de la otra.
 
 **v31 — Logros:** pestaña «Aptitudes» en la pantalla de avances (tecla L) con 17 logros: descansar en una Hoguera,
 nivel de alma 10, elegir rol, evolucionar a Maestro y a Definitivo, remate de combo, nivel 50 en una habilidad,

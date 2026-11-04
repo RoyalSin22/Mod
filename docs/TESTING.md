@@ -27,6 +27,8 @@ reescribir las existentes (JUnit 4):
 | `achievement/AchievementCatalogTest` | Árbol de logros (ids únicos, padres declarados), JSON de avances coherentes con el enum y sin sobrantes, traducciones en los 8 idiomas |
 | `event/SoulFogRulesTest` | Pesos que suman 100 por clima, clima por agua y temperatura, distribución exacta de las tiradas, variantes por clima y tiradas fuera de rango |
 | `event/StrongEventRulesTest` | Pesos del Eclipse por fase y del Nether por tamaño (suman 100 y siguen las tiradas), bonificación y armadura acotadas, material por fase, tamaños crecientes en potencia/caída/botín/restos, criaturas por tamaño y probabilidad |
+| `role/PathRulesTest` | Ids de los escalones, niveles aprobados y multiplicador de S6, exclusividad de sendas, bifurcación (una rama; S6 acepta cualquiera), migración (conserva la de más rangos; empate A) y rangos corruptos |
+| `config/ConfigMigrationTest` | El nivel máximo antiguo (30) pasa a 50 una sola vez; los valores elegidos a mano se respetan |
 
 Ejecución: `.\gradlew.bat test` (también se ejecutan en `.\gradlew.bat build`).
 
@@ -228,6 +230,23 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
    el comportamiento anterior. Verifica el HUD en la misma dimensión, en otra dimensión y tras desconectar.
 7. En Eclipse, confirma un Heraldo por grupo y escalado de vida hasta cinco integrantes; sin grupo, los jugadores
    a menos de 64 bloques siguen compartiendo un Heraldo. En Niebla de almas comprueba oleadas y tope según grupo.
+
+# v46.0 — Nivel 50 y Sendas exclusivas (verificación manual)
+
+1. Arranque con un `config/aptitudes.json` antiguo (con `"maxRoleLevel": 30` y sin `configRevision`): al cargar
+   pasa a 50 y aparece `"configRevision": 46`. Con `"maxRoleLevel": 40` se queda en 40.
+2. Mundo anterior con un rol que tenga dos sendas empezadas: al entrar, mensaje dorado «Sendas exclusivas: en
+   … conservas la senda … y recuperas N puntos»; la senda con más rangos sigue aprendida y los puntos vuelven.
+3. Pantalla de roles (J): botón «Sendas» abajo. En la vista: pestañas A/B/C, raíl de niveles (dorado los
+   alcanzados), escalones S1–S6 con la bifurcación lado a lado y la piedra angular con candado.
+4. Sin senda elegida: al aprender S1 de A aparece la confirmación; al aceptar, B y C se ven bloqueadas (velo y
+   candado) en la vista y en el árbol. Intentarlo por comando (`/roles learn <rol>_b1`) da «Ya sigues otra senda».
+5. `/roles admin setlevel J <rol> 50`: aprende S4; en la bifurcación elige S5x (confirmación); S5y queda
+   bloqueada («Ya elegiste la otra rama»). S6 se puede aprender con S5x **o** S5y.
+6. Tooltip de S6: valor ×1,5 del de S4 (p. ej., Bersérker A: robo de vida +3 % por rango). Comprueba en combate
+   que el efecto suma (más curación al golpear).
+7. Reasignar el árbol (`/roles respec <rol>` si está permitido) libera la senda y la rama.
+8. Escala de interfaz 3 y 4: la vista de sendas cabe o se desplaza con la rueda; nada se solapa.
 
 # v41.2 — Eclipse y Lluvia de brasas más fuertes (verificación manual)
 

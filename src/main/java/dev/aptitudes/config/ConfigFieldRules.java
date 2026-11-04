@@ -29,6 +29,7 @@ public final class ConfigFieldRules {
 		for (Field f : configClass.getFields()) {
 			int mod = f.getModifiers();
 			if (Modifier.isStatic(mod) || Modifier.isFinal(mod) || !supported(f.getType())) continue;
+			if (f.getName().equals("configRevision")) continue; // v46: interno (migraciones), no se edita
 			out.add(f);
 		}
 		return out;

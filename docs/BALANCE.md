@@ -132,7 +132,22 @@ Presteza, Eficiencia y el tope del 60 %. Puntos: +10 con Maestro y +5 con Defini
 
 - Puntos: `1 + nivel·3 / rolePointsEveryLevels` → 31 a nivel 30, frente a 69 rangos posibles en
   23 nodos (+1 legendario): obliga a elegir.
-- Sendas: 3 por rol, solo se pueden seguir 2 (validado en servidor y persistido en los rangos).
+- Sendas: 3 por rol; **v46: exclusivas** (una por rol, validado en el servidor). Antes se podían seguir 2.
+
+**v46 — nivel 50 y sendas más profundas** (`role/PathRules`, diseño en `docs/V46_DISENO_SENDAS.md`):
+
+| Aspecto | Valor |
+|---|---|
+| Nivel máximo de rol | 50 (antes 30). La curva de XP no cambia: llegar al 30 cuesta lo mismo; del 30 al 50 hacen falta ≈ 107 400 XP más (≈ 2,4 veces todo lo anterior) |
+| Puntos | La misma fórmula: 51 en el nivel 50 + 10 (Maestro) + 5 (Definitivo) = **66** |
+| Escalones de cada senda | S1 10, S2 14, S3 20 (los de antes), S4 26, bifurcación S5x/S5y 32 (una sola), S6 40; 3 rangos cada uno, +5 niveles por rango (el 3.º de S6 llega al 50) |
+| Valores | S4, S5x y S5y: el valor por rango de su `PathEffect`; **S6 = efecto de S4 ×1,5** |
+| Coste de una build completa | 43 (nodos base) + 18 (S1–S6 de una senda) + 15 (filas de evolución) = 76 rangos para 66 puntos |
+| Migración | Quien tenía 2 sendas conserva la de más rangos (empate: A, luego B) y recupera los puntos de la otra, con aviso en el chat |
+
+Efecto de balance: con una sola senda, la suma de efectos de senda de un jugador al nivel 30 baja (antes 2
+sendas × 9 rangos = 18; ahora 1 senda, 9 rangos hasta S3); a partir del 26 la profundidad lo compensa y en el 50
+la senda completa da 18 rangos, con S6 al ×1,5. La piedra angular (S7) llega en la v46.1.
 - Rol secundario: gana XP al 50 % (`secondaryRoleXpMultiplier`) y sus activas ocupan las teclas N/M.
 
 # Runas para armas (v32)

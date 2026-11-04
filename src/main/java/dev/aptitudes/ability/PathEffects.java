@@ -30,7 +30,8 @@ public final class PathEffects {
 		EnumMap<PathEffect, Double> out = new EnumMap<>(PathEffect.class);
 		for (Map.Entry<String, RoleTree.PathSpec> e : RoleTree.pathSpecs().entrySet()) {
 			int rank = RoleManager.activeRank(player, e.getKey());
-			if (rank > 0) out.merge(e.getValue().effect(), rank * e.getValue().effect().perRank(), Double::sum);
+			// v46: perRank() incluye el multiplicador del escalón (S6 = ×1,5).
+			if (rank > 0) out.merge(e.getValue().effect(), rank * e.getValue().perRank(), Double::sum);
 		}
 		// v23: pasivas de las filas de Maestro y Definitivo (mismo efecto, más valor por rango).
 		for (EvolvedTree.Passive p : EvolvedTree.passives().values()) {

@@ -104,7 +104,8 @@ public class AptitudesConfig {
 	public double luckPerPoint = 0.14;
 
 	// ---------- Roles ----------
-	public int maxRoleLevel = 30;
+	/** v46: 50 (antes 30). Los archivos anteriores con 30 se migran a 50 ({@link ConfigMigration}). */
+	public int maxRoleLevel = 50;
 	public double roleXpBase = 30.0;
 	public double roleXpExponent = 1.4;
 	/** El rol secundario recibe esta fracción de la XP de rol. */
@@ -261,14 +262,22 @@ public class AptitudesConfig {
 		return FabricLoader.getInstance().getConfigDir().resolve(FILE_NAME);
 	}
 
+	/** Revisión del archivo (para migraciones; ver {@link ConfigMigration}). No se edita a mano. */
+	public int configRevision = ConfigMigration.CURRENT;
+
 	public static AptitudesConfig load() {
 		Path path = path();
 		AptitudesConfig cfg = new AptitudesConfig();
 		if (Files.exists(path)) {
 			try (Reader reader = Files.newBufferedReader(path)) {
-				AptitudesConfig parsed = GSON.fromJson(reader, AptitudesConfig.class);
+				com.google.gson.JsonElement json = com.google.gson.JsonParser.parseReader(reader);
+				AptitudesConfig parsed = GSON.fromJson(json, AptitudesConfig.class);
 				if (parsed != null) {
 					cfg = parsed;
+					// v46: los archivos sin revisión son anteriores a la v46.
+					int from = revisionOf(json);
+					cfg.maxRoleLevel = ConfigMigration.maxRoleLevel(from, cfg.maxRoleLevel);
+					cfg.configRevision = ConfigMigration.CURRENT;
 				}
 			} catch (IOException | JsonParseException e) {
 				// No sobrescribimos un archivo roto: el usuario perdería sus cambios.
@@ -279,6 +288,18 @@ public class AptitudesConfig {
 		cfg = validated(cfg);
 		save(cfg);
 		return cfg;
+	}
+
+	/** Revisión guardada en el archivo; 0 si no está o no es un número (archivo anterior a la v46 o editado a mano). */
+	private static int revisionOf(com.google.gson.JsonElement json) {
+		try {
+			if (json.isJsonObject() && json.getAsJsonObject().has("configRevision")) {
+				return json.getAsJsonObject().get("configRevision").getAsInt();
+			}
+		} catch (RuntimeException e) {
+			Aptitudes.LOGGER.warn("[Aptitudes] configRevision no válido; se trata como un archivo antiguo");
+		}
+		return 0;
 	}
 
 	public static void save(AptitudesConfig cfg) {
