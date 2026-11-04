@@ -41,7 +41,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 | Sonidos propios (v37, generados; no editar a mano los .ogg) | `sound/ModSounds`, `assets/aptitudes/sounds.json`; ejecuta `python3 tools/audio/gen_sounds.py src/main/resources/assets/aptitudes` |
 | Texturas de armas y objetos (generadas, no editar a mano los PNG de la lista) | `tools/textures/gen_items.py` (`ITEMS` y plantillas `T`); ejecuta `python3 tools/textures/gen_items.py src/main/resources/assets/aptitudes/textures/item` |
 | Texturas de armaduras de rol: iconos y capas del modelo (generadas) | `tools/textures/gen_armor.py`; ejecuta `python3 tools/textures/gen_armor.py src/main/resources/assets/aptitudes/textures` |
-| Iconos de Sendas (fases 1–3): 300 PNG S4/S5x/S5y/S6/S7 generados, no editar a mano; dibujado con respaldo y caché; pendiente integración en pantallas | `tools/textures/gen_node_icons.py` (lee `RoleTree`; diccionario S7 de `docs/V46_DISENO_SENDAS.md` §10); ejecuta `python3 tools/textures/gen_node_icons.py src/main/resources/assets/aptitudes/textures/gui/node` (`--preview hoja.png`, `--check`); cliente `screen/NodeIconRenderer` (`draw`, `drawKeystone`; caché vaciada al recargar recursos) |
+| Iconos de Sendas (fases 1–3): 300 PNG S4/S5x/S5y/S6/S7 generados, no editar a mano; dibujado con respaldo y caché; integrados en la vista de sendas (v46.2) | `tools/textures/gen_node_icons.py` (lee `RoleTree`; diccionario S7 de `docs/V46_DISENO_SENDAS.md` §10); ejecuta `python3 tools/textures/gen_node_icons.py src/main/resources/assets/aptitudes/textures/gui/node` (`--preview hoja.png`, `--check`); cliente `screen/NodeIconRenderer` (`draw`, `drawKeystone`; caché vaciada al recargar recursos) |
 | Tiempos de espera persistentes (habilidades, definitiva, firma, legendaria, Inmortalidad carmesí) | `ability/CooldownBook` + attachment `COOLDOWNS`; usa `AbilityManager.cooldowns(p)` y `gameTime(p)` |
 | Filtro de objetivos: `MobEntityMixin` (setTarget) + `BrainTargetFilter` (mobs con IA Brain) | `ability/AbilityState.shouldBlockTarget` es la única regla: amplíala ahí |
 | Bloques temporales de habilidades (persistentes, sin drops) | `world/TemporaryBlocks.place(...)`; nunca `setBlockState` + `schedule` para bloques temporales |
@@ -132,6 +132,8 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
 ## 7. Pendientes conocidos (consulta antes de empezar algo grande)
 
 - v29 (grupos), v30 (contratos) y v31 (logros) ya están hechos. Siguiente: v42–v45 de `docs/PLAN_v40_v45.md`.
+- **Trabajo pendiente para Codex**: `docs/PLAN_CODEX.md` (tareas T1–T8 en orden, una rama por tarea, con su
+  prompt, la autorrevisión y cómo integrarlas en `main`).
 - Iconos de las Sendas (Codex, fases 1–3) integrados en `main` y usados en la vista de sendas (v46.2). El
   generador `tools/textures/gen_node_icons.py` lleva una copia de la tabla de plantillas: si cambia
   `KeystoneRules`, actualízala y regenera los iconos.
