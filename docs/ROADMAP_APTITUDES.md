@@ -274,6 +274,11 @@ Pendiente: comprobarlo en el juego (ver `docs/TESTING.md`, v39).
   `EclipsePayload` lleva el tipo de evento.
 - Comando `/aptitudes event [status|start <evento>|stop]`; `/aptitudes eclipse` informa del próximo evento.
 
+### v46.2 — Iconos propios de las Sendas (Codex) integrados
+- 300 iconos generados (`tools/textures/gen_node_icons.py`, revisados: regenerados aquí, idénticos píxel a píxel;
+  tabla de plantillas igual a `KeystoneRules`) y `client/screen/NodeIconRenderer` (respaldo al icono de objeto).
+- `PathsScreen` dibuja los escalones con `NodeIconRenderer.draw` (S1–S3 siguen con el icono de objeto).
+
 ### v46.1 — Piedras angulares
 
 - Iconos propios de Sendas, fases 1–3: generador y 300 PNG S4/S5x/S5y/S6/S7, con 10 glifos S7, diccionario de las 60 piedras angulares de §10, vista previa y `--check`; `client/screen/NodeIconRenderer` dibuja con respaldo y caché invalidada al recargar recursos; pendiente la integración en pantallas.

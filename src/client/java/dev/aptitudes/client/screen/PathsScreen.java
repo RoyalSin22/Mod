@@ -3,7 +3,6 @@ package dev.aptitudes.client.screen;
 import dev.aptitudes.client.ClientRoleState;
 import dev.aptitudes.network.RoleActionPayload;
 import dev.aptitudes.network.RoleSyncPayload;
-import dev.aptitudes.role.NodeIcons;
 import dev.aptitudes.role.PathRules;
 import dev.aptitudes.role.PathRules.Step;
 import dev.aptitudes.role.Role;
@@ -237,7 +236,7 @@ public class PathsScreen extends Screen {
 			ctx.fill(x, y, x + 20, y + 20, rank > 0 ? 0xF0262A3A : 0xF0151722);
 			ctx.drawBorder(x, y, 20, 20, isSelected ? 0xFFFFFFFF : rank > 0 ? color : locked ? 0xFF5A2A2A
 					: keystone ? 0xFF7E57C2 : 0xFF50546A);
-			ctx.drawItem(NodeIcons.of(node), x + 2, y + 2);
+			NodeIconRenderer.draw(ctx, node, x + 2, y + 2); // icono propio (S4–S7) o el de objeto (S1–S3)
 			if (locked) {
 				ctx.fill(x + 1, y + 1, x + 19, y + 19, 0x90401010);
 				lockIcon(ctx, x + 6, y + 5);
