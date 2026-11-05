@@ -28,7 +28,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 | Elementalista: 14 elementos y 10 fusiones | `role/Element`, `ability/ElementEffects`, `ability/ElementFusions` |
 | Legendarias (exclusividad opcional `legendaryExclusive`) | `unique/` |
 | Esbirros y torretas | `ability/Minions`, `ability/MinionBrain`, `ability/AbilityState` |
-| Accesorios, élites/campeones, estructuras, grimorio (18 capítulos) | `accessory/`, `elite/`, `world/`, `item/GuideBookItem`, `client/screen/GuideScreen` |
+| Accesorios, élites/campeones, estructuras, grimorio (22 capítulos; sendas, piedras angulares y logros desde T3) | `accessory/`, `elite/`, `world/`, `item/GuideBookItem`, `client/screen/GuideScreen` |
 | Efectos de lanzamiento e impacto de TODAS las habilidades (sello animado, remate por categoría, gesto) | `ability/CastFx` (`onCast`, `impact`); no dupliques estos efectos en cada habilidad |
 | Combos de combate (contador, bonificación y remates por categoría) | `ability/Combos` + `logic/ComboCounter`; HUD `client/hud/ComboHud` |
 | Nivel 50 y Sendas exclusivas (v46): una senda por rol, escalones S4–S6 con bifurcación (S5x/S5y), vista de sendas | `role/PathRules` (puro), `RoleTree` (`deeper(...)`, `nodeLocked`, `prerequisiteMet`, nodos nuevos **al final** de la lista), `RoleManager` (migración); cliente `screen/PathsScreen`; textos con `tools/lang/gen_path_lang.py` (no editar a mano); migración de configuración en `config/ConfigMigration` |

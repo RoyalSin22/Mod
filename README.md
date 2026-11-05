@@ -405,7 +405,9 @@ Comandos: `/unique` (lista) · `/unique admin give <jugador> <habilidad>` · `/u
 
 ## v14: grimorio, elementos y fusiones, armas de evolución y efectos de impacto
 
-- **Grimorio de Aptitudes** (libro + pepita de oro; se regala al entrar): guía con 18 capítulos.
+- **Grimorio de Aptitudes** (libro + pepita de oro; se regala al entrar): guía con 22 capítulos desde T3.
+  Incluye «Sendas y piedras angulares», con las diez plantillas y sus valores por defecto, «Logros» y
+  «Eventos del mundo» actualizado. Los cuerpos se ajustan al ancho y se desplazan con la rueda.
 - **Elementalista**: 14 elementos (nuevos: Luz, Vacío, Veneno, Cristal, Sonido) y 10 **fusiones**
   (Tormenta ígnea, Electrocución, Ventisca, Erupción, Plaga, Eclipse, Singularidad cristalina,
   Resonancia, Prisma, Choque térmico) que se añaden al Estallido si dominas los dos elementos.

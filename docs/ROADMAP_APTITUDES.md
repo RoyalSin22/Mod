@@ -247,7 +247,7 @@ Revisión estática de tamaños (Minecraft garantiza al menos 320×240 de GUI; c
 |---|---|---|
 | Pantalla K (`AptitudesScreen`) | 430×262 fijo | No cabía en alto con 768p/720p a escala 3 ni con poco margen a 1080p/4 → **desplazamiento vertical** con la rueda y barra dorada, como la pantalla de roles |
 | Roles (`RolesScreen`) | mín. 440×322 | Ya se desplaza (v19) |
-| Grimorio (`GuideScreen`) | mín. 380×236 | Cabe en alto (19 capítulos × 10 px); en ancho < 380 (monitores 4:3 a escala máxima) se recorta un poco |
+| Grimorio (`GuideScreen`) | mín. 380×236 | Índice de 22 capítulos con filas de 9 px en la ventana mínima (T3); cuerpos con ajuste y desplazamiento; en ancho < 380 se recorta un poco |
 | Mesa del gremio, accesorios | 176×166 | Caben |
 | Ajustes del HUD | 8 filas (≈ 176 px) | Caben en 240 |
 | HUD del Eclipse | centrado abajo | Estaba a la altura de la barra de acción (h − 72) y tapaba los avisos de runas → **subido a h − 92** |
@@ -273,6 +273,15 @@ Pendiente: comprobarlo en el juego (ver `docs/TESTING.md`, v39).
 - Cliente: colores de cielo, niebla, nubes y viñeta por evento; partículas propias; el sol eclipsado solo en el Eclipse.
   `EclipsePayload` lleva el tipo de evento.
 - Comando `/aptitudes event [status|start <evento>|stop]`; `/aptitudes eclipse` informa del próximo evento.
+
+### T3 — Grimorio actualizado a v46
+- Dos capítulos añadidos al final del índice: «Sendas y piedras angulares» y «Logros»; 22 en total.
+  Explican exclusividad, siete escalones, bifurcación, las diez piedras con valores de `docs/BALANCE.md`
+  y los 17 logros del catálogo. «Árbol de talentos» refleja nivel 50 y hasta 66 puntos por defecto.
+- «Eventos del mundo» conserva la clave `eclipse` y describe v41.1–v41.2: solo no muertos en la Niebla,
+  meteoritos pequeños/grandes/enormes y criaturas del Nether, armadura y Totalidad del Eclipse.
+- Textos en inglés y las siete variantes de español. Índice de 9–12 px por fila según la altura;
+  títulos medidos con la fuente vanilla y cuerpo ajustado/desplazable. Revisión visual en partida pendiente.
 
 ### T2 — Pruebas de guardado de contratos y grupos
 - `contract/ContractDataCodecTest`: ida y vuelta JSON con el codec real; conserva ofertas, progreso,

@@ -2,6 +2,29 @@
 
 ## Pruebas automatizadas (nuevas)
 
+T3 — textos y encaje del grimorio:
+
+- Verificar JSON válido y sin claves duplicadas en `en_us` y `es_es`; cada capítulo registrado en
+  `GuideScreen.CHAPTERS` necesita `.title` y `.body`. Las seis variantes regionales deben ser idénticas
+  byte a byte a `es_es`. T3 modifica siete claves por idioma y no reformatea los archivos completos.
+- Medición estática con los glifos bitmap de la fuente vanilla de Minecraft 1.21.1: a W=380,
+  página de 234 px, cuerpo de 224 px y cabecera con 196 px libres antes de la ilustración. El título
+  «Sendas y piedras angulares» ocupa 169 px en negrita; «Paths and keystones», 124 px. Los cuerpos
+  usan `textRenderer.wrapLines` y el desplazamiento existente para acceder al texto completo.
+- Comprobar alturas H=236..300: `24 + 22 × rowH <= H - 8`; en la ventana mínima, 22 filas de 9 px.
+  Los iconos del índice se ajustan a la fila. Ejecutar `.\gradlew.bat build`.
+
+Prueba manual de T3 pendiente (español e inglés):
+
+1. Abrir el grimorio a 426×240 y en 1080p con escala de interfaz 4. Seleccionar con ratón y flechas los
+   capítulos finales «Sendas y piedras angulares» y «Logros»; todo el índice debe quedar dentro de la ventana.
+2. Revisar la cabecera larga y recorrer con la rueda ambos cuerpos hasta el final. Comprobar las diez
+   plantillas, S7 al 50, las dos alternativas S5 y los porcentajes con un único signo `%`, sin claves visibles.
+3. Abrir «Eventos del mundo»: Niebla solo con no muertos, meteoritos grandes y enormes, criaturas del Nether,
+   armadura por fase y campeones del Eclipse. Revisar también «Árbol de talentos» (nivel 50, 66 puntos).
+4. Volver al Recetario y abrir una ficha: las recetas deben seguir leyéndose del juego y conservar su navegación.
+   Contrastar «Logros» con la pestaña de avances «Aptitudes» y «Sendas» con la vista del rol seleccionado.
+
 T2 — persistencia de contratos y grupos (sin iniciar un cliente ni un servidor):
 
 ```powershell

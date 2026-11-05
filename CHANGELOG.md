@@ -15,6 +15,11 @@ Compilado y probado en partida por el autor (v15–v19 y v29–v41 ✔).
   distribución se calcula por filas).
 
 ### Añadido
+- **T3 — Grimorio v46**: capítulos «Sendas y piedras angulares» (siete escalones, exclusividad,
+  bifurcación y las diez plantillas con sus valores por defecto) y «Logros» (los 17 objetivos y su
+  concesión por el servidor). El índice conserva el orden anterior y ajusta sus filas para 22 capítulos.
+  «Eventos del mundo» explica la Niebla de no muertos, los tres tamaños de meteorito y la armadura del
+  Eclipse; el árbol refleja el nivel 50. Textos en inglés y las siete variantes de español, sin copiar recetas.
 - **T2 — Pruebas de guardado**: pruebas nuevas de `ContractData.CODEC` con `JsonOps` (ofertas completas,
   progreso, reputación, cobros únicos, cambio de día y datos corruptos) y de `PartyState` con NBT
   (varios grupos, líder, nombres, opciones, datos incompletos y límites de pertenencia).

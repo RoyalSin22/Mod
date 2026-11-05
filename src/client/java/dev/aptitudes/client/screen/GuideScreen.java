@@ -83,7 +83,9 @@ public class GuideScreen extends Screen {
 					() -> List.of(dev.aptitudes.world.GuildVillagers.GUILD_DESK_ITEM, ModItems.GUILD_SEAL, ModItems.ARMORY_VOUCHER, ModItems.RUNE_FLAME, ModItems.RUNE_LEECH, ModItems.RUNE_SWIFT, ModItems.RUNE_FORCE,
 						ModItems.RUNE_FROST, ModItems.RUNE_THUNDER, ModItems.RUNE_GUARD)),
 			chapter(RECIPES_CHAPTER, Items.CRAFTING_TABLE, List::of),
-			chapter("drops", Items.ZOMBIE_HEAD, () -> List.of(Items.ZOMBIE_HEAD, Items.SKELETON_SKULL, ModItems.ELITE_ESSENCE)));
+			chapter("drops", Items.ZOMBIE_HEAD, () -> List.of(Items.ZOMBIE_HEAD, Items.SKELETON_SKULL, ModItems.ELITE_ESSENCE)),
+			chapter("paths", Items.NETHER_STAR, List::of),
+			chapter("achievements", Items.GOLDEN_APPLE, List::of));
 
 	/** Último capítulo abierto (dura la sesión de juego). */
 	private static int lastChapter;
@@ -194,7 +196,7 @@ public class GuideScreen extends Screen {
 
 	private int pageX() { return left + LIST_W + 14; }
 	private int pageW() { return W - LIST_W - 22; }
-	private int rowH() { return MathHelper.clamp((H - 32) / CHAPTERS.size(), 10, 13); }
+	private int rowH() { return MathHelper.clamp((H - 32) / CHAPTERS.size(), 9, 13); }
 	private boolean recipesMode() { return viewing == null && CHAPTERS.get(chapter).id().equals(RECIPES_CHAPTER); }
 
 	// ------------------------------------------------------------ Dibujo
@@ -230,10 +232,11 @@ public class GuideScreen extends Screen {
 			boolean current = i == chapter;
 			boolean hover = mouseX >= left + 6 && mouseX < left + 6 + LIST_W && mouseY >= y && mouseY < y + rh;
 			if (current || hover) ctx.fill(left + 6, y, left + 6 + LIST_W, y + rh, sel ? 0x60C9A54C : current ? 0x40C9A54C : 0x30303850);
-			// Icono a 10 px
+			// Con 22 capítulos, la ventana mínima usa filas e iconos de 9 px para que quepa el índice.
+			int iconSize = Math.min(10, rh);
 			ctx.getMatrices().push();
-			ctx.getMatrices().translate(left + 8, y + (rh - 10) / 2f, 0);
-			ctx.getMatrices().scale(0.625f, 0.625f, 1f);
+			ctx.getMatrices().translate(left + 8, y + (rh - iconSize) / 2f, 0);
+			ctx.getMatrices().scale(iconSize / 16f, iconSize / 16f, 1f);
 			ctx.drawItem(new ItemStack(CHAPTERS.get(i).icon()), 0, 0);
 			ctx.getMatrices().pop();
 			UiStyle.label(ctx, textRenderer, Text.translatable("guide.aptitudes." + CHAPTERS.get(i).id() + ".title"),
