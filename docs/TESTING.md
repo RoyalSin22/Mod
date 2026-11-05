@@ -2,6 +2,33 @@
 
 ## Pruebas automatizadas (nuevas)
 
+T2 — persistencia de contratos y grupos (sin iniciar un cliente ni un servidor):
+
+```powershell
+.\gradlew.bat test --tests dev.aptitudes.contract.ContractDataCodecTest --tests dev.aptitudes.party.PartyStateNbtTest
+.\gradlew.bat build
+```
+
+- `ContractDataCodecTest` usa `ContractData.CODEC` con `JsonOps` y texto JSON intermedio. Comprueba
+  ofertas completas, progreso parcial/completo, reputación, contador de completados y marcas de ofertas
+  aceptadas. Tras recargar, una oferta cobrada no se acepta ni se cobra otra vez en el mismo día; el
+  cambio de día conserva los contratos activos. Cubre JSON vacío, progreso ausente, índices extremos,
+  negativos, duplicados y listas mayores que los límites, sin imponer límites nuevos al constructor.
+- `PartyStateNbtTest` escribe y carga `NbtCompound` con varios grupos y compara líderes, miembros,
+  nombres (incluidos caracteres acentuados), fuego amigo y reparto. Cubre NBT vacío/incompleto, tipos
+  incorrectos, UUID ausentes, porcentajes extremos, miembros repetidos y máximo de cinco integrantes.
+  Regresión: el líder preinsertado por el constructor debe recuperar su nombre guardado, y las entradas
+  repetidas no deben reemplazar el primer nombre ni duplicar la pertenencia.
+  Invoca el lector privado mediante reflexión para evitar añadir una API principal solo para las pruebas;
+  el `WrapperLookup` es nulo porque estos campos no consultan registros.
+
+Comprobación manual complementaria pendiente: con dos jugadores, aceptar y avanzar contratos distintos,
+cobrar uno y formar un grupo con nombres y opciones reconocibles. Reconectar y reiniciar el servidor:
+deben conservarse el progreso y el grupo, incluida la presentación del líder desconectado; la oferta ya
+cobrada no debe poder aceptarse de nuevo ese día. Morir con un contrato activo debe conservarlo mediante
+`copyOnDeath`. Estas pruebas unitarias no ejercitan inventarios, concesión real de XP/recompensas ni
+el ciclo de vida de jugadores en creativo/espectador o de los attachments de Fabric.
+
 Iconos de Sendas (incluida T1 fase 1, S1–S3; Python 3 + Pillow, sin dependencias Java nuevas):
 
 ```sh

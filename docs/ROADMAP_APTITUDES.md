@@ -274,6 +274,15 @@ Pendiente: comprobarlo en el juego (ver `docs/TESTING.md`, v39).
   `EclipsePayload` lleva el tipo de evento.
 - Comando `/aptitudes event [status|start <evento>|stop]`; `/aptitudes eclipse` informa del próximo evento.
 
+### T2 — Pruebas de guardado de contratos y grupos
+- `contract/ContractDataCodecTest`: ida y vuelta JSON con el codec real; conserva ofertas, progreso,
+  reputación, contadores y marcas diarias; valida límites al cargar y evita repetir cobros tras recargar.
+- `party/PartyStateNbtTest`: escritura y carga NBT de varios grupos, líderes, nombres y opciones;
+  tolerancia a campos ausentes, porcentajes acotados, máximo de cinco miembros y pertenencia única.
+- Error reproducido por la prueba de ida y vuelta y corregido en `PartyState`: el nombre guardado del
+  líder se omitía al cargar por figurar ya como miembro; se conserva sin admitir miembros duplicados.
+- No sustituye las pruebas en partida de muerte (`copyOnDeath`), reconexión y reinicio del servidor.
+
 ### v46.2 — Iconos propios de las Sendas (Codex) integrados
 - T1 implementada: fase 1, 180 PNG S1–S3 desde `paths(...)`, marco de esquinas y catálogo/`--check`/hoja de 480 iconos; los 300 anteriores conservan sus píxeles. Fase 2, `RolesScreen` dibuja S1–S3 con `NodeIconRenderer.draw` sin cambiar la distribución; comprobación visual en partida pendiente.
 - 300 iconos generados (`tools/textures/gen_node_icons.py`, revisados: regenerados aquí, idénticos píxel a píxel;

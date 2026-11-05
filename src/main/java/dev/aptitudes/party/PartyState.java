@@ -64,9 +64,10 @@ public final class PartyState extends PersistentState {
 				NbtCompound entry = members.getCompound(j);
 				if (!entry.containsUuid("uuid")) continue;
 				UUID member = entry.getUuid("uuid");
-				if (party.members.contains(member) || claimed.contains(member)) continue;
-				party.members.add(member);
-				party.names.put(member, entry.getString("name"));
+				if (claimed.contains(member)) continue;
+				if (!party.members.contains(member)) party.members.add(member);
+				// El constructor ya añadió al líder, pero su nombre aún debe leerse del NBT.
+				party.names.putIfAbsent(member, entry.getString("name"));
 			}
 			if (!party.members.contains(leader)) {
 				if (party.members.size() >= 5) party.members.remove(party.members.size() - 1);

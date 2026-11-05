@@ -8,10 +8,16 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 Compilado y probado en partida por el autor (v15–v19 y v29–v41 ✔).
 
 ### Corregido
+- **T2 — Nombres de grupo al cargar**: `PartyState` conserva el nombre guardado del líder al leer el NBT.
+  Antes lo omitía porque el constructor ya lo había añadido como miembro; sin el líder conectado podía
+  aparecer «?». Los UUID repetidos siguen sin duplicarse y conservan el primer nombre leído.
 - **v41.1** — Ajustes del HUD (Mayús + O): el texto de escala y la ayuda ya no se montan sobre los botones (la
   distribución se calcula por filas).
 
 ### Añadido
+- **T2 — Pruebas de guardado**: pruebas nuevas de `ContractData.CODEC` con `JsonOps` (ofertas completas,
+  progreso, reputación, cobros únicos, cambio de día y datos corruptos) y de `PartyState` con NBT
+  (varios grupos, líder, nombres, opciones, datos incompletos y límites de pertenencia).
 - **T1 — Iconos S1–S3, fase 2**: los nodos de senda de la cuadrícula de `RolesScreen` se dibujan con
   `NodeIconRenderer.draw`, con respaldo al icono de objeto y caché existente. Conservan su posición,
   tamaño, marcos, indicadores de rango y superposiciones de bloqueo.
