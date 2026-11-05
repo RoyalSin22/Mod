@@ -54,6 +54,7 @@ public class Aptitudes implements ModInitializer {
 		dev.aptitudes.contract.ContractBoardScreenHandler.init();
 		dev.aptitudes.sound.ModSounds.init();
 		ModItems.init();
+		dev.aptitudes.alchemy.AlchemyPotions.init();
 		dev.aptitudes.world.ModWorldGen.init();
 		dev.aptitudes.world.GuildVillagers.init();
 		dev.aptitudes.world.GuildCrafting.init();

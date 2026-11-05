@@ -228,3 +228,9 @@ como tope por jugador.
 
 La interfaz de configuración del servidor permite editar estos campos; sus valores pasan por `validated(...)` igual
 que los demás.
+
+## Alquimia (v42, fase 1)
+
+Esta fase no añade campos de configuración. Potencias y duraciones iniciales están en `AlchemyRules`
+y en `docs/BALANCE.md`. Las opciones de alquimia, su validación y las ventajas del Herbolista se
+implementarán en la fase 2; el soporte conserva por ahora su velocidad vanilla y no concede XP de rol.

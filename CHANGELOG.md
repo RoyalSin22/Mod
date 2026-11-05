@@ -15,6 +15,12 @@ Compilado y probado en partida por el autor (v15–v19 y v29–v41 ✔).
   distribución se calcula por filas).
 
 ### Añadido
+- **v42 — Alquimia, fase 1**: cuatro pociones destilables (Maná, Frenesí, Velo del eclipse y Vigor del
+  bosque). Pétalos de hierbas extraíbles del saquito, sin cambiar su receta ni su uso medicinal. Tres
+  efectos propios con iconos generados, textos en ocho idiomas y reglas puras probadas. La recuperación
+  respeta la energía máxima; Frenesí no suma daño y usa un único modificador; el Velo reduce un 20 % el
+  daño de criaturas marcadas por el Eclipse o los eventos. Bonificaciones del Herbolista, configuración
+  y capítulo de alquimia pendientes de la fase 2.
 - **v44 — Tutorial guiado, fase 1**: seis pasos por jugador (grimorio, subir un nivel de alma en la Hoguera,
   rol principal, activa con éxito, combo de cinco y fabricación en la Mesa del gremio). Reglas puras,
   historial por claves en el attachment `tutorial` con `copyOnDeath` y una esmeralda por paso, cobrada

@@ -271,6 +271,32 @@ Efecto de balance a vigilar: compartir XP de rol permite que integrantes avancen
 tengan activo; es el comportamiento deliberado de la XP compartida. El rendimiento decreciente se calcula antes
 del reparto para que las bajas repetidas no eludan el límite.
 
+# Alquimia (v42, fase 1)
+
+| Poción | Efecto inicial | Duración bebible |
+|---|---|---|
+| Maná | +4 de energía por segundo, como máximo la energía máxima actual de `AbilityManager` | 10 s |
+| Frenesí | +15 % de la velocidad de ataque base, con un único identificador de atributo | 60 s |
+| Velo del eclipse | Daño ×0,80 si el atacante es una criatura marcada `aptitudes.eclipse` o `aptitudes.world_event`, incluidos sus proyectiles | 90 s |
+| Vigor del bosque | Regeneración I (1 de vida cada 50 ticks), Saturación I instantánea (+1 de alimento y +2 de saturación, con los topes vanilla) | 30 s de regeneración |
+
+Los tres efectos propios tienen potencia fija incluso si un comando les da un amplificador mayor.
+Maná usa el reloj de la entidad: renovar la duración no fuerza un pulso de recuperación. No concede XP.
+Frenesí solo cambia velocidad de ataque; no modifica daño ni el tope global `maxDamageMultiplier`.
+El Velo no protege de jugadores, criaturas sin marca, caídas ni meteoritos sin atacante criatura.
+Las reducciones existentes siguen aplicándose; el Velo por sí solo nunca da inmunidad.
+Regeneración y Saturación conservan sus reglas vanilla, incluidos sus límites de vida y hambre.
+
+Una dosis nueva usa la combinación de efectos vanilla (duración/potencia mayor, sin sumar modificadores).
+Leche, caducidad y muerte retiran los efectos; duración y atributos se guardan por el mecanismo vanilla
+al desconectar o reiniciar. No hay un attachment nuevo ni `copyOnDeath` para las pociones.
+Las versiones arrojadizas, persistentes y flechas conservan la reducción de duración y aplicación de área
+vanilla; pueden beneficiar a otras entidades, incluidos aliados o criaturas ajenas al grupo.
+
+Se extrae 1 pétalo por saquito, consumiéndolo mediante fabricación vanilla. Se conservan la receta y el
+uso medicinal del saquito. No se registran variantes prolongadas ni de potencia II.
+Sin bonificaciones por rol ni XP de destilado todavía; configuración y ventajas de Herbolista en fase 2.
+
 # Contratos del gremio (v30)
 
 | Tipo | Objetivo por dificultad (s = 1 Fácil … 5 Legendario) | Desde |

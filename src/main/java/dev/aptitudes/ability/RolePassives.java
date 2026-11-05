@@ -188,6 +188,7 @@ public final class RolePassives {
 	 */
 	public static float modifyOutgoingDamage(LivingEntity target, DamageSource source, float amount) {
 		if (amount <= 0 || target.getWorld().isClient()) return amount;
+		amount = dev.aptitudes.alchemy.AlchemyEffects.incoming(target, source, amount);
 		// Sendas – daño entrante al jugador (reducción, espinas).
 		if (target instanceof ServerPlayerEntity victim) {
 			amount = PathEffects.incoming(victim, source, amount);

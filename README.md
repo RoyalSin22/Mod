@@ -42,6 +42,18 @@ Para instalarlo, copia el JAR en `.minecraft/mods/` junto con Fabric API. **Serv
 
 ## Mecánicas
 
+### Alquimia (v42, fase 1; parcial)
+
+El soporte de pociones permite destilar Maná (4 de energía por segundo durante 10 s), Frenesí
+(+15 % de velocidad de ataque durante 60 s), Velo del eclipse (−20 % de daño de criaturas de eventos
+durante 90 s) y Vigor del bosque (Regeneración I durante 30 s y Saturación I instantánea).
+Los pétalos nuevos se extraen del Saquito de hierbas en la cuadrícula de fabricación. También se usan
+Esencia de élite y Fragmentos del eclipse. Las pociones admiten las formas arrojadiza y persistente
+vanilla; repetir una dosis renueva el efecto sin sumar su potencia.
+
+Las ventajas del Herbolista, opciones de configuración y el capítulo «Alquimia» del grimorio quedan
+pendientes de la fase 2. Esta fase no concede XP por destilar.
+
 ### Tutorial guiado (v44, fase 1; parcial)
 
 El servidor recuerda seis objetivos personales: obtener el grimorio, comprar un nivel de alma en una

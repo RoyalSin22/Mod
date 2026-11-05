@@ -832,6 +832,26 @@ T['book'] = [
 ]
 
 
+T['petals'] = [
+    "................",
+    "................",
+    "....AA..........",
+    "...AaaA....AA...",
+    "...AaaA...AaaA..",
+    "....AA....AaaA..",
+    ".......AA..AA...",
+    "......AaaA......",
+    "..AA..AaaA......",
+    ".AaaA..AA..VV...",
+    ".AaaA.....VvV...",
+    "..AA..VV.VVV....",
+    ".....VvVVV......",
+    "......VV........",
+    "................",
+    "................",
+]
+
+
 # ----------------------------------------------------------------------------- Objetos
 # nombre -> (plantilla, {material: color}); 'A' = acento del objeto, 'J' = gema, Y/V/B/R = colores extra.
 
@@ -847,6 +867,7 @@ MELEE = {'berserker', 'assassin', 'herbalist', 'lancer', 'swordsman', 'paladin',
          'shapeshifter', 'weapon_summoner', 'hunter', 'tamer'}
 
 ITEMS = {
+    'herb_petals': ('petals', {'A': '#d78bb9', 'V': '#4caf50'}),
     # Armas de rol
     'berserker_axe': ('axe', {'A': '#a8b0b8', 'W': '#5a3a22', 'G': '#c0392b'}),
     'dagger': ('dagger', {'A': '#c7ced6', 'G': '#6a5acd', 'L': '#2c3e50'}),

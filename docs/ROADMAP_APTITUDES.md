@@ -5,6 +5,15 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+### v42 — Alquimia (T5, fase 1 implementada; fase 2 pendiente)
+- Cuatro pociones registradas en 1.21.1 y recetas con `FabricBrewingRecipeRegistryBuilder`:
+  Maná, Frenesí, Velo del eclipse y Vigor del bosque. Pétalos nuevos extraíbles del saquito, autorizados
+  por el autor; se conservan los objetos y usos existentes. Iconos de efectos generados y ocho idiomas.
+- Recuperación de energía acotada, modificador de Frenesí idempotente y Velo solo contra criaturas
+  marcadas por los eventos; reglas puras con pruebas. Pendiente comprobar en partida.
+- Fase 2 pendiente: destilado rápido, +50 % de duración y XP con rendimiento decreciente para Herbolista,
+  configuración validada y capítulo «Alquimia» que lea las recetas reales del juego.
+
 ### Implementado (la base v41 fue compilada en el PC del autor; v29 en validación)
 - Habilidades por uso (10: Pesca desde la v15, Encantamiento desde la v21) con hitos cada 10 niveles.
 - Atributos Souls (8) comprados en la Hoguera con XP vanilla; afinidad por rol; mancha de XP al morir.

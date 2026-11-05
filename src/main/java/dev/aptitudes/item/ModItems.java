@@ -172,6 +172,9 @@ public final class ModItems {
 
 	public static final java.util.Map<dev.aptitudes.accessory.Accessory, Item> ACCESSORIES = registerAccessories();
 
+	/** Pétalos extraídos del saquito, ingrediente de las pociones de alquimia. */
+	public static final Item HERB_PETALS = register("herb_petals", new Item(new Item.Settings()));
+
 	private static java.util.Map<dev.aptitudes.accessory.Accessory, Item> registerAccessories() {
 		java.util.Map<dev.aptitudes.accessory.Accessory, Item> map = new java.util.EnumMap<>(dev.aptitudes.accessory.Accessory.class);
 		for (dev.aptitudes.accessory.Accessory a : dev.aptitudes.accessory.Accessory.values()) {
@@ -245,6 +248,11 @@ public final class ModItems {
 						entries.add(SOUL_AXE);
 						entries.add(SOUL_HOE);
 						for (Item piece : RoleArmor.all()) entries.add(piece);
+						entries.add(HERB_PETALS);
+						for (var potion : dev.aptitudes.alchemy.AlchemyPotions.all()) {
+							entries.add(net.minecraft.component.type.PotionContentsComponent.createStack(
+									net.minecraft.item.Items.POTION, potion));
+						}
 					})
 					.build());
 

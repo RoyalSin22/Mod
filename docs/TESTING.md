@@ -441,6 +441,47 @@ Prueba automática: `achievement/AchievementCatalogTest` (enum, JSON y traduccio
    del oficio» y «Firmado y sellado» sin hacer nada más.
 6. Con un datapack que borre un avance de la pestaña, el juego no falla (el logro simplemente no se concede).
 
+# v42 — Alquimia, fase 1
+
+Automático: `AlchemyRulesTest` comprueba energía al límite, dosis repetidas, máximos que bajan,
+valores enormes, negativos y no finitos; el Velo necesita protección y atacante de evento y nunca
+aumenta un golpe ni lo vuelve negativo. Los registros, recetas y entidades requieren Minecraft.
+Comprobado el arranque de inicialización dedicado con `runServer --args="--initSettings --nogui"`:
+el mod registra su contenido y termina correctamente; esto no abre un mundo ni prueba el destilado.
+Iconos: `python tools/textures/gen_status_effects.py src/main/resources/assets/aptitudes/textures/mob_effect --check`.
+Para regenerarlos añade `--preview hoja.png` y omite `--check`. Los pétalos se generan con `gen_items.py`.
+
+Pruebas en partida pendientes (servidor dedicado y dos clientes; repetir con escala de interfaz 4):
+
+1. Fabrica un saquito con su receta anterior. Colócalo solo en la cuadrícula: 1 pétalo, consumo de
+   1 saquito; sin recoger el resultado no se consume. Prueba clic normal, Mayús y libro de recetas.
+   El saquito restante conserva su curación y retirada de veneno. El pétalo muestra icono y nombre.
+2. Con combustible y pociones raras, destila pétalo → Maná, Esencia de élite → Frenesí y Fragmento
+   del eclipse → Velo. Maná + otro pétalo → Vigor del bosque. Comprueba 1 y 3 frascos, tolvas,
+   retirada/cambio del ingrediente o frasco durante el proceso y reinicio a mitad del destilado.
+   Una operación completa consume un ingrediente; una operación cancelada no da ni cobra el resultado.
+3. Gasta energía con una activa; bebe Maná: +4 por segundo además de la regeneración habitual.
+   Repite dosis justo antes de un pulso y al máximo: nunca supera la energía máxima ni da XP.
+   Repite con amplificador 255 por comando: sigue siendo +4 por segundo. En espectador o muerto
+   no recupera por este efecto; en creativo puede recuperar energía pero no gana XP.
+4. Mide `/attribute @s minecraft:generic.attack_speed get`, bebe Frenesí repetidamente y aplica
+   `/effect give @s aptitudes:frenzy 60 255`: solo +15 % de la base, sin daño extra por golpe.
+   La leche y la caducidad retiran exactamente ese modificador. Reconecta y reinicia con el efecto
+   activo: conserva el tiempo guardado y una sola bonificación. Muere: el efecto no vuelve al reaparecer.
+5. Con Velo, compara golpes idénticos de criaturas con/sin `aptitudes.eclipse` y
+   `aptitudes.world_event`; usa `/tag` en criaturas de prueba y flechas de un esqueleto marcado.
+   Solo las marcadas reducen el daño por el factor 0,80 (armadura y otras reducciones siguen vigentes).
+   Tener las dos marcas o amplificador 255 no aumenta la protección. Un jugador con esas etiquetas
+   no cuenta como criatura; caídas y meteoritos sin criatura atacante tampoco. Prueba con los tres
+   eventos reales, incluyendo el Heraldo, no muertos de la Niebla y criaturas de la Lluvia de brasas.
+6. Vigor: curación gradual, alimento/saturación con máximos vanilla. Con vida y hambre completas,
+   repetir dosis no rebasa los topes. Nunca se toca la XP vanilla ni la XP de rol, tampoco por comandos.
+7. Convierte las cuatro pociones con pólvora y aliento de dragón y fabrica flechas; comprueba
+   nombres, iconos y duración reducida vanilla. Con dos jugadores y en grupo, las áreas beneficiosas
+   pueden afectar a ambos; no hay reparto de XP, recompensas ni multiplicación por miembros.
+8. Repite nombres y tooltip en `en_us` y las siete variantes de español; sin claves visibles,
+   iconos ausentes ni texto solapado. Las ventajas de Herbolista y capítulo no están en esta fase.
+
 # v30 — contratos del gremio (verificación manual)
 
 1. Fabrica un Tablón (3 papel arriba, 3 tablones en medio y 1 tablón abajo en el centro) y úsalo: 3 ofertas con

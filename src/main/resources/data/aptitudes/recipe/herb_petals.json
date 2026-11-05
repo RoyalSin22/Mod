@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "aptitudes:herb_pouch"
+    }
+  ],
+  "result": {
+    "id": "aptitudes:herb_petals",
+    "count": 1
+  }
+}

@@ -306,6 +306,14 @@ public final class AbilityManager {
 		return true;
 	}
 
+	/** Recuperación del servidor, sin XP y limitada a la energía máxima actual. */
+	public static void restoreEnergy(ServerPlayerEntity player, double amount) {
+		if (!player.isAlive() || player.isSpectator()) return;
+		RoleData data = RoleManager.get(player);
+		data.setEnergy(dev.aptitudes.alchemy.AlchemyRules.restoredEnergy(data.energy(), maxEnergy(player), amount));
+		sendEnergy(player, false);
+	}
+
 	/** Llamado cada 10 ticks: regenera energía. */
 	public static void tickEnergy(MinecraftServer server) {
 		for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {

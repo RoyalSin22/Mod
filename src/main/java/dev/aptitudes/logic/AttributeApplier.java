@@ -67,7 +67,12 @@ public final class AttributeApplier {
 	/** Quita y, si {@code value != 0}, vuelve a añadir el modificador con ese id (idempotente). */
 	public static void set(ServerPlayerEntity player, RegistryEntry<EntityAttribute> attribute, Identifier id,
 							double value, EntityAttributeModifier.Operation operation) {
-		EntityAttributeInstance instance = player.getAttributeInstance(attribute);
+		set(player.getAttributeInstance(attribute), id, value, operation);
+	}
+
+	/** Variante para el ciclo de atributos de los efectos vanilla, también en criaturas. */
+	public static void set(EntityAttributeInstance instance, Identifier id, double value,
+			EntityAttributeModifier.Operation operation) {
 		if (instance == null) return;
 		instance.removeModifier(id);
 		if (value != 0.0) {
