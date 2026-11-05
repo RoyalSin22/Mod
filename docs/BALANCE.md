@@ -3,6 +3,20 @@
 Documento de referencia de las fórmulas de progresión. Cada cambio indica fórmula anterior, nueva,
 justificación, valores de ejemplo e impacto, como pide la política del proyecto.
 
+## Tutorial guiado (v44, T4 fase 1)
+
+- Recompensa nueva fija: **1 esmeralda por cada uno de los 6 pasos**, máximo **6 por jugador**.
+  No hay XP adicional, objetos de evolución, bonificación de grupo ni escalado con nivel/configuración.
+- Cada paso y su cobro se guardan por clave. Repetir, morir o reconectar no habilita otro pago.
+  Si no cabe la esmeralda, el cobro espera; los pasos hechos antes de tiempo se recuerdan y se pagan en orden.
+- La primera carga reconoce grimorio en inventario, nivel de alma positivo y rol principal guardados.
+  Puede conceder hasta tres esmeraldas a un jugador anterior; los otros objetivos requieren acciones nuevas.
+- Las acciones nuevas y los pagos solo cuentan para jugadores vivos fuera de creativo/espectador.
+  La compra de nivel se valida en la Hoguera: no se observan comandos que añadan XP, aunque la procedencia
+  histórica de la XP vanilla que paga una compra no puede distinguirse.
+- No cambia ninguna fórmula ni valor por defecto existente. Para alcanzar cinco golpes se necesita
+  `combosEnabled = true` y `comboFinisherHits >= 5`; omitir el tutorial desde comando queda para la fase 2.
+
 ## 1. Atributos (Souls): escalado de puntos
 
 **v27 — valores por punto −30 %** (decisión del autor: los atributos altos estaban demasiado fuertes):

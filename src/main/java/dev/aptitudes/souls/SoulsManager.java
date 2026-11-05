@@ -205,6 +205,7 @@ public final class SoulsManager {
 			dev.aptitudes.achievement.Achievements.grant(player, dev.aptitudes.achievement.Achievement.SOUL_LEVEL); // v31
 		}
 		if (toBuy > 0) {
+			dev.aptitudes.tutorial.TutorialManager.onStep(player, dev.aptitudes.tutorial.TutorialRules.Step.BONFIRE);
 			player.sendMessage(Text.translatable("aptitudes.souls.leveled", progress.getSoulLevel(), cost)
 					.formatted(Formatting.GOLD), false);
 			player.getWorld().playSound(null, player.getX(), player.getY(), player.getZ(),

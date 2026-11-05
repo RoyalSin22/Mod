@@ -10,6 +10,14 @@ Archivos (se crean en el primer arranque):
 El servidor envía al cliente las reglas que necesita (curvas de XP, costes…), así que el cliente
 siempre muestra lo que valida el servidor aunque su archivo local sea distinto.
 
+## Tutorial (v44, fase 1)
+
+Esta fase no añade campos de configuración: las seis recompensas son una esmeralda por paso y se guardan
+por jugador. El HUD y su interruptor en `aptitudes-client.json` quedan pendientes de la fase 2.
+El objetivo de cinco golpes requiere las opciones existentes `combosEnabled = true` y
+`comboFinisherHits >= 5`; un remate con umbral inferior reinicia el contador antes de cinco.
+No se cambian los valores por defecto (combos activados y remate a cinco golpes).
+
 ## Validación al cargar
 
 1. **General (nuevo):** cualquier número negativo, `NaN` o infinito vuelve a su valor por defecto y se

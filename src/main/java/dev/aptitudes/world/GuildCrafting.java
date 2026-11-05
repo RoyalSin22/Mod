@@ -30,4 +30,9 @@ public final class GuildCrafting {
 	/** Fuerza la carga de la clase (y los registros) durante la inicialización. */
 	public static void init() {
 	}
+
+	/** Resultado retirado de una receta válida en la Mesa del gremio, con ingredientes ya consumidos. */
+	public static void onCrafted(net.minecraft.server.network.ServerPlayerEntity player) {
+		dev.aptitudes.tutorial.TutorialManager.onStep(player, dev.aptitudes.tutorial.TutorialRules.Step.GUILD_CRAFT);
+	}
 }

@@ -193,6 +193,9 @@ public final class AbilityManager {
 		RoleManager.addRoleXp(player, role, Aptitudes.config().roleXpPerAbilityUse);
 		RoleManager.recordTrial(player, role, Evolution.TrialType.ABILITY_USES, 1);
 		dev.aptitudes.unique.UniqueEffects.recordAbility(player, cooldownKey);
+		if (slot >= 0 && slot < ULTIMATE_SLOT) {
+			dev.aptitudes.tutorial.TutorialManager.onStep(player, dev.aptitudes.tutorial.TutorialRules.Step.ACTIVE);
+		}
 	}
 
 	/** Quita el enfriamiento de una habilidad (Bardo – Bis) y avisa al HUD. */

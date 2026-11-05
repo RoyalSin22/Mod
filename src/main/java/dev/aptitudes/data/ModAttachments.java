@@ -64,6 +64,12 @@ public final class ModAttachments {
 				.initializer(dev.aptitudes.contract.ContractData::new)
 				.buildAndRegister(Aptitudes.id("contracts"));
 
+	public static final AttachmentType<dev.aptitudes.tutorial.TutorialData> TUTORIAL =
+			AttachmentRegistry.<dev.aptitudes.tutorial.TutorialData>builder()
+				.persistent(dev.aptitudes.tutorial.TutorialData.CODEC).copyOnDeath()
+				.initializer(dev.aptitudes.tutorial.TutorialData::new)
+				.buildAndRegister(Aptitudes.id("tutorial"));
+
 	private ModAttachments() {
 	}
 

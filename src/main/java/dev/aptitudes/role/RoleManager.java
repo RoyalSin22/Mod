@@ -275,6 +275,9 @@ public final class RoleManager {
 		if (ritual) data.setRebirths(data.rebirths() - 1);
 		refresh(player);
 		dev.aptitudes.achievement.Achievements.grant(player, dev.aptitudes.achievement.Achievement.CHOOSE_ROLE); // v31
+		if (primary && data.primary() != null) {
+			dev.aptitudes.tutorial.TutorialManager.onStep(player, dev.aptitudes.tutorial.TutorialRules.Step.PRIMARY_ROLE);
+		}
 		return ChangeResult.OK;
 	}
 

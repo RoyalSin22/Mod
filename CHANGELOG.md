@@ -15,6 +15,12 @@ Compilado y probado en partida por el autor (v15–v19 y v29–v41 ✔).
   distribución se calcula por filas).
 
 ### Añadido
+- **v44 — Tutorial guiado, fase 1**: seis pasos por jugador (grimorio, subir un nivel de alma en la Hoguera,
+  rol principal, activa con éxito, combo de cinco y fabricación en la Mesa del gremio). Reglas puras,
+  historial por claves en el attachment `tutorial` con `copyOnDeath` y una esmeralda por paso, cobrada
+  una sola vez y en orden. Las acciones adelantadas y las recompensas sin espacio se conservan. La primera
+  entrada reconoce grimorio, nivel de alma y rol previos; los eventos nuevos y la entrega excluyen creativo,
+  espectador y jugadores muertos. HUD, comandos y textos de usuario pendientes de la fase 2.
 - **T3 — Grimorio v46**: capítulos «Sendas y piedras angulares» (siete escalones, exclusividad,
   bifurcación y las diez plantillas con sus valores por defecto) y «Logros» (los 17 objetivos y su
   concesión por el servidor). El índice conserva el orden anterior y ajusta sus filas para 22 capítulos.

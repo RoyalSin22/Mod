@@ -2,6 +2,51 @@
 
 ## Pruebas automatizadas (nuevas)
 
+v44 — tutorial, T4 fase 1:
+
+```powershell
+.\gradlew.bat test --tests dev.aptitudes.tutorial.TutorialRulesTest --tests dev.aptitudes.tutorial.TutorialDataCodecTest
+.\gradlew.bat build
+```
+
+- `TutorialRulesTest`: orden de seis claves estables, acciones adelantadas, cobros únicos, recompensas
+  pendientes, progreso previo, omisión irreversible, listas corruptas, aislamiento entre jugadores y
+  umbral de cinco golpes (incluidos enteros extremos).
+- `TutorialDataCodecTest`: codec real con `JsonOps`, campos ausentes, ida y vuelta de observaciones y cobros,
+  claves desconocidas/duplicadas, omisión persistente y ausencia de un segundo pago después de recargar.
+  Las pruebas son puras y no arrancan registros de Minecraft.
+
+Prueba manual pendiente (supervivencia, dos jugadores y copia de un mundo anterior):
+
+1. Entrar con un jugador nuevo y obtener el grimorio (también vale el de bienvenida): una esmeralda.
+   Cambiar el libro de ranura, usarlo y reconectar no debe repetirla. El servidor revisa inventarios cada 20 ticks.
+2. Comprar un nivel de alma en una Hoguera: segunda esmeralda. Petición inválida, XP insuficiente,
+   descansar sin subir o asignar solo puntos libres no completan este paso. `/xp` por sí solo tampoco;
+   el tutorial reconoce la compra real, no puede conocer el origen de la XP vanilla usada para pagarla.
+3. Elegir rol principal, aprender/equipar una activa y usarla con éxito: una esmeralda por cada paso.
+   Un rol secundario sin principal, repetir la misma elección, una ranura inválida, falta de maná,
+   enfriamiento o habilidad sin efecto no deben inventar progreso. Característica y definitiva no son este paso.
+4. Encadenar cinco golpes válidos a criaturas: una esmeralda al quinto, no al remate siguiente.
+   Golpes bloqueados, proyectiles, jugadores e invocaciones no deben contar como combo nuevo. Repetir no paga.
+5. Fabricar una receta de la Mesa del gremio y retirar el resultado (clic normal y Mayús + clic): última
+   esmeralda. Solo previsualizar el resultado o mover ingredientes no completa el paso. Repetir la fabricación
+   no vuelve a pagar; confirmar que los ingredientes y el resultado siguen funcionando como antes.
+6. Hacer pasos fuera de orden: se recuerdan pero el pago espera a completar los anteriores. Llenar el
+   inventario sin huecos ni espacio para esmeraldas, completar un paso y reiniciar: liberar un hueco debe
+   entregar la recompensa pendiente una vez. Morir con pasos hechos/cobrados no debe borrar el historial.
+7. En un mundo anterior, entrar con rol principal y nivel de alma > 0: se reconocen sin repetirlos, incluso
+   si falta el grimorio (su recompensa y las siguientes esperan a recuperarlo). La migración solo ocurre
+   al crear el attachment. También puede leer estados antiguos al entrar en creativo/espectador: no hay
+   información histórica de su origen; ningún objeto se entrega hasta volver vivo a un modo elegible.
+8. Tras inicializar el tutorial, realizar acciones nuevas en creativo/espectador: no avanzan ni pagan.
+   Volver a supervivencia no transforma esos eventos en premios. El grimorio sí se detecta por posesión real.
+   Comprobar que el segundo jugador y el grupo no reciben el progreso ni las esmeraldas del autor.
+
+La fase 1 no tiene HUD ni comandos. La regla de omisión y su codec se prueban automáticamente; el comando
+para activarla llega en la fase 2. El paso de combo depende de `combosEnabled` y `comboFinisherHits >= 5`;
+no se cambian esos valores. Las pruebas puras no verifican la inserción real en inventarios, los ganchos
+de Fabric ni el guardado/copias reales de jugadores: esas comprobaciones requieren la partida anterior.
+
 T3 — textos y encaje del grimorio:
 
 - Verificar JSON válido y sin claves duplicadas en `en_us` y `es_es`; cada capítulo registrado en

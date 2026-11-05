@@ -274,6 +274,18 @@ Pendiente: comprobarlo en el juego (ver `docs/TESTING.md`, v39).
   `EclipsePayload` lleva el tipo de evento.
 - Comando `/aptitudes event [status|start <evento>|stop]`; `/aptitudes eclipse` informa del próximo evento.
 
+### v44 — Tutorial guiado (T4, fase 1 implementada; parcial)
+- `tutorial/TutorialRules`: seis pasos con claves estables, siguiente objetivo, observaciones fuera de orden,
+  cobro único en orden y omisión irreversible. `TutorialData.CODEC` conserva observaciones, cobros y omisión.
+- Attachment `aptitudes:tutorial` inmutable, con `copyOnDeath`. `TutorialManager` solo acepta eventos del
+  servidor; revisa el grimorio y los cobros pendientes cada 20 ticks, sin conceder XP ni repartir al grupo.
+- Ganchos en `SoulsManager.levelUp`, `RoleManager.setRole`, activas ordinarias tras éxito, `Combos` al llegar
+  a cinco y `GuildCrafting` tras retirar el resultado de una receta válida y consumir los ingredientes.
+- Primera entrada: reconoce nivel de alma > 0 y rol principal previos. Inventario lleno: conserva el cobro
+  pendiente. Las acciones nuevas y los pagos excluyen creativo/espectador y jugadores muertos.
+- Pendiente fase 2: HUD, interruptor de cliente, comando `status|skip` y textos en ocho idiomas.
+  Pruebas en partida de muerte, reinicio, inventario lleno y Mayús + clic pendientes.
+
 ### T3 — Grimorio actualizado a v46
 - Dos capítulos añadidos al final del índice: «Sendas y piedras angulares» y «Logros»; 22 en total.
   Explican exclusividad, siete escalones, bifurcación, las diez piedras con valores de `docs/BALANCE.md`

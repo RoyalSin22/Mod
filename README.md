@@ -42,6 +42,20 @@ Para instalarlo, copia el JAR en `.minecraft/mods/` junto con Fabric API. **Serv
 
 ## Mecánicas
 
+### Tutorial guiado (v44, fase 1; parcial)
+
+El servidor recuerda seis objetivos personales: obtener el grimorio, comprar un nivel de alma en una
+Hoguera, elegir rol principal, usar una activa con éxito, encadenar cinco golpes y fabricar en la Mesa
+del gremio. Cada paso da una esmeralda una sola vez (máximo seis); no concede XP ni objetos de evolución.
+Las acciones realizadas fuera de orden se recuerdan, y las recompensas se entregan en orden. Si el
+inventario está lleno, la recompensa espera hasta que haya espacio. El historial se conserva al morir,
+reconectar y guardar el mundo; se reconocen el rol y nivel de alma previos al instalar v44.
+
+Esta fase implementa solo servidor y persistencia. El aviso en el HUD, su interruptor y
+`/aptitudes tutorial status|skip` llegarán en la fase 2. El combo requiere el sistema de combos activado
+y un umbral de remate de al menos cinco golpes. Las acciones nuevas en creativo/espectador no cuentan
+y no se entregan recompensas en esos modos.
+
 ### Grupos cooperativos (v29)
 
 Pulsa `P` (cambiable en Controles) para abrir el menú de grupo. Invita a jugadores conectados; las invitaciones

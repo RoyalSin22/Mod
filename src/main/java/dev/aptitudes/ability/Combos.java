@@ -79,12 +79,14 @@ public final class Combos {
 		int consumed = c.tryFinisher(now, window(cfg), cfg.comboFinisherHits,
 				Math.round(cfg.comboFinisherCooldownSeconds * 20));
 		if (consumed > 0) {
+			dev.aptitudes.tutorial.TutorialManager.onCombo(player, consumed);
 			finisher(player, target, consumed);
 			send(player, 0, true);
 			dev.aptitudes.achievement.Achievements.grant(player, dev.aptitudes.achievement.Achievement.COMBO_FINISHER); // v31
 			return;
 		}
 		int count = c.hit(now, window(cfg));
+		dev.aptitudes.tutorial.TutorialManager.onCombo(player, count);
 		Role primary = RoleManager.get(player).primary();
 		if (primary != null) RoleResources.gain(player, primary, primary == Role.ASSASSIN ? 4f : 2f);
 		send(player, count, false);
