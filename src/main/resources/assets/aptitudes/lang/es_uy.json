@@ -3479,5 +3479,22 @@
   "item.minecraft.lingering_potion.effect.aptitudes_forest_vigor": "Poción persistente de vigor del bosque",
   "item.minecraft.tipped_arrow.effect.aptitudes_forest_vigor": "Flecha de vigor del bosque",
   "guide.aptitudes.alchemy.title": "Alquimia",
-  "guide.aptitudes.alchemy.body": "Destila en un soporte con combustible. Las recetas de abajo se leen del juego; pasa el ratón por los frascos y pulsa los pétalos para ver su extracción.\n\nManá recupera energía; Frenesí acelera los ataques; Velo protege de criaturas de eventos; Vigor regenera y sacia.\n\nUn Herbolista principal o secundario a 8 bloques acelera el destilado un 50 % y prolonga sus efectos un 50 %. Si abre el soporte, puede alejarse hasta 32 bloques mientras siga conectado en ese mundo. Las dosis no suman potencia.\n\nSolo un Herbolista recibe XP por elaboración: primero quien abrió el soporte y, si no está disponible, el más cercano. Las primeras tres dan 4 XP base; repetir en cinco minutos reduce la XP hasta cero. Recoger o reabrir no vuelve a cobrar. Creativo y espectador no cuentan. Estos valores se pueden configurar."
+  "guide.aptitudes.alchemy.body": "Destila en un soporte con combustible. Las recetas de abajo se leen del juego; pasa el ratón por los frascos y pulsa los pétalos para ver su extracción.\n\nManá recupera energía; Frenesí acelera los ataques; Velo protege de criaturas de eventos; Vigor regenera y sacia.\n\nUn Herbolista principal o secundario a 8 bloques acelera el destilado un 50 % y prolonga sus efectos un 50 %. Si abre el soporte, puede alejarse hasta 32 bloques mientras siga conectado en ese mundo. Las dosis no suman potencia.\n\nSolo un Herbolista recibe XP por elaboración: primero quien abrió el soporte y, si no está disponible, el más cercano. Las primeras tres dan 4 XP base; repetir en cinco minutos reduce la XP hasta cero. Recoger o reabrir no vuelve a cobrar. Creativo y espectador no cuentan. Estos valores se pueden configurar.",
+  "tutorial.aptitudes.step.guide": "Consigue el Grimorio de Aptitudes",
+  "tutorial.aptitudes.step.bonfire": "Sube un nivel en una Hoguera",
+  "tutorial.aptitudes.step.primary_role": "Elige tu rol principal",
+  "tutorial.aptitudes.step.active": "Usa una habilidad activa con éxito",
+  "tutorial.aptitudes.step.combo": "Encadena un combo de 5 golpes",
+  "tutorial.aptitudes.step.guild_craft": "Fabrica en la Mesa del gremio",
+  "tutorial.aptitudes.status": "Tutorial %s. Pasos: %d/%d; recompensas: %d/%d.",
+  "tutorial.aptitudes.state.active": "en curso",
+  "tutorial.aptitudes.state.completed": "completado",
+  "tutorial.aptitudes.state.skipped": "omitido",
+  "tutorial.aptitudes.next": "Paso %d/%d: %s",
+  "tutorial.aptitudes.pending": "Recompensas pendientes: %d. Se entregarán en orden al completar los pasos previos y dejar espacio.",
+  "tutorial.aptitudes.skipped": "Tutorial omitido de forma permanente. Las recompensas pendientes quedan canceladas.",
+  "tutorial.aptitudes.already_skipped": "El tutorial ya está omitido.",
+  "tutorial.aptitudes.hud": "Tutorial · %d/%d",
+  "tutorial.aptitudes.hud.pending": "Deja espacio en el inventario (%d).",
+  "screen.aptitudes.hud.tutorial": "Tutorial"
 }

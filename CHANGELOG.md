@@ -15,6 +15,11 @@ Compilado y probado en partida por el autor (v15–v19 y v29–v41 ✔).
   distribución se calcula por filas).
 
 ### Añadido
+- **v44 — Tutorial guiado, fase 2**: recordatorio del paso actual y aviso de recompensas pendientes en
+  el HUD, desactivable en `aptitudes-client.json` y Mayús + O. `/aptitudes tutorial [status|skip]`
+  consulta u omite solo el tutorial del ejecutor; la omisión es irreversible y cancela los cobros pendientes.
+  Sincronización personal desde el servidor, limpieza al desconectar, textos en ocho idiomas y pruebas
+  de la vista pura. Se conservan el progreso, las recompensas y los seis objetivos de la fase 1.
 - **v42 — Alquimia, fase 2**: Herbolista principal o secundario destila un 50 % más rápido a 8 bloques
   o tras abrir el soporte (hasta 32 bloques, conectado y en el mismo mundo); +50 % de duración sin
   aumentar potencia ni efectos instantáneos. Una concesión de XP por elaboración real, con rendimiento
@@ -32,7 +37,7 @@ Compilado y probado en partida por el autor (v15–v19 y v29–v41 ✔).
   historial por claves en el attachment `tutorial` con `copyOnDeath` y una esmeralda por paso, cobrada
   una sola vez y en orden. Las acciones adelantadas y las recompensas sin espacio se conservan. La primera
   entrada reconoce grimorio, nivel de alma y rol previos; los eventos nuevos y la entrega excluyen creativo,
-  espectador y jugadores muertos. HUD, comandos y textos de usuario pendientes de la fase 2.
+  espectador y jugadores muertos. HUD, comandos y textos de usuario completados en la fase 2.
 - **T3 — Grimorio v46**: capítulos «Sendas y piedras angulares» (siete escalones, exclusividad,
   bifurcación y las diez plantillas con sus valores por defecto) y «Logros» (los 17 objetivos y su
   concesión por el servidor). El índice conserva el orden anterior y ajusta sus filas para 22 capítulos.

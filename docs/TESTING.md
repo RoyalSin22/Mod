@@ -2,10 +2,11 @@
 
 ## Pruebas automatizadas (nuevas)
 
-v44 — tutorial, T4 fase 1:
+v44 — tutorial, T4 fases 1 y 2:
 
 ```powershell
 .\gradlew.bat test --tests dev.aptitudes.tutorial.TutorialRulesTest --tests dev.aptitudes.tutorial.TutorialDataCodecTest
+.\gradlew.bat test --tests dev.aptitudes.tutorial.TutorialViewTest
 .\gradlew.bat build
 ```
 
@@ -42,10 +43,36 @@ Prueba manual pendiente (supervivencia, dos jugadores y copia de un mundo anteri
    Volver a supervivencia no transforma esos eventos en premios. El grimorio sí se detecta por posesión real.
    Comprobar que el segundo jugador y el grupo no reciben el progreso ni las esmeraldas del autor.
 
-La fase 1 no tiene HUD ni comandos. La regla de omisión y su codec se prueban automáticamente; el comando
-para activarla llega en la fase 2. El paso de combo depende de `combosEnabled` y `comboFinisherHits >= 5`;
+La fase 2 añade HUD y comandos sobre el mismo estado. `TutorialViewTest` prueba lecturas sin cobros,
+acciones adelantadas, vista de premios pendientes, límites de índices y omisión con el codec real.
+El paso de combo depende de `combosEnabled` y `comboFinisherHits >= 5`;
 no se cambian esos valores. Las pruebas puras no verifican la inserción real en inventarios, los ganchos
 de Fabric ni el guardado/copias reales de jugadores: esas comprobaciones requieren la partida anterior.
+
+Fase 2 — prueba manual pendiente (cliente y servidor dedicado, ocho idiomas):
+
+Comprobación estática con fuente bitmap vanilla: los textos del recordatorio ocupan como máximo
+171 px en español y 170 px en inglés (210 disponibles). El contenido de Mayús + O mide 224 px de alto
+y cabe en 426×240. No sustituye la inspección visual en partida.
+
+1. Entrar con dos jugadores: cada HUD muestra su propio objetivo. Completar un paso y comprobar
+   la actualización inmediata; sin cambios de estado no se reenvían paquetes cada segundo.
+   Reconectar, cambiar de servidor y morir/reaparecer: no queda el estado del otro jugador/servidor.
+2. Mayús + O → Tutorial desactiva y reactiva solo el aviso. Reiniciar cliente conserva la elección;
+   con `showTutorial` ausente o `null`, queda activado. F1 y ocultar todo el HUD también lo ocultan.
+   En creativo/espectador, pantallas abiertas o muerto no aparece; vuelve al regresar a supervivencia.
+3. Ejecutar `/aptitudes tutorial` y `status` repetidamente: informa pasos, cobros y siguiente objetivo,
+   sin insertar esmeraldas, consumir objetos ni modificar XP. La consola no actúa por un jugador;
+   argumentos ajenos o un objetivo de otro jugador son rechazados por Brigadier.
+4. Inventario lleno y pasos observados sin cobrar: `status` informa premios pendientes. Completar todos
+   los objetivos muestra el aviso de espacio en el HUD; liberar un hueco entrega una sola vez y lo oculta.
+5. Con premios pendientes, ejecutar `skip` y repetirlo: omisión permanente, sin cobros y conservando
+   recompensas anteriores. Liberar huecos, hacer acciones, morir, reconectar y reiniciar no reactivan nada.
+   Repetir en creativo/espectador. El otro jugador y los integrantes del grupo no se alteran.
+6. Escala de interfaz 4 y 426×240: los siete interruptores, escala, ayuda y botones de Mayús + O caben;
+   la previsualización de la barra se dibuja detrás de los botones. El recordatorio queda a la derecha,
+   bajo los efectos de estado; revisar con grupos, eventos, barras Souls y sus dos modos, sin solapamientos.
+   Los seis objetivos y el aviso de espacio deben leerse completos, sin claves visibles.
 
 T3 — textos y encaje del grimorio:
 

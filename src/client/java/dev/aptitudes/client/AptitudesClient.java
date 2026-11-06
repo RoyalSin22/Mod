@@ -129,6 +129,8 @@ public class AptitudesClient implements ClientModInitializer {
 				(payload, context) -> ClientRoleState.onSync(payload));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.PartySyncPayload.ID,
 				(payload, context) -> PartyClientState.onSync(payload));
+		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.TutorialPayload.ID,
+				(payload, context) -> ClientTutorial.onPayload(payload));
 		ClientPlayNetworking.registerGlobalReceiver(EnergyPayload.ID,
 				(payload, context) -> ClientRoleState.onEnergy(payload));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.ResourcePayload.ID,
@@ -166,6 +168,7 @@ public class AptitudesClient implements ClientModInitializer {
 			ClientEclipse.clear();
 			ClientServerConfig.clear();
 			PartyClientState.clear();
+			ClientTutorial.clear();
 		});
 
 		HudRenderCallback.EVENT.register(AbilityHud::render);
@@ -174,6 +177,7 @@ public class AptitudesClient implements ClientModInitializer {
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.KeystoneHud::render);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.EclipseHud::render);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.PartyHud::render);
+		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.TutorialHud::render);
 		net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents.AFTER_ENTITIES.register(
 				dev.aptitudes.client.hud.ClientFx::renderWorld);
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.MechanicPayload.ID,

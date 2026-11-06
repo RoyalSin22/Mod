@@ -24,8 +24,8 @@ public class HudConfigScreen extends Screen {
 
 	/** Alto de una fila (botón de 18 + 4 de separación). */
 	private static final int ROW = 22;
-	/** Título + fila de escala + 6 interruptores + ayuda + Restablecer/Hecho. */
-	private static final int CONTENT_HEIGHT = 12 + ROW + 6 * ROW + 6 + 12 + 18;
+	/** Título + fila de escala + 7 interruptores + ayuda + Restablecer/Hecho. */
+	private static final int CONTENT_HEIGHT = 12 + ROW + 7 * ROW + 6 + 12 + 18;
 	private int titleY;
 	private int scaleY;
 	private int hintY;
@@ -55,6 +55,8 @@ public class HudConfigScreen extends Screen {
 		addDrawableChild(toggle(cx - 100, y, "screen.aptitudes.hud.eclipse_sky", () -> cfg.eclipseSkyEffects, v -> cfg.eclipseSkyEffects = v));
 		y += ROW;
 		addDrawableChild(toggle(cx - 100, y, "screen.aptitudes.hud.visible", () -> cfg.hudVisible, v -> cfg.hudVisible = v));
+		y += ROW;
+		addDrawableChild(toggle(cx - 100, y, "screen.aptitudes.hud.tutorial", () -> cfg.showTutorial, v -> cfg.showTutorial = v));
 		y += ROW + 6;
 		hintY = y;
 		y += 12;
@@ -87,7 +89,6 @@ public class HudConfigScreen extends Screen {
 
 	@Override
 	public void render(DrawContext ctx, int mouseX, int mouseY, float delta) {
-		super.render(ctx, mouseX, mouseY, delta);
 		ClientConfig cfg = ClientConfig.get();
 		ctx.drawCenteredTextWithShadow(textRenderer, title, width / 2, titleY, UiStyle.GOLD);
 		ctx.drawCenteredTextWithShadow(textRenderer, Text.translatable("screen.aptitudes.hud.scale",
@@ -102,6 +103,8 @@ public class HudConfigScreen extends Screen {
 		ctx.drawBorder(o[0] - 3, o[1] - (int) (32 * cfg.hudScale), w + 6, h + (int) (32 * cfg.hudScale),
 				dragging ? UiStyle.GOLD : 0xA0FFFFFF);
 		if (data != null) AbilityHud.renderAbilityBar(ctx, textRenderer, data, width, height, client.player == null ? 0 : client.player.age);
+		// La previsualización arrastrable no debe tapar los botones en la altura mínima.
+		super.render(ctx, mouseX, mouseY, delta);
 	}
 
 	private boolean overBar(double mx, double my) {

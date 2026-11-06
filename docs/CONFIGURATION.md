@@ -10,10 +10,15 @@ Archivos (se crean en el primer arranque):
 El servidor envía al cliente las reglas que necesita (curvas de XP, costes…), así que el cliente
 siempre muestra lo que valida el servidor aunque su archivo local sea distinto.
 
-## Tutorial (v44, fase 1)
+## Tutorial (v44)
 
-Esta fase no añade campos de configuración: las seis recompensas son una esmeralda por paso y se guardan
-por jugador. El HUD y su interruptor en `aptitudes-client.json` quedan pendientes de la fase 2.
+| Campo del cliente | Defecto | Dominio | Descripción |
+|---|---|---|---|
+| `showTutorial` | true | true / false | Recordatorio del tutorial en el HUD. Mayús + O → Tutorial. Si falta o es `null`, `ClientConfig.validated(...)` conserva true. Ocultarlo no altera progreso ni cobros. |
+
+Las seis recompensas siguen siendo una esmeralda por paso y se guardan por jugador, sin opciones nuevas
+del servidor. `hudVisible = false` y F1 también ocultan el recordatorio. `/aptitudes tutorial skip`
+es distinto del interruptor: omite permanentemente el tutorial y cancela los cobros pendientes.
 El objetivo de cinco golpes requiere las opciones existentes `combosEnabled = true` y
 `comboFinisherHits >= 5`; un remate con umbral inferior reinicia el contador antes de cinco.
 No se cambian los valores por defecto (combos activados y remate a cinco golpes).

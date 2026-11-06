@@ -3,7 +3,7 @@
 Documento de referencia de las fórmulas de progresión. Cada cambio indica fórmula anterior, nueva,
 justificación, valores de ejemplo e impacto, como pide la política del proyecto.
 
-## Tutorial guiado (v44, T4 fase 1)
+## Tutorial guiado (v44)
 
 - Recompensa nueva fija: **1 esmeralda por cada uno de los 6 pasos**, máximo **6 por jugador**.
   No hay XP adicional, objetos de evolución, bonificación de grupo ni escalado con nivel/configuración.
@@ -15,7 +15,13 @@ justificación, valores de ejemplo e impacto, como pide la política del proyect
   La compra de nivel se valida en la Hoguera: no se observan comandos que añadan XP, aunque la procedencia
   histórica de la XP vanilla que paga una compra no puede distinguirse.
 - No cambia ninguna fórmula ni valor por defecto existente. Para alcanzar cinco golpes se necesita
-  `combosEnabled = true` y `comboFinisherHits >= 5`; omitir el tutorial desde comando queda para la fase 2.
+  `combosEnabled = true` y `comboFinisherHits >= 5`.
+- Consultar `/aptitudes tutorial [status]` no cobra premios. `skip` conserva lo observado/cobrado,
+  marca la omisión de forma irreversible y cancela las recompensas pendientes; no consume objetos ni XP.
+  Se permite omitir también en creativo/espectador, pero nunca se paga por hacerlo.
+- Ocultar el HUD es solo una preferencia local reversible. No omite el tutorial ni detiene sus ganchos.
+  El HUD desaparece al terminar y cobrar todo, o al omitir; con todos los objetivos completos e inventario
+  lleno muestra las recompensas pendientes. Se oculta en creativo, espectador, durante pantallas y al morir.
 
 ## 1. Atributos (Souls): escalado de puntos
 

@@ -59,7 +59,7 @@ Cambiar de soporte, morir, reconectar o reiniciar no borra ese historial. Creati
 El capítulo «Alquimia» muestra las recetas reales y permite desplazarse; las siete opciones están
 documentadas en `docs/CONFIGURATION.md`. La comprobación de destilado en partida sigue pendiente.
 
-### Tutorial guiado (v44, fase 1; parcial)
+### Tutorial guiado (v44)
 
 El servidor recuerda seis objetivos personales: obtener el grimorio, comprar un nivel de alma en una
 Hoguera, elegir rol principal, usar una activa con éxito, encadenar cinco golpes y fabricar en la Mesa
@@ -68,8 +68,11 @@ Las acciones realizadas fuera de orden se recuerdan, y las recompensas se entreg
 inventario está lleno, la recompensa espera hasta que haya espacio. El historial se conserva al morir,
 reconectar y guardar el mundo; se reconocen el rol y nivel de alma previos al instalar v44.
 
-Esta fase implementa solo servidor y persistencia. El aviso en el HUD, su interruptor y
-`/aptitudes tutorial status|skip` llegarán en la fase 2. El combo requiere el sistema de combos activado
+El HUD recuerda el paso actual; puedes ocultarlo con Mayús + O → Tutorial o `showTutorial: false` en
+`config/aptitudes-client.json`, sin detener el progreso. `/aptitudes tutorial` y su subcomando `status`
+muestran objetivos y recompensas cobradas. `/aptitudes tutorial skip` omite permanentemente el tutorial
+y cancela las recompensas pendientes; repetirlo no concede nada. Ningún subcomando afecta a otro jugador.
+El cliente muestra solo datos recibidos del servidor. El combo requiere el sistema de combos activado
 y un umbral de remate de al menos cinco golpes. Las acciones nuevas en creativo/espectador no cuentan
 y no se entregan recompensas en esos modos.
 

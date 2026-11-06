@@ -4,14 +4,19 @@ import dev.aptitudes.data.ModAttachments;
 import dev.aptitudes.item.ModItems;
 import dev.aptitudes.logic.ProgressManager;
 import dev.aptitudes.role.RoleManager;
+import dev.aptitudes.network.TutorialPayload;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -19,6 +24,7 @@ import java.util.UUID;
 public final class TutorialManager {
 	/** Solo durante la entrega síncrona; se vacía en finally, no almacena progreso. */
 	private static final Set<UUID> PAYING = new HashSet<>();
+	private static final Map<UUID, TutorialView> LAST_SENT = new HashMap<>();
 
 	private TutorialManager() {
 	}
@@ -26,10 +32,16 @@ public final class TutorialManager {
 	public static void register() {
 		// Después de RoleManager: el grimorio de bienvenida ya se entregó al inventario.
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+			LAST_SENT.remove(handler.player.getUuid());
 			data(handler.getPlayer());
 			tick(handler.getPlayer());
 		});
-		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> tick(newPlayer));
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> LAST_SENT.remove(handler.player.getUuid()));
+		ServerLifecycleEvents.SERVER_STOPPED.register(server -> LAST_SENT.clear());
+		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
+			LAST_SENT.remove(newPlayer.getUuid());
+			tick(newPlayer);
+		});
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			if (server.getTicks() % 20 != 0) return;
 			for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) tick(player);
@@ -55,6 +67,7 @@ public final class TutorialManager {
 		TutorialData after = before.observe(step);
 		if (!after.equals(before)) player.setAttached(ModAttachments.TUTORIAL, after);
 		payPending(player);
+		sync(player, false);
 	}
 
 	public static void onCombo(ServerPlayerEntity player, int count) {
@@ -62,13 +75,32 @@ public final class TutorialManager {
 	}
 
 	private static void tick(ServerPlayerEntity player) {
-		if (!eligible(player)) return;
 		TutorialData data = data(player);
-		if (data.state().skipped()) return;
-		if (!data.state().observed().contains(TutorialRules.Step.GUIDE) && hasGuide(player)) {
-			player.setAttached(ModAttachments.TUTORIAL, data.observe(TutorialRules.Step.GUIDE));
+		if (eligible(player) && !data.state().skipped()) {
+			if (!data.state().observed().contains(TutorialRules.Step.GUIDE) && hasGuide(player)) {
+				player.setAttached(ModAttachments.TUTORIAL, data.observe(TutorialRules.Step.GUIDE));
+			}
+			payPending(player);
 		}
-		payPending(player);
+		sync(player, false);
+	}
+
+	/** Omisión propia y persistente; no paga ni borra cobros anteriores. */
+	public static boolean skip(ServerPlayerEntity player) {
+		TutorialData before = data(player);
+		TutorialData after = before.skip();
+		if (!after.equals(before)) player.setAttached(ModAttachments.TUTORIAL, after);
+		sync(player, true);
+		return !after.equals(before);
+	}
+
+	public static void sync(ServerPlayerEntity player, boolean force) {
+		if (!ServerPlayNetworking.canSend(player, TutorialPayload.ID)) return;
+		TutorialView view = TutorialView.from(data(player).state());
+		if (force || !view.equals(LAST_SENT.get(player.getUuid()))) {
+			ServerPlayNetworking.send(player, new TutorialPayload(view));
+			LAST_SENT.put(player.getUuid(), view);
+		}
 	}
 
 	private static boolean eligible(ServerPlayerEntity player) {

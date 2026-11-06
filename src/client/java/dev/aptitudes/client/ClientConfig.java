@@ -31,6 +31,8 @@ public final class ClientConfig {
 	public boolean showMechanic = true;
 	/** Eclipse (v34): cielo, niebla y nubes teñidos de rojo y sol eclipsado. Desactívalo si los destellos molestan. */
 	public boolean eclipseSkyEffects = true;
+	/** Recordatorio del tutorial. Boolean permite recuperar de forma segura un null escrito a mano. */
+	public Boolean showTutorial = true;
 
 	private static Path path() {
 		return FabricLoader.getInstance().getConfigDir().resolve(Aptitudes.MOD_ID + "-client.json");
@@ -51,9 +53,18 @@ public final class ClientConfig {
 		} catch (Exception e) {
 			Aptitudes.LOGGER.warn("No se pudo leer la configuración del cliente", e);
 		}
+		instance = validated(instance);
+	}
+
+	private static ClientConfig validated(ClientConfig config) {
+		if (config == null) config = new ClientConfig();
+		// Su dominio es booleano; un null explícito conserva el valor seguro por defecto.
+		if (config.showTutorial == null) config.showTutorial = true;
+		return config;
 	}
 
 	public static void save() {
+		instance = validated(instance);
 		try (Writer w = Files.newBufferedWriter(path())) {
 			GSON.toJson(instance, w);
 		} catch (Exception e) {

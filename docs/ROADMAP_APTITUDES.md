@@ -285,7 +285,7 @@ Pendiente: comprobarlo en el juego (ver `docs/TESTING.md`, v39).
   `EclipsePayload` lleva el tipo de evento.
 - Comando `/aptitudes event [status|start <evento>|stop]`; `/aptitudes eclipse` informa del próximo evento.
 
-### v44 — Tutorial guiado (T4, fase 1 implementada; parcial)
+### v44 — Tutorial guiado (T4, fases 1 y 2 implementadas)
 - `tutorial/TutorialRules`: seis pasos con claves estables, siguiente objetivo, observaciones fuera de orden,
   cobro único en orden y omisión irreversible. `TutorialData.CODEC` conserva observaciones, cobros y omisión.
 - Attachment `aptitudes:tutorial` inmutable, con `copyOnDeath`. `TutorialManager` solo acepta eventos del
@@ -294,7 +294,9 @@ Pendiente: comprobarlo en el juego (ver `docs/TESTING.md`, v39).
   a cinco y `GuildCrafting` tras retirar el resultado de una receta válida y consumir los ingredientes.
 - Primera entrada: reconoce nivel de alma > 0 y rol principal previos. Inventario lleno: conserva el cobro
   pendiente. Las acciones nuevas y los pagos excluyen creativo/espectador y jugadores muertos.
-- Pendiente fase 2: HUD, interruptor de cliente, comando `status|skip` y textos en ocho idiomas.
+- Fase 2: HUD desde datos personales S2C, interruptor `showTutorial` en archivo y Mayús + O,
+  comandos propios `status|skip` sin destinatarios externos, omisión irreversible y textos en ocho idiomas.
+  Vista pura probada; presentación y ciclos completos con jugadores pendientes de verificar en partida.
   Pruebas en partida de muerte, reinicio, inventario lleno y Mayús + clic pendientes.
 
 ### T3 — Grimorio actualizado a v46

@@ -50,6 +50,7 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playC2S().register(ContractActionPayload.ID, ContractActionPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(ContractViewPayload.ID, ContractViewPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(KeystonePayload.ID, KeystonePayload.CODEC); // v46.1
+		PayloadTypeRegistry.playS2C().register(TutorialPayload.ID, TutorialPayload.CODEC);
 		// v30: el índice es la oferta (aceptar) o la ranura activa (abandonar, entregar, cobrar); se valida en ContractManager.
 		ServerPlayNetworking.registerGlobalReceiver(ContractActionPayload.ID, (payload, context) -> {
 			if (payload.offer() < 0 || payload.offer() >= dev.aptitudes.contract.ContractRules.OFFERS_PER_DAY) return;
