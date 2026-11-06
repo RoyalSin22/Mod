@@ -5,6 +5,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Añadido
+- **v45 — Traducciones, T8 fase 1**: traducción inicial de interfaz y objetos a portugués de Brasil
+  (`pt_br`), francés (`fr_fr`) y alemán (`de_de`), que conviene revisar con hablantes nativos.
+  Cada idioma contiene las 3512 claves de inglés en el mismo orden: 1386 traducidas en esta fase;
+  grimorio y nodos/sendas (2126 claves) conservan el inglés hasta las fases 2 y 3.
+  Los rótulos de interfaz generados se mantienen en sus generadores. Nuevo comprobador de duplicados,
+  claves, orden y marcadores de formato, con pruebas de errores y ejecución en GitHub Actions.
+
 ## [1.4.0] — 2026-11-06
 
 Más opciones para jugar en grupo y seguir progresando: contratos, logros, sendas hasta el nivel 50,

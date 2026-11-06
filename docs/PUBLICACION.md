@@ -2,6 +2,7 @@
 
 Preparación de **Aptitudes 1.4.0**, con fecha **2026-11-06**. Los pasos marcados **(autor)** requieren
 tu cuenta o una decisión tuya. Este trabajo prepara el JAR y los textos; la publicación la hace el autor.
+La publicación está aplazada por decisión del autor; integrar las ramas en Git no publica el mod.
 
 ## 1. Antes de compilar la versión
 
@@ -9,10 +10,13 @@ tu cuenta o una decisión tuya. Este trabajo prepara el JAR y los textos; la pub
 - [x] Pruebas en partida de T4–T6 confirmadas por el autor el 2026-11-06. Historial de pruebas y guiones
   de regresión en `docs/TESTING.md`; v15–v19 y v29–v41 ya constaban como probadas por el autor.
 - [x] `mod_version=1.4.0` en `gradle.properties`, sin cambiar Minecraft, Java ni dependencias.
-- [x] Notas de 1.4.0 fechadas el 2026-11-06; sección «Sin publicar» vacía arriba.
-- [x] Build de la candidata: `.\gradlew.bat build` → `BUILD SUCCESSFUL`; 217 pruebas sin fallos,
+- [x] Notas de 1.4.0 fechadas el 2026-11-06; novedades de T8 separadas en «Sin publicar».
+- [x] Build de la base T7: `.\gradlew.bat build` → `BUILD SUCCESSFUL`; 217 pruebas sin fallos,
   errores ni omitidas. JAR con versión interna 1.4.0; clases y recursos idénticos a T6 salvo ese metadato.
-- [ ] **(Autor)** Commit/push de T7 y build de GitHub Actions aprobada antes de integrarla en `main`.
+- [x] T7 integrada en `main` en `e76b62f` tras GitHub Actions aprobada, con autorización del autor.
+  T8 se valida por fases aparte; no se ha publicado en Modrinth/CurseForge.
+- [x] T8 fase 1: build y 217 pruebas JUnit aprobados, 15 pruebas del comprobador y validación de los
+  tres idiomas. El JAR añade solo esos tres JSON a la base T7; grimorio y nodos siguen en inglés.
 - [ ] **(Autor)** Elegir el tipo de publicación. Si queda alguna etapa seleccionada sin probar en partida,
   usar **Beta** y describir qué falta; no presentar una comprobación estática como prueba en partida.
 
@@ -65,8 +69,10 @@ Pesca y Encantamiento. Mejora tus atributos en la Hoguera y combina un rol princ
   Ajusta el HUD con Mayús + O; los operadores pueden editar las reglas del servidor desde su pantalla.
 
 También incluye combos, runas, accesorios, élites, campeones y jefes. La exclusividad de las habilidades
-legendarias es opcional. Disponible en inglés y español, con seis variantes regionales de español;
-portugués, francés y alemán no forman parte de 1.4.0.
+legendarias es opcional. Disponible en inglés y español, con seis variantes regionales de español.
+La candidata de T8 añade una traducción inicial de interfaz y objetos a portugués de Brasil, francés y
+alemán. El grimorio y los nodos aún conservan el inglés; completar las fases 2–3 y revisar con hablantes
+nativos antes de presentar estos idiomas como completos.
 
 Instala Aptitudes y Fabric API para Minecraft 1.21.1 tanto en el cliente como en el servidor, con Java 21.
 Consulta la tabla «Limitaciones conocidas» del README para el filtro de IA, cambios de bloques y alcance

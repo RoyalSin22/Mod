@@ -318,6 +318,42 @@ def build(lang, data):
     return out
 
 
+# T8 fase 1: interfaz generada; nombres y efectos de nodos se incorporan en la fase 3.
+for locale, labels in {
+    'pt_br': (
+        'Você já segue outro caminho nesta classe (os caminhos são exclusivos)',
+        'Você já escolheu o outro ramo desta bifurcação',
+        'Caminhos exclusivos: em %s você mantém o caminho %s e recupera %s pontos dos demais.',
+        'Caminhos', '%s · Caminhos', 'Nível da classe %s/%s', 'Pontos livres: %s',
+        'Escolha um caminho: ele é exclusivo (bloqueia os outros dois)', 'Seu caminho',
+        'Bloqueado: você já segue %s', 'Bifurcação: escolha um', 'Pedra angular (nível 50)',
+        'Aprender', 'Árvore', 'Escolher esta opção?',
+        'Aprender %s escolhe o caminho %s e bloqueia os outros dois desta classe. Só é possível mudar reiniciando a árvore.',
+        'Aprender %s bloqueia o outro ramo da bifurcação. Só é possível mudar reiniciando a árvore.'),
+    'fr_fr': (
+        'Vous suivez déjà une autre voie pour ce rôle (les voies sont exclusives)',
+        'Vous avez déjà choisi l’autre branche de cette bifurcation',
+        'Voies exclusives : pour %s, vous gardez la voie %s et récupérez %s points des autres.',
+        'Voies', '%s · Voies', 'Niveau du rôle %s/%s', 'Points libres : %s',
+        'Choisissez une voie : elle est exclusive (verrouille les deux autres)', 'Votre voie',
+        'Verrouillé : vous suivez déjà %s', 'Bifurcation : choisissez une branche', 'Pierre angulaire (niveau 50)',
+        'Apprendre', 'Arbre', 'Choisir cette option ?',
+        'Apprendre %s choisit la voie %s et verrouille les deux autres pour ce rôle. Seule une réinitialisation de l’arbre permet de changer.',
+        'Apprendre %s verrouille l’autre branche de la bifurcation. Seule une réinitialisation de l’arbre permet de changer.'),
+    'de_de': (
+        'Du folgst mit dieser Rolle bereits einem anderen Pfad (Pfade schließen einander aus)',
+        'Du hast bereits den anderen Zweig dieser Verzweigung gewählt',
+        'Exklusive Pfade: Bei %s behältst du den Pfad %s und erhältst %s Punkte der anderen zurück.',
+        'Pfade', '%s · Pfade', 'Rollenstufe %s/%s', 'Freie Punkte: %s',
+        'Wähle einen exklusiven Pfad (sperrt die beiden anderen)', 'Dein Pfad',
+        'Gesperrt: Du folgst bereits %s', 'Verzweigung: einen Zweig wählen', 'Schlüsselstein (Stufe 50)',
+        'Erlernen', 'Baum', 'Diese Option wählen?',
+        'Durch das Erlernen von %s wählst du den Pfad %s und sperrst die beiden anderen dieser Rolle. Ein Wechsel erfordert das Zurücksetzen des Baums.',
+        'Durch das Erlernen von %s sperrst du den anderen Zweig. Ein Wechsel erfordert das Zurücksetzen des Baums.'),
+}.items():
+    UI[locale] = dict(zip(UI['en_us'], labels, strict=True))
+
+
 def write(lang):
     path = L + lang + '.json'
     data = json.load(open(path, encoding='utf-8'))

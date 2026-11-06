@@ -778,7 +778,7 @@ src/client/java/dev/aptitudes/client/   (solo cliente)
 | Rangos con evolución y potenciación | La evolución añade hasta +2; las activas combinadas se limitan a rango 6 y pueden ser potentes | Ajustar tras probar; la reducción combinada de enfriamientos está limitada al 60 % |
 | Fuego del Averno y explosiones del Creeper modifican bloques | Cambios permanentes del mundo (según `uniqueGriefing`) | — |
 | Quietud Eterna usa `NoAI` | Se repara al cargar, pero otro mod que lea `NoAI` podría verse afectado | — |
-| Idiomas disponibles en 1.4.0 | Inglés y español; las seis variantes regionales copian el español de España | Portugués, francés y alemán quedan para T8, sin incluirse en esta versión |
+| Idiomas de la candidata (T8, fase 1) | Inglés y español; las seis variantes regionales copian el español de España. Portugués de Brasil, francés y alemán tienen interfaz y objetos traducidos; grimorio y nodos aún en inglés | Traducción inicial: completar fases 2–3 y revisar con hablantes nativos antes de anunciarla como completa |
 | La Amenaza se fija al aparecer la criatura | Moverla, cambiar parámetros o recargar no recalcula su anillo; las antiguas ya comprobadas no se escalan retroactivamente | Los parámetros nuevos se aplican a nuevas apariciones; desactivar Amenaza suspende sus efectos |
 | El destilado mejorado depende de un Herbolista elegible | La ayuda termina al desconectarse, morir, cambiar de mundo, alejarse del límite o dejar de tener el rol activo | Mantener un Herbolista válido cerca o dentro del alcance tras abrir el soporte; ver `docs/CONFIGURATION.md` |
 

@@ -1,14 +1,23 @@
 # Roadmap de Aptitudes
 
-Estado de la candidata 1.4.0, preparada desde `main` en `1be8a15` (T1–T6 integradas).
+Estado de T8 fase 1, preparada desde `main` en `e76b62f` (T1–T7 integradas); publicación aplazada por el autor.
 Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fabric API 0.116.6 · Loom 1.10 · Java 21**.
 
 ## Estado real
 
+### v45 — Traducciones (T8, fase 1 implementada)
+- Portugués de Brasil, francés y alemán: archivos completos de 3512 claves, en el orden de `en_us`,
+  con 1386 textos de interfaz/objetos traducidos por idioma. Las 46 claves del grimorio quedan para
+  la fase 2; los 2080 textos de nodos/sendas, para la fase 3. Mientras tanto conservan el inglés.
+- Catálogo reproducible y rótulos de los dos generadores ampliados; no se modifican inglés ni español.
+  El comprobador detecta duplicados, claves ausentes/sobrantes, orden y marcadores `%`; CI lo ejecuta.
+- Traducción inicial pendiente de revisión con hablantes nativos y comprobación visual en el juego.
+  Fases 2–3 pendientes de continuación; el autor revisa cada fase antes de seguir. No se publica con esta fase.
+
 ### 1.4.0 — Preparación de publicación (T7)
 - Versión 1.4.0, notas para jugadores con fecha 2026-11-06, descripción pública y limitaciones actualizadas.
 - T4–T6 probadas en partida según confirmación del autor el 2026-11-06; T6 integrada tras CI aprobada.
-- Rama `codex/publicar-1.4.0`: candidata local, sin publicar en Modrinth/CurseForge. T8 (otros idiomas) pendiente.
+- T7 integrada en `main` (`e76b62f`) tras CI aprobada; no publicada en Modrinth/CurseForge por decisión del autor.
 
 ### v43 — Maestría y amenaza (T6, fases 1 y 2 implementadas)
 - Maestría de las diez habilidades y los veinte roles: XP nueva al máximo, curva pura, +0,5 % por punto

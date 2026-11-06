@@ -1,5 +1,48 @@
 # Pruebas de Aptitudes
 
+## v45 — Traducciones T8, fase 1
+
+```powershell
+python tools/lang/gen_interface_lang.py
+python tools/lang/gen_interface_lang.py --check
+python tools/lang/check_lang.py
+python -m unittest discover -s tools/lang -p test_check_lang.py
+.\gradlew.bat build
+```
+
+- Los tres JSON tienen las 3512 claves de `en_us`, en el mismo orden, con 2 espacios y LF.
+  Se traducen 1386 claves de interfaz/objetos; `guide.aptitudes.*` (46) y
+  `node.aptitudes.*` / `path.aptitudes.*` (2080) conservan provisionalmente el inglés.
+- El catálogo `ui_catalog.py` cubre cada clave de la fase 1, salvo los rótulos generados: se mantienen
+  en `UI` de `gen_evolved_lang.py` y `gen_path_lang.py`. La traducción completa de sus nodos se hará en
+  la fase 3. El generador de interfaz conserva las traducciones de fases posteriores al regenerar.
+- El comprobador rechaza JSON duplicado, claves ausentes/sobrantes, distinto orden, valores no textuales,
+  pérdida de argumentos, cambios de índice, conversión, anchura o precisión y porcentajes perdidos.
+  Conserva `%%` y `%` literal. Permite reordenar argumentos numerados, pero conserva la secuencia de
+  los no numerados. Las pruebas mutan cada caso y verifican la regeneración sin borrar fases posteriores.
+- GitHub Actions ejecuta pruebas del comprobador, validación y `--check` antes del build.
+  Los ocho idiomas anteriores, IDs, balance y código de juego permanecen intactos.
+
+Ejecutado en esta fase: build `BUILD SUCCESSFUL in 1m 14s`, 217 pruebas JUnit sin fallos, errores ni
+omitidas; 15 pruebas Python aprobadas; comprobador y `--check` correctos. El JAR contiene exactamente
+los tres JSON nuevos adicionales y conserva byte a byte las clases y recursos del JAR de T7.
+Medición estática con glifos vanilla: el paso más ancho del tutorial ocupa 189/205/194 px en
+pt_br/fr_fr/de_de (210 disponibles), y el aviso de Amenaza 115/101/120 px (143 disponibles en 426×240).
+Estas medidas no sustituyen la prueba visual ni la revisión con hablantes nativos.
+
+Prueba visual pendiente (traducción inicial que conviene revisar con hablantes nativos):
+
+1. Elegir Português (Brasil), Français y Deutsch; abrir K/J/U/P, accesorios, configuración, Mayús + O,
+   Hoguera, inventario, Mesa del gremio, tablón y avances. No deben aparecer claves crudas.
+2. Comprobar botones y valores a escala de interfaz 4 y en 426×240: textos largos se recortan o parten
+   según el comportamiento existente; tooltips de objetos, runas y efectos conservan todos los argumentos.
+3. Dos jugadores con idiomas distintos: invitaciones, contratos, recompensas y tutorial son personales;
+   no hay cambios de estado por cambiar idioma. Morir, reconectar y reiniciar conserva el progreso previo.
+4. Mostrar avisos de eventos, combos, piedras angulares, maestría y amenaza. Revisar argumentos repetidos,
+   números, porcentajes y caracteres acentuados. No modificar reglas ni generar XP para probar textos.
+5. El grimorio y los nodos/sendas aún se muestran en inglés: es una fase pendiente, no una clave perdida.
+   Regenerar y repetir `--check`: no altera idiomas previos ni claves de etapas ya traducidas.
+
 ## Validación de la candidata 1.4.0 (T7, 2026-11-06)
 
 El autor confirmó en esta fecha sus pruebas en partida de **T4–T6** (tutorial, alquimia, maestría y
@@ -15,8 +58,9 @@ con el JAR de T6: mismos archivos, clases y recursos; solo cambia la versión de
    `build/libs/aptitudes-1.4.0.jar`. El archivo `aptitudes-1.4.0-sources.jar` no se instala en el juego.
 2. Abrir el JAR como ZIP y revisar `fabric.mod.json`: `id=aptitudes`, `version=1.4.0`, Minecraft 1.21.1,
    Java 21, Fabric Loader y Fabric API; presencia de entradas de cliente/servidor, idiomas y recursos.
-3. Comprobar que «Sin publicar» está vacío y precede a `[1.4.0] — 2026-11-06`, que la descripción pública
-   corresponde a lo integrado en `main` y que el README conserva las limitaciones conocidas.
+3. En la base T7, «Sin publicar» estaba vacío antes de `[1.4.0] — 2026-11-06`; las novedades posteriores
+   de T8 se anotan en esa sección. Comprobar la fecha, la descripción pública de lo integrado en `main`
+   y las limitaciones conocidas del README.
 4. Al instalar la candidata, usar el JAR normal en cliente y servidor con Fabric API para 1.21.1.
    Para futuras regresiones, repetir los casos de esta guía sobre una copia del mundo. Registrar por
    separado quién ejecutó cada comprobación; T7 solo cambia versión y documentación, sin reglas nuevas.

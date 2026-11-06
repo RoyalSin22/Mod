@@ -286,6 +286,24 @@ GUIDE = {
 }
 
 
+# T8 fase 1: los rótulos generados se traducen aquí; los nodos llegan en la fase 3.
+for locale, labels in {
+    'pt_br': (
+        '✦ MESTRE · nível 20 · até 2 graus', '✦ DEFINITIVO · nível 30 · 1 grau',
+        'Bloqueado: evolua a classe para Mestre', 'Bloqueado: evolua a classe para Definitivo',
+        'Mestre', 'Definitivo', '%s · %s', 'Este nó requer um estágio de evolução superior da classe.'),
+    'fr_fr': (
+        '✦ MAÎTRE · niveau 20 · jusqu’à 2 rangs', '✦ ULTIME · niveau 30 · 1 rang',
+        'Verrouillé : faites évoluer le rôle au stade Maître', 'Verrouillé : faites évoluer le rôle au stade Ultime',
+        'Maître', 'Ultime', '%s · %s', 'Ce nœud nécessite une évolution supérieure du rôle.'),
+    'de_de': (
+        '✦ MEISTER · Stufe 20 · bis zu 2 Ränge', '✦ ULTIMATIV · Stufe 30 · 1 Rang',
+        'Gesperrt: Entwickle die Rolle zum Meister', 'Gesperrt: Entwickle die Rolle zu Ultimativ',
+        'Meister', 'Ultimativ', '%s · %s', 'Dieser Knoten erfordert eine höhere Rollenentwicklung.'),
+}.items():
+    UI[locale] = dict(zip(UI['en_us'], labels, strict=True))
+
+
 def build(lang):
     out = {}
     code = 'es' if lang == 'es_es' else 'en'

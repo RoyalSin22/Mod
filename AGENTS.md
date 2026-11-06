@@ -27,6 +27,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 | 20 roles, árbol de 23 nodos + legendario + 10 de evolución (filas Maestro/Definitivo), sendas, evoluciones, armas de evolución | `role/`, `ability/`, `item/weapon/`; filas de evolución en `role/EvolvedTree` (datos) y `ability/EvolvedAbilities` (10 plantillas) |
 | Activas equipadas (8 por rol) | `role/LoadoutCodec` (3 bits + bit de formato; lee el formato antiguo) |
 | Textos de los 200 nodos evolucionados (generados) | `tools/lang/gen_evolved_lang.py` (no los edites a mano en los JSON) |
+| Traducciones iniciales (v45, T8 fase 1): pt_br/fr_fr/de_de, 3512 claves por idioma, 1386 de interfaz/objetos traducidas; grimorio y nodos pendientes | `tools/lang/ui_catalog.py`, `gen_interface_lang.py` (`--check`); rótulos generados en `UI` de `gen_evolved_lang.py` y `gen_path_lang.py`; `check_lang.py` valida claves/orden/marcadores, `test_check_lang.py` prueba errores; CI ejecuta las tres comprobaciones |
 | Elementalista: 14 elementos y 10 fusiones | `role/Element`, `ability/ElementEffects`, `ability/ElementFusions` |
 | Legendarias (exclusividad opcional `legendaryExclusive`) | `unique/` |
 | Esbirros y torretas | `ability/Minions`, `ability/MinionBrain`, `ability/AbilityState` |
