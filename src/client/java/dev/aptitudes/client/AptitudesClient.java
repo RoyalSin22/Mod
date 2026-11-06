@@ -127,6 +127,10 @@ public class AptitudesClient implements ClientModInitializer {
 				(payload, context) -> ClientCache.update(context.player().getUuid(), payload));
 		ClientPlayNetworking.registerGlobalReceiver(RoleSyncPayload.ID,
 				(payload, context) -> ClientRoleState.onSync(payload));
+		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.MasteryPayload.ID,
+				(payload, context) -> dev.aptitudes.sync.ClientMastery.update(context.player().getUuid(), payload));
+		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.ThreatPayload.ID,
+				(payload, context) -> dev.aptitudes.client.hud.ThreatHud.onPayload(payload));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.PartySyncPayload.ID,
 				(payload, context) -> PartyClientState.onSync(payload));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.TutorialPayload.ID,
@@ -169,6 +173,7 @@ public class AptitudesClient implements ClientModInitializer {
 			ClientServerConfig.clear();
 			PartyClientState.clear();
 			ClientTutorial.clear();
+			dev.aptitudes.client.hud.ThreatHud.clear();
 		});
 
 		HudRenderCallback.EVENT.register(AbilityHud::render);
@@ -178,6 +183,7 @@ public class AptitudesClient implements ClientModInitializer {
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.EclipseHud::render);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.PartyHud::render);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.TutorialHud::render);
+		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.ThreatHud::render);
 		net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents.AFTER_ENTITIES.register(
 				dev.aptitudes.client.hud.ClientFx::renderWorld);
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.MechanicPayload.ID,

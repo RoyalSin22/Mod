@@ -431,6 +431,13 @@ public class AptitudesScreen extends Screen {
 	private void renderSkills(DrawContext ctx, SyncProgressPayload data, int mouseX, int mouseY) {
 		ProgressRules rules = data.rules();
 		UiStyle.header(ctx, textRenderer, Text.translatable("screen.aptitudes.skills_passives"), left + 10, top + 30, W - 20);
+		var mastery = dev.aptitudes.sync.ClientMastery.get();
+		var roles = dev.aptitudes.client.ClientRoleState.data();
+		if (mastery != null && roles != null && roles.primaryRole() != null) {
+			Text label = Text.translatable("mastery.aptitudes.roles", mastery.points(roles.primaryRole()),
+					roles.secondaryRole() == null ? 0 : mastery.points(roles.secondaryRole()));
+			ctx.drawTextWithShadow(textRenderer, label, left + W - 10 - textRenderer.getWidth(label), top + 30, UiStyle.GOLD);
+		}
 		Skill[] skills = Skill.values();
 		long now = net.minecraft.util.Util.getMeasuringTimeMs();
 		float dt = lastFrame == 0 ? 0f : Math.min(0.1f, (now - lastFrame) / 1000f);
@@ -472,7 +479,10 @@ public class AptitudesScreen extends Screen {
 			ctx.drawBorder(x + 3, y + 3, 20, 20, maxed ? UiStyle.GOLD : UiStyle.BORDER);
 			ctx.drawItem(skill.iconStack(), x + 5, y + 5);
 
-			Text name = Text.translatable(skill.translationKey());
+			Text lv = maxed && mastery != null ? Text.translatable("mastery.aptitudes.card", mastery.points(skill))
+					: maxed ? Text.translatable("screen.aptitudes.max") : Text.translatable("screen.aptitudes.level", level);
+			Text name = UiStyle.fit(textRenderer, Text.translatable(skill.translationKey()),
+					cardW - 80 - textRenderer.getWidth(lv));
 			ctx.drawTextWithShadow(textRenderer, name, x + 28, y + 4, UiStyle.TEXT);
 			// Hitos (10/20/30/40/50): rombos dorados si se alcanzaron.
 			int px = x + 28 + textRenderer.getWidth(name) + 5;
@@ -483,7 +493,6 @@ public class AptitudesScreen extends Screen {
 				if (got) ctx.fill(px + 2, y + 6, px + 3, y + 7, 0xFFFFF3B0);
 				px += 7;
 			}
-			Text lv = maxed ? Text.translatable("screen.aptitudes.max") : Text.translatable("screen.aptitudes.level", level);
 			ctx.drawTextWithShadow(textRenderer, lv, x + cardW - 6 - textRenderer.getWidth(lv), y + 4, maxed ? UiStyle.GOLD : UiStyle.TEXT);
 
 			// Barra de XP animada
@@ -520,6 +529,14 @@ public class AptitudesScreen extends Screen {
 				lines.add(Text.translatable(skill.translationKey()).formatted(net.minecraft.util.Formatting.GOLD));
 				lines.add(Text.translatable(skill.descriptionKey()).formatted(net.minecraft.util.Formatting.GRAY));
 				lines.add(Text.translatable("screen.aptitudes.xp", data.xp(skill), need));
+				if (mastery != null) {
+					int points = mastery.points(skill);
+					lines.add(Text.translatable("mastery.aptitudes.skill", points,
+							UiStyle.fmt((maxed ? mastery.bonus(skill) : 0) * 100)).formatted(net.minecraft.util.Formatting.GOLD));
+					lines.add(points >= dev.aptitudes.logic.MasteryRules.MAX_POINTS ? Text.translatable("mastery.aptitudes.limit")
+							: Text.translatable("mastery.aptitudes.xp", mastery.skills()[skill.ordinal()],
+							dev.aptitudes.logic.MasteryRules.required(points + 1, mastery.base(), mastery.step())));
+				}
 				lines.add(Text.translatable("screen.aptitudes.passives").formatted(net.minecraft.util.Formatting.AQUA));
 				for (int b = 0; b < bonuses.size(); b++) {
 					Skill.SkillBonus bonus = bonuses.get(b);
@@ -538,6 +555,21 @@ public class AptitudesScreen extends Screen {
 									: net.minecraft.util.Formatting.GRAY)));
 				}
 				tooltip = lines;
+			}
+		}
+		if (mastery != null && roles != null && roles.primaryRole() != null && mouseY >= top + 28 && mouseY < top + 40
+				&& mouseX >= left + W - 125 && mouseX < left + W - 10) {
+			tooltip = new java.util.ArrayList<>();
+			tooltip.add(Text.translatable("mastery.aptitudes.roles_hint"));
+			for (var role : new dev.aptitudes.role.Role[]{roles.primaryRole(), roles.secondaryRole()}) {
+				if (role == null) continue;
+				int points = mastery.points(role);
+				double bonus = mastery.enabled() && roles.level(role) >= Math.max(50, roles.rules().maxLevel())
+						? dev.aptitudes.logic.MasteryRules.bonus(points, mastery.cap()) : 0;
+				tooltip.add(Text.translatable("mastery.aptitudes.role", Text.translatable(role.translationKey()), points,
+						UiStyle.fmt(bonus * 100)).formatted(net.minecraft.util.Formatting.GOLD));
+				if (points < dev.aptitudes.logic.MasteryRules.MAX_POINTS) tooltip.add(Text.translatable("mastery.aptitudes.xp",
+						mastery.roles()[role.ordinal()], dev.aptitudes.logic.MasteryRules.required(points + 1, mastery.base(), mastery.step())));
 			}
 		}
 		if (tooltip != null) ctx.drawTooltip(textRenderer, tooltip, mouseX, mouseY);

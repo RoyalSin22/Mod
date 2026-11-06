@@ -25,6 +25,7 @@ public final class ClientCache {
 	}
 
 	public static void clear() {
+		ClientMastery.clear();
 		owner = null;
 		data = null;
 	}

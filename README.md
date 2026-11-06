@@ -42,6 +42,34 @@ Para instalarlo, copia el JAR en `.minecraft/mods/` junto con Fabric API. **Serv
 
 ## Mecánicas
 
+### Maestría (v43, fase 1)
+
+Al alcanzar el máximo de una habilidad, la XP nueva que sobre suma maestría. Los roles también la
+ganan al máximo, siempre a partir del nivel 50. Cada punto amplifica un 0,5 % las pasivas de esa
+habilidad, hasta +10 % inicialmente. Para roles aumenta la eficiencia energética de sus habilidades:
+con +10 %, un coste de 20 pasa a 20/1,10 ≈ 18,18. No aumenta rangos ni modifica hitos.
+
+El primer punto cuesta 1000 XP extra y cada siguiente cuesta 250 más. Se guarda al morir, reconectar
+y reiniciar. K mantiene las diez tarjetas y muestra M seguido de los puntos en dorado al máximo;
+sus tooltips muestran la XP acumulada. La cabecera resume las maestrías principal/secundaria.
+Comandos de XP, creativo y espectador no generan maestría. Véanse los límites y opciones en
+`docs/CONFIGURATION.md`; pruebas en partida pendientes.
+
+### Amenaza (v43, fase 2)
+
+Alejarse de la aparición del Mundo Normal aumenta la dificultad de las criaturas hostiles nuevas:
+zona tranquila antes de 1000 bloques, luego anillos I–V cada 1000 bloques. Por anillo ganan +15 % de
+vida base, +10 % de daño y mayor probabilidad de élite. Las bajas de un jugador en supervivencia tienen
+un 10 % por anillo de conseguir una tirada adicional de su tabla de botín, sin XP extra ni duplicar equipo.
+En V: +75 % de vida base, +50 % de daño, 50 % de tirada extra y probabilidad natural de élite de 5 % a 11,25 %.
+
+Se conserva el anillo de aparición al mover la criatura o recargar el mundo; los monstruos antiguos ya
+comprobados no se escalan retroactivamente. Jefes, esbirros/invocaciones, eventos y criaturas con nombre
+previo quedan fuera. Una criatura convertida por la tirada natural de élite conserva su amenaza aunque
+reciba el nombre generado de élite. El HUD avisa cuatro segundos al cambiar de anillo, sin mensajes de chat.
+`threatEnabled` y otros seis parámetros permiten ajustarlo desde la configuración del servidor.
+Ver fórmulas, límites y pruebas pendientes en `docs/BALANCE.md`, `docs/CONFIGURATION.md` y `docs/TESTING.md`.
+
 ### Alquimia (v42)
 
 El soporte de pociones permite destilar Maná (4 de energía por segundo durante 10 s), Frenesí

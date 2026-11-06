@@ -81,6 +81,11 @@ public final class ModAttachments {
 			.persistent(com.mojang.serialization.Codec.STRING)
 			.buildAndRegister(Aptitudes.id("herbal_brewer"));
 
+	/** Solo criaturas: instantánea persistente del escalado y del cobro de botín, sin copiar al morir. */
+	public static final AttachmentType<ThreatData> THREAT = AttachmentRegistry.<ThreatData>builder()
+			.persistent(ThreatData.CODEC)
+			.buildAndRegister(Aptitudes.id("threat"));
+
 	private ModAttachments() {
 	}
 

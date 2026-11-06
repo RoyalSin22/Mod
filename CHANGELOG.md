@@ -15,6 +15,19 @@ Compilado y probado en partida por el autor (v15–v19 y v29–v41 ✔).
   distribución se calcula por filas).
 
 ### Añadido
+- **v43 — Maestría, T6 fase 1**: la XP nueva sobrante al máximo de habilidades y roles (mínimo 50)
+  se guarda por jugador en claves nuevas del progreso. Curva propia, +0,5 % por punto y tope inicial
+  +10 % configurable. Amplifica pasivas existentes de habilidades; en roles mejora la eficiencia de
+  energía de activas, característica y definitiva. XP administrativa, creativo y espectador no generan
+  maestría. El reparto existente conserva una sola concesión por integrante, también al máximo.
+  Número dorado y detalle en las diez tarjetas de K, sin cambiar su distribución ni tamaño; resumen
+  del rol principal/secundario. Reglas, codec y configuración probados.
+- **v43 — Amenaza, T6 fase 2**: anillos horizontales desde la aparición del Mundo Normal, cada 1000
+  bloques hasta V. Criaturas hostiles nuevas: +15 % de vida y +10 % de daño por anillo, mayor probabilidad
+  de élite y hasta una tirada adicional de botín normal por baja de supervivencia, sin XP extra.
+  Instantánea persistente y atributo idempotente; no se acumulan al recargar ni repiten el cobro.
+  Excluye jefes, invocaciones, eventos escalados y criaturas con nombre previo. Siete opciones validadas,
+  aviso de cuatro segundos en el HUD, ocho idiomas y pruebas puras. Pendiente validación en partida.
 - **v44 — Tutorial guiado, fase 2**: recordatorio del paso actual y aviso de recompensas pendientes en
   el HUD, desactivable en `aptitudes-client.json` y Mayús + O. `/aptitudes tutorial [status|skip]`
   consulta u omite solo el tutorial del ejecutor; la omisión es irreversible y cancela los cobros pendientes.

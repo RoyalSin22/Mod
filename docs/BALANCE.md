@@ -23,6 +23,100 @@ justificación, valores de ejemplo e impacto, como pide la política del proyect
   El HUD desaparece al terminar y cobrar todo, o al omitir; con todos los objetivos completos e inventario
   lleno muestra las recompensas pendientes. Se oculta en creativo, espectador, durante pantallas y al morir.
 
+## Maestría (v43, T6 fase 1)
+
+Antes se descartaba toda XP al máximo. Ahora solo la XP nueva elegible suma maestría, incluida la parte
+sobrante de la acción que alcanza el máximo. Nunca se convierte la XP histórica de archivos antiguos,
+comandos o cambios de curva: al cruzar el máximo, el crédito no puede superar la concesión natural nueva.
+La XP normal restante se vacía al llegar al máximo como antes, sin acreditarla dos veces.
+
+Coste del punto n (n empieza en 1): `base + step × (n−1)`. XP total para n puntos:
+`base × n + step × n × (n−1) / 2`. Inicialmente 1000, 1250, 1500…; 20 puntos requieren 67 500 XP.
+Se guarda la XP total por clave y se derivan los puntos, sin cobros ni conversiones al leer el guardado.
+Cálculos en long, búsqueda binaria hasta 1000 puntos, XP saturada a 10¹² y bonus
+`min(masteryMaxBonus, puntos × 0,005)` (por defecto 0,10).
+
+El bonus multiplica la bonificación por nivel existente, no el valor base total ni los hitos:
+
+| Habilidad | Pasivas que amplifica |
+|---|---|
+| Minería | Velocidad de rotura y armadura |
+| Excavación | Velocidad de rotura y resistencia al empuje |
+| Tala | Velocidad de rotura y vida máxima |
+| Agricultura | Velocidad con azada, probabilidad de cosecha extra y suerte |
+| Combate | Bonificación de daño cuerpo a cuerpo |
+| Tiro con arco | Bonificación de daño base de flechas; la marca existente impide repetirla al cargar |
+| Defensa | Armadura, dureza y resistencia al empuje por explosión |
+| Agilidad | Velocidad de movimiento y caída segura |
+| Pesca | Suerte y probabilidad de captura doble |
+| Encantamiento | Maná máximo por nivel y probabilidad de reembolso; conserva el reembolso garantizado a 50 |
+
+Ejemplo: Minería 50, `breakSpeedPerLevel=0,02`, 20 puntos: velocidad de `1+50×0,02=2`
+a `1+50×0,02×1,10=2,10`. Las probabilidades conservan el límite de 1 y el daño conserva su circuito
+y tope global existentes. Los modificadores usan los identificadores de siempre mediante `AttributeApplier.set`.
+
+Roles al máximo (mínimo 50): eficiencia energética `1+bonus`. En la ejecución normal, característica
+y definitiva se gasta `coste/(1+bonus)`, conservando fracciones. Con 20 puntos, 20 → 18,1818… de energía.
+No aumenta rango, daño, curación, invocaciones ni reduce esperas. Las legendarias y objetos con su
+propio consumo no cambian. El coste de sangre restante se calcula después del descuento de energía.
+
+Comandos forzados no acreditan maestría. Creativo, espectador y jugadores muertos tampoco, incluso con
+`awardXpInCreative`; una fuente creativa del grupo tampoco produce maestría para sus aliados. El reparto
+legítimo existente sí cuenta para cada receptor una vez y mantiene sus fracciones/multiplicadores.
+No hay una segunda distribución al convertirlo en maestría. Sin grupo, el atacante al máximo también gana.
+
+El campo opcional `mastery` del attachment de progreso (`copyOnDeath`) conserva claves `skill/...`
+y `role/...` al morir, reconectar y reiniciar. Cambiar de rol o reasignar atributos no lo borra.
+`/roles admin reset` borra solo las maestrías de rol; `/aptitudes admin reset` borra todo el progreso,
+incluida la maestría. Bajar niveles o desactivar la opción conserva el historial; el efecto espera al máximo.
+Los hitos, puntos de árbol y nivel de alma no se incrementan con la maestría.
+
+## Amenaza (v43, T6 fase 2)
+
+Antes la distancia no modificaba estadísticas ni recompensas. El anillo nuevo usa solo X/Z:
+`min(threatMaxRing, floor(hypot(x − apariciónX, z − apariciónZ) / threatRingSize))`.
+Por defecto: 0 antes de 1000 bloques; I a 1000, II a 2000, III a 3000, IV a 4000 y V desde 5000.
+Las coordenadas no finitas producen 0; no se cuadran/restan coordenadas en enteros que puedan desbordar.
+
+| Anillo | Vida base × | Daño × | Probabilidad de tirada extra | Probabilidad natural de élite |
+|---|---:|---:|---:|---:|
+| 0 | 1 | 1 | 0 % | 5 % |
+| I | 1,15 | 1,10 | 10 % | 6,25 % |
+| II | 1,30 | 1,20 | 20 % | 7,50 % |
+| III | 1,45 | 1,30 | 30 % | 8,75 % |
+| IV | 1,60 | 1,40 | 40 % | 10 % |
+| V | 1,75 | 1,50 | 50 % | 11,25 % |
+
+- Vida: `1 + anillo × threatHealthPerRing`, tope ×3, mediante `AttributeApplier.set` e id
+  `aptitudes:threat/health`. Es `ADD_MULTIPLIED_BASE`: se suma al incremento base de élite, sin multiplicarlo.
+  Zombi base 20 → 35 en V; élite sin otros modificadores de vida: 40 → 55. Solo la primera aplicación
+  conserva la fracción de vida; recargar, reactivar y comprobar exclusiones nunca cura.
+- Daño: `1 + anillo × threatDamagePerRing`, tope ×2; se limita además al tope global positivo vigente.
+  Se aplica una sola vez desde el gancho existente de daño de `Elites`, tanto a cuerpo a cuerpo como a
+  proyectiles, magia o explosiones con atacante identificado. No se añade otro atributo de ataque.
+  Solo modifica atacantes hostiles elegibles; no amplifica PvP ni ataques de esbirros aliados.
+- Botín: probabilidad `anillo × threatLootPerRing`, máximo 1, de una tirada extra de la tabla real de la
+  criatura, con contexto de daño, jugador, fortuna y Saqueo. Incluye tablas personalizadas: se capturan
+  antes de que vanilla las vacíe al morir. Botín esperado ×`(1 + probabilidad)`, no garantiza objetos si
+  esa tabla sale vacía. No vuelve a ejecutar recompensas de contratos/logros/élites, ni equipo ni XP.
+  Solo una baja atribuida a un jugador fuera de creativo/espectador y con `doMobLoot=true` puede pagar.
+  El attachment marca el cobro antes de generar objetos, también para tiradas fallidas/no elegibles.
+  No hay consumo de inventario; en grupo existe una sola tirada por criatura, con drops físicos normales.
+- Élite: `min(1, eliteChance × (1 + anillo × threatEliteChancePerRing))`, conservando el 10 % de esa
+  probabilidad para campeón y el marcador persistente anterior de tirada comprobada. No añade una
+  segunda tirada. En 0, desactivado o excluido conserva la probabilidad anterior.
+
+Solo aparecen escaladas criaturas hostiles nuevas del Mundo Normal. Se excluyen Wither, Dragón,
+Warden, Guardián anciano, jefes propios, invocaciones/esbirros, Eclipse/eventos y nombres previos.
+Las criaturas convertidas por la tirada natural de élite mantienen la instantánea bajo su nombre generado.
+Nombrar posteriormente una criatura ordinaria suspende vida/daño/botín. Las antiguas ya comprobadas sin
+instantánea conservan sus estadísticas. El attachment de criatura `aptitudes:threat` guarda anillo,
+vida, daño, probabilidad de botín y cobro; no usa `copyOnDeath` ni transfiere recompensas a jugadores.
+La descarga/reconexión/reinicio no repite escalado ni tirada. Los cambios de curva afectan a apariciones
+nuevas; desactivar retira la vida añadida en hasta 20 ticks (puede recortar vida actual al nuevo máximo),
+desactiva daño/botín y conserva datos. Reactivar no cura. El HUD personal informa cada cambio de anillo
+en un máximo de 20 ticks durante cuatro segundos; no modifica estadísticas ni recompensa al cruzar.
+
 ## 1. Atributos (Souls): escalado de puntos
 
 **v27 — valores por punto −30 %** (decisión del autor: los atributos altos estaban demasiado fuertes):

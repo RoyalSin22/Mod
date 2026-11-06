@@ -98,6 +98,11 @@ public final class ProgressManager {
 
 	/** @param force si es {@code true} ignora las restricciones de modo de juego (comandos de admin). */
 	public static void addXp(ServerPlayerEntity player, Skill skill, int amount, boolean force) {
+		addXp(player, skill, amount, force, true);
+	}
+
+	/** El reparto conserva la procedencia: una fuente creativa no da maestría a aliados supervivientes. */
+	public static void addXp(ServerPlayerEntity player, Skill skill, int amount, boolean force, boolean masteryFromSource) {
 		if (amount <= 0) return;
 		AptitudesConfig cfg = Aptitudes.config();
 		if (!force && (player.isSpectator() || (player.isCreative() && !cfg.awardXpInCreative))) return;
@@ -107,7 +112,13 @@ public final class ProgressManager {
 		PlayerProgress progress = get(player);
 		ProgressRules rules = rules();
 		int level = progress.getLevel(skill);
-		if (level >= rules.maxLevel()) return;
+		boolean mastery = MasteryManager.eligible(player, !force && masteryFromSource);
+		if (level >= rules.maxLevel()) {
+			if (mastery) {
+				MasteryManager.gainSkill(player, skill, amount);
+			}
+			return;
+		}
 
 		long xp = (long) progress.getXp(skill) + amount;
 		int gained = 0;
@@ -116,7 +127,10 @@ public final class ProgressManager {
 			level++;
 			gained++;
 		}
-		if (level >= rules.maxLevel()) xp = 0;
+		if (level >= rules.maxLevel()) {
+			progress.mastery().add("skill/" + skill.key(), MasteryRules.surplus(xp, amount, mastery));
+			xp = 0;
+		}
 
 		progress.setLevel(skill, level);
 		progress.setXp(skill, (int) xp);
@@ -265,5 +279,6 @@ public final class ProgressManager {
 			affinity[a.ordinal()] = (int) Math.round((affinityMultiplier(player, a) - 1.0) * 100);
 		}
 		ServerPlayNetworking.send(player, SyncProgressPayload.of(progress, availablePoints(progress), rules(), affinity));
+		MasteryManager.sync(player);
 	}
 }

@@ -45,13 +45,14 @@ public record SyncProgressPayload(int[] levels, int[] xp, int[] allocated,
 		var c = dev.aptitudes.Aptitudes.config();
 		return new SyncProgressPayload(levels, xp, allocated, availablePoints, rules, progress.getSoulLevel(),
 				c.levelCostBase, c.levelCostDivisor, c.levelCostMax, c.soulLevelsPerPoint, affinityPercent,
-				skillPerLevel(c));
+				skillPerLevel(c, progress));
 	}
 
 	/** Valores por nivel de las bonificaciones de habilidad, en orden (habilidad, bonificación). */
-	private static double[] skillPerLevel(dev.aptitudes.config.AptitudesConfig c) {
+	private static double[] skillPerLevel(dev.aptitudes.config.AptitudesConfig c, PlayerProgress progress) {
 		java.util.List<Double> values = new java.util.ArrayList<>();
-		for (Skill s : Skill.values()) for (Skill.SkillBonus b : s.bonuses()) values.add(b.perLevel().applyAsDouble(c));
+		for (Skill s : Skill.values()) for (Skill.SkillBonus b : s.bonuses()) values.add(b.perLevel().applyAsDouble(c)
+				* dev.aptitudes.logic.MasteryManager.skillMultiplier(progress, s, c));
 		return values.stream().mapToDouble(Double::doubleValue).toArray();
 	}
 

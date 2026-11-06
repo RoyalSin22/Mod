@@ -96,7 +96,8 @@ public final class XpEvents {
 			SkillMilestones.onArrowFired(player, arrow);
 			int level = ProgressManager.get(player).getLevel(Skill.ARCHERY);
 			if (level > 0) {
-				arrow.setDamage(arrow.getDamage() * (1.0 + level * Aptitudes.config().archeryDamagePerLevel));
+				arrow.setDamage(arrow.getDamage() * (1.0 + level * Aptitudes.config().archeryDamagePerLevel
+						* MasteryManager.skillMultiplier(player, Skill.ARCHERY)));
 			}
 		});
 
@@ -169,7 +170,8 @@ public final class XpEvents {
 		if (state.getBlock() instanceof CropBlock crop) {
 			if (!crop.isMature(state)) return;
 			ProgressManager.addXp(sp, Skill.FARMING, cfg.farmingXpCrop);
-			double chance = ProgressManager.get(sp).getLevel(Skill.FARMING) * cfg.farmingExtraDropChancePerLevel;
+			double chance = Math.min(1, ProgressManager.get(sp).getLevel(Skill.FARMING) * cfg.farmingExtraDropChancePerLevel
+					* MasteryManager.skillMultiplier(sp, Skill.FARMING));
 			if (world.random.nextDouble() < chance) {
 				Block.dropStacks(state, world, pos, blockEntity, sp, tool);
 			}

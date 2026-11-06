@@ -37,17 +37,23 @@ public final class SkillEffects {
 
 		int level;
 		double perLevel;
+		double mastery = 1;
 		if (player.getWorld().isClient()) {
 			SyncProgressPayload data = ClientCache.get();
 			if (data == null || !player.getUuid().equals(ClientCache.owner())) return 1.0f;
 			level = data.level(skill);
 			perLevel = data.rules().breakSpeedPerLevel();
+			var view = dev.aptitudes.sync.ClientMastery.get();
+			if (view != null && player.getUuid().equals(dev.aptitudes.sync.ClientMastery.owner()) && level >= data.rules().maxLevel()) {
+				mastery += view.bonus(skill);
+			}
 		} else {
 			PlayerProgress progress = player.getAttached(ModAttachments.PROGRESS);
 			if (progress == null) return 1.0f;
 			level = progress.getLevel(skill);
 			perLevel = Aptitudes.config().breakSpeedPerLevel;
+			mastery = MasteryManager.skillMultiplier(progress, skill, Aptitudes.config());
 		}
-		return (float) (1.0 + level * perLevel);
+		return (float) (1.0 + level * perLevel * mastery);
 	}
 }

@@ -5,6 +5,18 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+### v43 — Maestría y amenaza (T6, fases 1 y 2 implementadas)
+- Maestría de las diez habilidades y los veinte roles: XP nueva al máximo, curva pura, +0,5 % por punto
+  con tope inicial +10 %. Campo opcional `mastery` en el progreso por claves, compatible con datos previos.
+- Pasivas de habilidad escaladas en servidor y predicción cliente; eficiencia energética por rol. El
+  reparto deja de omitir al atacante al máximo y concede cada parte una sola vez. XP de comandos y modos
+  creativo/espectador excluida. K conserva 430×262 y diez tarjetas (5×2), con números dorados y tooltip.
+- Maestría: cuatro opciones validadas, ocho idiomas y pruebas de reglas/codec/configuración.
+- Amenaza: anillos 0–V desde la aparición del Mundo Normal, siete opciones validadas, vida idempotente,
+  daño acotado, tirada única de botín y una sola tirada natural de élite. Instantánea por criatura;
+  exclusiones para jefes, invocaciones, eventos y nombres previos. HUD S2C al cambiar de anillo.
+  Reglas, codec y límites probados; pruebas en partida de ambas fases pendientes.
+
 ### v42 — Alquimia (T5, fases 1 y 2 implementadas)
 - Cuatro pociones registradas en 1.21.1 y recetas con `FabricBrewingRecipeRegistryBuilder`:
   Maná, Frenesí, Velo del eclipse y Vigor del bosque. Pétalos nuevos extraíbles del saquito, autorizados

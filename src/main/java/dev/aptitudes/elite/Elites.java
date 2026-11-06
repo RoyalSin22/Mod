@@ -81,10 +81,11 @@ public final class Elites {
 		// Al aparecer por primera vez: tirada de élite / campeón.
 		ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
 			if (!(entity instanceof MobEntity mob) || !(entity instanceof Monster)) return;
+			dev.aptitudes.logic.ThreatManager.onLoad(mob, world);
 			if (mob.getCommandTags().contains(CHAMPION)) track(mob);
 			if (mob.getCommandTags().contains(CHECKED)) return;
 			mob.addCommandTag(CHECKED);
-			double chance = Aptitudes.config().eliteChance;
+			double chance = dev.aptitudes.logic.ThreatManager.eliteChance(mob, Aptitudes.config().eliteChance);
 			float roll = world.random.nextFloat();
 			if (roll < chance * 0.1) makeElite(mob, true, world.random);
 			else if (roll < chance) makeElite(mob, false, world.random);
@@ -167,6 +168,7 @@ public final class Elites {
 	/** Daño hecho o recibido por élites (desde el mixin de {@code LivingEntity#damage}). */
 	public static float modifyDamage(LivingEntity target, DamageSource source, float amount) {
 		if (amount <= 0 || target.getWorld().isClient()) return amount;
+		amount = dev.aptitudes.logic.ThreatManager.modifyDamage(target, source, amount);
 		Entity attacker = source.getAttacker();
 		if (attacker instanceof MobEntity elite && isElite(elite)) {
 			if (has(elite, Mod.VAMPIRIC)) elite.heal(amount * 0.3f);

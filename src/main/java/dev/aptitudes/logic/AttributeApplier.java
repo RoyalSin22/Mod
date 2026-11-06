@@ -53,7 +53,8 @@ public final class AttributeApplier {
 			for (int i = 0; i < bonuses.size(); i++) {
 				Skill.SkillBonus b = bonuses.get(i);
 				if (b.attribute() == null) continue; // rotura, cosecha doble, flechas: lógica propia
-				set(player, b.attribute(), s.modifierId(i), progress.getLevel(s) * b.perLevel().applyAsDouble(config),
+				set(player, b.attribute(), s.modifierId(i), progress.getLevel(s) * b.perLevel().applyAsDouble(config)
+						* MasteryManager.skillMultiplier(progress, s, config),
 						b.operation());
 			}
 		}

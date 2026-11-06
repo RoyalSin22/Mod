@@ -3496,5 +3496,19 @@
   "tutorial.aptitudes.already_skipped": "The tutorial is already skipped.",
   "tutorial.aptitudes.hud": "Tutorial · %d/%d",
   "tutorial.aptitudes.hud.pending": "Make inventory space (%d).",
-  "screen.aptitudes.hud.tutorial": "Tutorial"
+  "screen.aptitudes.hud.tutorial": "Tutorial",
+  "mastery.aptitudes.card": "M%d",
+  "mastery.aptitudes.roles": "Roles M %d/%d",
+  "mastery.aptitudes.roles_hint": "Primary / secondary; bonus at the level cap (min. 50).",
+  "mastery.aptitudes.skill": "Mastery: %d points · +%s%% to passives",
+  "mastery.aptitudes.role": "%s: M%d · +%s%% energy efficiency",
+  "mastery.aptitudes.xp": "Mastery XP: %s / %s",
+  "mastery.aptitudes.limit": "Mastery point limit reached.",
+  "threat.aptitudes.hud": "Threat: %s",
+  "threat.aptitudes.ring.0": "Calm zone",
+  "threat.aptitudes.ring.1": "I",
+  "threat.aptitudes.ring.2": "II",
+  "threat.aptitudes.ring.3": "III",
+  "threat.aptitudes.ring.4": "IV",
+  "threat.aptitudes.ring.5": "V"
 }

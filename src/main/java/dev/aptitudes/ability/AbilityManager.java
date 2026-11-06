@@ -146,14 +146,16 @@ public final class AbilityManager {
 		}
 		RoleData data = RoleManager.get(player);
 		// v46.1 Sobrecarga: la N-ésima habilidad no gasta maná y su espera se reduce a la mitad.
+		double payableEnergy = dev.aptitudes.logic.MasteryRules.energyCost(energyCost,
+				dev.aptitudes.logic.MasteryManager.roleBonus(player, role));
 		boolean overload = Keystones.overloadReady(player);
 		boolean free = player.isCreative() || overload;
-		double missingEnergy = free ? 0 : Math.max(0, energyCost - data.energy());
+		double missingEnergy = free ? 0 : Math.max(0, payableEnergy - data.energy());
 		float bloodCost = 0;
 		if (!free && missingEnergy > 0) {
 			// Nigromante Maestro+: la magia de sangre cubre la energía que falta con vida.
 			if (!canUseBloodMagic(data, role)) {
-				fail(player, Text.translatable("aptitudes.ability.no_energy", energyCost));
+				fail(player, Text.translatable("aptitudes.ability.no_energy", (int) Math.ceil(payableEnergy)));
 				return;
 			}
 			bloodCost = (float) Math.ceil(missingEnergy / ENERGY_PER_HEALTH);
@@ -170,7 +172,7 @@ public final class AbilityManager {
 		}
 
 		if (!free) {
-			data.setEnergy(data.energy() - (energyCost - missingEnergy));
+			data.setEnergy(data.energy() - (payableEnergy - missingEnergy));
 			if (bloodCost > 0) {
 				player.setHealth(player.getHealth() - bloodCost);
 				player.getServerWorld().spawnParticles(new net.minecraft.particle.DustParticleEffect(

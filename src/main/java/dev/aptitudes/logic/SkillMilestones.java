@@ -140,7 +140,8 @@ public final class SkillMilestones {
 		int level = ProgressManager.get(p).getLevel(Skill.ENCHANTING);
 		if (level <= 0) return;
 		World world = p.getWorld();
-		double refund = Math.min(1.0, level * Aptitudes.config().enchantingRefundChancePerLevel);
+		double refund = Math.min(1.0, level * Aptitudes.config().enchantingRefundChancePerLevel
+				* MasteryManager.skillMultiplier(p, Skill.ENCHANTING));
 		if (level >= 50 || world.random.nextDouble() < refund) {
 			p.addExperienceLevels(1);
 			p.getServerWorld().spawnParticles(ParticleTypes.ENCHANT, p.getX(), p.getBodyY(0.8), p.getZ(), 30, 0.5, 0.5, 0.5, 0.6);
@@ -152,7 +153,8 @@ public final class SkillMilestones {
 	/** Maná máximo extra por Encantamiento: pasiva por nivel + 10 con el hito 20 («Mente arcana»). */
 	public static double bonusMana(ServerPlayerEntity p) {
 		int level = ProgressManager.get(p).getLevel(Skill.ENCHANTING);
-		return level * Aptitudes.config().enchantingManaPerLevel + (level >= 20 ? 10.0 : 0.0);
+		return level * Aptitudes.config().enchantingManaPerLevel * MasteryManager.skillMultiplier(p, Skill.ENCHANTING)
+				+ (level >= 20 ? 10.0 : 0.0);
 	}
 
 	/** Encantamiento 40 («Flujo arcano»): −10 % de espera de habilidades (dentro del tope global del 60 %). */
@@ -171,7 +173,8 @@ public final class SkillMilestones {
 		int fishing = prog.getLevel(Skill.FISHING);
 		if (fishing <= 0) return;
 		World world = p.getWorld();
-		double doubleChance = Math.min(1.0, fishing * Aptitudes.config().fishingDoubleCatchPerLevel);
+		double doubleChance = Math.min(1.0, fishing * Aptitudes.config().fishingDoubleCatchPerLevel
+				* MasteryManager.skillMultiplier(p, Skill.FISHING));
 		if (world.random.nextDouble() < doubleChance) give(p, randomFish(world));
 		if (fishing >= 10) p.addExperience(2 + world.random.nextInt(3));
 		if (fishing >= 30) {

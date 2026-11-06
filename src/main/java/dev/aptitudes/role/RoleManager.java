@@ -214,24 +214,43 @@ public final class RoleManager {
 
 	/** Concede XP compartida al mismo rol, aunque no esté activo; respeta creativo/espectador. */
 	public static void addSharedRoleXp(ServerPlayerEntity player, Role role, int amount) {
+		addSharedRoleXp(player, role, amount, true);
+	}
+
+	public static void addSharedRoleXp(ServerPlayerEntity player, Role role, int amount, boolean masteryFromSource) {
 		if (amount <= 0 || player.isSpectator() || (player.isCreative() && !Aptitudes.config().awardXpInCreative)) return;
-		grantRoleXp(player, role, amount, true);
+		grantRoleXp(player, role, amount, true, masteryFromSource);
 	}
 
 	private static void grantRoleXp(ServerPlayerEntity player, Role role, int amount, boolean chargeResource) {
+		grantRoleXp(player, role, amount, chargeResource, chargeResource);
+	}
+
+	private static void grantRoleXp(ServerPlayerEntity player, Role role, int amount, boolean chargeResource, boolean masteryFromSource) {
 		RoleData data = get(player);
 		if (chargeResource) RoleResources.gain(player, role, amount); // toda XP normal o compartida carga el recurso
 
 		RoleRules rules = rules();
 		int level = data.level(role);
-		if (level >= rules.maxLevel()) return;
+		boolean mastery = dev.aptitudes.logic.MasteryManager.eligible(player, masteryFromSource);
+		if (level >= rules.maxLevel()) {
+			if (mastery && level >= 50) {
+				dev.aptitudes.logic.ProgressManager.get(player).mastery().add("role/" + role.key(), amount);
+				dev.aptitudes.logic.MasteryManager.sync(player);
+			}
+			return;
+		}
 		long xp = (long) data.xp(role) + amount;
 		int before = level;
 		while (level < rules.maxLevel() && xp >= rules.xpToNext(level)) {
 			xp -= rules.xpToNext(level);
 			level++;
 		}
-		if (level >= rules.maxLevel()) xp = 0;
+		if (level >= rules.maxLevel()) {
+			dev.aptitudes.logic.ProgressManager.get(player).mastery().add("role/" + role.key(),
+					dev.aptitudes.logic.MasteryRules.surplus(xp, amount, mastery && level >= 50));
+			xp = 0;
+		}
 		data.setLevel(role, level);
 		data.setXp(role, (int) xp);
 
@@ -406,6 +425,7 @@ public final class RoleManager {
 
 	public static void reset(ServerPlayerEntity player) {
 		player.setAttached(ModAttachments.ROLES, new RoleData());
+		dev.aptitudes.logic.ProgressManager.get(player).mastery().clearRoles();
 		refresh(player);
 	}
 
@@ -467,6 +487,7 @@ public final class RoleManager {
 	}
 
 	public static void sync(ServerPlayerEntity player) {
+		dev.aptitudes.logic.MasteryManager.sync(player);
 		if (!ServerPlayNetworking.canSend(player, RoleSyncPayload.ID)) return;
 		RoleData data = get(player);
 		ServerPlayNetworking.send(player, RoleSyncPayload.of(data, rules(),

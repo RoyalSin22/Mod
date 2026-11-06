@@ -2,6 +2,115 @@
 
 ## Pruebas automatizadas (nuevas)
 
+v43 — maestría, T6 fase 1:
+
+```powershell
+.\gradlew.bat test --tests dev.aptitudes.logic.MasteryRulesTest --tests dev.aptitudes.data.MasteryProgressCodecTest --tests dev.aptitudes.config.MasteryConfigValidationTest
+.\gradlew.bat build
+```
+
+- `MasteryRulesTest`: curva creciente/constante, umbrales exactos, concesiones pequeñas frente a una grande,
+  lecturas sin duplicación, saturación en long, bonus con topes y no finitos, exceso elegible y coste fraccional.
+- `MasteryProgressCodecTest`: codec real con JsonOps, claves separadas de habilidades/roles, guardado y carga,
+  negativos, valores enormes, claves inválidas, máximo de entradas y aislamiento entre jugadores.
+- `MasteryConfigValidationTest`: cuatro valores por defecto y sus límites, NaN, negativos y desactivación.
+  Son clases puras. El codec completo de `PlayerProgress` carga enums con registros de Minecraft y requiere
+  partida; no se afirma haber probado su migración con JUnit simple.
+
+Verificación manual pendiente en servidor dedicado y dos clientes (copia de un mundo anterior):
+
+1. Cargar datos sin campo `mastery`: conserva niveles, XP, atributos, alma y roles, con maestría a cero.
+   Para acelerar las pruebas se pueden usar los campos nuevos `masteryXpBase=1`, `masteryXpStep=0`;
+   restaurar 1000/250 al terminar. No cambiar otros valores de balance.
+2. `/aptitudes admin setlevel @s mining 49` y `/aptitudes admin addxp @s mining 2147483647`:
+   llega al máximo sin maestría. Repetir al máximo y usar `/xp` no genera puntos. Una nueva acción
+   legítima sí convierte solo su XP. Probar también el cruce natural del máximo con exceso de XP.
+3. Entrenar las diez habilidades al máximo, una por una: verificar efectos descritos en `BALANCE.md`.
+   En Minería, Excavación y Tala la predicción cliente debe coincidir con la rotura del servidor, sin
+   bloques que reaparezcan. Agricultura/Pesca nunca superan 100 % de probabilidad; Encantamiento conserva
+   el reembolso anterior. No se amplifican hitos ni se añaden niveles, puntos de atributo o árbol.
+4. `/roles admin setlevel @s mage 50` y `/roles admin addxp @s mage 2147483647`: cero maestría de esa XP.
+   Usar una activa con éxito genera XP nueva; sin objetivo, en espera o sin energía, no. Con +10 % de
+   eficiencia, comprobar gasto real 20/1,10, incluyendo fracciones, definitiva y característica. Las
+   legendarias y objetos con consumo independiente conservan su coste; el rango y la espera no cambian.
+5. Solo y en grupo: el atacante al máximo recibe su XP una vez y los integrantes su parte existente,
+   cada uno en su maestría propia. No se vuelve a repartir al convertirla. Dos jugadores con distintos
+   roles/niveles: no copian ni borran el progreso ajeno. El fuego amigo conserva el filtro anterior.
+6. En creativo/espectador no se gana maestría, incluso con `awardXpInCreative=true`. Con una baja en
+   creativo y un aliado superviviente, tampoco se convierte la parte compartida en maestría. Repetir
+   acciones, volver a supervivencia y esperar las lecturas de estadísticas de Pesca/Encantamiento/Agilidad.
+7. Morir, reconectar, reiniciar y recargar chunks: XP/puntos intactos, sin reconvertir el mismo saldo.
+   Una flecha existente no recibe de nuevo el multiplicador al recargar. Reasignar atributos o cambiar
+   de rol conserva la maestría. Los resets administrativos borran el historial indicado en `BALANCE.md`.
+8. Editar las cuatro opciones por archivo/pantalla: límites, NaN y valores enormes seguros. Desactivar
+   deja pasivas/costes en su valor previo y conserva el saldo; reactivar no añade XP. Elevar el máximo
+   pausa el bonus hasta alcanzarlo. Un cliente sin permisos no puede modificar estas reglas.
+9. K: 430×262, diez tarjetas 5×2, M y número en dorado sin solapar nombre/hitos; tooltips de puntos,
+   bonus y XP. Resumen principal/secundario en la cabecera. Comprobar español/inglés y seis variantes,
+   escala de interfaz 4 y desplazamiento de la ventana en 426×240. No debe aparecer ninguna clave cruda.
+   Comprobación estática con glifos vanilla: M1000 ocupa 30 px y la cabecera de roles 95 px en ambos
+   idiomas; nombre, cinco hitos y marca disponen de reservas separadas. Falta inspección visual real.
+10. Probar varias capas de daño (arma, Combate, rol, combo) y confirmar que el tope global existente se
+    sigue aplicando. La maestría no introduce multiplicadores después de ese tope.
+
+v43 — Amenaza, T6 fase 2:
+
+```powershell
+.\gradlew.bat test --tests dev.aptitudes.logic.ThreatRulesTest --tests dev.aptitudes.data.ThreatDataCodecTest --tests dev.aptitudes.config.ThreatConfigValidationTest
+.\gradlew.bat build
+```
+
+- `ThreatRulesTest`: umbrales exactos, X/Z/diagonales, aparición desplazada, coordenadas negativas,
+  distancias enormes/no finitas, límites, exclusiones, probabilidades, tope de daño y cobro único elegible.
+- `ThreatDataCodecTest`: ida/vuelta JsonOps, instantánea y cobro conservados, datos vacíos/incompletos,
+  negativos, enormes y no finitos acotados. La llamada repetida a `claim()` mantiene el estado cobrado.
+- `ThreatConfigValidationTest`: siete opciones con sus valores por defecto y límites, desactivación,
+  cero, negativos y NaN/infinitos; `eliteChance=0.05` sigue intacto.
+- No se cargan entidades ni registros con JUnit simple. La integración de atributos, botín, red y HUD
+  requiere Minecraft; las pruebas siguientes quedan pendientes, no se presentan como ejecutadas.
+
+Verificación manual pendiente en una copia de mundo, servidor dedicado y dos clientes:
+
+1. Fijar `/setworldspawn 0 64 0`; en supervivencia ir a X/Z 999/0, 1000/0, 2000/0, 3000/0, 4000/0,
+   5000/0 y 9000/0: aviso zona tranquila/I/II/III/IV/V/V. Comprobar -1000/0, 0/-1000 y diagonal
+   600/600 (zona tranquila). Cambiar Y no altera el nivel; desplazar la aparición traslada los umbrales.
+   El aviso aparece en hasta 20 ticks, dura cuatro segundos y no se repite mientras se permanece en el anillo.
+2. Crear zombis nuevos sin nombre en cada anillo y consultar `/attribute <uuid> minecraft:generic.max_health get`:
+   20/23/26/29/32/35 sin élite ni otros efectos. Vida inicial completa y un solo id `aptitudes:threat/health`.
+   Un monstruo antiguo con `aptitudes.elite_checked` y sin attachment no cambia al recargar el chunk.
+3. Herir una criatura, descargar y cargar el chunk, reconectar y reiniciar: misma vida actual y máxima,
+   anillo y multiplicadores. Transportarla cerca de la aparición no recalcula ni vuelve a sortear élite.
+   Al desactivar `threatEnabled` desaparece el aumento de vida en hasta 20 ticks y se anulan daño/botín;
+   al reactivar no se cura ni se repite recompensa. Los parámetros nuevos solo afectan a nuevas apariciones.
+4. Probar golpes de zombi, flechas de esqueleto, magia con atacante y explosiones de creeper:
+   daño ×1,5 en V antes de defensas, una sola vez, sin superar el `maxDamageMultiplier` positivo.
+   No cambia el daño de un jugador contra otro ni el de esbirros/invocaciones aliados. Restituir la
+   configuración tras las pruebas del tope. Dos clientes en anillos distintos reciben sus propios avisos.
+5. Nombres previos (`CustomName`), Wither/Dragón/Warden/Guardián anciano, jefes de estructuras, esbirros
+   y criaturas del Eclipse/Niebla/Lluvia: no reciben atributo, daño ni botín de Amenaza. Nether y End no
+   escalan. Nombrar un monstruo ordinario ya escalado retira su atributo en hasta 20 ticks, sin curarlo.
+   Un élite generado naturalmente conserva el anillo pese a su nombre generado; sin otros modificadores
+   de vida, el élite de V tiene 55 de vida, no 70. No se acumulan escalados de eventos.
+6. Para comprobar botín sin azar, usar temporalmente `threatLootPerRing=0.2` y criaturas nuevas en V:
+   una sola tirada adicional por baja de jugador en supervivencia, tabla real/contexto de Saqueo y fortuna.
+   Repetir con tabla personalizada o vacía: se respeta, sin caer en la tabla predeterminada al morir.
+   No duplica equipo, XP vanilla/de rol, recompensas de élite, contratos ni logros. Guardar/cargar no
+   habilita otra tirada. En grupo los objetos físicos aparecen una vez y la XP conserva el reparto previo.
+7. Bajas en creativo, espectador, por entorno/comandos o con `doMobLoot=false`: cero botín adicional.
+   Volver a supervivencia no habilita otro cobro. Muerte impedida por otro sistema no paga; la siguiente
+   muerte real solo puede pagar una vez. No consume objetos ni XP de jugadores.
+8. Probar la única tirada natural de élite: base 5 %, V 11,25 % (campeones: 10 % de esa probabilidad).
+   Recargar chunks/reiniciar no repite la tirada. Con Amenaza desactivada o anillo 0, base anterior intacta.
+9. Pantalla/archivo de configuración: límites de los siete campos, negativos, no finitos y enormes;
+   cliente sin permisos rechazado. `threatMaxRing=2` no produce III–V, tamaño mínimo 100.
+10. HUD en ocho idiomas, F1, `hudVisible=false`, muerte, creativo/espectador, cambio de dimensión,
+    desconexión y nuevo servidor: no quedan avisos de otra sesión. Entrada al Mundo Normal avisa el
+    anillo actual. Probar 426×240 y escala 4 con tutorial, cinco miembros, combo y Eclipse activos;
+    el aviso ocupa una línea a la derecha, por encima del Eclipse, y se recorta si falta ancho. Se aparta
+    del tutorial si su escala lo desplaza. Verificación estática de glifos vanilla: máximo 89 px en inglés
+    y 121 px en español, frente a 143 px disponibles en 426×240. Los rótulos cortos mantienen caja mínima
+    de 60 px y no deben desaparecer. Esta medición no sustituye la inspección visual en partida.
+
 v44 — tutorial, T4 fases 1 y 2:
 
 ```powershell

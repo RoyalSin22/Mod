@@ -306,6 +306,21 @@ public class AptitudesConfig {
 	public int alchemyXpWindowSeconds = 300;
 	public int alchemyXpFullRewardBrews = 3;
 
+	// ---------- Maestría (v43) ----------
+	public boolean masteryEnabled = true;
+	public int masteryXpBase = 1000;
+	public int masteryXpStep = 250;
+	public double masteryMaxBonus = 0.10;
+
+	// ---------- Amenaza por distancia (v43) ----------
+	public boolean threatEnabled = true;
+	public int threatRingSize = 1000;
+	public int threatMaxRing = 5;
+	public double threatHealthPerRing = 0.15;
+	public double threatDamagePerRing = 0.10;
+	public double threatLootPerRing = 0.10;
+	public double threatEliteChancePerRing = 0.25;
+
 	public static AptitudesConfig load() {
 		Path path = path();
 		AptitudesConfig cfg = new AptitudesConfig();
@@ -494,6 +509,15 @@ public class AptitudesConfig {
 		c.alchemyRoleXpPerBrew = clamp(c.alchemyRoleXpPerBrew, 0, 20);
 		c.alchemyXpWindowSeconds = clamp(c.alchemyXpWindowSeconds, 10, 3600);
 		c.alchemyXpFullRewardBrews = clamp(c.alchemyXpFullRewardBrews, 1, 20);
+		c.masteryXpBase = clamp(c.masteryXpBase, 1, 1_000_000);
+		c.masteryXpStep = clamp(c.masteryXpStep, 0, 1_000_000);
+		c.masteryMaxBonus = Math.min(0.25, c.masteryMaxBonus);
+		c.threatRingSize = clamp(c.threatRingSize, 100, 1_000_000);
+		c.threatMaxRing = clamp(c.threatMaxRing, 1, 5);
+		c.threatHealthPerRing = Math.min(0.4, c.threatHealthPerRing);
+		c.threatDamagePerRing = Math.min(0.2, c.threatDamagePerRing);
+		c.threatLootPerRing = Math.min(0.2, c.threatLootPerRing);
+		c.threatEliteChancePerRing = Math.min(1, c.threatEliteChancePerRing);
 		return c;
 	}
 

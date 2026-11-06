@@ -27,7 +27,8 @@ public final class PlayerProgress {
 			INT_MAP.optionalFieldOf("xp", Map.of()).forGetter(p -> toNames(p.xp)),
 			INT_MAP.optionalFieldOf("allocated", Map.of()).forGetter(p -> toNames(p.allocated)),
 			Codec.INT.optionalFieldOf("bonus_points", 0).forGetter(p -> p.bonusPoints),
-			Codec.INT.optionalFieldOf("soul_level", 0).forGetter(p -> p.soulLevel)
+			Codec.INT.optionalFieldOf("soul_level", 0).forGetter(p -> p.soulLevel),
+			MasteryProgress.CODEC.optionalFieldOf("mastery").forGetter(p -> java.util.Optional.of(p.mastery))
 	).apply(instance, PlayerProgress::new));
 
 	private final EnumMap<Skill, Integer> levels;
@@ -36,19 +37,24 @@ public final class PlayerProgress {
 	private int bonusPoints;
 	/** Nivel de alma: niveles comprados en una Hoguera (cada uno = 1 punto de atributo). */
 	private int soulLevel;
+	private final MasteryProgress mastery;
 
 	public PlayerProgress() {
-		this(Map.of(), Map.of(), Map.of(), 0, 0);
+		this(Map.of(), Map.of(), Map.of(), 0, 0, java.util.Optional.empty());
 	}
 
 	private PlayerProgress(Map<String, Integer> levels, Map<String, Integer> xp,
-						   Map<String, Integer> allocated, int bonusPoints, int soulLevel) {
+						   Map<String, Integer> allocated, int bonusPoints, int soulLevel,
+						   java.util.Optional<MasteryProgress> mastery) {
 		this.levels = fromNames(Skill.class, levels);
 		this.xp = fromNames(Skill.class, xp);
 		this.allocated = fromNames(PlayerAttribute.class, allocated);
 		this.bonusPoints = bonusPoints;
 		this.soulLevel = Math.max(0, soulLevel);
+		this.mastery = mastery.orElseGet(MasteryProgress::new);
 	}
+
+	public MasteryProgress mastery() { return mastery; }
 
 	public int getSoulLevel() {
 		return soulLevel;

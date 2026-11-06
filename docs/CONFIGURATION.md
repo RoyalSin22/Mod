@@ -23,6 +23,42 @@ El objetivo de cinco golpes requiere las opciones existentes `combosEnabled = tr
 `comboFinisherHits >= 5`; un remate con umbral inferior reinicia el contador antes de cinco.
 No se cambian los valores por defecto (combos activados y remate a cinco golpes).
 
+## Maestría (v43, T6 fase 1)
+
+| Campo del servidor | Defecto | Límites | Descripción |
+|---|---:|---:|---|
+| `masteryEnabled` | true | booleano | Activa ganancia y efectos de maestría; desactivarlo conserva el historial. |
+| `masteryXpBase` | 1000 | [1, 1 000 000] | XP del primer punto, con curva acumulada propia. |
+| `masteryXpStep` | 250 | [0, 1 000 000] | Aumento del coste por punto siguiente; 0 mantiene coste constante. |
+| `masteryMaxBonus` | 0.10 | [0, 0.25] | Tope del bonus. Cada punto aporta 0,005; 0 anula efectos sin borrar ni detener la XP si sigue activada. |
+
+Se aplican `validated(...)` y la validación general de negativos/NaN/infinitos. Se sincronizan los valores
+reales al cliente. La XP acumulada no cambia al editar la curva; se recalculan puntos y bonus desde ella.
+Límites internos: 10¹² XP por clave y 1000 puntos; nunca se supera el tope configurado de bonificación.
+Las habilidades requieren `maxSkillLevel`; los roles, `max(50, maxRoleLevel)`. Aumentar el nivel máximo
+conserva la maestría, pero suspende su efecto hasta volver a alcanzarlo.
+
+## Amenaza (v43, T6 fase 2)
+
+| Campo del servidor | Defecto | Límites | Descripción |
+|---|---:|---:|---|
+| `threatEnabled` | true | booleano | Activa escalado, botín y aviso. Desactivarlo retira vida añadida en hasta 20 ticks y pausa daño/botín; conserva instantáneas. |
+| `threatRingSize` | 1000 | [100, 1 000 000] | Anchura horizontal de cada anillo desde la aparición del mundo. La zona inicial tiene nivel 0. |
+| `threatMaxRing` | 5 | [1, 5] | Máximo I–V; la distancia mayor conserva ese nivel. |
+| `threatHealthPerRing` | 0.15 | [0, 0.4] | Vida base adicional por anillo; máximo interno +200 %. Se suma a otros modificadores de base, sin multiplicar élites. |
+| `threatDamagePerRing` | 0.10 | [0, 0.2] | Daño adicional por anillo, golpes/proyectiles/explosiones; máximo ×2 y sujeto a `maxDamageMultiplier` cuando es positivo. |
+| `threatLootPerRing` | 0.10 | [0, 0.2] | Probabilidad por anillo de una única tirada adicional de la tabla de botín; máximo 100 %, sin XP ni equipo extra. |
+| `threatEliteChancePerRing` | 0.25 | [0, 1] | Incremento relativo por anillo de `eliteChance`: `base × (1 + anillo × valor)`, limitado a 100 %. |
+
+Negativos y no finitos vuelven al defecto antes de aplicar límites. Las siete opciones pasan por la
+pantalla existente y la validación del servidor. Cada criatura nueva conserva anillo y multiplicadores
+de aparición: cambiar parámetros o mover la aparición del mundo afecta a nuevas criaturas y al aviso,
+sin volver a sortear élites ni curar las antiguas. Desactivar/reactivar no borra ni vuelve a pagar botín;
+reactivar el atributo no cura. Cambiar de dimensión o nombrar una criatura ordinaria suspende su escalado.
+El nombre generado por la conversión natural de élite conserva su instantánea. Los monstruos antiguos
+ya comprobados y sin instantánea no reciben escalado retroactivo. El aviso usa `hudVisible` y F1;
+se oculta en creativo/espectador, al morir o salir del Mundo Normal. No se añaden opciones del cliente.
+
 ## Validación al cargar
 
 1. **General (nuevo):** cualquier número negativo, `NaN` o infinito vuelve a su valor por defecto y se

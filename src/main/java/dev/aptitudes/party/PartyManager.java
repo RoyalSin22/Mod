@@ -116,11 +116,12 @@ public final class PartyManager {
 			dev.aptitudes.logic.ProgressManager.addXp(killer, skill, baseAmount);
 			return;
 		}
+		boolean masterySource = dev.aptitudes.logic.MasteryManager.eligible(killer, true);
 		boolean sourceAtCap = dev.aptitudes.logic.ProgressManager.get(killer).getLevel(skill)
 				>= dev.aptitudes.logic.ProgressManager.rules().maxLevel();
 		PartyState.Party party = killer.getServer() == null ? null : findParty(killer.getServer(), killer.getUuid());
 		if (party == null) {
-			if (!sourceAtCap) dev.aptitudes.logic.ProgressManager.addXp(killer, skill, baseAmount);
+			if (!sourceAtCap || masterySource) dev.aptitudes.logic.ProgressManager.addXp(killer, skill, baseAmount);
 			return;
 		}
 		List<ServerPlayerEntity> members = onlineMembers(killer);
@@ -128,9 +129,9 @@ public final class PartyManager {
 				Aptitudes.config().partyXpBonusMax);
 		int bonusXp = PartyRules.bonusXp(baseAmount, bonus);
 		for (ServerPlayerEntity member : members) {
-			if (member == killer && sourceAtCap) continue;
+			if (member == killer && sourceAtCap && !masterySource) continue;
 			int amount = PartyRules.memberXp(baseAmount, party.sharePercent, member == killer, bonusXp);
-			if (amount > 0) dev.aptitudes.logic.ProgressManager.addXp(member, skill, amount);
+			if (amount > 0) dev.aptitudes.logic.ProgressManager.addXp(member, skill, amount, false, masterySource);
 		}
 	}
 
@@ -153,7 +154,7 @@ public final class PartyManager {
 			if (target == null) continue;
 			int amount = member == killer ? PartyRules.sourceXp(earned, bonusXp)
 					: PartyRules.memberXp(earned, party.sharePercent, false, bonusXp);
-			RoleManager.addSharedRoleXp(member, target, amount);
+			RoleManager.addSharedRoleXp(member, target, amount, killer.isAlive() && !killer.isCreative() && !killer.isSpectator());
 		}
 	}
 
