@@ -1,5 +1,26 @@
 # Pruebas de Aptitudes
 
+## Validación de la candidata 1.4.0 (T7, 2026-11-06)
+
+El autor confirmó en esta fecha sus pruebas en partida de **T4–T6** (tutorial, alquimia, maestría y
+amenaza). Esta confirmación complementa la de v15–v19 y v29–v41 del 2026-11-03. Los guiones siguientes
+se conservan para regresión; no se atribuye al agente la ejecución en partida de cada caso ni se marcan
+como ejecutados los guiones de T1–T3 que no han recibido una confirmación específica.
+
+Ejecutado por el agente: `.\gradlew.bat build` → `BUILD SUCCESSFUL in 1m 10s`, con 217 pruebas,
+cero fallos, errores u omitidas. Verificado `fabric.mod.json` dentro de `aptitudes-1.4.0.jar` y comparado
+con el JAR de T6: mismos archivos, clases y recursos; solo cambia la versión de ese metadato.
+
+1. Ejecutar `.\gradlew.bat build` desde `codex/publicar-1.4.0` y comprobar las pruebas y la generación de
+   `build/libs/aptitudes-1.4.0.jar`. El archivo `aptitudes-1.4.0-sources.jar` no se instala en el juego.
+2. Abrir el JAR como ZIP y revisar `fabric.mod.json`: `id=aptitudes`, `version=1.4.0`, Minecraft 1.21.1,
+   Java 21, Fabric Loader y Fabric API; presencia de entradas de cliente/servidor, idiomas y recursos.
+3. Comprobar que «Sin publicar» está vacío y precede a `[1.4.0] — 2026-11-06`, que la descripción pública
+   corresponde a lo integrado en `main` y que el README conserva las limitaciones conocidas.
+4. Al instalar la candidata, usar el JAR normal en cliente y servidor con Fabric API para 1.21.1.
+   Para futuras regresiones, repetir los casos de esta guía sobre una copia del mundo. Registrar por
+   separado quién ejecutó cada comprobación; T7 solo cambia versión y documentación, sin reglas nuevas.
+
 ## Pruebas automatizadas (nuevas)
 
 v43 — maestría, T6 fase 1:
@@ -17,7 +38,7 @@ v43 — maestría, T6 fase 1:
   Son clases puras. El codec completo de `PlayerProgress` carga enums con registros de Minecraft y requiere
   partida; no se afirma haber probado su migración con JUnit simple.
 
-Verificación manual pendiente en servidor dedicado y dos clientes (copia de un mundo anterior):
+Guion de regresión en servidor dedicado y dos clientes (copia de un mundo anterior):
 
 1. Cargar datos sin campo `mastery`: conserva niveles, XP, atributos, alma y roles, con maestría a cero.
    Para acelerar las pruebas se pueden usar los campos nuevos `masteryXpBase=1`, `masteryXpStep=0`;
@@ -49,7 +70,7 @@ Verificación manual pendiente en servidor dedicado y dos clientes (copia de un 
    bonus y XP. Resumen principal/secundario en la cabecera. Comprobar español/inglés y seis variantes,
    escala de interfaz 4 y desplazamiento de la ventana en 426×240. No debe aparecer ninguna clave cruda.
    Comprobación estática con glifos vanilla: M1000 ocupa 30 px y la cabecera de roles 95 px en ambos
-   idiomas; nombre, cinco hitos y marca disponen de reservas separadas. Falta inspección visual real.
+   idiomas; nombre, cinco hitos y marca disponen de reservas separadas. La inspección en partida corresponde al autor.
 10. Probar varias capas de daño (arma, Combate, rol, combo) y confirmar que el tope global existente se
     sigue aplicando. La maestría no introduce multiplicadores después de ese tope.
 
@@ -67,9 +88,9 @@ v43 — Amenaza, T6 fase 2:
 - `ThreatConfigValidationTest`: siete opciones con sus valores por defecto y límites, desactivación,
   cero, negativos y NaN/infinitos; `eliteChance=0.05` sigue intacto.
 - No se cargan entidades ni registros con JUnit simple. La integración de atributos, botín, red y HUD
-  requiere Minecraft; las pruebas siguientes quedan pendientes, no se presentan como ejecutadas.
+  requiere Minecraft; la confirmación de partida es del autor, no una ejecución en partida del agente.
 
-Verificación manual pendiente en una copia de mundo, servidor dedicado y dos clientes:
+Guion de regresión en una copia de mundo, servidor dedicado y dos clientes:
 
 1. Fijar `/setworldspawn 0 64 0`; en supervivencia ir a X/Z 999/0, 1000/0, 2000/0, 3000/0, 4000/0,
    5000/0 y 9000/0: aviso zona tranquila/I/II/III/IV/V/V. Comprobar -1000/0, 0/-1000 y diagonal
@@ -126,7 +147,7 @@ v44 — tutorial, T4 fases 1 y 2:
   claves desconocidas/duplicadas, omisión persistente y ausencia de un segundo pago después de recargar.
   Las pruebas son puras y no arrancan registros de Minecraft.
 
-Prueba manual pendiente (supervivencia, dos jugadores y copia de un mundo anterior):
+Guion de regresión manual (supervivencia, dos jugadores y copia de un mundo anterior):
 
 1. Entrar con un jugador nuevo y obtener el grimorio (también vale el de bienvenida): una esmeralda.
    Cambiar el libro de ranura, usarlo y reconectar no debe repetirla. El servidor revisa inventarios cada 20 ticks.
@@ -158,7 +179,7 @@ El paso de combo depende de `combosEnabled` y `comboFinisherHits >= 5`;
 no se cambian esos valores. Las pruebas puras no verifican la inserción real en inventarios, los ganchos
 de Fabric ni el guardado/copias reales de jugadores: esas comprobaciones requieren la partida anterior.
 
-Fase 2 — prueba manual pendiente (cliente y servidor dedicado, ocho idiomas):
+Fase 2 — guion de regresión manual (cliente y servidor dedicado, ocho idiomas):
 
 Comprobación estática con fuente bitmap vanilla: los textos del recordatorio ocupan como máximo
 171 px en español y 170 px en inglés (210 disponibles). El contenido de Mayús + O mide 224 px de alto
@@ -587,7 +608,7 @@ el mod registra su contenido y termina correctamente; esto no abre un mundo ni p
 Iconos: `python tools/textures/gen_status_effects.py src/main/resources/assets/aptitudes/textures/mob_effect --check`.
 Para regenerarlos añade `--preview hoja.png` y omite `--check`. Los pétalos se generan con `gen_items.py`.
 
-Pruebas en partida pendientes (servidor dedicado y dos clientes; repetir con escala de interfaz 4):
+Guion de regresión en partida (servidor dedicado y dos clientes; repetir con escala de interfaz 4):
 
 Para comprobar las duraciones base, prueba sin Herbolistas o desactiva `alchemyHerbalistEnabled`.
 
@@ -620,7 +641,7 @@ Para comprobar las duraciones base, prueba sin Herbolistas o desactiva `alchemyH
 8. Repite nombres y tooltip en `en_us` y las siete variantes de español; sin claves visibles,
    iconos ausentes ni texto solapado. Las ventajas y el capítulo se verifican a continuación.
 
-## v42 — fase 2 (verificación manual pendiente)
+## v42 — fase 2 (guion de regresión manual)
 
 Automático: `BrewingRulesTest` (duración, instantáneos, velocidad, desbordamiento y XP hasta cero),
 `AlchemyXpPersistenceTest` (codec real con JsonOps, límites y ventana tras guardar/cargar) y
@@ -628,7 +649,7 @@ Automático: `BrewingRulesTest` (duración, instantáneos, velocidad, desbordami
 el único campo de `aptitudes.accesswidener` contra Yarn 1.21.1. No se añaden dependencias ni mixins.
 Comprobación estática con los glifos bitmap vanilla: ambos textos de «Alquimia» se parten en 24 líneas
 de hasta 224 px en la ventana mínima (380×236); cabecera de menos de 50 px, índice de 23 filas dentro
-del borde y contenido desplazable. Falta confirmar la presentación en el cliente real.
+del borde y contenido desplazable. Esta medición no sustituye la inspección en el cliente real.
 
 1. Mide una operación sin Herbolista (20 s) y con Herbolista principal/secundario dentro de 8 bloques
    (aproximadamente 13,35 s). Abre el soporte, ciérralo y aléjate a 20 bloques: conserva la ayuda; a más

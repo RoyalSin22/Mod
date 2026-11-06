@@ -145,7 +145,7 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
 - **Plan aprobado v40–v45** (configuración, eventos rotativos, alquimia, maestría y amenaza, tutorial,
   traducciones): `docs/PLAN_v40_v45.md`. Excepción a «sin dependencias»: Mod Menu como `modCompileOnly` (v40).
 - Activar `attributeScaling = SOFTCAP` por defecto: **decisión del autor** tras probar en partida.
-- Pruebas en partida: v15–v19 y v29–v41 ✔ (autor, 2026-11-03). v41.1 corrige el solapamiento de `HudConfigScreen`.
+- Pruebas en partida: v15–v19 y v29–v41 ✔ (autor, 2026-11-03); T4–T6 ✔ confirmadas por el autor el 2026-11-06. v41.1 corrige el solapamiento de `HudConfigScreen`.
 - Limitaciones abiertas: tabla «Limitaciones conocidas» del `README.md` (el filtro Brain actúa cada 5 ticks).
 
 ## 8. Al terminar una tarea

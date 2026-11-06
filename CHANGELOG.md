@@ -5,104 +5,56 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
-Compilado y probado en partida por el autor (v15–v19 y v29–v41 ✔).
+## [1.4.0] — 2026-11-06
 
-### Corregido
-- **T2 — Nombres de grupo al cargar**: `PartyState` conserva el nombre guardado del líder al leer el NBT.
-  Antes lo omitía porque el constructor ya lo había añadido como miembro; sin el líder conectado podía
-  aparecer «?». Los UUID repetidos siguen sin duplicarse y conservan el primer nombre leído.
-- **v41.1** — Ajustes del HUD (Mayús + O): el texto de escala y la ayuda ya no se montan sobre los botones (la
-  distribución se calcula por filas).
+Más opciones para jugar en grupo y seguir progresando: contratos, logros, sendas hasta el nivel 50,
+piedras angulares, alquimia, maestría y zonas de amenaza. Incluye un tutorial guiado y el grimorio actualizado.
 
 ### Añadido
-- **v43 — Maestría, T6 fase 1**: la XP nueva sobrante al máximo de habilidades y roles (mínimo 50)
-  se guarda por jugador en claves nuevas del progreso. Curva propia, +0,5 % por punto y tope inicial
-  +10 % configurable. Amplifica pasivas existentes de habilidades; en roles mejora la eficiencia de
-  energía de activas, característica y definitiva. XP administrativa, creativo y espectador no generan
-  maestría. El reparto existente conserva una sola concesión por integrante, también al máximo.
-  Número dorado y detalle en las diez tarjetas de K, sin cambiar su distribución ni tamaño; resumen
-  del rol principal/secundario. Reglas, codec y configuración probados.
-- **v43 — Amenaza, T6 fase 2**: anillos horizontales desde la aparición del Mundo Normal, cada 1000
-  bloques hasta V. Criaturas hostiles nuevas: +15 % de vida y +10 % de daño por anillo, mayor probabilidad
-  de élite y hasta una tirada adicional de botín normal por baja de supervivencia, sin XP extra.
-  Instantánea persistente y atributo idempotente; no se acumulan al recargar ni repiten el cobro.
-  Excluye jefes, invocaciones, eventos escalados y criaturas con nombre previo. Siete opciones validadas,
-  aviso de cuatro segundos en el HUD, ocho idiomas y pruebas puras. Pendiente validación en partida.
-- **v44 — Tutorial guiado, fase 2**: recordatorio del paso actual y aviso de recompensas pendientes en
-  el HUD, desactivable en `aptitudes-client.json` y Mayús + O. `/aptitudes tutorial [status|skip]`
-  consulta u omite solo el tutorial del ejecutor; la omisión es irreversible y cancela los cobros pendientes.
-  Sincronización personal desde el servidor, limpieza al desconectar, textos en ocho idiomas y pruebas
-  de la vista pura. Se conservan el progreso, las recompensas y los seis objetivos de la fase 1.
-- **v42 — Alquimia, fase 2**: Herbolista principal o secundario destila un 50 % más rápido a 8 bloques
-  o tras abrir el soporte (hasta 32 bloques, conectado y en el mismo mundo); +50 % de duración sin
-  aumentar potencia ni efectos instantáneos. Una concesión de XP por elaboración real, con rendimiento
-  decreciente personal persistente y sin XP en creativo/espectador. Siete opciones validadas, capítulo
-  «Alquimia» con recetas del registro del mundo, desplazamiento y ocho idiomas. El tooltip muestra una
-  sola duración y un solo modificador por efecto. Sin mixins nuevos: acceso limitado al contador vanilla.
-- **v42 — Alquimia, fase 1**: cuatro pociones destilables (Maná, Frenesí, Velo del eclipse y Vigor del
-  bosque). Pétalos de hierbas extraíbles del saquito, sin cambiar su receta ni su uso medicinal. Tres
-  efectos propios con iconos generados, textos en ocho idiomas y reglas puras probadas. La recuperación
-  respeta la energía máxima; Frenesí no suma daño y usa un único modificador; el Velo reduce un 20 % el
-  daño de criaturas marcadas por el Eclipse o los eventos. Bonificaciones del Herbolista, configuración
-  y capítulo de alquimia completados en la fase 2.
-- **v44 — Tutorial guiado, fase 1**: seis pasos por jugador (grimorio, subir un nivel de alma en la Hoguera,
-  rol principal, activa con éxito, combo de cinco y fabricación en la Mesa del gremio). Reglas puras,
-  historial por claves en el attachment `tutorial` con `copyOnDeath` y una esmeralda por paso, cobrada
-  una sola vez y en orden. Las acciones adelantadas y las recompensas sin espacio se conservan. La primera
-  entrada reconoce grimorio, nivel de alma y rol previos; los eventos nuevos y la entrega excluyen creativo,
-  espectador y jugadores muertos. HUD, comandos y textos de usuario completados en la fase 2.
-- **T3 — Grimorio v46**: capítulos «Sendas y piedras angulares» (siete escalones, exclusividad,
-  bifurcación y las diez plantillas con sus valores por defecto) y «Logros» (los 17 objetivos y su
-  concesión por el servidor). El índice conserva el orden anterior y ajusta sus filas para 22 capítulos.
-  «Eventos del mundo» explica la Niebla de no muertos, los tres tamaños de meteorito y la armadura del
-  Eclipse; el árbol refleja el nivel 50. Textos en inglés y las siete variantes de español, sin copiar recetas.
-- **T2 — Pruebas de guardado**: pruebas nuevas de `ContractData.CODEC` con `JsonOps` (ofertas completas,
-  progreso, reputación, cobros únicos, cambio de día y datos corruptos) y de `PartyState` con NBT
-  (varios grupos, líder, nombres, opciones, datos incompletos y límites de pertenencia).
-- **T1 — Iconos S1–S3, fase 2**: los nodos de senda de la cuadrícula de `RolesScreen` se dibujan con
-  `NodeIconRenderer.draw`, con respaldo al icono de objeto y caché existente. Conservan su posición,
-  tamaño, marcos, indicadores de rango y superposiciones de bloqueo.
-- **T1 — Iconos S1–S3, fase 1**: 180 PNG nuevos para las 60 sendas, con los efectos de `paths(...)`
-  y un marco de esquinas más sencillo que S4. El generador, `--check` y la hoja `--preview` cubren
-  ahora los 480 iconos. Los 300 S4–S7 conservan sus píxeles. Integración en `RolesScreen`: véase fase 2.
-- **Iconos de Sendas — fases 1–3**: 300 iconos originales de 16×16 RGBA para S4, S5x, S5y, S6 y S7,
-  generados con Pillow desde los efectos de `RoleTree`. Incluye 19 glifos, marcos por escalón y color de
-  senda, hoja de vista previa ×4 y comprobación `--check`. Los 60 S7 usan 10 glifos de piedra angular,
-  emblema morado de borde dorado y franja de senda; asignaciones de la tabla de diseño §10 validadas.
-  Clase de cliente `NodeIconRenderer`: dibuja el PNG o el objeto de `NodeIcons` si falta, con caché que se
-  vacía al recargar recursos y atajo S7 que busca su nodo real. Pendiente la integración en las pantallas.
-- **v46.1 — Piedras angulares**: el escalón S7 (nivel 50, 1 rango) de cada senda, con 10 plantillas (Carnicería,
-  Baluarte, Sobrecarga, Detonación, Contagio, Legión, Espectro, Fortuna, Tempestad y Santuario), un sonido propio
-  para cada una e indicador en el HUD (encima de la barra de habilidades). Todos los valores son configurables.
-- **v46 — Nivel 50 y Sendas exclusivas**: el nivel máximo de rol sube a 50; las sendas pasan a ser exclusivas
-  (una por rol) y cada una crece con S4 (nivel 26), una bifurcación de dos ramas en el 32 (se elige una) y S6
-  (40, ×1,5): 240 nodos nuevos. Vista de sendas (botón «Sendas» en la pantalla de roles) con pestañas A/B/C,
-  raíl de niveles, bifurcación y confirmación al elegir. Quien tenía dos sendas conserva la de más rangos y
-  recupera los puntos de la otra. Las piedras angulares del nivel 50 llegan en la v46.1 (ver arriba).
-- **v31 — Logros**: pestaña «Aptitudes» en la pantalla de avances con 17 logros (Hoguera, roles y evoluciones,
-  combos, habilidades, runas, jefes, eventos del mundo, grupos y contratos). Los logros de estado se conceden también
-  al entrar, así que los mundos anteriores no pierden lo ya conseguido.
-- **v30 — Contratos del gremio**: Tablón de contratos con 3 ofertas diarias por jugador (fijas por día), 2–3
-  activos, 8 tipos (Caza, Entrega, Pesca, Encantamiento, Oficio, Forja, Evento y Jefe), dificultad por
-  reputación y por evolución (Élite y Legendario) y recompensas con reputación. La Caza y los Jefes cuentan
-  también para el grupo.
-- **v29 — Grupos**: menú con tecla P, invitaciones clicables con caducidad, XP compartida configurable,
-  bonificación de grupo, protección contra fuego amigo, apoyo a aliados, HUD y persistencia en el Mundo Normal.
-- **v41** — Eventos rotativos: Niebla de almas y Lluvia de brasas se alternan al azar con el Eclipse (sin
-  repetir el anterior); `/aptitudes event`; pesos configurables.
-- **v40** — Pantalla de configuración (`/aptitudes config`, pestaña ⚙ de la pantalla K o Mod Menu opcional): los
-  operadores cambian la configuración del servidor en el juego; los tooltips de las runas muestran los valores reales.
+- **Grupos**: abre el menú con P, invita a tus compañeros, comparte XP y presta apoyo a aliados.
+  El grupo conserva sus miembros, opciones y nombres al reiniciar el mundo; el fuego amigo es configurable.
+- **Contratos del gremio**: tres ofertas diarias por jugador, con encargos de caza, entrega, pesca,
+  encantamiento, oficio, forja, eventos y jefes. Completa contratos para ganar recompensas y reputación.
+- **17 logros** en la pestaña «Aptitudes» de los avances, con reconocimiento al entrar de los objetivos
+  de estado que ya habías conseguido.
+- **Roles hasta el nivel 50** y una senda exclusiva por rol, elegida entre tres. Siete escalones con una
+  bifurcación de elección única y una piedra angular final; la vista «Sendas» permite consultar la progresión.
+  Si tenías dos sendas, se conserva la de más rangos y se devuelven los puntos de la otra.
+- **Piedras angulares**: 60 nodos finales con diez plantillas de efectos, sonidos e indicador en el HUD.
+  Carnicería, Baluarte, Sobrecarga, Detonación, Contagio, Legión, Espectro, Fortuna, Tempestad y Santuario.
+- **Maestría**: la XP nueva que sobra al máximo mejora las pasivas de habilidades y la eficiencia
+  energética de roles. Cada punto aporta +0,5 %, hasta +10 % por defecto. K muestra los puntos en dorado;
+  conserva sus diez tarjetas. La XP administrativa y los modos creativo/espectador no generan maestría.
+- **Amenaza**: los hostiles nuevos del Mundo Normal se fortalecen por anillos de 1000 bloques desde la
+  aparición del mundo, hasta V. Por anillo: +15 % de vida base, +10 % de daño, más probabilidad de élite
+  y 10 % de probabilidad de una tirada extra de botín normal por baja de supervivencia. El HUD avisa al
+  cambiar de anillo. Se excluyen jefes, invocaciones, criaturas de eventos y nombres previos.
+- **Alquimia del Herbolista**: pociones de Maná, Frenesí, Velo del eclipse y Vigor del bosque; pétalos
+  extraíbles del saquito de hierbas. Un Herbolista elegible acelera el destilado un 50 % y amplía su
+  duración un 50 %. La XP por destilar tiene rendimiento decreciente; no se acumulan ampliaciones.
+- **Tutorial de seis pasos**, con una esmeralda por paso y cobro único. El recordatorio se puede ocultar
+  en Mayús + O; `/aptitudes tutorial status` consulta el progreso y `skip` lo omite de forma irreversible.
+- **Grimorio actualizado**, con 23 capítulos, sendas, piedras angulares, logros y alquimia; consulta las
+  recetas reales del juego. Los nodos de senda tienen iconos propios en el árbol y en la vista de sendas.
+- **Configuración en el juego** para operadores, desde `/aptitudes config`, K o Mod Menu opcional.
+  Los cambios pasan por validación del servidor y se sincronizan con los clientes.
 
 ### Cambiado
-- **v41.2** — Eclipse más duro: armadura (+4 y piezas de malla, hierro en la Totalidad y diamante los campeones),
-  +25 % de vida y daño en la Totalidad y esqueletos wither en sus oleadas. Lluvia de brasas con meteoritos
-  pequeños, grandes y enormes (más explosión, más botín, restos de magma temporales) y criaturas del Nether
-  (cubos de magma, blazes, piglins brutos, hoglins y esqueletos wither). Todo configurable.
-- **v41.1** — La Niebla de almas solo trae no muertos a pie: zombis, zombis aldeanos, esqueletos y, según el
-  bioma, ahogados y esqueletos pantanosos junto al agua, momias en climas cálidos y errantes en los fríos (ya no
-  aparecen fantasmas).
-- **v39** — La pantalla K se desplaza con la rueda cuando no cabe (escala de interfaz grande); la barra del
-  Eclipse sube para no tapar los avisos de la barra de acción.
+- **Eventos rotativos**: el Eclipse se alterna con la Niebla de almas y la Lluvia de brasas, sin repetir
+  el evento anterior. La Niebla solo trae no muertos a pie, con variantes según el bioma.
+- **Eclipse reforzado**: armadura y equipo en las oleadas, +25 % de vida y daño durante la Totalidad y
+  esqueletos wither. La Lluvia de brasas incorpora meteoritos grandes/enormes y criaturas del Nether.
+- **Interfaz**: K se desplaza si no cabe; el indicador del Eclipse deja libre la barra de acción.
+  Textos nuevos en inglés y español, con seis variantes regionales idénticas al español de España.
+  Portugués, francés y alemán quedan para una actualización posterior.
+
+### Corregido
+- El nombre guardado del líder del grupo se conserva al cargar, aunque no esté conectado.
+- En Mayús + O, el texto de escala y la ayuda ya no se superponen a los botones.
+
+### Validación
+- T4–T6 probadas en partida según confirmación del autor el 2026-11-06; v15–v19 y v29–v41, el 2026-11-03.
+  Las pruebas de regresión y limitaciones siguen documentadas en `docs/TESTING.md` y `README.md`.
 
 ## [1.3.7] — 2026-11-02
 

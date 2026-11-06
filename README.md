@@ -2,13 +2,13 @@
 
 Sistema RPG con tres capas que se combinan:
 
-- **8 habilidades** que suben **por uso**: Minería, Excavación, Tala, Agricultura, Combate, Tiro con arco, Defensa y Agilidad. Cada una da una bonificación pasiva por nivel.
+- **10 habilidades** que suben **por uso**: Minería, Excavación, Tala, Agricultura, Combate, Tiro con arco, Defensa, Agilidad, Pesca y Encantamiento. Cada una da una bonificación pasiva por nivel.
 - **Progresión estilo Souls**: 8 atributos (Vigor, Mente, Aguante, Fuerza, Destreza, Inteligencia, Fe y Suerte) que se suben **en una Hoguera**, pagando **niveles de XP vanilla**. Al morir, tu XP queda en el suelo y puedes recuperarla.
 - **Maná + recurso de rol**: todas las habilidades gastan Maná; cada rol tiene además un recurso propio (Furia, Sangre, Chi…) que **potencia** sus habilidades.
-- **14 roles** (clases) en **5 categorías**: Bersérker, Mago, Asesino, Herbolista, Ingeniero, Lancero, Espadachín, Paladín, Nigromante, Druida, Mercader, Monje, Elementalista y **Cambiaformas**. Eliges uno **principal** y uno **secundario**; cada rol tiene un **árbol** con 2 pasivas y 2 habilidades activas, que se usan con teclas y gastan **energía**.
+- **20 roles** (clases) en **5 categorías**. Eliges uno **principal** y uno **secundario**; ambos conservan su progreso, árbol de talentos, habilidades equipables y evoluciones. Nivel máximo inicial 50, una senda exclusiva por rol y una piedra angular al final.
 - **Evolución de roles**: Base → **Maestro** → **Definitivo** (nivel + prueba + ítem), con títulos propios, una **habilidad característica** al llegar a Maestro (tecla `Z`) y una **definitiva** al llegar a Definitivo (tecla `R`).
-- **16 habilidades únicas** (tecla `H`; catálogo con `U`): cada una tiene **un solo dueño en todo el servidor**.
-- **17 ítems nuevos** con receta (uno por rol, el Ingeniero tiene dos, y 2 ítems de evolución).
+- **16 habilidades legendarias** (tecla `H`; catálogo con `U`): la exclusividad por servidor es opcional y está desactivada por defecto.
+- **Armas, armaduras, accesorios, runas y cuatro pociones propias**, con recetas consultables en el grimorio.
 - **GUI** rediseñada (`K` atributos/habilidades, `J` roles, `U` únicas, `G` cambiar elemento), **HUD** de energía, enfriamientos y elemento activo, **comandos** y **configuración JSON**.
 
 ## Documentación técnica
@@ -33,7 +33,7 @@ Sistema RPG con tres capas que se combinan:
 ## Compilar y probar
 
 ```bash
-./gradlew build          # JAR en build/libs/aptitudes-1.0.0.jar
+./gradlew build          # JAR en build/libs/aptitudes-1.4.0.jar
 ./gradlew runClient      # lanza el cliente de desarrollo
 ./gradlew runServer      # lanza un servidor dedicado de desarrollo
 ```
@@ -53,7 +53,7 @@ El primer punto cuesta 1000 XP extra y cada siguiente cuesta 250 más. Se guarda
 y reiniciar. K mantiene las diez tarjetas y muestra M seguido de los puntos en dorado al máximo;
 sus tooltips muestran la XP acumulada. La cabecera resume las maestrías principal/secundaria.
 Comandos de XP, creativo y espectador no generan maestría. Véanse los límites y opciones en
-`docs/CONFIGURATION.md`; pruebas en partida pendientes.
+`docs/CONFIGURATION.md`. El autor confirmó las pruebas en partida de T4–T6 el 2026-11-06.
 
 ### Amenaza (v43, fase 2)
 
@@ -773,12 +773,14 @@ src/client/java/dev/aptitudes/client/   (solo cliente)
 
 | Limitación | Impacto | Posible mejora |
 |---|---|---|
-| Los textos del servidor son claves traducibles | Un cliente sin el mod ve las claves en vez del texto | Usar Server Translations API |
-| Cliente vanilla en un servidor con el mod | Sin GUI. El minado se ve más lento en el cliente, aunque el servidor lo acepta | — |
+| El mod se necesita en cliente y servidor | Un cliente vanilla no dispone de las pantallas, recursos ni datos sincronizados; puede mostrar claves traducibles | Instalar la misma versión de Aptitudes y Fabric API para 1.21.1 en ambos lados |
 | Mobs con IA de "Brain" (piglins, hoglins, warden) | Se corrigen cada 5 ticks (v19): entre dos revisiones pueden iniciar un ataque; el warden, muy agresivo, puede llegar a golpear | Mixin sobre sus tareas de ataque si hiciera falta |
-| El rango efectivo puede llegar a 5 con la evolución | Algunos valores (esquiva 35 %, Mente clara −50 %) pueden quedar fuertes | Ajustar tras probar; Mente clara está limitada a −60 % |
+| Rangos con evolución y potenciación | La evolución añade hasta +2; las activas combinadas se limitan a rango 6 y pueden ser potentes | Ajustar tras probar; la reducción combinada de enfriamientos está limitada al 60 % |
 | Fuego del Averno y explosiones del Creeper modifican bloques | Cambios permanentes del mundo (según `uniqueGriefing`) | — |
 | Quietud Eterna usa `NoAI` | Se repara al cargar, pero otro mod que lea `NoAI` podría verse afectado | — |
+| Idiomas disponibles en 1.4.0 | Inglés y español; las seis variantes regionales copian el español de España | Portugués, francés y alemán quedan para T8, sin incluirse en esta versión |
+| La Amenaza se fija al aparecer la criatura | Moverla, cambiar parámetros o recargar no recalcula su anillo; las antiguas ya comprobadas no se escalan retroactivamente | Los parámetros nuevos se aplican a nuevas apariciones; desactivar Amenaza suspende sus efectos |
+| El destilado mejorado depende de un Herbolista elegible | La ayuda termina al desconectarse, morir, cambiar de mundo, alejarse del límite o dejar de tener el rol activo | Mantener un Herbolista válido cerca o dentro del alcance tras abrir el soporte; ver `docs/CONFIGURATION.md` |
 
 **Resueltas en la v16:** la Defensa solo da XP por daño realmente recibido (no por golpes bloqueados con
 escudo ni ignorados por invulnerabilidad); un zombi esbirro que empieza a convertirse en ahogado se

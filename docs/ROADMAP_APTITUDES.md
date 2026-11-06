@@ -1,9 +1,14 @@
 # Roadmap de Aptitudes
 
-Estado sincronizado con `main` (v41, base `a608131`) y la implementación v29 en `codex/v29-grupos-v2`.
+Estado de la candidata 1.4.0, preparada desde `main` en `1be8a15` (T1–T6 integradas).
 Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fabric API 0.116.6 · Loom 1.10 · Java 21**.
 
 ## Estado real
+
+### 1.4.0 — Preparación de publicación (T7)
+- Versión 1.4.0, notas para jugadores con fecha 2026-11-06, descripción pública y limitaciones actualizadas.
+- T4–T6 probadas en partida según confirmación del autor el 2026-11-06; T6 integrada tras CI aprobada.
+- Rama `codex/publicar-1.4.0`: candidata local, sin publicar en Modrinth/CurseForge. T8 (otros idiomas) pendiente.
 
 ### v43 — Maestría y amenaza (T6, fases 1 y 2 implementadas)
 - Maestría de las diez habilidades y los veinte roles: XP nueva al máximo, curva pura, +0,5 % por punto
@@ -15,20 +20,20 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 - Amenaza: anillos 0–V desde la aparición del Mundo Normal, siete opciones validadas, vida idempotente,
   daño acotado, tirada única de botín y una sola tirada natural de élite. Instantánea por criatura;
   exclusiones para jefes, invocaciones, eventos y nombres previos. HUD S2C al cambiar de anillo.
-  Reglas, codec y límites probados; pruebas en partida de ambas fases pendientes.
+  Reglas, codec y límites probados; pruebas en partida confirmadas por el autor el 2026-11-06.
 
 ### v42 — Alquimia (T5, fases 1 y 2 implementadas)
 - Cuatro pociones registradas en 1.21.1 y recetas con `FabricBrewingRecipeRegistryBuilder`:
   Maná, Frenesí, Velo del eclipse y Vigor del bosque. Pétalos nuevos extraíbles del saquito, autorizados
   por el autor; se conservan los objetos y usos existentes. Iconos de efectos generados y ocho idiomas.
 - Recuperación de energía acotada, modificador de Frenesí idempotente y Velo solo contra criaturas
-  marcadas por los eventos; reglas puras con pruebas. Pendiente comprobar en partida.
+  marcadas por los eventos; reglas puras con pruebas. Pruebas en partida confirmadas por el autor el 2026-11-06.
 - Fase 2: +50 % de velocidad y duración para Herbolista, XP decreciente persistente, siete opciones
   validadas y capítulo «Alquimia» que consulta el registro de destilado. Acceso a un campo del contador,
   sin mixins nuevos. Un único beneficiario por elaboración, exclusión de creativo/espectador y limpieza
-  de soportes al descargar chunks. Pruebas en partida de ambas fases pendientes.
+  de soportes al descargar chunks. Pruebas en partida de ambas fases confirmadas por el autor el 2026-11-06.
 
-### Implementado (la base v41 fue compilada en el PC del autor; v29 en validación)
+### Implementado e integrado en main
 - Habilidades por uso (10: Pesca desde la v15, Encantamiento desde la v21) con hitos cada 10 niveles.
 - Atributos Souls (8) comprados en la Hoguera con XP vanilla; afinidad por rol; mancha de XP al morir.
 - 20 roles en 5 categorías, principal + secundario, árbol de 23 nodos + legendario, 3 Sendas (2 elegibles),
