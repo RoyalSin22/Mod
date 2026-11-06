@@ -42,7 +42,7 @@ Para instalarlo, copia el JAR en `.minecraft/mods/` junto con Fabric API. **Serv
 
 ## Mecánicas
 
-### Alquimia (v42, fase 1; parcial)
+### Alquimia (v42)
 
 El soporte de pociones permite destilar Maná (4 de energía por segundo durante 10 s), Frenesí
 (+15 % de velocidad de ataque durante 60 s), Velo del eclipse (−20 % de daño de criaturas de eventos
@@ -51,8 +51,13 @@ Los pétalos nuevos se extraen del Saquito de hierbas en la cuadrícula de fabri
 Esencia de élite y Fragmentos del eclipse. Las pociones admiten las formas arrojadiza y persistente
 vanilla; repetir una dosis renueva el efecto sin sumar su potencia.
 
-Las ventajas del Herbolista, opciones de configuración y el capítulo «Alquimia» del grimorio quedan
-pendientes de la fase 2. Esta fase no concede XP por destilar.
+Un Herbolista principal o secundario a 8 bloques destila un 50 % más rápido y prolonga las pociones
+un 50 % (sin aumentar potencia ni efectos instantáneos). Abrir el soporte le da prioridad mientras siga
+conectado, en ese mundo y a no más de 32 bloques. Solo uno recibe XP por elaboración: las tres primeras
+dan 4 XP base y las siguientes reducen su rendimiento hasta cero dentro de una ventana de cinco minutos.
+Cambiar de soporte, morir, reconectar o reiniciar no borra ese historial. Creativo y espectador no cuentan.
+El capítulo «Alquimia» muestra las recetas reales y permite desplazarse; las siete opciones están
+documentadas en `docs/CONFIGURATION.md`. La comprobación de destilado en partida sigue pendiente.
 
 ### Tutorial guiado (v44, fase 1; parcial)
 

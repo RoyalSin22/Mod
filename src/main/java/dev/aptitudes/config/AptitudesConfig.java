@@ -297,6 +297,15 @@ public class AptitudesConfig {
 	/** Revisión del archivo (para migraciones; ver {@link ConfigMigration}). No se edita a mano. */
 	public int configRevision = ConfigMigration.CURRENT;
 
+	// ---------- Alquimia del Herbolista (v42) ----------
+	public boolean alchemyHerbalistEnabled = true;
+	public int alchemyHerbalistRadius = 8;
+	public double alchemyBrewingSpeedBonus = 0.5;
+	public double alchemyDurationBonus = 0.5;
+	public int alchemyRoleXpPerBrew = 4;
+	public int alchemyXpWindowSeconds = 300;
+	public int alchemyXpFullRewardBrews = 3;
+
 	public static AptitudesConfig load() {
 		Path path = path();
 		AptitudesConfig cfg = new AptitudesConfig();
@@ -479,6 +488,12 @@ public class AptitudesConfig {
 		c.roleChangeCooldownMinutes = clamp(c.roleChangeCooldownMinutes, 0, 100_000);
 		c.baseMaxEnergy = Math.max(1.0, c.baseMaxEnergy);
 		c.baseEnergyRegenPerSecond = Math.max(0.0, c.baseEnergyRegenPerSecond);
+		c.alchemyHerbalistRadius = clamp(c.alchemyHerbalistRadius, 0, 16);
+		c.alchemyBrewingSpeedBonus = Math.min(1.0, c.alchemyBrewingSpeedBonus);
+		c.alchemyDurationBonus = Math.min(1.0, c.alchemyDurationBonus);
+		c.alchemyRoleXpPerBrew = clamp(c.alchemyRoleXpPerBrew, 0, 20);
+		c.alchemyXpWindowSeconds = clamp(c.alchemyXpWindowSeconds, 10, 3600);
+		c.alchemyXpFullRewardBrews = clamp(c.alchemyXpFullRewardBrews, 1, 20);
 		return c;
 	}
 

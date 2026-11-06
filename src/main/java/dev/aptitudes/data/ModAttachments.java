@@ -70,6 +70,17 @@ public final class ModAttachments {
 				.initializer(dev.aptitudes.tutorial.TutorialData::new)
 				.buildAndRegister(Aptitudes.id("tutorial"));
 
+	public static final AttachmentType<dev.aptitudes.alchemy.AlchemyXpData> ALCHEMY_XP =
+			AttachmentRegistry.<dev.aptitudes.alchemy.AlchemyXpData>builder()
+					.persistent(dev.aptitudes.alchemy.AlchemyXpData.CODEC).copyOnDeath()
+					.initializer(() -> new dev.aptitudes.alchemy.AlchemyXpData(0, 0))
+					.buildAndRegister(Aptitudes.id("alchemy_xp"));
+
+	/** Último Herbolista que abrió realmente el soporte, guardado en la entidad de bloque. */
+	public static final AttachmentType<String> HERBAL_BREWER = AttachmentRegistry.<String>builder()
+			.persistent(com.mojang.serialization.Codec.STRING)
+			.buildAndRegister(Aptitudes.id("herbal_brewer"));
+
 	private ModAttachments() {
 	}
 

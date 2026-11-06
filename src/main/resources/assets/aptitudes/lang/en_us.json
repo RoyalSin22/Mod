@@ -3477,5 +3477,7 @@
   "item.minecraft.potion.effect.aptitudes_forest_vigor": "Potion of Forest Vigor",
   "item.minecraft.splash_potion.effect.aptitudes_forest_vigor": "Splash Potion of Forest Vigor",
   "item.minecraft.lingering_potion.effect.aptitudes_forest_vigor": "Lingering Potion of Forest Vigor",
-  "item.minecraft.tipped_arrow.effect.aptitudes_forest_vigor": "Arrow of Forest Vigor"
+  "item.minecraft.tipped_arrow.effect.aptitudes_forest_vigor": "Arrow of Forest Vigor",
+  "guide.aptitudes.alchemy.title": "Alchemy",
+  "guide.aptitudes.alchemy.body": "Brew in a fueled brewing stand. The recipes below come from the game; hover over bottles and click the petals to view their extraction.\n\nMana restores energy; Frenzy speeds up attacks; Veil protects against event creatures; Vigor regenerates and nourishes.\n\nA primary or secondary Herbalist within 8 blocks brews 50% faster and extends effects by 50%. Opening the stand lets them move up to 32 blocks away while online in that world. Doses do not add potency.\n\nOnly one Herbalist earns XP per batch: the player who opened the stand takes priority, then the nearest. The first three grant 4 base XP; repeated batches within five minutes reduce XP to zero. Taking bottles or reopening never pays again. Creative and spectator players do not qualify. These values are configurable."
 }

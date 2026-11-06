@@ -5,14 +5,16 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
-### v42 — Alquimia (T5, fase 1 implementada; fase 2 pendiente)
+### v42 — Alquimia (T5, fases 1 y 2 implementadas)
 - Cuatro pociones registradas en 1.21.1 y recetas con `FabricBrewingRecipeRegistryBuilder`:
   Maná, Frenesí, Velo del eclipse y Vigor del bosque. Pétalos nuevos extraíbles del saquito, autorizados
   por el autor; se conservan los objetos y usos existentes. Iconos de efectos generados y ocho idiomas.
 - Recuperación de energía acotada, modificador de Frenesí idempotente y Velo solo contra criaturas
   marcadas por los eventos; reglas puras con pruebas. Pendiente comprobar en partida.
-- Fase 2 pendiente: destilado rápido, +50 % de duración y XP con rendimiento decreciente para Herbolista,
-  configuración validada y capítulo «Alquimia» que lea las recetas reales del juego.
+- Fase 2: +50 % de velocidad y duración para Herbolista, XP decreciente persistente, siete opciones
+  validadas y capítulo «Alquimia» que consulta el registro de destilado. Acceso a un campo del contador,
+  sin mixins nuevos. Un único beneficiario por elaboración, exclusión de creativo/espectador y limpieza
+  de soportes al descargar chunks. Pruebas en partida de ambas fases pendientes.
 
 ### Implementado (la base v41 fue compilada en el PC del autor; v29 en validación)
 - Habilidades por uso (10: Pesca desde la v15, Encantamiento desde la v21) con hitos cada 10 niveles.

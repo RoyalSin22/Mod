@@ -85,7 +85,8 @@ public class GuideScreen extends Screen {
 			chapter(RECIPES_CHAPTER, Items.CRAFTING_TABLE, List::of),
 			chapter("drops", Items.ZOMBIE_HEAD, () -> List.of(Items.ZOMBIE_HEAD, Items.SKELETON_SKULL, ModItems.ELITE_ESSENCE)),
 			chapter("paths", Items.NETHER_STAR, List::of),
-			chapter("achievements", Items.GOLDEN_APPLE, List::of));
+			chapter("achievements", Items.GOLDEN_APPLE, List::of),
+			chapter("alchemy", Items.BREWING_STAND, () -> List.of(ModItems.HERB_PETALS)));
 
 	/** Último capítulo abierto (dura la sesión de juego). */
 	private static int lastChapter;
@@ -109,6 +110,8 @@ public class GuideScreen extends Screen {
 	private final Map<Item, List<RecipeEntry<?>>> recipesFor = new HashMap<>();
 	private final Map<Item, Set<Item>> usedIn = new HashMap<>();
 	private final List<Item> craftable = new ArrayList<>();
+	private record Brew(ItemStack input, ItemStack ingredient, ItemStack output) { }
+	private final List<Brew> brewing = new ArrayList<>();
 
 	private TextFieldWidget search;
 	private String query = "";
@@ -155,6 +158,7 @@ public class GuideScreen extends Screen {
 		left = (width - W) / 2;
 		top = (height - H) / 2;
 		buildRecipeIndex();
+		buildBrewingIndex();
 		search = new TextFieldWidget(textRenderer, pageX(), top + 40, Math.min(160, pageW()), 14,
 				Text.translatable("screen.aptitudes.guide.search"));
 		search.setPlaceholder(Text.translatable("screen.aptitudes.guide.search").formatted(Formatting.DARK_GRAY));
@@ -192,6 +196,28 @@ public class GuideScreen extends Screen {
 
 	private static boolean isModItem(Item item) {
 		return Registries.ITEM.getId(item).getNamespace().equals(Aptitudes.MOD_ID);
+	}
+
+	/** Consulta el registro de destilado del mundo: no mantiene una segunda tabla de recetas. */
+	private void buildBrewingIndex() {
+		brewing.clear();
+		if (client == null || client.world == null) return;
+		var registry = client.world.getBrewingRecipeRegistry();
+		for (Item item : Registries.ITEM) {
+			if (!isModItem(item)) continue;
+			ItemStack ingredient = new ItemStack(item);
+			if (!registry.isValidIngredient(ingredient)) continue;
+			for (var potion : Registries.POTION.streamEntries().toList()) {
+				ItemStack input = net.minecraft.component.type.PotionContentsComponent.createStack(Items.POTION, potion);
+				if (!registry.hasRecipe(input, ingredient)) continue;
+				ItemStack output = registry.craft(ingredient, input);
+				var contents = output.get(net.minecraft.component.DataComponentTypes.POTION_CONTENTS);
+				if (contents != null && contents.potion().isPresent()
+						&& contents.potion().get().getKey().orElseThrow().getValue().getNamespace().equals(Aptitudes.MOD_ID)) {
+					brewing.add(new Brew(input, ingredient, output));
+				}
+			}
+		}
 	}
 
 	private int pageX() { return left + LIST_W + 14; }
@@ -232,7 +258,7 @@ public class GuideScreen extends Screen {
 			boolean current = i == chapter;
 			boolean hover = mouseX >= left + 6 && mouseX < left + 6 + LIST_W && mouseY >= y && mouseY < y + rh;
 			if (current || hover) ctx.fill(left + 6, y, left + 6 + LIST_W, y + rh, sel ? 0x60C9A54C : current ? 0x40C9A54C : 0x30303850);
-			// Con 22 capítulos, la ventana mínima usa filas e iconos de 9 px para que quepa el índice.
+			// Con 23 capítulos, la ventana mínima usa filas e iconos de 9 px para que quepa el índice.
 			int iconSize = Math.min(10, rh);
 			ctx.getMatrices().push();
 			ctx.getMatrices().translate(left + 8, y + (rh - iconSize) / 2f, 0);
@@ -257,6 +283,10 @@ public class GuideScreen extends Screen {
 		Text counter = Text.translatable("screen.aptitudes.guide.chapter", chapter + 1, CHAPTERS.size());
 		ctx.drawText(textRenderer, counter, px, top + 42, UiStyle.MUTED, false);
 		UiStyle.line(ctx, px, top + 59, px + pw, top + 59, UiStyle.GOLD_DARK);
+		if (c.id().equals("alchemy")) {
+			renderAlchemy(ctx, mouseX, mouseY, tip);
+			return;
+		}
 		int y = top + 63;
 
 		// Ilustraciones clicables
@@ -295,6 +325,50 @@ public class GuideScreen extends Screen {
 			Text more = Text.translatable("screen.aptitudes.guide.scroll", (int) scroll + 1, maxScroll + 1);
 			ctx.drawText(textRenderer, more, px + pw - textRenderer.getWidth(more) - 6, top + H - 10, UiStyle.MUTED, false);
 		}
+	}
+
+	private void renderAlchemy(DrawContext ctx, int mouseX, int mouseY, Tooltip tip) {
+		int px = pageX(), pw = pageW(), start = top + 63, bottom = top + H - 12;
+		List<OrderedText> lines = textRenderer.wrapLines(Text.translatable("guide.aptitudes.alchemy.body"), pw - 10);
+		int total = lines.size() * 10 + 8 + Math.max(1, brewing.size()) * 26 + 26;
+		int visible = bottom - start;
+		int maxScroll = Math.max(0, total - visible);
+		scroll = MathHelper.clamp(scroll, 0, maxScroll);
+		int y = start - (int) scroll;
+		ctx.enableScissor(px - 2, start, px + pw, bottom);
+		for (OrderedText line : lines) { ctx.drawText(textRenderer, line, px, y, UiStyle.TEXT, false); y += 10; }
+		y += 8;
+		if (brewing.isEmpty()) {
+			ctx.drawText(textRenderer, UiStyle.fit(textRenderer,
+					Text.translatable("screen.aptitudes.guide.no_recipes_synced"), pw - 10), px, y, UiStyle.MUTED, false);
+			y += 26;
+		}
+		for (Brew brew : brewing) {
+			ItemStack[] stacks = {brew.input(), brew.ingredient(), brew.output()};
+			int[] offsets = {4, 40, 94};
+			ctx.drawText(textRenderer, Text.literal("+"), px + 27, y + 5, UiStyle.GOLD, false);
+			arrow(ctx, px + 67, y + 5);
+			for (int i = 0; i < 3; i++) {
+				int x = px + offsets[i];
+				slot(ctx, x, y, false);
+				ctx.drawItem(stacks[i], x + 1, y + 1);
+				if (mouseY >= Math.max(start, y) && mouseY < Math.min(bottom, y + SLOT)
+						&& mouseX >= x && mouseX < x + SLOT) tip.item(stacks[i]);
+			}
+			Text name = brew.output().getName();
+			ctx.drawText(textRenderer, UiStyle.fit(textRenderer, name, pw - 120), px + 116, y + 5, UiStyle.TEXT, false);
+			y += 26;
+		}
+		// La extracción se consulta en la ficha normal y su receta sincronizada.
+		slot(ctx, px + 4, y, false);
+		ctx.drawItem(new ItemStack(ModItems.HERB_PETALS), px + 5, y + 1);
+		ctx.drawText(textRenderer, UiStyle.fit(textRenderer, ModItems.HERB_PETALS.getName(), pw - 30), px + 26, y + 5, UiStyle.TEXT, false);
+		if (y >= start && y + SLOT <= bottom) {
+			hits.add(new Hit(px + 4, y, SLOT, SLOT, () -> openItem(ModItems.HERB_PETALS, true)));
+			if (mouseX >= px + 4 && mouseX < px + 4 + SLOT && mouseY >= y && mouseY < y + SLOT) tip.item(new ItemStack(ModItems.HERB_PETALS));
+		}
+		ctx.disableScissor();
+		scrollBar(ctx, px + pw - 2, start, bottom, scroll, maxScroll, visible, total);
 	}
 
 	private void renderRecipeBook(DrawContext ctx, int mouseX, int mouseY, float delta, Tooltip tip) {
@@ -587,7 +661,7 @@ public class GuideScreen extends Screen {
 
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
-		scroll -= verticalAmount * (recipesMode() ? 1 : 2);
+		scroll -= verticalAmount * (viewing == null && CHAPTERS.get(chapter).id().equals("alchemy") ? 18 : recipesMode() ? 1 : 2);
 		return true;
 	}
 

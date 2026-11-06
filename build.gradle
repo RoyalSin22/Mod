@@ -11,6 +11,7 @@ base {
 }
 
 loom {
+	accessWidenerPath = file('src/main/resources/aptitudes.accesswidener')
 	// Separa el código de cliente (GUI, keybinds) del común: evita cargar
 	// clases de cliente en un servidor dedicado.
 	splitEnvironmentSourceSets()

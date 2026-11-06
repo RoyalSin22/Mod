@@ -453,6 +453,8 @@ Para regenerarlos añade `--preview hoja.png` y omite `--check`. Los pétalos se
 
 Pruebas en partida pendientes (servidor dedicado y dos clientes; repetir con escala de interfaz 4):
 
+Para comprobar las duraciones base, prueba sin Herbolistas o desactiva `alchemyHerbalistEnabled`.
+
 1. Fabrica un saquito con su receta anterior. Colócalo solo en la cuadrícula: 1 pétalo, consumo de
    1 saquito; sin recoger el resultado no se consume. Prueba clic normal, Mayús y libro de recetas.
    El saquito restante conserva su curación y retirada de veneno. El pétalo muestra icono y nombre.
@@ -480,7 +482,42 @@ Pruebas en partida pendientes (servidor dedicado y dos clientes; repetir con esc
    nombres, iconos y duración reducida vanilla. Con dos jugadores y en grupo, las áreas beneficiosas
    pueden afectar a ambos; no hay reparto de XP, recompensas ni multiplicación por miembros.
 8. Repite nombres y tooltip en `en_us` y las siete variantes de español; sin claves visibles,
-   iconos ausentes ni texto solapado. Las ventajas de Herbolista y capítulo no están en esta fase.
+   iconos ausentes ni texto solapado. Las ventajas y el capítulo se verifican a continuación.
+
+## v42 — fase 2 (verificación manual pendiente)
+
+Automático: `BrewingRulesTest` (duración, instantáneos, velocidad, desbordamiento y XP hasta cero),
+`AlchemyXpPersistenceTest` (codec real con JsonOps, límites y ventana tras guardar/cargar) y
+`AlchemyConfigValidationTest` (siete valores por defecto, límites y no finitos). El build valida además
+el único campo de `aptitudes.accesswidener` contra Yarn 1.21.1. No se añaden dependencias ni mixins.
+Comprobación estática con los glifos bitmap vanilla: ambos textos de «Alquimia» se parten en 24 líneas
+de hasta 224 px en la ventana mínima (380×236); cabecera de menos de 50 px, índice de 23 filas dentro
+del borde y contenido desplazable. Falta confirmar la presentación en el cliente real.
+
+1. Mide una operación sin Herbolista (20 s) y con Herbolista principal/secundario dentro de 8 bloques
+   (aproximadamente 13,35 s). Abre el soporte, ciérralo y aléjate a 20 bloques: conserva la ayuda; a más
+   de 32 bloques, desconectado, muerto, en otro mundo, creativo/espectador o sin rol activo, deja de ayudar.
+2. Comprueba tres frascos frente a uno: una sola concesión de XP por operación. Dos Herbolistas, incluso
+   en grupo: un beneficiario y una bonificación; tiene prioridad quien abrió, luego el más cercano.
+   Reabrir, clic rápido, recoger mediante tolva o volver a introducir el resultado nunca vuelve a cobrar.
+3. Poción rara + pétalo con ayuda: Maná de 15 s. Frenesí 90 s, Velo 135 s y Vigor 45 s de regeneración;
+   Saturación no aumenta. Pasa luego Maná a Vigor, a arrojadiza y a persistente: solo +50 % desde la
+   nueva receta, sin acumulación de porcentajes ni potencia. Tooltip: una duración y un modificador,
+   tanto en el inventario como en el grimorio. Repite con pociones vanilla y varios ingredientes.
+4. Retira/cambia ingrediente o frascos durante el proceso; cancela antes del último tick, usa tolvas
+   y prueba varios soportes a la vez: nunca XP sin consumir el ingrediente de una receta real.
+   Configura el bono de velocidad a 0 y 1 para verificar ambos extremos y su finalización única.
+5. Completa más de 12 operaciones con efectos en cinco minutos: 4/4/4/3/2/2/1…/0 XP base, según
+   multiplicadores de rol. Cambia de soporte, reconecta y reinicia entre operaciones: el contador sigue.
+   Muere y reaparece: tampoco se borra. Las pociones sin efectos y `/experience` no dan esta XP.
+6. Guarda/carga un chunk a mitad de destilado y después de terminar; comprueba frascos, duración y
+   ausencia de cobro repetido. No fuerza chunks descargados. La prioridad del soporte se conserva.
+   Con dos Herbolistas abriendo alternadamente, solo la apertura nueva cambia la prioridad.
+7. Edita las siete opciones por archivo y pantalla del servidor: límites documentados, NaN/infinitos
+   rechazados. Con ventajas desactivadas queda el destilado vanilla. Un cliente sin permisos no cambia nada.
+8. Grimorio con escala 4 y ventana útil 426×240: 23 capítulos dentro del índice, «Alquimia» con cuerpo
+   desplazable y recetas del registro (iconos/tooltip con entradas y salidas reales). Pulsa los pétalos:
+   abre su extracción desde la receta sincronizada. Repite en inglés y siete variantes de español.
 
 # v30 — contratos del gremio (verificación manual)
 

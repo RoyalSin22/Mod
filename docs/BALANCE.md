@@ -271,7 +271,7 @@ Efecto de balance a vigilar: compartir XP de rol permite que integrantes avancen
 tengan activo; es el comportamiento deliberado de la XP compartida. El rendimiento decreciente se calcula antes
 del reparto para que las bajas repetidas no eludan el límite.
 
-# Alquimia (v42, fase 1)
+# Alquimia (v42)
 
 | Poción | Efecto inicial | Duración bebible |
 |---|---|---|
@@ -295,7 +295,26 @@ vanilla; pueden beneficiar a otras entidades, incluidos aliados o criaturas ajen
 
 Se extrae 1 pétalo por saquito, consumiéndolo mediante fabricación vanilla. Se conservan la receta y el
 uso medicinal del saquito. No se registran variantes prolongadas ni de potencia II.
-Sin bonificaciones por rol ni XP de destilado todavía; configuración y ventajas de Herbolista en fase 2.
+Herbolista principal o secundario: velocidad ×1,5 (unos 13,35 s en lugar de 20 s) y duración ×1,5.
+La ayuda cercana requiere 8 bloques; quien abrió realmente el soporte tiene prioridad hasta 32 bloques.
+En ambos casos debe seguir conectado, vivo, en ese mundo y con el rol activo. No cuenta en creativo ni
+espectador, incluso con `awardXpInCreative`. El propietario se guarda en el soporte, pero no evita que
+otro Herbolista lo use y asuma la prioridad al abrirlo. Si no está disponible se elige al más cercano.
+Dos Herbolistas no suman bonificaciones ni duplican la XP. No hay reparto de esta XP al grupo.
+
+La duración se calcula desde los efectos de la receta original (no desde una duración ya ampliada),
+con máximo 24 000 ticks; el amplificador no cambia y los instantáneos no se repiten. Se conserva el
+identificador de poción para poder seguir destilando. Los efectos ampliados usan componentes vanilla
+y se combinan por duración máxima, no por suma. El tooltip los presenta una sola vez. La elaboración
+siguiente crea una poción nueva desde el registro vanilla y no arrastra la ampliación anterior.
+
+XP: una concesión al terminar una operación real que produzca pociones con efectos, tanto de Aptitudes
+como vanilla. Nada por abrir, recoger, introducir una poción ya hecha ni elaborar pociones sin efectos.
+Por defecto, para el evento n en cinco minutos: `floor(4 × min(1, 3/n))`; desde el evento 13 da cero,
+con un máximo de 25 XP base por ventana (antes del multiplicador de rol secundario/especialización).
+La ventana empieza en la primera elaboración y se guarda en `alchemy_xp` con `copyOnDeath`.
+Cambiar de soporte/rol, morir, reconectar o reiniciar no la borra; los comandos de XP no la alimentan.
+Se conserva el consumo y cancelación vanilla. Un chunk descargado no se acelera ni fuerza su carga.
 
 # Contratos del gremio (v30)
 

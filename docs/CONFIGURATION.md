@@ -229,8 +229,18 @@ como tope por jugador.
 La interfaz de configuración del servidor permite editar estos campos; sus valores pasan por `validated(...)` igual
 que los demás.
 
-## Alquimia (v42, fase 1)
+## Alquimia (v42)
 
-Esta fase no añade campos de configuración. Potencias y duraciones iniciales están en `AlchemyRules`
-y en `docs/BALANCE.md`. Las opciones de alquimia, su validación y las ventajas del Herbolista se
-implementarán en la fase 2; el soporte conserva por ahora su velocidad vanilla y no concede XP de rol.
+| Campo | Defecto | Límites | Descripción |
+|---|---:|---:|---|
+| `alchemyHerbalistEnabled` | true | booleano | Activa ventajas y XP de destilado; no desregistra pociones ni recetas. |
+| `alchemyHerbalistRadius` | 8 | [0, 16] | Radio de detección cercana. Con 0 solo ayuda el Herbolista que abrió el soporte, hasta 32 bloques. |
+| `alchemyBrewingSpeedBonus` | 0.5 | [0, 1] | Fracción de velocidad adicional: 0.5 = 50 % más rápido; 0 conserva el tiempo vanilla. |
+| `alchemyDurationBonus` | 0.5 | [0, 1] | Duración adicional respecto de la receta original, sin aumentar potencia ni instantáneos. Tope de duración ampliada: 24 000 ticks. |
+| `alchemyRoleXpPerBrew` | 4 | [0, 20] | XP base por elaboración con efectos, no por frasco ni por recogida. 0 desactiva la XP. |
+| `alchemyXpWindowSeconds` | 300 | [10, 3600] | Ventana personal de rendimiento decreciente, persistente al morir/reconectar/reiniciar. |
+| `alchemyXpFullRewardBrews` | 3 | [1, 20] | Elaboraciones con XP completa por ventana; después baja hasta cero, sin suelo positivo. |
+
+Las potencias y duraciones base de las cuatro pociones se conservan en `AlchemyRules` y `docs/BALANCE.md`.
+Los valores no finitos o negativos vuelven al defecto y luego se acotan en `validated(...)`.
+Estas opciones se sincronizan y editan con la pantalla existente, con validación del servidor.

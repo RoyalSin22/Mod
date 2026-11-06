@@ -3477,5 +3477,7 @@
   "item.minecraft.potion.effect.aptitudes_forest_vigor": "Poción de vigor del bosque",
   "item.minecraft.splash_potion.effect.aptitudes_forest_vigor": "Poción arrojadiza de vigor del bosque",
   "item.minecraft.lingering_potion.effect.aptitudes_forest_vigor": "Poción persistente de vigor del bosque",
-  "item.minecraft.tipped_arrow.effect.aptitudes_forest_vigor": "Flecha de vigor del bosque"
+  "item.minecraft.tipped_arrow.effect.aptitudes_forest_vigor": "Flecha de vigor del bosque",
+  "guide.aptitudes.alchemy.title": "Alquimia",
+  "guide.aptitudes.alchemy.body": "Destila en un soporte con combustible. Las recetas de abajo se leen del juego; pasa el ratón por los frascos y pulsa los pétalos para ver su extracción.\n\nManá recupera energía; Frenesí acelera los ataques; Velo protege de criaturas de eventos; Vigor regenera y sacia.\n\nUn Herbolista principal o secundario a 8 bloques acelera el destilado un 50 % y prolonga sus efectos un 50 %. Si abre el soporte, puede alejarse hasta 32 bloques mientras siga conectado en ese mundo. Las dosis no suman potencia.\n\nSolo un Herbolista recibe XP por elaboración: primero quien abrió el soporte y, si no está disponible, el más cercano. Las primeras tres dan 4 XP base; repetir en cinco minutos reduce la XP hasta cero. Recoger o reabrir no vuelve a cobrar. Creativo y espectador no cuentan. Estos valores se pueden configurar."
 }

@@ -15,12 +15,18 @@ Compilado y probado en partida por el autor (v15–v19 y v29–v41 ✔).
   distribución se calcula por filas).
 
 ### Añadido
+- **v42 — Alquimia, fase 2**: Herbolista principal o secundario destila un 50 % más rápido a 8 bloques
+  o tras abrir el soporte (hasta 32 bloques, conectado y en el mismo mundo); +50 % de duración sin
+  aumentar potencia ni efectos instantáneos. Una concesión de XP por elaboración real, con rendimiento
+  decreciente personal persistente y sin XP en creativo/espectador. Siete opciones validadas, capítulo
+  «Alquimia» con recetas del registro del mundo, desplazamiento y ocho idiomas. El tooltip muestra una
+  sola duración y un solo modificador por efecto. Sin mixins nuevos: acceso limitado al contador vanilla.
 - **v42 — Alquimia, fase 1**: cuatro pociones destilables (Maná, Frenesí, Velo del eclipse y Vigor del
   bosque). Pétalos de hierbas extraíbles del saquito, sin cambiar su receta ni su uso medicinal. Tres
   efectos propios con iconos generados, textos en ocho idiomas y reglas puras probadas. La recuperación
   respeta la energía máxima; Frenesí no suma daño y usa un único modificador; el Velo reduce un 20 % el
   daño de criaturas marcadas por el Eclipse o los eventos. Bonificaciones del Herbolista, configuración
-  y capítulo de alquimia pendientes de la fase 2.
+  y capítulo de alquimia completados en la fase 2.
 - **v44 — Tutorial guiado, fase 1**: seis pasos por jugador (grimorio, subir un nivel de alma en la Hoguera,
   rol principal, activa con éxito, combo de cinco y fabricación en la Mesa del gremio). Reglas puras,
   historial por claves en el attachment `tutorial` con `copyOnDeath` y una esmeralda por paso, cobrada

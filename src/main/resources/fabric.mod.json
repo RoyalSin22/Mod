@@ -14,6 +14,7 @@
 		"issues": "https://github.com/RoyalSin22/mod/issues"
 	},
 	"environment": "*",
+	"accessWidener": "aptitudes.accesswidener",
 	"entrypoints": {
 		"main": [
 			"dev.aptitudes.Aptitudes"
