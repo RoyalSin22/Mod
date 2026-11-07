@@ -273,6 +273,8 @@ Las artes de sangre se integran en la evolución del Nigromante (Nigromante → 
 ## Cambios de equilibrio y diseño (tras la primera prueba)
 
 **Idioma.** Además de `es_es` se incluyen `es_mx`, `es_ar`, `es_cl`, `es_ec`, `es_uy` y `es_ve`. Minecraft busca el archivo exacto del idioma elegido y, si no lo encuentra, muestra el inglés.
+La candidata de T8 incluye también portugués de Brasil, francés y alemán con todas las claves traducidas;
+son traducciones iniciales pendientes de revisión visual y con hablantes nativos.
 
 **Atributos más lentos.**
 - **1 punto de atributo cada 3 niveles de alma** (`soulLevelsPerPoint`).
@@ -778,7 +780,7 @@ src/client/java/dev/aptitudes/client/   (solo cliente)
 | Rangos con evolución y potenciación | La evolución añade hasta +2; las activas combinadas se limitan a rango 6 y pueden ser potentes | Ajustar tras probar; la reducción combinada de enfriamientos está limitada al 60 % |
 | Fuego del Averno y explosiones del Creeper modifican bloques | Cambios permanentes del mundo (según `uniqueGriefing`) | — |
 | Quietud Eterna usa `NoAI` | Se repara al cargar, pero otro mod que lea `NoAI` podría verse afectado | — |
-| Idiomas de la candidata (T8, fase 1) | Inglés y español; las seis variantes regionales copian el español de España. Portugués de Brasil, francés y alemán tienen interfaz y objetos traducidos; grimorio y nodos aún en inglés | Traducción inicial: completar fases 2–3 y revisar con hablantes nativos antes de anunciarla como completa |
+| Idiomas de la candidata (T8, fases 1–3) | Inglés y español; las seis variantes regionales copian el español de España. Portugués de Brasil, francés y alemán cubren las 3512 claves, incluidos interfaz, objetos, grimorio y nodos/sendas | Traducción inicial: revisión visual y con hablantes nativos pendiente antes de presentarla como revisada |
 | La Amenaza se fija al aparecer la criatura | Moverla, cambiar parámetros o recargar no recalcula su anillo; las antiguas ya comprobadas no se escalan retroactivamente | Los parámetros nuevos se aplican a nuevas apariciones; desactivar Amenaza suspende sus efectos |
 | El destilado mejorado depende de un Herbolista elegible | La ayuda termina al desconectarse, morir, cambiar de mundo, alejarse del límite o dejar de tener el rol activo | Mantener un Herbolista válido cerca o dentro del alcance tras abrir el soporte; ver `docs/CONFIGURATION.md` |
 

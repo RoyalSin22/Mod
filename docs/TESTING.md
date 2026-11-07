@@ -1,6 +1,117 @@
 # Pruebas de Aptitudes
 
+## v45 — Traducciones T8, fase 3 (nodos y sendas)
+
+```powershell
+python -X utf8 tools/lang/gen_interface_lang.py
+python -X utf8 tools/lang/gen_guide_lang.py
+python -X utf8 tools/lang/gen_nodes_lang.py
+python -X utf8 tools/lang/gen_evolved_lang.py
+python -X utf8 tools/lang/gen_path_lang.py
+python -X utf8 tools/lang/gen_interface_lang.py --check
+python -X utf8 tools/lang/gen_guide_lang.py --check
+python -X utf8 tools/lang/gen_nodes_lang.py --check
+python -X utf8 tools/lang/gen_evolved_lang.py --check
+python -X utf8 tools/lang/gen_path_lang.py --check
+python -X utf8 tools/lang/check_lang.py
+python -X utf8 -m unittest discover -s tools/lang -p 'test_*_lang.py'
+.\gradlew.bat build
+```
+
+- Las 2080 claves de esta fase se reparten en 600 de nodos base, 400 de evolución y 1080 de sendas.
+  `node_catalog.py` mantiene las frases base completas, sin traducción automática por fragmentos ni
+  respaldo en inglés. Las otras dos familias proceden de sus generadores originales ampliados.
+- `gen_nodes_lang.py` exige cobertura exacta y conserva las fases anteriores. Los generadores de
+  evolución y sendas admiten `--check` y `--locales pt_br fr_fr de_de`; por defecto incluyen inglés,
+  español y los tres idiomas nuevos. `generator_cli.py` mantiene orden, LF y 2 espacios, y copia
+  español a sus variantes. No duplica el párrafo antiguo de evolución al regenerar el grimorio actual.
+- Las 12 pruebas nuevas verifican cobertura, ausencia de descripciones en inglés, números de cada
+  descripción, conservación de otras fases, idempotencia, claves nuevas sin traducir, textos vacíos,
+  porcentajes rotos, duplicados, nombres faltantes, bifurcaciones, S6 ×1.5, plantillas S7 y caracteres
+  invisibles accidentales. La regeneración de inglés y español se compara byte a byte, incluidas variantes.
+- Resultado local del 2026-11-06: `BUILD SUCCESSFUL in 42s`, 217 pruebas JUnit sin fallos, errores ni
+  omitidas; 35 pruebas Python aprobadas. Los tres idiomas tienen las 3512 claves de `en_us` en el mismo
+  orden y con los mismos marcadores, incluidos argumentos repetidos, índices y porcentajes escapados.
+- Autorrevisión: solo cambian recursos de idioma en el mod; recompensas, consumo, XP, modos de juego,
+  muerte, reconexión, reinicio, grupos, aliados y límites del servidor conservan su lógica. No se añaden
+  configuraciones ni se altera el balance. Los ocho idiomas anteriores permanecen idénticos a la base.
+  Comparación del JAR final con T8 fase 1: mismos archivos, 362 clases idénticas byte a byte y solo
+  tres recursos distintos (`pt_br.json`, `fr_fr.json`, `de_de.json`).
+
+Pruebas en partida y revisión con hablantes nativos pendientes (traducción inicial):
+
+1. En cada idioma, abrir J y recorrer los veinte roles: nodos base, estadísticas, mecánica, reactivas,
+   activas y legendario. Revisar números, porcentajes y tecla H; las claves internas no deben verse.
+2. Evolucionar un personaje de prueba y revisar los diez nodos de Maestro/Definitivo por rol: nombres,
+   efectos, requisitos y tooltips. Comprobar que cada fila conserva sus valores anteriores.
+3. Abrir Sendas para cada rol y las tres pestañas. Revisar S1–S7, ambas opciones de S5, el aumento de S6
+   y las diez plantillas de piedra angular. Comparar los valores con la configuración y `docs/BALANCE.md`.
+4. Usar escala 4 y resolución 426×240: comprobar recorte de nombres en listados y lectura de detalles.
+   Se conserva la distribución y el ajuste de texto existentes; esta fase no atribuye una prueba visual al agente.
+5. Regenerar con los comandos anteriores y ejecutar los cinco `--check`: no debe cambiar ningún archivo.
+   Los nombres compartidos entre idiomas (p. ej., Kensei, Shuriken o nombres musicales) son intencionados;
+   ninguna descripción de nodo/senda conserva el inglés como texto provisional.
+
+## v45 — Traducciones T8, fase 2 (grimorio)
+
+Registro de la fase 2; la fase 3 anterior completa sus nodos pendientes.
+
+```powershell
+python -X utf8 tools/lang/gen_guide_lang.py
+python -X utf8 tools/lang/gen_guide_lang.py --check
+python -X utf8 tools/lang/gen_interface_lang.py --check
+python -X utf8 tools/lang/check_lang.py
+python -X utf8 -m unittest discover -s tools/lang -p 'test_*_lang.py'
+.\gradlew.bat build
+```
+
+- `guide_catalog.py` traduce las 46 claves de los 23 capítulos a `pt_br`, `fr_fr` y `de_de`.
+  `gen_guide_lang.py` exige cobertura completa y conserva interfaz, objetos y nodos de otras fases.
+  El párrafo de filas evolucionadas procede de `GUIDE` en `gen_evolved_lang.py`, conservando Unicode.
+- Las ocho pruebas nuevas comprueban cuerpos traducidos, nuevas claves sin traducción, claves de más,
+  cuerpo vacío, marcadores alterados, conservación de las demás fases y del orden, regeneración
+  idempotente y presencia única del párrafo generado. CI ejecuta las 23 pruebas Python y ambos `--check`.
+- Resultado ejecutado el 2026-11-06: `BUILD SUCCESSFUL in 13s`, 217 pruebas JUnit con cero fallos,
+  errores u omitidas; 23 pruebas Python aprobadas. Los tres JSON tienen exactamente las 3512 claves,
+  el orden y los marcadores del inglés; 1432 claves traducidas por idioma en las fases 1–2.
+  Las 2080 claves de nodos/sendas conservan el inglés hasta la fase 3.
+- Frente a fase 1, solo cambian valores del grimorio: 46 en portugués/alemán y 45 en francés, donde
+  el título «Structures» coincide con el inglés. Interfaz, objetos y nodos se conservan; los ocho idiomas
+  anteriores son idénticos byte a byte. No se añaden claves ni se reformatean archivos completos.
+- Comparación del JAR con la fase 1: mismos archivos y 362 clases idénticas byte a byte; solo cambian
+  `assets/aptitudes/lang/{pt_br,fr_fr,de_de}.json`. La autorrevisión no identifica cambios de recompensas,
+  consumo, XP, creativo/espectador, muerte, reconexión, reinicio, grupos, aliados o límites del servidor:
+  la lógica de juego y la persistencia conservan exactamente su código anterior.
+
+Ancho comprobado estáticamente con los glifos de la fuente predeterminada de Minecraft 1.21.1:
+
+| Idioma | Cabecera más ancha, con margen conservador para negrita | Palabra más ancha del cuerpo |
+|---|---|---|
+| `pt_br` | 176 px | 92 px |
+| `fr_fr` | 166 px | 90 px |
+| `de_de` | 163 px | 119 px |
+
+Se usa el panel mínimo de 380 px: 192 px reservados para cabecera e ilustración y 224 px para el
+cuerpo. Todas las cabeceras caben; las líneas se parten dentro de esos 224 px, sin palabras demasiado
+largas. `GuideScreen` ya desplaza el cuerpo y las recetas de alquimia; no se cambia su distribución.
+El índice conserva su recorte existente a 107 px (uno/tres/tres títulos largos respectivamente).
+En 426×240 hay más ancho disponible que en esta medición. No es una prueba visual en partida.
+
+Pruebas manuales pendientes (traducción inicial que conviene revisar con hablantes nativos):
+
+1. En cada idioma nuevo, abrir los 23 capítulos a escala de interfaz 4 y en 426×240. Revisar cabeceras,
+   índice, acentos y porcentajes; recorrer hasta la última línea con rueda y teclado. No deben verse claves.
+2. Revisar los siete escalones, la bifurcación y las diez piedras angulares; contrastar los valores con
+   `docs/BALANCE.md`. Leer también logros, contratos y los tres eventos completos.
+3. En Alquimia, llegar al final y comprobar las recetas sincronizadas y los tooltips de las pociones;
+   pulsar los pétalos para su extracción. En los otros capítulos, abrir las fichas y volver con Retroceso.
+   Los textos nuevos remiten a las recetas del juego y no mantienen listas propias de ingredientes.
+4. Regenerar interfaz y grimorio, ejecutar ambos `--check` y el comprobador global: no debe cambiar nada.
+   Revisar la calidad de los tres idiomas con hablantes nativos antes de presentarlos como completos.
+
 ## v45 — Traducciones T8, fase 1
+
+Registro de la fase 1; la fase 2 anterior sustituye su estado provisional del grimorio.
 
 ```powershell
 python tools/lang/gen_interface_lang.py

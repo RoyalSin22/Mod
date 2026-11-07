@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-Genera los textos de las Sendas de la v46 en en_us y es_es y copia es_es a las variantes.
+Genera las Sendas v46 en inglés, español, portugués, francés y alemán.
+Español se copia a sus seis variantes. --check comprueba sin escribir.
 
 - Nombres y descripciones de los escalones nuevos S4, S5x, S5y y S6 de las 60 sendas (240 nodos).
 - Descripción de S1–S3 actualizada: las sendas son exclusivas (antes «2 de las 3»).
@@ -12,9 +13,12 @@ No edites estas claves a mano en los JSON: cambia este script y vuelve a ejecuta
 
 Uso: python3 tools/lang/gen_path_lang.py
 """
-import json
 import os
 import re
+
+from check_lang import LOCALES
+from gen_evolved_lang import EFFECT_NAME
+from ui_catalog import TRANSLATIONS as UI_TRANSLATIONS
 
 ROOT = os.path.join(os.path.dirname(__file__), '..', '..')
 L = os.path.join(ROOT, 'src/main/resources/assets/aptitudes/lang/')
@@ -241,10 +245,82 @@ GUIDE = {
 }
 LETTERS = 'abc'
 
+# Nombre de senda, S4/S5x/S5y/S6/S7 y frase; el orden de las filas originales no cambia.
+LOCAL_ROWS = {locale: {} for locale in LOCALES}
+for row in """
+berserker_a¦Açougueiro/Sede carmesim/Fio voraz/Finalização brutal/Fome vermelha/Fúria insaciável/Fortalece ao ferir e finalizar inimigos¦Boucher/Soif carmin/Tranchant vorace/Coup final brutal/Faim rouge/Furie insatiable/Se renforce en blessant et achevant ses ennemis¦Schlächter/Purpurdurst/Gierige Schneide/Brutaler Abschluss/Roter Hunger/Unstillbare Wut/Wird durch Verwunden und Besiegen stärker
+berserker_b¦Colosso/Pele de ferro/Muro espinhoso/Passo inamovível/Fortaleza brutal/Último bastião/Transforma dano recebido em contra-ataque¦Colosse/Peau de fer/Mur épineux/Pas inamovible/Vigueur brutale/Dernier bastion/Transforme les dégâts subis en contre-attaque¦Koloss/Eisenhaut/Dornenwand/Unverrückbarer Schritt/Brutale Standhaftigkeit/Letzte Bastion/Verwandelt erlittenen Schaden in Gegenangriffe
+berserker_c¦Redemoinho/Ritmo selvagem/Corrida sangrenta/Pulso vital/Turbilhão selvagem/Tempestade de machados/Pressão ofensiva constante¦Tourbillon/Rythme sauvage/Ruée sanglante/Pulsation vitale/Tourbillon sauvage/Tempête de haches/Pression offensive constante¦Wirbelwind/Wilder Rhythmus/Blutiger Ansturm/Lebenspuls/Wilder Wirbelwind/Axtsturm/Unablässiger Angriffsdruck
+mage_a¦Arcanista/Ruptura arcana/Decreto mortal/Selo murcho/Colapso arcano/Tempestade arcana/Dano arcano concentrado¦Arcaniste/Rupture arcanique/Décret mortel/Sceau flétri/Effondrement arcanique/Tempête arcanique/Dégâts arcaniques concentrés¦Arkanist/Arkaner Bruch/Tödlicher Erlass/Verdorrtes Siegel/Arkaner Kollaps/Arkaner Sturm/Gebündelter arkaner Schaden
+mage_b¦Erudito/Fonte interior/Fluxo infinito/Manto arcano/Manancial místico/Fluxo perpétuo/Combate prolongado com reservas¦Érudit/Source intérieure/Flux infini/Manteau arcanique/Source mystique/Flux perpétuel/Longs combats grâce aux réserves¦Gelehrter/Innere Quelle/Endloser Fluss/Arkaner Mantel/Mystischer Quell/Ewiger Fluss/Lange Kämpfe mit großen Reserven
+mage_c¦Cronomante/Corrente gélida/Véu espectral/Reserva oculta/Prisão temporal/Reflexo arcano/Controla o ritmo e evita golpes¦Chronomancien/Chaîne glacée/Voile spectral/Réserve cachée/Prison temporelle/Réflexe arcanique/Contrôle le rythme et évite les coups¦Chronomant/Frostkette/Geisterschleier/Verborgene Reserve/Zeitgefängnis/Arkaner Reflex/Bestimmt das Tempo und vermeidet Treffer
+assassin_a¦Carrasco/Marca mortal/Corte perfeito/Toxina letal/Sentença final/Morte silenciosa/Golpes precisos e letais¦Bourreau/Marque mortelle/Entaille parfaite/Toxine létale/Sentence finale/Mort silencieuse/Frappes précises et mortelles¦Henker/Todesmal/Vollkommener Schnitt/Tödliches Toxin/Letztes Urteil/Lautloser Tod/Präzise tödliche Treffer
+assassin_b¦Fantasma/Passo umbrio/Vento sombrio/Lâmina entorpecente/Deslocamento sombrio/Ruptura sombria/Velocidade e enfraquecimento¦Fantôme/Pas ténébreux/Vent obscur/Lame entravante/Déplacement d'ombre/Rupture d'ombre/Vitesse et affaiblissement¦Phantom/Dunkler Schritt/Dunkler Wind/Hemmende Klinge/Schattenwechsel/Schattenbruch/Geschwindigkeit und Schwächung
+assassin_c¦Sombra carmesim/Ferida profunda/Sede do vazio/Dança mortal/Ferida abissal/Praga silenciosa/Desgaste e recuperação¦Ombre carmin/Blessure profonde/Soif du vide/Danse mortelle/Blessure abyssale/Fléau silencieux/Usure et récupération¦Purpurschatten/Tiefe Wunde/Leerendurst/Todestanz/Abgrundwunde/Stille Seuche/Zermürbung und Erholung
+herbalist_a¦Curandeiro/Seiva vital/Casca antiga/Pele vegetal/Seiva eterna/Jardim vital/Recuperação e fortaleza natural¦Guérisseur/Sève vitale/Écorce ancienne/Peau végétale/Sève éternelle/Jardin vital/Récupération et vigueur naturelle¦Heiler/Lebenssaft/Alte Rinde/Blatthaut/Ewiger Saft/Lebensgarten/Erholung und natürliche Stärke
+herbalist_b¦Envenenador/Extrato letal/Pólen paralisante/Destilado mortal/Veneno concentrado/Floração tóxica/Venenos e enfraquecimento¦Empoisonneur/Extrait létal/Pollen paralysant/Distillat mortel/Venin concentré/Floraison toxique/Poisons et affaiblissement¦Giftmischer/Tödlicher Extrakt/Lähmender Pollen/Tödliches Destillat/Konzentriertes Gift/Giftblüte/Gifte und Schwächung
+herbalist_c¦Alquimista/Fluxo alquímico/Reserva espiritual/Colheita afortunada/Fluxo refinado/Colheita dourada/Recursos e fortuna¦Alchimiste/Flux alchimique/Réserve spirituelle/Récolte chanceuse/Flux raffiné/Moisson dorée/Ressources et fortune¦Alchemist/Alchemistischer Fluss/Geisterreserve/Glücksernte/Verfeinerter Fluss/Goldene Ernte/Ressourcen und Glück
+engineer_a¦Artilheiro/Calibração letal/Protocolo de execução/Núcleo de impacto/Mira aperfeiçoada/Núcleo explosivo/Precisão e dano concentrado¦Artilleur/Calibrage létal/Protocole d'exécution/Noyau d'impact/Visée perfectionnée/Noyau explosif/Précision et dégâts concentrés¦Schütze/Tödliche Kalibrierung/Hinrichtungsprotokoll/Aufprallkern/Verbesserte Visierung/Explosiver Kern/Präzision und gebündelter Schaden
+engineer_b¦Encouraçado/Blindagem reforçada/Âncora magnética/Chassi reforçado/Blindagem integral/Fortaleza industrial/Blindagem e estabilidade¦Cuirassé/Blindage renforcé/Ancrage magnétique/Châssis renforcé/Blindage intégral/Forteresse industrielle/Blindage et stabilité¦Gepanzerter/Verstärkte Panzerung/Magnetanker/Verstärktes Fahrwerk/Vollpanzerung/Industriefestung/Panzerung und Stabilität
+engineer_c¦Acelerado/Engrenagens rápidas/Propulsão/Reator interno/Engrenagens supremas/Reator central/Velocidade operacional e energia¦Surcadencé/Engrenages rapides/Propulsion/Réacteur interne/Engrenages suprêmes/Réacteur central/Vitesse opérationnelle et énergie¦Übertakteter/Schnelle Zahnräder/Antrieb/Innerer Reaktor/Überlegene Zahnräder/Zentralreaktor/Arbeitstempo und Energie
+lancer_a¦Dragão/Ponta mortal/Carga impetuosa/Ponta entorpecente/Estocada perfeita/Lança relâmpago/Mobilidade e ataques precisos¦Dragon/Pointe mortelle/Charge impétueuse/Pointe entravante/Estoc parfait/Lance foudroyante/Mobilité et attaques précises¦Dragoner/Tödliche Spitze/Ungestümer Ansturm/Hemmende Spitze/Vollkommener Stoß/Blitzlanze/Beweglichkeit und präzise Angriffe
+lancer_b¦Falange/Espinho defensivo/Postura firme/Armadura de guerra/Espinho de aço/Formação imbatível/Resiste e pune quem se aproxima¦Phalange/Pointe défensive/Posture ferme/Armure de guerre/Pointe d'acier/Formation invincible/Résiste et punit ceux qui s'approchent¦Phalanx/Abwehrstachel/Fester Stand/Kriegsrüstung/Stahlstachel/Unbesiegbare Formation/Hält stand und bestraft nahe Gegner
+lancer_c¦Empalador/Sede do guerreiro/Couraça vital/Estocada final/Sede do empalador/Colheita de guerra/Recupera vida e finaliza¦Empaleur/Soif guerrière/Cuirasse vitale/Estoc final/Soif de l'empaleur/Moisson de guerre/Récupère de la santé et achève¦Pfähler/Kriegerdurst/Lebensharnisch/Letzter Stoß/Pfählerdurst/Kriegsernte/Heilt und besiegt Feinde
+swordsman_a¦Duelista/Corte magistral/Dança de aço/Passo do duelista/Corte supremo/Contra-ataque perfeito/Duelos, críticos e golpes seguidos¦Duelliste/Entaille magistrale/Danse d'acier/Pas du duelliste/Entaille suprême/Riposte parfaite/Duels, critiques et coups enchaînés¦Duellant/Meisterhafter Schnitt/Stahltanz/Duellantenschritt/Höchster Schnitt/Vollkommene Riposte/Duelle, kritische und verkettete Treffer
+swordsman_b¦Kensei/Fome de aço/Execução marcial/Lâmina entorpecente/Fome de sangue/Dança carmesim/Pressão, recuperação e finalizações¦Kensei/Faim d'acier/Exécution martiale/Lame entravante/Faim de sang/Danse carmin/Pression, récupération et coups finaux¦Kensei/Stahlhunger/Kriegerische Hinrichtung/Hemmende Klinge/Bluthunger/Purpurtanz/Druck, Erholung und Abschlüsse
+swordsman_c¦Guardião de aço/Guarda de aço/Resposta espinhosa/Vitalidade marcial/Guarda absoluta/Juramento de aço/Resiste ao desgaste¦Gardien d'acier/Garde d'acier/Riposte épineuse/Vitalité martiale/Garde absolue/Serment d'acier/Résiste à l'usure¦Stahlwächter/Stahlwache/Dornenriposte/Kriegerische Vitalität/Absolute Wache/Stahlschwur/Widersteht der Zermürbung
+paladin_a¦Templário/Sentença divina/Fio radiante/Chama purificadora/Veredito celeste/Julgamento radiante/Golpes sagrados devastadores¦Templier/Sentence divine/Tranchant radieux/Flamme purificatrice/Verdict céleste/Jugement radieux/Frappes sacrées dévastatrices¦Templer/Göttliches Urteil/Strahlende Schneide/Reinigende Flamme/Himmlischer Richterspruch/Strahlendes Urteil/Verheerende heilige Treffer
+paladin_b¦Guardião/Escudo consagrado/Espinhos sagrados/Graça restauradora/Escudo divino/Fortaleza consagrada/Protege o grupo e mantém a linha¦Gardien/Bouclier consacré/Épines sacrées/Grâce réparatrice/Bouclier divin/Forteresse consacrée/Protège le groupe et tient la ligne¦Wächter/Geweihter Schild/Heilige Dornen/Heilende Gnade/Göttlicher Schild/Geweihte Festung/Schützt die Gruppe und hält die Stellung
+paladin_c¦Cruzado/Golpe radiante/Cadência sagrada/Fé inabalável/Golpe celeste/Graça compartilhada/Ataques rápidos e apoio¦Croisé/Frappe radieuse/Cadence sacrée/Foi inébranlable/Frappe céleste/Grâce partagée/Attaques rapides et soutien¦Kreuzritter/Strahlender Schlag/Heiliger Takt/Unerschütterlicher Glaube/Himmelsschlag/Geteilte Gnade/Schnelle Angriffe und Unterstützung
+necromancer_a¦Senhor dos servos/Legião murcha/Reserva funerária/Mana sepulcral/Legião ascendente/Exército sepulcral/Seus servos são sua força¦Seigneur des serviteurs/Légion flétrie/Réserve funéraire/Mana sépulcral/Légion montante/Armée sépulcrale/Les serviteurs font sa force¦Dienerherr/Verdorrte Legion/Grabesreserve/Grabesmana/Aufsteigende Legion/Grabesheer/Seine Diener sind seine Stärke
+necromancer_b¦Hemomante/Dreno funesto/Praga necrótica/Carne imortal/Dreno abissal/Maldição funerária/Drena vitalidade¦Hémomancien/Drain funeste/Fléau nécrotique/Chair immortelle/Drain abyssal/Malédiction funéraire/Draine la vitalité¦Hämomant/Unheilvoller Entzug/Nekrotische Seuche/Unsterbliches Fleisch/Abgrundentzug/Grabesfluch/Entzieht Lebenskraft
+necromancer_c¦Praga/Praga venenosa/Marcha entorpecente/Decreto da morte/Praga eterna/Sepulcro profanado/Espalha doenças¦Peste/Fléau venimeux/Marche entravante/Décret de mort/Fléau éternel/Tombeau profané/Propage les maladies¦Seuche/Giftseuche/Hemmender Marsch/Todeserlass/Ewige Seuche/Entweihtes Grab/Verbreitet Krankheiten
+druid_a¦Guardião selvagem/Raízes vigorosas/Casca protetora/Seiva renovadora/Coração de carvalho/Bosque protetor/Fortaleza e regeneração¦Gardien sauvage/Racines vigoureuses/Écorce protectrice/Sève rénovatrice/Cœur de chêne/Bosquet protecteur/Vigueur et régénération¦Wilder Wächter/Kräftige Wurzeln/Schützende Rinde/Erneuernder Saft/Eichenherz/Schützender Hain/Stärke und Regeneration
+druid_b¦Caçador lunar/Instinto predador/Corrida feral/Presa tóxica/Instinto primordial/Caçada selvagem/Caça presas com críticos¦Chasseur lunaire/Instinct prédateur/Ruée sauvage/Croc toxique/Instinct primordial/Chasse sauvage/Chasse ses proies avec des critiques¦Mondjäger/Raubtierinstinkt/Wilder Ansturm/Giftzahn/Urinstinkt/Wilde Jagd/Jagt Beute mit kritischen Treffern
+druid_c¦Guarda-espinhos/Sarças defensivas/Raízes inamovíveis/Pólen entorpecente/Sarças letais/Matagal invasor/Controla o espaço ao redor¦Gardien des ronces/Ronces défensives/Racines inamovibles/Pollen entravant/Ronces létales/Fourré envahissant/Contrôle l'espace alentour¦Dornenwächter/Abwehrranken/Unverrückbare Wurzeln/Hemmender Pollen/Tödliche Ranken/Wucherndes Dickicht/Beherrscht den Raum ringsum
+merchant_a¦Tesoureiro/Capital arcano/Reserva comercial/Olhar do mercador/Capital composto/Mercado dourado/Aproveita os recursos ao máximo¦Trésorier/Capital arcanique/Réserve commerciale/Œil du marchand/Capital composé/Marché doré/Tire le meilleur des ressources¦Schatzmeister/Arkanes Kapital/Handelsreserve/Händlerauge/Zinskapital/Goldener Markt/Nutzt Ressourcen optimal
+merchant_b¦Mercenário/Aposta mortal/Sangue arriscado/Cobrança final/Aposta mestra/Falência explosiva/Críticos e finalizações oportunistas¦Mercenaire/Pari mortel/Sang risqué/Recouvrement final/Pari magistral/Faillite explosive/Critiques et coups finaux opportunistes¦Söldner/Tödliche Wette/Risikoblut/Letzte Eintreibung/Meisterwette/Explosiver Bankrott/Gelegene kritische Treffer und Abschlüsse
+merchant_c¦Contrabandista/Passo furtivo/Fuga rápida/Pele do negociante/Passo invisível/Fuga calculada/Evasão e mobilidade¦Contrebandier/Pas furtif/Fuite rapide/Peau du négociant/Pas invisible/Fuite calculée/Esquive et mobilité¦Schmuggler/Verdeckter Schritt/Schnelle Flucht/Händlerhaut/Unsichtbarer Schritt/Berechnete Flucht/Ausweichen und Beweglichkeit
+monk_a¦Punho de ferro/Golpe transcendente/Cadência interior/Passo leve/Punho absoluto/Punhos do trovão/Críticos e velocidade¦Poing de fer/Frappe transcendante/Cadence intérieure/Pas léger/Poing absolu/Poings du tonnerre/Critiques et vitesse¦Eisenfaust/Erhabener Schlag/Innerer Takt/Leichter Schritt/Absolute Faust/Donnerfäuste/Kritische Treffer und Geschwindigkeit
+monk_b¦Lótus/Respiração profunda/Reflexo sereno/Foco interior/Respiração eterna/Serenidade compartilhada/Foco e combates longos¦Lotus/Souffle profond/Réflexe serein/Concentration intérieure/Souffle éternel/Sérénité partagée/Concentration et longs combats¦Lotus/Tiefer Atem/Ruhiger Reflex/Innerer Fokus/Ewiger Atem/Geteilte Gelassenheit/Fokus und lange Kämpfe
+monk_c¦Punho do dragão/Dreno marcial/Impacto sísmico/Golpe final/Dreno absoluto/Caminho do destruidor/Dreno, impacto e finalizações¦Poing du dragon/Drain martial/Impact sismique/Coup final/Drain absolu/Voie du destructeur/Drain, impact et coups finaux¦Drachenfaust/Kriegerischer Entzug/Seismischer Einschlag/Letzter Schlag/Absoluter Entzug/Weg des Zerstörers/Entzug, Einschlag und Abschlüsse
+elementalist_a¦Catalisador/Núcleo ígneo/Colapso elemental/Sentença ardente/Chama primordial/Cataclismo ígneo/Devastação pelo fogo¦Catalyseur/Noyau igné/Effondrement élémentaire/Sentence brûlante/Flamme primordiale/Cataclysme igné/Dévastation par le feu¦Katalysator/Feuerkern/Elementarkollaps/Sengendes Urteil/Urflamme/Feuerkataklysmus/Verheerung durch Feuer
+elementalist_b¦Condutor/Corrente arcana/Surto elemental/Manto energético/Corrente primordial/Coração elemental/Sustenta o poder elemental¦Conducteur/Courant arcanique/Afflux élémentaire/Manteau énergétique/Courant primordial/Cœur élémentaire/Entretient la puissance élémentaire¦Leiter/Arkaner Strom/Elementarschub/Energiemantel/Urstrom/Elementarherz/Erhält die Elementarkraft
+elementalist_c¦Tempestade/Toque glacial/Passo boreal/Vento elemental/Toque glacial supremo/Tempestade cristalina/Controle e distância¦Tempête/Toucher glacial/Pas boréal/Vent élémentaire/Toucher glacial suprême/Tempête cristalline/Contrôle et distance¦Sturm/Frostberührung/Nordschritt/Elementarwind/Höchste Frostberührung/Kristallsturm/Kontrolle und Abstand
+gunslinger_a¦Pistoleiro/Mira letal/Disparo final/Cadência precisa/Mira absoluta/Munição fulminante/Disparos precisos¦Pistolero/Visée létale/Tir final/Cadence précise/Visée absolue/Munitions foudroyantes/Tirs précis¦Revolverheld/Tödliche Visierung/Letzter Schuss/Präziser Takt/Absolute Visierung/Blitzmunition/Präzise Schüsse
+gunslinger_b¦Atirador arcano/Câmara energética/Reator de munição/Deslocamento tático/Câmara sobrecarregada/Arsenal inesgotável/Energia e pressão¦Tireur arcanique/Chambre énergétique/Réacteur de munitions/Déplacement tactique/Chambre surchargée/Arsenal inépuisable/Énergie et pression¦Arkaner Schütze/Energiekammer/Munitionsreaktor/Taktischer Wechsel/Überladene Kammer/Endloses Arsenal/Energie und Druck
+gunslinger_c¦Fora da lei/Disparo drenante/Corrida balística/Disparo entorpecente/Disparo voraz/Bala fantasma/Mobilidade e desgaste¦Hors-la-loi/Tir drainant/Ruée balistique/Tir entravant/Tir vorace/Balle fantôme/Mobilité et usure¦Gesetzloser/Entzugsschuss/Ballistischer Ansturm/Hemmender Schuss/Gieriger Schuss/Geisterkugel/Beweglichkeit und Zermürbung
+weapon_summoner_a¦Lâminas dançantes/Fio manifesto/Impacto espectral/Dreno do arsenal/Arsenal liberado/Tempestade de lâminas/Pressão com armas conjuradas¦Lames dansantes/Tranchant manifesté/Impact spectral/Drain d'arsenal/Arsenal déchaîné/Tempête de lames/Pression par les armes invoquées¦Tanzende Klingen/Manifestierte Schneide/Geistereinschlag/Arsenalentzug/Entfesseltes Arsenal/Klingensturm/Druck durch beschworene Waffen
+weapon_summoner_b¦Bastião de aço/Armadura manifesta/Reflexo de aço/Núcleo defensivo/Armadura perpétua/Forja inabalável/Armamentos protetores¦Bastion d'acier/Armure manifestée/Reflet d'acier/Noyau défensif/Armure perpétuelle/Forge inébranlable/Armements protecteurs¦Stahlbastion/Manifestierte Rüstung/Stahlreflex/Abwehrkern/Ewige Rüstung/Unerschütterliche Schmiede/Schützende Bewaffnung
+weapon_summoner_c¦Forja rúnica/Fluxo de armas/Reserva manifesta/Carrasco espectral/Fluxo de armas supremo/Núcleo de invocação/Recursos e finalizações¦Forge runique/Flux d'armes/Réserve manifestée/Bourreau spectral/Flux d'armes suprême/Noyau d'invocation/Ressources et coups finaux¦Runenschmiede/Waffenfluss/Manifestierte Reserve/Geisterhenker/Höchster Waffenfluss/Beschwörungskern/Ressourcen und Abschlüsse
+hunter_a¦Franco-atirador/Instinto letal/Disparo certeiro/Armadilha venenosa/Instinto furtivo/Marca do rastreador/Pontos fracos e execução¦Tireur d'élite/Instinct létal/Tir juste/Piège venimeux/Instinct de traque/Marque du traqueur/Points faibles et exécution¦Scharfschütze/Tödlicher Instinkt/Gezielter Schuss/Giftfalle/Pirschinstinkt/Fährtenlesermal/Schwachstellen und Hinrichtung
+hunter_b¦Armadilheiro/Passo silencioso/Corrida do vento/Flecha entorpecente/Passo do rastreador/Saque do explorador/Mobilidade e evasão¦Trappeur/Pas silencieux/Course du vent/Flèche entravante/Pas du traqueur/Butin de l'explorateur/Mobilité et esquive¦Fallensteller/Lautloser Schritt/Windlauf/Hemmender Pfeil/Fährtenleserschritt/Entdeckerbeute/Beweglichkeit und Ausweichen
+hunter_c¦Fera/Instinto sanguinário/Constituição selvagem/Impacto de caça/Instinto de sobrevivência/Troféu supremo/Vitalidade e impacto¦Bête/Instinct sanguinaire/Constitution sauvage/Impact de chasse/Instinct de survie/Trophée suprême/Vitalité et impact¦Bestie/Blutdürstiger Instinkt/Wilde Konstitution/Jagdeinschlag/Überlebensinstinkt/Höchste Trophäe/Lebenskraft und Einschlag
+bard_a¦Menestrel/Ressonância vital/Melodia arcana/Nota afortunada/Ressonância superior/Sinfonia vital/Energia e fortuna¦Ménestrel/Résonance vitale/Mélodie arcanique/Note chanceuse/Résonance supérieure/Symphonie vitale/Énergie et fortune¦Spielmann/Lebensresonanz/Arkane Melodie/Glücksnote/Höhere Resonanz/Lebenssinfonie/Energie und Glück
+bard_b¦Trovador de guerra/Acorde crítico/Ritmo acelerado/Nota ardente/Acorde perfeito/Sinfonia do trovão/Cadência e ataques flamejantes¦Troubadour de guerre/Accord critique/Rythme accéléré/Note ardente/Accord parfait/Symphonie du tonnerre/Cadence et attaques enflammées¦Kriegstroubadour/Kritischer Akkord/Beschleunigter Rhythmus/Feuernote/Vollkommener Akkord/Donnersinfonie/Takt und brennende Angriffe
+bard_c¦Cantor sagrado/Melodia restauradora/Hino guardião/Voz vital/Melodia eterna/Última estrofe/Sustenta o grupo¦Chantre sacré/Mélodie réparatrice/Hymne gardien/Voix vitale/Mélodie éternelle/Dernière strophe/Soutient le groupe¦Heiliger Sänger/Heilende Melodie/Wächterhymne/Lebensstimme/Ewige Melodie/Letzte Strophe/Unterstützt die Gruppe
+warlock_a¦Amaldiçoado/Marca murchante/Toxina sombria/Veredito sombrio/Marca abissal/Maldição infinita/Maldições e execução¦Maudit/Marque flétrissante/Toxine obscure/Verdict sinistre/Marque abyssale/Malédiction infinie/Malédictions et exécution¦Verfluchter/Verdorrendes Mal/Dunkles Toxin/Düsterer Richterspruch/Abgrundmal/Endloser Fluch/Flüche und Hinrichtung
+warlock_b¦Sangue maldito/Dreno sombrio/Carne profana/Renovação umbria/Dreno profano/Banquete sombrio/Vitalidade como arma¦Sang maudit/Drain obscur/Chair impie/Renouveau ténébreux/Drain profane/Festin sinistre/La vitalité comme arme¦Verfluchtes Blut/Dunkler Entzug/Unheiliges Fleisch/Dunkle Erneuerung/Unheiliger Entzug/Düsteres Festmahl/Lebenskraft als Waffe
+warlock_c¦Abismo/Golpe do abismo/Reserva abissal/Canalização sombria/Golpe do vazio/Abismo inesgotável/Concentra recursos¦Abîme/Frappe abyssale/Réserve abyssale/Canalisation obscure/Frappe du vide/Abîme inépuisable/Concentre les ressources¦Abgrund/Abgrundschlag/Abgrundreserve/Dunkles Kanalisieren/Leerenschlag/Bodenloser Abgrund/Bündelt Ressourcen
+tamer_a¦Matilha/Pele de fera/Constituição feral/Rugido de guerra/Pele primordial/Matilha suprema/Linha de frente com suas feras¦Meute/Peau de bête/Constitution sauvage/Rugissement de guerre/Peau primordiale/Meute suprême/En première ligne avec ses bêtes¦Rudel/Bestienhaut/Wilde Konstitution/Kriegsbrüllen/Urhaut/Höchstes Rudel/Frontlinie an der Seite seiner Bestien
+tamer_b¦Feral/Instinto alfa/Ataque coordenado/Presa voraz/Instinto alfa supremo/Caçada dominante/Ataques coordenados¦Sauvage/Instinct alpha/Attaque coordonnée/Croc vorace/Instinct alpha suprême/Chasse dominante/Attaques coordonnées¦Wild/Alphainstinkt/Koordinierter Angriff/Gieriger Fangzahn/Höchster Alphainstinkt/Überlegene Jagd/Koordinierte Angriffe
+tamer_c¦Pastor/Vínculo vital/Instinto afortunado/Reserva animal/Vínculo eterno/Refúgio da matilha/Sobrevivência e recursos¦Berger/Lien vital/Instinct chanceux/Réserve animale/Lien éternel/Refuge de la meute/Survie et ressources¦Hirte/Lebensband/Glücksinstinkt/Tierreserve/Ewiges Band/Rudelzuflucht/Überleben und Ressourcen
+shapeshifter_a¦Predador/Instinto letal/Fome selvagem/Corrida feral/Instinto supremo/Reflexo predador/Persegue e elimina¦Prédateur/Instinct létal/Faim sauvage/Ruée sauvage/Instinct suprême/Réflexe prédateur/Traque et élimine¦Raubtier/Tödlicher Instinkt/Wilder Hunger/Wilder Ansturm/Höchster Instinkt/Raubtierreflex/Verfolgt und besiegt
+shapeshifter_b¦Mímico/Reflexos selvagens/Instinto adaptativo/Fluxo metamórfico/Reflexos primordiais/Metamorfose afortunada/Mobilidade e energia¦Mime/Réflexes sauvages/Instinct adaptatif/Flux métamorphique/Réflexes primordiaux/Métamorphose chanceuse/Mobilité et énergie¦Mimiker/Wilde Reflexe/Anpassungsinstinkt/Metamorpher Fluss/Urreflexe/Glückswandlung/Beweglichkeit und Energie
+shapeshifter_c¦Colosso bestial/Constituição monstruosa/Pele encouraçada/Espinhos naturais/Constituição primordial/Forma imparável/Absorve impactos¦Colosse bestial/Constitution monstrueuse/Peau cuirassée/Épines naturelles/Constitution primordiale/Forme imparable/Absorbe les impacts¦Bestienkoloss/Monströse Konstitution/Gepanzerte Haut/Naturdornen/Urkonstitution/Unaufhaltsame Gestalt/Absorbiert Treffer
+""".strip().splitlines():
+    path, *columns = row.split('¦')
+    for locale, column in zip(LOCALES, columns, strict=True):
+        values = column.split('/')
+        if len(values) != 7 or path in LOCAL_ROWS[locale]:
+            raise ValueError(f'Textos de senda inválidos: {locale}/{path}')
+        LOCAL_ROWS[locale][path] = values
+
 
 def java_effects():
     """{rol: [[S1,S2,S3,S4,S5x,S5y,S6] por senda]} leído de RoleTree.java."""
-    src = open(JAVA, encoding='utf-8').read()
+    with open(JAVA, encoding='utf-8') as source:
+        src = source.read()
     pat = r'%s\(Role\.(\w+), of\(([^)]*)\), of\(([^)]*)\), of\(([^)]*)\)\)'
     base = {m.group(1).lower(): [[CODE[x.strip()] for x in g.split(',')] for g in m.groups()[1:]]
             for m in re.finditer(pat % 'paths', src)}
@@ -268,14 +344,17 @@ def amount(effect, value, lang):
 def desc(effect, mult, lang, extra):
     per, _ = EFFECTS[effect]
     v = per * mult
-    word = ('por rango', 'máx.') if lang == 'es' else ('per rank', 'max')
+    word = {'es': ('por rango', 'máx.'), 'en': ('per rank', 'max'),
+            'pt_br': ('por grau', 'máx.'), 'fr_fr': ('par rang', 'max'),
+            'de_de': ('pro Rang', 'max.')}[lang]
     text = f"{LABEL[lang][effect]}: {amount(effect, v, lang)} {word[0]} ({word[1]} {amount(effect, v * 3, lang)})."
     return ' '.join([text] + extra + [EXCLUSIVE[lang]])
 
 
 def keystone_templates():
     """{rol: [plantilla A, B, C]} leído de KeystoneRules.java."""
-    src = open(KS_JAVA, encoding='utf-8').read()
+    with open(KS_JAVA, encoding='utf-8') as source:
+        src = source.read()
     out = {m.group(1): [KS_CAMEL[x] for x in m.groups()[1:]]
            for m in re.finditer(r'entry\("(\w+)", Template\.(\w+), Template\.(\w+), Template\.(\w+)\)', src)}
     assert len(out) == 20, 'KeystoneRules: faltan roles'
@@ -283,6 +362,8 @@ def keystone_templates():
 
 
 def build(lang, data):
+    if lang in LOCALES:
+        return build_local(lang)
     code = 'es' if lang == 'es_es' else 'en'
     effects = java_effects()
     templates = keystone_templates()
@@ -318,7 +399,39 @@ def build(lang, data):
     return out
 
 
-# T8 fase 1: interfaz generada; nombres y efectos de nodos se incorporan en la fase 3.
+def build_local(lang):
+    effects, templates = java_effects(), keystone_templates()
+    expected = {f'{role}_{LETTERS[path - 1]}' for role, path, *_ in ROWS}
+    if set(LOCAL_ROWS[lang]) != expected:
+        raise ValueError(f'Cobertura de nombres de senda incorrecta: {lang}')
+    out = dict(UI[lang])
+    for template, (name, text) in TEMPLATE[lang].items():
+        out[f'keystone.aptitudes.{template}'] = name
+        out[f'keystone.aptitudes.{template}.desc'] = text
+        out[f'subtitles.aptitudes.keystone_{template}'] = SUBTITLES[lang][template]
+    for role, path, *_ in ROWS:
+        base = f'{role}_{LETTERS[path - 1]}'
+        title, *rest = LOCAL_ROWS[lang][base]
+        names, keystone, flavor = rest[:4], rest[4], rest[5]
+        out[f'path.aptitudes.{base}'] = title
+        out[f'path.aptitudes.{base}.desc'] = flavor
+        for i, rank in enumerate(('I', 'II', 'III')):
+            key = f'node.aptitudes.{base}{i + 1}'
+            out[key] = f'{title} {rank}'
+            out[key + '.desc'] = desc(effects[role][path - 1][i], 1.0, lang, [])
+        for i, suffix in enumerate(('4', '5x', '5y', '6')):
+            key = f'node.aptitudes.{base}{suffix}'
+            extra = [FORK[lang]] if suffix in ('5x', '5y') else [BOOSTED[lang]] if suffix == '6' else []
+            out[key] = names[i]
+            out[key + '.desc'] = desc(effects[role][path - 1][3 + i], 1.5 if suffix == '6' else 1.0, lang, extra)
+        key = f'node.aptitudes.{base}7'
+        name, text = TEMPLATE[lang][templates[role][path - 1]]
+        out[key] = keystone
+        out[key + '.desc'] = f'{name}: {text} {KS_NOTE[lang]}'
+    return out
+
+
+# Rótulos generados de la vista de sendas.
 for locale, labels in {
     'pt_br': (
         'Você já segue outro caminho nesta classe (os caminhos são exclusivos)',
@@ -353,26 +466,52 @@ for locale, labels in {
 }.items():
     UI[locale] = dict(zip(UI['en_us'], labels, strict=True))
 
+for index, locale in enumerate(LOCALES):
+    TEMPLATE[locale] = {key: (UI_TRANSLATIONS[f'keystone.aptitudes.{key}'][index],
+                              UI_TRANSLATIONS[f'keystone.aptitudes.{key}.desc'][index])
+                        for key in TEMPLATE['en']}
+    SUBTITLES[locale] = {key: UI_TRANSLATIONS[f'subtitles.aptitudes.keystone_{key}'][index]
+                          for key in TEMPLATE['en']}
+    LABEL[locale] = dict(EFFECT_NAME[locale])
 
-def write(lang):
-    path = L + lang + '.json'
-    data = json.load(open(path, encoding='utf-8'))
+for locale, exclusive, fork, boosted, note, labels in zip(LOCALES, (
+    'Os caminhos são exclusivos: só é possível seguir um por classe.',
+    'Les voies sont exclusives : une seule par rôle.',
+    'Pfade schließen einander aus: nur einer pro Rolle.',
+), (
+    'Bifurcação: só é possível aprender um dos dois ramos.',
+    'Bifurcation : une seule des deux branches peut être apprise.',
+    'Verzweigung: Du kannst nur einen der beiden Zweige erlernen.',
+), (
+    'Potencializa o efeito de S4 (×1.5).',
+    "Renforce l'effet de S4 (×1.5).",
+    'Verstärkt den Effekt von S4 (×1.5).',
+), (
+    'Pedra angular (nível 50, 1 grau). Valores da configuração padrão.',
+    'Pierre angulaire (niveau 50, 1 rang). Valeurs de la configuration par défaut.',
+    'Schlüsselstein (Stufe 50, 1 Rang). Werte der Standardkonfiguration.',
+), (
+    ('Golpe crítico (×1.5)', 'Execução (+dano em inimigos abaixo de 35% de vida)', 'Espinhos (reflete dano corpo a corpo)', 'Regeneração de vida (a cada 3 s)', 'Regeneração de mana (por segundo)'),
+    ('Coup critique (×1.5)', 'Exécution (+dégâts aux ennemis sous 35% de santé)', 'Épines (renvoie les dégâts de mêlée)', 'Régénération de santé (toutes les 3 s)', 'Régénération de mana (par seconde)'),
+    ('Kritischer Treffer (×1.5)', 'Hinrichtung (+Schaden gegen Feinde unter 35% Leben)', 'Dornen (wirft Nahkampfschaden zurück)', 'Lebensregeneration (alle 3 s)', 'Manaregeneration (pro Sekunde)'),
+), strict=True):
+    EXCLUSIVE[locale], FORK[locale], BOOSTED[locale], KS_NOTE[locale] = exclusive, fork, boosted, note
+    LABEL[locale].update(zip(('CRIT', 'EXECUTE', 'THORNS', 'REGEN', 'MANA_REGEN'), labels, strict=True))
+
+
+def update(lang, data):
     new = build(lang, data)
     guide = 'guide.aptitudes.tree.body'
-    old, repl = GUIDE[lang]
-    if old in data[guide]:
-        data[guide] = data[guide].replace(old, repl)
+    if lang in GUIDE:
+        old, repl = GUIDE[lang]
+        if old in data[guide]:
+            data[guide] = data[guide].replace(old, repl)
     data.pop('screen.aptitudes.paths.keystone_soon', None)  # v46.0: aviso provisional, ya no se usa
     # Actualiza en su sitio las claves existentes y añade al final solo las nuevas.
     data.update(new)
-    open(path, 'w', encoding='utf-8', newline='\n').write(json.dumps(data, ensure_ascii=False, indent=2) + '\n')
-    return len(new)
+    return data
 
 
 if __name__ == '__main__':
-    n_en = write('en_us')
-    n_es = write('es_es')
-    src = open(L + 'es_es.json', encoding='utf-8').read()
-    for v in ['es_mx', 'es_ar', 'es_cl', 'es_ec', 'es_uy', 'es_ve']:
-        open(L + v + '.json', 'w', encoding='utf-8', newline='\n').write(src)
-    print(f'{n_en} claves en en_us, {n_es} en es_es (copiado a 6 variantes)')
+    from generator_cli import run
+    raise SystemExit(run(update, __doc__))

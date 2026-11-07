@@ -33,9 +33,13 @@ jobs:
 
       - name: Comprobar traducciones
         run: |
-          python3 -m unittest discover -s tools/lang -p test_check_lang.py
+          python3 -m unittest discover -s tools/lang -p 'test_*_lang.py'
           python3 tools/lang/check_lang.py
           python3 tools/lang/gen_interface_lang.py --check
+          python3 tools/lang/gen_guide_lang.py --check
+          python3 tools/lang/gen_nodes_lang.py --check
+          python3 tools/lang/gen_evolved_lang.py --check
+          python3 tools/lang/gen_path_lang.py --check
 
       - name: Compilar y probar
         run: ./gradlew build --no-daemon --stacktrace

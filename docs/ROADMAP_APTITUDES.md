@@ -1,18 +1,25 @@
 # Roadmap de Aptitudes
 
-Estado de T8 fase 1, preparada desde `main` en `e76b62f` (T1–T7 integradas); publicación aplazada por el autor.
+Estado de T8 fases 2–3, sobre `main` en `8c42ba3` (T1–T7 y T8 fase 1 integradas); publicación aplazada por el autor.
 Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fabric API 0.116.6 · Loom 1.10 · Java 21**.
 
 ## Estado real
 
-### v45 — Traducciones (T8, fase 1 implementada)
+### v45 — Traducciones (T8, fases 1–3 implementadas)
 - Portugués de Brasil, francés y alemán: archivos completos de 3512 claves, en el orden de `en_us`,
-  con 1386 textos de interfaz/objetos traducidos por idioma. Las 46 claves del grimorio quedan para
-  la fase 2; los 2080 textos de nodos/sendas, para la fase 3. Mientras tanto conservan el inglés.
+  con 1386 textos de interfaz/objetos, 46 del grimorio y 2080 de nodos/sendas traducidos por idioma.
+  Cobertura de las 3512 claves, incluidos nodos base, legendarios, evolucionados y las 60 sendas S1–S7.
 - Catálogo reproducible y rótulos de los dos generadores ampliados; no se modifican inglés ni español.
   El comprobador detecta duplicados, claves ausentes/sobrantes, orden y marcadores `%`; CI lo ejecuta.
+- Los 23 capítulos incluyen valores y mecánicas de sendas, piedras angulares, logros, eventos y alquimia.
+  Generador del grimorio que conserva las demás fases; párrafo de evolución traducido en su generador.
+  Cabeceras y cuerpos medidos con glifos vanilla en el ancho mínimo; no cambia `GuideScreen`.
+- Los generadores de evolución y sendas escriben los tres idiomas y admiten `--check`, con números,
+  efectos y plantillas compartidos con sus tablas previas. Catálogo explícito para nodos base y
+  generador conjunto que exige cobertura exacta. Regenerar conserva los ocho idiomas anteriores;
+  el párrafo de evolución del grimorio se mantiene al día en el generador, sin duplicarlo.
 - Traducción inicial pendiente de revisión con hablantes nativos y comprobación visual en el juego.
-  Fases 2–3 pendientes de continuación; el autor revisa cada fase antes de seguir. No se publica con esta fase.
+  Integración de fases 2–3 autorizada por el autor tras validación local y CI. No se publica en plataformas.
 
 ### 1.4.0 — Preparación de publicación (T7)
 - Versión 1.4.0, notas para jugadores con fecha 2026-11-06, descripción pública y limitaciones actualizadas.

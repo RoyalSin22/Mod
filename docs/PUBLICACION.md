@@ -16,7 +16,14 @@ La publicación está aplazada por decisión del autor; integrar las ramas en Gi
 - [x] T7 integrada en `main` en `e76b62f` tras GitHub Actions aprobada, con autorización del autor.
   T8 se valida por fases aparte; no se ha publicado en Modrinth/CurseForge.
 - [x] T8 fase 1: build y 217 pruebas JUnit aprobados, 15 pruebas del comprobador y validación de los
-  tres idiomas. El JAR añade solo esos tres JSON a la base T7; grimorio y nodos siguen en inglés.
+  tres idiomas. Integrada en `main` en `8c42ba3`; el JAR añade solo esos tres JSON a la base T7.
+- [x] T8 fase 2: `BUILD SUCCESSFUL in 13s`, 217 pruebas JUnit y 23 pruebas Python aprobadas.
+  Traducidas las 46 claves del grimorio por idioma; regeneración, marcadores y ancho comprobados.
+  Frente al JAR de fase 1 solo cambian los tres JSON; revisión visual y con hablantes nativos pendiente.
+- [x] T8 fase 3: `BUILD SUCCESSFUL in 42s`, 217 pruebas JUnit y 35 pruebas Python aprobadas.
+  Cobertura de las 3512 claves por idioma; ambos generadores de nodos admiten los tres idiomas y `--check`.
+  El JAR conserva las clases, IDs, balance y recursos anteriores, salvo los tres idiomas nuevos.
+  La revisión en partida y con hablantes nativos sigue pendiente.
 - [ ] **(Autor)** Elegir el tipo de publicación. Si queda alguna etapa seleccionada sin probar en partida,
   usar **Beta** y describir qué falta; no presentar una comprobación estática como prueba en partida.
 
@@ -70,9 +77,9 @@ Pesca y Encantamiento. Mejora tus atributos en la Hoguera y combina un rol princ
 
 También incluye combos, runas, accesorios, élites, campeones y jefes. La exclusividad de las habilidades
 legendarias es opcional. Disponible en inglés y español, con seis variantes regionales de español.
-La candidata de T8 añade una traducción inicial de interfaz y objetos a portugués de Brasil, francés y
-alemán. El grimorio y los nodos aún conservan el inglés; completar las fases 2–3 y revisar con hablantes
-nativos antes de presentar estos idiomas como completos.
+La candidata de T8 añade una traducción inicial a portugués de Brasil, francés y alemán: las 3512 claves,
+con interfaz, objetos, los 23 capítulos del grimorio, nodos de rol y las 60 sendas completas. Conviene
+revisarla en partida y con hablantes nativos antes de presentarla como una traducción revisada.
 
 Instala Aptitudes y Fabric API para Minecraft 1.21.1 tanto en el cliente como en el servidor, con Java 21.
 Consulta la tabla «Limitaciones conocidas» del README para el filtro de IA, cambios de bloques y alcance

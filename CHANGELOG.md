@@ -12,6 +12,18 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   grimorio y nodos/sendas (2126 claves) conservan el inglés hasta las fases 2 y 3.
   Los rótulos de interfaz generados se mantienen en sus generadores. Nuevo comprobador de duplicados,
   claves, orden y marcadores de formato, con pruebas de errores y ejecución en GitHub Actions.
+- **v45 — Traducciones, T8 fase 2**: traducción inicial de los 23 capítulos del grimorio a los tres
+  idiomas, que conviene revisar con hablantes nativos. Incluye sendas, las diez piedras angulares,
+  logros, contratos, eventos y alquimia; las recetas se consultan en el juego.
+  Catálogo y generador reproducibles, con el párrafo de evolución en su generador original, comprobación
+  de ancho con la fuente de Minecraft y pruebas de conservación de las demás traducciones.
+  Acumulado: 1432 claves traducidas por idioma; los 2080 textos de nodos/sendas esperan la fase 3.
+- **v45 — Traducciones, T8 fase 3**: traducción inicial de los nodos base, legendarios, evolucionados
+  y sendas completas S1–S7 a portugués de Brasil, francés y alemán, que conviene revisar con hablantes
+  nativos. Las 3512 claves de cada idioma están cubiertas, con el mismo orden y marcadores que el inglés.
+  Los dos generadores originales incorporan los tres idiomas y `--check`; se comprueban los números,
+  las bifurcaciones y las piedras angulares. Inglés y los siete archivos de español no cambian.
+  El generador de evolución reconoce el párrafo vigente del grimorio y evita duplicar el antiguo al regenerar.
 
 ## [1.4.0] — 2026-11-06
 
