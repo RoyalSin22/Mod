@@ -6,6 +6,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Cambiado
+- **v51 — Mesa y Tablón del gremio.** Separamos la cuadrícula, el resultado y el inventario de la Mesa.
+  El Tablón muestra ofertas y contratos activos en columnas, con una fila de acciones por ficha.
+  Al pasar el cursor se pueden leer el objetivo y la recompensa completos. El árbol usa un lienzo común e indica que se elige una senda.
 - **v50 — HUD e iconos del árbol.** El árbol y la barra de habilidades comparten iconos propios.
   Los sellos identifican el rol, las activas muestran sus marcas y los nodos evolucionados distinguen
   Maestro y Definitivo. La barra separa piedras angulares y mecánicas, muestra teclas y costes con

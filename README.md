@@ -540,7 +540,8 @@ Las tablas de botín están en `data/aptitudes/loot_table/chests/` y la rareza e
 
 ### Aldeano de gremio
 Fabrica una **Mesa del gremio** en una mesa de trabajo y colócala junto a un aldeano sin profesión.
-Usa la cuadrícula de la Mesa del gremio para las demás recetas de fabricación de Aptitudes, incluidas
+Usa la cuadrícula de la Mesa del gremio, separada del resultado y del inventario, para las demás
+recetas de fabricación de Aptitudes, incluidas
 la Hoguera y el Grimorio. El grimorio muestra la estación de cada receta.
 Vende Fragmentos de alma, frascos de Estus y Éter, materiales de rol, **Vales de armería**
 (dan una pieza del set de tu rol principal, primero las que te faltan), Ofrendas de renacimiento,

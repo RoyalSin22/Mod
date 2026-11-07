@@ -1858,7 +1858,7 @@
   "aptitudes.mech.encore": "Encore ! Le chant se déclenche sans recharge",
   "aptitudes.mech.crescendo": "Crescendo ! Un final pour vos alliés",
   "screen.aptitudes.tree.passives": "PASSIFS",
-  "screen.aptitudes.tree.paths": "VOIES · CHOISIR 2",
+  "screen.aptitudes.tree.paths": "VOIES · CHOISIR 1",
   "screen.aptitudes.tree.actives": "ACTIFS",
   "unique.aptitudes.skypiercer": "Perce-ciel",
   "unique.aptitudes.skypiercer.desc": "Passif : +1 d'allonge. Actif : une lance céleste tombe au point visé : 14 dégâts dans un rayon de 4 blocs, projetant les ennemis.",

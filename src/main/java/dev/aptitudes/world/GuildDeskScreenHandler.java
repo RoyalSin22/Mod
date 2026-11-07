@@ -29,6 +29,9 @@ public class GuildDeskScreenHandler extends ScreenHandler {
 	private final ScreenHandlerContext context;
 	private boolean crafting;
 
+	public static final int WIDTH = 256;
+	public static final int HEIGHT = 208;
+
 	/** Cliente: el servidor sincroniza el contenido. */
 	public GuildDeskScreenHandler(int syncId, PlayerInventory playerInventory) {
 		this(syncId, playerInventory, ScreenHandlerContext.EMPTY);
@@ -37,16 +40,16 @@ public class GuildDeskScreenHandler extends ScreenHandler {
 	public GuildDeskScreenHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
 		super(GuildCrafting.SCREEN, syncId);
 		this.context = context;
-		addSlot(new ResultSlot(result, 0, 124, 35));
+		addSlot(new ResultSlot(result, 0, 176, 54));
 		for (int row = 0; row < 3; row++) {
-			for (int col = 0; col < 3; col++) addSlot(new Slot(input, col + row * 3, 30 + col * 18, 17 + row * 18));
+			for (int col = 0; col < 3; col++) addSlot(new Slot(input, col + row * 3, 44 + col * 18, 41 + row * 18));
 		}
 		for (int row = 0; row < 3; row++) {
 			for (int col = 0; col < 9; col++) {
-				addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 84 + row * 18));
+				addSlot(new Slot(playerInventory, col + row * 9 + 9, 48 + col * 18, 129 + row * 18));
 			}
 		}
-		for (int col = 0; col < 9; col++) addSlot(new Slot(playerInventory, col, 8 + col * 18, 142));
+		for (int col = 0; col < 9; col++) addSlot(new Slot(playerInventory, col, 48 + col * 18, 185));
 	}
 
 	@Override

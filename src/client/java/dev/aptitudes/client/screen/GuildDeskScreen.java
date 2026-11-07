@@ -7,24 +7,35 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 
-/** Cuadrícula de fabricación con la madera, el latón y el jade de la Mesa del gremio. */
+/** Las zonas de trabajo y de inventario conservan los índices de ranura del contenedor. */
 public class GuildDeskScreen extends HandledScreen<GuildDeskScreenHandler> {
-	private static final int JADE = 0xFF82BEAB;
+	private static final int JADE = 0xFF8AC4B0;
 	private static final int BRASS = 0xFFB9824B;
-	private static final int WOOD = 0xFF302328;
-	private static final int RECESS = 0xFF171B21;
-	private static final int EDGE = 0xFF584143;
+	private static final int WOOD = 0xFF302329;
+	private static final int RECESS = 0xFF151922;
+	private static final int EDGE = 0xFF63494A;
 
 	public GuildDeskScreen(GuildDeskScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
+		backgroundWidth = GuildDeskScreenHandler.WIDTH;
+		backgroundHeight = GuildDeskScreenHandler.HEIGHT;
 	}
 
 	@Override
 	protected void drawBackground(DrawContext ctx, float delta, int mouseX, int mouseY) {
 		UiStyle.window(ctx, x, y, backgroundWidth, backgroundHeight);
-		ctx.fill(x + 2, y + 2, x + 174, y + 75, WOOD);
-		ctx.drawBorder(x + 25, y + 15, 61, 57, EDGE);
-		ctx.drawBorder(x + 120, y + 31, 24, 24, handler.getSlot(0).hasStack() ? BRASS : EDGE);
+		ctx.fill(x + 2, y + 3, x + backgroundWidth - 2, y + 23, WOOD);
+		ctx.fill(x + 12, y + 24, x + backgroundWidth - 12, y + 25, BRASS);
+
+		ctx.fill(x + 27, y + 31, x + 115, y + 104, WOOD);
+		ctx.drawBorder(x + 27, y + 31, 88, 73, EDGE);
+		ctx.fill(x + 128, y + 31, x + 240, y + 104, WOOD);
+		ctx.drawBorder(x + 128, y + 31, 112, 73, EDGE);
+
+		UiStyle.panel(ctx, x + 10, y + 111, backgroundWidth - 20, 94);
+		boolean ready = handler.getSlot(0).hasStack();
+		Slot output = handler.getSlot(0);
+		ctx.drawBorder(x + output.x - 4, y + output.y - 4, 24, 24, ready ? BRASS : EDGE);
 		for (int i = 0; i < handler.slots.size(); i++) {
 			Slot slot = handler.getSlot(i);
 			int sx = x + slot.x - 1;
@@ -32,22 +43,18 @@ public class GuildDeskScreen extends HandledScreen<GuildDeskScreenHandler> {
 			ctx.fill(sx, sy, sx + 18, sy + 18, RECESS);
 			ctx.drawBorder(sx, sy, 18, 18, i == 0 ? BRASS : i < 10 ? 0xFF416557 : UiStyle.BORDER);
 		}
-		int arrow = handler.getSlot(0).hasStack() ? JADE : UiStyle.MUTED;
-		ctx.fill(x + 94, y + 42, x + 109, y + 44, arrow);
-		UiStyle.line(ctx, x + 105, y + 38, x + 110, y + 42, arrow);
-		UiStyle.line(ctx, x + 110, y + 42, x + 105, y + 46, arrow);
-		for (int dx = 4; dx <= 168; dx += 164) {
-			ctx.fill(x + dx, y + 5, x + dx + 3, y + 8, BRASS);
-			ctx.fill(x + dx, y + 68, x + dx + 3, y + 71, BRASS);
-		}
+		int arrow = ready ? JADE : UiStyle.MUTED;
+		ctx.fill(x + 116, y + 61, x + 124, y + 63, arrow);
+		UiStyle.line(ctx, x + 121, y + 57, x + 125, y + 61, arrow);
+		UiStyle.line(ctx, x + 125, y + 61, x + 121, y + 65, arrow);
 	}
 
 	@Override
 	protected void drawForeground(DrawContext ctx, int mouseX, int mouseY) {
-		UiStyle.label(ctx, textRenderer, title, 10, 5, 156, UiStyle.GOLD);
+		UiStyle.label(ctx, textRenderer, title, 12, 9, backgroundWidth - 24, UiStyle.GOLD);
 		Text result = Text.translatable("container.aptitudes.guild_desk.result");
-		ctx.drawCenteredTextWithShadow(textRenderer, UiStyle.fit(textRenderer, result, 76), 132, 20, JADE);
-		UiStyle.label(ctx, textRenderer, playerInventoryTitle, 8, 75, 160, UiStyle.TEXT);
+		ctx.drawCenteredTextWithShadow(textRenderer, UiStyle.fit(textRenderer, result, 96), 184, 39, JADE);
+		UiStyle.label(ctx, textRenderer, playerInventoryTitle, 16, 116, backgroundWidth - 32, UiStyle.TEXT);
 	}
 
 	@Override

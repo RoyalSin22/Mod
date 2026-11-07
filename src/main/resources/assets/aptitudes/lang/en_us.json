@@ -1858,7 +1858,7 @@
   "aptitudes.mech.encore": "Encore! The song goes off without cooldown",
   "aptitudes.mech.crescendo": "Crescendo! A finale for your allies",
   "screen.aptitudes.tree.passives": "PASSIVES",
-  "screen.aptitudes.tree.paths": "PATHS · PICK 2",
+  "screen.aptitudes.tree.paths": "PATHS · PICK 1",
   "screen.aptitudes.tree.actives": "ACTIVES",
   "unique.aptitudes.skypiercer": "Skypiercer",
   "unique.aptitudes.skypiercer.desc": "Passive: +1 reach. Active: a celestial spear falls where you look: 14 damage within 4 blocks, launching enemies.",

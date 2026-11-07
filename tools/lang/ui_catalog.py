@@ -189,7 +189,7 @@ hud.visible¦HUD visível¦ATH visible¦HUD sichtbar
 hud.reset¦Redefinir¦Réinitialiser¦Zurücksetzen
 hud.drag¦Arraste a barra de habilidades para movê-la¦Glissez la barre de capacités pour la déplacer¦Ziehe die Fähigkeitsleiste, um sie zu verschieben
 tree.passives¦PASSIVAS¦PASSIFS¦PASSIVE
-tree.paths¦CAMINHOS · ESCOLHA 2¦VOIES · CHOISIR 2¦PFADE · WÄHLE 2
+tree.paths¦CAMINHOS · ESCOLHA 1¦VOIES · CHOISIR 1¦PFADE · WÄHLE 1
 tree.actives¦ATIVAS¦ACTIFS¦AKTIVE
 node.legendary¦Lendária¦Légendaire¦Legendär
 accessories¦Acessórios¦Accessoires¦Accessoires

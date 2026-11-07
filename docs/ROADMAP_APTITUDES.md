@@ -1,11 +1,16 @@
 # Roadmap de Aptitudes
 
-v50 implementada en `codex/v50-hud-iconos` sobre v49, integrada en `main`. La publicación sigue aplazada.
+v51 preparada en `codex/v51-interfaz-puestos`. v50 está integrada en `main`. La publicación sigue aplazada.
 Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fabric API 0.116.6 · Loom 1.10 · Java 21**.
 
 ## Estado real
 
-### v50 — HUD e iconos del árbol (implementados en rama)
+### v51 — Mesa y Tablón con más espacio (implementados en rama)
+- Mesa con zonas separadas y Tablón con fichas para ofertas y contratos activos.
+- Lienzo unificado y corrección del rótulo de sendas exclusivas. Maqueta y propuestas de asedio, datapack y roles
+  en [V51_DISENO_Y_FASES.md](V51_DISENO_Y_FASES.md).
+
+### v50 — HUD e iconos del árbol (integrados en main)
 - Atlas con 570 iconos propios para los nodos del árbol, los sellos de rol y las piedras angulares
   del HUD. Los 480 PNG de Sendas siguen siendo los mismos.
 - Barra con teclas y costes más legibles, dos filas auxiliares y ajuste al área visible. La vista previa

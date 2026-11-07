@@ -60,8 +60,8 @@ public class RolesScreen extends Screen {
 	/** X local de cada columna: tres zonas (pasivas 0-2, sendas 3-5, activas 6-8) con separación entre zonas. */
 	private static final int[] COL_X = {8, 46, 84, 136, 194, 252, 304, 342, 380};
 	private static final int ROW_H = 38;
-	/** Zonas del árbol: x inicial, x final, color y clave del título. */
-	private static final int[][] ZONES = {{0, 112, 0x182A3A55}, {124, 288, 0x18C9A54C}, {296, 412, 0x18E57373}};
+	/** Límites y acentos de las secciones del lienzo. */
+	private static final int[][] ZONES = {{0, 112, 0xFF92A9CE}, {124, 288, 0xFFD8B675}, {296, 412, 0xFFCA9DA4}};
 	private static final String[] ZONE_KEYS = {"screen.aptitudes.tree.passives", "screen.aptitudes.tree.paths",
 			"screen.aptitudes.tree.actives"};
 	/** Colores de las tres sendas (A, B, C). */
@@ -808,20 +808,21 @@ public class RolesScreen extends Screen {
 		ctx.fill(a.x() + 24, y, b.x(), y + 2, color);
 	}
 
-	/** Fondos de las tres zonas del árbol con su título. */
+	/** Las secciones comparten un lienzo y se distinguen por sus rótulos. */
 	private void renderZones(DrawContext ctx) {
 		int top = gridY() + ROW_H - 10;
 		int bottom = gridY() + ROW_H * 6 + 30;
+		int right = ZONES[ZONES.length - 1][1];
+		ctx.fill(0, top, right, bottom, 0xFF171B24);
+		ctx.drawBorder(0, top, right, bottom - top, 0xFF373541);
 		for (int i = 0; i < ZONES.length; i++) {
 			int[] z = ZONES[i];
-			ctx.fill(z[0], top, z[1], bottom, z[2] | 0x20000000);
-			ctx.drawBorder(z[0], top, z[1] - z[0], bottom - top, (z[2] & 0xFFFFFF) | 0x50000000);
-			Text title = Text.translatable(ZONE_KEYS[i]);
+			Text title = UiStyle.fit(textRenderer, Text.translatable(ZONE_KEYS[i]), (z[1] - z[0] - 12) * 4 / 3);
 			int tw = (int) (textRenderer.getWidth(title) * 0.75f);
 			ctx.getMatrices().push();
 			ctx.getMatrices().translate((z[0] + z[1]) / 2f - tw / 2f, top + 2, 0);
 			ctx.getMatrices().scale(0.75f, 0.75f, 1f);
-			ctx.drawText(textRenderer, title, 0, 0, 0xFF8A8FA3, false);
+			ctx.drawText(textRenderer, title, 0, 0, z[2], false);
 			ctx.getMatrices().pop();
 		}
 	}

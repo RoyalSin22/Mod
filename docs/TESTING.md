@@ -1,5 +1,18 @@
 # Pruebas de Aptitudes
 
+## v51 — Mesa y Tablón del gremio
+
+1. Abre la Mesa a escala de interfaz 4. Revisa la separación de la cuadrícula, resultado e inventario.
+   Prueba arrastrar, Mayús + clic y recoger un lote de dos objetos. Con v48, abre Reforja desde el botón
+   y comprueba que cabe debajo del resultado.
+2. Abre el Tablón con tres ofertas y con el máximo de contratos activos. Incluye un contrato de entrega
+   y una oferta legendaria con una recompensa larga. Verifica los rótulos, barras y botones en español
+   y alemán. Al pasar sobre el objetivo, comprueba que se lean todas las recompensas.
+3. Acepta, entrega, abandona y cobra en un mundo de prueba. Verifica que cada botón corresponda a su
+   ficha y que los límites y cobros del servidor sigan aplicándose. Cierra y vuelve a abrir el Tablón.
+4. Abre J. Pasivas, Sendas y Activas deben compartir el fondo. La cabecera de Sendas debe indicar
+   que se elige una. Revisa que los nodos, conexiones, controles y su foco funcionen al hacer zoom.
+
 ## v50 — HUD e iconos del árbol
 
 1. Abre J con varios roles. Recorre nodos base, legendarios y las filas Maestro y Definitivo.
