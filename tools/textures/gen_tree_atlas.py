@@ -144,6 +144,11 @@ def entries():
         catalog['keystone/' + name.lower()] = (template, KEYSTONE_COLORS[name], 'legend', 0)
     if len(catalog) != len(roles) * 28 + len(KEYSTONE_GLYPHS):
         raise ValueError('Hay identificadores de icono duplicados o ausentes')
+    # Añade las marcas de agua al final: los iconos existentes conservan su índice.
+    for role, tint in roles.items():
+        catalog[f'role/{role}/crest'] = (SEALS[role], tint, 'crest', 0)
+    if len(catalog) > (SIZE // TILE) ** 2:
+        raise ValueError('El atlas no tiene espacio para todos los iconos')
     return catalog
 
 
@@ -152,6 +157,16 @@ def render(tile, tint, frame, mark):
     light = '#' + ''.join(f'{max(82, min(230, c + 35)):02x}' for c in (r, g, b))
     ink = Image.new('RGBA', (16, 16))
     draw = ImageDraw.Draw(ink)
+    if frame == 'crest':
+        # Grabado tenue y transparente, destinado al fondo del lienzo.
+        draw.polygon(((7, 0), (8, 0), (15, 7), (15, 8), (8, 15), (7, 15), (0, 8), (0, 7)),
+                     outline=(169, 174, 184, 23))
+        tone = (*[int(light[i:i + 2], 16) for i in (1, 3, 5)], 31)
+        for y, row in enumerate(tile):
+            for x, pixel in enumerate(row):
+                if pixel == 'A':
+                    draw.point((x, y), fill=tone)
+        return ink
     if frame in ('core', 'signature', 'ultimate', 'legend'):
         draw.polygon(((5, 0), (10, 0), (15, 5), (15, 10), (10, 15), (5, 15), (0, 10), (0, 5)),
                      fill=(18, 20, 30, 255), outline=light)

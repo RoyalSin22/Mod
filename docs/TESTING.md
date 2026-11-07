@@ -16,6 +16,17 @@
    RePág/AvPág o la rueda fuera del árbol para llegar a la ficha. En ambos tamaños comprueba zoom,
    arrastre, C, foco con Tab y la ayuda del nodo. Abre también Elementos y Formas desde sus roles.
 
+### Fase 2 — Identidad de los 20 roles
+
+1. Recorre los 20 roles desde las cinco categorías. Compara la cabecera, el fondo grabado y la
+   ficha en Talentos, Maestro y Definitivo. En Sendas, verifica que se reconozca el mismo rol y
+   que A, B y C tengan nombres en la ayuda del cursor.
+2. Con Tab y Mayús + Tab, recorre las pestañas. Comprueba que el borde de foco se distinga de la
+   marca superior de la pestaña abierta. Repite en una ventana ancha y con 426×240 efectivos.
+3. Comprueba que el grabado permita leer etiquetas, conexiones, rangos y candados. Recarga recursos
+   con F3 + T. Si un paquete aporta un índice anterior, verifica que la vista siga mostrando los iconos.
+4. Ejecuta el generador con `--check`. Debe comprobar 590 entradas del atlas, incluidas 20 marcas de agua.
+
 ## v51 — Mesa y Tablón del gremio
 
 1. Abre la Mesa a escala de interfaz 4. Revisa la separación de la cuadrícula, resultado e inventario.

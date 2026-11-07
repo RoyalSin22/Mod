@@ -1,6 +1,7 @@
 package dev.aptitudes.client.screen;
 
 import com.google.gson.JsonParser;
+import com.mojang.blaze3d.systems.RenderSystem;
 import dev.aptitudes.Aptitudes;
 import dev.aptitudes.role.KeystoneRules;
 import dev.aptitudes.role.NodeIcons;
@@ -72,10 +73,14 @@ public final class NodeIconRenderer {
 	}
 
 	private static boolean drawSprite(DrawContext ctx, String key, int x, int y) {
+		return drawSprite(ctx, key, x, y, TILE);
+	}
+
+	private static boolean drawSprite(DrawContext ctx, String key, int x, int y, int size) {
 		if (atlas == null) atlas = readAtlas();
 		Integer index = atlas.get(key);
 		if (index == null) return false;
-		ctx.drawTexture(ATLAS, x, y, (index % COLUMNS) * TILE, (index / COLUMNS) * TILE,
+		ctx.drawTexture(ATLAS, x, y, size, size, (index % COLUMNS) * TILE, (index / COLUMNS) * TILE,
 				TILE, TILE, ATLAS_SIZE, ATLAS_SIZE);
 		return true;
 	}
@@ -102,6 +107,18 @@ public final class NodeIconRenderer {
 			case SIGNATURE -> NodeIcons.signature(role);
 			case ULTIMATE -> NodeIcons.ultimate(role);
 		}, x, y);
+	}
+
+	/** La decoración es opcional para los paquetes de recursos con un índice anterior. */
+	static void drawCrest(DrawContext ctx, Role role, int x, int y, int size) {
+		// DrawContext.drawTexture en 1.21.1 no activa la mezcla para el alfa del grabado.
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		try {
+			drawSprite(ctx, "role/" + role.key() + "/crest", x, y, size);
+		} finally {
+			RenderSystem.disableBlend();
+		}
 	}
 
 	public static void drawKeystoneTemplate(DrawContext ctx, KeystoneRules.Template template, int x, int y) {

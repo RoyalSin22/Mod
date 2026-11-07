@@ -6,8 +6,9 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 ## Estado real
 
 ### v53 — Atlas de talentos (implementado en rama)
-- Cuatro entradas en J, ficha adaptable y acentos propios para Domador, Espadachín y Bardo.
-  Sendas reúne S1–S7 y la ficha de S1 muestra su requisito en Talentos. Pruebas visuales en partida pendientes.
+- Fase 1. Cuatro entradas en J y ficha adaptable. Sendas reúne S1–S7 y la ficha de S1 muestra su requisito en Talentos.
+- Fase 2. Paletas y grabados para los 20 roles, con pestañas que distinguen selección y foco en ambas vistas.
+  Pruebas visuales en partida pendientes.
 
 ### v51 — Mesa y Tablón con más espacio (integrados en main)
 - Mesa con zonas separadas y Tablón con fichas para ofertas y contratos activos.

@@ -83,12 +83,12 @@ public class RolesScreen extends Screen {
 	private boolean keepView;
 	private RoleCategory category = RoleCategory.MARTIAL;
 	private Role selected = Role.BERSERKER;
+	private RoleAtlasTheme theme;
 	/** Clave de la casilla seleccionada: id del nodo o nombre de {@link NodeKind}. */
 	private String selectedNode = NodeKind.CORE.name();
 	private boolean extraView;
 	private TalentTab tab = TalentTab.TALENTS;
 	private List<NodeView> visibleNodes = List.of();
-	private final ButtonWidget[] tabButtons = new ButtonWidget[TalentTab.values().length];
 
 	private ButtonWidget primaryButton;
 	private ButtonWidget secondaryButton;
@@ -106,6 +106,7 @@ public class RolesScreen extends Screen {
 			selected = data.primaryRole();
 			category = selected.category();
 		}
+		theme = RoleAtlasTheme.of(selected);
 	}
 
 	private int canvasX() { return left + LIST_W + 16; }
@@ -165,9 +166,11 @@ public class RolesScreen extends Screen {
 			int start = i * canvasW() / options.length;
 			int end = (i + 1) * canvasW() / options.length;
 			Text label = Text.translatable(option.key);
-			tabButtons[i] = addDrawableChild(ButtonWidget.builder(UiStyle.fit(textRenderer, label, end - start - 8),
-					b -> openTab(option)).tooltip(Tooltip.of(label))
-					.dimensions(canvasX() + start, top + 29, end - start - 4, 16).build());
+			var button = new RoleAtlasTheme.Tab(canvasX() + start, top + 29, end - start - 4,
+					UiStyle.fit(textRenderer, label, end - start - 8), b -> openTab(option),
+					() -> !extraView && option == tab, () -> theme.accent());
+			button.setTooltip(Tooltip.of(label));
+			addDrawableChild(button);
 		}
 		primaryButton = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.roles.set_primary"),
 				b -> send(RoleActionPayload.SET_PRIMARY, "")).dimensions(lx, top + 182, LIST_W, 16).build());
@@ -211,6 +214,7 @@ public class RolesScreen extends Screen {
 	}
 
 	private void openTab(TalentTab option) {
+		if (!extraView && option == tab) return;
 		extraView = false;
 		if (option == TalentTab.PATHS) {
 			keepView = true;
@@ -260,9 +264,6 @@ public class RolesScreen extends Screen {
 		primaryButton.active = ready && data.primaryRole() != selected;
 		secondaryButton.active = ready && data.secondaryRole() != selected;
 		updateEvolveButton(data);
-		for (TalentTab option : TalentTab.values()) {
-			tabButtons[option.ordinal()].active = extraView || option != tab;
-		}
 
 		NodeView v = nodeView(selectedNode);
 		upgradeButton.visible = !extraView && v != null && v.node() != null;
@@ -501,6 +502,7 @@ public class RolesScreen extends Screen {
 
 	private void selectRole(Role role) {
 		selected = role;
+		theme = RoleAtlasTheme.of(role);
 		category = role.category();
 		extraView = false;
 		selectTabStart();
@@ -543,15 +545,16 @@ public class RolesScreen extends Screen {
 	public void renderBackground(DrawContext ctx, int mouseX, int mouseY, float delta) {
 		super.renderBackground(ctx, mouseX, mouseY, delta);
 		UiStyle.window(ctx, left, top, W, H);
-		UiStyle.panel(ctx, canvasX(), top + 4, canvasW(), 22);
+		theme.panel(ctx, canvasX(), top + 4, canvasW(), 22);
 		if (extraView) {
-			UiStyle.panel(ctx, canvasX(), top + CANVAS_TOP, canvasW(), infoBottom() - top - CANVAS_TOP);
+			theme.panel(ctx, canvasX(), top + CANVAS_TOP, canvasW(), infoBottom() - top - CANVAS_TOP);
 		} else {
 			int treeBottom = viewY2() + 13;
-			ctx.fill(canvasX(), top + CANVAS_TOP, canvasX() + treeW(), treeBottom, 0xFF171B24);
-			ctx.drawBorder(canvasX(), top + CANVAS_TOP, treeW(), treeBottom - top - CANVAS_TOP, UiStyle.BORDER);
-			ctx.fill(canvasX() + 1, top + CANVAS_TOP + 1, canvasX() + treeW() - 1, top + CANVAS_TOP + 2, accent());
-			UiStyle.panel(ctx, infoX(), infoY(), infoW(), infoBottom() - infoY());
+			theme.panel(ctx, canvasX(), top + CANVAS_TOP, treeW(), treeBottom - top - CANVAS_TOP);
+			theme.panel(ctx, infoX(), infoY(), infoW(), infoBottom() - infoY());
+			int crest = Math.min(112, (viewY2() - viewY1()) * 3 / 4);
+			NodeIconRenderer.drawCrest(ctx, selected, (viewX1() + viewX2() - crest) / 2,
+					(viewY1() + viewY2() - crest) / 2, crest);
 		}
 	}
 
@@ -594,30 +597,17 @@ public class RolesScreen extends Screen {
 		}
 	}
 
-	private int accent() {
-		return switch (selected) {
-			case TAMER -> 0xFF8DC99F;
-			case SWORDSMAN -> 0xFF9EC4E2;
-			case BARD -> 0xFFD6A5E5;
-			default -> 0xFF7F7F7F + ((selected.color() & 0xFEFEFE) >>> 1);
-		};
-	}
-
 	private void renderAtlasHeader(DrawContext ctx, RoleSyncPayload data) {
 		int x = canvasX();
 		int statsX = x + canvasW() - 112;
 		NodeIconRenderer.drawRole(ctx, selected, NodeIconRenderer.Badge.CORE, x + 4, top + 7);
 		UiStyle.label(ctx, textRenderer, Text.translatable(Evolution.titleKey(selected, data.tier(selected))),
-				x + 25, top + 11, statsX - x - 31, accent());
+				x + 25, top + 11, statsX - x - 31, theme.accent());
 		UiStyle.label(ctx, textRenderer, Text.translatable("screen.aptitudes.paths.level",
 				data.level(selected), data.rules().maxLevel()), statsX, top + 6, 108, UiStyle.TEXT);
 		int points = availablePoints(data, selected);
 		UiStyle.label(ctx, textRenderer, Text.translatable("screen.aptitudes.points", points),
 				statsX, top + 16, 108, points > 0 ? UiStyle.GOOD : UiStyle.MUTED);
-		if (!extraView) {
-			ButtonWidget current = tabButtons[tab.ordinal()];
-			ctx.fill(current.getX() + 1, top + 45, current.getX() + current.getWidth() - 1, top + 47, accent());
-		}
 	}
 
 	private void renderSynergy(DrawContext ctx, RoleSyncPayload data) {
@@ -648,8 +638,12 @@ public class RolesScreen extends Screen {
 		for (int i = 0; i < roles.size(); i++) {
 			Role role = roles.get(i);
 			int y = top + 48 + i * ROLE_ROW_H;
-			UiStyle.row(ctx, left + 8, y, LIST_W, ROLE_ROW_H - 2, i, role == selected);
-			if (role == selected) ctx.fill(left + 8, y, left + 10, y + ROLE_ROW_H - 2, accent());
+			if (role == selected) {
+				theme.panel(ctx, left + 8, y, LIST_W, ROLE_ROW_H - 2);
+				ctx.fill(left + 8, y, left + 10, y + ROLE_ROW_H - 2, theme.accent());
+			} else {
+				UiStyle.row(ctx, left + 8, y, LIST_W, ROLE_ROW_H - 2, i, false);
+			}
 			NodeIconRenderer.drawRole(ctx, role, NodeIconRenderer.Badge.CORE, left + 9, y);
 			String marker = role == data.primaryRole() ? "P" : role == data.secondaryRole() ? "S" : "";
 			String stars = "★".repeat(data.tier(role));
@@ -678,7 +672,7 @@ public class RolesScreen extends Screen {
 				pts > 0 ? UiStyle.GOOD : UiStyle.MUTED);
 		ctx.fill(left + 8, y + 36, left + 8 + LIST_W, y + 39, 0xFF202433);
 		double fill = level >= rules.maxLevel() ? 1 : Math.min(1, data.xp(selected) / (double) rules.xpToNext(level));
-		ctx.fill(left + 8, y + 36, left + 8 + (int) (LIST_W * fill), y + 39, 0xFF000000 | selected.color());
+		ctx.fill(left + 8, y + 36, left + 8 + (int) (LIST_W * fill), y + 39, theme.accent());
 		// Ritual de la Hoguera: cambios de rol disponibles.
 		Text rebirth = data.rebirths() > 0 ? Text.translatable("screen.aptitudes.roles.rebirths", data.rebirths())
 				: Text.translatable("screen.aptitudes.roles.need_ritual");
@@ -712,7 +706,7 @@ public class RolesScreen extends Screen {
 			NodeView parent = pre != null ? nodeView(pre)
 					: tab == TalentTab.TALENTS && v.y() == FIRST_TALENT_Y ? root : null;
 			if (parent == null) continue;
-			elbow(ctx, parent, v, lit(data, v) ? accent() : available(data, v) ? 0xFF7A8098 : 0xFF42495B);
+			elbow(ctx, parent, v, lit(data, v) ? theme.accent() : available(data, v) ? 0xFF7A8098 : 0xFF42495B);
 		}
 
 		renderLaneTitles(ctx, tier);
@@ -750,7 +744,7 @@ public class RolesScreen extends Screen {
 			}
 			UiStyle.frame(ctx, v.x(), v.y(), frame, lit, hover);
 			if (v.key().equals(selectedNode)) {
-				ctx.drawBorder(v.x() - 3, v.y() - 3, 30, 30, accent());
+				ctx.drawBorder(v.x() - 3, v.y() - 3, 30, 30, theme.accent());
 			}
 			drawNodeIcon(ctx, v);
 			if (!lit && !available) ctx.fill(v.x() + 2, v.y() + 2, v.x() + 22, v.y() + 22, 0x88101018);
@@ -760,7 +754,7 @@ public class RolesScreen extends Screen {
 				ctx.fill(v.x() - 2, v.y() - 2, v.x() + 9, v.y() + 11, 0xFF141820);
 				UiStyle.lockIcon(ctx, v.x(), v.y() - 1);
 			} else if (available) {
-				ctx.fill(v.x(), v.y(), v.x() + 4, v.y() + 4, accent());
+				ctx.fill(v.x(), v.y(), v.x() + 4, v.y() + 4, theme.accent());
 			}
 			if (v.node() != null) {
 				int rank = data.rank(v.node().id());
@@ -789,7 +783,7 @@ public class RolesScreen extends Screen {
 	private void renderLaneTitles(DrawContext ctx, int tier) {
 		if (tab == TalentTab.TALENTS) {
 			laneTitle(ctx, "screen.aptitudes.tree.passives", 12, 128, 15, UiStyle.MUTED);
-			laneTitle(ctx, "screen.aptitudes.node.mechanic", 126, 210, 77, accent());
+			laneTitle(ctx, "screen.aptitudes.node.mechanic", 126, 210, 77, theme.accent());
 			laneTitle(ctx, "screen.aptitudes.tree.actives", 212, 324, 15, UiStyle.MUTED);
 		} else {
 			boolean master = tab == TalentTab.MASTER;
@@ -798,7 +792,7 @@ public class RolesScreen extends Screen {
 					? (unlocked ? "screen.aptitudes.tree.row_master" : "screen.aptitudes.tree.requires_master")
 					: (unlocked ? "screen.aptitudes.tree.row_ultimate" : "screen.aptitudes.tree.requires_ultimate");
 			ctx.fill(12, 77, CONTENT_W - 12, 78, UiStyle.BORDER);
-			laneTitle(ctx, key, 16, CONTENT_W - 16, 72, unlocked ? accent() : UiStyle.MUTED);
+			laneTitle(ctx, key, 16, CONTENT_W - 16, 72, unlocked ? theme.accent() : UiStyle.MUTED);
 		}
 	}
 
@@ -806,7 +800,7 @@ public class RolesScreen extends Screen {
 		Text title = UiStyle.fit(textRenderer, Text.translatable(key), x2 - x1 - 6);
 		int tw = textRenderer.getWidth(title);
 		int x = (x1 + x2 - tw) / 2;
-		ctx.fill(x - 3, y - 1, x + tw + 3, y + 9, 0xFF171B24);
+		ctx.fill(x - 3, y - 1, x + tw + 3, y + 9, theme.slate());
 		ctx.drawText(textRenderer, title, x, y, color, false);
 	}
 
@@ -906,7 +900,7 @@ public class RolesScreen extends Screen {
 
 	private List<Text> nodeDetails(RoleSyncPayload data, NodeView v) {
 		List<Text> lines = new ArrayList<>();
-		lines.add(nodeName(v).copy().withColor(accent() & 0xFFFFFF));
+		lines.add(nodeName(v).copy().withColor(theme.accent() & 0xFFFFFF));
 		lines.add(nodeType(v).copy().formatted(Formatting.GRAY));
 		RoleNode node = v.node();
 		if (node != null) {
@@ -961,7 +955,7 @@ public class RolesScreen extends Screen {
 		UiStyle.frame(ctx, x, y, UiStyle.Frame.PASSIVE, lit(data, v), false);
 		drawNodeIcon(ctx, new NodeView(v.kind(), v.node(), x, y));
 		List<Text> lines = nodeDetails(data, v);
-		UiStyle.label(ctx, textRenderer, lines.get(0), x + 30, y + 2, w - 30, accent());
+		UiStyle.label(ctx, textRenderer, lines.get(0), x + 30, y + 2, w - 30, theme.accent());
 		UiStyle.label(ctx, textRenderer, lines.get(1), x + 30, y + 13, w - 30, UiStyle.MUTED);
 		ctx.fill(x, y + 29, x + w, y + 30, UiStyle.BORDER);
 		int bodyW = sideInspector() ? w : w - 76;

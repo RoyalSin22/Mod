@@ -575,6 +575,7 @@ rojo con menos del 25 %; los recursos de rol parpadean cuando pueden potenciar u
 ## Atlas de talentos (v53)
 
 Pulsa **J** para elegir un rol. La cabecera muestra su sello, nivel y puntos disponibles.
+Cada rol tiene una paleta y un emblema grabado que también aparecen en Sendas.
 **Talentos** muestra los nodos base y sus requisitos. **Sendas** reúne los siete escalones,
 la bifurcación y la piedra angular de cada opción. **Maestro** y **Definitivo** muestran
 sus propios talentos, habilidad y arma. Selecciona un nodo para consultar el rango y lo que

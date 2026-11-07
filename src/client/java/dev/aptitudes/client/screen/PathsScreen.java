@@ -12,6 +12,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
@@ -42,18 +43,19 @@ public class PathsScreen extends Screen {
 
 	private final Screen parent;
 	private final Role role;
+	private final RoleAtlasTheme theme;
 	private int path;
 	@Nullable private Step selected = Step.S1;
 	private int left;
 	private int top;
 	private int scroll;
 	private ButtonWidget learnButton;
-	private final ButtonWidget[] tabs = new ButtonWidget[PathRules.PATHS];
 
 	public PathsScreen(Screen parent, Role role) {
 		super(Text.translatable("screen.aptitudes.paths.title", Text.translatable(role.translationKey())));
 		this.parent = parent;
 		this.role = role;
+		this.theme = RoleAtlasTheme.of(role);
 		RoleSyncPayload data = ClientRoleState.data();
 		int chosen = data == null ? 0 : PathRules.chosenPath(data::rank, role.key());
 		this.path = chosen > 0 ? chosen : 1;
@@ -70,11 +72,15 @@ public class PathsScreen extends Screen {
 		top = maxScroll() > 0 ? 8 - scroll : (height - H) / 2;
 		for (int p = 1; p <= PathRules.PATHS; p++) {
 			final int target = p;
-			tabs[p - 1] = addDrawableChild(ButtonWidget.builder(Text.literal(String.valueOf((char) ('A' + p - 1))), b -> {
+			Text letter = Text.literal(String.valueOf((char) ('A' + p - 1)));
+			var button = new RoleAtlasTheme.Tab(left + W - 112 + (p - 1) * 36, top + 6, 32, letter, b -> {
+				if (path == target) return;
 				path = target;
 				selected = Step.S1;
 				updateButtons();
-			}).dimensions(left + W - 112 + (p - 1) * 36, top + 6, 32, 16).build());
+			}, () -> path == target, () -> PATH_COLORS[target - 1]);
+			button.setTooltip(Tooltip.of(Text.translatable(RoleTree.pathKey(role, target))));
+			addDrawableChild(button);
 		}
 		learnButton = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.paths.learn"),
 				b -> learn()).dimensions(left + PANEL_X + 6, top + H - 50, W - PANEL_X - 12, 16).build());
@@ -85,9 +91,6 @@ public class PathsScreen extends Screen {
 
 	private void updateButtons() {
 		RoleSyncPayload data = ClientRoleState.data();
-		for (int p = 1; p <= PathRules.PATHS; p++) {
-			tabs[p - 1].active = p != path;
-		}
 		RoleNode node = selectedNode();
 		learnButton.visible = node != null;
 		learnButton.active = data != null && node != null && canLearn(data, node);
@@ -177,7 +180,10 @@ public class PathsScreen extends Screen {
 	@Override
 	public void renderBackground(DrawContext ctx, int mouseX, int mouseY, float delta) {
 		super.renderBackground(ctx, mouseX, mouseY, delta);
-		UiStyle.window(ctx, left, top, W, H); // aquí: si se dibujara en render() taparía los botones
+		UiStyle.window(ctx, left, top, W, H);
+		theme.panel(ctx, left + 5, top + 4, PANEL_X - 9, 24);
+		theme.panel(ctx, left + 5, rowY(0) - 2, PANEL_X - 9, rowY(6) + 24 - rowY(0));
+		NodeIconRenderer.drawCrest(ctx, role, left + 151, top + 83, 80);
 	}
 
 	@Override
@@ -189,9 +195,9 @@ public class PathsScreen extends Screen {
 		Text pathName = Text.translatable(RoleTree.pathKey(role, path));
 		NodeIconRenderer.drawRole(ctx, role, NodeIconRenderer.Badge.CORE, left + 8, top + 6);
 		UiStyle.label(ctx, textRenderer, Text.translatable(role.translationKey()).append(" · ").append(pathName),
-				left + 28, top + 6, W - 150, UiStyle.GOLD);
+				left + 28, top + 6, PANEL_X - 36, theme.accent());
 		UiStyle.label(ctx, textRenderer, Text.translatable(RoleTree.pathKey(role, path) + ".desc"),
-				left + 28, top + 17, W - 150, UiStyle.MUTED);
+				left + 28, top + 17, PANEL_X - 36, UiStyle.MUTED);
 		if (data == null) return;
 		int level = data.level(role);
 		int max = data.rules().maxLevel();
@@ -202,7 +208,7 @@ public class PathsScreen extends Screen {
 		Text status = statusLine(data);
 		UiStyle.label(ctx, textRenderer, status, left + PANEL_X, top + 30, W - PANEL_X - 8,
 				PathRules.pathLocked(data::rank, role.key(), path) ? UiStyle.DOWN : UiStyle.GOLD);
-		ctx.fill(left + 6, top + 41, left + W - 6, top + 42, UiStyle.GOLD_DARK);
+		ctx.fill(left + 6, top + 41, left + W - 6, top + 42, theme.accent());
 
 		// Raíl de niveles.
 		int[] railLevels = {10, 14, 20, 26, 32, 40, 50};
@@ -311,7 +317,7 @@ public class PathsScreen extends Screen {
 	/** La ficha mantiene los requisitos a la vista y el cursor muestra la descripción completa. */
 	private void renderPanel(DrawContext ctx, RoleSyncPayload data, int mouseX, int mouseY, @Nullable RoleNode hovered) {
 		int x = left + PANEL_X, y = top + ROWS_Y, w = W - PANEL_X - 8, h = H - ROWS_Y - 56;
-		UiStyle.panel(ctx, x, y, w, h);
+		theme.panel(ctx, x, y, w, h);
 		RoleNode node = selectedNode();
 		if (node == null) return;
 		List<Text> lines = stepDetails(data, node);

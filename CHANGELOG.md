@@ -9,6 +9,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 - **v53 — Atlas de talentos.** En J, abre Talentos, Sendas, Maestro o Definitivo desde la cabecera
   del rol. Los sellos, iconos y acentos identifican cada rol. La ficha muestra el rango y los
   requisitos del nodo seleccionado y el cursor revela la descripción completa.
+  Los 20 roles tienen paleta y emblema propios en el atlas y en Sendas. Las pestañas distinguen
+  selección y foco, y las de Sendas muestran el nombre completo al pasar el cursor.
 - **v51 — Mesa y Tablón del gremio.** Separamos la cuadrícula, el resultado y el inventario de la Mesa.
   El Tablón muestra ofertas y contratos activos en columnas, con una fila de acciones por ficha.
   Al pasar el cursor se pueden leer el objetivo y la recompensa completos. El árbol usa un lienzo común e indica que se elige una senda.
