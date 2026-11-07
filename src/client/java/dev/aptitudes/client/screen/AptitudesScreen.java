@@ -67,6 +67,7 @@ public class AptitudesScreen extends Screen {
 
 	/** {@code true} si se abrió descansando en una Hoguera: permite comprar niveles de alma. */
 	private final boolean bonfire;
+	private final net.minecraft.item.ItemStack bonfireIcon;
 
 	public AptitudesScreen() {
 		this(false);
@@ -75,6 +76,8 @@ public class AptitudesScreen extends Screen {
 	public AptitudesScreen(boolean bonfire) {
 		super(Text.translatable("screen.aptitudes.title"));
 		this.bonfire = bonfire;
+		bonfireIcon = bonfire ? new net.minecraft.item.ItemStack(dev.aptitudes.block.ModBlocks.BONFIRE_ITEM)
+				: net.minecraft.item.ItemStack.EMPTY;
 	}
 
 	/** Puntos preparados que no cubren los puntos libres y hay que comprar como niveles. */
@@ -271,6 +274,7 @@ public class AptitudesScreen extends Screen {
 	public void renderBackground(DrawContext ctx, int mouseX, int mouseY, float delta) {
 		super.renderBackground(ctx, mouseX, mouseY, delta);
 		UiStyle.window(ctx, left, top, W, H);
+		if (bonfire && tab == Tab.ATTRIBUTES) drawBonfireFrame(ctx);
 	}
 
 	@Override
@@ -285,9 +289,11 @@ public class AptitudesScreen extends Screen {
 			ctx.fill(width - 5, 8, width - 2, 8 + trackH, 0x60000000);
 			ctx.fill(width - 5, thumbY, width - 2, thumbY + thumbH, UiStyle.GOLD);
 		}
-		ctx.drawTextWithShadow(textRenderer, Text.translatable(tab == Tab.ATTRIBUTES
-				? "screen.aptitudes.tab.attributes" : "screen.aptitudes.tab.skills").copy()
-				.formatted(net.minecraft.util.Formatting.BOLD), left + 12, top + 9, UiStyle.GOLD);
+		boolean atHearth = bonfire && tab == Tab.ATTRIBUTES;
+		Text heading = Text.translatable(atHearth ? "block.aptitudes.bonfire" : tab == Tab.ATTRIBUTES
+				? "screen.aptitudes.tab.attributes" : "screen.aptitudes.tab.skills");
+		ctx.drawTextWithShadow(textRenderer, heading.copy().formatted(net.minecraft.util.Formatting.BOLD),
+				left + (atHearth ? 30 : 12), top + 9, UiStyle.GOLD);
 		renderTabs(ctx, mouseX, mouseY);
 
 		SyncProgressPayload data = ClientCache.get();
@@ -301,6 +307,13 @@ public class AptitudesScreen extends Screen {
 
 		ctx.drawText(textRenderer, Text.translatable(tab == Tab.ATTRIBUTES ? "screen.aptitudes.hint.attributes"
 				: "screen.aptitudes.hint.tabs"), left + 10, top + H - 16, UiStyle.MUTED, false);
+	}
+
+	private void drawBonfireFrame(DrawContext ctx) {
+		ctx.fill(left + 2, top + 2, left + W - 2, top + 23, 0xFF30232A);
+		ctx.fill(left + 7, top + 207, left + W - 7, top + H - 19, 0xFF2B2128);
+		ctx.fill(left + 7, top + 207, left + W - 7, top + 208, 0xFF86533A);
+		ctx.drawItem(bonfireIcon, left + 9, top + 4);
 	}
 
 	private void renderTabs(DrawContext ctx, int mouseX, int mouseY) {

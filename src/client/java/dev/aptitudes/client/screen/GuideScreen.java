@@ -2,6 +2,7 @@ package dev.aptitudes.client.screen;
 
 import dev.aptitudes.Aptitudes;
 import dev.aptitudes.item.ModItems;
+import dev.aptitudes.world.GuildShapelessRecipe;
 import dev.aptitudes.item.RoleArmor;
 import dev.aptitudes.item.weapon.RoleWeapons;
 import dev.aptitudes.role.Role;
@@ -180,7 +181,7 @@ public class GuideScreen extends Screen {
 		var lookup = client.world.getRegistryManager();
 		for (RecipeEntry<?> entry : client.world.getRecipeManager().values()) {
 			Recipe<?> recipe = entry.value();
-			if (!(recipe instanceof ShapedRecipe) && !(recipe instanceof ShapelessRecipe)) continue;
+			if (!(recipe instanceof ShapedRecipe) && !isShapeless(recipe)) continue;
 			ItemStack result = recipe.getResult(lookup);
 			if (result.isEmpty() || !isModItem(result.getItem())) continue;
 			recipesFor.computeIfAbsent(result.getItem(), k -> new ArrayList<>()).add(entry);
@@ -451,7 +452,7 @@ public class GuideScreen extends Screen {
 		} else {
 			recipeIndex = Math.floorMod(recipeIndex, recipes.size());
 			Recipe<?> recipe = recipes.get(recipeIndex).value();
-			boolean shapeless = recipe instanceof ShapelessRecipe;
+			boolean shapeless = isShapeless(recipe);
 			Text kind = Text.translatable(shapeless ? "screen.aptitudes.guide.shapeless" : "screen.aptitudes.guide.shaped");
 			ctx.drawText(textRenderer, kind, px, y, UiStyle.TEXT, false);
 			if (recipes.size() > 1) {
@@ -475,7 +476,6 @@ public class GuideScreen extends Screen {
 			ctx.drawItem(result, rx + 5, ry + 5);
 			ctx.drawItemInSlot(textRenderer, result, rx + 5, ry + 5);
 			if (mouseX >= rx && mouseX < rx + 26 && mouseY >= ry && mouseY < ry + 26) tip.item(result);
-			// v27: las armaduras de rol se fabrican en la Mesa del gremio.
 			Text where = Text.translatable(recipe.getType() == dev.aptitudes.world.GuildCrafting.RECIPE_TYPE
 					? "screen.aptitudes.guide.guild_desk" : "screen.aptitudes.guide.crafting_table");
 			ctx.drawText(textRenderer, UiStyle.fit(textRenderer, where, px + pw - rx - 32), rx + 32, ry + 9, UiStyle.MUTED, false);
@@ -498,6 +498,10 @@ public class GuideScreen extends Screen {
 				ix += 20;
 			}
 		}
+	}
+
+	private static boolean isShapeless(Recipe<?> recipe) {
+		return recipe instanceof ShapelessRecipe || recipe instanceof GuildShapelessRecipe;
 	}
 
 	/** Cuadrícula 3×3: con forma respeta ancho/alto; sin forma, en orden. */

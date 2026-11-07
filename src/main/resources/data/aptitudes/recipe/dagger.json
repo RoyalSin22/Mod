@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "aptitudes:guild_crafting",
   "category": "equipment",
   "pattern": [
     "I",

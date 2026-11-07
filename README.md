@@ -154,7 +154,7 @@ Máximo 99 puntos por atributo. Las 10 habilidades por uso siguen subiendo y dan
 
 ### Hoguera y subida de nivel
 
-- **La Hoguera** se fabrica con `·S· / BCB` (S = espada de hierro, B = piedra, C = fogata). Al descansar en ella (clic derecho) recuperas toda la vida y el maná, fija tu **punto de reaparición** y se abre la pantalla de subida de nivel.
+- **La Hoguera** se fabrica en la Mesa del gremio con `·S· / BCB` (S = espada de hierro, B = piedra, C = fogata). Al descansar en ella (clic derecho) recuperas toda la vida y el maná, fija tu **punto de reaparición** y se abre la pantalla de subida de nivel.
 - **Subir de nivel:** los puntos que prepares por encima de los libres se **compran como niveles de alma**. Cada nivel cuesta `1 + nivel / 3` niveles de XP vanilla (máximo 30, configurable). La pantalla muestra el coste y la XP que tienes antes de confirmar.
 - **Mancha de XP:** al morir, **toda** tu XP (no solo los 100 puntos de vanilla) queda en el lugar de la muerte, marcada con llamas de alma que solo tú ves. Si vuelves a ese punto la recuperas; si mueres antes, la mancha anterior se pierde. Se desactiva con `keepInventory` o con `soulsBloodstain = false`.
 
@@ -539,7 +539,9 @@ Las tablas de botín están en `data/aptitudes/loot_table/chests/` y la rareza e
 `data/aptitudes/worldgen/placed_feature/` (editables con un datapack).
 
 ### Aldeano de gremio
-Coloca una **Mesa del gremio** (oro + esmeralda + tablones) junto a un aldeano sin profesión.
+Fabrica una **Mesa del gremio** en una mesa de trabajo y colócala junto a un aldeano sin profesión.
+Usa la cuadrícula de la Mesa del gremio para las demás recetas de fabricación de Aptitudes, incluidas
+la Hoguera y el Grimorio. El grimorio muestra la estación de cada receta.
 Vende Fragmentos de alma, frascos de Estus y Éter, materiales de rol, **Vales de armería**
 (dan una pieza del set de tu rol principal, primero las que te faltan), Ofrendas de renacimiento,
 Emblemas de maestría y Núcleos definitivos.

@@ -1,8 +1,15 @@
 {
-  "parent": "minecraft:block/cube_bottom_top",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": true,
   "textures": {
+    "particle": "aptitudes:block/guild_desk_side",
     "top": "aptitudes:block/guild_desk_top",
     "side": "aptitudes:block/guild_desk_side",
     "bottom": "aptitudes:block/guild_desk_bottom"
-  }
+  },
+  "elements": [
+    {"from": [0,0,0],"to": [16,2,16],"faces": {"down": {"texture": "#bottom","cullface": "down"},"up": {"texture": "#side"},"north": {"texture": "#side","cullface": "north"},"south": {"texture": "#side","cullface": "south"},"west": {"texture": "#side","cullface": "west"},"east": {"texture": "#side","cullface": "east"}}},
+    {"from": [0.25,2,0.25],"to": [15.75,14,15.75],"faces": {"down": {"texture": "#side"},"up": {"texture": "#side"},"north": {"texture": "#side"},"south": {"texture": "#side"},"west": {"texture": "#side"},"east": {"texture": "#side"}}},
+    {"from": [0,14,0],"to": [16,16,16],"faces": {"down": {"texture": "#side"},"up": {"texture": "#top","cullface": "up"},"north": {"texture": "#side","cullface": "north"},"south": {"texture": "#side","cullface": "south"},"west": {"texture": "#side","cullface": "west"},"east": {"texture": "#side","cullface": "east"}}}
+  ]
 }

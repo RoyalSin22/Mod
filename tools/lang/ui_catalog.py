@@ -546,6 +546,7 @@ block.aptitudes.guild_desk¦Mesa da Guilda¦Table de guilde¦Gildentisch
 entity.minecraft.villager.guildmaster¦Mestre da Guilda¦Maître de guilde¦Gildenmeister
 entity.minecraft.villager.aptitudes.guildmaster¦Mestre da Guilda¦Maître de guilde¦Gildenmeister
 container.aptitudes.guild_desk¦Mesa da Guilda¦Table de guilde¦Gildentisch
+container.aptitudes.guild_desk.result¦Resultado¦Résultat¦Ergebnis
 block.aptitudes.contract_board¦Quadro de Contratos¦Tableau de contrats¦Auftragstafel
 container.aptitudes.contract_board¦Quadro de Contratos¦Tableau de contrats¦Auftragstafel
 effect.aptitudes.mana¦Recuperação de Mana¦Récupération de mana¦Manawiederherstellung

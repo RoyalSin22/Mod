@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 
 /**
  * Mesa del gremio (v27): además de bloque de trabajo del aldeano de gremio, al usarla abre la cuadrícula
- * donde se fabrican las armaduras de rol. Mismo id que antes ({@code aptitudes:guild_desk}).
+ * donde se fabrican las recetas del gremio.
  */
 public class GuildDeskBlock extends Block {
 	private static final Text TITLE = Text.translatable("container.aptitudes.guild_desk");

@@ -14,6 +14,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   sustituir una unidad ordinaria sin botín. No aparece sobre el jugador si falta un emplazamiento seguro.
   Finalización protegida contra cobros repetidos, exclusión de creativo/espectador y recuento restaurado
   tras reiniciar. Siete opciones nuevas validadas y capítulo del grimorio actualizado en once idiomas.
+- **v49 — Mesa del gremio y Hoguera.** La Mesa del gremio se fabrica en la mesa de trabajo y reúne
+  el resto de las recetas de fabricación de Aptitudes, incluidas la Hoguera y el Grimorio. La Mesa
+  estrena un panel 3×3 de madera, latón y jade. La Hoguera incorpora un brasero de piedra, llamas
+  animadas y una cabecera propia al descansar. El grimorio indica qué mesa requiere cada receta.
 
 ### Añadido
 - **v45 — Traducciones, T8 fase 1**: traducción inicial de interfaz y objetos a portugués de Brasil

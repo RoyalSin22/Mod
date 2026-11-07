@@ -5,6 +5,13 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+### v49 — Puestos del gremio y la Hoguera (implementados en rama)
+- Modelos y texturas propios, llamas animadas, panel 3×3 exclusivo del gremio y cabecera de descanso.
+- La Mesa se fabrica en la mesa de trabajo. Las demás recetas de Aptitudes, incluidas la Hoguera
+  y el Grimorio, usan la Mesa del gremio. El grimorio muestra la estación leída de la receta.
+- Pendientes las pruebas en partida de la interfaz, la fabricación y la convivencia con Reforja y
+  Templado tras integrar las dos ramas.
+
 ### v47 — Eclipse y experiencia del mod (fase 1: asalto implementado)
 - Oleadas configurables 4/8 por jugador, mínimos de élites y campeones, unidades con armadura completa
   visible y sin equipo como botín. Se conservan probabilidades y multiplicadores anteriores fuera de las garantías.

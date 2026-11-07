@@ -77,6 +77,31 @@ Pruebas manuales pendientes (cliente y servidor dedicado; guardar copia del mund
 9. En los once idiomas, leer el capítulo de eventos completo y desplazar hasta su final. Comprobar
    cantidades, acentos, porcentajes y ausencia de claves visibles. La revisión visual no la sustituye JUnit.
 
+## v49 — Mesa del gremio y Hoguera
+
+1. En un mundo nuevo, fabrica una Mesa del gremio en una mesa de trabajo. Comprueba que la receta
+   de Hoguera requiere la Mesa del gremio y que el Grimorio se fabrica allí en cualquier orden.
+   Verifica que las dos recetas queden sin resultado en la mesa de trabajo. La Mesa del gremio
+   tampoco debe dar resultados de recetas vanilla.
+2. Fabrica una armadura de rol, una runa y una receta trasladada. Usa el grimorio para confirmar
+   la estación y la disposición de ingredientes. Prueba un patrón con forma desplazado o reflejado
+   y uno sin forma en varias posiciones de la cuadrícula.
+3. Prueba clic, tecla numérica, doble clic, Mayús + clic y Q. Con inventario lleno y espacio para
+   solo uno de los dos objetos, Mayús + clic en una receta de dos unidades debe conservar los
+   ingredientes. Al liberar espacio, cada lote de dos debe gastar un solo juego de ingredientes.
+   Con un datapack de prueba, comprueba que el cubo vacío vuelve a la cuadrícula o al inventario.
+4. Abre la Mesa con dos jugadores. Rompe el bloque, aléjate, desconecta o muere con ingredientes
+   dentro. Solo se deben devolver o soltar los ingredientes de cada sesión. Verifica que el
+   tutorial avanza con fabricación válida y que los contratos de forja cuentan armaduras y runas,
+   una vez por lote y solo para quien fabrica en supervivencia o aventura.
+5. Coloca ambos bloques, recarga recursos y vuelve a entrar al mundo. Revisa modelos en inventario
+   y colocados, llama animada, interacción con la Hoguera, Ofrenda, puesto del aldeano y atajos
+   de runas y núcleos. Revisa el panel 3×3 y la cabecera al descansar a escala de interfaz 4.
+   Tras integrar v48, prueba también los botones de Reforja y Templado.
+
+`GuildRecipeResourcesTest` comprueba los tipos de receta sin iniciar Minecraft. El generador
+`tools/textures/gen_workstations.py` admite `--check` sobre `src/main/resources/assets/aptitudes/textures/block`.
+
 ## v45 — Traducciones T8, fase 3 (nodos y sendas)
 
 ```powershell

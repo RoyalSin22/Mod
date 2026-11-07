@@ -2,239 +2,29 @@
   "parent": "minecraft:block/block",
   "ambientocclusion": false,
   "textures": {
-    "particle": "minecraft:block/cobblestone",
-    "stone": "minecraft:block/cobblestone",
-    "ash": "minecraft:block/campfire_log",
-    "fire": "minecraft:block/fire_0",
+    "particle": "aptitudes:block/bonfire_stone",
+    "stone": "aptitudes:block/bonfire_stone",
+    "coal": "aptitudes:block/bonfire_coal",
+    "fire": "aptitudes:block/bonfire_flame",
     "blade": "minecraft:block/iron_block",
     "hilt": "minecraft:block/dark_oak_planks"
   },
   "elements": [
-    {
-      "from": [
-        1,
-        0,
-        1
-      ],
-      "to": [
-        15,
-        3,
-        15
-      ],
-      "faces": {
-        "down": {
-          "texture": "#stone"
-        },
-        "up": {
-          "texture": "#stone"
-        },
-        "north": {
-          "texture": "#stone"
-        },
-        "south": {
-          "texture": "#stone"
-        },
-        "east": {
-          "texture": "#stone"
-        },
-        "west": {
-          "texture": "#stone"
-        }
-      }
-    },
-    {
-      "from": [
-        3,
-        3,
-        3
-      ],
-      "to": [
-        13,
-        4,
-        13
-      ],
-      "faces": {
-        "up": {
-          "texture": "#ash"
-        },
-        "north": {
-          "texture": "#ash"
-        },
-        "south": {
-          "texture": "#ash"
-        },
-        "east": {
-          "texture": "#ash"
-        },
-        "west": {
-          "texture": "#ash"
-        }
-      }
-    },
-    {
-      "from": [
-        0,
-        4,
-        8
-      ],
-      "to": [
-        16,
-        16,
-        8
-      ],
-      "shade": false,
-      "rotation": {
-        "origin": [
-          8,
-          8,
-          8
-        ],
-        "axis": "y",
-        "angle": 45,
-        "rescale": true
-      },
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#fire"
-        },
-        "south": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#fire"
-        }
-      }
-    },
-    {
-      "from": [
-        8,
-        4,
-        0
-      ],
-      "to": [
-        8,
-        16,
-        16
-      ],
-      "shade": false,
-      "rotation": {
-        "origin": [
-          8,
-          8,
-          8
-        ],
-        "axis": "y",
-        "angle": 45,
-        "rescale": true
-      },
-      "faces": {
-        "east": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#fire"
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#fire"
-        }
-      }
-    },
-    {
-      "from": [
-        7.5,
-        2,
-        7.5
-      ],
-      "to": [
-        8.5,
-        13,
-        8.5
-      ],
-      "rotation": {
-        "origin": [
-          8,
-          8,
-          8
-        ],
-        "axis": "z",
-        "angle": -22.5
-      },
-      "faces": {
-        "up": {
-          "texture": "#blade"
-        },
-        "north": {
-          "texture": "#blade"
-        },
-        "south": {
-          "texture": "#blade"
-        },
-        "east": {
-          "texture": "#blade"
-        },
-        "west": {
-          "texture": "#blade"
-        }
-      }
-    },
-    {
-      "from": [
-        6.5,
-        13,
-        7.5
-      ],
-      "to": [
-        9.5,
-        14,
-        8.5
-      ],
-      "rotation": {
-        "origin": [
-          8,
-          8,
-          8
-        ],
-        "axis": "z",
-        "angle": -22.5
-      },
-      "faces": {
-        "up": {
-          "texture": "#hilt"
-        },
-        "down": {
-          "texture": "#hilt"
-        },
-        "north": {
-          "texture": "#hilt"
-        },
-        "south": {
-          "texture": "#hilt"
-        },
-        "east": {
-          "texture": "#hilt"
-        },
-        "west": {
-          "texture": "#hilt"
-        }
-      }
-    }
+    {"from": [1,0,1],"to": [15,2,15],"faces": {"down": {"texture": "#stone"},"up": {"texture": "#stone"},"north": {"texture": "#stone"},"south": {"texture": "#stone"},"west": {"texture": "#stone"},"east": {"texture": "#stone"}}},
+    {"from": [3,2,3],"to": [13,3,13],"faces": {"down": {"texture": "#coal"},"up": {"texture": "#coal"},"north": {"texture": "#coal"},"south": {"texture": "#coal"},"west": {"texture": "#coal"},"east": {"texture": "#coal"}}},
+    {"from": [2,2,2],"to": [14,4,4],"faces": {"down": {"texture": "#stone"},"up": {"texture": "#stone"},"north": {"texture": "#stone"},"south": {"texture": "#stone"},"west": {"texture": "#stone"},"east": {"texture": "#stone"}}},
+    {"from": [2,2,12],"to": [14,4,14],"faces": {"down": {"texture": "#stone"},"up": {"texture": "#stone"},"north": {"texture": "#stone"},"south": {"texture": "#stone"},"west": {"texture": "#stone"},"east": {"texture": "#stone"}}},
+    {"from": [2,2,4],"to": [4,4,12],"faces": {"down": {"texture": "#stone"},"up": {"texture": "#stone"},"north": {"texture": "#stone"},"south": {"texture": "#stone"},"west": {"texture": "#stone"},"east": {"texture": "#stone"}}},
+    {"from": [12,2,4],"to": [14,4,12],"faces": {"down": {"texture": "#stone"},"up": {"texture": "#stone"},"north": {"texture": "#stone"},"south": {"texture": "#stone"},"west": {"texture": "#stone"},"east": {"texture": "#stone"}}},
+    {"from": [1,2,1],"to": [4,5,4],"faces": {"down": {"texture": "#stone"},"up": {"texture": "#stone"},"north": {"texture": "#stone"},"south": {"texture": "#stone"},"west": {"texture": "#stone"},"east": {"texture": "#stone"}}},
+    {"from": [1,2,12],"to": [4,5,15],"faces": {"down": {"texture": "#stone"},"up": {"texture": "#stone"},"north": {"texture": "#stone"},"south": {"texture": "#stone"},"west": {"texture": "#stone"},"east": {"texture": "#stone"}}},
+    {"from": [12,2,1],"to": [15,5,4],"faces": {"down": {"texture": "#stone"},"up": {"texture": "#stone"},"north": {"texture": "#stone"},"south": {"texture": "#stone"},"west": {"texture": "#stone"},"east": {"texture": "#stone"}}},
+    {"from": [12,2,12],"to": [15,5,15],"faces": {"down": {"texture": "#stone"},"up": {"texture": "#stone"},"north": {"texture": "#stone"},"south": {"texture": "#stone"},"west": {"texture": "#stone"},"east": {"texture": "#stone"}}},
+    {"from": [2,3,8],"to": [14,15,8],"faces": {"north": {"texture": "#fire","uv": [0,0,16,16]},"south": {"texture": "#fire","uv": [0,0,16,16]}},"shade": false,"rotation": {"origin": [8,3,8],"axis": "y","angle": 45}},
+    {"from": [8,3,2],"to": [8,15,14],"faces": {"east": {"texture": "#fire","uv": [0,0,16,16]},"west": {"texture": "#fire","uv": [0,0,16,16]}},"shade": false,"rotation": {"origin": [8,3,8],"axis": "y","angle": 45}},
+    {"from": [7.25,3,7.5],"to": [8.75,11.5,8.5],"faces": {"down": {"texture": "#blade"},"up": {"texture": "#blade"},"north": {"texture": "#blade"},"south": {"texture": "#blade"},"west": {"texture": "#blade"},"east": {"texture": "#blade"}},"rotation": {"origin": [8,3,8],"axis": "z","angle": -22.5}},
+    {"from": [6,11.5,7.25],"to": [10,12.5,8.75],"faces": {"down": {"texture": "#blade"},"up": {"texture": "#blade"},"north": {"texture": "#blade"},"south": {"texture": "#blade"},"west": {"texture": "#blade"},"east": {"texture": "#blade"}},"rotation": {"origin": [8,3,8],"axis": "z","angle": -22.5}},
+    {"from": [7.5,12.5,7.5],"to": [8.5,14.5,8.5],"faces": {"down": {"texture": "#hilt"},"up": {"texture": "#hilt"},"north": {"texture": "#hilt"},"south": {"texture": "#hilt"},"west": {"texture": "#hilt"},"east": {"texture": "#hilt"}},"rotation": {"origin": [8,3,8],"axis": "z","angle": -22.5}},
+    {"from": [7.25,14.5,7.25],"to": [8.75,15.5,8.75],"faces": {"down": {"texture": "#blade"},"up": {"texture": "#blade"},"north": {"texture": "#blade"},"south": {"texture": "#blade"},"west": {"texture": "#blade"},"east": {"texture": "#blade"}},"rotation": {"origin": [8,3,8],"axis": "z","angle": -22.5}}
   ]
 }

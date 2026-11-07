@@ -22,21 +22,21 @@ chapter('start', ('Boas-vindas', 'Bienvenue', 'Willkommen'), (
     """Aptitudes é um sistema RPG completo: suas HABILIDADES evoluem com as ações (minerar, cortar madeira, lutar…), seus ATRIBUTOS são comprados em uma Fogueira com experiência, e você escolhe uma CLASSE principal e uma secundária, cada uma com árvore de talentos, mana e habilidades.
 
 Primeiros passos:
-1. Fabrique uma Fogueira e descanse nela.
+1. Faça uma Fogueira na Mesa da Guilda e descanse.
 2. Pressione J e escolha a classe principal.
 3. Gaste pontos na árvore (J) e equipe suas ativas.
 4. Use V, B (classe principal) e N, M (secundária).""",
     """Aptitudes est un système RPG complet : vos COMPÉTENCES progressent par vos actions (miner, couper du bois, combattre…), vos ATTRIBUTS s'achètent à un feu de camp avec de l'expérience, et vous choisissez un RÔLE principal et un secondaire, chacun avec son arbre de talents, son mana et ses capacités.
 
 Premiers pas :
-1. Fabriquez un feu de camp et reposez-vous.
+1. Fabriquez un feu de camp à la Table de guilde et reposez-vous.
 2. Appuyez sur J et choisissez votre rôle principal.
 3. Dépensez vos points d'arbre (J) et équipez vos capacités actives.
 4. Utilisez V, B (rôle principal) et N, M (secondaire).""",
     """Aptitudes ist ein vollständiges RPG-System: Deine FERTIGKEITEN steigen durch Tätigkeiten (Bergbau, Holzfällen, Kämpfen…), deine ATTRIBUTE kaufst du mit Erfahrung an einem Leuchtfeuer. Du wählst eine HAUPTROLLE und eine NEBENROLLE, jede mit eigenem Talentbaum, Mana und Fähigkeiten.
 
 Erste Schritte:
-1. Stelle ein Leuchtfeuer her und raste dort.
+1. Baue ein Leuchtfeuer am Gildentisch und raste dort.
 2. Drücke J und wähle deine Hauptrolle.
 3. Verteile Baumpunkte (J) und rüste aktive Fähigkeiten aus.
 4. Nutze V, B (Hauptrolle) und N, M (Nebenrolle)."""))
@@ -373,21 +373,21 @@ chapter('guild', ('Aldeão da guilda', 'Villageois de guilde', 'Gildendorfbewohn
 
 Conforme o nível, vende: Fragmentos de Alma, Frascos de Estus e de Éter, materiais de classe, Vales de Arsenal, Oferendas de Renovação, Emblemas de Maestria e Núcleos Definitivos. Compra couro e ossos.
 
-A mesa também é uma oficina: clique direito para fabricar armaduras de classe (só podem ser feitas ali).
+Faça a Mesa da Guilda na bancada. Use a Mesa da Guilda para as demais receitas de Aptitudes.
 
 RUNAS: segure uma arma de classe em uma mão e uma runa na outra e use a Mesa da Guilda para engastar (duas por arma, diferentes). Há Chama, Roubo de Vida, Agilidade, Força, Geada, Trovão, Guarda e Eclipse. Para remover a última: Shift + clique direito na Mesa, com a arma na mão e a outra vazia; custa esmeraldas e a runa é perdida.""",
     """Placez une Table de guilde près d'un villageois sans métier pour en faire un Maître de guilde. Consultez la recette réelle dans le grimoire.
 
 Selon son niveau, il vend : Fragments d'âme, Fioles d'Estus et d'éther, matériaux de rôle, Bons d'armurerie, Offrandes de renouveau, Emblèmes de maîtrise et Noyaux ultimes. Il achète du cuir et des os.
 
-La table sert aussi d'atelier : clic droit pour fabriquer les armures de rôle (uniquement à cet endroit).
+Fabriquez la Table de guilde à l’établi. Utilisez-la pour les autres recettes d’Aptitudes.
 
 RUNES : tenez une arme de rôle dans une main et une rune dans l'autre, puis utilisez la Table de guilde pour la sertir (deux différentes par arme). Il existe Flamme, Vol de vie, Vélocité, Force, Givre, Tonnerre, Garde et Éclipse. Pour retirer la dernière : Maj + clic droit sur la Table avec l'arme en main et l'autre main vide ; cela coûte des émeraudes et la rune est perdue.""",
     """Stelle einen Gildentisch neben einen arbeitslosen Dorfbewohner, damit er Gildenmeister wird. Das tatsächliche Rezept findest du im Grimoire.
 
 Je nach Stufe verkauft er: Seelensplitter, Estus- und Ätherflakons, Rollenmaterialien, Rüstkammergutscheine, Opfergaben der Erneuerung, Meisterschaftsembleme und Ultimative Kerne. Er kauft Leder und Knochen.
 
-Der Tisch ist auch eine Werkstatt: Rechtsklick zum Herstellen von Rollenrüstung (nur dort möglich).
+Baue den Gildentisch an der Werkbank. Nutze ihn für die übrigen Rezepte von Aptitudes.
 
 RUNEN: Halte eine Rollenwaffe in einer Hand und eine Rune in der anderen und nutze den Gildentisch zum Einsetzen (zwei verschiedene pro Waffe). Es gibt Flamme, Lebensraub, Flinkheit, Kraft, Frost, Donner, Wache und Finsternis. Letzte Rune entfernen: Umschalt + Rechtsklick auf den Tisch mit der Waffe in der Hand und leerer anderer Hand; kostet Smaragde und die Rune geht verloren."""))
 

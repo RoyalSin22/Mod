@@ -401,8 +401,8 @@ al desconectar o reiniciar. No hay un attachment nuevo ni `copyOnDeath` para las
 Las versiones arrojadizas, persistentes y flechas conservan la reducción de duración y aplicación de área
 vanilla; pueden beneficiar a otras entidades, incluidos aliados o criaturas ajenas al grupo.
 
-Se extrae 1 pétalo por saquito, consumiéndolo mediante fabricación vanilla. Se conservan la receta y el
-uso medicinal del saquito. No se registran variantes prolongadas ni de potencia II.
+Se extrae 1 pétalo por saquito, consumiéndolo en la Mesa del gremio desde v49. Se conservan los
+ingredientes y el uso medicinal del saquito. No se registran variantes prolongadas ni de potencia II.
 Herbolista principal o secundario: velocidad ×1,5 (unos 13,35 s en lugar de 20 s) y duración ×1,5.
 La ayuda cercana requiere 8 bloques; quien abrió realmente el soporte tiene prioridad hasta 32 bloques.
 En ambos casos debe seguir conectado, vivo, en ese mundo y con el rol activo. No cuenta en creativo ni
@@ -433,7 +433,7 @@ Se conserva el consumo y cancelación vanilla. Un chunk descargado no se acelera
 | Pesca | 3 + 2·s (+0–2) | Fácil |
 | Oficio (XP de una habilidad) | 150·s | Fácil |
 | Encantamiento | 1 + s | Normal |
-| Forja (Mesa del gremio) | 1 (2 en Élite y Legendario) | Normal |
+| Forja (armaduras de rol y runas en la Mesa del gremio) | 1 (2 en Élite y Legendario) | Normal |
 | Evento (sobrevivir) | 1 | Difícil |
 | Jefe | 1 | Legendario |
 
