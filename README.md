@@ -583,10 +583,11 @@ rojo con menos del 25 %; los recursos de rol parpadean cuando pueden potenciar u
   `roleChangeRequiresRitual` en `config/aptitudes.json` lo desactiva.
 - **Mago arcano**: sin fuego ni hielo. Proyectil arcano, Distorsión temporal, Lluvia rúnica
   (característica) y Senda Arcanista (crítico, ejecución, marchitar).
-- **HUD**: barras estilo Souls arriba a la izquierda (vida con trozo retrasado y absorción, maná,
-  aguante, recursos), indicador de la mecánica del rol sobre la barra de habilidades, ranuras con
-  esquinas doradas y destello al quedar listas. **Mayús + O** abre la configuración: arrastrar la
-  barra, escala 50–200 %, y activar/desactivar cada elemento.
+- **HUD**. La barra de habilidades usa los mismos iconos que el árbol. Las mecánicas de rol y las
+  piedras angulares ocupan filas separadas. Los marcos señalan el rol y destellan al recargarse.
+  Abre **Mayús + O** para arrastrar la barra, elegir una escala entre 50 y 200 % o cambiar qué
+  elementos se muestran. La barra se reduce automáticamente si la ventana es demasiado estrecha.
+  Las barras estilo Souls muestran vida, absorción, maná, aguante y recursos de rol.
 
 ## Árbol ramificado y mecánicas de rol (v9, fase 1)
 

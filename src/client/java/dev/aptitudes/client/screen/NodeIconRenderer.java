@@ -1,6 +1,8 @@
 package dev.aptitudes.client.screen;
 
+import com.google.gson.JsonParser;
 import dev.aptitudes.Aptitudes;
+import dev.aptitudes.role.KeystoneRules;
 import dev.aptitudes.role.NodeIcons;
 import dev.aptitudes.role.PathRules;
 import dev.aptitudes.role.Role;
@@ -14,16 +16,26 @@ import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
-/** Iconos propios de nodos de Sendas, con respaldo al objeto actual si falta la textura. */
+/** Iconos propios del árbol, con respaldo al objeto si el paquete de recursos no aporta el icono. */
 public final class NodeIconRenderer {
+	public enum Badge { CORE, SIGNATURE, ULTIMATE }
+
+	private static final int ATLAS_SIZE = 512;
+	private static final int TILE = 16;
+	private static final int COLUMNS = ATLAS_SIZE / TILE;
+	private static final Identifier ATLAS = Aptitudes.id("textures/gui/tree/atlas.png");
+	private static final Identifier INDEX = Aptitudes.id("textures/gui/tree/atlas.json");
 	private static final Map<String, Boolean> HAS_TEXTURE = new HashMap<>();
+	private static Map<String, Integer> atlas;
+	private static final String[] KEYSTONES = java.util.Arrays.stream(KeystoneRules.Template.values())
+			.map(template -> "keystone/" + template.name().toLowerCase(Locale.ROOT)).toArray(String[]::new);
 
 	static {
-		// Fabric ejecuta esta recarga síncrona en el hilo principal, como el dibujado.
-		// Evita conservar resultados obsoletos tras F3+T o un cambio de paquetes de recursos.
 		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(
 				new SimpleSynchronousResourceReloadListener() {
 					@Override
@@ -34,6 +46,7 @@ public final class NodeIconRenderer {
 					@Override
 					public void reload(ResourceManager manager) {
 						HAS_TEXTURE.clear();
+						atlas = null;
 					}
 				});
 	}
@@ -41,20 +54,63 @@ public final class NodeIconRenderer {
 	private NodeIconRenderer() {
 	}
 
-	/** Dibuja el PNG propio de 16×16 del nodo (también S7) o su icono de objeto si no existe. */
-	public static void draw(DrawContext ctx, RoleNode node, int x, int y) {
-		Identifier texture = Aptitudes.id("textures/gui/node/" + node.id() + ".png");
-		boolean present = HAS_TEXTURE.computeIfAbsent(node.id(), id ->
-				MinecraftClient.getInstance().getResourceManager().getResource(texture).isPresent());
-		if (present) {
-			// Yarn 1.21.1: textura, x, y, u, v, ancho, alto, anchoTextura, altoTextura.
-			ctx.drawTexture(texture, x, y, 0.0F, 0.0F, 16, 16, 16, 16);
-		} else {
-			ctx.drawItem(NodeIcons.of(node), x, y);
+	private static Map<String, Integer> readAtlas() {
+		ResourceManager manager = MinecraftClient.getInstance().getResourceManager();
+		var index = manager.getResource(INDEX);
+		if (index.isEmpty() || manager.getResource(ATLAS).isEmpty()) return Map.of();
+		try (var reader = index.get().getReader()) {
+			Map<String, Integer> sprites = new HashMap<>();
+			for (var entry : JsonParser.parseReader(reader).getAsJsonObject().entrySet()) {
+				int value = entry.getValue().getAsInt();
+				if (value >= 0 && value < COLUMNS * COLUMNS) sprites.put(entry.getKey(), value);
+			}
+			return sprites;
+		} catch (IOException | RuntimeException e) {
+			Aptitudes.LOGGER.warn("No se pudo leer el atlas del árbol de roles", e);
+			return Map.of();
 		}
 	}
 
-	/** Busca la piedra angular S7 de una senda (1–3) y la dibuja como cualquier otro nodo. */
+	private static boolean drawSprite(DrawContext ctx, String key, int x, int y) {
+		if (atlas == null) atlas = readAtlas();
+		Integer index = atlas.get(key);
+		if (index == null) return false;
+		ctx.drawTexture(ATLAS, x, y, (index % COLUMNS) * TILE, (index / COLUMNS) * TILE,
+				TILE, TILE, ATLAS_SIZE, ATLAS_SIZE);
+		return true;
+	}
+
+	public static void draw(DrawContext ctx, RoleNode node, int x, int y) {
+		if (node.kind() == RoleNode.Kind.PATH) {
+			Identifier texture = Aptitudes.id("textures/gui/node/" + node.id() + ".png");
+			boolean present = HAS_TEXTURE.computeIfAbsent(node.id(), id ->
+					MinecraftClient.getInstance().getResourceManager().getResource(texture).isPresent());
+			if (present) {
+				ctx.drawTexture(texture, x, y, 0.0F, 0.0F, TILE, TILE, TILE, TILE);
+				return;
+			}
+		} else if (drawSprite(ctx, node.id(), x, y)) {
+			return;
+		}
+		ctx.drawItem(NodeIcons.of(node), x, y);
+	}
+
+	public static void drawRole(DrawContext ctx, Role role, Badge badge, int x, int y) {
+		if (drawSprite(ctx, "role/" + role.key() + "/" + badge.name().toLowerCase(Locale.ROOT), x, y)) return;
+		ctx.drawItem(switch (badge) {
+			case CORE -> role.iconStack();
+			case SIGNATURE -> NodeIcons.signature(role);
+			case ULTIMATE -> NodeIcons.ultimate(role);
+		}, x, y);
+	}
+
+	public static void drawKeystoneTemplate(DrawContext ctx, KeystoneRules.Template template, int x, int y) {
+		if (!drawSprite(ctx, KEYSTONES[template.ordinal()], x, y)) {
+			ctx.drawItem(NodeIcons.keystone(template), x, y);
+		}
+	}
+
+	/** Busca la piedra angular S7 de una senda (1–3) y dibuja su PNG de senda. */
 	public static void drawKeystone(DrawContext ctx, Role role, int path, int x, int y) {
 		String id = PathRules.nodeId(role.key(), path, PathRules.Step.S7);
 		RoleNode node = RoleTree.get(id);

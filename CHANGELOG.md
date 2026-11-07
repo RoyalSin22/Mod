@@ -6,6 +6,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Cambiado
+- **v50 — HUD e iconos del árbol.** El árbol y la barra de habilidades comparten iconos propios.
+  Los sellos identifican el rol, las activas muestran sus marcas y los nodos evolucionados distinguen
+  Maestro y Definitivo. La barra separa piedras angulares y mecánicas, muestra teclas y costes con
+  fondo de contraste y se ajusta al espacio disponible incluso al arrastrarla en Mayús + O.
 - **v47 — Asalto del Eclipse, fase 1**: oleadas de 4 criaturas por jugador en Penumbra y 8 en Totalidad,
   con élites y campeones garantizados cuando sus probabilidades están activadas y hay espacio/presupuesto.
   Equipo completo visible en unidades de élite, sin soltarlo al morir; conservan los multiplicadores previos.

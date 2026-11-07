@@ -1,11 +1,19 @@
 # Roadmap de Aptitudes
 
-Estado de v47 fase 1, basada en `main` en `1d2f27b` (T1–T8 integradas); publicación aplazada por el autor.
+v50 implementada en `codex/v50-hud-iconos` sobre v49, integrada en `main`. La publicación sigue aplazada.
 Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fabric API 0.116.6 · Loom 1.10 · Java 21**.
 
 ## Estado real
 
-### v49 — Puestos del gremio y la Hoguera (implementados en rama)
+### v50 — HUD e iconos del árbol (implementados en rama)
+- Atlas con 570 iconos propios para los nodos del árbol, los sellos de rol y las piedras angulares
+  del HUD. Los 480 PNG de Sendas siguen siendo los mismos.
+- Barra con teclas y costes más legibles, dos filas auxiliares y ajuste al área visible. La vista previa
+  usa la misma geometría. Pruebas en partida pendientes.
+- Siguientes fases del bloque: animaciones de habilidades, árbol extensible por datapack y encuentros
+  en estructuras.
+
+### v49 — Puestos del gremio y la Hoguera (integrados en main)
 - Modelos y texturas propios, llamas animadas, panel 3×3 exclusivo del gremio y cabecera de descanso.
 - La Mesa se fabrica en la mesa de trabajo. Las demás recetas de Aptitudes, incluidas la Hoguera
   y el Grimorio, usan la Mesa del gremio. El grimorio muestra la estación leída de la receta.

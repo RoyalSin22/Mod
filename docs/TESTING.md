@@ -1,5 +1,19 @@
 # Pruebas de Aptitudes
 
+## v50 — HUD e iconos del árbol
+
+1. Abre J con varios roles. Recorre nodos base, legendarios y las filas Maestro y Definitivo.
+   Comprueba sellos, marcas y estados bloqueados. Los iconos S1–S7 se conservan en las dos vistas.
+2. Equipa dos activas de cada rol y prueba características, definitivas y legendarias.
+   Compara los iconos del árbol con la barra. Agota maná, lanza una activa y espera su recarga.
+   Comprueba candados, cuenta atrás, coste de referencia y destellos.
+3. Activa una piedra angular y una mecánica simultáneamente. Comprueba las dos filas en
+   1080p a escala de interfaz 4, en ventana estrecha y con escala HUD 50/100/200 %.
+   Desde Mayús + O, arrastra a las cuatro esquinas, recarga recursos con F3 + T y reconecta.
+   Comprueba que O, F1, espectador y Restablecer se comporten correctamente.
+4. Ejecuta `.\gradlew.bat build` y `python -X utf8 tools/textures/gen_tree_atlas.py src/main/resources/assets/aptitudes/textures/gui/tree --check`.
+   `AbilityHudLayoutTest` cubre tamaños, escala y desplazamientos fuera de rango.
+
 ## v47 — Asalto del Eclipse (fase 1)
 
 ```powershell

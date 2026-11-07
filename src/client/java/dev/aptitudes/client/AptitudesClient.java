@@ -179,7 +179,6 @@ public class AptitudesClient implements ClientModInitializer {
 		HudRenderCallback.EVENT.register(AbilityHud::render);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.ClientFx::renderHud);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.ComboHud::render);
-		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.KeystoneHud::render);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.EclipseHud::render);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.PartyHud::render);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.TutorialHud::render);

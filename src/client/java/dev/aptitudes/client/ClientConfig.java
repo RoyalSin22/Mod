@@ -3,6 +3,7 @@ package dev.aptitudes.client;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.aptitudes.Aptitudes;
+import dev.aptitudes.logic.AbilityHudLayout;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.Reader;
@@ -60,6 +61,9 @@ public final class ClientConfig {
 		if (config == null) config = new ClientConfig();
 		// Su dominio es booleano; un null explícito conserva el valor seguro por defecto.
 		if (config.showTutorial == null) config.showTutorial = true;
+		config.hudScale = AbilityHudLayout.validatedScale(config.hudScale);
+		config.hudOffsetX = Math.clamp(config.hudOffsetX, -4096, 4096);
+		config.hudOffsetY = Math.clamp(config.hudOffsetY, -4096, 4096);
 		return config;
 	}
 

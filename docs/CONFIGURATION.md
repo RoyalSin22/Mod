@@ -33,6 +33,13 @@ No se fuerzan chunks. Al cargar o reiniciar se cuentan las criaturas existentes 
 si cargar criaturas guardadas supera un límite, se suspenden las nuevas apariciones, sin borrar las antiguas.
 Las probabilidades, tamaños y presupuestos se vuelven a acotar en las reglas puras.
 
+## Barra de habilidades (cliente)
+
+| Campo de `aptitudes-client.json` | Defecto | Dominio | Descripción |
+|---|---:|---|---|
+| `hudScale` | 1.0 | 0.5–2.0 | Escala solicitada en Mayús + O. La barra usa una escala menor cuando lo exige la ventana. Un valor no finito se sustituye por 1.0. |
+| `hudOffsetX`, `hudOffsetY` | 0 | −4096–4096 | Desplazamiento en píxeles de interfaz. La posición efectiva se acota al área visible junto con las filas de mecánicas y piedras angulares. |
+
 ## Tutorial (v44)
 
 | Campo del cliente | Defecto | Dominio | Descripción |

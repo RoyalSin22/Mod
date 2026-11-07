@@ -567,7 +567,7 @@ public class RolesScreen extends Screen {
 			Role role = roles.get(i);
 			int y = top + 48 + i * ROLE_ROW_H;
 			UiStyle.row(ctx, left + 8, y, LIST_W, ROLE_ROW_H - 2, i, role == selected);
-			ctx.drawItem(role.iconStack(), left + 9, y);
+			NodeIconRenderer.drawRole(ctx, role, NodeIconRenderer.Badge.CORE, left + 9, y);
 			String marker = role == data.primaryRole() ? "P" : role == data.secondaryRole() ? "S" : "";
 			String stars = "★".repeat(data.tier(role));
 			String right = (marker.isEmpty() ? "" : marker + " ") + stars + data.level(role);
@@ -680,11 +680,7 @@ public class RolesScreen extends Screen {
 				ctx.fill(v.x() - 2, v.y() - 2, v.x() + 26, v.y() + 26, ((int) (120 * (1f - t)) << 24) | 0xFFF3B0);
 			}
 			UiStyle.frame(ctx, v.x(), v.y(), frame, lit, hover || v.key().equals(selectedNode));
-			if (v.node() != null && v.node().kind() == RoleNode.Kind.PATH) {
-				NodeIconRenderer.draw(ctx, v.node(), v.x() + 4, v.y() + 4);
-			} else {
-				ctx.drawItem(nodeIcon(v), v.x() + 4, v.y() + 4);
-			}
+			drawNodeIcon(ctx, v);
 			if (!lit) ctx.fill(v.x() + 2, v.y() + 2, v.x() + 22, v.y() + 22, available(data, v) ? 0x60101018 : 0x90101018);
 			if (pathLocked(data, v.node())) ctx.fill(v.x() + 2, v.y() + 2, v.x() + 22, v.y() + 22, 0x90801010);
 			boolean tierLocked = v.node() != null && tier < v.node().requiredTier();
@@ -838,16 +834,17 @@ public class RolesScreen extends Screen {
 				&& data.tier(selected) >= v.node().requiredTier();
 	}
 
-	/** Icono de cada nodo: el del rol para los propios y uno genérico para los comunes. */
-	private net.minecraft.item.ItemStack nodeIcon(NodeView v) {
-		return switch (v.kind()) {
-			case CORE -> selected.iconStack();
-			case SIGNATURE -> dev.aptitudes.role.NodeIcons.signature(selected);
-			case ULTIMATE -> dev.aptitudes.role.NodeIcons.ultimate(selected);
-			case WEAPON_MASTER -> new net.minecraft.item.ItemStack(dev.aptitudes.item.weapon.RoleWeapons.get(selected, 1));
-			case WEAPON_ULTIMATE -> new net.minecraft.item.ItemStack(dev.aptitudes.item.weapon.RoleWeapons.get(selected, 2));
-			case NODE -> dev.aptitudes.role.NodeIcons.of(v.node());
-		};
+	private void drawNodeIcon(DrawContext ctx, NodeView v) {
+		int x = v.x() + 4;
+		int y = v.y() + 4;
+		switch (v.kind()) {
+			case CORE -> NodeIconRenderer.drawRole(ctx, selected, NodeIconRenderer.Badge.CORE, x, y);
+			case SIGNATURE -> NodeIconRenderer.drawRole(ctx, selected, NodeIconRenderer.Badge.SIGNATURE, x, y);
+			case ULTIMATE -> NodeIconRenderer.drawRole(ctx, selected, NodeIconRenderer.Badge.ULTIMATE, x, y);
+			case WEAPON_MASTER, WEAPON_ULTIMATE -> ctx.drawItem(new net.minecraft.item.ItemStack(
+					dev.aptitudes.item.weapon.RoleWeapons.get(selected, v.kind() == NodeKind.WEAPON_MASTER ? 1 : 2)), x, y);
+			case NODE -> NodeIconRenderer.draw(ctx, v.node(), x, y);
+		}
 	}
 
 	/** Nombre de cada senda encima de su columna (letra pequeña), en su color. */

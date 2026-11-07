@@ -10,7 +10,9 @@ import dev.aptitudes.network.RoleSyncPayload;
 import dev.aptitudes.network.UniqueSyncPayload;
 import dev.aptitudes.role.Element;
 import dev.aptitudes.role.Evolution;
-import dev.aptitudes.role.NodeIcons;
+import dev.aptitudes.client.screen.NodeIconRenderer;
+import dev.aptitudes.client.screen.UiStyle;
+import dev.aptitudes.logic.AbilityHudLayout;
 import dev.aptitudes.role.Role;
 import dev.aptitudes.role.RoleNode;
 import dev.aptitudes.role.RoleResource;
@@ -20,7 +22,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
-import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import dev.aptitudes.network.MechanicPayload;
 import org.jetbrains.annotations.Nullable;
@@ -48,7 +49,8 @@ public final class AbilityHud {
 			AbilityManager.UNIQUE_SLOT};
 	private static final boolean[] GAP_BEFORE = {false, false, true, false, true, false, true};
 
-	private record SlotView(ItemStack icon, boolean learned, int cost, int border, @Nullable Role role) {}
+	private record SlotView(@Nullable RoleNode node, @Nullable UniqueSkill unique, boolean learned, int cost, int border,
+							@Nullable Role role) {}
 
 	private AbilityHud() {
 	}
@@ -68,6 +70,9 @@ public final class AbilityHud {
 	public static void clear() {
 		mechanics = List.of();
 		laggedHealth = -1;
+		java.util.Arrays.fill(READY_FLASH, 0);
+		java.util.Arrays.fill(LAST_COOLDOWN, 0);
+		KeystoneHud.clear();
 	}
 
 	public static void render(DrawContext ctx, RenderTickCounter tickCounter) {
@@ -81,43 +86,32 @@ public final class AbilityHud {
 		ClientConfig cfg = ClientConfig.get();
 
 		if (cfg.soulsBars) renderSoulsBars(ctx, text, data, client);
-		if (data.primaryRole() == null && ownUnique() == null) return;
+		if (data.primaryRole() == null && data.secondaryRole() == null && ownUnique() == null) return;
 		if (!cfg.soulsBars) renderBars(ctx, text, data, w, h);
 		renderAbilityBar(ctx, text, data, w, h, client.player.age);
 	}
 
-	/** Barra de habilidades + indicador de mecánica, con la escala y el desplazamiento configurados. */
+	/** Dibuja la barra y sus dos filas auxiliares con la misma escala y el mismo anclaje. */
 	public static void renderAbilityBar(DrawContext ctx, TextRenderer text, RoleSyncPayload data, int w, int h, int age) {
 		ClientConfig cfg = ClientConfig.get();
-		int[] origin = barOrigin(w, h);
+		AbilityHudLayout layout = barLayout(w, h);
 		ctx.getMatrices().push();
-		ctx.getMatrices().translate(origin[0], origin[1], 0);
-		ctx.getMatrices().scale(cfg.hudScale, cfg.hudScale, 1f);
+		ctx.getMatrices().translate(layout.x(), layout.y(), 0);
+		ctx.getMatrices().scale(layout.scale(), layout.scale(), 1f);
 		renderSlots(ctx, text, data, age);
-		if (cfg.showMechanic) renderMechanics(ctx, text, data);
+		if (cfg.showMechanic) renderMechanics(ctx, text);
+		KeystoneHud.draw(ctx);
 		ctx.getMatrices().pop();
 	}
 
 	/** Ancho total (sin escala) de la barra de habilidades. */
 	public static int barWidth() {
-		int total = 0;
-		for (int i = 0; i < ORDER.length; i++) total += SLOT + GAP + (GAP_BEFORE[i] ? GROUP_GAP : 0);
-		return total;
+		return ORDER.length * SLOT + (ORDER.length - 1) * GAP + 3 * GROUP_GAP;
 	}
 
-	/** Esquina superior izquierda de la barra en pantalla (posición por defecto + desplazamiento). */
-	public static int[] barOrigin(int w, int h) {
+	public static AbilityHudLayout barLayout(int w, int h) {
 		ClientConfig cfg = ClientConfig.get();
-		int total = (int) (barWidth() * cfg.hudScale);
-		int x = w / 2 + 91 + 12;
-		int y = h - (int) (SLOT * cfg.hudScale) - 2;
-		if (x + total > w - 2) { // pantalla estrecha: encima de la hotbar, a la derecha
-			x = w - total - 2;
-			y = h - (int) (SLOT * cfg.hudScale) - 46;
-		}
-		x = Math.max(0, Math.min(w - total, x + cfg.hudOffsetX));
-		y = Math.max(10, Math.min(h - (int) (SLOT * cfg.hudScale), y + cfg.hudOffsetY));
-		return new int[]{x, y};
+		return AbilityHudLayout.place(w, h, barWidth(), cfg.hudScale, cfg.hudOffsetX, cfg.hudOffsetY);
 	}
 
 	// ----------------------------------------------------- Barras Souls
@@ -234,10 +228,11 @@ public final class AbilityHud {
 	// --------------------------------------------------------- Mecánica
 
 	/** Iconos de la mecánica sobre la barra: pips de acumulación o el estado con nombre. */
-	private static void renderMechanics(DrawContext ctx, TextRenderer text, RoleSyncPayload data) {
+	private static void renderMechanics(DrawContext ctx, TextRenderer text) {
 		int x = 0;
-		int y = -22;
+		int y = -24;
 		for (MechanicPayload.Entry e : mechanics) {
+			if (x + 22 >= barWidth()) break;
 			RoleNode node = RoleTree.get(e.node());
 			if (node == null) continue;
 			int color = 0xFF000000 | node.role().color();
@@ -246,10 +241,11 @@ public final class AbilityHud {
 			ctx.getMatrices().push();
 			ctx.getMatrices().translate(x, y, 0);
 			ctx.getMatrices().scale(0.75f, 0.75f, 1f);
-			ctx.drawItem(NodeIcons.of(node), 0, 0);
+			NodeIconRenderer.draw(ctx, node, 0, 0);
 			ctx.getMatrices().pop();
 			int px = x + 16;
-			if (e.max() > 0) {
+			int available = barWidth() - px;
+			if (e.max() > 0 && e.max() <= available / 7) {
 				for (int i = 0; i < e.max(); i++) {
 					boolean on = i < e.value();
 					int c = on ? (e.value() >= e.max() ? 0xFFFFE082 : color) : 0xFF2A2A34;
@@ -257,10 +253,13 @@ public final class AbilityHud {
 					ctx.fill(px, y + 4, px + 5, y + 8, c);
 					px += 7;
 				}
-			} else if (!e.label().isEmpty()) {
-				Text label = e.value() > 0 ? Text.translatable(e.label(), e.value()) : Text.translatable(e.label());
-				small(ctx, text, label, px, y + 4, color);
-				px += (int) (text.getWidth(label) * 0.7f) + 2;
+			} else {
+				Text label = e.max() > 0 ? Text.literal(e.value() + "/" + e.max())
+						: e.label().isEmpty() ? Text.empty()
+						: e.value() > 0 ? Text.translatable(e.label(), e.value()) : Text.translatable(e.label());
+				Text fitted = UiStyle.fit(text, label, (int) (available / 0.7f));
+				small(ctx, text, fitted, px, y + 4, color);
+				px += (int) (text.getWidth(fitted) * 0.7f) + 2;
 			}
 			x = px + 6;
 		}
@@ -335,31 +334,32 @@ public final class AbilityHud {
 	private static SlotView view(RoleSyncPayload data, int slot) {
 		if (slot == AbilityManager.UNIQUE_SLOT) {
 			UniqueSkill skill = ownUnique();
-			return skill == null ? null : new SlotView(skill.iconStack(), true, skill.energyCost(), 0xFFB388FF, null);
+			return skill == null ? null : new SlotView(null, skill, true, skill.energyCost(), 0xFFB388FF, null);
 		}
 		if (slot == AbilityManager.SIGNATURE_SLOT) {
 			Role role = signatureRole(data);
-			return role == null ? null : new SlotView(NodeIcons.signature(role), true, Signatures.ENERGY, 0xFFE6C36A, role);
+			return role == null ? null : new SlotView(null, null, true, Signatures.ENERGY, 0xFFE6C36A, role);
 		}
 		if (slot == AbilityManager.ULTIMATE_SLOT) {
 			Role role = ultimateRole(data);
 			return role == null ? null
-					: new SlotView(NodeIcons.ultimate(role), true, AbilityManager.ULTIMATE_ENERGY, 0xFFFFC107, role);
+					: new SlotView(null, null, true, AbilityManager.ULTIMATE_ENERGY, 0xFFFFC107, role);
 		}
 		Role role = slot < 2 ? data.primaryRole() : data.secondaryRole();
 		if (role == null) return null;
 		RoleNode node = RoleTree.active(role, data.equipped(role, slot % 2));
 		if (node == null) return null;
-		return new SlotView(NodeIcons.of(node), data.rank(node.id()) > 0, node.energyCost(), 0, role);
+		return new SlotView(node, null, data.rank(node.id()) > 0, node.energyCost(), 0, role);
 	}
 
 	private static void drawSlot(DrawContext ctx, TextRenderer text, RoleSyncPayload data, @Nullable SlotView view,
 								 int slot, int x, int y, int age) {
-		// Marco oscuro con esquinas doradas
+		int accent = view == null ? 0xFF565260 : view.border() != 0 ? view.border()
+				: lighter(0xFF000000 | view.role().color());
 		ctx.fill(x - 1, y - 1, x + SLOT + 1, y + SLOT + 1, 0xD0000000);
-		ctx.fillGradient(x, y, x + SLOT, y + SLOT, 0xC0302A20, 0xC0141018);
-		ctx.drawBorder(x, y, SLOT, SLOT, 0xFF4A4030);
-		int corner = 0xFFC9A54C;
+		ctx.fillGradient(x, y, x + SLOT, y + SLOT, 0xF02B2734, 0xEF12151F);
+		ctx.drawBorder(x, y, SLOT, SLOT, 0xFF4D4655);
+		int corner = view != null && view.learned() ? accent : darker(accent);
 		ctx.fill(x - 1, y - 1, x + 3, y, corner);
 		ctx.fill(x - 1, y - 1, x, y + 3, corner);
 		ctx.fill(x + SLOT - 3, y - 1, x + SLOT + 1, y, corner);
@@ -368,11 +368,11 @@ public final class AbilityHud {
 		ctx.fill(x - 1, y + SLOT - 3, x, y + SLOT + 1, corner);
 		ctx.fill(x + SLOT - 3, y + SLOT, x + SLOT + 1, y + SLOT + 1, corner);
 		ctx.fill(x + SLOT, y + SLOT - 3, x + SLOT + 1, y + SLOT + 1, corner);
-		Text key = AptitudesClient.abilityKey(slot).getBoundKeyLocalizedText();
-		small(ctx, text, key, x + SLOT / 2 - (int) (text.getWidth(key) * 0.35f), y - 7, view == null ? 0xFF707070 : 0xFFE0E0E0);
+		Text key = UiStyle.fit(text, AptitudesClient.abilityKey(slot).getBoundKeyLocalizedText(), (int) ((SLOT - 2) / 0.7f));
+		ctx.fill(x + 1, y - 9, x + SLOT - 1, y - 1, 0xEC151620);
+		small(ctx, text, key, x + SLOT / 2 - (int) (text.getWidth(key) * 0.35f), y - 8,
+				view == null ? UiStyle.MUTED : UiStyle.TEXT);
 		if (view == null) return;
-
-		if (view.border() != 0) ctx.drawBorder(x - 1, y - 1, SLOT + 2, SLOT + 2, view.border());
 		// v24: al lanzar, el icono rebota (×1,35 → ×1) y la ranura destella con el color del rol (350 ms).
 		long since = ClientRoleState.sinceCast(slot);
 		if (since < 350) {
@@ -387,17 +387,38 @@ public final class AbilityHud {
 			ctx.getMatrices().push();
 			ctx.getMatrices().translate(x + SLOT / 2f, y + SLOT / 2f, 0);
 			ctx.getMatrices().scale(scale, scale, 1f);
-			ctx.drawItem(view.icon(), -8, -8);
+			drawSlotIcon(ctx, view, slot, -8, -8);
 			ctx.getMatrices().pop();
 		} else {
-			ctx.drawItem(view.icon(), x + 2, y + 2);
+			drawSlotIcon(ctx, view, slot, x + 2, y + 2);
 		}
 
-		if (!view.learned()) {
+		ctx.getMatrices().push();
+		ctx.getMatrices().translate(0, 0, 200);
+		if (view.learned()) {
+			drawStatus(ctx, text, data, view, slot, x, y, age);
+		} else {
 			ctx.fill(x + 1, y + 1, x + SLOT - 1, y + SLOT - 1, 0xB0101010);
 			padlock(ctx, x + SLOT / 2 - 3, y + 6);
-			return;
 		}
+		ctx.getMatrices().pop();
+	}
+
+	private static void drawSlotIcon(DrawContext ctx, SlotView view, int slot, int x, int y) {
+		if (view.node() != null) {
+			NodeIconRenderer.draw(ctx, view.node(), x, y);
+		} else if (view.unique() != null) {
+			RoleNode legend = RoleTree.get(view.unique().role().key() + "_legend");
+			if (legend != null) NodeIconRenderer.draw(ctx, legend, x, y);
+			else ctx.drawItem(view.unique().iconStack(), x, y);
+		} else {
+			NodeIconRenderer.drawRole(ctx, view.role(), slot == AbilityManager.SIGNATURE_SLOT
+					? NodeIconRenderer.Badge.SIGNATURE : NodeIconRenderer.Badge.ULTIMATE, x, y);
+		}
+	}
+
+	private static void drawStatus(DrawContext ctx, TextRenderer text, RoleSyncPayload data, SlotView view,
+								   int slot, int x, int y, int age) {
 		int cooldown = ClientRoleState.cooldown(slot);
 		// Destello al quedar lista
 		if (LAST_COOLDOWN[slot] > 0 && cooldown == 0) READY_FLASH[slot] = age + 8;
@@ -413,13 +434,15 @@ public final class AbilityHud {
 			String secs = String.valueOf((cooldown + 19) / 20);
 			ctx.drawTextWithShadow(text, secs, x + (SLOT - text.getWidth(secs)) / 2, y + 6, 0xFFFFFFFF);
 		} else if (ClientRoleState.energy() < view.cost()) {
-			ctx.fill(x + 1, y + 1, x + SLOT - 1, y + SLOT - 1, 0x702050FF); // falta maná
+			ctx.drawBorder(x, y, SLOT, SLOT, 0xFF537AC8); // falta maná
 		} else if (view.role() != null && empowerReady(data, view.role())) {
 			int pulse = (age / 4) % 2 == 0 ? 0xFFFFE082 : 0xFFFFB300;
 			ctx.drawBorder(x - 1, y - 1, SLOT + 2, SLOT + 2, pulse); // se potenciará
 		}
 		String cost = String.valueOf(view.cost());
-		small(ctx, text, Text.literal(cost), x + SLOT - 1 - (int) (text.getWidth(cost) * 0.7f), y + SLOT - 6, 0xFF8FD3FF);
+		int costX = x + SLOT - 2 - (int) (text.getWidth(cost) * 0.7f);
+		ctx.fill(costX - 1, y + SLOT - 7, x + SLOT - 1, y + SLOT - 1, 0xE0121520);
+		small(ctx, text, Text.literal(cost), costX, y + SLOT - 7, 0xFFA9DCFF);
 	}
 
 	private static boolean empowerReady(RoleSyncPayload data, Role role) {

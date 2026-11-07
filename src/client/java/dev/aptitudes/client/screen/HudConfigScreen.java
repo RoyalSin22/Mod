@@ -3,6 +3,7 @@ package dev.aptitudes.client.screen;
 import dev.aptitudes.client.ClientConfig;
 import dev.aptitudes.client.ClientRoleState;
 import dev.aptitudes.client.hud.AbilityHud;
+import dev.aptitudes.logic.AbilityHudLayout;
 import dev.aptitudes.network.RoleSyncPayload;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -17,6 +18,8 @@ import net.minecraft.util.math.MathHelper;
  */
 public class HudConfigScreen extends Screen {
 	private boolean dragging;
+	private double dragX;
+	private double dragY;
 
 	public HudConfigScreen() {
 		super(Text.translatable("screen.aptitudes.hud_config"));
@@ -97,28 +100,22 @@ public class HudConfigScreen extends Screen {
 				width / 2, hintY, UiStyle.MUTED);
 		// Vista previa de la barra con su marco de arrastre.
 		RoleSyncPayload data = ClientRoleState.data();
-		int[] o = AbilityHud.barOrigin(width, height);
-		int w = (int) (AbilityHud.barWidth() * cfg.hudScale);
-		int h = (int) (24 * cfg.hudScale);
-		ctx.drawBorder(o[0] - 3, o[1] - (int) (32 * cfg.hudScale), w + 6, h + (int) (32 * cfg.hudScale),
+		AbilityHudLayout preview = AbilityHud.barLayout(width, height);
+		ctx.drawBorder(preview.left(), preview.top(), preview.right() - preview.left(), preview.bottom() - preview.top(),
 				dragging ? UiStyle.GOLD : 0xA0FFFFFF);
 		if (data != null) AbilityHud.renderAbilityBar(ctx, textRenderer, data, width, height, client.player == null ? 0 : client.player.age);
 		// La previsualización arrastrable no debe tapar los botones en la altura mínima.
 		super.render(ctx, mouseX, mouseY, delta);
 	}
 
-	private boolean overBar(double mx, double my) {
-		ClientConfig cfg = ClientConfig.get();
-		int[] o = AbilityHud.barOrigin(width, height);
-		int w = (int) (AbilityHud.barWidth() * cfg.hudScale);
-		return mx >= o[0] - 3 && mx < o[0] + w + 3 && my >= o[1] - 32 * cfg.hudScale && my < o[1] + 24 * cfg.hudScale;
-	}
-
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (super.mouseClicked(mouseX, mouseY, button)) return true;
-		if (overBar(mouseX, mouseY)) {
+		AbilityHudLayout preview = AbilityHud.barLayout(width, height);
+		if (button == 0 && preview.contains(mouseX, mouseY)) {
 			dragging = true;
+			dragX = mouseX - preview.x();
+			dragY = mouseY - preview.y();
 			return true;
 		}
 		return false;
@@ -128,8 +125,9 @@ public class HudConfigScreen extends Screen {
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
 		if (dragging) {
 			ClientConfig cfg = ClientConfig.get();
-			cfg.hudOffsetX += (int) Math.round(deltaX);
-			cfg.hudOffsetY += (int) Math.round(deltaY);
+			AbilityHudLayout anchor = AbilityHudLayout.place(width, height, AbilityHud.barWidth(), cfg.hudScale, 0, 0);
+			cfg.hudOffsetX = (int) Math.clamp(Math.round(mouseX - dragX - anchor.x()), -4096, 4096);
+			cfg.hudOffsetY = (int) Math.clamp(Math.round(mouseY - dragY - anchor.y()), -4096, 4096);
 			return true;
 		}
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
