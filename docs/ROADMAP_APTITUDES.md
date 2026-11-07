@@ -1,11 +1,15 @@
 # Roadmap de Aptitudes
 
-v51 preparada en `codex/v51-interfaz-puestos`. v50 está integrada en `main`. La publicación sigue aplazada.
+v53 preparada en `codex/v53-atlas-talentos`. v51 está integrada en `main`. La publicación sigue aplazada.
 Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fabric API 0.116.6 · Loom 1.10 · Java 21**.
 
 ## Estado real
 
-### v51 — Mesa y Tablón con más espacio (implementados en rama)
+### v53 — Atlas de talentos (implementado en rama)
+- Cuatro entradas en J, ficha adaptable y acentos propios para Domador, Espadachín y Bardo.
+  Sendas reúne S1–S7 y la ficha de S1 muestra su requisito en Talentos. Pruebas visuales en partida pendientes.
+
+### v51 — Mesa y Tablón con más espacio (integrados en main)
 - Mesa con zonas separadas y Tablón con fichas para ofertas y contratos activos.
 - Lienzo unificado y corrección del rótulo de sendas exclusivas. Maqueta y propuestas de asedio, datapack y roles
   en [V51_DISENO_Y_FASES.md](V51_DISENO_Y_FASES.md).

@@ -1491,3 +1491,9 @@ ring.3¦III¦III¦III
 ring.4¦IV¦IV¦IV
 ring.5¦V¦V¦V
 """)
+
+add('screen.aptitudes.tree.', """
+tab_talents¦Talentos¦Talents¦Talente
+rank¦Grau %s/%s¦Rang %s/%s¦Rang %s/%s
+either¦%s ou %s¦%s ou %s¦%s oder %s
+""")

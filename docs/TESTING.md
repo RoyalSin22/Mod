@@ -1,5 +1,21 @@
 # Pruebas de Aptitudes
 
+## v53 — Atlas de talentos
+
+1. Abre J con Domador, Espadachín y Bardo. Revisa que la cabecera cambie de sello, nivel, puntos y
+   acento. Selecciona otros roles y comprueba que se mantenga la pestaña con los nodos del nuevo rol.
+2. Revisa Talentos con nodos aprendidos, disponibles y bloqueados. Selecciona una activa y comprueba
+   rango, nivel, requisito y coste. Aprende un rango y equípalo en ambas ranuras por separado.
+   Cambia a un rol que no tengas activo y comprueba que sus nodos solo se puedan consultar.
+3. Abre Maestro y Definitivo antes y después de evolucionar. Comprueba los cinco talentos y el
+   arma de cada vista. Reclama un arma válida y verifica que repetir la petición no vuelva a otorgarla.
+4. Abre Sendas, compara A/B/C y consulta S1 antes de aprender su requisito en Talentos. Sigue hasta
+   S7 y elige cada alternativa de S5 en personajes distintos. Comprueba que cualquiera habilite el
+   requisito de S6 y que cerrar Sendas vuelva al atlas.
+5. Prueba a 426×240 efectivos y en una ventana ancha, en español y alemán. En el tamaño menor usa
+   RePág/AvPág o la rueda fuera del árbol para llegar a la ficha. En ambos tamaños comprueba zoom,
+   arrastre, C, foco con Tab y la ayuda del nodo. Abre también Elementos y Formas desde sus roles.
+
 ## v51 — Mesa y Tablón del gremio
 
 1. Abre la Mesa a escala de interfaz 4. Revisa la separación de la cuadrícula, resultado e inventario.

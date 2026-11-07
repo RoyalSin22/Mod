@@ -572,6 +572,17 @@ al aprender y en gris claro cuando el nodo ya está disponible.
 Icono pixel art + barra redondeada con degradado y brillo, valor dentro de la barra; la vida late en
 rojo con menos del 25 %; los recursos de rol parpadean cuando pueden potenciar una habilidad.
 
+## Atlas de talentos (v53)
+
+Pulsa **J** para elegir un rol. La cabecera muestra su sello, nivel y puntos disponibles.
+**Talentos** muestra los nodos base y sus requisitos. **Sendas** reúne los siete escalones,
+la bifurcación y la piedra angular de cada opción. **Maestro** y **Definitivo** muestran
+sus propios talentos, habilidad y arma. Selecciona un nodo para consultar el rango y lo que
+falta para desbloquearlo. Pasa el cursor sobre la ficha para leer el detalle completo.
+
+Arrastra el lienzo para moverlo, usa la rueda para acercar y pulsa **C** para centrarlo. En una
+ventana baja puedes desplazar la pantalla con **RePág/AvPág** o con la rueda fuera del lienzo.
+
 ## Cambios v10 (tras la prueba de la v8)
 
 - **Textos**: las etiquetas largas se recortan con "…" en lugar de pisar los valores; nivel y puntos

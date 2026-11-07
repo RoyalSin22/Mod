@@ -3511,5 +3511,8 @@
   "threat.aptitudes.ring.2": "II",
   "threat.aptitudes.ring.3": "III",
   "threat.aptitudes.ring.4": "IV",
-  "threat.aptitudes.ring.5": "V"
+  "threat.aptitudes.ring.5": "V",
+  "screen.aptitudes.tree.tab_talents": "Talentos",
+  "screen.aptitudes.tree.rank": "Rango %s/%s",
+  "screen.aptitudes.tree.either": "%s o %s"
 }

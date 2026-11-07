@@ -133,6 +133,16 @@ public final class UiStyle {
 		ctx.fill(x + s - 1, y + s - 4, x + s, y + s, color);
 	}
 
+	/** Candado de 8×10 px dibujado con rectángulos. */
+	static void lockIcon(DrawContext ctx, int x, int y) {
+		int c = 0xFFB0B4C0;
+		ctx.fill(x + 2, y, x + 6, y + 1, c);
+		ctx.fill(x + 1, y + 1, x + 2, y + 5, c);
+		ctx.fill(x + 6, y + 1, x + 7, y + 5, c);
+		ctx.fill(x, y + 5, x + 8, y + 11, c);
+		ctx.fill(x + 3, y + 7, x + 5, y + 9, 0xFF303440);
+	}
+
 	/** Línea (horizontal/vertical/diagonal) de 2 px entre dos puntos, para el árbol. */
 	public static void line(DrawContext ctx, int x1, int y1, int x2, int y2, int color) {
 		int steps = Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1));
