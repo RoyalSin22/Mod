@@ -301,14 +301,22 @@ Cada jefe deja un núcleo distinto. Aplicar un núcleo en la Mesa del gremio añ
 | Elemento | Valor por defecto | Notas |
 |---|---|---|
 | Frecuencia | Cada 10 días, desde el día 10 | De 6:00 a 18:00 (10 min reales) |
-| Oleada | 2 criaturas (Penumbra) / 4 (Totalidad) por jugador cada 30 s | Tope de 12 vivas por jugador |
+| Oleada (v47) | 4 criaturas (Penumbra) / 8 (Totalidad) por jugador cada 30 s | Solicitudes acotadas por espacio y presupuesto; Retirada sin refuerzos |
+| Población (v47) | 12 por jugador próximo, 24 por zona y 128 cargadas en el Mundo Normal | Área de 48 bloques; presupuesto compartido con o sin grupo y orden rotativo. Cargar criaturas previas por encima del límite bloquea nuevas apariciones |
 | Criaturas | Vida y daño ×1,5 | Antes del escalado de élite (×2/×4 de vida) |
-| Élites / campeones | 50 % / 10 % | Recompensas normales de élite y campeón, más fragmentos |
+| Élites / campeones | 50 % / 10 % fuera de las garantías | Una élite por oleada y, en Totalidad, un campeón primero, si sus probabilidades son positivas y hay presupuesto/espacio. Las unidades restantes mantienen la tirada anterior |
+| Equipo visible (v47) | Completo en élites: malla en Penumbra, hierro en Totalidad; campeones de diamante | Usa zombis/esqueletos. Irrompible y no se suelta; las unidades normales conservan 35 % por pieza. Interruptor de configuración para volver al equipo aleatorio |
 | Heraldo | Campeón esqueleto wither con armadura de netherita | Vida ×(1 + 0,5 por jugador extra), máx. ×4; fases y golpe de área de la v33 |
 | Fragmentos | Élite 1, campeón 3, Heraldo 8, normal 10 % → 1 | — |
 | Runa del Eclipse | +15 % de daño contra élites, campeones y jefes | Multiplicador aditivo dentro del tope global `maxDamageMultiplier` |
 | Núcleo del eclipse | +0,5 de daño en un arma de evolución | Cuenta para el tope de 3 núcleos por arma |
 | Superviviente | 300 XP de rol principal y 200 de Combate | Solo si no mueres durante el evento |
+
+El asalto aumenta la frecuencia efectiva de bajas élite/campeón y, por tanto, sus recompensas normales;
+no aumenta la recompensa individual ni los multiplicadores base. Los límites y mínimos son configurables.
+El Heraldo cuenta en el tope global y, si está justo lleno, sustituye una unidad ordinaria sin soltar botín;
+no sustituye otros Heraldos. Si no hay espacio seguro o todos los huecos están ocupados por Heraldos,
+no se fuerza una aparición. El límite no borra criaturas guardadas al volver a cargar sus chunks.
 
 «Morir es fácil» por diseño (decisión del autor). Para suavizarlo en un servidor: bajar
 `eclipseMobDamageMultiplier`, `eclipseEliteChance` o `eclipseMaxMobsPerPlayer`.
@@ -323,7 +331,7 @@ Cada jefe deja un núcleo distinto. Aplicar un núcleo en la Mesa del gremio añ
 
 Efecto de balance: en la Totalidad las criaturas resisten ≈ +25 % más y la armadura (+4, ≈ 14 % menos daño
 recibido sin contar las piezas) alarga los combates. Para volver a la v41: `eclipseTotalityBonus = 0`,
-`eclipseMobArmor = 0`, `eclipseArmorChance = 0`.
+`eclipseMobArmor = 0`, `eclipseArmorChance = 0`; desde v47, también `eclipseGuaranteedEliteArmor = false`.
 
 # Runas+ (v35)
 

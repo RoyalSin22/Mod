@@ -1,9 +1,21 @@
 # Roadmap de Aptitudes
 
-Estado de T8 fases 2–3, sobre `main` en `8c42ba3` (T1–T7 y T8 fase 1 integradas); publicación aplazada por el autor.
+Estado de v47 fase 1, basada en `main` en `1d2f27b` (T1–T8 integradas); publicación aplazada por el autor.
 Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fabric API 0.116.6 · Loom 1.10 · Java 21**.
 
 ## Estado real
+
+### v47 — Eclipse y experiencia del mod (fase 1: asalto implementado)
+- Oleadas configurables 4/8 por jugador, mínimos de élites y campeones, unidades con armadura completa
+  visible y sin equipo como botín. Se conservan probabilidades y multiplicadores anteriores fuera de las garantías.
+- Presupuesto por proximidad, con o sin grupo, y topes de zona/mundo; turnos rotativos, control del espacio
+  y chunks cargados. Recuento de criaturas restaurado al arrancar y finalización idempotente sin pagos
+  a jugadores muertos, creativo o espectador. El Heraldo depende de encuentros próximos, no de un grupo lejano.
+- Siete opciones acotadas, reglas puras con JUnit y texto del grimorio en los once idiomas. Pruebas en partida
+  pendientes. El autor pidió parar tras esta fase; diseño y límites en `docs/V47_ECLIPSE.md`.
+- Fases posteriores solicitadas: Reforja/Templado, bloques y Mesa del gremio con menús propios, HUD/iconos,
+  animaciones de habilidades y encuentros en estructuras. Se permite evaluar una biblioteca de animación;
+  ninguna se añade aquí. El árbol por datapack requiere cargadores y sincronización del servidor: no existe aún.
 
 ### v45 — Traducciones (T8, fases 1–3 implementadas)
 - Portugués de Brasil, francés y alemán: archivos completos de 3512 claves, en el orden de `en_us`,

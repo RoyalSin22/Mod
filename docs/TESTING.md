@@ -1,5 +1,82 @@
 # Pruebas de Aptitudes
 
+## v47 — Asalto del Eclipse (fase 1)
+
+```powershell
+.\gradlew.bat build
+python -X utf8 -m unittest discover -s tools/lang -p 'test_*_lang.py'
+python -X utf8 tools/lang/check_lang.py
+python -X utf8 tools/lang/gen_interface_lang.py --check
+python -X utf8 tools/lang/gen_guide_lang.py --check
+python -X utf8 tools/lang/gen_nodes_lang.py --check
+python -X utf8 tools/lang/gen_evolved_lang.py --check
+python -X utf8 tools/lang/gen_path_lang.py --check
+```
+
+Regresión automática: `event/EclipseAssaultRulesTest` (9 pruebas) comprueba participación de supervivencia,
+oleadas por fase, presupuesto compartido y mundial, cero/negativos/extremos sin desbordamiento, composición
+garantizada, desactivación por probabilidad cero, NaN/infinito y tipos que muestran armadura. Los pesos
+originales siguen comprobados por `StrongEventRulesTest`. `config/EclipseAssaultConfigTest` (3 pruebas)
+comprueba nuevos defectos, límites y ceros, y lectura de una configuración antigua sin las claves nuevas.
+Las 35 pruebas Python y los cinco `--check` comprueban los once idiomas y sus catálogos; solo cambia
+`guide.aptitudes.eclipse.body`, con el mismo orden, formato y marcadores. Español y sus seis variantes
+deben ser idénticos. No hay claves nuevas, dependencias, mixins ni IDs de registro modificados.
+
+Ejecutado por el agente: build final `BUILD SUCCESSFUL in 28s`, con 229 pruebas JUnit sin fallos,
+errores ni omitidas. Las 35 pruebas Python, el comprobador de idiomas y los cinco `--check` pasan.
+Un primer build detectó un error de sintaxis en el bloque del Heraldo; corregido antes de esta validación.
+JAR: `build/libs/aptitudes-1.4.0.jar`; la versión pública se conserva. No se ejecutaron pruebas en partida.
+
+Autorrevisión del código:
+
+- `end` comprueba `state.active` antes de finalizar; repetir la llamada no vuelve a pagar XP, contratos
+  ni logros. El estado se desactiva antes de pagar. Los muertos durante el evento siguen en el conjunto
+  persistente `fallen`, identificado por UUID; morir, reconectar o reiniciar no lo limpia.
+- Los nuevos refuerzos y el pago excluyen muertos, creativo y espectador. Esta fase no concede XP
+  mediante comandos nuevos ni cambia la ruta administrativa de XP. Los comandos de evento existentes
+  conservan sus permisos; iniciar por comando sigue simulando un evento con sus recompensas habituales.
+- No hay consumo de objetos ni nuevas reclamaciones. La armadura equipada no se suelta; las recompensas
+  normales de élites/campeones siguen siendo las existentes. Disolver una criatura para hacer hueco al
+  Heraldo no causa una muerte ni concede XP/botín.
+- Las garantías cuentan apariciones exitosas; un fallo de posición no registra una criatura como viva.
+  Los modificadores usan IDs estables con quitar/añadir. Las peticiones de configuración siguen la
+  validación y el control de permisos del servidor; el cliente no decide oleadas, objetivos ni atributos.
+- Recuento restaurado después de cargar chunks iniciales del servidor, sin reaplicar atributos. Los
+  límites frenan apariciones nuevas y no borran criaturas guardadas por recargar o bajar la configuración.
+  Una migración antigua puede quedar temporalmente por encima del tope hasta eliminar criaturas.
+- El presupuesto local depende de jugadores próximos y no de su grupo; miembros lejanos no suman
+  refuerzos locales ni absorben el Heraldo de otra región. `setTarget` conserva el filtro común de roles.
+- El premio de supervivencia conserva su condición anterior de estar en el Mundo Normal al finalizar;
+  esta fase no introduce un mínimo de tiempo de participación ni rehace la economía de los contratos.
+
+Pruebas manuales pendientes (cliente y servidor dedicado; guardar copia del mundo de prueba):
+
+1. En superficie abierta, supervivencia, iniciar `/aptitudes eclipse start` como operador. Verificar
+   4 criaturas por oleada de Penumbra y 8 en Totalidad, cada 30 s después de la primera espera. Retirada
+   sin refuerzos. Verificar élites y campeones con equipo completo y cuerpos visibles de zombi/esqueleto.
+2. Comprobar malla/hierro según fase, diamante en campeones y sus modificadores/barra. Matar unidades:
+   no sueltan el equipo puesto; sí pueden dar su botín habitual, una sola vez. Medir dificultad con equipo
+   inicial, Maestro y Definitivo, y el rendimiento económico de campeones garantizados.
+3. Dejar vivas las criaturas: un jugador no debe recibir refuerzos por encima de 12 locales. Con dos
+   jugadores próximos, con y sin grupo, comprobar el límite 24. Con jugadores dispersos y topes pequeños,
+   comprobar el límite mundial y el orden rotativo, incluyendo Heraldos en el recuento.
+4. Al mediodía, dos compañeros de grupo en regiones distintas reciben encuentros separados; próximos,
+   comparten un Heraldo con vida escalada. Probar el tope mundial lleno: sustituye como máximo una
+   unidad ordinaria por Heraldo, sin su botín. No reemplaza otro Heraldo. Sin suelo/altura segura no
+   aparece sobre el jugador; no se reintenta el encuentro más tarde durante ese Eclipse.
+5. Poner probabilidades de élite/campeón a cero: no aparecen esas garantías. Poner mínimos a cero:
+   vuelve la tirada original. Poner tamaños/límites a cero y activar/desactivar armadura garantizada;
+   probar valores enormes, negativos y NaN en probabilidades mediante archivo y pantalla de operador.
+6. Creativo, espectador, pacífico, jugador muerto y otra dimensión no generan refuerzos. Probar Soborno
+   y camuflaje: el objetivo inicial debe seguir respetando el filtro del rol.
+7. Morir y reaparecer, reconectar y reiniciar a mitad del evento. Las criaturas cargadas cuentan antes
+   de nuevas oleadas y se retiran al finalizar. Quien murió no cobra supervivencia; detener dos veces
+   no paga, finalizar una vez no permite un segundo pago al detener o reconectar.
+8. Descargar y recargar chunks con enemigos y bajar límites durante el evento: suspende refuerzos sin
+   curar, duplicar ni reaplicar modificadores. Cambiar al Nether y volver tampoco duplica el Heraldo.
+9. En los once idiomas, leer el capítulo de eventos completo y desplazar hasta su final. Comprobar
+   cantidades, acentos, porcentajes y ausencia de claves visibles. La revisión visual no la sustituye JUnit.
+
 ## v45 — Traducciones T8, fase 3 (nodos y sendas)
 
 ```powershell

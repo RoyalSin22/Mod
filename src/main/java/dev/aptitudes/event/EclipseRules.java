@@ -69,7 +69,7 @@ public final class EclipseRules {
 		};
 	}
 
-	/** Criaturas de una oleada alrededor de un jugador: 2 en la Penumbra, 4 en la Totalidad, ninguna en la Retirada. */
+	/** Tamaño histórico v34; el asalto v47 usa {@link EclipseAssaultRules#waveSize(Phase, int, int)}. */
 	public static int waveSize(Phase phase) {
 		return switch (phase) {
 			case PENUMBRA -> 2;

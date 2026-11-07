@@ -160,6 +160,17 @@ public class AptitudesConfig {
 	public double eclipseMobArmor = 4.0;
 	/** v41.2: probabilidad de cada pieza de armadura visible (malla, hierro en la Totalidad, diamante los campeones). */
 	public double eclipseArmorChance = 0.35;
+	/** v47: tamaño de oleada por jugador; cero desactiva refuerzos de esa fase. */
+	public int eclipsePenumbraWaveSize = 4;
+	public int eclipseTotalityWaveSize = 8;
+	/** Límites compartidos de criaturas cargadas; cero impide nuevas oleadas. */
+	public int eclipseZoneMobCap = 24;
+	public int eclipseWorldMobCap = 128;
+	/** Mínimos por oleada exitosa; requieren que la probabilidad de ese grado sea mayor que cero. */
+	public int eclipseMinElitesPerWave = 1;
+	public int eclipseMinChampionsTotality = 1;
+	/** Las élites y campeones usan humanoides con equipo completo que no se suelta al morir. */
+	public boolean eclipseGuaranteedEliteArmor = true;
 	// ---------- Eventos rotativos (v41) ----------
 	// El calendario es el de eclipseIntervalDays / eclipseFirstDay: cada fecha toca un evento al azar, sin repetir
 	// el anterior. El peso es la probabilidad relativa; 0 desactiva ese evento.
@@ -461,6 +472,12 @@ public class AptitudesConfig {
 		c.eclipseTotalityBonus = Math.min(2.0, c.eclipseTotalityBonus);
 		c.eclipseMobArmor = Math.min(20.0, c.eclipseMobArmor);
 		c.eclipseArmorChance = Math.min(1.0, c.eclipseArmorChance);
+		c.eclipsePenumbraWaveSize = clamp(c.eclipsePenumbraWaveSize, 0, 16);
+		c.eclipseTotalityWaveSize = clamp(c.eclipseTotalityWaveSize, 0, 24);
+		c.eclipseZoneMobCap = clamp(c.eclipseZoneMobCap, 0, 160);
+		c.eclipseWorldMobCap = clamp(c.eclipseWorldMobCap, 0, 512);
+		c.eclipseMinElitesPerWave = clamp(c.eclipseMinElitesPerWave, 0, 4);
+		c.eclipseMinChampionsTotality = clamp(c.eclipseMinChampionsTotality, 0, 2);
 		c.emberRainLargeChance = Math.min(1.0, c.emberRainLargeChance);
 		c.emberRainHugeChance = Math.min(1.0, c.emberRainHugeChance);
 		c.emberRainMobChance = Math.min(1.0, c.emberRainMobChance);

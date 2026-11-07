@@ -9,6 +9,7 @@ import dev.aptitudes.elite.Elites;
 import dev.aptitudes.event.EclipseRules.Phase;
 import dev.aptitudes.item.ModItems;
 import dev.aptitudes.logic.ProgressManager;
+import dev.aptitudes.logic.AttributeApplier;
 import dev.aptitudes.network.EclipsePayload;
 import dev.aptitudes.role.Role;
 import dev.aptitudes.role.RoleManager;
@@ -29,7 +30,6 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
@@ -73,6 +73,7 @@ public final class EclipseManager {
 	private static final Identifier HERALD_HEALTH_ID = Aptitudes.id("eclipse/herald_health");
 	private static final Identifier ARMOR_ID = Aptitudes.id("eclipse/armor");
 	private static final Identifier KNOCKBACK_ID = Aptitudes.id("eclipse/knockback");
+	private static final Identifier FOLLOW_ID = Aptitudes.id("eclipse/follow_range");
 	private static final int HELMET_COLOR = 0x2A0707;
 	private static final double GROUP_RADIUS = 64.0;
 	private static final double COUNT_RADIUS = 48.0;
@@ -87,21 +88,24 @@ public final class EclipseManager {
 	private static final Set<UUID> LEFTOVERS = new HashSet<>();
 	private static Phase lastPhase = Phase.NONE;
 	private static long nextWaveTick;
+	private static int waveCursor;
 
 	private EclipseManager() {
 	}
 
 	public static void register() {
-		ServerLifecycleEvents.SERVER_STARTED.register(server -> reset());
+		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+			reset();
+			// Las entidades de los chunks iniciales pueden cargarse antes de SERVER_STARTED.
+			for (ServerWorld world : server.getWorlds()) {
+				for (Entity entity : world.iterateEntities()) trackLoaded(entity, world);
+			}
+		});
 		ServerLifecycleEvents.SERVER_STOPPED.register(server -> reset());
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			if (server.getTicks() % 20 == 10) tick(server);
 		});
-		ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-			if (!entity.getCommandTags().contains(TAG)) return;
-			if (world.getRegistryKey() == World.OVERWORLD && EclipseState.get(world).active) ALIVE.add(entity.getUuid());
-			else LEFTOVERS.add(entity.getUuid());
-		});
+		ServerEntityEvents.ENTITY_LOAD.register(EclipseManager::trackLoaded);
 		ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> ALIVE.remove(entity.getUuid()));
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
 			if (!(entity.getWorld() instanceof ServerWorld world)) return;
@@ -122,11 +126,19 @@ public final class EclipseManager {
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player, origin, destination) -> sync(player));
 	}
 
+	private static void trackLoaded(Entity entity, ServerWorld world) {
+		if (!entity.getCommandTags().contains(TAG)) return;
+		if (world.getRegistryKey() == World.OVERWORLD && EclipseState.get(world).active && entity.isAlive()) {
+			ALIVE.add(entity.getUuid());
+		} else LEFTOVERS.add(entity.getUuid());
+	}
+
 	private static void reset() {
 		ALIVE.clear();
 		LEFTOVERS.clear();
 		lastPhase = Phase.NONE;
 		nextWaveTick = 0;
+		waveCursor = 0;
 	}
 
 	// ------------------------------------------------------------------ Bucle
@@ -174,8 +186,8 @@ public final class EclipseManager {
 		}
 
 		boolean hostile = world.getDifficulty() != Difficulty.PEACEFUL;
-		if (hostile && server.getTicks() >= nextWaveTick) {
-			nextWaveTick = server.getTicks() + EclipseRules.waveIntervalTicks(cfg.eclipseWaveIntervalSeconds);
+		if (hostile && world.getTime() >= nextWaveTick) {
+			nextWaveTick = world.getTime() + EclipseRules.waveIntervalTicks(cfg.eclipseWaveIntervalSeconds);
 			waves(world, phase, cfg);
 		}
 		if (hostile && cfg.eclipseHeraldEnabled && !state.heraldSpawned && phase == Phase.TOTALITY
@@ -199,7 +211,7 @@ public final class EclipseManager {
 		state.fallen.clear();
 		state.markDirty();
 		lastPhase = Phase.PENUMBRA;
-		nextWaveTick = server.getTicks() + 100;
+		nextWaveTick = world.getTime() + 100;
 		broadcast(server, Text.translatable("eclipse.aptitudes.start").formatted(Formatting.DARK_RED, Formatting.BOLD));
 		playToAll(world, dev.aptitudes.sound.ModSounds.ECLIPSE_START, 1.0f);
 		long eventTime = forced ? 0 : EclipseRules.timeInDay(world.getTimeOfDay());
@@ -208,6 +220,7 @@ public final class EclipseManager {
 
 	/** Termina el eclipse; si {@code completed}, premia a los supervivientes del Mundo Normal. */
 	public static void end(MinecraftServer server, ServerWorld world, EclipseState state, boolean completed) {
+		if (!state.active) return; // una segunda finalización no vuelve a conceder XP, contratos ni logros
 		state.active = false;
 		state.forced = false;
 		state.heraldSpawned = false;
@@ -225,7 +238,7 @@ public final class EclipseManager {
 		if (completed) {
 			AptitudesConfig cfg = Aptitudes.config();
 			for (ServerPlayerEntity player : world.getPlayers()) {
-				if (player.isSpectator() || fallen.contains(player.getUuid())) continue;
+				if (!eligible(player) || fallen.contains(player.getUuid())) continue;
 				dev.aptitudes.contract.ContractManager.onEventSurvived(player, WorldEventKind.ECLIPSE);
 				dev.aptitudes.achievement.Achievements.survived(player, WorldEventKind.ECLIPSE); // v31
 				Role primary = RoleManager.get(player).primary();
@@ -259,38 +272,39 @@ public final class EclipseManager {
 	// ------------------------------------------------------------------ Oleadas y Heraldo
 
 	private static void waves(ServerWorld world, Phase phase, AptitudesConfig cfg) {
-		int wave = EclipseRules.waveSize(phase);
+		int wave = EclipseAssaultRules.waveSize(phase, cfg.eclipsePenumbraWaveSize, cfg.eclipseTotalityWaveSize);
 		if (wave <= 0) return;
-		java.util.Set<UUID> processed = new java.util.HashSet<>();
-		for (ServerPlayerEntity player : world.getPlayers()) {
-			if (!player.isAlive() || player.isSpectator() || player.isCreative() || processed.contains(player.getUuid())) continue;
-			List<ServerPlayerEntity> group = dev.aptitudes.party.PartyManager.hasParty(player)
-					? dev.aptitudes.party.PartyManager.onlineMembers(player).stream()
-						.filter(member -> member.getWorld() == world && member.isAlive()
-								&& !member.isSpectator() && !member.isCreative()).toList()
-					: List.of(player);
-			if (group.isEmpty()) continue;
-			for (ServerPlayerEntity member : group) processed.add(member.getUuid());
-			java.util.Set<UUID> alive = new java.util.HashSet<>();
-			for (ServerPlayerEntity member : group) {
-				world.getEntitiesByClass(MobEntity.class, member.getBoundingBox().expand(COUNT_RADIUS),
-						mob -> mob.isAlive() && mob.getCommandTags().contains(TAG)).forEach(mob -> alive.add(mob.getUuid()));
-			}
-			int groupSize = group.size();
-			int cap = cfg.eclipseMaxMobsPerPlayer * groupSize;
-			int count = EclipseRules.allowedSpawns(alive.size(), cap, wave * groupSize);
-			for (int i = 0; i < count; i++) {
-				ServerPlayerEntity target = group.get(i % groupSize);
-				BlockPos pos = findSpawn(world, target.getBlockPos(), 16, 32);
+		List<ServerPlayerEntity> players = world.getPlayers(EclipseManager::eligible);
+		if (players.isEmpty()) return;
+		int first = Math.floorMod(waveCursor, players.size());
+		waveCursor = (first + 1) % players.size();
+		for (int offset = 0; offset < players.size(); offset++) {
+			ServerPlayerEntity target = players.get((first + offset) % players.size());
+			var area = target.getBoundingBox().expand(COUNT_RADIUS);
+			int alive = world.getEntitiesByClass(MobEntity.class, area,
+					mob -> mob.isAlive() && mob.getCommandTags().contains(TAG)).size();
+			int nearby = (int) players.stream().filter(p -> area.contains(p.getPos())).count();
+			int cap = EclipseAssaultRules.localCap(cfg.eclipseMaxMobsPerPlayer, nearby, cfg.eclipseZoneMobCap);
+			int count = EclipseAssaultRules.spawnBudget(alive, cap, ALIVE.size(), cfg.eclipseWorldMobCap, wave);
+			int spawned = 0;
+			for (int attempt = 0; attempt < count; attempt++) {
+				BlockPos pos = findSpawn(world, target.getBlockPos(), 16, 32, 3);
 				if (pos == null) continue;
-				spawnMob(world, waveType(phase, world.random.nextInt(100)), pos, cfg, phase);
+				var grade = EclipseAssaultRules.grade(phase, spawned, cfg.eclipseMinElitesPerWave,
+						cfg.eclipseMinChampionsTotality, cfg.eclipseEliteChance, cfg.eclipseChampionChance, world.random.nextDouble());
+				var type = EclipseAssaultRules.mob(phase, grade, cfg.eclipseGuaranteedEliteArmor, world.random.nextInt(100));
+				if (spawnMob(world, waveType(type), pos, cfg, phase, grade, target)) spawned++;
 			}
 		}
 	}
 
+	private static boolean eligible(ServerPlayerEntity player) {
+		return EclipseAssaultRules.eligible(player.isAlive(), player.isCreative(), player.isSpectator());
+	}
+
 	/** v41.2: tipo de criatura por fase ({@link StrongEventRules#eclipseMob}); la Totalidad trae esqueletos wither. */
-	private static EntityType<? extends MobEntity> waveType(Phase phase, int roll) {
-		return switch (StrongEventRules.eclipseMob(phase, roll)) {
+	private static EntityType<? extends MobEntity> waveType(StrongEventRules.EclipseMob type) {
+		return switch (type) {
 			case ZOMBIE -> EntityType.ZOMBIE;
 			case SKELETON -> EntityType.SKELETON;
 			case SPIDER -> EntityType.SPIDER;
@@ -301,12 +315,16 @@ public final class EclipseManager {
 		};
 	}
 
-	private static void spawnMob(ServerWorld world, EntityType<? extends MobEntity> type, BlockPos pos, AptitudesConfig cfg,
-								 Phase phase) {
+	private static boolean spawnMob(ServerWorld world, EntityType<? extends MobEntity> type, BlockPos pos, AptitudesConfig cfg,
+			Phase phase, EclipseAssaultRules.Grade grade, ServerPlayerEntity target) {
 		MobEntity mob = type.create(world);
-		if (mob == null) return;
+		if (mob == null) return false;
 		mob.refreshPositionAndAngles(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, world.random.nextFloat() * 360f, 0);
 		mob.initialize(world, world.getLocalDifficulty(pos), SpawnReason.EVENT, null);
+		// Sin pasajeros adicionales fuera del presupuesto (p. ej., un jinete generado al inicializar una araña).
+		for (Entity passenger : List.copyOf(mob.getPassengerList())) passenger.discard();
+		mob.removeAllPassengers();
+		if (!world.getWorldBorder().contains(pos) || !world.isSpaceEmpty(mob)) return false;
 		mob.addCommandTag(TAG);
 		mob.addCommandTag(Elites.CHECKED); // la tirada de élite la hace el eclipse, no la aparición normal
 		// v41.2: en la Totalidad, vida y daño extra sobre los multiplicadores de siempre; armadura y aguante.
@@ -317,17 +335,24 @@ public final class EclipseManager {
 				EclipseRules.boundedMultiplier(cfg.eclipseMobDamageMultiplier, 1.0, 5.0) * phaseBonus - 1.0);
 		flatModifier(mob, EntityAttributes.GENERIC_ARMOR, ARMOR_ID, StrongEventRules.armorPoints(cfg.eclipseMobArmor));
 		flatModifier(mob, EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, KNOCKBACK_ID, phase == Phase.TOTALITY ? 0.25 : 0.0);
+		flatModifier(mob, EntityAttributes.GENERIC_FOLLOW_RANGE, FOLLOW_ID, 16.0);
 		mob.setHealth(mob.getMaxHealth());
 		darkHelmet(mob);
-		float roll = world.random.nextFloat();
-		boolean champion = roll < cfg.eclipseChampionChance;
-		equipArmor(mob, StrongEventRules.armorTier(phase, champion), cfg.eclipseArmorChance, world.random);
+		boolean champion = grade == EclipseAssaultRules.Grade.CHAMPION;
+		boolean elite = grade == EclipseAssaultRules.Grade.ELITE;
+		double armorChance = EclipseAssaultRules.armorChance(grade, cfg.eclipseGuaranteedEliteArmor, cfg.eclipseArmorChance);
+		equipArmor(mob, StrongEventRules.armorTier(phase, champion), armorChance,
+				cfg.eclipseGuaranteedEliteArmor && (champion || elite), world.random);
 		if (champion) Elites.makeElite(mob, true, world.random);
-		else if (roll < cfg.eclipseChampionChance + cfg.eclipseEliteChance) Elites.makeElite(mob, false, world.random);
+		else if (elite) Elites.makeElite(mob, false, world.random);
+		if (!world.isSpaceEmpty(mob)) return false; // el modificador Gigante también debe caber
+		for (EquipmentSlot slot : EquipmentSlot.values()) mob.setEquipmentDropChance(slot, 0.0f);
 		mob.setPersistent();
-		world.spawnEntityAndPassengers(mob);
+		if (!world.spawnEntity(mob)) return false;
+		mob.setTarget(target); // setTarget conserva el filtro común de Soborno, camuflaje y esbirros
 		world.spawnParticles(ParticleTypes.SMOKE, mob.getX(), mob.getBodyY(0.5), mob.getZ(), 16, 0.3, 0.6, 0.3, 0.01);
 		ALIVE.add(mob.getUuid());
+		return true;
 	}
 
 	/** Casco oscuro e irrompible: los no muertos del eclipse no arden con la luz del día ni lo sueltan. */
@@ -340,65 +365,54 @@ public final class EclipseManager {
 		mob.setEquipmentDropChance(EquipmentSlot.HEAD, 0.0f);
 	}
 
-	/** v41.2: piezas de armadura visibles (pecho, piernas y botas; el casco oscuro ya está), sin soltarlas al morir. */
-	private static void equipArmor(MobEntity mob, StrongEventRules.ArmorTier tier, double chance, Random random) {
+	/** Equipo del evento: piezas completas en élites; las unidades normales conservan su probabilidad. */
+	private static void equipArmor(MobEntity mob, StrongEventRules.ArmorTier tier, double chance, boolean full, Random random) {
 		if (!ARMORED_TYPES.contains(mob.getType())) return;
-		EquipmentSlot[] slots = {EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
+		EquipmentSlot[] slots = {EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET, EquipmentSlot.HEAD};
 		net.minecraft.item.Item[][] items = {
-				{Items.CHAINMAIL_CHESTPLATE, Items.CHAINMAIL_LEGGINGS, Items.CHAINMAIL_BOOTS},
-				{Items.IRON_CHESTPLATE, Items.IRON_LEGGINGS, Items.IRON_BOOTS},
-				{Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS},
+				{Items.CHAINMAIL_CHESTPLATE, Items.CHAINMAIL_LEGGINGS, Items.CHAINMAIL_BOOTS, Items.CHAINMAIL_HELMET},
+				{Items.IRON_CHESTPLATE, Items.IRON_LEGGINGS, Items.IRON_BOOTS, Items.IRON_HELMET},
+				{Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS, Items.DIAMOND_HELMET},
 		};
 		for (int i = 0; i < slots.length; i++) {
-			if (!mob.getEquippedStack(slots[i]).isEmpty() || random.nextDouble() >= chance) continue;
-			mob.equipStack(slots[i], new ItemStack(items[tier.ordinal()][i]));
+			if (!full && (slots[i] == EquipmentSlot.HEAD || !mob.getEquippedStack(slots[i]).isEmpty()
+					|| random.nextDouble() >= chance)) continue;
+			ItemStack piece = new ItemStack(items[tier.ordinal()][i]);
+			piece.set(DataComponentTypes.UNBREAKABLE, new UnbreakableComponent(false));
+			mob.equipStack(slots[i], piece);
 			mob.setEquipmentDropChance(slots[i], 0.0f);
 		}
 	}
 
 	/** Suma un valor fijo a un atributo (quita antes el modificador anterior con el mismo id). */
 	private static void flatModifier(MobEntity mob, RegistryEntry<EntityAttribute> attribute, Identifier id, double value) {
-		EntityAttributeInstance instance = mob.getAttributeInstance(attribute);
-		if (instance == null) return;
-		instance.removeModifier(id);
-		if (value > 0) instance.addPersistentModifier(new EntityAttributeModifier(id, value,
-				EntityAttributeModifier.Operation.ADD_VALUE));
+		AttributeApplier.set(mob.getAttributeInstance(attribute), id, Math.max(0, value), EntityAttributeModifier.Operation.ADD_VALUE);
 	}
 
 	private static void modifier(MobEntity mob, RegistryEntry<EntityAttribute> attribute, Identifier id, double value) {
-		EntityAttributeInstance instance = mob.getAttributeInstance(attribute);
-		if (instance == null) return;
-		instance.removeModifier(id);
-		if (value > 0) instance.addPersistentModifier(new EntityAttributeModifier(id, value,
-				EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+		AttributeApplier.set(mob.getAttributeInstance(attribute), id, Math.max(0, value),
+				EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 	}
 
 	/** Un Heraldo por grupo de jugadores (a menos de 64 bloques entre sí); su vida escala con el grupo. */
 	private static void spawnHeralds(MinecraftServer server, ServerWorld world) {
+		boolean spawned = false;
 		List<ServerPlayerEntity> pending = new ArrayList<>();
 		for (ServerPlayerEntity p : world.getPlayers()) {
-			if (p.isAlive() && !p.isSpectator() && !p.isCreative()) pending.add(p);
+			if (eligible(p)) pending.add(p);
 		}
 		while (!pending.isEmpty()) {
 			ServerPlayerEntity leader = pending.remove(0);
 			int group = 1;
-			boolean hasParty = dev.aptitudes.party.PartyManager.hasParty(leader);
-			if (hasParty) {
-				group = (int) dev.aptitudes.party.PartyManager.onlineMembers(leader).stream()
-						.filter(p -> p.isAlive() && !p.isSpectator() && !p.isCreative()).count();
-				for (int i = pending.size() - 1; i >= 0; i--) {
-					if (dev.aptitudes.party.PartyManager.inSameParty(leader, pending.get(i))) pending.remove(i);
-				}
-			} else {
-				for (int i = pending.size() - 1; i >= 0; i--) {
-					if (pending.get(i).squaredDistanceTo(leader) <= GROUP_RADIUS * GROUP_RADIUS) {
-						pending.remove(i);
-						group++;
-					}
+			for (int i = pending.size() - 1; i >= 0; i--) {
+				if (pending.get(i).squaredDistanceTo(leader) <= GROUP_RADIUS * GROUP_RADIUS) {
+					pending.remove(i);
+					group++;
 				}
 			}
-			BlockPos pos = findSpawn(world, leader.getBlockPos(), 12, 20);
-			if (pos == null) pos = leader.getBlockPos();
+			BlockPos pos = findSpawn(world, leader.getBlockPos(), 12, 20, 4);
+			if (pos == null) continue;
+			if (!reserveHeraldSlot(world, Aptitudes.config().eclipseWorldMobCap)) continue;
 			MobEntity herald = BossManager.spawn(world, EntityType.WITHER_SKELETON, pos, BossKind.ECLIPSE_HERALD);
 			if (herald == null) continue;
 			herald.addCommandTag(TAG);
@@ -408,14 +422,40 @@ public final class EclipseManager {
 			herald.setCustomName(Text.translatable(BossKind.ECLIPSE_HERALD.nameKey()).formatted(Formatting.DARK_RED, Formatting.BOLD));
 			Elites.setChampionBarName(herald, herald.getDisplayName());
 			ALIVE.add(herald.getUuid());
+			herald.setTarget(leader);
+			spawned = true;
 			world.spawnParticles(ParticleTypes.SOUL_FIRE_FLAME, herald.getX(), herald.getBodyY(0.5), herald.getZ(), 60, 0.6, 1.2, 0.6, 0.05);
 		}
-		broadcast(server, Text.translatable("eclipse.aptitudes.herald").formatted(Formatting.DARK_RED, Formatting.BOLD));
-		playToAll(world, dev.aptitudes.sound.ModSounds.HERALD_SPAWN, 1.0f);
+		if (spawned) {
+			broadcast(server, Text.translatable("eclipse.aptitudes.herald").formatted(Formatting.DARK_RED, Formatting.BOLD));
+			playToAll(world, dev.aptitudes.sound.ModSounds.HERALD_SPAWN, 1.0f);
+		}
 	}
 
-	/** Busca suelo firme con 2 bloques libres a {@code min}–{@code max} bloques del centro (6 intentos). */
+	/** Al llegar al tope, el Heraldo sustituye una unidad ordinaria; nunca elimina otro jefe ni da botín. */
+	private static boolean reserveHeraldSlot(ServerWorld world, int configuredCap) {
+		int cap = Math.max(0, Math.min(512, configuredCap));
+		if (cap == 0 || ALIVE.size() > cap) return false;
+		if (ALIVE.size() < cap) return true;
+		for (UUID id : List.copyOf(ALIVE)) {
+			Entity entity = world.getEntity(id);
+			if (entity instanceof MobEntity mob && mob.isAlive()
+					&& !mob.getCommandTags().contains(BossKind.ECLIPSE_HERALD.tag())) {
+				ALIVE.remove(id);
+				dissolve(world, mob);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/** Búsqueda compartida histórica: dos bloques libres, también para los otros eventos. */
 	static BlockPos findSpawn(ServerWorld world, BlockPos center, int min, int max) {
+		return findSpawn(world, center, min, max, 2);
+	}
+
+	/** El asalto reserva más altura; el Heraldo puede tener el modificador Gigante. */
+	private static BlockPos findSpawn(ServerWorld world, BlockPos center, int min, int max, int clearance) {
 		Random random = world.random;
 		for (int attempt = 0; attempt < 6; attempt++) {
 			double angle = random.nextDouble() * Math.PI * 2;
@@ -425,10 +465,16 @@ public final class EclipseManager {
 			if (!world.isChunkLoaded(x >> 4, z >> 4)) continue;
 			int y = world.getTopY(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, x, z);
 			BlockPos pos = new BlockPos(x, y, z);
+			if (!world.getWorldBorder().contains(pos)) continue;
 			BlockPos below = pos.down();
 			if (Math.abs(y - center.getY()) > 12) continue;
 			if (!world.getBlockState(below).isSideSolidFullSquare(world, below, Direction.UP)) continue;
-			if (!world.getFluidState(below).isEmpty() || !world.isAir(pos) || !world.isAir(pos.up())) continue;
+			if (!world.getFluidState(below).isEmpty()) continue;
+			boolean clear = true;
+			for (int height = 0; height < clearance; height++) {
+				if (!world.isAir(pos.up(height))) { clear = false; break; }
+			}
+			if (!clear) continue;
 			return pos;
 		}
 		return null;

@@ -10,6 +10,29 @@ Archivos (se crean en el primer arranque):
 El servidor envía al cliente las reglas que necesita (curvas de XP, costes…), así que el cliente
 siempre muestra lo que valida el servidor aunque su archivo local sea distinto.
 
+## Asalto del Eclipse (v47)
+
+| Campo del servidor | Defecto | Límites | Descripción |
+|---|---:|---:|---|
+| `eclipsePenumbraWaveSize` | 4 | [0, 16] | Refuerzos solicitados por jugador en Penumbra; cero desactiva las oleadas de esta fase. |
+| `eclipseTotalityWaveSize` | 8 | [0, 24] | Refuerzos por jugador en Totalidad; cero desactiva las oleadas de esta fase. |
+| `eclipseZoneMobCap` | 24 | [0, 160] | Tope local adicional de criaturas del Eclipse en el área de 48 bloques de cada jugador. Se comparte entre jugadores próximos, con o sin grupo; cero impide nuevos refuerzos. |
+| `eclipseWorldMobCap` | 128 | [0, 512] | Tope para apariciones nuevas contando criaturas del Eclipse cargadas en el Mundo Normal, incluidos Heraldos. Si está justo lleno, un Heraldo puede sustituir una unidad ordinaria sin botín; cero impide también Heraldos nuevos. |
+| `eclipseMinElitesPerWave` | 1 | [0, 4] | Primeras unidades élite garantizadas por jugador y oleada, después de los campeones. Solo si `eclipseEliteChance > 0`, cabe la criatura y queda presupuesto. Cero conserva la tirada aleatoria. |
+| `eclipseMinChampionsTotality` | 1 | [0, 2] | Campeones garantizados al comienzo de cada oleada de Totalidad, si `eclipseChampionChance > 0` y queda espacio/presupuesto. Cero conserva la tirada aleatoria. |
+| `eclipseGuaranteedEliteArmor` | true | booleano | Élites/campeones de oleadas con cuerpo de zombi/esqueleto y equipo completo visible (malla/hierro por fase; campeones, diamante), irrompible y sin soltarlo. Con false se conservan tipos y probabilidad de equipo anteriores. |
+
+Las opciones existentes no cambian de valor: intervalo 30 s, tope 12 por jugador, vida/daño ×1,5,
+élite 0,5, campeón 0,1, armadura 4, probabilidad de piezas normales 0,35 y bonus de Totalidad 0,25.
+Fuera de las unidades garantizadas se conservan las tiradas de grado. `eclipseArmorChance = 0` solo
+desactiva equipo aleatorio; para desactivar también el equipo garantizado usa su interruptor.
+Los enteros nuevos pasan por `validated(...)`: negativos inválidos recuperan el defecto y los demás
+se acotan al rango indicado. Se pueden editar por la pantalla existente con validación del servidor.
+
+No se fuerzan chunks. Al cargar o reiniciar se cuentan las criaturas existentes antes de generar otras;
+si cargar criaturas guardadas supera un límite, se suspenden las nuevas apariciones, sin borrar las antiguas.
+Las probabilidades, tamaños y presupuestos se vuelven a acotar en las reglas puras.
+
 ## Tutorial (v44)
 
 | Campo del cliente | Defecto | Dominio | Descripción |

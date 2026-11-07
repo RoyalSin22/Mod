@@ -773,6 +773,12 @@ src/client/java/dev/aptitudes/client/   (solo cliente)
 
 ### Limitaciones conocidas
 
+El asalto del Eclipse de la candidata v47 solicita oleadas de 4/8 criaturas por jugador en Penumbra/Totalidad,
+con garantías de élite y campeón condicionadas por espacio y presupuesto. Las unidades de élite llevan equipo
+completo visible. Siete opciones permiten ajustar la presión; los multiplicadores previos se conservan.
+Se limita la población por zona y por mundo, contando los Heraldos, y se respeta la proximidad real de los jugadores.
+Detalles y guion de prueba: `docs/V47_ECLIPSE.md` y `docs/TESTING.md`. Pendiente de validación en partida.
+
 | Limitación | Impacto | Posible mejora |
 |---|---|---|
 | El mod se necesita en cliente y servidor | Un cliente vanilla no dispone de las pantallas, recursos ni datos sincronizados; puede mostrar claves traducibles | Instalar la misma versión de Aptitudes y Fabric API para 1.21.1 en ambos lados |

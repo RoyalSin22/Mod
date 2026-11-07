@@ -5,6 +5,16 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Cambiado
+- **v47 — Asalto del Eclipse, fase 1**: oleadas de 4 criaturas por jugador en Penumbra y 8 en Totalidad,
+  con élites y campeones garantizados cuando sus probabilidades están activadas y hay espacio/presupuesto.
+  Equipo completo visible en unidades de élite, sin soltarlo al morir; conservan los multiplicadores previos.
+  Presupuestos compartidos por proximidad, tope por zona y por mundo, turnos rotativos y búsqueda del jugador.
+  El Heraldo se organiza por encuentros próximos, incluso con grupos dispersos; al llegar al límite puede
+  sustituir una unidad ordinaria sin botín. No aparece sobre el jugador si falta un emplazamiento seguro.
+  Finalización protegida contra cobros repetidos, exclusión de creativo/espectador y recuento restaurado
+  tras reiniciar. Siete opciones nuevas validadas y capítulo del grimorio actualizado en once idiomas.
+
 ### Añadido
 - **v45 — Traducciones, T8 fase 1**: traducción inicial de interfaz y objetos a portugués de Brasil
   (`pt_br`), francés (`fr_fr`) y alemán (`de_de`), que conviene revisar con hablantes nativos.
