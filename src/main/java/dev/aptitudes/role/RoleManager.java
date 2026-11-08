@@ -6,6 +6,8 @@ import dev.aptitudes.ability.RolePassives;
 import dev.aptitudes.config.AptitudesConfig;
 import dev.aptitudes.data.ModAttachments;
 import dev.aptitudes.network.RoleSyncPayload;
+import dev.aptitudes.role.datapack.RoleTalentCatalog;
+import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -26,7 +28,7 @@ public final class RoleManager {
 
 	/** Resultado de intentar subir un rango. */
 	public enum UpgradeResult { OK, UNKNOWN_NODE, ROLE_NOT_ACTIVE, MAX_RANK, LEVEL_TOO_LOW, MISSING_PREREQUISITE, NO_POINTS,
-		PATH_LOCKED, LEGEND_TAKEN, LEGEND_LIMIT, TIER_TOO_LOW, BRANCH_LOCKED }
+		PATH_LOCKED, LEGEND_TAKEN, LEGEND_LIMIT, TIER_TOO_LOW, BRANCH_LOCKED, DATAPACK_STALE, DATAPACK_UNAVAILABLE }
 
 	private RoleManager() {
 	}
@@ -55,7 +57,10 @@ public final class RoleManager {
 			String tag = dev.aptitudes.Aptitudes.MOD_ID + ".got_guide";
 			if (oldPlayer.getCommandTags().contains(tag)) newPlayer.addCommandTag(tag);
 		});
-		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
+		// Fabric copia los attachments en la fase por defecto de este mismo evento.
+		var roleRefresh = Aptitudes.id("refresh_roles");
+		ServerPlayerEvents.AFTER_RESPAWN.addPhaseOrdering(Event.DEFAULT_PHASE, roleRefresh);
+		ServerPlayerEvents.AFTER_RESPAWN.register(roleRefresh, (oldPlayer, newPlayer, alive) -> {
 			refresh(newPlayer);
 			// Al morir se pierde la transformación.
 			if (!alive) dev.aptitudes.morph.MorphManager.unmorph(newPlayer);
@@ -440,11 +445,13 @@ public final class RoleManager {
 		RoleData data = get(player);
 		ensureConsistent(player, data);
 		RolePassives.applyAttributes(player);
+		RoleTalentCatalog.applySpeed(player, data);
 		// La afinidad de atributos depende del rol: se recalculan los atributos y la pantalla.
 		dev.aptitudes.logic.AttributeApplier.apply(player, dev.aptitudes.logic.ProgressManager.get(player), Aptitudes.config());
 		dev.aptitudes.logic.ProgressManager.sync(player);
 		data.setEnergy(Math.min(data.energy(), AbilityManager.maxEnergy(player)));
 		sync(player);
+		RoleTalentCatalog.sync(player, data);
 		AbilityManager.sendEnergy(player, true);
 		RoleResources.send(player, true);
 		// Legendarias: dependen de los nodos aprendidos y de los roles activos.
@@ -476,6 +483,9 @@ public final class RoleManager {
 					data.setRank(node.id(), 0);
 				}
 			}
+		}
+		RoleTalentCatalog.reconcile(player.getServer(), data);
+		for (Role role : Role.values()) {
 			// Si la configuración redujo los puntos, se devuelven los del árbol afectado.
 			if (availablePoints(data, role) < 0
 					|| (role == Role.ELEMENTALIST && data.elements().size() > Element.allowedCount(data.level(role)))) {

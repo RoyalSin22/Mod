@@ -1,11 +1,16 @@
 # Roadmap de Aptitudes
 
-v53 preparada en `codex/v53-atlas-talentos`. v51 está integrada en `main`. La publicación sigue aplazada.
+v55 fases 1 y 2 preparadas en `codex/v55-talentos-datapack`. v53 está integrada en `main`. La publicación sigue aplazada.
 Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fabric API 0.116.6 · Loom 1.10 · Java 21**.
 
 ## Estado real
 
-### v53 — Atlas de talentos (implementado en rama)
+### v55 — Talentos por datapack
+- Fase 1. Catálogo opcional, recarga por revisión y [ejemplo del Espadachín](DATAPACK_TALENTOS.md).
+- Fase 2. Vista en J, compras validadas por revisión y rango, puntos compartidos y reembolso al perder
+  requisitos. La plantilla piloto da +2 % de velocidad por rango, hasta +6 % entre ambos roles activos.
+
+### v53 — Atlas de talentos (integrado en main)
 - Fase 1. Cuatro entradas en J y ficha adaptable. Sendas reúne S1–S7 y la ficha de S1 muestra su requisito en Talentos.
 - Fase 2. Paletas y grabados para los 20 roles, con pestañas que distinguen selección y foco en ambas vistas.
   Pruebas visuales en partida pendientes.
@@ -40,7 +45,7 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
   pendientes. El autor pidió parar tras esta fase; diseño y límites en `docs/V47_ECLIPSE.md`.
 - Fases posteriores solicitadas: Reforja/Templado, bloques y Mesa del gremio con menús propios, HUD/iconos,
   animaciones de habilidades y encuentros en estructuras. Se permite evaluar una biblioteca de animación;
-  ninguna se añade aquí. El árbol por datapack requiere cargadores y sincronización del servidor: no existe aún.
+  ninguna se añade aquí. El piloto del árbol por datapack se documenta en v55.
 
 ### v45 — Traducciones (T8, fases 1–3 implementadas)
 - Portugués de Brasil, francés y alemán: archivos completos de 3512 claves, en el orden de `en_us`,

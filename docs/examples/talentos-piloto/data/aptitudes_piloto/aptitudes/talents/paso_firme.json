@@ -1,0 +1,7 @@
+{
+  "role": "swordsman",
+  "prerequisite": "aptitudes_piloto:paso_ligero",
+  "level": 16,
+  "ranks": 2,
+  "template": "speed"
+}

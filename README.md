@@ -574,6 +574,10 @@ rojo con menos del 25 %; los recursos de rol parpadean cuando pueden potenciar u
 
 ## Atlas de talentos (v53)
 
+El [piloto de talentos por datapack](docs/DATAPACK_TALENTOS.md) permite añadir ramas de velocidad.
+Cuando el rol seleccionado tiene una rama instalada, **Talentos del pack** en J muestra sus requisitos
+y permite gastar puntos de ese rol.
+
 Pulsa **J** para elegir un rol. La cabecera muestra su sello, nivel y puntos disponibles.
 Cada rol tiene una paleta y un emblema grabado que también aparecen en Sendas.
 **Talentos** muestra los nodos base y sus requisitos. **Sendas** reúne los siete escalones,

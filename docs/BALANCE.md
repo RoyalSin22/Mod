@@ -23,6 +23,12 @@ justificación, valores de ejemplo e impacto, como pide la política del proyect
   El HUD desaparece al terminar y cobrar todo, o al omitir; con todos los objetivos completos e inventario
   lleno muestra las recompensas pendientes. Se oculta en creativo, espectador, durante pantallas y al morir.
 
+## Talentos por datapack (v55)
+
+El piloto comparte el presupuesto de puntos de cada rol. Cada rango de `speed` cuesta un punto y
+suma +2 % de velocidad de movimiento sobre la base del atributo. El modificador de ambos roles
+activos tiene un tope propio de +6 %. Las Sendas conservan sus valores.
+
 ## Maestría (v43, T6 fase 1)
 
 Antes se descartaba toda XP al máximo. Ahora solo la XP nueva elegible suma maestría, incluida la parte

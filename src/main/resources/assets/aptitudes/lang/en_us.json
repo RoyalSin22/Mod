@@ -3514,5 +3514,14 @@
   "threat.aptitudes.ring.5": "V",
   "screen.aptitudes.tree.tab_talents": "Talents",
   "screen.aptitudes.tree.rank": "Rank %s/%s",
-  "screen.aptitudes.tree.either": "%s or %s"
+  "screen.aptitudes.tree.either": "%s or %s",
+  "screen.aptitudes.datapack.tab": "Pack talents",
+  "screen.aptitudes.datapack.title": "Pack talents · %s",
+  "screen.aptitudes.datapack.empty": "This role has no pack talents.",
+  "screen.aptitudes.datapack.speed": "Movement speed +%s%% per rank · shared cap +%s%%",
+  "screen.aptitudes.datapack.prerequisite": "Requires %s",
+  "aptitudes.role.upgrade.datapack_stale": "Your pack talents changed. Check the rank and try again.",
+  "aptitudes.role.upgrade.datapack_unavailable": "You can only learn pack talents while alive and outside spectator mode.",
+  "talent.aptitudes_piloto.paso_ligero.name": "Light Step",
+  "talent.aptitudes_piloto.paso_firme.name": "Sure Step"
 }

@@ -32,6 +32,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   animadas y una cabecera propia al descansar. El grimorio indica qué mesa requiere cada receta.
 
 ### Añadido
+- **v55 — Talentos por datapack.** El pack de ejemplo añade Paso ligero y Paso firme al Espadachín.
+  Con el pack activo, abre **Talentos del pack** desde J para consultar y aprender la rama con puntos
+  del rol. Cada rango da +2 % de velocidad de movimiento, hasta +6 % entre ambos roles activos.
+  Al retirar el pack o perder un requisito, recuperas los puntos de los rangos afectados.
 - **v45 — Traducciones, T8 fase 1**: traducción inicial de interfaz y objetos a portugués de Brasil
   (`pt_br`), francés (`fr_fr`) y alemán (`de_de`), que conviene revisar con hablantes nativos.
   Cada idioma contiene las 3512 claves de inglés en el mismo orden: 1386 traducidas en esta fase;

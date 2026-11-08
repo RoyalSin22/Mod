@@ -118,9 +118,7 @@ public class PathsScreen extends Screen {
 	}
 
 	private int availablePoints(RoleSyncPayload data) {
-		int spent = 0;
-		for (RoleNode n : RoleTree.nodes(role)) spent += data.rank(n.id());
-		return data.rules().earnedPoints(data.level(role), data.tier(role)) - spent;
+		return ClientRoleState.availablePoints(data, role);
 	}
 
 	private void learn() {

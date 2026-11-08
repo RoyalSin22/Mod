@@ -3514,5 +3514,14 @@
   "threat.aptitudes.ring.5": "V",
   "screen.aptitudes.tree.tab_talents": "Talentos",
   "screen.aptitudes.tree.rank": "Grau %s/%s",
-  "screen.aptitudes.tree.either": "%s ou %s"
+  "screen.aptitudes.tree.either": "%s ou %s",
+  "screen.aptitudes.datapack.tab": "Talentos do pacote",
+  "screen.aptitudes.datapack.title": "Talentos do pacote · %s",
+  "screen.aptitudes.datapack.empty": "Esta classe não tem talentos do pacote.",
+  "screen.aptitudes.datapack.speed": "Velocidade de movimento +%s%% por grau · limite total +%s%%",
+  "screen.aptitudes.datapack.prerequisite": "Requer %s",
+  "aptitudes.role.upgrade.datapack_stale": "Seus talentos do pacote mudaram. Confira o grau e tente novamente.",
+  "aptitudes.role.upgrade.datapack_unavailable": "Só é possível aprender talentos do pacote com vida e fora do modo espectador.",
+  "talent.aptitudes_piloto.paso_ligero.name": "Passo leve",
+  "talent.aptitudes_piloto.paso_firme.name": "Passo firme"
 }

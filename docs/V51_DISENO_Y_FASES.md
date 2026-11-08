@@ -36,15 +36,14 @@ aprendido, disponible y bloqueado se distinguen por forma y borde además del co
 
 ## Árbol ampliable y revisión de roles
 
-1. Define un datapack piloto que extienda un rol existente con una rama opcional y una plantilla de
-   habilidad ya implementada. Usa claves con espacio de nombres para los nodos añadidos. Valida
-   referencias, ciclos, tamaños y valores antes de activar el catálogo. Si falla la recarga, conserva
-   el catálogo válido anterior e informa del motivo.
-2. Sincroniza el catálogo y su revisión desde el servidor. El servidor sigue comprobando requisitos,
-   compra, coste, objetivos y enfriamiento. La primera fase conserva el orden de las ranuras de activas
-   y las claves guardadas. Ampliar las ranuras requiere un formato de guardado con versión.
+1. **Implementado en v55 fase 1.** El [datapack piloto](DATAPACK_TALENTOS.md) define una rama opcional
+   para el Espadachín. El servidor valida las definiciones y conserva la revisión anterior si falla
+   la recarga del catálogo.
+2. **Implementado en v55 fase 2.** El servidor sincroniza el catálogo y los rangos. En J se pueden
+   comprar pasivas con puntos del rol. La compra valida requisitos y rango. Si una definición se retira,
+   se reembolsan sus puntos. Ampliar las ranuras de activas requiere un formato de guardado con versión.
 3. Revisa primero los roles que compiten por la misma función. Compara en solitario y en grupo cuándo
    conviene equipar cada activa. Ajusta primero sus decisiones de juego. Si se decide retirar un rol,
    define antes cómo conservar o reasignar los puntos, las habilidades equipadas y las armas existentes.
 
-El asedio, el catálogo por datapack y la revisión de roles quedan propuestos.
+El asedio y la revisión de roles se desarrollan en fases separadas.
