@@ -56,6 +56,20 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playS2C().register(TutorialPayload.ID, TutorialPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(MasteryPayload.ID, MasteryPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(ThreatPayload.ID, ThreatPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(ForgePreviewPayload.ID, ForgePreviewPayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(ForgeActionPayload.ID, ForgeActionPayload.CODEC);
+		ServerPlayNetworking.registerGlobalReceiver(ForgeActionPayload.ID, (payload, context) -> {
+			var player = context.player();
+			if (payload.action() == ForgeActionPayload.OPEN_TEMPER) {
+				if (payload.syncId() == player.playerScreenHandler.syncId
+						&& player.currentScreenHandler == player.playerScreenHandler
+						&& player.currentScreenHandler.getCursorStack().isEmpty()) {
+					dev.aptitudes.souls.SoulsManager.openTempering(player);
+				}
+			} else if (player.currentScreenHandler instanceof dev.aptitudes.forge.ForgeScreenHandler handler) {
+				handler.handle(player, payload);
+			}
+		});
 		// v30: el índice es la oferta (aceptar) o la ranura activa (abandonar, entregar, cobrar); se valida en ContractManager.
 		ServerPlayNetworking.registerGlobalReceiver(ContractActionPayload.ID, (payload, context) -> {
 			if (payload.offer() < 0 || payload.offer() >= dev.aptitudes.contract.ContractRules.OFFERS_PER_DAY) return;

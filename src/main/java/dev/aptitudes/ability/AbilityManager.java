@@ -148,6 +148,9 @@ public final class AbilityManager {
 		// v46.1 Sobrecarga: la N-ésima habilidad no gasta maná y su espera se reduce a la mitad.
 		double payableEnergy = dev.aptitudes.logic.MasteryRules.energyCost(energyCost,
 				dev.aptitudes.logic.MasteryManager.roleBonus(player, role));
+		if (slot >= 0 && slot < ULTIMATE_SLOT) {
+			payableEnergy = dev.aptitudes.forge.ForgeWeapons.energyCost(player, role, payableEnergy);
+		}
 		boolean overload = Keystones.overloadReady(player);
 		boolean free = player.isCreative() || overload;
 		double missingEnergy = free ? 0 : Math.max(0, payableEnergy - data.energy());

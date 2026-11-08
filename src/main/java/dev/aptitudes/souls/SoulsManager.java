@@ -167,6 +167,19 @@ public final class SoulsManager {
 				&& player.getBlockPos().getSquaredDistance(bonfire.pos()) <= BONFIRE_RANGE_SQ;
 	}
 
+	public static boolean canTemperAt(ServerPlayerEntity player, BlockPos pos) {
+		Bonfire bonfire = RESTED.get(player.getUuid());
+		return bonfire != null && bonfire.pos().equals(pos) && nearBonfire(player);
+	}
+
+	public static void openTempering(ServerPlayerEntity player) {
+		Bonfire bonfire = RESTED.get(player.getUuid());
+		if (bonfire == null || !dev.aptitudes.forge.ForgeScreenHandler.open(player, player.getServerWorld(),
+				bonfire.pos(), dev.aptitudes.forge.ForgeScreenHandler.Mode.TEMPER)) {
+			player.sendMessage(Text.translatable("forge.aptitudes.temper_unavailable"), true);
+		}
+	}
+
 	/**
 	 * Asigna los puntos pedidos. Los que excedan los puntos libres se compran como
 	 * niveles de alma, pagando XP vanilla. Todo o nada.

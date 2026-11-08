@@ -3,7 +3,11 @@ package dev.aptitudes.client;
 import dev.aptitudes.ability.AbilityManager;
 import dev.aptitudes.client.hud.AbilityHud;
 import dev.aptitudes.client.screen.AptitudesScreen;
+import dev.aptitudes.client.screen.ForgeScreen;
 import dev.aptitudes.client.screen.RolesScreen;
+import dev.aptitudes.forge.ForgeScreenHandler;
+import dev.aptitudes.forge.ForgeWeapons;
+import dev.aptitudes.network.ForgePreviewPayload;
 import dev.aptitudes.network.FormSyncPayload;
 import dev.aptitudes.network.MorphPayload;
 import dev.aptitudes.network.UniqueSyncPayload;
@@ -47,6 +51,7 @@ public class AptitudesClient implements ClientModInitializer {
 			AlchemyTooltips.adjust(stack, context, lines);
 			if (dev.aptitudes.rune.RuneSocketing.eligible(stack)) dev.aptitudes.rune.RuneSocketing.appendTooltip(stack, lines, ClientServerConfig.get());
 			dev.aptitudes.boss.BossManager.appendTooltip(stack, lines);
+			ForgeWeapons.appendTooltip(stack, lines);
 			if (stack.getItem() instanceof dev.aptitudes.boss.BossCoreItem) lines.add(net.minecraft.text.Text.translatable("boss.aptitudes.core_hint"));
 		});
 		openSkillsKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
@@ -68,6 +73,11 @@ public class AptitudesClient implements ClientModInitializer {
 				dev.aptitudes.client.screen.AccessoryScreen::new);
 		net.minecraft.client.gui.screen.ingame.HandledScreens.register(dev.aptitudes.world.GuildCrafting.SCREEN,
 				dev.aptitudes.client.screen.GuildDeskScreen::new);
+		net.minecraft.client.gui.screen.ingame.HandledScreens.register(ForgeScreenHandler.REFORGE, ForgeScreen::new);
+		net.minecraft.client.gui.screen.ingame.HandledScreens.register(ForgeScreenHandler.TEMPER, ForgeScreen::new);
+		ClientPlayNetworking.registerGlobalReceiver(ForgePreviewPayload.ID, (payload, context) -> context.client().execute(() -> {
+			if (context.client().currentScreen instanceof ForgeScreen screen) screen.setPreview(payload);
+		}));
 		net.minecraft.client.gui.screen.ingame.HandledScreens.register(dev.aptitudes.contract.ContractBoardScreenHandler.TYPE,
 				dev.aptitudes.client.screen.ContractBoardScreen::new);
 		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.ContractViewPayload.ID,

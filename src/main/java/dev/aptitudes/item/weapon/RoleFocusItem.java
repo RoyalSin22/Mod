@@ -3,6 +3,7 @@ package dev.aptitudes.item.weapon;
 import dev.aptitudes.ability.AbilityManager;
 import dev.aptitudes.ability.ParticleFx;
 import dev.aptitudes.ability.Targeting;
+import dev.aptitudes.forge.ForgeWeapons;
 import dev.aptitudes.role.Element;
 import dev.aptitudes.role.Evolution;
 import dev.aptitudes.role.Role;
@@ -46,6 +47,10 @@ public class RoleFocusItem extends Item {
 		return role;
 	}
 
+	public int tier() {
+		return tier;
+	}
+
 	@Override
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack stack = user.getStackInHand(hand);
@@ -77,13 +82,14 @@ public class RoleFocusItem extends Item {
 			float damage = (tier >= Evolution.ULTIMATE ? 10f : 7f) + data.level(role) * 0.2f
 					+ dev.aptitudes.rune.RuneSocketing.damageBonus(stack)
 					+ (float) dev.aptitudes.boss.BossManager.damageBonus(stack);
-			target.damage(player.getDamageSources().indirectMagic(player, player), damage);
+			boolean hostile = Targeting.isHostileTo(player, target);
+			boolean accepted = target.damage(player.getDamageSources().indirectMagic(player, player), damage);
 			if (role == Role.ELEMENTALIST) {
 				Element element = data.activeElement();
 				if (element != null) sworld.spawnParticles(element.particle(), to.x, to.y, to.z, 15, 0.4, 0.4, 0.4, 0.05);
 			}
 			RoleManager.addRoleXp(player, role, 2);
-			RoleResources.gain(player, role, 3);
+			RoleResources.gain(player, role, ForgeWeapons.impactGain(stack, player, accepted && hostile));
 		}
 		return TypedActionResult.success(stack);
 	}
