@@ -104,18 +104,27 @@ public final class EclipseManager {
 		ServerLifecycleEvents.SERVER_STOPPED.register(server -> reset());
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			if (server.getTicks() % 20 == 10) tick(server);
+			if (ALIVE.isEmpty() || !Aptitudes.config().eclipseEnabled) return;
+			ServerWorld world = server.getOverworld();
+			if (world != null && world.getDifficulty() != Difficulty.PEACEFUL && EclipseState.get(world).active) {
+				EclipsePursuit.tick(world, ALIVE);
+			}
 		});
 		ServerEntityEvents.ENTITY_LOAD.register(EclipseManager::trackLoaded);
-		ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> ALIVE.remove(entity.getUuid()));
+		ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
+			if (ALIVE.remove(entity.getUuid())) EclipsePursuit.forget(entity.getUuid());
+		});
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
 			if (!(entity.getWorld() instanceof ServerWorld world)) return;
 			if (entity instanceof ServerPlayerEntity player) {
+				EclipsePursuit.forgetPlayer(world.getServer().getOverworld(), player);
 				if (world.getRegistryKey() == World.OVERWORLD) {
 					EclipseState state = EclipseState.get(world);
 					if (state.active && state.fallen.add(player.getUuid())) state.markDirty();
 				}
 			} else if (entity instanceof MobEntity mob && mob.getCommandTags().contains(TAG)) {
 				ALIVE.remove(mob.getUuid());
+				EclipsePursuit.forget(mob.getUuid());
 				boolean herald = mob.getCommandTags().contains(BossKind.ECLIPSE_HERALD.tag());
 				int count = EclipseRules.fragments(herald, Elites.isChampion(mob), Elites.isElite(mob), world.random.nextDouble());
 				if (count > 0) mob.dropStack(new ItemStack(ModItems.ECLIPSE_FRAGMENT, count));
@@ -123,7 +132,12 @@ public final class EclipseManager {
 		});
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> sync(handler.getPlayer()));
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> sync(newPlayer));
-		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player, origin, destination) -> sync(player));
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) ->
+				EclipsePursuit.forgetPlayer(server.getOverworld(), handler.getPlayer()));
+		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player, origin, destination) -> {
+			EclipsePursuit.forgetPlayer(origin.getServer().getOverworld(), player);
+			sync(player);
+		});
 	}
 
 	private static void trackLoaded(Entity entity, ServerWorld world) {
@@ -135,6 +149,7 @@ public final class EclipseManager {
 
 	private static void reset() {
 		ALIVE.clear();
+		EclipsePursuit.clear();
 		LEFTOVERS.clear();
 		lastPhase = Phase.NONE;
 		nextWaveTick = 0;
@@ -233,6 +248,7 @@ public final class EclipseManager {
 			if (entity != null) dissolve(world, entity);
 		}
 		ALIVE.clear();
+		EclipsePursuit.clear();
 		broadcast(server, Text.translatable(completed ? "eclipse.aptitudes.end" : "eclipse.aptitudes.stopped")
 				.formatted(Formatting.GOLD));
 		if (completed) {
@@ -298,7 +314,7 @@ public final class EclipseManager {
 		}
 	}
 
-	private static boolean eligible(ServerPlayerEntity player) {
+	static boolean eligible(ServerPlayerEntity player) {
 		return EclipseAssaultRules.eligible(player.isAlive(), player.isCreative(), player.isSpectator());
 	}
 
@@ -349,7 +365,7 @@ public final class EclipseManager {
 		for (EquipmentSlot slot : EquipmentSlot.values()) mob.setEquipmentDropChance(slot, 0.0f);
 		mob.setPersistent();
 		if (!world.spawnEntity(mob)) return false;
-		mob.setTarget(target); // setTarget conserva el filtro común de Soborno, camuflaje y esbirros
+		EclipsePursuit.seed(world, mob, target);
 		world.spawnParticles(ParticleTypes.SMOKE, mob.getX(), mob.getBodyY(0.5), mob.getZ(), 16, 0.3, 0.6, 0.3, 0.01);
 		ALIVE.add(mob.getUuid());
 		return true;
@@ -422,7 +438,7 @@ public final class EclipseManager {
 			herald.setCustomName(Text.translatable(BossKind.ECLIPSE_HERALD.nameKey()).formatted(Formatting.DARK_RED, Formatting.BOLD));
 			Elites.setChampionBarName(herald, herald.getDisplayName());
 			ALIVE.add(herald.getUuid());
-			herald.setTarget(leader);
+			EclipsePursuit.seed(world, herald, leader);
 			spawned = true;
 			world.spawnParticles(ParticleTypes.SOUL_FIRE_FLAME, herald.getX(), herald.getBodyY(0.5), herald.getZ(), 60, 0.6, 1.2, 0.6, 0.05);
 		}
@@ -442,6 +458,7 @@ public final class EclipseManager {
 			if (entity instanceof MobEntity mob && mob.isAlive()
 					&& !mob.getCommandTags().contains(BossKind.ECLIPSE_HERALD.tag())) {
 				ALIVE.remove(id);
+				EclipsePursuit.forget(id);
 				dissolve(world, mob);
 				return true;
 			}

@@ -19,6 +19,11 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 - Fase 2. Paletas y grabados para los 20 roles, con pestañas que distinguen selección y foco en ambas vistas.
   Pruebas visuales en partida pendientes.
 
+### v52 — Persecución del Eclipse
+- Búsqueda escalonada de jugadores visibles a 48 bloques y recuerdo temporal de la última posición vista.
+- Usa el filtro de objetivos del servidor y trabaja sobre los mobs cargados del Eclipse. Prueba en partida pendiente.
+- Escalada temporal y rotura opcional de barreras siguen propuestas en [V51_DISENO_Y_FASES.md](V51_DISENO_Y_FASES.md).
+
 ### v51 — Mesa y Tablón con más espacio (integrados en main)
 - Mesa con zonas separadas y Tablón con fichas para ofertas y contratos activos.
 - Lienzo unificado y corrección del rótulo de sendas exclusivas. Maqueta y propuestas de asedio, datapack y roles

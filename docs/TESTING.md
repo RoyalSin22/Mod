@@ -63,6 +63,25 @@
    con F3 + T. Si un paquete aporta un índice anterior, verifica que la vista siga mostrando los iconos.
 4. Ejecuta el generador con `--check`. Debe comprobar 590 entradas del atlas, incluidas 20 marcas de agua.
 
+## v52 — Persecución del Eclipse
+
+1. En el Mundo Normal, dificultad normal y supervivencia, inicia `/aptitudes eclipse start`.
+   En campo abierto, deja que una criatura de la oleada te vea. Dobla una esquina y cambia
+   de dirección detrás de un muro. Debe intentar llegar al último punto visible.
+2. Quédate oculto más de seis segundos, aléjate más de 48 bloques, vuelve a mostrarte y cambia de
+   dimensión. Comprueba la caducidad de la búsqueda y la adquisición de un objetivo visible.
+   Repite al morir, entrar en creativo/espectador, desconectar y reconectar.
+3. Prueba con dos jugadores, primero juntos y luego separados. Oculta a uno y deja visible al
+   otro. Repite con Soborno, camuflaje e invisibilidad, con un objetivo no jugador y cerca del borde de chunks
+   cargados. Comprueba que los mobs ajenos al Eclipse conservan su IA y que el asedio no activa
+   ninguna nueva acción sobre el terreno.
+4. Reinicia durante el evento y prueba `/aptitudes eclipse stop`. La criatura cargada debe
+   adquirir objetivos de nuevo según su entorno al reiniciar. Al terminar se disuelve por la
+   ruta existente. Repite con el Heraldo en Totalidad.
+
+`EclipsePursuitRulesTest` comprueba intervalos, alcance, llegada, caducidad y relojes extremos.
+La navegación y la visibilidad se comprueban en partida.
+
 ## v51 — Mesa y Tablón del gremio
 
 1. Abre la Mesa a escala de interfaz 4. Revisa la separación de la cuadrícula, resultado e inventario.

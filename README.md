@@ -804,6 +804,10 @@ src/client/java/dev/aptitudes/client/   (solo cliente)
 
 ### Limitaciones conocidas
 
+Durante el Eclipse, las criaturas del evento buscan jugadores visibles a 48 bloques. Tras perderlos
+de vista, van al último punto observado durante un máximo de seis segundos. Soborno y camuflaje
+siguen funcionando.
+
 El asalto del Eclipse de la candidata v47 solicita oleadas de 4/8 criaturas por jugador en Penumbra/Totalidad,
 con garantías de élite y campeón condicionadas por espacio y presupuesto. Las unidades de élite llevan equipo
 completo visible. Siete opciones permiten ajustar la presión; los multiplicadores previos se conservan.

@@ -17,7 +17,7 @@ aprendido, disponible y bloqueado se distinguen por forma y borde además del co
 
 ## Eclipse — propuesta de asedio
 
-1. **Persecución.** Las unidades marcadas por el evento revisan su objetivo a intervalos cortos
+1. **Persecución (implementada en v52).** Las unidades marcadas por el evento revisan su objetivo a intervalos cortos
    y escalonados. Siguen al jugador elegible si lo ven y buscan durante un tiempo breve en su última
    posición conocida si lo pierden. Cuando cambia de dimensión, muere o entra en creativo/espectador,
    descartan ese objetivo. Respeta el filtro común de Soborno y camuflaje, el alcance del encuentro
@@ -46,4 +46,4 @@ aprendido, disponible y bloqueado se distinguen por forma y borde además del co
    conviene equipar cada activa. Ajusta primero sus decisiones de juego. Si se decide retirar un rol,
    define antes cómo conservar o reasignar los puntos, las habilidades equipadas y las armas existentes.
 
-El asedio y la revisión de roles se desarrollan en fases separadas.
+La escalada, la rotura y la revisión de roles quedan propuestas.

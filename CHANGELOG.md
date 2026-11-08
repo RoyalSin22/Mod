@@ -17,6 +17,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   requisitos del nodo seleccionado y el cursor revela la descripción completa.
   Los 20 roles tienen paleta y emblema propios en el atlas y en Sendas. Las pestañas distinguen
   selección y foco, y las de Sendas muestran el nombre completo al pasar el cursor.
+- **v52 — Persecución del Eclipse.** Las criaturas del evento y su Heraldo buscan jugadores visibles
+  a su alrededor. Si pierden de vista al objetivo, intentan llegar al último punto en el que lo vieron
+  durante un máximo de seis segundos. Soborno y camuflaje siguen protegiendo al jugador.
 - **v51 — Mesa y Tablón del gremio.** Separamos la cuadrícula, el resultado y el inventario de la Mesa.
   El Tablón muestra ofertas y contratos activos en columnas, con una fila de acciones por ficha.
   Al pasar el cursor se pueden leer el objetivo y la recompensa completos. El árbol usa un lienzo común e indica que se elige una senda.
