@@ -14,7 +14,7 @@ decisión va marcado con ❓.
 - §2: **descartados** el viaje entre Hogueras (S1) y los Ciclos/Nuevo Juego+ (S8); el resto, aprobado.
 - §3 (jefes inspirados) y §4–§8: **aprobados**.
 - **GeckoLib aprobado** como dependencia (§6, A3). playerAnimator: no por ahora.
-- Estamina y rodar (S4): ❓ pendiente de confirmar (ver §12).
+- Estamina y rodar (S4): **todavía no** (más adelante).
 - Orden de §10: **aprobado** (ajustado a los descartes).
 - Nueva idea del autor: **activar el Eclipse desde la Hoguera** con un objeto raro (§2b), reformulada para
   cumplir §0 y las exclusiones; detalles ❓ pendientes.
@@ -188,6 +188,17 @@ Las **animaciones e iconos** ya se pueden cambiar con un **resource pack** (text
 | v66 | Datapack D1–D2 (sobre la base de talentos de v55) | Claude |
 | v67 | Combate avanzado S3 (parada), mensajes en el suelo (S5) y ecos de muerte (S6); S4 (rodar con estamina) si se confirma | Claude |
 
+## 10b. Decisiones del 2026-11-08 (segunda ronda)
+
+- §2b **aprobado** con el objeto original (Astrolabio del Ocaso): E1 lo autorizan **los operadores o el líder del
+  grupo** (party: quien lo creó; confirmado por el autor), E2 espera de **3 días de juego**,
+  E4 obtención como se propuso, E5 hora como se propuso, E6 **solo Mundo Normal**, E7 logro «Quien llama a la
+  noche». E3 (calendario): el convocado sustituye al siguiente evento natural (propuesta por defecto).
+- **Nueva**: Lluvia de brasas **local** al encender un portal al Nether nuevo (P1–P6 aprobadas): solo portales en
+  una posición nueva, radio 64 alrededor del portal, 5 minutos, espera global de 3 días, solo Mundo Normal, no
+  altera el calendario, mismas recompensas por meteorito y sin logro de superviviente.
+- Planes de trabajo: `docs/PLAN_CLAUDE.md` (Claude) y `docs/PLAN_CODEX_2.md` (Codex).
+
 ## 11. GeckoLib (aprobado): implicaciones
 
 - Pasa a ser **dependencia obligatoria** para jugar (cliente y servidor), como Fabric API. Versión fijada para
@@ -197,9 +208,8 @@ Las **animaciones e iconos** ya se pueden cambiar con un **resource pack** (text
 - Se usa solo para criaturas y jefes nuevos (v51+). Las criaturas existentes no cambian.
 - Los modelos y animaciones se hacen en Blockbench (plugin de GeckoLib): arte original.
 
-## 12. Pendiente de decisión ❓
+## 12. Decisiones cerradas (2026-11-08)
 
-1. **Estamina y rodar (S4)**: dijiste «la estamina y el rodar todavía». ¿Significa «todavía no» (más adelante)
-   o «sí, añadirlos»? Es el cambio de combate más grande; si es «sí», lo diseño aparte antes de programarlo.
-2. **Convocar el Eclipse (§2b)**: ¿aceptas el objeto original (sin sacrificio)? ¿Cómo se obtiene? ¿Respuestas
-   E1–E7 (o las propuestas por defecto)?
+1. Estamina y rodar (S4): **todavía no**; se retomará más adelante.
+2. Convocar el Eclipse (§2b): objeto original aprobado; E1 = operadores o líder del grupo (quien lo creó); E2–E7
+   como en §10b.

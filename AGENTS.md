@@ -146,7 +146,9 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
 ## 7. Pendientes conocidos (consulta antes de empezar algo grande)
 
 - v29 (grupos), v30 (contratos) y v31 (logros) ya están hechos. Siguiente: v42–v45 de `docs/PLAN_v40_v45.md`.
-- **Trabajo pendiente para Codex**: `docs/PLAN_CODEX.md` (tareas T1–T8 en orden, una rama por tarea, con su
+- **Trabajo actual**: Codex sigue `docs/PLAN_CODEX_2.md` (K1–K6) y Claude `docs/PLAN_CLAUDE.md` (C1–C7); no
+  toquéis a la vez los mismos archivos (ver cada plan). Plan anterior, ya completado:
+  `docs/PLAN_CODEX.md` (tareas T1–T8 en orden, una rama por tarea, con su
   prompt, la autorrevisión y cómo integrarlas en `main`).
 - Iconos de las Sendas (Codex, fases 1–3) integrados en `main` y usados en la vista de sendas (v46.2). El
   generador `tools/textures/gen_node_icons.py` lleva una copia de la tabla de plantillas: si cambia
