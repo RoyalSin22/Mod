@@ -1,5 +1,18 @@
 # Pruebas de Aptitudes
 
+## v54 — Animaciones de lanzamiento
+
+1. Lanza una activa con un rol de cada categoría. Observa en F5 el tajo de Marcial, los cristales
+   de Arcana, las esquirlas de Sombras, las placas de Guardianes y el engranaje de Oficio. Camina
+   durante el lanzamiento y prueba detrás de una pared con otro jugador cerca.
+2. Lanza una característica, una definitiva y una legendaria. Compara el tamaño y la duración con
+   una activa. Intenta lanzar en enfriamiento, sin energía o en modo espectador y comprueba que
+   el remate solo acompañe a un lanzamiento válido.
+3. Con dos clientes, repite cerca, a más de 40 bloques y en otra dimensión. Muere, cambia de mundo
+   o reconecta durante una animación y comprueba que desaparezca.
+4. En Mayús + O, a 426×240, apaga Animaciones 3D y guarda. Prueba un nuevo lanzamiento, el sello
+   rúnico y el sonido. Reactiva el ajuste y comprueba que se conserve al reiniciar el cliente.
+
 ## v53 — Atlas de talentos
 
 1. Abre J con Domador, Espadachín y Bardo. Revisa que la cabecera cambie de sello, nivel, puntos y

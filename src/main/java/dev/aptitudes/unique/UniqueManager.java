@@ -285,7 +285,7 @@ public final class UniqueManager {
 			fail(player, Text.translatable("aptitudes.ability.no_effect"));
 			return;
 		}
-		dev.aptitudes.ability.CastFx.onCast(player, null, dev.aptitudes.ability.CastFx.Kind.UNIQUE);
+		dev.aptitudes.ability.CastFx.onCast(player, skill.role(), dev.aptitudes.logic.CastAnimationRules.Kind.UNIQUE);
 		if (!player.isCreative()) data.setEnergy(data.energy() - skill.energyCost());
 		int cooldown = skill.cooldownSecs() * 20;
 		AbilityManager.cooldowns(player).start(AbilityManager.LEGENDARY_COOLDOWN_KEY, now, cooldown);

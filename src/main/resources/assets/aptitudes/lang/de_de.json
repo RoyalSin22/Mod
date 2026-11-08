@@ -1452,6 +1452,7 @@
   "screen.aptitudes.hud.mechanic": "Rollenmechanik",
   "screen.aptitudes.hud.damage_numbers": "Schadenszahlen",
   "screen.aptitudes.hud.screen_effects": "Bildschirmeffekte",
+  "screen.aptitudes.hud.cast_animations": "3D-Animationen",
   "screen.aptitudes.hud.visible": "HUD sichtbar",
   "screen.aptitudes.hud.reset": "Zurücksetzen",
   "screen.aptitudes.hud.drag": "Ziehe die Fähigkeitsleiste, um sie zu verschieben",

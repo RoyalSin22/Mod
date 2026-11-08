@@ -185,6 +185,7 @@ hud.souls_bars¦Barras estilo Souls¦Barres de style Souls¦Leisten im Souls-Sti
 hud.mechanic¦Mecânica da classe¦Mécanique du rôle¦Rollenmechanik
 hud.damage_numbers¦Números de dano¦Nombres de dégâts¦Schadenszahlen
 hud.screen_effects¦Efeitos de tela¦Effets d'écran¦Bildschirmeffekte
+hud.cast_animations¦Animações 3D¦Animations 3D¦3D-Animationen
 hud.visible¦HUD visível¦ATH visible¦HUD sichtbar
 hud.reset¦Redefinir¦Réinitialiser¦Zurücksetzen
 hud.drag¦Arraste a barra de habilidades para movê-la¦Glissez la barre de capacités pour la déplacer¦Ziehe die Fähigkeitsleiste, um sie zu verschieben

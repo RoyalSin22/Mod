@@ -1,11 +1,15 @@
 # Roadmap de Aptitudes
 
-v53 preparada en `codex/v53-atlas-talentos`. v51 está integrada en `main`. La publicación sigue aplazada.
+v54 preparada en `codex/v54-animaciones-lanzamiento`. v53 está integrada en `main`. La publicación sigue aplazada.
 Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fabric API 0.116.6 · Loom 1.10 · Java 21**.
 
 ## Estado real
 
-### v53 — Atlas de talentos (implementado en rama)
+### v54 — Animaciones de habilidades (fase 1)
+- Remates geométricos por categoría, con duración y escala distintas para cada tipo de lanzamiento.
+  Se muestran al lanzador y a los clientes cercanos que rastrean su entidad. La prueba multijugador queda pendiente.
+
+### v53 — Atlas de talentos (integrado en main)
 - Fase 1. Cuatro entradas en J y ficha adaptable. Sendas reúne S1–S7 y la ficha de S1 muestra su requisito en Talentos.
 - Fase 2. Paletas y grabados para los 20 roles, con pestañas que distinguen selección y foco en ambas vistas.
   Pruebas visuales en partida pendientes.

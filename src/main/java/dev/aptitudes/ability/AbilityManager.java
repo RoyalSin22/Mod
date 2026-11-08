@@ -1,6 +1,7 @@
 package dev.aptitudes.ability;
 
 import dev.aptitudes.Aptitudes;
+import dev.aptitudes.logic.CastAnimationRules.Kind;
 import dev.aptitudes.network.CooldownPayload;
 import dev.aptitudes.network.EnergyPayload;
 import dev.aptitudes.role.Evolution;
@@ -180,8 +181,8 @@ public final class AbilityManager {
 						player.getX(), player.getBodyY(0.5), player.getZ(), 20, 0.3, 0.5, 0.3, 0);
 			}
 		}
-		CastFx.onCast(player, role, slot == ULTIMATE_SLOT ? CastFx.Kind.ULTIMATE
-				: slot == SIGNATURE_SLOT ? CastFx.Kind.SIGNATURE : CastFx.Kind.ACTIVE);
+		CastFx.onCast(player, role, slot == ULTIMATE_SLOT ? Kind.ULTIMATE
+				: slot == SIGNATURE_SLOT ? Kind.SIGNATURE : Kind.ACTIVE);
 		if (empowered) RoleResources.consumeEmpower(player, role);
 		if (overload) cooldown = cooldown / 2;
 		Keystones.afterCast(player, overload);
