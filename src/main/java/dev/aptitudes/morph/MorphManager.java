@@ -30,6 +30,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -53,6 +54,7 @@ public final class MorphManager {
 	private static final Identifier HEALTH_MODIFIER = Aptitudes.id("morph_health");
 	/** Transformaciones temporales (definitiva, Espejo Perfecto): no gastan energía. jugador → tick fin. */
 	private static final Map<UUID, Integer> TIMED = new HashMap<>();
+	private static final Map<UUID, Object> BAT_FLIGHTS = new HashMap<>();
 
 	private MorphManager() {
 	}
@@ -119,6 +121,7 @@ public final class MorphManager {
 	 * @param bonusHealth   vida máxima extra mientras dure (Espejo Perfecto)
 	 */
 	public static void morph(ServerPlayerEntity player, EntityType<?> type, int durationTicks, float bonusHealth) {
+		BAT_FLIGHTS.remove(player.getUuid());
 		MorphData data = get(player);
 		data.setActiveType(Registries.ENTITY_TYPE.getId(type).toString());
 		data.setBonusHealth(bonusHealth);
@@ -141,6 +144,7 @@ public final class MorphManager {
 	}
 
 	public static void unmorph(ServerPlayerEntity player) {
+		BAT_FLIGHTS.remove(player.getUuid());
 		MorphData data = get(player);
 		if (!data.isMorphed()) return;
 		data.setActiveType("");
@@ -310,10 +314,7 @@ public final class MorphManager {
 				return true;
 			}
 			case BAT -> {
-				effect(p, StatusEffects.LEVITATION, 40, 1);
-				effect(p, StatusEffects.SLOW_FALLING, 200, 0);
-				sound(p, SoundEvents.ENTITY_BAT_TAKEOFF);
-				return true;
+				return flyAsBat(p);
 			}
 			case SLIME -> {
 				p.setVelocity(p.getVelocity().x, 1.2 + 0.1 * r, p.getVelocity().z);
@@ -393,6 +394,7 @@ public final class MorphManager {
 	}
 
 	public static void onLeave(ServerPlayerEntity player) {
+		BAT_FLIGHTS.remove(player.getUuid());
 		TIMED.remove(player.getUuid());
 		MorphPayload payload = new MorphPayload(player.getUuid(), "");
 		for (ServerPlayerEntity other : player.getServer().getPlayerManager().getPlayerList()) {
@@ -411,6 +413,36 @@ public final class MorphManager {
 			if (isUnlocked(player, f)) mask |= 1 << f.ordinal();
 		}
 		ServerPlayNetworking.send(player, new FormSyncPayload(kills, mask, data.selected().ordinal()));
+	}
+
+	private static boolean flyAsBat(ServerPlayerEntity player) {
+		if (!canFlyAsBat(player)) return false;
+		UUID id = player.getUuid();
+		Object token = new Object();
+		BAT_FLIGHTS.put(id, token);
+		ServerWorld world = player.getServerWorld();
+		effect(player, StatusEffects.SLOW_FALLING, 200, 0);
+		sound(player, SoundEvents.ENTITY_BAT_TAKEOFF);
+		AbilityState.repeat(world.getServer(), MorphFlightRules.PULSES, MorphFlightRules.INTERVAL, pulse -> {
+			if (BAT_FLIGHTS.get(id) != token) return;
+			if (player.isRemoved() || player.getWorld() != world || !canFlyAsBat(player)) {
+				BAT_FLIGHTS.remove(id);
+				return;
+			}
+			Vec3d look = player.getRotationVec(1.0f);
+			player.setVelocity(look.x * MorphFlightRules.SPEED, MorphFlightRules.verticalSpeed(look.y),
+					look.z * MorphFlightRules.SPEED);
+			player.velocityModified = true;
+			player.fallDistance = 0;
+			if (pulse == MorphFlightRules.PULSES - 1) BAT_FLIGHTS.remove(id);
+		});
+		return true;
+	}
+
+	private static boolean canFlyAsBat(ServerPlayerEntity player) {
+		return player.isAlive() && !player.isSpectator() && !player.hasVehicle() && !player.isTouchingWater()
+				&& !player.getAbilities().flying && currentForm(player) == MorphForm.BAT
+				&& RoleManager.get(player).isActive(Role.SHAPESHIFTER);
 	}
 
 	// ----------------------------------------------------- Utilidades

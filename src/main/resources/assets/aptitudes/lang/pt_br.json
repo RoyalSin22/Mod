@@ -402,7 +402,7 @@
   "form.aptitudes.blaze": "Blaze",
   "form.aptitudes.blaze.desc": "Resistência ao fogo. Poder: 3 bolas de fogo. Desbloqueio: derrotar 10.",
   "form.aptitudes.bat": "Morcego",
-  "form.aptitudes.bat.desc": "Visão noturna; queda lenta ao agachar. Poder: voo curto. Desbloqueio: derrotar 5.",
+  "form.aptitudes.bat.desc": "Visão noturna; queda lenta ao agachar. Poder: voo curto guiado pelo olhar. Desbloqueio: derrotar 5.",
   "form.aptitudes.slime": "Slime",
   "form.aptitudes.slime.desc": "Sem dano de queda. Poder: supersalto. Desbloqueio: derrotar 10.",
   "form.aptitudes.chicken": "Galinha",

@@ -402,7 +402,7 @@
   "form.aptitudes.blaze": "Blaze",
   "form.aptitudes.blaze.desc": "Résistance au feu. Pouvoir : 3 boules de feu. Déblocage : en vaincre 10.",
   "form.aptitudes.bat": "Chauve-souris",
-  "form.aptitudes.bat.desc": "Vision nocturne ; chute lente accroupi. Pouvoir : vol bref. Déblocage : en vaincre 5.",
+  "form.aptitudes.bat.desc": "Vision nocturne ; chute lente accroupi. Pouvoir : vol bref dirigé par le regard. Déblocage : en vaincre 5.",
   "form.aptitudes.slime": "Slime",
   "form.aptitudes.slime.desc": "Aucun dégât de chute. Pouvoir : super saut. Déblocage : en vaincre 10.",
   "form.aptitudes.chicken": "Poule",

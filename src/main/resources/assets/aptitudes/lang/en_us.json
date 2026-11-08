@@ -402,7 +402,7 @@
   "form.aptitudes.blaze": "Blaze",
   "form.aptitudes.blaze.desc": "Fire resistance. Power: 3 fireballs. Unlock: defeat 10.",
   "form.aptitudes.bat": "Bat",
-  "form.aptitudes.bat.desc": "Night vision; slow fall while sneaking. Power: short flight. Unlock: defeat 5.",
+  "form.aptitudes.bat.desc": "Night vision; slow fall while sneaking. Power: short flight steered by looking. Unlock: defeat 5.",
   "form.aptitudes.slime": "Slime",
   "form.aptitudes.slime.desc": "No fall damage. Power: super jump. Unlock: defeat 10.",
   "form.aptitudes.chicken": "Chicken",

@@ -402,7 +402,7 @@
   "form.aptitudes.blaze": "Lohe",
   "form.aptitudes.blaze.desc": "Feuerresistenz. Kraft: 3 Feuerbälle. Freischalten: 10 besiegen.",
   "form.aptitudes.bat": "Fledermaus",
-  "form.aptitudes.bat.desc": "Nachtsicht; langsamer Fall beim Schleichen. Kraft: kurzer Flug. Freischalten: 5 besiegen.",
+  "form.aptitudes.bat.desc": "Nachtsicht; langsamer Fall beim Schleichen. Kraft: kurzer Flug in Blickrichtung. Freischalten: 5 besiegen.",
   "form.aptitudes.slime": "Schleim",
   "form.aptitudes.slime.desc": "Kein Fallschaden. Kraft: Supersprung. Freischalten: 10 besiegen.",
   "form.aptitudes.chicken": "Huhn",

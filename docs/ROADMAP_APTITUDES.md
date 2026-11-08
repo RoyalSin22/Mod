@@ -5,14 +5,18 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
-### v57 — Espaciado del atlas (preparada en rama)
+### v58 — Cambiaformas
+- Animación del murciélago, la gallina y el slime en el modelo de transformación. El poder del
+  murciélago permite dirigir el vuelo corto con la mirada.
+
+### v57 — Espaciado del atlas
 - Sendas separa la bifurcación en dos filas y reserva una columna para los rangos. Talentos despeja
   el área de nodos. Prioridades de interfaz y propuestas de criaturas en [V57_DISENO_VISUAL.md](V57_DISENO_VISUAL.md).
 
 ### v56 — Encuentros en estructuras
 - Fase 1. Generación segura del Centinela, el Oráculo y el Campeón en su propia región de chunks.
   Los golpes de fase final se anuncian un segundo antes y respetan la cobertura y los filtros de objetivos.
-- Fase 2 preparada en `codex/v56-encuentros-fase-2`. El Centinela usa un círculo, el Oráculo un anillo con centro seguro y el Campeón un cono.
+- Fase 2. El Centinela usa un círculo, el Oráculo un anillo con centro seguro y el Campeón un cono.
   El cono fija su dirección al anunciarse, por lo que se puede esquivar lateralmente.
 
 ### v55 — Talentos por datapack (integrado en main)
@@ -52,7 +56,7 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 - La Mesa se fabrica en la mesa de trabajo. Las demás recetas de Aptitudes, incluidas la Hoguera
   y el Grimorio, usan la Mesa del gremio. El grimorio muestra la estación leída de la receta.
 - Pendientes las pruebas en partida de la interfaz, la fabricación y la convivencia con Reforja y
-  Templado tras integrar las dos ramas.
+  Templado en la misma instalación.
 
 ### v47 — Eclipse y experiencia del mod (fase 1: asalto implementado)
 - Oleadas configurables 4/8 por jugador, mínimos de élites y campeones, unidades con armadura completa

@@ -5,8 +5,12 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.mob.SlimeEntity;
+import net.minecraft.entity.passive.BatEntity;
+import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -55,12 +59,35 @@ public final class ClientMorphs {
 				player.calculateDimensions();
 			}
 		}
-		for (Map.Entry<UUID, LivingEntity> e : FAKES.entrySet()) {
-			Entity player = client.world.getPlayerByUuid(e.getKey());
-			if (player instanceof LivingEntity living) {
-				e.getValue().limbAnimator.updateLimbs(living.limbAnimator.getSpeed(), 1.0f);
-				e.getValue().age = living.age;
-			}
+		FAKES.entrySet().removeIf(e -> {
+			var player = client.world.getPlayerByUuid(e.getKey());
+			LivingEntity fake = e.getValue();
+			if (player == null || fake.getWorld() != client.world) return true;
+			animate(player, fake);
+			return false;
+		});
+	}
+
+	/** Avanza solo el estado visual. Las entidades de render nunca ejecutan IA ni física. */
+	private static void animate(net.minecraft.entity.player.PlayerEntity player, LivingEntity fake) {
+		fake.age = player.age;
+		fake.limbAnimator.updateLimbs(player.limbAnimator.getSpeed(), 1.0f);
+		if (fake instanceof BatEntity bat) {
+			bat.setRoosting(false);
+			bat.roostingAnimationState.stop();
+			bat.flyingAnimationState.startIfNotRunning(fake.age);
+		} else if (fake instanceof ChickenEntity chicken) {
+			chicken.prevFlapProgress = chicken.flapProgress;
+			chicken.prevMaxWingDeviation = chicken.maxWingDeviation;
+			chicken.maxWingDeviation = MathHelper.clamp(chicken.maxWingDeviation + (player.isOnGround() ? -0.3f : 1.2f), 0f, 1f);
+			if (!player.isOnGround()) chicken.flapSpeed = Math.max(chicken.flapSpeed, 1f);
+			chicken.flapSpeed *= 0.9f;
+			chicken.flapProgress += chicken.flapSpeed * 2f;
+		} else if (fake instanceof SlimeEntity slime) {
+			slime.lastStretch = slime.stretch;
+			double motion = player.getY() - player.prevY;
+			float target = player.isOnGround() ? 0f : (float) Math.clamp(motion * 0.5, -0.2, 0.35);
+			slime.stretch += (target - slime.stretch) * 0.5f;
 		}
 	}
 
@@ -74,6 +101,7 @@ public final class ClientMorphs {
 			Entity created = type.create(player.getWorld());
 			if (!(created instanceof LivingEntity living)) return null;
 			fake = living;
+			animate(player, fake);
 			FAKES.put(player.getUuid(), fake);
 		}
 		copyPose(player, fake);

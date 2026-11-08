@@ -724,7 +724,7 @@ spider.desc¦Visão noturna. Poder: mordida venenosa. Desbloqueio: derrotar 10.�
 blaze¦Blaze¦Blaze¦Lohe
 blaze.desc¦Resistência ao fogo. Poder: 3 bolas de fogo. Desbloqueio: derrotar 10.¦Résistance au feu. Pouvoir : 3 boules de feu. Déblocage : en vaincre 10.¦Feuerresistenz. Kraft: 3 Feuerbälle. Freischalten: 10 besiegen.
 bat¦Morcego¦Chauve-souris¦Fledermaus
-bat.desc¦Visão noturna; queda lenta ao agachar. Poder: voo curto. Desbloqueio: derrotar 5.¦Vision nocturne ; chute lente accroupi. Pouvoir : vol bref. Déblocage : en vaincre 5.¦Nachtsicht; langsamer Fall beim Schleichen. Kraft: kurzer Flug. Freischalten: 5 besiegen.
+bat.desc¦Visão noturna; queda lenta ao agachar. Poder: voo curto guiado pelo olhar. Desbloqueio: derrotar 5.¦Vision nocturne ; chute lente accroupi. Pouvoir : vol bref dirigé par le regard. Déblocage : en vaincre 5.¦Nachtsicht; langsamer Fall beim Schleichen. Kraft: kurzer Flug in Blickrichtung. Freischalten: 5 besiegen.
 slime¦Slime¦Slime¦Schleim
 slime.desc¦Sem dano de queda. Poder: supersalto. Desbloqueio: derrotar 10.¦Aucun dégât de chute. Pouvoir : super saut. Déblocage : en vaincre 10.¦Kein Fallschaden. Kraft: Supersprung. Freischalten: 10 besiegen.
 chicken¦Galinha¦Poule¦Huhn
