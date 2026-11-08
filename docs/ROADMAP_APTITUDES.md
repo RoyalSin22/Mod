@@ -1,11 +1,16 @@
 # Roadmap de Aptitudes
 
-v51 preparada en `codex/v51-interfaz-puestos`. v50 está integrada en `main`. La publicación sigue aplazada.
+v52 preparada en `codex/v52-persecucion-eclipse`. v51 está integrada en `main`. La publicación sigue aplazada.
 Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fabric API 0.116.6 · Loom 1.10 · Java 21**.
 
 ## Estado real
 
-### v51 — Mesa y Tablón con más espacio (implementados en rama)
+### v52 — Persecución del Eclipse (implementada en rama)
+- Búsqueda escalonada de jugadores visibles a 48 bloques y recuerdo temporal de la última posición vista.
+- Usa el filtro de objetivos del servidor y trabaja sobre los mobs cargados del Eclipse. Prueba en partida pendiente.
+- Escalada temporal y rotura opcional de barreras siguen propuestas en [V51_DISENO_Y_FASES.md](V51_DISENO_Y_FASES.md).
+
+### v51 — Mesa y Tablón con más espacio (integrados en main)
 - Mesa con zonas separadas y Tablón con fichas para ofertas y contratos activos.
 - Lienzo unificado y corrección del rótulo de sendas exclusivas. Maqueta y propuestas de asedio, datapack y roles
   en [V51_DISENO_Y_FASES.md](V51_DISENO_Y_FASES.md).

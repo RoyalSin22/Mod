@@ -302,6 +302,7 @@ Cada jefe deja un núcleo distinto. Aplicar un núcleo en la Mesa del gremio añ
 |---|---|---|
 | Frecuencia | Cada 10 días, desde el día 10 | De 6:00 a 18:00 (10 min reales) |
 | Oleada (v47) | 4 criaturas (Penumbra) / 8 (Totalidad) por jugador cada 30 s | Solicitudes acotadas por espacio y presupuesto; Retirada sin refuerzos |
+| Persecución (v52) | 48 bloques y 6 s de memoria | Revisión una vez por segundo por criatura, repartida entre ticks. Conserva la presa visible y prueba hasta cuatro candidatos nuevos por revisión. El objetivo debe seguir vivo, elegible y en alcance |
 | Población (v47) | 12 por jugador próximo, 24 por zona y 128 cargadas en el Mundo Normal | Área de 48 bloques; presupuesto compartido con o sin grupo y orden rotativo. Cargar criaturas previas por encima del límite bloquea nuevas apariciones |
 | Criaturas | Vida y daño ×1,5 | Antes del escalado de élite (×2/×4 de vida) |
 | Élites / campeones | 50 % / 10 % fuera de las garantías | Una élite por oleada y, en Totalidad, un campeón primero, si sus probabilidades son positivas y hay presupuesto/espacio. Las unidades restantes mantienen la tirada anterior |
