@@ -98,7 +98,7 @@ final class StructureBuilder {
 
 	/** Jefe propio del mod generado dentro de una estructura existente. */
 	void boss(EntityType<? extends MobEntity> type, int x, int y, int z, dev.aptitudes.boss.BossKind kind) {
-		dev.aptitudes.boss.BossManager.spawn(world.toServerWorld(), type, at(x, y, z), kind);
+		dev.aptitudes.boss.BossManager.spawn(world, type, at(x, y, z), kind, random);
 	}
 
 	/** Aparece un monstruo persistente (no desaparece) en la posición relativa. */

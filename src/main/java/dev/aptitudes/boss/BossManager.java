@@ -1,12 +1,15 @@
 package dev.aptitudes.boss;
 
 import dev.aptitudes.Aptitudes;
+import dev.aptitudes.ability.AbilityState;
+import dev.aptitudes.ability.ParticleFx;
 import dev.aptitudes.elite.Elites;
 import dev.aptitudes.item.ModItems;
 import dev.aptitudes.item.weapon.RoleBladeItem;
 import dev.aptitudes.item.weapon.RoleFocusItem;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifiersComponent;
@@ -31,14 +34,17 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.world.RaycastContext;
+import net.minecraft.world.StructureWorldAccess;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -51,15 +57,20 @@ public final class BossManager {
 	private static final String UPGRADE_DATA = "aptitudes_boss_cores";
 	private static final Map<UUID, BossKind> LOADED = new HashMap<>();
 	private static final Map<UUID, Long> ABILITY_READY = new HashMap<>();
+	private static final Map<UUID, Strike> STRIKES = new HashMap<>();
+
+	private record Strike(Vec3d center, long impactAt) {}
 	private BossManager() {}
 
 	public static void register() {
 		ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
 			if (entity instanceof MobEntity mob) kind(mob).ifPresent(k -> LOADED.put(mob.getUuid(), k));
 		});
-		ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
-			LOADED.remove(entity.getUuid());
-			ABILITY_READY.remove(entity.getUuid());
+		ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> forget(entity.getUuid()));
+		ServerLifecycleEvents.SERVER_STOPPED.register(server -> {
+			LOADED.clear();
+			ABILITY_READY.clear();
+			STRIKES.clear();
 		});
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
 			if (entity instanceof MobEntity mob) onDeath(mob, source.getAttacker());
@@ -69,17 +80,22 @@ public final class BossManager {
 		});
 	}
 
-	/** Crea un campeón nombrado; las fases se guardan en etiquetas del mob vanilla. Devuelve el jefe o null. */
 	public static MobEntity spawn(ServerWorld world, EntityType<? extends MobEntity> type, BlockPos pos, BossKind kind) {
-		MobEntity mob = type.create(world);
+		return spawn(world, type, pos, kind, world.random);
+	}
+
+	/** Usa la región de generación para inicializar y guardar el jefe junto con su chunk. */
+	public static MobEntity spawn(StructureWorldAccess world, EntityType<? extends MobEntity> type, BlockPos pos,
+								   BossKind kind, Random random) {
+		MobEntity mob = type.create(world.toServerWorld());
 		if (mob == null) return null;
-		mob.refreshPositionAndAngles(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, world.random.nextFloat() * 360f, 0);
+		mob.refreshPositionAndAngles(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, random.nextFloat() * 360f, 0);
+		// Consultar la dificultad en ServerWorld pediría un chunk completo que todavía se está generando.
 		mob.initialize(world, world.getLocalDifficulty(pos), SpawnReason.STRUCTURE, null);
-		Elites.makeElite(mob, true, world.random); // reutiliza el escalado, las barras y recompensas de campeón
+		Elites.makeElite(mob, true, random);
 		mob.addCommandTag(kind.tag());
 		mob.setCustomName(Text.translatable(kind.nameKey()).formatted(Formatting.GOLD));
 		mob.setCustomNameVisible(true);
-		Elites.setChampionBarName(mob, mob.getDisplayName());
 		mob.setPersistent();
 		if (kind == BossKind.TOWER_SENTINEL) {
 			mob.equipStack(EquipmentSlot.MAINHAND, new ItemStack(net.minecraft.item.Items.NETHERITE_SWORD));
@@ -96,7 +112,6 @@ public final class BossManager {
 		}
 		for (EquipmentSlot slot : EquipmentSlot.values()) mob.setEquipmentDropChance(slot, 0.0f);
 		world.spawnEntityAndPassengers(mob);
-		LOADED.put(mob.getUuid(), kind);
 		return mob;
 	}
 
@@ -109,23 +124,94 @@ public final class BossManager {
 	}
 
 	private static void tick(MinecraftServer server) {
-		Iterator<Map.Entry<UUID, BossKind>> iterator = LOADED.entrySet().iterator();
-		while (iterator.hasNext()) {
-			Map.Entry<UUID, BossKind> entry = iterator.next();
-			MobEntity boss = find(server, entry.getKey());
+		// El daño devuelto por una víctima puede matar y retirar al jefe en este mismo tick.
+		for (UUID id : List.copyOf(LOADED.keySet())) {
+			BossKind kind = LOADED.get(id);
+			if (kind == null) continue;
+			MobEntity boss = find(server, id);
 			if (boss == null || !boss.isAlive() || !(boss.getWorld() instanceof ServerWorld world)) {
-				iterator.remove();
-				ABILITY_READY.remove(entry.getKey());
+				forget(id);
 				continue;
 			}
 			int phase = BossRules.phase(boss.getHealth() / boss.getMaxHealth());
-			if (phase >= 2 && !boss.getCommandTags().contains(PHASE_TWO)) transition(world, boss, entry.getValue(), 2, PHASE_TWO);
-			if (phase >= 3 && !boss.getCommandTags().contains(PHASE_THREE)) transition(world, boss, entry.getValue(), 3, PHASE_THREE);
-			if (phase == 3 && ABILITY_READY.getOrDefault(boss.getUuid(), 0L) <= world.getTime()) {
-				ABILITY_READY.put(boss.getUuid(), world.getTime() + (entry.getValue() == BossKind.SHRINE_ORACLE ? 80 : 60));
-				ability(world, boss, entry.getValue());
+			if (phase >= 2 && !boss.getCommandTags().contains(PHASE_TWO)) transition(world, boss, kind, 2, PHASE_TWO);
+			if (phase >= 3 && !boss.getCommandTags().contains(PHASE_THREE)) transition(world, boss, kind, 3, PHASE_THREE);
+			if (phase != 3) {
+				STRIKES.remove(id);
+			} else if (kind == BossKind.ECLIPSE_HERALD) {
+				if (ABILITY_READY.getOrDefault(id, 0L) <= world.getTime()) {
+					ABILITY_READY.put(id, world.getTime() + 60);
+					heraldStrike(world, boss);
+				}
+			} else {
+				structureStrike(world, boss, kind, id);
 			}
 		}
+	}
+
+	private static void forget(UUID id) {
+		LOADED.remove(id);
+		ABILITY_READY.remove(id);
+		STRIKES.remove(id);
+	}
+
+	private static void structureStrike(ServerWorld world, MobEntity boss, BossKind kind, UUID id) {
+		long now = world.getTime();
+		double radius = kind == BossKind.TOWER_SENTINEL ? 4.5 : 6.0;
+		Strike pending = STRIKES.get(id);
+		if (pending != null) {
+			Vec3d center = pending.center();
+			if (!world.isChunkLoaded(BlockPos.ofFloored(center))) {
+				STRIKES.remove(id);
+			} else if (now >= pending.impactAt()) {
+				STRIKES.remove(id);
+				impact(world, center, kind);
+				float damage = switch (kind) {
+					case TOWER_SENTINEL -> 5.0f;
+					case SHRINE_ORACLE -> 4.0f;
+					default -> 4.5f;
+				};
+				for (ServerPlayerEntity target : strikeTargets(world, boss, center, radius)) {
+					if (!boss.isAlive()) break;
+					if (target.damage(world.getDamageSources().mobAttack(boss), damage)) {
+						if (kind == BossKind.SHRINE_ORACLE) target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 50, 1));
+						knockback(target, center);
+					}
+				}
+			} else {
+				drawWarning(world, center, radius, kind);
+			}
+			return;
+		}
+		if (ABILITY_READY.getOrDefault(id, 0L) > now) return;
+		Vec3d center = boss.getPos();
+		if (strikeTargets(world, boss, center, radius).isEmpty()) return;
+		STRIKES.put(id, new Strike(center, now + BossRules.STRIKE_WARNING_TICKS));
+		ABILITY_READY.put(id, now + (kind == BossKind.SHRINE_ORACLE ? 80 : 60));
+		drawWarning(world, center, radius, kind);
+		world.playSound(null, center.x, center.y, center.z, SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE,
+				SoundCategory.HOSTILE, 0.8f, kind == BossKind.SHRINE_ORACLE ? 1.4f : 0.9f);
+	}
+
+	private static List<ServerPlayerEntity> strikeTargets(ServerWorld world, MobEntity boss, Vec3d center, double radius) {
+		// La caja es un filtro amplio. inStrike incluye el borde de altura al medir los pies.
+		Box area = new Box(center, center).expand(radius, BossRules.STRIKE_HEIGHT + 1, radius);
+		Vec3d origin = center.add(0, 0.7, 0);
+		return world.getEntitiesByClass(ServerPlayerEntity.class, area, player -> player.isAlive()
+				&& !player.isCreative() && !player.isSpectator()
+				&& BossRules.inStrike(player.getX() - center.x, player.getY() - center.y, player.getZ() - center.z, radius)
+				&& !AbilityState.shouldBlockTarget(boss, player)
+				&& world.raycast(new RaycastContext(origin, player.getPos().add(0, 0.7, 0),
+						RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, boss)).getType() == HitResult.Type.MISS);
+	}
+
+	private static void drawWarning(ServerWorld world, Vec3d center, double radius, BossKind kind) {
+		int rgb = switch (kind) {
+			case TOWER_SENTINEL -> 0xFF694A;
+			case SHRINE_ORACLE -> 0xD78BFF;
+			default -> 0xFFC34F;
+		};
+		ParticleFx.ring(world, center.add(0, 0.15, 0), radius, ParticleFx.dust(rgb, 1.25f), 24);
 	}
 
 	private static MobEntity find(MinecraftServer server, UUID uuid) {
@@ -150,21 +236,25 @@ public final class BossManager {
 		else boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 160, phase - 2));
 	}
 
-	/** Golpe de área al entrar a fase final, repetido cada 3–4 s y limitado a jugadores cercanos. */
-	private static void ability(ServerWorld world, MobEntity boss, BossKind kind) {
-		Box area = boss.getBoundingBox().expand(kind == BossKind.TOWER_SENTINEL ? 4.5 : 6.0);
-		List<ServerPlayerEntity> targets = world.getEntitiesByClass(ServerPlayerEntity.class, area, PlayerEntity::isAlive);
-		world.spawnParticles(kind == BossKind.SHRINE_ORACLE ? ParticleTypes.ENCHANTED_HIT : ParticleTypes.SWEEP_ATTACK,
-				boss.getX(), boss.getY() + 0.1, boss.getZ(), 36, 2.5, 0.15, 2.5, 0.02);
-		world.playSound(null, boss.getX(), boss.getY(), boss.getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE,
-				SoundCategory.HOSTILE, 0.55f, kind == BossKind.TOWER_SENTINEL ? 0.7f : 1.3f);
-		for (ServerPlayerEntity target : targets) {
-			float damage = kind == BossKind.TOWER_SENTINEL ? 5.0f : kind == BossKind.SHRINE_ORACLE ? 4.0f : 4.5f;
-			target.damage(world.getDamageSources().mobAttack(boss), damage);
-			if (kind == BossKind.SHRINE_ORACLE) target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 50, 1));
-			Vec3d away = target.getPos().subtract(boss.getPos()).normalize();
-			target.takeKnockback(0.9, -away.x, -away.z);
+	private static void heraldStrike(ServerWorld world, MobEntity boss) {
+		Box area = boss.getBoundingBox().expand(6.0);
+		impact(world, boss.getPos(), BossKind.ECLIPSE_HERALD);
+		for (ServerPlayerEntity target : world.getEntitiesByClass(ServerPlayerEntity.class, area, PlayerEntity::isAlive)) {
+			target.damage(world.getDamageSources().mobAttack(boss), 4.5f);
+			knockback(target, boss.getPos());
 		}
+	}
+
+	private static void impact(ServerWorld world, Vec3d center, BossKind kind) {
+		world.spawnParticles(kind == BossKind.SHRINE_ORACLE ? ParticleTypes.ENCHANTED_HIT : ParticleTypes.SWEEP_ATTACK,
+				center.x, center.y + 0.1, center.z, 36, 2.5, 0.15, 2.5, 0.02);
+		world.playSound(null, center.x, center.y, center.z, SoundEvents.ENTITY_GENERIC_EXPLODE,
+				SoundCategory.HOSTILE, 0.55f, kind == BossKind.TOWER_SENTINEL ? 0.7f : 1.3f);
+	}
+
+	private static void knockback(ServerPlayerEntity target, Vec3d center) {
+		Vec3d away = target.getPos().subtract(center).normalize();
+		target.takeKnockback(0.9, -away.x, -away.z);
 	}
 
 	private static void onDeath(MobEntity mob, Entity attacker) {
@@ -189,8 +279,7 @@ public final class BossManager {
 			world.getServer().getPlayerManager().broadcast(Text.translatable("boss.aptitudes.defeated",
 					killer.getDisplayName(), mob.getDisplayName()).formatted(Formatting.GOLD), false);
 		}
-		LOADED.remove(mob.getUuid());
-		ABILITY_READY.remove(mob.getUuid());
+		forget(mob.getUuid());
 	}
 
 	/** Engarza un núcleo en una hoja/foco evolucionado: +0,5 daño por núcleo y uno de cada tipo. */

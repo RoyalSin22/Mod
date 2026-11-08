@@ -5,6 +5,8 @@ import java.util.List;
 /** Reglas puras de fases y mejoras acumulables de armas de evolución. */
 public final class BossRules {
 	public static final int MAX_WEAPON_CORES = 3;
+	public static final int STRIKE_WARNING_TICKS = 20;
+	public static final double STRIKE_HEIGHT = 2.0;
 	private BossRules() {}
 
 	public static int phase(double healthFraction) {
@@ -12,6 +14,10 @@ public final class BossRules {
 		if (healthFraction <= 1.0 / 3.0) return 3;
 		if (healthFraction <= 2.0 / 3.0) return 2;
 		return 1;
+	}
+
+	public static boolean inStrike(double dx, double dy, double dz, double radius) {
+		return Math.abs(dy) <= STRIKE_HEIGHT && dx * dx + dz * dz <= radius * radius;
 	}
 
 	public static boolean canApplyCore(List<String> applied, String coreId) {

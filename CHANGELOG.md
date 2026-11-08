@@ -5,7 +5,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Corregido
+- **v56 — Generación de jefes.** Torres, santuarios y campamentos guardan sus jefes con el terreno al
+  generarse. Esto corrige el bloqueo que podía detener el mundo e impedir abrir o romper bloques.
+
 ### Cambiado
+- **v56 — Encuentros en estructuras.** En la fase final, el Centinela, el Oráculo y el Campeón marcan
+  el suelo y dan un segundo para salir del círculo o ponerse a cubierto antes del golpe.
 - **v53 — Atlas de talentos.** En J, abre Talentos, Sendas, Maestro o Definitivo desde la cabecera
   del rol. Los sellos, iconos y acentos identifican cada rol. La ficha muestra el rango y los
   requisitos del nodo seleccionado y el cursor revela la descripción completa.

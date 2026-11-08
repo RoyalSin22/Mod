@@ -1,5 +1,18 @@
 # Pruebas de Aptitudes
 
+## v56 — Encuentros en estructuras
+
+1. Crea un mundo nuevo. Genera una Torre, un Santuario y un Campamento. Comprueba que el servidor
+   siga avanzando mientras abres un cofre y colocas o rompes bloques. Cada estructura debe cargar su
+   jefe con el nombre correcto y una barra. Guarda y reabre el mundo para comprobar que persiste.
+2. En Supervivencia, baja al jefe a un tercio de vida. El suelo debe mostrar un círculo y sonar un
+   aviso. Sal antes del golpe y repite quedándote dentro. Prueba también detrás de una pared, en
+   otro piso y en creativo o espectador. El golpe debe aplicarse solo dentro del círculo y sin cobertura.
+3. Durante el aviso, derrota al jefe o aléjate hasta descargarlo. El golpe pendiente debe cancelarse.
+   Comprueba que el núcleo se obtenga una sola vez y que el jefe derrotado no reaparezca al recargar.
+4. Con dos jugadores, que uno se quede en el círculo y el otro salga. Solo debe recibir el golpe el
+   primero. En un Eclipse, verifica que el Heraldo conserve su ataque y su barra.
+
 ## v55 — Catálogo de talentos por datapack
 
 1. Copia [el ejemplo](examples/talentos-piloto/) a `datapacks` de un mundo de prueba. Al cargarlo,

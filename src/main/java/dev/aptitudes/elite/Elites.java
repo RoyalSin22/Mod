@@ -82,13 +82,15 @@ public final class Elites {
 		ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
 			if (!(entity instanceof MobEntity mob) || !(entity instanceof Monster)) return;
 			dev.aptitudes.logic.ThreatManager.onLoad(mob, world);
-			if (mob.getCommandTags().contains(CHAMPION)) track(mob);
-			if (mob.getCommandTags().contains(CHECKED)) return;
-			mob.addCommandTag(CHECKED);
-			double chance = dev.aptitudes.logic.ThreatManager.eliteChance(mob, Aptitudes.config().eliteChance);
-			float roll = world.random.nextFloat();
-			if (roll < chance * 0.1) makeElite(mob, true, world.random);
-			else if (roll < chance) makeElite(mob, false, world.random);
+			if (!mob.getCommandTags().contains(CHECKED)) {
+				mob.addCommandTag(CHECKED);
+				double chance = dev.aptitudes.logic.ThreatManager.eliteChance(mob, Aptitudes.config().eliteChance);
+				float roll = world.random.nextFloat();
+				if (roll < chance * 0.1) makeElite(mob, true, world.random);
+				else if (roll < chance) makeElite(mob, false, world.random);
+			}
+			// La barra se registra al cargar la entidad en el servidor, fuera del hilo de generación.
+			if (isChampion(mob)) track(mob);
 		});
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
 			if (entity instanceof MobEntity mob && isElite(mob)) onDeath(mob, source);
@@ -152,7 +154,6 @@ public final class Elites {
 		mob.setCustomName(Text.translatable(champion ? "elite.aptitudes.champion_name" : "elite.aptitudes.elite_name", name)
 				.formatted(champion ? Formatting.GOLD : Formatting.LIGHT_PURPLE));
 		mob.setCustomNameVisible(true);
-		if (champion && mob.getWorld() instanceof ServerWorld) track(mob);
 	}
 
 	private static void modifier(MobEntity mob, RegistryEntry<EntityAttribute> attribute, String id, double value,

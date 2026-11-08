@@ -296,7 +296,12 @@ Cada arma de rol admite dos runas distintas. Fuego aplica 3 segundos de ignició
 1 punto de salud y tiene enfriamiento de 4 segundos; Aceleración suma 10 % a la velocidad de ataque o reduce
 2 ticks el enfriamiento del foco; Fuerza suma 1 punto de daño. Son valores fijos y no escalan con XP ni atributos.
 
-# Jefes propios (v33)
+# Jefes propios (v33 y v56)
+
+El Centinela, el Oráculo y el Campeón anuncian su golpe final 20 ticks antes. El círculo queda fijo
+con radio de 4,5 bloques para el Centinela y 6 para el Oráculo y el Campeón, con un margen vertical de
+2 bloques. La cobertura sólida detiene el golpe. El daño de 5 / 4 / 4,5 puntos y la cadencia de
+60 / 80 / 60 ticks, respectivamente, son los mismos. El Heraldo conserva su ataque.
 
 Centinela de la Torre, Oráculo del Santuario y Campeón del Campamento aparecen en las estructuras actuales y conservan tres fases en sus etiquetas de entidad. Los tres comparten el escalado y la barra de campeón existente. En fase final, cada 3–4 s hacen un golpe de área telegráfico: 5, 4 o 4,5 puntos de daño respectivamente; el Oráculo también aplica lentitud.
 

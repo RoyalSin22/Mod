@@ -1,11 +1,15 @@
 # Roadmap de Aptitudes
 
-v55 fases 1 y 2 preparadas en `codex/v55-talentos-datapack`. v53 está integrada en `main`. La publicación sigue aplazada.
+v56 fase 1 preparada en `codex/v56-encuentros-estructuras`. v55 está integrada en `main`. La publicación sigue aplazada.
 Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fabric API 0.116.6 · Loom 1.10 · Java 21**.
 
 ## Estado real
 
-### v55 — Talentos por datapack
+### v56 — Encuentros en estructuras
+- Fase 1. Generación segura del Centinela, el Oráculo y el Campeón en su propia región de chunks.
+  Su golpe de fase final marca un círculo fijo un segundo antes y respeta cobertura y filtros de objetivos.
+
+### v55 — Talentos por datapack (integrado en main)
 - Fase 1. Catálogo opcional, recarga por revisión y [ejemplo del Espadachín](DATAPACK_TALENTOS.md).
 - Fase 2. Vista en J, compras validadas por revisión y rango, puntos compartidos y reembolso al perder
   requisitos. La plantilla piloto da +2 % de velocidad por rango, hasta +6 % entre ambos roles activos.

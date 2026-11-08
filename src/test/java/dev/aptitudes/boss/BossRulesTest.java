@@ -12,6 +12,14 @@ class BossRulesTest {
 		assertEquals(1, BossRules.phase(Double.NaN));
 	}
 
+	@Test void strikeMatchesTheMarkedCircleAndDoesNotReachAnotherFloor() {
+		assertTrue(BossRules.inStrike(4.5, 2.0, 0.0, 4.5));
+		assertTrue(BossRules.inStrike(0.0, -2.0, 6.0, 6.0));
+		assertFalse(BossRules.inStrike(4.0, 0.0, 4.0, 4.5));
+		assertFalse(BossRules.inStrike(0.0, 2.01, 0.0, 6.0));
+		assertFalse(BossRules.inStrike(0.0, -2.01, 0.0, 6.0));
+	}
+
 	@Test void weaponAcceptsEachOfThreeCoresOnlyOnce() {
 		assertTrue(BossRules.canApplyCore(List.of(), "tower"));
 		assertFalse(BossRules.canApplyCore(List.of("tower"), "tower"));
