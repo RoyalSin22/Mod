@@ -1,6 +1,8 @@
 package dev.aptitudes.item.weapon;
 
 import dev.aptitudes.ability.ParticleFx;
+import dev.aptitudes.ability.Targeting;
+import dev.aptitudes.forge.ForgeWeapons;
 import dev.aptitudes.role.Evolution;
 import dev.aptitudes.role.Role;
 import dev.aptitudes.role.RoleManager;
@@ -35,6 +37,10 @@ public class RoleBladeItem extends SwordItem {
 		return role;
 	}
 
+	public int tier() {
+		return tier;
+	}
+
 	@Override
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		if (attacker instanceof ServerPlayerEntity player && RoleManager.get(player).isActive(role)) {
@@ -42,7 +48,7 @@ public class RoleBladeItem extends SwordItem {
 			world.spawnParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getBodyY(0.6), target.getZ(), 1, 0, 0, 0, 0);
 			world.spawnParticles(ParticleFx.dust(role.color(), 1.2f), target.getX(), target.getBodyY(0.6), target.getZ(),
 					10, 0.35, 0.35, 0.35, 0);
-			RoleResources.gain(player, role, 3);
+			RoleResources.gain(player, role, ForgeWeapons.impactGain(stack, player, Targeting.isHostileImpactTarget(player, target)));
 			if (tier >= Evolution.ULTIMATE && player.getHealth() < player.getMaxHealth()) player.heal(0.5f);
 		}
 		return super.postHit(stack, target, attacker);

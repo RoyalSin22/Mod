@@ -296,6 +296,22 @@ Centinela de la Torre, Oráculo del Santuario y Campeón del Campamento aparecen
 
 Cada jefe deja un núcleo distinto. Aplicar un núcleo en la Mesa del gremio añade +0,5 de daño a un arma de evolución. Cada arma acepta una vez cada uno de los tres núcleos, hasta +1,5 total; no cambia la potencia de armas que no sean evolutivas.
 
+# Reforja y Templado (v48)
+
+| Operación | Trofeo | Fragmentos de alma |
+|---|---|---:|
+| Aplicar o cambiar un afijo en la Mesa del gremio | 1 Esencia de élite | 8 |
+| Templado I en la Hoguera | 1 Corazón de campeón | 12 |
+| Templado II en la Hoguera | 2 Corazones de campeón | 16 |
+
+**Reserva** reduce el coste de activas equipadas en 2/4/6 % tras Maestría, según el rango 0/I/II.
+Requiere sostener el arma del rol de la activa en la mano principal. El coste previo de 1 o más
+tiene un mínimo de 1. Los costes inferiores a 1 conservan su valor.
+
+**Impulso** incrementa la carga de recurso del golpe de hoja o disparo de foco en 5/10/15 %.
+Ante un impacto válido contra un enemigo, la ganancia de 3 pasa a 3,15/3,30/3,45 antes del
+tope del recurso. Los dos afijos son excluyentes y cambiar de afijo conserva el rango.
+
 # Eclipse (v34)
 
 | Elemento | Valor por defecto | Notas |

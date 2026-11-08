@@ -1,5 +1,6 @@
 package dev.aptitudes.world;
 
+import dev.aptitudes.forge.ForgeScreenHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
@@ -11,6 +12,9 @@ import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 
 /**
  * Cuadrícula 3×3 de la Mesa del gremio (v27). Misma disposición que la mesa de trabajo, pero solo busca
@@ -19,6 +23,7 @@ import net.minecraft.screen.slot.Slot;
  * <p>Ranuras: 0 = resultado, 1-9 = cuadrícula, 10-36 = inventario, 37-45 = barra rápida.</p>
  */
 public class GuildDeskScreenHandler extends ScreenHandler {
+	public static final int OPEN_REFORGE = 0;
 	private final RecipeInputInventory input = new CraftingInventory(this, 3, 3);
 	private final CraftingResultInventory result = new CraftingResultInventory();
 	private final ScreenHandlerContext context;
@@ -84,6 +89,18 @@ public class GuildDeskScreenHandler extends ScreenHandler {
 	@Override
 	public boolean canUse(PlayerEntity player) {
 		return canUse(context, player, GuildVillagers.GUILD_DESK);
+	}
+
+	@Override
+	public boolean onButtonClick(PlayerEntity player, int id) {
+		if (id != OPEN_REFORGE || !(player instanceof ServerPlayerEntity serverPlayer)
+				|| player.currentScreenHandler != this || !canUse(player)) return false;
+		if (!input.isEmpty() || !getCursorStack().isEmpty()) {
+			player.sendMessage(Text.translatable("forge.aptitudes.empty_grid"), true);
+			return false;
+		}
+		return context.get((world, pos) -> world instanceof ServerWorld serverWorld
+				&& ForgeScreenHandler.open(serverPlayer, serverWorld, pos, ForgeScreenHandler.Mode.REFORGE), false);
 	}
 
 	@Override

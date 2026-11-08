@@ -5,6 +5,7 @@ import dev.aptitudes.data.PlayerAttribute;
 import dev.aptitudes.data.ProgressRules;
 import dev.aptitudes.data.Skill;
 import dev.aptitudes.network.AllocatePointsPayload;
+import dev.aptitudes.network.ForgeActionPayload;
 import dev.aptitudes.network.RequestStatsPayload;
 import dev.aptitudes.network.StatsPayload;
 import dev.aptitudes.network.SyncProgressPayload;
@@ -64,6 +65,7 @@ public class AptitudesScreen extends Screen {
 	private int ticks;
 	private ButtonWidget confirmButton;
 	private ButtonWidget resetButton;
+	private ButtonWidget temperButton;
 
 	/** {@code true} si se abrió descansando en una Hoguera: permite comprar niveles de alma. */
 	private final boolean bonfire;
@@ -104,6 +106,14 @@ public class AptitudesScreen extends Screen {
 				.dimensions(left + 10, top + H - 44, 140, 20).build());
 		resetButton = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.reset"), b -> reset())
 				.dimensions(left + 156, top + H - 44, 70, 20).build());
+		if (bonfire) {
+			temperButton = addDrawableChild(ButtonWidget.builder(Text.translatable("forge.aptitudes.temper"), button -> {
+				if (client.player != null && ClientPlayNetworking.canSend(ForgeActionPayload.ID)) {
+					ClientPlayNetworking.send(new ForgeActionPayload(client.player.playerScreenHandler.syncId,
+							ForgeActionPayload.OPEN_TEMPER, 0));
+				}
+			}).dimensions(left + 232, top + H - 44, 112, 20).build());
+		}
 		requestStats();
 		updateButtons();
 	}
@@ -180,6 +190,7 @@ public class AptitudesScreen extends Screen {
 	private void updateButtons() {
 		boolean attributes = tab == Tab.ATTRIBUTES;
 		confirmButton.visible = resetButton.visible = attributes;
+		if (temperButton != null) temperButton.visible = attributes;
 		SyncProgressPayload data = ClientCache.get();
 		confirmButton.active = stagedTotal() > 0 && data != null && (!bonfire || canAfford(data, levelsToBuy(data)));
 		resetButton.active = stagedTotal() > 0;

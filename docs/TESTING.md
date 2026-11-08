@@ -1,5 +1,31 @@
 # Pruebas de Aptitudes
 
+## v48 — Reforja y Templado
+
+- Ejecuta `.\gradlew.bat build` con Java 21. `ForgeRulesTest` cubre los costes, cambios de afijo,
+  límites de rango y las dos fórmulas. `ForgeWeaponsNbtTest` comprueba NBT antiguo, malformado y con
+  datos ajenos al taller. Ejecuta `python -X utf8 tools/lang/check_lang.py` para las traducciones.
+- En supervivencia o aventura, intenta abrir Reforja con la cuadrícula ocupada y con un objeto en
+  el cursor. Vacía ambos, inserta una hoja o foco de tu evolución activa y selecciona Reserva.
+  Confirma con una Esencia y ocho Fragmentos. Debe quedar la misma arma con Reserva 0, incluido
+  su nombre, desgaste, encantamientos, runas y núcleos. El mismo afijo ya no admite confirmación.
+- Descansa en una Hoguera. Templa el arma a I y II y compara los costes con la vista previa.
+  Prueba con un arma sin afijo, un rol inactivo y una evolución sin desbloquear. En rango II cambia
+  a Impulso desde la Mesa y comprueba que conserva II. Repite con cantidades insuficientes.
+- Con dos clientes en la misma Mesa, cambia la selección, sustituye el arma, retira materiales y
+  reenvía la revisión anterior. Pulsa Confirmar varias veces. Solo debe cobrarse la operación
+  vigente una vez y cada jugador debe recuperar únicamente el contenido de su sesión.
+- Rompe el bloque con el taller abierto, aléjate, cambia de dimensión o a creativo/espectador,
+  muere y prueba a confirmar. Comprueba la devolución o caída de los objetos al cerrar con el
+  inventario lleno, desconectar y detener el servidor con `stop`. Tras reconectar, el arma ya
+  confirmada debe conservar su afijo y rango. Un arma de reemplazo reclamada empieza sin afijo.
+- Compara la energía con Reserva tras Maestría y Sobrecarga. Prueba el arma en mano secundaria y
+  el disparo propio del foco. Mide la carga de Impulso en golpes letales y no letales, impactos
+  rechazados, jugadores y criaturas aliadas. Revisa que el taller no conceda XP ni progrese contratos.
+- A escala 4, comprueba las ranuras, los contadores, el foco del teclado, los textos emergentes y
+  el botón de la Mesa en los once idiomas. Repite la fabricación 3×3, los atajos de runas y núcleos,
+  el descanso y la Ofrenda de renacimiento.
+
 ## v47 — Asalto del Eclipse (fase 1)
 
 ```powershell

@@ -31,8 +31,12 @@ public final class Targeting {
 	}
 
 	public static boolean isHostileTo(ServerPlayerEntity player, Entity entity) {
-		if (dev.aptitudes.party.PartyManager.isAlly(player, entity)) return false;
-		if (!(entity instanceof LivingEntity living) || entity == player || !living.isAlive()) return false;
+		return entity instanceof LivingEntity living && living.isAlive() && isHostileImpactTarget(player, living);
+	}
+
+	/** Clasifica también a la víctima de un golpe letal ya aceptado. */
+	public static boolean isHostileImpactTarget(ServerPlayerEntity player, LivingEntity entity) {
+		if (entity == player || dev.aptitudes.party.PartyManager.isAlly(player, entity)) return false;
 		if (entity instanceof PlayerEntity || entity instanceof ArmorStandEntity) return false;
 		if (AbilityState.isSummon(entity)) return false; // esbirros y torretas son aliados
 		return entity instanceof Monster || (entity instanceof MobEntity mob && mob.getTarget() == player);

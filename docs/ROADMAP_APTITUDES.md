@@ -1,6 +1,6 @@
 # Roadmap de Aptitudes
 
-Estado de v47 fase 1, basada en `main` en `1d2f27b` (T1–T8 integradas); publicación aplazada por el autor.
+v48 implementada en `codex/v48-reforja-templado` sobre `main` en `dc0493e` (T1–T8 y Eclipse v47 integrados). La publicación sigue aplazada.
 Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fabric API 0.116.6 · Loom 1.10 · Java 21**.
 
 ## Estado real
@@ -12,10 +12,15 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
   y chunks cargados. Recuento de criaturas restaurado al arrancar y finalización idempotente sin pagos
   a jugadores muertos, creativo o espectador. El Heraldo depende de encuentros próximos, no de un grupo lejano.
 - Siete opciones acotadas, reglas puras con JUnit y texto del grimorio en los once idiomas. Pruebas en partida
-  pendientes. El autor pidió parar tras esta fase; diseño y límites en `docs/V47_ECLIPSE.md`.
-- Fases posteriores solicitadas: Reforja/Templado, bloques y Mesa del gremio con menús propios, HUD/iconos,
+  pendientes. Diseño y límites en `docs/V47_ECLIPSE.md`.
+- Fases posteriores solicitadas: bloques y Mesa del gremio con menús propios, HUD/iconos,
   animaciones de habilidades y encuentros en estructuras. Se permite evaluar una biblioteca de animación;
   ninguna se añade aquí. El árbol por datapack requiere cargadores y sincronización del servidor: no existe aún.
+
+### v48 — Reforja y Templado (implementados)
+- Dos afijos de arma en la Mesa del gremio y dos rangos de Templado en la Hoguera con trofeos existentes.
+- Vista previa y confirmación de un solo uso validadas por el servidor. Costes, efectos y casos en partida
+  en [V48_REFORJA_TEMPLADO.md](V48_REFORJA_TEMPLADO.md).
 
 ### v45 — Traducciones (T8, fases 1–3 implementadas)
 - Portugués de Brasil, francés y alemán: archivos completos de 3512 claves, en el orden de `en_us`,

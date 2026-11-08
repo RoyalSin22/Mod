@@ -16,6 +16,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   tras reiniciar. Siete opciones nuevas validadas y capítulo del grimorio actualizado en once idiomas.
 
 ### Añadido
+- **v48 — Reforja y Templado.** Aplica Reserva o Impulso a una hoja o foco de evolución en la Mesa del
+  gremio. Templa el arma hasta el rango II en la Hoguera con Corazones de campeón y Fragmentos de alma.
+  Los talleres muestran el efecto actual, el resultado y los ingredientes requeridos antes de confirmar.
+  El arma conserva su rango al cambiar de afijo y mantiene sus runas, núcleos y encantamientos.
 - **v45 — Traducciones, T8 fase 1**: traducción inicial de interfaz y objetos a portugués de Brasil
   (`pt_br`), francés (`fr_fr`) y alemán (`de_de`), que conviene revisar con hablantes nativos.
   Cada idioma contiene las 3512 claves de inglés en el mismo orden: 1386 traducidas en esta fase;

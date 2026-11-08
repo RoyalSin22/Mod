@@ -158,6 +158,17 @@ Máximo 99 puntos por atributo. Las 10 habilidades por uso siguen subiendo y dan
 - **Subir de nivel:** los puntos que prepares por encima de los libres se **compran como niveles de alma**. Cada nivel cuesta `1 + nivel / 3` niveles de XP vanilla (máximo 30, configurable). La pantalla muestra el coste y la XP que tienes antes de confirmar.
 - **Mancha de XP:** al morir, **toda** tu XP (no solo los 100 puntos de vanilla) queda en el lugar de la muerte, marcada con llamas de alma que solo tú ves. Si vuelves a ese punto la recuperas; si mueres antes, la mancha anterior se pierde. Se desactiva con `keepInventory` o con `soulsBloodstain = false`.
 
+### Reforja y Templado de armas
+
+- En la **Mesa del gremio**, vacía la cuadrícula y el cursor y abre **Reforjar arma**. Coloca la hoja o
+  foco de tu rol activo, una Esencia de élite y ocho Fragmentos de alma. Elige **Reserva** para gastar
+  menos energía en las activas equipadas con el arma en la mano principal, o **Impulso** para cargar más
+  recurso de rol al acertar con el arma a criaturas hostiles.
+- Descansa en una **Hoguera** y abre **Templar arma**. El rango I cuesta un Corazón de campeón y doce
+  Fragmentos de alma. El rango II cuesta dos Corazones y dieciséis Fragmentos. El rango se conserva
+  al cambiar de afijo. Revisa el efecto y los ingredientes antes de confirmar y recoge el arma de su
+  ranura. Los dos talleres están disponibles en supervivencia y aventura.
+
 ## Roles
 
 **Principal + secundario.** Ocupar una ranura vacía es gratis; sustituir un rol ya elegido activa un enfriamiento (`roleChangeCooldownMinutes`, 30 min de juego por defecto). El progreso de cada rol se conserva aunque deje de estar activo, pero solo los dos roles activos ganan XP y aplican sus nodos. El secundario gana el 50 % de la XP (`secondaryRoleXpMultiplier`).

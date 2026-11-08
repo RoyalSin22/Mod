@@ -1490,3 +1490,32 @@ ring.3¦III¦III¦III
 ring.4¦IV¦IV¦IV
 ring.5¦V¦V¦V
 """)
+
+add('forge.aptitudes.', """
+reforge¦Reforjar arma¦Reforger l’arme¦Waffe umschmieden
+temper¦Temperar arma¦Tremper l’arme¦Waffe härten
+confirm¦Confirmar¦Confirmer¦Bestätigen
+empty_grid¦Esvazie a grade e solte o item do cursor.¦Videz la grille et déposez l’objet du curseur.¦Leere das Raster und lege den Gegenstand am Mauszeiger ab.
+temper_unavailable¦Descanse em uma Fogueira acessível no modo Sobrevivência ou Aventura para temperar uma arma.¦Reposez-vous à un feu de camp accessible en Survie ou en Aventure pour tremper une arme.¦Raste im Überlebens- oder Abenteuermodus an einem erreichbaren Leuchtfeuer, um eine Waffe zu härten.
+input.weapon¦Arma¦Arme¦Waffe
+input.essence¦Essência¦Essence¦Essenz
+input.heart¦Coração¦Cœur¦Herz
+input.shards¦Fragmentos¦Fragments¦Splitter
+current¦Atual · %s¦Actuel · %s¦Aktuell · %s
+result¦Resultado · %s¦Résultat · %s¦Ergebnis · %s
+none¦Sem afixo¦Sans affixe¦Ohne Affix
+affix¦%1$s %2$s¦%1$s %2$s¦%1$s %2$s
+profile.reserve¦Reserva¦Réserve¦Reserve
+profile.impetus¦Impulso¦Élan¦Schwung
+effect.reserve¦−%s%% custo¦−%s%% coût¦−%s%% Kosten
+effect.impetus¦+%s%% recurso¦+%s%% ressource¦+%s%% Ressource
+hint.reserve¦As habilidades ativas equipadas desta classe gastam menos energia com a arma na mão principal.¦Les capacités actives équipées de ce rôle coûtent moins d’énergie avec cette arme en main principale.¦Ausgerüstete aktive Fähigkeiten dieser Rolle kosten weniger Energie, solange du die Waffe in der Haupthand hältst.
+hint.impetus¦Acertos válidos com esta arma contra criaturas hostis geram mais recurso desta classe.¦Les coups valides de cette arme contre les créatures hostiles donnent plus de ressource à ce rôle.¦Gültige Treffer mit dieser Waffe gegen feindliche Kreaturen gewähren mehr Rollenressource.
+status.no_weapon¦Coloque uma arma de evolução.¦Placez une arme d’évolution.¦Lege eine Entwicklungswaffe ein.
+status.wrong_role¦Ative a classe da arma e desbloqueie sua evolução.¦Activez le rôle de l’arme et débloquez son évolution.¦Aktiviere die Rolle der Waffe und schalte ihre Entwicklung frei.
+status.same_affix¦A arma já tem esse afixo.¦L’arme possède déjà cet affixe.¦Die Waffe hat dieses Affix bereits.
+status.needs_reforge¦Reforje a arma na Mesa da Guilda primeiro.¦Reforgez d’abord l’arme à la Table de guilde.¦Schmiede die Waffe zuerst am Gildentisch um.
+status.max_rank¦A têmpera já está no grau II.¦La trempe est déjà au rang II.¦Die Waffe ist bereits auf Rang II gehärtet.
+status.missing¦Adicione os ingredientes necessários.¦Ajoutez les ingrédients requis.¦Lege die benötigten Zutaten ein.
+status.ready¦Pronto para confirmar.¦Prêt à confirmer.¦Bereit zur Bestätigung.
+""")
