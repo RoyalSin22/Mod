@@ -1,5 +1,15 @@
 # Pruebas de Aptitudes
 
+## v58 — Cambiaformas
+
+1. Con Cambiaformas, activa la forma de murciélago y cambia a tercera persona con F5. Revisa que
+   se vea el modelo y bata las alas al moverse. Comprueba la forma desde otro cliente.
+2. Usa el poder de la forma mirando en diagonal hacia arriba, gira en el aire y comprueba que
+   cambie el rumbo. Prueba contra una pared y al volver a humano durante el vuelo. Repite al
+   morir o cambiar de dimensión y comprueba que se cancelen los impulsos.
+3. Prueba la gallina al caer y el slime al saltar. Verifica que las demás formas sigan la
+   posición, la rotación y la animación de caminar del jugador.
+
 ## v56 — Encuentros en estructuras
 
 1. Crea un mundo nuevo. Genera una Torre, un Santuario y un Campamento. Comprueba que el servidor

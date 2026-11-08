@@ -8,6 +8,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ### Corregido
 - **v56 — Generación de jefes.** Torres, santuarios y campamentos guardan sus jefes con el terreno al
   generarse. Esto corrige el bloqueo que podía detener el mundo e impedir abrir o romper bloques.
+- **v58 — Cambiaformas.** El murciélago bate las alas al verse en tercera persona. La gallina
+  agita las alas al caer y el slime se estira durante el salto. El poder del murciélago da un
+  vuelo corto que se dirige con la mirada.
 
 ### Cambiado
 - **v56 — Encuentros en estructuras.** En la fase final, el Centinela, el Oráculo y el Campeón marcan

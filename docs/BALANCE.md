@@ -23,6 +23,12 @@ justificación, valores de ejemplo e impacto, como pide la política del proyect
   El HUD desaparece al terminar y cobrar todo, o al omitir; con todos los objetivos completos e inventario
   lleno muestra las recompensas pendientes. Se oculta en creativo, espectador, durante pantallas y al morir.
 
+## Vuelo del Cambiaformas (v58)
+
+La activa del murciélago aplica diez impulsos separados por cuatro ticks. Cada impulso toma la
+dirección actual de la mirada, con velocidad horizontal máxima de 0,38 bloques por tick y
+velocidad vertical entre −0,15 y 0,32. Se conserva la caída lenta de 200 ticks de la activa.
+
 ## Talentos por datapack (v55)
 
 El piloto comparte el presupuesto de puntos de cada rol. Cada rango de `speed` cuesta un punto y

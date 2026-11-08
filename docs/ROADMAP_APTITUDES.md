@@ -5,6 +5,10 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+### v58 — Cambiaformas (preparada en rama)
+- Animación del murciélago, la gallina y el slime en el modelo de transformación. El poder del
+  murciélago permite dirigir el vuelo corto con la mirada.
+
 ### v56 — Encuentros en estructuras
 - Fase 1. Generación segura del Centinela, el Oráculo y el Campeón en su propia región de chunks.
   Su golpe de fase final marca un círculo fijo un segundo antes y respeta cobertura y filtros de objetivos.
