@@ -563,9 +563,7 @@ public class RolesScreen extends Screen {
 			int treeBottom = viewY2() + 13;
 			theme.panel(ctx, canvasX(), top + CANVAS_TOP, treeW(), treeBottom - top - CANVAS_TOP);
 			theme.panel(ctx, infoX(), infoY(), infoW(), infoBottom() - infoY());
-			int crest = Math.min(112, (viewY2() - viewY1()) * 3 / 4);
-			NodeIconRenderer.drawCrest(ctx, selected, (viewX1() + viewX2() - crest) / 2,
-					(viewY1() + viewY2() - crest) / 2, crest);
+
 		}
 	}
 
@@ -717,7 +715,7 @@ public class RolesScreen extends Screen {
 			NodeView parent = pre != null ? nodeView(pre)
 					: tab == TalentTab.TALENTS && v.y() == FIRST_TALENT_Y ? root : null;
 			if (parent == null) continue;
-			elbow(ctx, parent, v, lit(data, v) ? theme.accent() : available(data, v) ? 0xFF7A8098 : 0xFF42495B);
+			elbow(ctx, parent, v, lit(data, v) ? theme.accent() : available(data, v) ? 0xFF7A8098 : 0xFF566077);
 		}
 
 		renderLaneTitles(ctx, tier);
@@ -794,7 +792,6 @@ public class RolesScreen extends Screen {
 	private void renderLaneTitles(DrawContext ctx, int tier) {
 		if (tab == TalentTab.TALENTS) {
 			laneTitle(ctx, "screen.aptitudes.tree.passives", 12, 128, 15, UiStyle.MUTED);
-			laneTitle(ctx, "screen.aptitudes.node.mechanic", 126, 210, 77, theme.accent());
 			laneTitle(ctx, "screen.aptitudes.tree.actives", 212, 324, 15, UiStyle.MUTED);
 		} else {
 			boolean master = tab == TalentTab.MASTER;
@@ -815,7 +812,7 @@ public class RolesScreen extends Screen {
 		ctx.drawText(textRenderer, title, x, y, color, false);
 	}
 
-	/** Conector en ángulo recto de 2 px: baja desde el padre, cruza en horizontal a media altura y baja al hijo. */
+	/** Conector en ángulo recto: baja desde el padre, cruza en horizontal a media altura y baja al hijo. */
 	private void elbow(DrawContext ctx, NodeView parent, NodeView child, int color) {
 		int px = parent.x() + 11;
 		int cx = child.x() + 11;
@@ -823,9 +820,9 @@ public class RolesScreen extends Screen {
 		int cy = child.y();
 		// El tramo horizontal queda entre filas para no atravesar otros nodos.
 		int mid = Math.min(py + 5, cy - 4);
-		ctx.fill(px, py, px + 2, mid + 2, color);
-		ctx.fill(Math.min(px, cx), mid, Math.max(px, cx) + 2, mid + 2, color);
-		ctx.fill(cx, mid, cx + 2, cy, color);
+		ctx.fill(px, py, px + 1, mid + 1, color);
+		ctx.fill(Math.min(px, cx), mid, Math.max(px, cx) + 1, mid + 1, color);
+		ctx.fill(cx, mid, cx + 1, cy, color);
 	}
 
 	private boolean available(RoleSyncPayload data, NodeView v) {

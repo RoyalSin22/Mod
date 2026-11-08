@@ -10,6 +10,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   generarse. Esto corrige el bloqueo que podía detener el mundo e impedir abrir o romper bloques.
 
 ### Cambiado
+- **v57 — Atlas y Sendas.** Las dos opciones de la bifurcación tienen filas separadas y el rango
+  queda alineado a la derecha. La ficha envuelve los requisitos y el lienzo de Talentos despeja
+  el fondo y usa conectores más finos.
 - **v56 — Encuentros en estructuras.** Los jefes dan un segundo de aviso antes del golpe final.
   Sal del círculo del Centinela, cruza al centro seguro del anillo del Oráculo o esquiva de lado
   el cono del Campeón. Una pared sólida detiene el golpe.

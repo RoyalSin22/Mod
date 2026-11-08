@@ -5,6 +5,10 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+### v57 — Espaciado del atlas (preparada en rama)
+- Sendas separa la bifurcación en dos filas y reserva una columna para los rangos. Talentos despeja
+  el área de nodos. Prioridades de interfaz y propuestas de criaturas en [V57_DISENO_VISUAL.md](V57_DISENO_VISUAL.md).
+
 ### v56 — Encuentros en estructuras
 - Fase 1. Generación segura del Centinela, el Oráculo y el Campeón en su propia región de chunks.
   Los golpes de fase final se anuncian un segundo antes y respetan la cobertura y los filtros de objetivos.

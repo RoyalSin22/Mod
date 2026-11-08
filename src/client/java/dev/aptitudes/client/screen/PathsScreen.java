@@ -25,19 +25,22 @@ import java.util.List;
 
 /**
  * Vista de sendas (v46): una senda cada vez (pestañas A/B/C), con sus 7 escalones en vertical, el raíl de niveles a la
- * izquierda, la bifurcación del nivel 32 lado a lado y el detalle del escalón elegido a la derecha. Diseño en
+ * izquierda, la bifurcación del nivel 32 en dos filas y el detalle del escalón elegido a la derecha. Diseño en
  * {@code docs/V46_DISENO_SENDAS.md} §5. Solo muestra datos sincronizados: el servidor valida al aprender.
  *
- * <p>Mide 426×232 y se desplaza con la rueda si la ventana es más baja.</p>
+ * <p>Mide hasta 426×232 y se desplaza con la rueda si la ventana es más baja.</p>
  */
 public class PathsScreen extends Screen {
-	private static final int W = 426;
+	private static final int MAX_WIDTH = 426;
 	private static final int H = 232;
-	private static final int ROW_H = 24;
-	private static final int ROWS_Y = 44;
+	private static final int ROW_H = 19;
+	private static final int ROWS_Y = 49;
+	private static final int ROWS = 8;
+	private static final int RAIL_X = 35;
 	private static final int NODE_X = 46;
-	private static final int BRANCH_X2 = 150;
-	private static final int PANEL_X = 268;
+	private static final int BRANCH_INDENT = 12;
+	private static final int GAP = 8;
+	private static final int FOOTER_Y = 207;
 	/** Colores de las sendas A, B y C (los mismos que en el árbol). */
 	private static final int[] PATH_COLORS = {0xFFE57373, 0xFF64B5F6, 0xFF81C784};
 
@@ -46,6 +49,8 @@ public class PathsScreen extends Screen {
 	private final RoleAtlasTheme theme;
 	private int path;
 	@Nullable private Step selected = Step.S1;
+	private int windowWidth;
+	private int panelX;
 	private int left;
 	private int top;
 	private int scroll;
@@ -62,18 +67,20 @@ public class PathsScreen extends Screen {
 	}
 
 	private int maxScroll() {
-		return Math.max(0, H + 16 - height);
+		return Math.max(0, H + 8 - height);
 	}
 
 	@Override
 	protected void init() {
 		scroll = MathHelper.clamp(scroll, 0, maxScroll());
-		left = (width - W) / 2;
-		top = maxScroll() > 0 ? 8 - scroll : (height - H) / 2;
+		windowWidth = Math.min(MAX_WIDTH, width - 8);
+		panelX = windowWidth * 59 / 100;
+		left = (width - windowWidth) / 2;
+		top = maxScroll() > 0 ? 4 - scroll : (height - H) / 2;
 		for (int p = 1; p <= PathRules.PATHS; p++) {
 			final int target = p;
 			Text letter = Text.literal(String.valueOf((char) ('A' + p - 1)));
-			var button = new RoleAtlasTheme.Tab(left + W - 112 + (p - 1) * 36, top + 6, 32, letter, b -> {
+			var button = new RoleAtlasTheme.Tab(left + windowWidth - 112 + (p - 1) * 36, top + 6, 32, letter, b -> {
 				if (path == target) return;
 				path = target;
 				selected = Step.S1;
@@ -83,9 +90,9 @@ public class PathsScreen extends Screen {
 			addDrawableChild(button);
 		}
 		learnButton = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.paths.learn"),
-				b -> learn()).dimensions(left + PANEL_X + 6, top + H - 50, W - PANEL_X - 12, 16).build());
+				b -> learn()).dimensions(left + panelX, top + FOOTER_Y, windowWidth - panelX - GAP, 18).build());
 		addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.paths.back"),
-				b -> close()).dimensions(left + W / 2 - 50, top + H - 24, 100, 18).build());
+				b -> close()).dimensions(left + GAP, top + FOOTER_Y, 100, 18).build());
 		updateButtons();
 	}
 
@@ -158,30 +165,38 @@ public class PathsScreen extends Screen {
 		return top + ROWS_Y + row * ROW_H;
 	}
 
-	/** Fila de cada escalón: S5x y S5y comparten la fila 4; S6 es la 5; la piedra angular, la 6. */
+	/** Cada opción de la bifurcación ocupa una fila con su propio nombre y rango. */
 	private static int rowOf(Step step) {
 		return switch (step) {
 			case S1 -> 0;
 			case S2 -> 1;
 			case S3 -> 2;
 			case S4 -> 3;
-			case S5X, S5Y -> 4;
-			case S6 -> 5;
-			case S7 -> 6;
+			case S5X -> 4;
+			case S5Y -> 5;
+			case S6 -> 6;
+			case S7 -> 7;
 		};
 	}
 
 	private int nodeX(Step step) {
-		return left + (step == Step.S5Y ? BRANCH_X2 : NODE_X);
+		return left + NODE_X + (step.branch() ? BRANCH_INDENT : 0);
+	}
+
+	private boolean overStep(double mouseX, double mouseY, Step step) {
+		int y = rowY(rowOf(step));
+		return mouseX >= nodeX(step) && mouseX < left + panelX - GAP - 3
+				&& mouseY >= y && mouseY < y + ROW_H - 1;
 	}
 
 	@Override
 	public void renderBackground(DrawContext ctx, int mouseX, int mouseY, float delta) {
 		super.renderBackground(ctx, mouseX, mouseY, delta);
-		UiStyle.window(ctx, left, top, W, H);
-		theme.panel(ctx, left + 5, top + 4, PANEL_X - 9, 24);
-		theme.panel(ctx, left + 5, rowY(0) - 2, PANEL_X - 9, rowY(6) + 24 - rowY(0));
-		NodeIconRenderer.drawCrest(ctx, role, left + 151, top + 83, 80);
+		UiStyle.window(ctx, left, top, windowWidth, H);
+		theme.panel(ctx, left + GAP, top + 4, panelX - 2 * GAP, 24);
+		theme.panel(ctx, left + GAP, rowY(0) - 2, panelX - 2 * GAP, ROWS * ROW_H + 3);
+		theme.panel(ctx, left + panelX, rowY(0) - 2, windowWidth - panelX - GAP, ROWS * ROW_H + 3);
+		if (windowWidth >= 390) NodeIconRenderer.drawCrest(ctx, role, left + panelX + 22, top + 7, 16);
 	}
 
 	@Override
@@ -189,89 +204,76 @@ public class PathsScreen extends Screen {
 		super.render(ctx, mouseX, mouseY, delta);
 		RoleSyncPayload data = ClientRoleState.data();
 		int color = PATH_COLORS[path - 1];
-		// Cabecera: rol · senda, frase y nivel.
 		Text pathName = Text.translatable(RoleTree.pathKey(role, path));
-		NodeIconRenderer.drawRole(ctx, role, NodeIconRenderer.Badge.CORE, left + 8, top + 6);
+		NodeIconRenderer.drawRole(ctx, role, NodeIconRenderer.Badge.CORE, left + 11, top + 7);
 		UiStyle.label(ctx, textRenderer, Text.translatable(role.translationKey()).append(" · ").append(pathName),
-				left + 28, top + 6, PANEL_X - 36, theme.accent());
+				left + 31, top + 7, panelX - 44, theme.accent());
 		UiStyle.label(ctx, textRenderer, Text.translatable(RoleTree.pathKey(role, path) + ".desc"),
-				left + 28, top + 17, PANEL_X - 36, UiStyle.MUTED);
+				left + 31, top + 17, panelX - 44, UiStyle.MUTED);
 		if (data == null) return;
 		int level = data.level(role);
-		int max = data.rules().maxLevel();
-		UiStyle.label(ctx, textRenderer, Text.translatable("screen.aptitudes.paths.level", level, max),
-				left + 8, top + 30, 106, UiStyle.TEXT);
+		UiStyle.label(ctx, textRenderer, Text.translatable("screen.aptitudes.paths.level", level, data.rules().maxLevel()),
+				left + 9, top + 34, panelX / 2 - 14, UiStyle.TEXT);
 		UiStyle.label(ctx, textRenderer, Text.translatable("screen.aptitudes.paths.points", Math.max(0, availablePoints(data))),
-				left + 120, top + 30, PANEL_X - 126, UiStyle.TEXT);
+				left + panelX / 2, top + 34, panelX / 2 - GAP, UiStyle.TEXT);
 		Text status = statusLine(data);
-		UiStyle.label(ctx, textRenderer, status, left + PANEL_X, top + 30, W - PANEL_X - 8,
-				PathRules.pathLocked(data::rank, role.key(), path) ? UiStyle.DOWN : UiStyle.GOLD);
-		ctx.fill(left + 6, top + 41, left + W - 6, top + 42, theme.accent());
-
-		// Raíl de niveles.
-		int[] railLevels = {10, 14, 20, 26, 32, 40, 50};
-		for (int row = 0; row < railLevels.length; row++) {
-			int y = rowY(row) + 7;
-			int c = level >= railLevels[row] ? UiStyle.GOLD : UiStyle.MUTED;
-			ctx.drawText(textRenderer, Integer.toString(railLevels[row]), left + 15, y, c, false);
-		}
-		// Líneas entre escalones (en color si el de arriba está aprendido).
-		for (Step step : Step.values()) {
-			if (step == Step.S1) continue;
-			for (Step from : parents(step)) {
-				boolean lit = data.rank(PathRules.nodeId(role.key(), path, from)) > 0;
-				int x1 = nodeX(from) + 9, y1 = rowY(rowOf(from)) + 18;
-				int x2 = nodeX(step) + 9, y2 = rowY(rowOf(step)) + 2;
-				UiStyle.line(ctx, x1, y1, x2, y2, lit ? color : 0xFF3A3F55);
-			}
+		int statusColor = PathRules.pathLocked(data::rank, role.key(), path) ? UiStyle.DOWN : UiStyle.GOLD;
+		int sy = top + 28;
+		for (OrderedText line : textRenderer.wrapLines(status, windowWidth - panelX - GAP)) {
+			if (sy > top + 37) break;
+			ctx.drawText(textRenderer, line, left + panelX, sy, statusColor, false);
+			sy += 9;
 		}
 
-		// Escalones.
+		int railX = left + RAIL_X;
+		ctx.fill(railX, rowY(0) + 8, railX + 1, rowY(ROWS - 1) + 9, UiStyle.BORDER);
+		int branchRail = left + NODE_X;
+		int branchTop = rowY(rowOf(Step.S5X)) + 8;
+		int branchBottom = rowY(rowOf(Step.S5Y)) + 8;
+		int junction = (branchTop + branchBottom) / 2;
+		ctx.fill(railX, junction, branchRail, junction + 1, UiStyle.BORDER);
+		ctx.fill(branchRail, branchTop, branchRail + 1, branchBottom + 1, UiStyle.BORDER);
 		RoleNode hovered = null;
 		for (Step step : Step.values()) {
 			RoleNode node = node(step);
 			if (node == null) continue;
-			int x = nodeX(step), y = rowY(rowOf(step));
+			int y = rowY(rowOf(step));
+			int x = nodeX(step);
 			int rank = data.rank(node.id());
 			boolean excluded = RoleTree.nodeLocked(data::rank, node);
 			boolean available = rank == 0 && canLearn(data, node);
-			boolean hover = mouseX >= x && mouseX < x + 20 && mouseY >= y && mouseY < y + 20;
-			if (hover) hovered = node;
-			boolean isSelected = step == selected;
-			boolean keystone = step == Step.S7; // v46.1: piedra angular, marco morado
-			ctx.fill(x, y, x + 20, y + 20, rank > 0 ? 0xF0262A3A : 0xF0151722);
-			ctx.drawBorder(x, y, 20, 20, isSelected ? 0xFFFFFFFF : rank > 0 || available ? color : excluded ? 0xFF5A2A2A
-					: keystone ? 0xFF7E57C2 : 0xFF50546A);
-			NodeIconRenderer.draw(ctx, node, x + 2, y + 2);
+			if (step != Step.S5Y) {
+				int required = node.requiredLevel();
+				int ly = step == Step.S5X ? y + ROW_H / 2 + 4 : y + 5;
+				ctx.drawText(textRenderer, Integer.toString(required), left + 15, ly,
+						level >= required ? UiStyle.GOLD : UiStyle.MUTED, false);
+			}
+
+			int end = left + panelX - GAP - 3;
+			int rankColor = rank > 0 ? color : UiStyle.MUTED;
+			ctx.fill(step.branch() ? branchRail : railX, y + 8, x, y + 9, rank > 0 || available ? color : UiStyle.BORDER);
+			UiStyle.row(ctx, x, y, end - x, ROW_H - 1, rowOf(step), step == selected);
+			int frame = step == Step.S7 ? 0xFF7E57C2 : UiStyle.BORDER;
+			ctx.drawBorder(x + 1, y + 1, 16, 16, rank > 0 || available ? color : frame);
+			NodeIconRenderer.draw(ctx, node, x + 1, y + 1);
 			if (rank == 0 && !available) {
-				ctx.fill(x + 1, y + 1, x + 19, y + 19, excluded ? 0x90401010 : 0x60101018);
+				ctx.fill(x + 1, y + 1, x + 17, y + 17, excluded ? 0x90401010 : 0x60101018);
 				UiStyle.lockIcon(ctx, x + 1, y);
 			} else if (available) {
-				ctx.fill(x, y, x + 4, y + 4, color);
+				ctx.fill(x + 1, y + 1, x + 5, y + 5, color);
 			}
-			int textX = x + 24;
-			int maxW = (step == Step.S5X ? BRANCH_X2 - NODE_X - 26 : PANEL_X - (x - left) - 30);
-			UiStyle.label(ctx, textRenderer, Text.translatable(node.translationKey()), textX, y + 2, maxW,
-					excluded ? UiStyle.MUTED : UiStyle.TEXT);
-			ctx.drawText(textRenderer, rank + "/" + node.maxRank(), textX, y + 12, rank > 0 ? color : UiStyle.MUTED, false);
+			String rankText = rank + "/" + node.maxRank();
+			int rankX = end - 6 - textRenderer.getWidth(rankText);
+			int nameWidth = rankX - x - 28;
+			Text name = Text.translatable(node.translationKey());
+			if (overStep(mouseX, mouseY, step) && (mouseX < x + 18
+					|| (mouseX >= x + 22 && mouseX < x + 22 + nameWidth && textRenderer.getWidth(name) > nameWidth))) {
+				hovered = node;
+			}
+			UiStyle.label(ctx, textRenderer, name, x + 22, y + 5, nameWidth, excluded ? UiStyle.MUTED : UiStyle.TEXT);
+			ctx.drawText(textRenderer, rankText, rankX, y + 5, rankColor, false);
 		}
-		UiStyle.label(ctx, textRenderer, Text.translatable("screen.aptitudes.paths.branch"), left + BRANCH_X2 + 24,
-				rowY(4) + 12, PANEL_X - BRANCH_X2 - 30, UiStyle.MUTED);
-
 		renderPanel(ctx, data, mouseX, mouseY, hovered);
-	}
-
-	/** Escalones de los que sale la línea hacia {@code step}. */
-	private static List<Step> parents(Step step) {
-		return switch (step) {
-			case S2 -> List.of(Step.S1);
-			case S3 -> List.of(Step.S2);
-			case S4 -> List.of(Step.S3);
-			case S5X, S5Y -> List.of(Step.S4);
-			case S6 -> List.of(Step.S5X, Step.S5Y);
-			case S7 -> List.of(Step.S6);
-			default -> List.of();
-		};
 	}
 
 	private Text statusLine(RoleSyncPayload data) {
@@ -289,12 +291,15 @@ public class PathsScreen extends Screen {
 			lines.add(Text.translatable("screen.aptitudes.paths.keystone").formatted(Formatting.LIGHT_PURPLE));
 		}
 		lines.add(Text.translatable("screen.aptitudes.tree.rank", rank, node.maxRank()));
+		RoleTree.PathSpec pathSpec = RoleTree.pathSpec(node.id());
+		if (pathSpec != null && pathSpec.step().branch()) {
+			lines.add(Text.translatable("screen.aptitudes.paths.branch").formatted(Formatting.YELLOW));
+		}
 		if (rank < node.maxRank()) {
 			RoleNode pre = node.prerequisite() == null ? null : RoleTree.get(node.prerequisite());
 			if (pre != null) {
 				Text requirement = Text.translatable(pre.translationKey());
-				RoleTree.PathSpec spec = RoleTree.pathSpec(node.id());
-				if (spec != null && spec.step() == Step.S6) {
+				if (pathSpec != null && pathSpec.step() == Step.S6) {
 					RoleNode alternative = node(Step.S5Y);
 					if (alternative != null) {
 						requirement = Text.translatable("screen.aptitudes.tree.either", requirement,
@@ -314,25 +319,25 @@ public class PathsScreen extends Screen {
 
 	/** La ficha mantiene los requisitos a la vista y el cursor muestra la descripción completa. */
 	private void renderPanel(DrawContext ctx, RoleSyncPayload data, int mouseX, int mouseY, @Nullable RoleNode hovered) {
-		int x = left + PANEL_X, y = top + ROWS_Y, w = W - PANEL_X - 8, h = H - ROWS_Y - 56;
-		theme.panel(ctx, x, y, w, h);
+		int x = left + panelX + 7, y = top + ROWS_Y + 5;
+		int w = windowWidth - panelX - GAP - 14;
+		int bottom = rowY(ROWS) - 3;
 		RoleNode node = selectedNode();
 		if (node == null) return;
 		List<Text> lines = stepDetails(data, node);
-		int ty = y + 6;
-		for (int i = 0; i < lines.size() - 1; i++) {
-			UiStyle.label(ctx, textRenderer, lines.get(i), x + 5, ty, w - 10, UiStyle.TEXT);
-			ty += 12;
+		int ty = y;
+		for (int i = 0; i < lines.size(); i++) {
+			if (i == lines.size() - 1) ty += 4;
+			for (OrderedText part : textRenderer.wrapLines(lines.get(i), w)) {
+				if (ty + 8 > bottom) break;
+				ctx.drawText(textRenderer, part, x, ty, UiStyle.TEXT, false);
+				ty += 10;
+			}
+			ty += 2;
 		}
-		ty += 3;
-		for (OrderedText part : textRenderer.wrapLines(lines.getLast(), w - 10)) {
-			if (ty > y + h - 10) break;
-			ctx.drawText(textRenderer, part, x + 5, ty, UiStyle.TEXT, false);
-			ty += 10;
-		}
-		if (hovered != null || (mouseX >= x && mouseX < x + w && mouseY >= y && mouseY < y + h)) {
+		if (hovered != null) {
 			List<OrderedText> tooltip = new ArrayList<>();
-			for (Text line : hovered == null || hovered == node ? lines : stepDetails(data, hovered)) {
+			for (Text line : hovered == node ? lines : stepDetails(data, hovered)) {
 				tooltip.addAll(textRenderer.wrapLines(line, Math.min(248, width - 20)));
 			}
 			ctx.drawOrderedTooltip(textRenderer, tooltip, mouseX, mouseY);
@@ -345,8 +350,7 @@ public class PathsScreen extends Screen {
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (super.mouseClicked(mouseX, mouseY, button)) return true;
 		for (Step step : Step.values()) {
-			int x = nodeX(step), y = rowY(rowOf(step));
-			if (mouseX >= x && mouseX < x + 20 && mouseY >= y && mouseY < y + 20) {
+			if (node(step) != null && overStep(mouseX, mouseY, step)) {
 				selected = step;
 				updateButtons();
 				return true;
