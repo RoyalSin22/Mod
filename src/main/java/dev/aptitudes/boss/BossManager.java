@@ -3,6 +3,7 @@ package dev.aptitudes.boss;
 import dev.aptitudes.Aptitudes;
 import dev.aptitudes.ability.AbilityState;
 import dev.aptitudes.ability.ParticleFx;
+import dev.aptitudes.boss.BossRules.StrikeShape;
 import dev.aptitudes.elite.Elites;
 import dev.aptitudes.item.ModItems;
 import dev.aptitudes.item.weapon.RoleBladeItem;
@@ -44,6 +45,7 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.StructureWorldAccess;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +61,7 @@ public final class BossManager {
 	private static final Map<UUID, Long> ABILITY_READY = new HashMap<>();
 	private static final Map<UUID, Strike> STRIKES = new HashMap<>();
 
-	private record Strike(Vec3d center, long impactAt) {}
+	private record Strike(Vec3d center, long impactAt, double heading) {}
 	private BossManager() {}
 
 	public static void register() {
@@ -157,7 +159,11 @@ public final class BossManager {
 
 	private static void structureStrike(ServerWorld world, MobEntity boss, BossKind kind, UUID id) {
 		long now = world.getTime();
-		double radius = kind == BossKind.TOWER_SENTINEL ? 4.5 : 6.0;
+		StrikeShape shape = switch (kind) {
+			case TOWER_SENTINEL -> StrikeShape.CIRCLE;
+			case SHRINE_ORACLE -> StrikeShape.RING;
+			default -> StrikeShape.CONE;
+		};
 		Strike pending = STRIKES.get(id);
 		if (pending != null) {
 			Vec3d center = pending.center();
@@ -171,24 +177,29 @@ public final class BossManager {
 					case SHRINE_ORACLE -> 4.0f;
 					default -> 4.5f;
 				};
-				for (ServerPlayerEntity target : strikeTargets(world, boss, center, radius)) {
+				for (ServerPlayerEntity target : strikeTargets(world, boss, center, shape.radius)) {
 					if (!boss.isAlive()) break;
+					Vec3d offset = target.getPos().subtract(center);
+					if (!shape.contains(offset.x, offset.y, offset.z, pending.heading())) continue;
 					if (target.damage(world.getDamageSources().mobAttack(boss), damage)) {
 						if (kind == BossKind.SHRINE_ORACLE) target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 50, 1));
 						knockback(target, center);
 					}
 				}
 			} else {
-				drawWarning(world, center, radius, kind);
+				drawWarning(world, pending, shape, kind);
 			}
 			return;
 		}
 		if (ABILITY_READY.getOrDefault(id, 0L) > now) return;
 		Vec3d center = boss.getPos();
-		if (strikeTargets(world, boss, center, radius).isEmpty()) return;
-		STRIKES.put(id, new Strike(center, now + BossRules.STRIKE_WARNING_TICKS));
+		List<ServerPlayerEntity> targets = strikeTargets(world, boss, center, shape.radius);
+		if (targets.isEmpty()) return;
+		double heading = shape == StrikeShape.CONE ? aim(boss, center, targets) : 0;
+		Strike strike = new Strike(center, now + BossRules.STRIKE_WARNING_TICKS, heading);
+		STRIKES.put(id, strike);
 		ABILITY_READY.put(id, now + (kind == BossKind.SHRINE_ORACLE ? 80 : 60));
-		drawWarning(world, center, radius, kind);
+		drawWarning(world, strike, shape, kind);
 		world.playSound(null, center.x, center.y, center.z, SoundEvents.BLOCK_RESPAWN_ANCHOR_CHARGE,
 				SoundCategory.HOSTILE, 0.8f, kind == BossKind.SHRINE_ORACLE ? 1.4f : 0.9f);
 	}
@@ -205,13 +216,39 @@ public final class BossManager {
 						RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, boss)).getType() == HitResult.Type.MISS);
 	}
 
-	private static void drawWarning(ServerWorld world, Vec3d center, double radius, BossKind kind) {
+	private static double aim(MobEntity boss, Vec3d center, List<ServerPlayerEntity> targets) {
+		ServerPlayerEntity closest = targets.stream()
+				.min(Comparator.comparingDouble(player -> player.squaredDistanceTo(center))).orElseThrow();
+		Vec3d direction = closest.getPos().subtract(center);
+		if (direction.horizontalLengthSquared() < 1e-9) return Math.toRadians(boss.getYaw() + 90.0);
+		return Math.atan2(direction.z, direction.x);
+	}
+
+	private static void drawWarning(ServerWorld world, Strike strike, StrikeShape shape, BossKind kind) {
 		int rgb = switch (kind) {
 			case TOWER_SENTINEL -> 0xFF694A;
 			case SHRINE_ORACLE -> 0xD78BFF;
 			default -> 0xFFC34F;
 		};
-		ParticleFx.ring(world, center.add(0, 0.15, 0), radius, ParticleFx.dust(rgb, 1.25f), 24);
+		var dust = ParticleFx.dust(rgb, 1.25f);
+		Vec3d center = strike.center().add(0, 0.15, 0);
+		if (shape == StrikeShape.CONE) {
+			double start = strike.heading() - shape.halfAngle;
+			double end = strike.heading() + shape.halfAngle;
+			ParticleFx.line(world, dust, center, strikeEdge(center, shape.radius, start), 6);
+			ParticleFx.line(world, dust, center, strikeEdge(center, shape.radius, end), 6);
+			for (int i = 1; i < 12; i++) {
+				Vec3d point = strikeEdge(center, shape.radius, start + (end - start) * i / 12);
+				world.spawnParticles(dust, point.x, point.y, point.z, 1, 0, 0, 0, 0);
+			}
+		} else {
+			ParticleFx.ring(world, center, shape.radius, dust, 24);
+			if (shape.safeRadius > 0) ParticleFx.ring(world, center, shape.safeRadius, dust, 12);
+		}
+	}
+
+	private static Vec3d strikeEdge(Vec3d center, double radius, double angle) {
+		return center.add(radius * Math.cos(angle), 0, radius * Math.sin(angle));
 	}
 
 	private static MobEntity find(MinecraftServer server, UUID uuid) {

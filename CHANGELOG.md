@@ -10,8 +10,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   generarse. Esto corrige el bloqueo que podía detener el mundo e impedir abrir o romper bloques.
 
 ### Cambiado
-- **v56 — Encuentros en estructuras.** En la fase final, el Centinela, el Oráculo y el Campeón marcan
-  el suelo y dan un segundo para salir del círculo o ponerse a cubierto antes del golpe.
+- **v56 — Encuentros en estructuras.** Los jefes dan un segundo de aviso antes del golpe final.
+  Sal del círculo del Centinela, cruza al centro seguro del anillo del Oráculo o esquiva de lado
+  el cono del Campeón. Una pared sólida detiene el golpe.
 - **v54 — Animaciones de lanzamiento.** Cinco remates 3D por categoría de rol, desde el tajo marcial
   hasta el engranaje de Oficio. Se ven en primera o tercera persona según el ángulo y también los
   ven los jugadores cercanos. El interruptor Animaciones 3D está en Mayús + O.

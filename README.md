@@ -870,8 +870,9 @@ de jugador dentro de un hueco pequeño, el jugador puede asfixiarse como en vani
 **v32 (rama local):** cuatro runas engarzables en armas de rol, con dos ranuras persistentes y recetas en la Mesa del gremio. Ver `docs/BALANCE.md` y `docs/ROADMAP_APTITUDES.md`.
 
 Tres jefes tienen fases propias en torres, santuarios y campamentos. Sus núcleos mejoran armas
-de evolución desde la Mesa del gremio. En la fase final, el jefe señala la zona del golpe con un
-círculo y un sonido. Sal de la marca o ponte a cubierto antes del impacto.
+de evolución desde la Mesa del gremio. En la fase final, el Centinela marca un círculo, el Oráculo
+deja un centro seguro dentro de su anillo y el Campeón fija un cono hacia el jugador más cercano
+al que puede alcanzar. Cada aviso da un segundo para esquivar o ponerse a cubierto.
 Consulta el [balance de los jefes](docs/BALANCE.md#jefes-propios-v33-y-v56).
 
 **v34:** el Eclipse. Cada 10 días el sol se oscurece en el Mundo Normal: cielo rojo, oleadas de élites y

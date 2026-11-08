@@ -5,13 +5,16 @@
 1. Crea un mundo nuevo. Genera una Torre, un Santuario y un Campamento. Comprueba que el servidor
    siga avanzando mientras abres un cofre y colocas o rompes bloques. Cada estructura debe cargar su
    jefe con el nombre correcto y una barra. Guarda y reabre el mundo para comprobar que persiste.
-2. En Supervivencia, baja al jefe a un tercio de vida. El suelo debe mostrar un círculo y sonar un
-   aviso. Sal antes del golpe y repite quedándote dentro. Prueba también detrás de una pared, en
-   otro piso y en creativo o espectador. El golpe debe aplicarse solo dentro del círculo y sin cobertura.
-3. Durante el aviso, derrota al jefe o aléjate hasta descargarlo. El golpe pendiente debe cancelarse.
+2. En Supervivencia, baja al jefe a un tercio de vida. El Centinela dibuja un círculo, el Oráculo un
+   anillo y el Campeón un cono. Cada golpe debe sonar un segundo después del aviso. Prueba quedarse
+   dentro, salir, ponerse detrás de una pared y subir a otro piso. Repite en creativo y espectador.
+3. Con el Oráculo, entra al centro del anillo antes del impacto y comprueba que salgas ileso.
+   Repite en la banda marcada y verifica el daño y la lentitud. Con el Campeón, muévete a un lado
+   durante el aviso y comprueba que el golpe mantenga la orientación original.
+4. Durante el aviso, derrota al jefe o aléjate hasta descargarlo. El golpe pendiente debe cancelarse.
    Comprueba que el núcleo se obtenga una sola vez y que el jefe derrotado no reaparezca al recargar.
-4. Con dos jugadores, que uno se quede en el círculo y el otro salga. Solo debe recibir el golpe el
-   primero. En un Eclipse, verifica que el Heraldo conserve su ataque y su barra.
+5. Con dos jugadores, sitúate dentro de la marca y pide al otro que salga. Solo debe recibir el golpe
+   el jugador dentro de la marca. En un Eclipse, verifica el ataque y la barra del Heraldo.
 
 ## v55 — Catálogo de talentos por datapack
 
