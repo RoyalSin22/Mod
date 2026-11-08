@@ -121,7 +121,7 @@ guardado por jugador). Las herramientas de los roles (gancho del Ingeniero, salt
 |---|---|
 | H1 | **Tema visual unificado** (marcos, fuentes de números, colores) en todos los HUD y pantallas — ✔ en parte v49–v53 (Mesa, Tablón, HUD y atlas); falta el resto |
 | H2 | **Barra de jefe estilo Souls** abajo, con nombre y fase; una sola barra para varios jefes |
-| H3 | **Modo minimalista** y **modo daltónico** (formas además de colores en sendas, efectos e iconos) |
+| H3 | **Modo minimalista** (el modo daltónico se descartó por decisión del autor, 2026-11-08) |
 | H4 | Presets de disposición del HUD (clásico, centrado, compacto) en el editor actual (Mayús + O) |
 | H5 | Animaciones de interfaz: aparición de avisos, llenado de barras, latido al subir de nivel |
 
@@ -178,7 +178,7 @@ Las **animaciones e iconos** ya se pueden cambiar con un **resource pack** (text
 
 | Versión | Contenido | Quién |
 |---|---|---|
-| v59 | Rendimiento R1–R3 + resto de HUD (H2 barra de jefe, H3 minimalista y daltónico, H4 presets) | Claude (R) / Codex (H) |
+| v59 | Rendimiento R1–R3 + resto de HUD (H2 barra de jefe, H3 minimalista, H4 presets) | Claude (R) / Codex (H) |
 | v60 | Souls «suaves»: S2 mejora de frascos, S7 arenas con niebla, §2b convocar el Eclipse (cuando se decida) | Codex / Claude (§2b) |
 | v61 | Grimorio G1–G5 (bestiario y buscador) | Codex |
 | v62 | Objetos y gráficos A1, A6 (sin dependencias) | Codex (generadores) |

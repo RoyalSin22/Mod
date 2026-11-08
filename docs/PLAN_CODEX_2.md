@@ -10,7 +10,7 @@ En paralelo, Claude trabaja `docs/PLAN_CLAUDE.md`. **No toques** mientras Claude
 
 | Orden | Tarea | Rama | Tamaño |
 |---|---|---|---|
-| K1 | HUD: barra de jefe, modo minimalista y daltónico, presets | `codex/v59-hud` | Medio |
+| K1 | HUD: barra de jefe, modo minimalista, presets | `codex/v59-hud` | Medio |
 | K2 | Mejora de frascos y arenas de jefe con muro de niebla | `codex/v60-frascos-arenas` | Medio |
 | K3 | Grimorio: bestiario, buscador, progreso e ilustraciones | `codex/v61-grimorio` | Medio |
 | K4 | Armas 3D en mano y rediseño de objetos | `codex/v62-objetos` | Medio-grande |
@@ -26,8 +26,7 @@ TAREA K1 (rama codex/v59-hud). Según docs/IDEAS_v47_v55.md §5 (H2–H5), sobre
 - Fase 1: barra de jefe estilo Souls abajo y centrada (nombre, fase y vida; una sola barra que lista varios
   jefes si hay más de uno), usando los datos que ya llegan al cliente; si hace falta un payload nuevo,
   valídalo en el servidor y envíalo solo a jugadores cercanos.
-- Fase 2: modo minimalista (oculta lo secundario) y modo daltónico (formas además de colores en sendas,
-  efectos e iconos), presets de disposición (clásico, centrado, compacto) en el editor de Mayús + O, y
+- Fase 2: modo minimalista (oculta lo secundario), presets de disposición (clásico, centrado, compacto) en el editor de Mayús + O, y
   animaciones suaves de avisos y barras. Todo en config/aptitudes-client.json, con textos en los 11 idiomas.
 No cambies la pantalla K (5×2, 430×262).
 ```
