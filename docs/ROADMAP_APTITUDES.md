@@ -1,9 +1,13 @@
 # Roadmap de Aptitudes
 
-v56 fase 1 preparada en `codex/v56-encuentros-estructuras`. v55 está integrada en `main`. La publicación sigue aplazada.
+v56 fase 1 integrada en `main`. La publicación sigue aplazada.
 Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fabric API 0.116.6 · Loom 1.10 · Java 21**.
 
 ## Estado real
+
+### v57 — Espaciado del atlas (preparada en rama)
+- Sendas separa la bifurcación en dos filas y reserva una columna para los rangos. Talentos despeja
+  el área de nodos. Prioridades de interfaz y propuestas de criaturas en [V57_DISENO_VISUAL.md](V57_DISENO_VISUAL.md).
 
 ### v56 — Encuentros en estructuras
 - Fase 1. Generación segura del Centinela, el Oráculo y el Campeón en su propia región de chunks.

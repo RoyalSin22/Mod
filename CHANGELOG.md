@@ -10,6 +10,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   generarse. Esto corrige el bloqueo que podía detener el mundo e impedir abrir o romper bloques.
 
 ### Cambiado
+- **v57 — Atlas y Sendas.** Las dos opciones de la bifurcación tienen filas separadas y el rango
+  queda alineado a la derecha. La ficha envuelve los requisitos y el lienzo de Talentos despeja
+  el fondo y usa conectores más finos.
 - **v56 — Encuentros en estructuras.** En la fase final, el Centinela, el Oráculo y el Campeón marcan
   el suelo y dan un segundo para salir del círculo o ponerse a cubierto antes del golpe.
 - **v53 — Atlas de talentos.** En J, abre Talentos, Sendas, Maestro o Definitivo desde la cabecera

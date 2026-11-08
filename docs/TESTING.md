@@ -1,5 +1,14 @@
 # Pruebas de Aptitudes
 
+## v57 — Espaciado del atlas y Sendas
+
+1. En J, selecciona Espadachín y abre Sendas C. Verifica que Contraataque y Vitalidad Marcial
+   ocupen filas separadas y que sus rangos se lean a la derecha.
+2. Selecciona cada fila pulsando su nombre. Comprueba que la ficha envuelva requisitos y descripción.
+   Pasa el cursor por un nombre largo para leerlo entero. Repite en alemán y a escala 4.
+3. Vuelve a Talentos y comprueba que los nodos y sus enlaces se distingan del fondo al arrastrar,
+   ampliar y seleccionar. Reduce la ventana hasta 426×240 y revisa el desplazamiento.
+
 ## v56 — Encuentros en estructuras
 
 1. Crea un mundo nuevo. Genera una Torre, un Santuario y un Campamento. Comprueba que el servidor
