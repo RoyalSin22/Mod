@@ -10,8 +10,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   generarse. Esto corrige el bloqueo que podía detener el mundo e impedir abrir o romper bloques.
 
 ### Cambiado
-- **v56 — Encuentros en estructuras.** En la fase final, el Centinela, el Oráculo y el Campeón marcan
-  el suelo y dan un segundo para salir del círculo o ponerse a cubierto antes del golpe.
+- **v56 — Encuentros en estructuras.** Los jefes dan un segundo de aviso antes del golpe final.
+  Sal del círculo del Centinela, cruza al centro seguro del anillo del Oráculo o esquiva de lado
+  el cono del Campeón. Una pared sólida detiene el golpe.
 - **v53 — Atlas de talentos.** En J, abre Talentos, Sendas, Maestro o Definitivo desde la cabecera
   del rol. Los sellos, iconos y acentos identifican cada rol. La ficha muestra el rango y los
   requisitos del nodo seleccionado y el cursor revela la descripción completa.

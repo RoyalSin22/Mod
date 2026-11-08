@@ -298,12 +298,16 @@ Cada arma de rol admite dos runas distintas. Fuego aplica 3 segundos de ignició
 
 # Jefes propios (v33 y v56)
 
-El Centinela, el Oráculo y el Campeón anuncian su golpe final 20 ticks antes. El círculo queda fijo
-con radio de 4,5 bloques para el Centinela y 6 para el Oráculo y el Campeón, con un margen vertical de
-2 bloques. La cobertura sólida detiene el golpe. El daño de 5 / 4 / 4,5 puntos y la cadencia de
-60 / 80 / 60 ticks, respectivamente, son los mismos. El Heraldo conserva su ataque.
+El aviso del golpe final dura 20 ticks y fija la zona en el suelo. La cobertura sólida y una
+diferencia de altura mayor de 2 bloques protegen del impacto.
 
-Centinela de la Torre, Oráculo del Santuario y Campeón del Campamento aparecen en las estructuras actuales y conservan tres fases en sus etiquetas de entidad. Los tres comparten el escalado y la barra de campeón existente. En fase final, cada 3–4 s hacen un golpe de área telegráfico: 5, 4 o 4,5 puntos de daño respectivamente; el Oráculo también aplica lentitud.
+| Jefe | Zona | Daño | Cadencia |
+|---|---|---|---|
+| Centinela de la Torre | Círculo de radio 4,5 bloques | 5 puntos | 60 ticks |
+| Oráculo del Santuario | Anillo entre 2 y 6 bloques del centro | 4 puntos y lentitud al acertar | 80 ticks |
+| Campeón del Campamento | Cono de 90° y 6 bloques de alcance hacia el objetivo elegible más cercano al avisar | 4,5 puntos | 60 ticks |
+
+Los tres jefes guardan sus fases en las etiquetas de entidad y usan el escalado y la barra de campeón.
 
 Cada jefe deja un núcleo distinto. Aplicar un núcleo en la Mesa del gremio añade +0,5 de daño a un arma de evolución. Cada arma acepta una vez cada uno de los tres núcleos, hasta +1,5 total; no cambia la potencia de armas que no sean evolutivas.
 
