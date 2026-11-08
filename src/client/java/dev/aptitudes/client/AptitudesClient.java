@@ -1,6 +1,7 @@
 package dev.aptitudes.client;
 
 import dev.aptitudes.ability.AbilityManager;
+import dev.aptitudes.client.fx.CastAnimations;
 import dev.aptitudes.client.hud.AbilityHud;
 import dev.aptitudes.client.screen.AptitudesScreen;
 import dev.aptitudes.client.screen.ForgeScreen;
@@ -8,6 +9,7 @@ import dev.aptitudes.client.screen.RolesScreen;
 import dev.aptitudes.forge.ForgeScreenHandler;
 import dev.aptitudes.forge.ForgeWeapons;
 import dev.aptitudes.network.ForgePreviewPayload;
+import dev.aptitudes.network.CastAnimationPayload;
 import dev.aptitudes.network.FormSyncPayload;
 import dev.aptitudes.network.MorphPayload;
 import dev.aptitudes.network.UniqueSyncPayload;
@@ -181,6 +183,7 @@ public class AptitudesClient implements ClientModInitializer {
 			ClientMorphs.clear();
 			ClientExtraState.clear();
 			dev.aptitudes.client.hud.ClientFx.clear();
+			CastAnimations.clear();
 			AbilityHud.clear();
 			ClientEclipse.clear();
 			ClientServerConfig.clear();
@@ -198,6 +201,9 @@ public class AptitudesClient implements ClientModInitializer {
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.ThreatHud::render);
 		net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents.AFTER_ENTITIES.register(
 				dev.aptitudes.client.hud.ClientFx::renderWorld);
+		net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents.AFTER_ENTITIES.register(CastAnimations::render);
+		ClientPlayNetworking.registerGlobalReceiver(CastAnimationPayload.ID,
+				(payload, context) -> CastAnimations.receive(context.client(), payload));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.MechanicPayload.ID,
 				(payload, context) -> AbilityHud.onMechanics(payload));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.ScreenFxPayload.ID,

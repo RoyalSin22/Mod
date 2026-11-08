@@ -583,6 +583,12 @@ al aprender y en gris claro cuando el nodo ya está disponible.
 Icono pixel art + barra redondeada con degradado y brillo, valor dentro de la barra; la vida late en
 rojo con menos del 25 %; los recursos de rol parpadean cuando pueden potenciar una habilidad.
 
+## Animaciones de lanzamiento (v54)
+
+Las habilidades dibujan un remate 3D breve según la categoría del rol. Usa **F5** para ver la forma
+completa y **Mayús + O → Animaciones 3D** para ocultarla. La opción se aplica a los lanzamientos
+propios y a los que ves de otros jugadores.
+
 ## Atlas de talentos (v53)
 
 El [piloto de talentos por datapack](docs/DATAPACK_TALENTOS.md) permite añadir ramas de velocidad.

@@ -1452,6 +1452,7 @@
   "screen.aptitudes.hud.mechanic": "Mecánica del rol",
   "screen.aptitudes.hud.damage_numbers": "Números de daño",
   "screen.aptitudes.hud.screen_effects": "Efectos de pantalla",
+  "screen.aptitudes.hud.cast_animations": "Animaciones 3D",
   "screen.aptitudes.hud.visible": "HUD visible",
   "screen.aptitudes.hud.reset": "Restablecer",
   "screen.aptitudes.hud.drag": "Arrastra la barra de habilidades para moverla",

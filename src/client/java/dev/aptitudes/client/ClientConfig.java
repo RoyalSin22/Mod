@@ -19,6 +19,8 @@ public final class ClientConfig {
 	public boolean hudVisible = true;
 	/** Destellos de color y temblor de cámara al lanzar habilidades o recibir golpes fuertes. */
 	public boolean screenEffects = true;
+	/** Remates geométricos de las habilidades en el mundo. */
+	public Boolean castAnimations = true;
 	/** Números de daño flotantes. */
 	public boolean damageNumbers = true;
 	/** Escala del HUD de habilidades (0,5 – 2). */
@@ -61,6 +63,7 @@ public final class ClientConfig {
 		if (config == null) config = new ClientConfig();
 		// Su dominio es booleano; un null explícito conserva el valor seguro por defecto.
 		if (config.showTutorial == null) config.showTutorial = true;
+		if (config.castAnimations == null) config.castAnimations = true;
 		config.hudScale = AbilityHudLayout.validatedScale(config.hudScale);
 		config.hudOffsetX = Math.clamp(config.hudOffsetX, -4096, 4096);
 		config.hudOffsetY = Math.clamp(config.hudOffsetY, -4096, 4096);

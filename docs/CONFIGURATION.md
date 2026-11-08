@@ -39,6 +39,7 @@ Las probabilidades, tamaños y presupuestos se vuelven a acotar en las reglas pu
 |---|---:|---|---|
 | `hudScale` | 1.0 | 0.5–2.0 | Escala solicitada en Mayús + O. La barra usa una escala menor cuando lo exige la ventana. Un valor no finito se sustituye por 1.0. |
 | `hudOffsetX`, `hudOffsetY` | 0 | −4096–4096 | Desplazamiento en píxeles de interfaz. La posición efectiva se acota al área visible junto con las filas de mecánicas y piedras angulares. |
+| `castAnimations` | true | true / false | Remates 3D de las habilidades, desde Mayús + O → Animaciones 3D. Un `null` explícito recupera true en `ClientConfig.validated(...)`. |
 
 ## Tutorial (v44)
 

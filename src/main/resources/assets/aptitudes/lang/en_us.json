@@ -1452,6 +1452,7 @@
   "screen.aptitudes.hud.mechanic": "Role mechanic",
   "screen.aptitudes.hud.damage_numbers": "Damage numbers",
   "screen.aptitudes.hud.screen_effects": "Screen effects",
+  "screen.aptitudes.hud.cast_animations": "3D cast animations",
   "screen.aptitudes.hud.visible": "HUD visible",
   "screen.aptitudes.hud.reset": "Reset",
   "screen.aptitudes.hud.drag": "Drag the ability bar to move it",

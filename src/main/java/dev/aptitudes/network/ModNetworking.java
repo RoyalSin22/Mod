@@ -38,6 +38,7 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playS2C().register(MechanicPayload.ID, MechanicPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(ResourcePayload.ID, ResourcePayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(ScreenFxPayload.ID, ScreenFxPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(CastAnimationPayload.ID, CastAnimationPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(DamageNumberPayload.ID, DamageNumberPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(SkillXpPayload.ID, SkillXpPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(PartySyncPayload.ID, PartySyncPayload.CODEC);

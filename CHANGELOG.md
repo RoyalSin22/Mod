@@ -12,6 +12,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ### Cambiado
 - **v56 — Encuentros en estructuras.** En la fase final, el Centinela, el Oráculo y el Campeón marcan
   el suelo y dan un segundo para salir del círculo o ponerse a cubierto antes del golpe.
+- **v54 — Animaciones de lanzamiento.** Cinco remates 3D por categoría de rol, desde el tajo marcial
+  hasta el engranaje de Oficio. Se ven en primera o tercera persona según el ángulo y también los
+  ven los jugadores cercanos. El interruptor Animaciones 3D está en Mayús + O.
 - **v53 — Atlas de talentos.** En J, abre Talentos, Sendas, Maestro o Definitivo desde la cabecera
   del rol. Los sellos, iconos y acentos identifican cada rol. La ficha muestra el rango y los
   requisitos del nodo seleccionado y el cursor revela la descripción completa.

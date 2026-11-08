@@ -14,6 +14,10 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 - Fase 2. Vista en J, compras validadas por revisión y rango, puntos compartidos y reembolso al perder
   requisitos. La plantilla piloto da +2 % de velocidad por rango, hasta +6 % entre ambos roles activos.
 
+### v54 — Animaciones de habilidades (fase 1)
+- Remates geométricos por categoría, con duración y escala distintas para cada tipo de lanzamiento.
+  Se muestran al lanzador y a los clientes cercanos que rastrean su entidad. La prueba multijugador queda pendiente.
+
 ### v53 — Atlas de talentos (integrado en main)
 - Fase 1. Cuatro entradas en J y ficha adaptable. Sendas reúne S1–S7 y la ficha de S1 muestra su requisito en Talentos.
 - Fase 2. Paletas y grabados para los 20 roles, con pestañas que distinguen selección y foco en ambas vistas.

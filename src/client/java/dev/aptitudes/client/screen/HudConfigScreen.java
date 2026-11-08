@@ -25,10 +25,10 @@ public class HudConfigScreen extends Screen {
 		super(Text.translatable("screen.aptitudes.hud_config"));
 	}
 
-	/** Alto de una fila (botón de 18 + 4 de separación). */
-	private static final int ROW = 22;
-	/** Título + fila de escala + 7 interruptores + ayuda + Restablecer/Hecho. */
-	private static final int CONTENT_HEIGHT = 12 + ROW + 7 * ROW + 6 + 12 + 18;
+	/** Alto de una fila (botón de 18 + 2 de separación). */
+	private static final int ROW = 20;
+	/** Título + fila de escala + 8 interruptores + ayuda + Restablecer/Hecho. */
+	private static final int CONTENT_HEIGHT = 12 + ROW + 8 * ROW + 6 + 12 + 18;
 	private int titleY;
 	private int scaleY;
 	private int hintY;
@@ -54,6 +54,8 @@ public class HudConfigScreen extends Screen {
 		addDrawableChild(toggle(cx - 100, y, "screen.aptitudes.hud.damage_numbers", () -> cfg.damageNumbers, v -> cfg.damageNumbers = v));
 		y += ROW;
 		addDrawableChild(toggle(cx - 100, y, "screen.aptitudes.hud.screen_effects", () -> cfg.screenEffects, v -> cfg.screenEffects = v));
+		y += ROW;
+		addDrawableChild(toggle(cx - 100, y, "screen.aptitudes.hud.cast_animations", () -> cfg.castAnimations, v -> cfg.castAnimations = v));
 		y += ROW;
 		addDrawableChild(toggle(cx - 100, y, "screen.aptitudes.hud.eclipse_sky", () -> cfg.eclipseSkyEffects, v -> cfg.eclipseSkyEffects = v));
 		y += ROW;

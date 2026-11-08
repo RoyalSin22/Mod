@@ -1452,6 +1452,7 @@
   "screen.aptitudes.hud.mechanic": "Mécanique du rôle",
   "screen.aptitudes.hud.damage_numbers": "Nombres de dégâts",
   "screen.aptitudes.hud.screen_effects": "Effets d'écran",
+  "screen.aptitudes.hud.cast_animations": "Animations 3D",
   "screen.aptitudes.hud.visible": "ATH visible",
   "screen.aptitudes.hud.reset": "Réinitialiser",
   "screen.aptitudes.hud.drag": "Glissez la barre de capacités pour la déplacer",
