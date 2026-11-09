@@ -51,9 +51,20 @@ public class OsarioEntity extends HostileEntity implements GeoEntity {
 	}
 
 	@Override
+	public boolean tryAttack(net.minecraft.entity.Entity target) {
+		// El barrido del brazo largo se dispara al atacar (el golpe llega al final de la animación).
+		if (!getWorld().isClient()) triggerAnim("action", "heavy_swipe");
+		return super.tryAttack(target);
+	}
+
+	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 		controllers.add(new AnimationController<>(this, "move", 5,
 				state -> state.setAndContinue(state.isMoving() ? WALK : IDLE)));
+		AnimationController<OsarioEntity> actions = new AnimationController<>(this, "action", 2,
+				state -> software.bernie.geckolib.animation.PlayState.STOP);
+		actions.triggerableAnim("heavy_swipe", RawAnimation.begin().thenPlay("heavy_swipe"));
+		controllers.add(actions);
 	}
 
 	@Override

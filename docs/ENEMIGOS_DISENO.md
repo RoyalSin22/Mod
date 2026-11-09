@@ -71,5 +71,6 @@ otro enemigo o para las marcas con partículas.
   renderizador `client/render/MobRenderers`.
 - Aparece en la Niebla de almas con un 10 % de las apariciones (`mob/OsarioRules`, 5 pruebas).
 - Nombre en los 11 idiomas.
-- **Pendiente:** la animación `heavy_swipe` aún no se dispara desde el ataque; huevo de aparición; entrada en el
-  bestiario; y las partículas de ectoplasma y de tierra. Probar en partida la aparición y el combate.
+- **Hecho después:** el barrido `heavy_swipe` se dispara al atacar; huevo de aparición
+  (`osario_quebrado_spawn_egg`); entrada en el bestiario, con texto en los 11 idiomas.
+- **Pendiente:** partículas de ectoplasma y de tierra; añadir el huevo a la pestaña creativa; probar en partida.

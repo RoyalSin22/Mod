@@ -99,6 +99,9 @@ public final class BestiaryRules {
 				"aptitudes:dismantled_guardian_spawn_egg", List.of("aptitudes:soul_shard", "aptitudes:elite_essence")));
 		out.add(new Entry("ancient_automaton", Kind.BOSS, Region.OVERWORLD, "aptitudes:ancient_automaton", null,
 				"aptitudes:ancient_automaton_spawn_egg", List.of("aptitudes:soul_shard", "aptitudes:elite_essence")));
+		// v65: criaturas nuevas, al final.
+		out.add(new Entry("osario_quebrado", Kind.CREATURE, Region.OVERWORLD, "aptitudes:osario_quebrado", null,
+				"aptitudes:osario_quebrado_spawn_egg", List.of("aptitudes:soul_shard")));
 		ENTRIES = Collections.unmodifiableList(out);
 		for (Entry e : ENTRIES) {
 			if (BY_ID.put(e.id(), e) != null) throw new IllegalStateException("Entrada duplicada: " + e.id());

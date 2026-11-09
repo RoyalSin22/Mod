@@ -15,6 +15,11 @@ public final class OsarioEntities {
 					.dimensions(0.75f, 1.8f).maxTrackingRange(8)
 					.build("osario_quebrado"));
 
+	/** Huevo de aparición (para pruebas y para el bestiario). */
+	public static final net.minecraft.item.Item OSARIO_EGG = Registry.register(Registries.ITEM,
+			Aptitudes.id("osario_quebrado_spawn_egg"),
+			new net.minecraft.item.SpawnEggItem(OSARIO, 0x4A3B2E, 0x4DE2A6, new net.minecraft.item.Item.Settings()));
+
 	private OsarioEntities() {}
 
 	public static void register() {

@@ -3723,6 +3723,8 @@
   "advancement.aptitudes.life_vessel.description": "Benutze ein Lebensgefäß.",
   "entity.aptitudes.faceless_colossus": "Der gesichtslose Koloss",
   "entity.aptitudes.osario_quebrado": "Zerbrochenes Beinhaus",
+  "item.aptitudes.osario_quebrado_spawn_egg": "Erscheinungsei des Zerbrochenen Beinhauses",
+  "bestiary.aptitudes.osario_quebrado.tip": "Knochen und Erde, die nicht ruhen wollen. Er schleift einen Arm und stürmt los, sobald er dich sieht.",
   "item.aptitudes.faceless_colossus_spawn_egg": "Spawn-Ei des gesichtslosen Kolosses",
   "bestiary.aptitudes.faceless_colossus.tip": "Riesiger Krieger mit Zweihänder. Er kündigt einen weiten Hieb und einen Abwärtsschlag mit Schockwelle an: Verlasse den markierten Kreis. Bei halber Lebenskraft bricht seine Rüstung: Er wird schneller, stürmt aus der Ferne an und erleidet mehr Schaden.",
   "entity.aptitudes.dismantled_guardian": "Zerlegter Wächter",

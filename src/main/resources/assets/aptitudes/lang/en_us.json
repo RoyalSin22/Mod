@@ -3723,6 +3723,8 @@
   "advancement.aptitudes.life_vessel.description": "Use a Life Vessel.",
   "entity.aptitudes.faceless_colossus": "The Faceless Colossus",
   "entity.aptitudes.osario_quebrado": "Broken Ossuary",
+  "item.aptitudes.osario_quebrado_spawn_egg": "Broken Ossuary Spawn Egg",
+  "bestiary.aptitudes.osario_quebrado.tip": "Bone and earth that will not rest. It drags one arm and charges when it sees you.",
   "item.aptitudes.faceless_colossus_spawn_egg": "Faceless Colossus Spawn Egg",
   "bestiary.aptitudes.faceless_colossus.tip": "Giant warrior with a greatsword. It telegraphs a wide sweep and an overhead slam with a shock wave; step out of the marked circle. At half health its armor cracks: it moves faster, charges from afar and takes more damage.",
   "entity.aptitudes.dismantled_guardian": "Dismantled Guardian",
