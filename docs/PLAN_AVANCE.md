@@ -80,7 +80,10 @@ Pendiente:
   Autómata: orbe PROJECTILE, pisotón GROUND, rayo PROJECTILE. Estas asignaciones son provisionales.
   Decisión abierta: la postura que causa un golpe del **jugador** (¿qué ataque del jugador es pesado?) no depende de
   las etiquetas del jefe. Por ahora el drenaje usa NORMAL; hay que definir la regla antes de usar HEAVY en ese caso.
-- B3: guardia perfecta y parry ligados a etiquetas PARRYABLE, validados en el servidor.
+- B3 (hecho en código, sin commit): parry contra el tajo del Coloso (etiqueta PARRYABLE). Si el jugador bloquea en
+  el impacto, el golpe no llega y la postura del jefe baja 25. Decisión mía: sin ventana medida desde que se levantó
+  el escudo, porque el proyecto no tiene seguimiento de ese tiempo. Pendiente: ventana de tiempo real (guardia
+  perfecta), guardia con contraataque, y ampliar PARRYABLE a otros ataques.
 - B4: postura en élites y campeones (hoy solo jefes animados).
 - B5: la postura no se guarda en NBT; decidir si debe persistir al recargar el mundo.
 - B6: animación de aturdimiento y aviso visual (K5).

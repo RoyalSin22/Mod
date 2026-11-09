@@ -130,14 +130,29 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 		if (getWorld() instanceof ServerWorld world) {
 			long now = world.getTime();
 			// Solo los golpes de jugadores drenan la postura; por ahora sin etiquetas por ataque (NORMAL).
-			if (source.getAttacker() instanceof PlayerEntity) {
-				PostureRules.Result r = PostureRules.drain(posture, amount, AttackTags.of(), now);
-				posture = r.state();
-				if (r.broke()) onPostureBroken(world);
-			}
+			if (source.getAttacker() instanceof PlayerEntity) drainPosture(world, amount);
 			mult *= (float) posture.damageMultiplier(now);
 		}
 		return super.damage(source, amount * mult);
+	}
+
+	/** Drena la postura con un golpe (sin etiquetas: NORMAL) y avisa si se rompe. */
+	private void drainPosture(ServerWorld world, double amount) {
+		PostureRules.Result r = PostureRules.drain(posture, amount, AttackTags.of(), world.getTime());
+		posture = r.state();
+		if (r.broke()) onPostureBroken(world);
+	}
+
+	/**
+	 * Parry (B3): si el ataque es desviable y el jugador bloquea en el impacto, el golpe no llega y la postura del jefe
+	 * baja {@link GuardRules#PARRY_POSTURE_DAMAGE}. Devuelve true si el golpe se desvió.
+	 */
+	protected boolean parried(LivingEntity e, Move move) {
+		if (!(e instanceof ServerPlayerEntity player) || !(getWorld() instanceof ServerWorld world)) return false;
+		if (GuardRules.resolve(move.tags(), player.isBlocking()) != GuardRules.Outcome.PARRY) return false;
+		world.playSound(null, player.getBlockPos(), SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.PLAYERS, 1f, 1.2f);
+		drainPosture(world, GuardRules.PARRY_POSTURE_DAMAGE);
+		return true;
 	}
 
 	/** Postura vaciada: aviso sonoro y de partículas. El aturdimiento lo aplica {@link PostureRules}. */

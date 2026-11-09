@@ -27,7 +27,8 @@ import java.util.List;
  * {@code docs/V63_JEFES.md}.
  */
 public class FacelessColossusEntity extends AnimatedBossEntity {
-	static final Move SWEEP = new Move("sweep", 1, 0, 4.5, 18, 30, 3);
+	static final Move SWEEP = new Move("sweep", 1, 0, 4.5, 18, 30, 3,
+			AttackTags.of(AttackTags.Tag.PARRYABLE));
 	static final Move SLAM = new Move("slam", 1, 0, 5.5, 28, 70, 2,
 			AttackTags.of(AttackTags.Tag.HEAVY, AttackTags.Tag.GROUND));
 	static final Move CHARGE = new Move("charge", 2, 5, 18, 16, 90, 2,
@@ -91,7 +92,8 @@ public class FacelessColossusEntity extends AnimatedBossEntity {
 		if (move == SWEEP) {
 			world.playSound(null, getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.HOSTILE, 1.2f, 0.6f);
 			for (LivingEntity e : world.getEntitiesByClass(LivingEntity.class, getBoundingBox().expand(4.5), this::hittable)) {
-				if (BossMoveRules.inArc(e.getX() - getX(), e.getZ() - getZ(), getYaw(), SWEEP_ARC, 4.5)) {
+				if (BossMoveRules.inArc(e.getX() - getX(), e.getZ() - getZ(), getYaw(), SWEEP_ARC, 4.5)
+						&& !parried(e, move)) {
 					hit(e, base, 0.8);
 				}
 			}
