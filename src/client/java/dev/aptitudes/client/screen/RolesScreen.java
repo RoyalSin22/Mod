@@ -455,6 +455,11 @@ public class RolesScreen extends Screen {
 				double ly = toLocalY(mouseY);
 				for (NodeView v : visibleNodes) {
 					if (lx >= v.x() && lx < v.x() + 24 && ly >= v.y() && ly < v.y() + 24) {
+						if (tab == TalentTab.TALENTS) {
+							RoleSyncPayload clickData = ClientRoleState.data();
+							boolean open = clickData != null && (lit(clickData, v) || available(clickData, v));
+							playUi(open ? dev.aptitudes.sound.ModSounds.UI_METAL_SELECT : dev.aptitudes.sound.ModSounds.UI_METAL_DENIED);
+						}
 						selectedNode = v.key();
 						updateButtons();
 						return true;
@@ -509,6 +514,11 @@ public class RolesScreen extends Screen {
 		if (keyCode == GLFW.GLFW_KEY_PAGE_DOWN && scrollPage(80)) return true;
 		if (keyCode == GLFW.GLFW_KEY_PAGE_UP && scrollPage(-80)) return true;
 		return super.keyPressed(keyCode, scanCode, modifiers);
+	}
+
+	private static void playUi(net.minecraft.sound.SoundEvent sound) {
+		net.minecraft.client.MinecraftClient.getInstance().getSoundManager()
+				.play(net.minecraft.client.sound.PositionedSoundInstance.master(sound, 1.0f));
 	}
 
 	private void selectRole(Role role) {
@@ -720,6 +730,7 @@ public class RolesScreen extends Screen {
 
 		renderLaneTitles(ctx, tier);
 		List<Text> tooltip = null;
+		long pulseNow = net.minecraft.util.Util.getMeasuringTimeMs();
 		for (NodeView v : visibleNodes) {
 			boolean hover = mouseX >= v.x() && mouseX < v.x() + 24 && mouseY >= v.y() && mouseY < v.y() + 24;
 			UiStyle.Frame frame = switch (v.kind()) {
@@ -740,7 +751,10 @@ public class RolesScreen extends Screen {
 				int rankNow = data.rank(v.node().id());
 				Integer before = LAST_RANK.put(v.node().id(), rankNow);
 				long nowMs = net.minecraft.util.Util.getMeasuringTimeMs();
-				if (before != null && rankNow > before) LEARNED_AT.put(v.node().id(), nowMs);
+				if (before != null && rankNow > before) {
+					LEARNED_AT.put(v.node().id(), nowMs);
+					if (tab == TalentTab.TALENTS) playUi(dev.aptitudes.sound.ModSounds.UI_METAL_UNLOCK);
+				}
 				Long at = LEARNED_AT.get(v.node().id());
 				if (at != null) learnedFor = nowMs - at;
 			}
@@ -750,6 +764,11 @@ public class RolesScreen extends Screen {
 				int a = (int) (230 * (1f - t));
 				ctx.drawBorder(v.x() - grow, v.y() - grow, 24 + grow * 2, 24 + grow * 2, (a << 24) | 0xE6C36A);
 				ctx.fill(v.x() - 2, v.y() - 2, v.x() + 26, v.y() + 26, ((int) (120 * (1f - t)) << 24) | 0xFFF3B0);
+			}
+			if (tab == TalentTab.TALENTS && hover) ctx.drawBorder(v.x() - 2, v.y() - 2, 28, 28, 0x55FFF3B0);
+			if (tab == TalentTab.TALENTS && available && !hover) {
+				int pulse = (int) (16 + 14 * (0.5 + 0.5 * Math.sin(pulseNow / 450.0)));
+				ctx.drawBorder(v.x() - 1, v.y() - 1, 26, 26, (pulse << 24) | 0xF0C060);
 			}
 			UiStyle.frame(ctx, v.x(), v.y(), frame, lit, hover);
 			if (v.key().equals(selectedNode)) {
