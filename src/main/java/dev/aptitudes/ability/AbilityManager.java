@@ -189,6 +189,7 @@ public final class AbilityManager {
 		if (empowered) RoleResources.consumeEmpower(player, role);
 		if (overload) cooldown = cooldown / 2;
 		Keystones.afterCast(player, overload);
+		Trance.onSkill(player); // F2: usar una habilidad llena la sintonía
 		cooldowns(player).start(cooldownKey, now, cooldown);
 		if (ServerPlayNetworking.canSend(player, CooldownPayload.ID)) {
 			ServerPlayNetworking.send(player, new CooldownPayload(slot, cooldown));

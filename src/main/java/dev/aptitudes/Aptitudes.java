@@ -76,6 +76,7 @@ public class Aptitudes implements ModInitializer {
 		dev.aptitudes.world.BossArenas.register();
 		dev.aptitudes.ability.BrainTargetFilter.register();
 		dev.aptitudes.ability.Combos.register();
+		dev.aptitudes.ability.Trance.register();
 		XpEvents.register();
 		RoleEvents.register();
 		dev.aptitudes.unique.UniqueEffects.register();
