@@ -153,6 +153,13 @@ public final class ModItems {
 	/** Corazón de campeón: solo lo sueltan los campeones. */
 	public static final Item CHAMPION_HEART = register("champion_heart",
 			new Item(new Item.Settings().rarity(Rarity.EPIC).fireproof()));
+	// Paso 2 de la reinvocación: sellos de invocación (fase C). Texturas, receta y textos: paso 3.
+	public static final Item FACELESS_COLOSSUS_SEAL = register("faceless_colossus_seal",
+			new dev.aptitudes.boss.SummonSealItem("faceless_colossus", CHAMPION_HEART, new Item.Settings().rarity(Rarity.EPIC)));
+	public static final Item DISMANTLED_GUARDIAN_SEAL = register("dismantled_guardian_seal",
+			new dev.aptitudes.boss.SummonSealItem("dismantled_guardian", ELITE_ESSENCE, new Item.Settings().rarity(Rarity.EPIC)));
+	public static final Item ANCIENT_AUTOMATON_SEAL = register("ancient_automaton_seal",
+			new dev.aptitudes.boss.SummonSealItem("ancient_automaton", ELITE_ESSENCE, new Item.Settings().rarity(Rarity.EPIC)));
 
 	public static final Item RUNE_FLAME = register("rune_flame", new dev.aptitudes.rune.RuneItem(dev.aptitudes.rune.RuneKind.FLAME, new Item.Settings().rarity(Rarity.UNCOMMON)));
 	public static final Item RUNE_LEECH = register("rune_leech", new dev.aptitudes.rune.RuneItem(dev.aptitudes.rune.RuneKind.LEECH, new Item.Settings().rarity(Rarity.RARE)));

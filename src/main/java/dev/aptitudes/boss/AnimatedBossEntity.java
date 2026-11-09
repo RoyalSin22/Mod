@@ -93,6 +93,11 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 		return phase;
 	}
 
+	/** Fase con la que vuelve un jefe reinvocado (paso 2 de la reinvocación). Nunca baja de la fase actual. */
+	public void restorePhase(int restored) {
+		phase = Math.max(phase, Math.max(1, Math.min(3, restored)));
+	}
+
 	@Override
 	protected void initGoals() {
 		goalSelector.add(0, new SwimGoal(this));

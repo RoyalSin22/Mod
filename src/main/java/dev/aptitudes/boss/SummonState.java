@@ -4,9 +4,11 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.PersistentState;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Fase C del plan de avance (cableado de la reinvocación, paso 1): registro por mundo de la última derrota y de la
@@ -21,6 +23,18 @@ public final class SummonState extends PersistentState {
 	private static final String NAME = "aptitudes_summon";
 
 	private final Map<String, Defeat> defeats = new HashMap<>();
+	/** Instancia viva de cada jefe invocado con un sello (el UUID de la entidad). */
+	private final Map<String, UUID> active = new HashMap<>();
+
+	@Nullable
+	public UUID active(String bossId) {
+		return active.get(bossId);
+	}
+
+	public void setActive(String bossId, UUID uuid) {
+		active.put(bossId, uuid);
+		markDirty();
+	}
 
 	public static SummonState get(MinecraftServer server) {
 		return server.getOverworld().getPersistentStateManager().getOrCreate(TYPE, NAME);
@@ -57,6 +71,9 @@ public final class SummonState extends PersistentState {
 			list.put(id, entry);
 		});
 		nbt.put("defeats", list);
+		NbtCompound actives = new NbtCompound();
+		active.forEach((id, uuid) -> actives.putUuid(id, uuid));
+		nbt.put("active", actives);
 		return nbt;
 	}
 
@@ -67,6 +84,8 @@ public final class SummonState extends PersistentState {
 			NbtCompound entry = list.getCompound(id);
 			state.defeats.put(id, new Defeat(entry.getLong("tick"), clampPhase(entry.getInt("phase"))));
 		}
+		NbtCompound actives = nbt.getCompound("active");
+		for (String id : actives.getKeys()) state.active.put(id, actives.getUuid(id));
 		return state;
 	}
 }

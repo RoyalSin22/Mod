@@ -105,9 +105,13 @@ Pendiente:
   Decisiones del autor: se invoca con un **objeto**; el jefe **conserva su fase** al reinvocarse. El coste en materiales
   lo fija el proyecto: provisional, 4 Fragmentos de alma y 1 Corazón de campeón (Coloso), 1 Esencia de élite (Guardián y
   Autómata). Cableado en curso, en pasos. **Paso 1 hecho** (sin commit): `boss/SummonState` (estado persistente por
-  mundo con la última derrota y la fase de cada jefe) y `AnimatedBossEntity.onDeath`, que lo registra; compila, 383
-  pruebas. Pendiente: paso 2, objeto «Sello de invocación» que consulta `SummonRules` y `SummonState` y consume los
-  materiales; paso 3, receta, textura y textos en los 11 idiomas.
+  mundo con la última derrota, la fase y la instancia viva de cada jefe) y `AnimatedBossEntity.onDeath`, que lo
+  registra. **Paso 2 hecho** (sin commit): `boss/SummonSealItem` y tres objetos (`faceless_colossus_seal`,
+  `dismantled_guardian_seal`, `ancient_automaton_seal`). Usar un sello comprueba `SummonRules`, cobra 4 Fragmentos de
+  alma y el material propio, invoca al jefe junto al jugador y lo deja en la fase guardada. Compila, 383 pruebas.
+  Limitaciones: la instancia viva solo se busca en el mundo donde se usó el sello; un jefe que nunca se derrotó
+  también puede invocarse con el sello. **Paso 3 pendiente**: texturas, receta, nombres y textos en los 11 idiomas
+  (sin ellos los objetos aparecen sin textura ni nombre y no se pueden fabricar).
 - C2 (hecho en código, sin commit): `temple/TempleRecurrenceRules` (puro). Un templo resuelto no vuelve antes de 3
   días; luego la probabilidad sube linealmente hasta 25 % en 6 días. La tirada es determinista (0–999). Cada jugador
   reclama una vez por instancia (`claim`/`canClaim`). Provisional. Pendiente: el punto 3 del plan (probabilidad por
