@@ -765,7 +765,11 @@ public class RolesScreen extends Screen {
 				ctx.drawBorder(v.x() - grow, v.y() - grow, 24 + grow * 2, 24 + grow * 2, (a << 24) | 0xE6C36A);
 				ctx.fill(v.x() - 2, v.y() - 2, v.x() + 26, v.y() + 26, ((int) (120 * (1f - t)) << 24) | 0xFFF3B0);
 			}
-			if (tab == TalentTab.TALENTS && hover) ctx.drawBorder(v.x() - 2, v.y() - 2, 28, 28, 0x55FFF3B0);
+			if (tab == TalentTab.TALENTS && hover) {
+				ctx.fill(v.x() - 4, v.y() - 4, v.x() + 28, v.y() + 28, 0x30FFD56A);
+				ctx.fill(v.x() - 2, v.y() - 2, v.x() + 26, v.y() + 26, 0x50FFD56A);
+				ctx.drawBorder(v.x() - 2, v.y() - 2, 28, 28, 0xDDFFE9A0);
+			}
 			if (tab == TalentTab.TALENTS && available && !hover) {
 				int pulse = (int) (16 + 14 * (0.5 + 0.5 * Math.sin(pulseNow / 450.0)));
 				ctx.drawBorder(v.x() - 1, v.y() - 1, 26, 26, (pulse << 24) | 0xF0C060);
