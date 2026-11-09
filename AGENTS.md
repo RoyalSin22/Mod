@@ -107,9 +107,6 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
 - **Si `git commit` o `git push` fallan, no improvises**: no reintentes con otros comandos, no cambies la
   configuración de Git ni amplíes permisos. Copia el error exacto, deja los cambios preparados (`git add`)
   y avisa al autor, que hará el commit desde su terminal.
-- **Trabajas en un worktree propio** (la app de Codex lo crea en `%USERPROFILE%\.codex\worktrees\…`). Al
-  terminar, indica en el informe la **ruta del worktree** y la **rama**, para que el autor haga el commit
-  y el push ahí antes de cerrar la tarea (si la tarea se cierra sin commit, el trabajo se pierde).
 - **Atribución**: el trailer de sesión (`Claude-Session: …`) es lo único que se añade a los commits. No se
   incluye ningún nombre o identificador de modelo en commits, PRs, código ni documentación del repositorio.
 - **Una versión por tarea y por rama.** No mezcles en el mismo directorio cambios de dos versiones.
@@ -180,7 +177,7 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
 ## 8. Al terminar una tarea
 
 Entrega un informe breve con: qué cambiaste y por qué, archivos tocados, resultado real de
-`gradlew build`, riesgos o efectos de balance, y el commit propuesto (sin ejecutarlo).
+`gradlew build`, riesgos o efectos de balance, y el commit realizado (hash y mensaje).
 
 ## 9. Herramientas del proyecto (plugins, skills y conectores)
 
@@ -197,7 +194,7 @@ Unity, Zapier, Supabase, Cloudflare, datos, diseño) **no aplican a este mod**: 
 | `java-backend-skills:java-concurrency` | Ciclo de vida de jefes, temporizadores y colas por servidor | Tareas de servidor con estado en memoria |
 | `superpowers:test-driven-development` | Escribir la prueba de la regla antes del código | Reglas puras nuevas |
 | `superpowers:verification-before-completion` | Exigir la salida real de `./gradlew build` antes de decir que algo funciona | Siempre, antes de informar |
-| `superpowers:using-git-worktrees` / `finishing-a-development-branch` | Worktrees por tarea (política de §4) | Al empezar una tarea |
+| `superpowers:using-git-worktrees` / `finishing-a-development-branch` | Worktrees por tarea, si se usan | Al empezar una tarea |
 | `pr-review-toolkit:silent-failure-hunter`, `type-design-analyzer` | Revisión de catch vacíos y de tipos nuevos | Antes de integrar en `main` |
 | `coderabbit:code-review` | Revisión previa al commit (requiere la CLI de CodeRabbit) | Si la CLI está instalada |
 | `sonarqube:sonar-analyze` | Calidad y seguridad (requiere un proyecto en SonarQube) | Cuando el autor lo active |
