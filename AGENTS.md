@@ -128,6 +128,9 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
   guardan casi siempre **por clave** (habilidades, roles, elementos y nodos), pero algunos campos son
   índices (`active_element` o las ranuras equipadas). Añadir valores al final de un enum o de una lista
   es seguro; renombrar, reordenar o borrar no.
+- **Puestos de aldeano**: para que un bloque sea puesto de trabajo de un aldeano vanilla, añade su tipo de punto
+  de interés a la etiqueta `minecraft:acquirable_job_site` (archivo `data/minecraft/tags/point_of_interest_type/`
+  con `"replace": false`). No hace falta mixin (el aldeano del gremio lo usa).
 - **Prefiere no añadir mixins.** Si hacen falta, `defaultRequire = 1` hace que un nombre de método
   equivocado tumbe el juego al arrancar: comprueba el nombre exacto en Yarn 1.21.1.
 - **Aritmética**: valores que vienen del cliente o de la configuración → cálculo en `long` y límites

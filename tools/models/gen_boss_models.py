@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Modelos, animaciones y texturas de prueba de los jefes animados (v63, C4) para GeckoLib.
+"""Modelos, animaciones y texturas de los jefes animados (v63, GeckoLib).
 
-Genera, a partir de una descripción de huesos y cubos en este archivo:
+Genera, a partir de las descripciones de este archivo:
   geo/entity/<jefe>.geo.json, animations/entity/<jefe>.animation.json y textures/entity/<jefe>.png.
-Son la base jugable; K5 puede sustituirlos por modelos hechos en Blockbench (mismos nombres de hueso y de
-animación, ver docs/V63_JEFES.md). Arte original.
+Las coordenadas de cada cubo son absolutas en el modelo (píxeles de 1/16 de bloque, origen en los pies). Los
+huesos y las animaciones son el contrato de docs/V63_JEFES.md: K5 puede sustituir los modelos por otros
+hechos en Blockbench con los mismos nombres de hueso y de animación. Arte original.
 
 Uso: python3 tools/models/gen_boss_models.py src/main/resources/assets/aptitudes [--check] [--preview hoja.png]
 """
@@ -16,40 +17,63 @@ from pathlib import Path
 
 from PIL import Image
 
-TEX = 128
-
-# ------------------------------------------------------------------ Coloso Sin Rostro
-# (hueso, padre, pivote, rotación inicial, [(origen, tamaño, material)])
-COLOSSUS_BONES = [
-    ('root', None, [0, 0, 0], None, []),
-    ('right_leg', 'root', [-5, 24, 0], None, [([-8.5, 0, -4], [7, 24, 8], 'greave')]),
-    ('left_leg', 'root', [5, 24, 0], None, [([1.5, 0, -4], [7, 24, 8], 'greave')]),
-    ('body', 'root', [0, 24, 0], None, [([-9.5, 24, -5.5], [19, 3, 11], 'leather'),
-                                        ([-9, 27, -5], [18, 17, 10], 'plate')]),
-    ('head', 'body', [0, 44, 0], None, [([-5, 44, -5], [10, 10, 10], 'helm'),
-                                        ([-1, 54, -4], [2, 2, 8], 'crest')]),
-    ('right_arm', 'body', [-12, 41, 0], None, [([-17, 37, -5], [8, 7, 10], 'plate'),
-                                               ([-16, 21, -3], [6, 16, 6], 'iron')]),
-    ('left_arm', 'body', [12, 41, 0], None, [([9, 37, -5], [8, 7, 10], 'plate'),
-                                             ([10, 21, -3], [6, 16, 6], 'iron')]),
-    # Espadón en la mano derecha, apuntando al frente y abajo.
-    ('sword', 'right_arm', [-13, 23, 0], [-60, 0, 0], [([-14, 19, -1], [2, 8, 2], 'leather'),
-                                                       ([-16.5, 17, -2], [7, 2, 4], 'iron'),
-                                                       ([-15, -9, -1], [4, 26, 2], 'blade')]),
-]
+TEX = 256
 
 MATERIALS = {
-    'plate': (58, 61, 72), 'iron': (96, 100, 112), 'greave': (46, 48, 58), 'helm': (70, 73, 84),
-    'leather': (92, 64, 44), 'crest': (176, 66, 58), 'blade': (178, 186, 196),
-    'brass': (176, 132, 60), 'gauntlet': (150, 124, 62), 'core': (235, 70, 60), 'shield': (84, 96, 120),
+    'plate': (60, 63, 76), 'iron': (98, 102, 116), 'greave': (48, 50, 62), 'helm': (72, 75, 88),
+    'dark': (30, 32, 40), 'leather': (96, 66, 46), 'cloth': (100, 30, 38), 'bone': (214, 204, 176),
+    'spike': (122, 118, 130), 'brass': (182, 138, 64), 'gauntlet': (154, 128, 66), 'shield': (84, 98, 124),
+    'core': (240, 74, 62), 'crest': (178, 68, 60), 'blade': (182, 190, 200),
 }
 
-# Animaciones: {nombre: (duración, bucle, {hueso: {'rotation'|'position': {t: [x, y, z]}}})}
+# Materiales con relieve en la textura: remaches (plate, iron, helm…), tejido (cloth), rejilla (dark), etc.
+RIVETED = {'plate', 'iron', 'helm', 'greave', 'shield', 'gauntlet'}
+
+
+def box(x, y, z, w, h, d, mat):
+    """Cubo por su esquina mínima y su tamaño (formato de (origen, tamaño, material))."""
+    return ([x, y, z], [w, h, d], mat)
+
+
+# ------------------------------------------------------------------ Coloso Sin Rostro
+# Gigante con armadura de placas, capa, hombreras con púas, casco sin rostro y espadón.
+COLOSSUS_BONES = [
+    ('root', None, [0, 0, 0], None, []),
+    ('right_leg', 'root', [-5, 24, 0], None, [
+        box(-9, 0, -4, 8, 22, 8, 'greave'), box(-9.5, 0, -4.5, 9, 3, 9, 'dark'),
+        box(-8.5, 15, -4.6, 7, 4, 1, 'plate'), box(-8, 4, -4.6, 6, 6, 1, 'cloth')]),
+    ('left_leg', 'root', [5, 24, 0], None, [
+        box(1, 0, -4, 8, 22, 8, 'greave'), box(0.5, 0, -4.5, 9, 3, 9, 'dark'),
+        box(1.5, 15, -4.6, 7, 4, 1, 'plate'), box(2, 4, -4.6, 6, 6, 1, 'cloth')]),
+    ('body', 'root', [0, 24, 0], None, [
+        box(-9.5, 24, -5.5, 19, 3, 11, 'leather'), box(-9, 27, -5, 18, 17, 10, 'plate'),
+        box(-6, 31, -5.6, 12, 2, 1, 'iron'), box(-1.5, 34, -5.7, 3, 3, 1, 'core'),
+        box(-1, 24, -5.7, 2, 2, 1, 'brass'), box(-6, 42, -3, 12, 2, 6, 'iron')]),
+    ('cape', 'body', [0, 40, 5], None, [box(-7, 20, 5, 14, 22, 1, 'cloth'), box(-7, 20, 5.8, 3, 3, 0.4, 'dark')]),
+    ('head', 'body', [0, 44, 0], None, [
+        box(-5, 44, -5, 10, 10, 10, 'helm'), box(-4, 47, -5.4, 8, 2, 0.6, 'dark'),
+        box(-0.5, 52, -4, 1, 4, 8, 'crest'), box(-7, 50, -2, 2, 4, 2, 'bone'), box(5, 50, -2, 2, 4, 2, 'bone')]),
+    ('right_arm', 'body', [-12, 41, 0], None, [
+        box(-17, 37, -5, 8, 7, 10, 'plate'), box(-18, 35, -5.5, 10, 2, 11, 'iron'),
+        box(-18, 44, -3, 2, 3, 2, 'spike'), box(-14, 45, -3, 2, 3, 2, 'spike'), box(-10, 44, -3, 2, 3, 2, 'spike'),
+        box(-16, 21, -3, 6, 16, 6, 'iron'), box(-16.5, 15, -3.5, 7, 6, 7, 'gauntlet')]),
+    ('left_arm', 'body', [12, 41, 0], None, [
+        box(9, 37, -5, 8, 7, 10, 'plate'), box(8, 35, -5.5, 10, 2, 11, 'iron'),
+        box(16, 44, -3, 2, 3, 2, 'spike'), box(12, 45, -3, 2, 3, 2, 'spike'), box(8, 44, -3, 2, 3, 2, 'spike'),
+        box(10, 21, -3, 6, 16, 6, 'iron'), box(9, 17, -4, 8, 8, 7, 'shield'), box(9.5, 15, -3, 7, 4, 5, 'gauntlet')]),
+    # Espadón en la mano derecha, apuntando al frente y abajo.
+    ('sword', 'right_arm', [-13, 23, 0], [-60, 0, 0], [
+        box(-14, 19, -1, 2, 8, 2, 'leather'), box(-16.5, 17, -2, 7, 2, 4, 'iron'),
+        box(-14.5, 16, -1.5, 3, 2, 3, 'brass'), box(-15, -9, -1, 4, 26, 2, 'blade'),
+        box(-14.5, -8, -1.6, 1, 24, 0.4, 'iron')]),
+]
+
 COLOSSUS_ANIMS = {
     'idle': (3.0, True, {
         'body': {'rotation': {0: [0, 0, 0], 1.5: [2, 0, 0], 3.0: [0, 0, 0]}},
         'head': {'rotation': {0: [0, 0, 0], 1.5: [-2, 0, 0], 3.0: [0, 0, 0]}},
         'left_arm': {'rotation': {0: [0, 0, 0], 1.5: [0, 0, -3], 3.0: [0, 0, 0]}},
+        'cape': {'rotation': {0: [0, 0, 0], 1.5: [4, 0, 0], 3.0: [0, 0, 0]}},
     }),
     'walk': (1.2, True, {
         'right_leg': {'rotation': {0: [25, 0, 0], 0.6: [-25, 0, 0], 1.2: [25, 0, 0]}},
@@ -83,20 +107,26 @@ COLOSSUS_ANIMS = {
 }
 
 # ------------------------------------------------------------------ Guardián Desmontado
-# Piezas: yelmo (cabeza), escudo (brazo izquierdo) y guanteletes (ambos brazos). Solo el núcleo (pecho) brilla.
+# Armadura vacía con las piezas separadas: yelmo, escudo y guanteletes; el pecho muestra el núcleo.
 GUARDIAN_BONES = [
     ('root', None, [0, 0, 0], None, []),
-    ('left_leg', 'root', [2, 12, 0], None, [([-0.5, 0, -2.5], [4, 12, 5], 'iron')]),
-    ('right_leg', 'root', [-2, 12, 0], None, [([-3.5, 0, -2.5], [4, 12, 5], 'iron')]),
-    ('body', 'root', [0, 12, 0], None, [([-5, 12, -3], [10, 12, 6], 'plate'),
-                                        ([-4, 21, -2.5], [8, 4, 5], 'brass'),
-                                        ([-1.5, 14, -3.4], [3, 3, 1], 'core')]),
-    ('head', 'body', [0, 24, 0], None, [([-3, 24, -3], [6, 8, 6], 'helm'),
-                                        ([-0.5, 30, -3.5], [1, 3, 1], 'core')]),
-    ('left_arm', 'body', [5, 22, 0], None, [([5, 12, -1.5], [3, 12, 3], 'iron'),
-                                            ([4, 18, -4], [5, 8, 1.5], 'shield')]),
-    ('right_arm', 'body', [-5, 22, 0], None, [([-8, 12, -1.5], [3, 12, 3], 'iron'),
-                                              ([-9, 11, -1.5], [4, 4, 3], 'gauntlet')]),
+    ('left_leg', 'root', [2, 12, 0], None, [
+        box(-0.5, 0, -2.5, 4, 12, 5, 'iron'), box(-1, 0, -3, 5, 3, 6, 'dark'), box(-0.5, 6, -2.8, 4, 3, 1, 'plate')]),
+    ('right_leg', 'root', [-2, 12, 0], None, [
+        box(-3.5, 0, -2.5, 4, 12, 5, 'iron'), box(-4, 0, -3, 5, 3, 6, 'dark'), box(-3.5, 6, -2.8, 4, 3, 1, 'plate')]),
+    ('body', 'root', [0, 12, 0], None, [
+        box(-5, 12, -3, 10, 4, 6, 'plate'), box(-4, 16, -2, 8, 1, 4, 'dark'), box(-5, 17, -3, 10, 7, 6, 'plate'),
+        box(-4, 21, -2.5, 8, 4, 5, 'brass'), box(-1.5, 14, -3.4, 3, 3, 1, 'core'), box(-3, 22, -3.4, 6, 1, 1, 'iron'),
+        box(-6, 12, -1, 1, 8, 1, 'iron'), box(5, 12, 1, 1, 8, 1, 'iron')]),
+    ('head', 'body', [0, 24, 0], None, [
+        box(-3, 24, -3, 6, 8, 6, 'helm'), box(-2, 27, -3.4, 4, 2, 0.6, 'dark'),
+        box(-0.5, 30, -3.5, 1, 3, 1, 'core'), box(-3.5, 31, -2, 1, 2, 4, 'brass'), box(2.5, 31, -2, 1, 2, 4, 'brass')]),
+    ('left_arm', 'body', [5, 22, 0], None, [
+        box(5, 12, -1.5, 3, 12, 3, 'iron'), box(4, 18, -4, 5, 8, 1.5, 'shield'), box(5, 16, -3, 4, 4, 4, 'shield'),
+        box(5.5, 21, -4.2, 2, 2, 0.4, 'core')]),
+    ('right_arm', 'body', [-5, 22, 0], None, [
+        box(-8, 12, -1.5, 3, 12, 3, 'iron'), box(-9, 11, -1.5, 4, 4, 3, 'gauntlet'),
+        box(-10, 8, -1, 1, 4, 1, 'gauntlet'), box(-8.5, 8, -1, 1, 4, 1, 'gauntlet'), box(-7.2, 8, -1, 1, 4, 1, 'gauntlet')]),
 ]
 
 GUARDIAN_ANIMS = {
@@ -126,17 +156,25 @@ GUARDIAN_ANIMS = {
 }
 
 # ------------------------------------------------------------------ Autómata Antiguo
+# Constructo de bronce y piedra: pistones en las piernas, anillos de unión, lente en el pecho y cañón en el brazo.
 AUTOMATON_BONES = [
     ('root', None, [0, 0, 0], None, []),
-    ('left_leg', 'root', [2.5, 12, 0], None, [([0.5, 0, -2], [4, 12, 4], 'iron')]),
-    ('right_leg', 'root', [-2.5, 12, 0], None, [([-4.5, 0, -2], [4, 12, 4], 'iron')]),
-    ('body', 'root', [0, 12, 0], None, [([-5, 12, -4], [10, 12, 8], 'plate'),
-                                        ([-3, 22, -3], [6, 4, 6], 'brass')]),
-    ('head', 'body', [0, 24, 0], None, [([-3, 24, -3], [6, 6, 6], 'plate'),
-                                        ([-1, 27, -3.5], [2, 2, 1], 'core')]),
-    ('left_arm', 'body', [5, 22, 0], None, [([5, 14, -1.5], [4, 10, 3], 'iron')]),
-    ('right_arm', 'body', [-5, 22, 0], None, [([-9, 14, -1.5], [4, 10, 3], 'iron'),
-                                              ([-9, 8, -2], [4, 4, 4], 'brass')]),
+    ('left_leg', 'root', [2.5, 12, 0], None, [
+        box(0.5, 0, -2, 4, 12, 4, 'iron'), box(1, 4, -2.6, 3, 8, 1, 'brass'), box(0, 0, -3, 6, 2, 6, 'dark')]),
+    ('right_leg', 'root', [-2.5, 12, 0], None, [
+        box(-4.5, 0, -2, 4, 12, 4, 'iron'), box(-4, 4, -2.6, 3, 8, 1, 'brass'), box(-5, 0, -3, 6, 2, 6, 'dark')]),
+    ('body', 'root', [0, 12, 0], None, [
+        box(-5, 12, -4, 10, 12, 8, 'plate'), box(-3, 22, -3, 6, 4, 6, 'brass'),
+        box(-5.5, 14, -4.2, 11, 1, 0.6, 'brass'), box(-5.5, 20, -4.2, 11, 1, 0.6, 'brass'),
+        box(-3, 16, -4.3, 6, 3, 0.5, 'dark'), box(-1, 17, -4.5, 2, 2, 0.5, 'core')]),
+    ('head', 'body', [0, 24, 0], None, [
+        box(-3, 24, -3, 6, 6, 6, 'plate'), box(-1.5, 26, -3.4, 3, 3, 1, 'core'), box(-2, 25.5, -3.6, 4, 4, 0.4, 'brass'),
+        box(-0.5, 30, -0.5, 1, 4, 1, 'brass')]),
+    ('left_arm', 'body', [5, 22, 0], None, [
+        box(5, 14, -1.5, 4, 10, 3, 'iron'), box(4, 21, -2, 5, 4, 4, 'brass'), box(5, 9, -2, 4, 5, 4, 'plate')]),
+    ('right_arm', 'body', [-5, 22, 0], None, [
+        box(-9, 14, -1.5, 4, 10, 3, 'iron'), box(-9, 21, -2, 5, 4, 4, 'brass'),
+        box(-11, 11, -3, 3, 3, 8, 'dark'), box(-11.5, 11.5, -4, 4, 4, 1, 'brass'), box(-9, 8, -2, 4, 4, 4, 'brass')]),
 ]
 
 AUTOMATON_ANIMS = {
@@ -233,6 +271,31 @@ def animations(anims):
     return {'format_version': '1.8.0', 'animations': out}
 
 
+def detail(mat, xx, yy, fw, fh, edge, base, rnd):
+    """Detalle por material: remaches, tejido, rejilla, veta, núcleo luminoso y puntadas."""
+    if mat in RIVETED and not edge and xx % 4 == 2 and yy % 4 == 2:
+        return 30  # remache
+    if mat == 'cloth' and (xx + yy) % 2 == 0:
+        return -8  # tejido
+    if mat == 'dark' and xx % 3 == 0:
+        return -10  # rejilla
+    if mat == 'brass' and yy % 3 == 0:
+        return 26  # estría
+    if mat == 'leather' and xx % 5 == 0 and not edge:
+        return -14  # puntada
+    if mat == 'bone' and rnd.random() < 0.06:
+        return -22  # grieta
+    if mat == 'core':
+        cx, cy = (fw - 1) / 2, (fh - 1) / 2
+        d = ((xx - cx) ** 2 + (yy - cy) ** 2) ** 0.5 / max(1, (cx + cy) / 2)
+        return int(60 * (1 - min(1, d)))  # gradiente: el centro brilla más
+    if mat == 'shield' and (abs(xx - (fw - 1) / 2) < 1 or abs(yy - (fh - 1) / 2) < 1):
+        return 22  # cruz del escudo
+    if mat == 'blade' and xx in (0, fw - 1):
+        return 0  # filo (el color se cambia abajo)
+    return 0
+
+
 def texture(boss, bones):
     rnd = random.Random('tex-' + boss)
     img = Image.new('RGBA', (TEX, TEX), (0, 0, 0, 0))
@@ -248,14 +311,15 @@ def texture(boss, bones):
         for fx, fy, fw, fh, light in faces:
             for yy in range(fh):
                 for xx in range(fw):
-                    n = rnd.randint(-6, 6)
+                    n = rnd.randint(-5, 5)
                     edge = xx in (0, fw - 1) or yy in (0, fh - 1)
-                    k = light * (0.82 if edge else 1.0)
-                    c = [max(0, min(255, int(ch * k) + n)) for ch in base]
-                    if mat in ('plate', 'greave', 'helm') and (xx + 2 * yy) % 7 == 0 and not edge:
-                        c = [min(255, ch + 22) for ch in c]  # remaches
+                    k = light * (0.8 if edge else 1.0)
+                    extra = detail(mat, xx, yy, fw, fh, edge, base, rnd)
+                    c = [max(0, min(255, int(ch * k) + n + extra)) for ch in base]
                     if mat == 'blade' and xx in (0, fw - 1):
                         c = [200, 70, 60]  # filo rojizo
+                    if mat == 'core' and edge:
+                        c = [min(255, ch + 40) for ch in c]  # aro brillante alrededor del núcleo
                     px[fx + xx, fy + yy] = tuple(c) + (255,)
     buf = BytesIO()
     img.save(buf, format='PNG', optimize=False)
@@ -275,7 +339,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('assets', type=Path)
     parser.add_argument('--check', action='store_true')
-    parser.add_argument('--preview', type=Path)
+    parser.add_argument('--preview', type=Path, help='Hoja de texturas de los tres jefes (solo para revisar)')
     args = parser.parse_args()
     stale = []
     for path, data in files(args.assets).items():
@@ -286,7 +350,10 @@ def main():
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(data)
     if args.preview:
-        texture('faceless_colossus', COLOSSUS_BONES)[1].resize((TEX * 4, TEX * 4), Image.NEAREST).save(args.preview)
+        sheet = Image.new('RGBA', (TEX * 3, TEX), (40, 42, 54, 255))
+        for i, (boss, (bones, _)) in enumerate(BOSSES.items()):
+            sheet.paste(texture(boss, bones)[1], (i * TEX, 0), texture(boss, bones)[1])
+        sheet.resize((sheet.width * 2, sheet.height * 2), Image.NEAREST).save(args.preview)
     if stale:
         raise SystemExit('Recursos de jefes ausentes o desactualizados:\n' + '\n'.join(stale))
     print(f'{len(BOSSES)} jefe(s): modelo, animaciones y textura {"comprobados" if args.check else "generados"}')

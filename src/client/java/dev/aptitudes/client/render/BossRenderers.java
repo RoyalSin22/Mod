@@ -7,8 +7,7 @@ import dev.aptitudes.boss.BossEntities;
 import dev.aptitudes.boss.FacelessColossusEntity;
 import dev.aptitudes.boss.GuardianEntity;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
@@ -40,11 +39,7 @@ public final class BossRenderers {
 			renderer.withScale(1.0f);
 			return renderer;
 		});
-		EntityRendererRegistry.register(BossEntities.AUTOMATON_ORB, ctx -> new EntityRenderer<AutomatonOrbEntity>(ctx) {
-			@Override
-			public Identifier getTexture(AutomatonOrbEntity entity) {
-				return Identifier.ofVanilla("textures/misc/white.png");
-			}
-		});
+		EntityRendererRegistry.register(BossEntities.AUTOMATON_ORB,
+				ctx -> new FlyingItemEntityRenderer<AutomatonOrbEntity>(ctx, 1.4f, true));
 	}
 }

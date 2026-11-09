@@ -2,9 +2,12 @@ package dev.aptitudes.boss;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.FlyingItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.item.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -19,7 +22,7 @@ import net.minecraft.world.World;
  * Esfera de energía del Autómata Antiguo (v63). Vuela recta a velocidad constante y hiere al primero que toca,
  * salvo a su dueño. Si un jugador la golpea, se devuelve: la siguiente vez que alcance al Autómata lo aturde.
  */
-public class AutomatonOrbEntity extends ProjectileEntity {
+public class AutomatonOrbEntity extends ProjectileEntity implements FlyingItemEntity {
 	private static final int LIFETIME = 200;
 	private static final float DAMAGE = 6f;
 	private static final float DEFLECTED_DAMAGE = 4f;
@@ -42,6 +45,12 @@ public class AutomatonOrbEntity extends ProjectileEntity {
 
 	public boolean deflected() {
 		return deflected;
+	}
+
+	/** Se dibuja como una bola de fuego: brillante y lo bastante grande para verla venir. */
+	@Override
+	public ItemStack getStack() {
+		return new ItemStack(Items.FIRE_CHARGE);
 	}
 
 	@Override

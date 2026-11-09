@@ -1,5 +1,17 @@
 # Pruebas de Aptitudes
 
+## v63d — Correcciones: aldeano del gremio, modelos y esferas
+
+1. Aldeano del gremio: en un mundo con operador, `/summon minecraft:villager` junto a dos
+   `aptitudes:guild_desk`. Tras unos 90 segundos, `/data get entity @e[type=villager,sort=nearest,limit=1] VillagerData`
+   debe dar `profession: "aptitudes:guildmaster"`. Verificado por Claude en el cliente de desarrollo.
+   (Control: un atril de vanilla da bibliotecario en ~90 s con el mismo método.)
+2. Modelos: los tres jefes se ven con más piezas que antes. Verificado por Claude en el cliente de desarrollo
+   (Coloso con espadón y armadura, Guardián y Autómata con sus barras).
+3. Esferas del Autómata: la esfera ahora se dibuja como bola de fuego. Verificado por Claude solo de forma
+   parcial: sus golpes restan vida al jugador (22 → 13), pero no se consiguió un encuadre con la esfera a la vista.
+   Compruébalo tú: el Autómata lanza esferas visibles, y una esfera que golpeas vuelve hacia él y lo aturde.
+
 ## v63c — Guardián Desmontado y Autómata Antiguo
 
 Automáticas: `boss/PieceBossRulesTest` y `guide/BestiaryRulesTest` (nueve jefes en el bestiario).

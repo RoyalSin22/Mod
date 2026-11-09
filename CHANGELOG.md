@@ -12,6 +12,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   agita las alas al caer y el slime se estira durante el salto. El poder del murciélago da un
   vuelo corto que se dirige con la mirada.
 
+### Corregido
+- **Aldeano del gremio.** Un aldeano sin trabajo ahora se convierte en Maestro del gremio al encontrar una Mesa
+  del gremio. Vanilla solo ofrece como puesto de trabajo los tipos de su etiqueta
+  `minecraft:acquirable_job_site`; el mod la amplía con un dato de etiqueta, sin mixins.
+- **Modelos de los jefes.** Los tres jefes tienen más piezas y detalle (placas, remaches, capa, púas,
+  pistones, lente y cañón). La textura pasa a 256 px.
+
 ### Añadido
 - **v63 — Jefes animados.** El mod requiere ahora **GeckoLib 4.7.7**. Tres jefes animados: el Coloso Sin
   Rostro (tajo en arco, golpe descendente con onda y, con la armadura agrietada, embestida), el Guardián
