@@ -183,7 +183,7 @@ Las **animaciones e iconos** ya se pueden cambiar con un **resource pack** (text
 | v61 | Grimorio G1–G5 (bestiario y buscador) | Claude ✔ (2026-11-09) |
 | v62 | Objetos y gráficos A1, A6 (sin dependencias) | Claude ✔ (2026-11-09) |
 | v63 | Primer bloque de jefes originales (Coloso Sin Rostro, Guardián Desmontado, Autómata Antiguo) + estructuras, con **GeckoLib** | Claude (diseño) + Codex |
-| v64 | Templos de puzle y Vasos de vida | Codex |
+| v64 | Templos de puzle y Vasos de vida | Claude ✔ (2026-11-09) |
 | v65 | Sinergias Y1–Y5 | Claude |
 | v66 | Datapack D1–D2 (sobre la base de talentos de v55) | Claude |
 | v67 | Combate avanzado S3 (parada), mensajes en el suelo (S5) y ecos de muerte (S6); S4 (rodar con estamina) si se confirma | Claude |

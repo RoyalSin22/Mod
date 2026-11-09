@@ -23,12 +23,15 @@ public final class ModWorldGen {
 			Aptitudes.id("bonfire_shrine"), new BonfireShrineFeature(DefaultFeatureConfig.CODEC));
 	public static final Feature<DefaultFeatureConfig> CAMP = Registry.register(Registries.FEATURE,
 			Aptitudes.id("camp"), new CampFeature(DefaultFeatureConfig.CODEC));
+	/** v64: Templo sellado (puzle, guardián y Relicario). */
+	public static final Feature<DefaultFeatureConfig> TEMPLE = Registry.register(Registries.FEATURE,
+			Aptitudes.id("temple"), new TempleFeature(DefaultFeatureConfig.CODEC));
 
 	private ModWorldGen() {
 	}
 
 	public static void init() {
-		for (String id : new String[]{"tower", "bonfire_shrine", "camp"}) {
+		for (String id : new String[]{"tower", "bonfire_shrine", "camp", "temple"}) {
 			BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.SURFACE_STRUCTURES,
 					RegistryKey.of(RegistryKeys.PLACED_FEATURE, Aptitudes.id(id)));
 		}

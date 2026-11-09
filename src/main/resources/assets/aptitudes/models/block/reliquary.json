@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "aptitudes:block/reliquary_top",
+    "side": "aptitudes:block/reliquary_side",
+    "bottom": "aptitudes:block/reliquary_bottom"
+  }
+}

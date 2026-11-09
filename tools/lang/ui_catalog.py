@@ -1686,3 +1686,37 @@ item.aptitudes.rarity.uncommon¦Raridade: incomum¦Rareté : peu commun¦Seltenh
 item.aptitudes.rarity.rare¦Raridade: rara¦Rareté : rare¦Seltenheit: selten
 item.aptitudes.rarity.epic¦Raridade: épica¦Rareté : épique¦Seltenheit: episch
 """)
+
+# v64 (K6): Templos sellados y Vasos de vida.
+add('', """
+block.aptitudes.sealed_stone¦Pedra selada¦Pierre scellée¦Versiegelter Stein
+block.aptitudes.temple_seal¦Selo do templo¦Sceau du temple¦Tempelsiegel
+block.aptitudes.reliquary¦Relicário¦Reliquaire¦Reliquiar
+item.aptitudes.temple_key¦Chave do templo¦Clé du temple¦Tempelschlüssel
+item.aptitudes.temple_key.tooltip¦Abre o Relicário do templo cujo guardião a deixou cair.¦Ouvre le Reliquaire du temple dont le gardien l'a lâchée.¦Öffnet das Reliquiar des Tempels, dessen Wächter ihn fallen ließ.
+item.aptitudes.temple_key.blank¦Uma chave vazia: não pertence a nenhum templo.¦Une clé vide : elle n'appartient à aucun temple.¦Ein leerer Schlüssel: Er gehört zu keinem Tempel.
+item.aptitudes.life_vessel¦Vaso de vida¦Vase de vie¦Lebensgefäß
+item.aptitudes.life_vessel.tooltip¦Use: +1 coração permanente (cada vaso funciona uma vez).¦Utiliser : +1 cœur permanent (chaque vase ne sert qu'une fois).¦Benutzen: +1 dauerhaftes Herz (jedes Gefäß wirkt nur einmal).
+entity.aptitudes.temple_guardian¦Guardião do templo¦Gardien du temple¦Tempelwächter
+temple.aptitudes.levers_solved¦As alavancas se encaixam no lugar.¦Les leviers s'enclenchent.¦Die Hebel rasten ein.
+temple.aptitudes.plates_reset¦O selo rejeita a ordem. Comece de novo.¦Le sceau refuse cet ordre. Recommencez.¦Das Siegel verwirft die Reihenfolge. Fang von vorn an.
+temple.aptitudes.awakened¦O selo se rompe: o guardião do templo desperta!¦Le sceau se brise : le gardien du temple s'éveille !¦Das Siegel bricht: Der Tempelwächter erwacht!
+temple.aptitudes.guardian_defeated¦O guardião cai e deixa a chave do templo.¦Le gardien tombe et laisse la clé du temple.¦Der Wächter fällt und hinterlässt den Tempelschlüssel.
+temple.aptitudes.seal.levers¦Selo: reproduza com as alavancas as luzes sobre a porta.¦Sceau : reproduisez avec les leviers les lumières au-dessus de la porte.¦Siegel: Stelle mit den Hebeln die Lichter über der Tür nach.
+temple.aptitudes.seal.plates¦Selo: pise nas placas na ordem das velas.¦Sceau : marchez sur les plaques dans l'ordre de leurs bougies.¦Siegel: Betritt die Platten in der Reihenfolge ihrer Kerzen.
+temple.aptitudes.seal.awakened¦Selo: o guardião vigia o santuário.¦Sceau : le gardien veille sur le sanctuaire.¦Siegel: Der Wächter bewacht das Heiligtum.
+temple.aptitudes.seal.cleared¦Selo: este templo está aberto.¦Sceau : ce temple est ouvert.¦Siegel: Dieser Tempel ist offen.
+temple.aptitudes.reliquary.sealed¦O Relicário está trancado. O guardião do templo guarda a chave.¦Le Reliquaire est verrouillé. Le gardien du temple en garde la clé.¦Das Reliquiar ist verschlossen. Der Tempelwächter trägt den Schlüssel.
+temple.aptitudes.reliquary.wrong_key¦Esta chave é de outro templo.¦Cette clé appartient à un autre temple.¦Dieser Schlüssel gehört zu einem anderen Tempel.
+temple.aptitudes.reliquary.opened¦O Relicário se abre.¦Le Reliquaire s'ouvre.¦Das Reliquiar öffnet sich.
+temple.aptitudes.reliquary.vessel¦Você recebe um Vaso de vida.¦Vous recevez un Vase de vie.¦Du erhältst ein Lebensgefäß.
+temple.aptitudes.reliquary.claimed¦Você já pegou seu vaso deste Relicário.¦Vous avez déjà pris votre vase dans ce Reliquaire.¦Du hast dein Gefäß aus diesem Reliquiar schon genommen.
+temple.aptitudes.vessel.used¦Vaso de vida: %s/%s.¦Vase de vie : %s/%s.¦Lebensgefäß: %s/%s.
+temple.aptitudes.vessel.limit¦Você já tem o máximo de vasos.¦Vous avez déjà le maximum de vases.¦Du hast bereits die Höchstzahl an Gefäßen.
+temple.aptitudes.vessel.duplicate¦Este vaso já foi usado.¦Ce vase a déjà été utilisé.¦Dieses Gefäß wurde bereits benutzt.
+temple.aptitudes.vessel.disabled¦Os Vasos de vida estão desativados neste servidor.¦Les Vases de vie sont désactivés sur ce serveur.¦Lebensgefäße sind auf diesem Server deaktiviert.
+advancement.aptitudes.temple_opened.title¦Sem selo¦Descellé¦Entsiegelt
+advancement.aptitudes.temple_opened.description¦Abra o Relicário de um templo com sua chave.¦Ouvrez le Reliquaire d'un temple avec sa clé.¦Öffne das Reliquiar eines Tempels mit seinem Schlüssel.
+advancement.aptitudes.life_vessel.title¦Coração pleno¦Cœur comblé¦Volles Herz
+advancement.aptitudes.life_vessel.description¦Use um Vaso de vida.¦Utilisez un Vase de vie.¦Benutze ein Lebensgefäß.
+""")

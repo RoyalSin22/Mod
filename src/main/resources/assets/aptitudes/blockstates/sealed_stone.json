@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "aptitudes:block/sealed_stone"
+    }
+  }
+}

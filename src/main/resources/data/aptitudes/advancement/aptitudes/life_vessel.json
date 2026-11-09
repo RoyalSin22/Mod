@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "aptitudes:life_vessel"
+    },
+    "title": {
+      "translate": "advancement.aptitudes.life_vessel.title"
+    },
+    "description": {
+      "translate": "advancement.aptitudes.life_vessel.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "aptitudes:aptitudes/temple_opened",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ]
+}

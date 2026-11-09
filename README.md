@@ -9,6 +9,7 @@ Sistema RPG con tres capas que se combinan:
 - **Evolución de roles**: Base → **Maestro** → **Definitivo** (nivel + prueba + ítem), con títulos propios, una **habilidad característica** al llegar a Maestro (tecla `Z`) y una **definitiva** al llegar a Definitivo (tecla `R`).
 - **16 habilidades legendarias** (tecla `H`; se eligen en el árbol de talentos): la exclusividad por servidor es opcional y está desactivada por defecto.
 - **Armas, armaduras, accesorios, runas y cuatro pociones propias**, con recetas consultables en el grimorio.
+- **Templos sellados** con puzles, un guardián y Vasos de vida (+1 corazón permanente, hasta 5) (v64).
 - **Grimorio** con bestiario que se desbloquea al vencer a cada criatura o jefe, progreso, buscador, marcadores y sendas de cada rol (v61).
 - **GUI** rediseñada (`K` atributos/habilidades, `J` roles, `G` cambiar elemento, `U` ver un objeto en el grimorio desde un inventario), **HUD** de energía, enfriamientos y elemento activo, **comandos** y **configuración JSON**.
 

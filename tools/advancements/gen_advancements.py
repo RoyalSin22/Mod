@@ -34,6 +34,8 @@ ACHIEVEMENTS = [
     ("first_contract", "root", "task", "aptitudes:contract_board"),
     ("contract_veteran", "first_contract", "goal", "minecraft:emerald"),
     ("guild_master", "contract_veteran", "challenge", "aptitudes:guild_seal"),
+    ("temple_opened", "slay_boss", "goal", "aptitudes:temple_key"),
+    ("life_vessel", "temple_opened", "goal", "aptitudes:life_vessel"),
 ]
 
 

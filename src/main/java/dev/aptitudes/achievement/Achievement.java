@@ -27,7 +27,11 @@ public enum Achievement {
 	JOIN_PARTY("join_party", ROOT, Frame.TASK, "minecraft:cake"),
 	FIRST_CONTRACT("first_contract", ROOT, Frame.TASK, "aptitudes:contract_board"),
 	CONTRACT_VETERAN("contract_veteran", FIRST_CONTRACT, Frame.GOAL, "minecraft:emerald"),
-	GUILD_MASTER("guild_master", CONTRACT_VETERAN, Frame.CHALLENGE, "aptitudes:guild_seal");
+	GUILD_MASTER("guild_master", CONTRACT_VETERAN, Frame.CHALLENGE, "aptitudes:guild_seal"),
+	/** v64: abrir el relicario de un Templo sellado con su llave. */
+	TEMPLE_OPENED("temple_opened", SLAY_BOSS, Frame.GOAL, "aptitudes:temple_key"),
+	/** v64: usar un Vaso de vida. */
+	LIFE_VESSEL("life_vessel", TEMPLE_OPENED, Frame.GOAL, "aptitudes:life_vessel");
 
 	/** Nombre del único criterio de cada logro (salvo la raíz, que usa {@code minecraft:tick}). */
 	public static final String CRITERION = "done";

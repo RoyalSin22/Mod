@@ -5,6 +5,17 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+### v64 — Templos sellados y Vasos de vida (K6, hecho por Claude)
+- `world/TempleFeature` (15×15, radio 7, sin entidades al generarse; rareza 1/400 por chunk) con paleta y
+  puzle por anillo: 3–4 palancas con patrón visible, placas por velas desde el anillo II (3 o 4).
+- `temple/TempleSealBlockEntity` (puzle en el servidor cada 10 ticks, solo con jugadores a 24 bloques;
+  puerta de `sealed_stone`; guardián élite campeón con +25 % de vida por anillo que reaparece si se pierde),
+  `ReliquaryBlockEntity` (llave ligada al templo, un vaso por jugador), `LifeVesselItem` (id único,
+  `LifeVesselState` por mundo), attachment `LIFE_VESSELS` (`copyOnDeath`), reglas puras con JUnit.
+- Verificado en el cliente de desarrollo: generación, palancas, apertura, guardián con barra, llave,
+  Relicario (y segundo intento rechazado), vaso (20 → 22 de vida) y los dos logros.
+- Pendiente: probar en partida las placas (anillos II–V) y el guardián evocador (IV–V).
+
 ### v62 — Objetos y armas 3D (K4, hecho por Claude)
 - A1: 52 modelos 3D generados por `tools/models/gen_weapon_models.py` a partir de las plantillas de
   `gen_items.py` (grosor por material, misma textura y orientación). `client/model/HandheldModels` los

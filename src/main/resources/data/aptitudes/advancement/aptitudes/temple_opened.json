@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "aptitudes:temple_key"
+    },
+    "title": {
+      "translate": "advancement.aptitudes.temple_opened.title"
+    },
+    "description": {
+      "translate": "advancement.aptitudes.temple_opened.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "aptitudes:aptitudes/slay_boss",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ]
+}

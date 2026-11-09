@@ -866,6 +866,45 @@ ROLE_COLORS = {
 MELEE = {'berserker', 'assassin', 'herbalist', 'lancer', 'swordsman', 'paladin', 'merchant', 'monk',
          'shapeshifter', 'weapon_summoner', 'hunter', 'tamer'}
 
+# v64: Templos sellados (llave ligada a un templo y Vaso de vida).
+T['temple_key'] = [
+    "................",
+    "..........GGG...",
+    ".........G+J+G..",
+    ".........GJjJG..",
+    ".........G+J+G..",
+    "..........GGG...",
+    ".........G......",
+    "........G.......",
+    ".......G........",
+    "......G.........",
+    ".....G..........",
+    "....GgG.........",
+    "...G.G..........",
+    "..GgG...........",
+    "...G............",
+    "................",
+]
+
+T['vessel'] = [
+    "................",
+    "......GGGG......",
+    ".......FF.......",
+    "......FFFF......",
+    ".....FfAAAF.....",
+    "....FfAaAAAF....",
+    "...FfAAAAAAAF...",
+    "...FAAA*AAAAF...",
+    "...FAAJJJJAAF...",
+    "...FAJjJJJJAF...",
+    "...FAAJJJJAAF...",
+    "....FAAJJAAF....",
+    ".....FAAAAF.....",
+    "......FFFF......",
+    ".....GGGGGG.....",
+    "................",
+]
+
 ITEMS = {
     'herb_petals': ('petals', {'A': '#d78bb9', 'V': '#4caf50'}),
     # Armas de rol
@@ -932,6 +971,9 @@ ITEMS = {
     'arcane_amulet': ('amulet', {'G': '#e0b43a', 'J': '#ab47bc'}),
     'amulet_of_the_grove': ('amulet', {'G': '#a1887f', 'J': '#66bb6a'}),
     'hunters_trophy': ('trophy', {'L': '#6d4c2a', 'B': '#efe6d2'}),
+    # v64: Templos sellados
+    'temple_key': ('temple_key', {'G': '#5fb3b3', 'J': '#ffd166'}),
+    'life_vessel': ('vessel', {'F': '#e9eef2', 'A': '#c2185b', 'J': '#ff8fab', 'G': '#e0b43a'}),
 }
 
 # Armas de evolución: hoja (cuerpo a cuerpo) o foco; Maestro con oro y gema; Definitivo, netherita y destellos.

@@ -3,6 +3,14 @@
 Documento de referencia de las fórmulas de progresión. Cada cambio indica fórmula anterior, nueva,
 justificación, valores de ejemplo e impacto, como pide la política del proyecto.
 
+## Vasos de vida (v64)
+
+- Antes: la vida máxima solo crecía con Vigor, Tala y bonificaciones de rol. Ahora: +2 de vida (1 corazón)
+  por Vaso de vida usado, con tope `lifeVesselMax` = 5 (+10 de vida como máximo).
+- Justificación: recompensa de exploración que no depende de subir niveles; el tope evita acumulación.
+  Cada templo da un vaso por jugador y hacen falta cinco templos distintos para el máximo.
+- Fórmula: `bonus = 2 × min(vasos usados, tope)` (`temple/VesselRules`, JUnit).
+
 ## Tutorial guiado (v44)
 
 - Recompensa nueva fija: **1 esmeralda por cada uno de los 6 pasos**, máximo **6 por jugador**.

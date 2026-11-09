@@ -33,6 +33,12 @@ No se fuerzan chunks. Al cargar o reiniciar se cuentan las criaturas existentes 
 si cargar criaturas guardadas supera un límite, se suspenden las nuevas apariciones, sin borrar las antiguas.
 Las probabilidades, tamaños y presupuestos se vuelven a acotar en las reglas puras.
 
+## Templos (v64)
+
+| Campo | Defecto | Dominio | Descripción |
+|---|---:|---|---|
+| `lifeVesselMax` | 5 | 0–20 | Vasos de vida que cuentan por jugador (+1 corazón cada uno). 0 desactiva su uso. Si se rebaja, los vasos ya usados se conservan pero solo cuentan hasta el nuevo tope. |
+
 ## Frascos (v60)
 
 | Campo | Defecto | Dominio | Descripción |

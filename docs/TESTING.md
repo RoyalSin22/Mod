@@ -1,5 +1,25 @@
 # Pruebas de Aptitudes
 
+## v64 — Templos sellados y Vasos de vida (K6)
+
+Automáticas: `temple/TempleRulesTest` y `temple/VesselRulesTest`. Texturas:
+`python3 tools/textures/gen_temple_blocks.py src/main/resources/assets/aptitudes/textures/block --check`.
+
+1. Coloca un templo con `/place feature aptitudes:temple` cerca de la aparición (anillo 0): tres palancas,
+   luces sobre la puerta sellada y el Sello en el suelo. Clic derecho en el Sello: indica la etapa.
+2. Activa las palancas según las luces: suenan, la puerta desaparece y aparece el Guardián del templo con
+   su barra. Una combinación errónea no hace nada. Los espectadores no cuentan.
+3. A 2 000 bloques o más de la aparición (anillo II+, con `threatRingSize` 1000): placas con 1–4 velas. Pisa en orden: suena un tono por paso; una
+   placa fuera de turno reinicia la secuencia con aviso.
+4. Vence al guardián: suelta la Llave del templo (no desaparece). Con otra llave el Relicario dice
+   «Esta llave es de otro templo». Con la suya se abre, da el logro «Sin sello» y un Vaso de vida; un segundo
+   intento dice que ya lo tomaste; otro jugador recibe el suyo.
+5. Usa el vaso en supervivencia: vida máxima +2 (20 → 22) y logro «Corazón colmado». Muere, desconéctate
+   y vuelve: se conserva. Una copia del mismo vaso (creativo) se rechaza. Con 5 vasos, el sexto no se usa.
+6. Cambia `lifeVesselMax` a 2 y a 0: la vida extra se ajusta y 0 impide usar vasos.
+
+Verificado por Claude en el cliente de desarrollo: puntos 1, 2, 4 y 5 (salvo muerte, copia y tope).
+
 ## v62 — Armas 3D y objetos (K4)
 
 Automáticas: `logic/ItemStatRulesTest`. Generadores con `--check`:

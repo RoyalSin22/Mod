@@ -96,6 +96,13 @@ public final class ModAttachments {
 					.initializer(java.util.TreeMap::new)
 					.buildAndRegister(Aptitudes.id("bestiary"));
 
+	/** v64: Vasos de vida consumidos por el jugador (+1 corazón cada uno); se conserva al morir. */
+	public static final AttachmentType<Integer> LIFE_VESSELS = AttachmentRegistry.<Integer>builder()
+			.persistent(com.mojang.serialization.Codec.INT)
+			.copyOnDeath()
+			.initializer(() -> 0)
+			.buildAndRegister(Aptitudes.id("life_vessels"));
+
 	private ModAttachments() {
 	}
 

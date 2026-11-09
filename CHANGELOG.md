@@ -12,6 +12,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   agita las alas al caer y el slime se estira durante el salto. El poder del murciélago da un
   vuelo corto que se dirige con la mirada.
 
+### Añadido
+- **v64 — Templos sellados y Vasos de vida.** Un templo de 15×15 aparece en el Mundo Normal con el
+  aspecto y el puzle de su anillo de Amenaza: imita con las palancas las luces sobre la puerta sellada
+  y, desde el anillo II, pisa las placas en el orden de sus velas. Al abrirse despierta el Guardián del
+  templo, cuya llave abre el Relicario: cada jugador recibe un Vaso de vida (+1 corazón permanente,
+  hasta 5, `lifeVesselMax`). Un vaso no se puede usar dos veces ni copiar. Dos logros nuevos.
+
 ### Cambiado
 - **v62 — Armas y objetos.** Las 40 armas de evolución y 12 armas de rol tienen volumen en la mano, en
   el suelo y en los marcos; el inventario conserva su icono plano. Las texturas ganan destellos en
