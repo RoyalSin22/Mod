@@ -84,7 +84,10 @@ Pendiente:
   el impacto, el golpe no llega y la postura del jefe baja 25. Decisión mía: sin ventana medida desde que se levantó
   el escudo, porque el proyecto no tiene seguimiento de ese tiempo. Pendiente: ventana de tiempo real (guardia
   perfecta), guardia con contraataque, y ampliar PARRYABLE a otros ataques.
-- B4: postura en élites y campeones (hoy solo jefes animados).
+- B4 (hecho en código, sin commit): `elite/ElitePosture`. Postura 60 para élites y campeones (ambos llevan la
+  etiqueta de élite); solo la drenan los golpes de jugadores; al romperse se pausa la IA del mob 5 s y después se
+  reanuda. Limitación: sin vulnerabilidad ×1,5 (los mobs no permiten multiplicar el daño sin mixins) y sin
+  persistencia. Pendiente de validar en partida.
 - B5: la postura no se guarda en NBT; decidir si debe persistir al recargar el mundo.
 - B6: animación de aturdimiento y aviso visual (K5).
 - Integrar la postura en los tres jefes animados y en élites y campeones.

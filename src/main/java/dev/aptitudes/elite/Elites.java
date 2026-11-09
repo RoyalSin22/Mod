@@ -114,6 +114,7 @@ public final class Elites {
 			BARS.clear();
 			BOSS_HUD_VIEWERS.clear();
 		});
+		ElitePosture.register();
 	}
 
 	public static boolean isElite(Entity e) {
