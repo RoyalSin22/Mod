@@ -88,7 +88,9 @@ Pendiente:
   etiqueta de élite); solo la drenan los golpes de jugadores; al romperse se pausa la IA del mob 5 s y después se
   reanuda. Limitación: sin vulnerabilidad ×1,5 (los mobs no permiten multiplicar el daño sin mixins) y sin
   persistencia. Pendiente de validar en partida.
-- B5: la postura no se guarda en NBT; decidir si debe persistir al recargar el mundo.
+- B5 (hecho en código, sin commit): decisión mía. Los **jefes** guardan su postura actual en NBT
+  (`aptitudes_posture`); el aturdimiento y la inmunidad no se guardan, así que al recargar no hay aturdimiento. Los
+  **élites y campeones** no persisten su postura: son mobs comunes y su estado se pierde al recargar.
 - B6: animación de aturdimiento y aviso visual (K5).
 - Integrar la postura en los tres jefes animados y en élites y campeones.
 - Guardia perfecta y parry: ventana y respuesta del servidor; sin invulnerabilidad prolongada.

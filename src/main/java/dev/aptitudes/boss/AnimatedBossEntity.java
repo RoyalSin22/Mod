@@ -211,12 +211,17 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 	public void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
 		nbt.putInt("aptitudes_phase", phase);
+		// B5: se guarda la postura actual. El aturdimiento y la inmunidad no se guardan: al recargar no hay aturdimiento.
+		nbt.putDouble("aptitudes_posture", posture.current());
 	}
 
 	@Override
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
 		phase = Math.max(1, Math.min(3, nbt.getInt("aptitudes_phase")));
+		if (nbt.contains("aptitudes_posture")) {
+			posture = new PostureRules.Posture(nbt.getDouble("aptitudes_posture"), POSTURE_MAX, 0, 0);
+		}
 		if (hasCustomName()) bossBar.setName(getDisplayName());
 	}
 
