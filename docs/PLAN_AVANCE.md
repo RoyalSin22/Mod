@@ -101,9 +101,16 @@ Pendiente:
 
 ### Fase C — Reinvocación y templos regenerables
 - C1 (hecho en código, sin commit): `boss/SummonRules` (puro) fija la espera de reinvocación: 20 minutos desde la
-  última derrota, y solo si no hay otra instancia viva. Provisional. Pendiente (decisiones del autor): cómo se invoca
-  (objeto, altar o estructura), su coste y si el jefe conserva su fase al reinvocarse.
-- Templos regenerables con probabilidad por mundo y recompensa individual (pendiente, punto 3).
+  última derrota, y solo si no hay otra instancia viva. Provisional.
+  Decisiones del autor: se invoca con un **objeto**; el jefe **conserva su fase** al reinvocarse. El coste en materiales
+  lo fija el proyecto: provisional, 4 Fragmentos de alma y 1 Corazón de campeón (Coloso), 1 Esencia de élite (Guardián y
+  Autómata). Pendiente de implementar (cableado): objeto «Sello de invocación», estado persistente con la última derrota
+  y la última fase de cada jefe, hook de derrota de los tres jefes animados, receta, textura y textos en los 11
+  idiomas. Se hará en commits separados.
+- C2 (hecho en código, sin commit): `temple/TempleRecurrenceRules` (puro). Un templo resuelto no vuelve antes de 3
+  días; luego la probabilidad sube linealmente hasta 25 % en 6 días. La tirada es determinista (0–999). Cada jugador
+  reclama una vez por instancia (`claim`/`canClaim`). Provisional. Pendiente: el punto 3 del plan (probabilidad por
+  mundo, que decides tú) y el cableado en `TempleFeature` y en el bloque del templo.
 
 ### Fase D — Contenido de endgame finito
 - Templos ominosos (variante opt-in de un templo ya resuelto).
