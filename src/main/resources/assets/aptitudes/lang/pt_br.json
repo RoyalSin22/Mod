@@ -3670,5 +3670,12 @@
   "bestiary.aptitudes.boss_tower_sentinel.tip": "Guardião do topo das torres. Fica mais forte na fase II; na final marca um círculo ao redor antes de golpear: saia da marca.",
   "bestiary.aptitudes.boss_shrine_oracle.tip": "Feiticeiro dos santuários da Fogueira. Endurece na fase II e na final golpeia em um anel que também desacelera: fique perto, dentro do anel.",
   "bestiary.aptitudes.boss_camp_champion.tip": "Líder dos acampamentos de saqueadores. Na fase final mira um cone no jogador mais próximo: desvie para o lado ao ver o aviso.",
-  "bestiary.aptitudes.boss_eclipse_herald.tip": "Surge durante o Eclipse com armadura de netherita. Na fase final libera uma onda ao redor a cada poucos segundos: mova-se e ataque entre os pulsos."
+  "bestiary.aptitudes.boss_eclipse_herald.tip": "Surge durante o Eclipse com armadura de netherita. Na fase final libera uma onda ao redor a cada poucos segundos: mova-se e ataque entre os pulsos.",
+  "item.aptitudes.role_item": "Item de classe: %s",
+  "item.aptitudes.hitscan.stats": "Dano %s · Alcance %s blocos · Recarga %s s",
+  "item.aptitudes.hitscan.lifesteal": "Rouba %s%% do dano como vida",
+  "item.aptitudes.stats.dps": "≈ %s de dano por segundo",
+  "item.aptitudes.rarity.uncommon": "Raridade: incomum",
+  "item.aptitudes.rarity.rare": "Raridade: rara",
+  "item.aptitudes.rarity.epic": "Raridade: épica"
 }

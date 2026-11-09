@@ -3670,5 +3670,12 @@
   "bestiary.aptitudes.boss_tower_sentinel.tip": "Guardian at the top of the towers. It grows stronger in phase two; in its final phase it marks a circle around itself before striking. Step out of the mark.",
   "bestiary.aptitudes.boss_shrine_oracle.tip": "Spellcaster of the bonfire shrines. It hardens in phase two and in its final phase strikes in a ring that also slows: stay close to it, inside the ring.",
   "bestiary.aptitudes.boss_camp_champion.tip": "Leader of the raider camps. In its final phase it aims a cone at the nearest player; dodge sideways when the warning appears.",
-  "bestiary.aptitudes.boss_eclipse_herald.tip": "Appears during the Eclipse in netherite armor. In its final phase it releases a shock wave around itself every few seconds: keep moving and strike between pulses."
+  "bestiary.aptitudes.boss_eclipse_herald.tip": "Appears during the Eclipse in netherite armor. In its final phase it releases a shock wave around itself every few seconds: keep moving and strike between pulses.",
+  "item.aptitudes.role_item": "Role item: %s",
+  "item.aptitudes.hitscan.stats": "Damage %s · Range %s blocks · Cooldown %s s",
+  "item.aptitudes.hitscan.lifesteal": "Steals %s%% of the damage as health",
+  "item.aptitudes.stats.dps": "≈ %s damage per second",
+  "item.aptitudes.rarity.uncommon": "Rarity: uncommon",
+  "item.aptitudes.rarity.rare": "Rarity: rare",
+  "item.aptitudes.rarity.epic": "Rarity: epic"
 }

@@ -1675,3 +1675,14 @@ bestiary.aptitudes.boss_shrine_oracle.tip¦Feiticeiro dos santuários da Fogueir
 bestiary.aptitudes.boss_camp_champion.tip¦Líder dos acampamentos de saqueadores. Na fase final mira um cone no jogador mais próximo: desvie para o lado ao ver o aviso.¦Chef des camps de pillards. En phase finale, il vise un cône vers le joueur le plus proche : esquivez sur le côté quand l'avertissement apparaît.¦Anführer der Plündererlager. In der letzten Phase zielt er mit einem Kegel auf den nächsten Spieler: weiche seitlich aus, sobald die Warnung erscheint.
 bestiary.aptitudes.boss_eclipse_herald.tip¦Surge durante o Eclipse com armadura de netherita. Na fase final libera uma onda ao redor a cada poucos segundos: mova-se e ataque entre os pulsos.¦Apparaît pendant l'Éclipse en armure de netherite. En phase finale, il libère une onde de choc autour de lui toutes les quelques secondes : bougez et frappez entre les impulsions.¦Erscheint während der Finsternis in Netheritrüstung. In der letzten Phase stößt er alle paar Sekunden eine Schockwelle aus: bleib in Bewegung und schlage zwischen den Stößen zu.
 """)
+
+# v62 (K4): tooltips de objetos (rol, estadísticas y rareza).
+add('', """
+item.aptitudes.role_item¦Item de classe: %s¦Objet de rôle : %s¦Rollengegenstand: %s
+item.aptitudes.hitscan.stats¦Dano %s · Alcance %s blocos · Recarga %s s¦Dégâts %s · Portée %s blocs · Recharge %s s¦Schaden %s · Reichweite %s Blöcke · Abklingzeit %s s
+item.aptitudes.hitscan.lifesteal¦Rouba %s%% do dano como vida¦Vole %s %% des dégâts en vie¦Stiehlt %s %% des Schadens als Leben
+item.aptitudes.stats.dps¦≈ %s de dano por segundo¦≈ %s dégâts par seconde¦≈ %s Schaden pro Sekunde
+item.aptitudes.rarity.uncommon¦Raridade: incomum¦Rareté : peu commun¦Seltenheit: ungewöhnlich
+item.aptitudes.rarity.rare¦Raridade: rara¦Rareté : rare¦Seltenheit: selten
+item.aptitudes.rarity.epic¦Raridade: épica¦Rareté : épique¦Seltenheit: episch
+""")

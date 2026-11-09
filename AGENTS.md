@@ -34,6 +34,8 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 | Esbirros y torretas | `ability/Minions`, `ability/MinionBrain`, `ability/AbilityState` |
 | Accesorios, élites/campeones, estructuras, grimorio (23 capítulos; sendas, piedras angulares, logros y alquimia) | `accessory/`, `elite/`, `world/`, `item/GuideBookItem`, `client/screen/GuideScreen` |
 | Grimorio v61 (K3): bestiario por jugador, progreso, buscador global, marcadores, sendas por rol, enlaces desde tutorial y tooltips (tecla U), cabeceras generadas | `guide/BestiaryRules` y `GuideRules` (puros, JUnit), `guide/GrimoireManager`, attachment `BESTIARY` (`copyOnDeath`), `GrimoirePayload` (S2C) y `GrimoireRequestPayload` (C2S, limitada); cliente `ClientGrimoire`, `GuideLookup` (access widener de `HandledScreen.focusedSlot`), `ClientConfig.guideBookmarks`; cabeceras con `tools/textures/gen_guide_headers.py` (no editar los PNG) |
+| Armas 3D en la mano (v62, K4 A1): icono 2D en la interfaz y modelo vóxel en mano, suelo y marcos | `tools/models/gen_weapon_models.py` (lee las plantillas de `gen_items.py`; no editar los `*_3d.json`), cliente `client/model/HandheldModels` y `HandheldModel` (API de carga de modelos y de renderizado de Fabric) |
+| Tooltips de objetos (v62, K4 A6): sello de rol, daño por segundo, cifras de disparo y rareza | `item/RoleGlyphs` (fuente `aptitudes:role_icons` de `tools/textures/gen_role_glyphs.py`), `logic/ItemStatRules` (puro, JUnit), cliente `ItemTooltips`; texturas con detalle en `gen_items.py` (`SHINY`, `GRAINED`) |
 | Efectos de lanzamiento e impacto de TODAS las habilidades (sello animado, remate por categoría, gesto) | `ability/CastFx` (`onCast`, `impact`); no dupliques estos efectos en cada habilidad |
 | Remates 3D al lanzar habilidades (v54): cinco categorías, alcance de 40 bloques, ajuste solo visual | `ability/CastFx`, `logic/CastAnimationRules` (puro), `network/CastAnimationPayload`, cliente `fx/CastAnimations` y `ClientConfig.castAnimations` |
 | Combos de combate (contador, bonificación y remates por categoría) | `ability/Combos` + `logic/ComboCounter`; HUD `client/hud/ComboHud` |
@@ -143,7 +145,7 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
   `role/LoadoutCodecTest`, `role/EvolutionPointsTest`, `morph/MorphSizeRulesTest`, `logic/ComboCounterTest`,
   `role/RoleRulesTest`, `data/ProgressRulesTest` y
   `rune/RuneRulesTest`, `boss/BossRulesTest`, `event/EclipseRulesTest`, `rune/RuneBalanceTest`, `logic/PlacedBlockPersistenceTest`, `config/ConfigFieldRulesTest`, `event/WorldEventRulesTest`, `party/PartyRulesTest`, `contract/ContractRulesTest`, `achievement/AchievementCatalogTest`, `event/SoulFogRulesTest`, `event/StrongEventRulesTest`, `role/PathRulesTest`, `config/ConfigMigrationTest`, `role/KeystoneRulesTest`,
-  `config/AptitudesConfigValidationTest`, `guide/BestiaryRulesTest`, `guide/GuideRulesTest`.
+  `config/AptitudesConfigValidationTest`, `guide/BestiaryRulesTest`, `guide/GuideRulesTest`, `logic/ItemStatRulesTest`.
 - **No escribas pruebas que llamen a métodos que no existen.** Si una prueba necesita una API nueva,
   impleméntala en el código principal en el mismo cambio y explícalo.
 - Prueba lógica pura; las clases que cargan registros de Minecraft no se prueban con JUnit simple.

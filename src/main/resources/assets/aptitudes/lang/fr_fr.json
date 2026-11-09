@@ -3670,5 +3670,12 @@
   "bestiary.aptitudes.boss_tower_sentinel.tip": "Gardien du sommet des tours. Il se renforce en phase II ; en phase finale, il marque un cercle autour de lui avant de frapper : sortez de la marque.",
   "bestiary.aptitudes.boss_shrine_oracle.tip": "Sorcier des sanctuaires du feu de camp. Il se durcit en phase II et, en phase finale, frappe en anneau en ralentissant : restez près de lui, dans l'anneau.",
   "bestiary.aptitudes.boss_camp_champion.tip": "Chef des camps de pillards. En phase finale, il vise un cône vers le joueur le plus proche : esquivez sur le côté quand l'avertissement apparaît.",
-  "bestiary.aptitudes.boss_eclipse_herald.tip": "Apparaît pendant l'Éclipse en armure de netherite. En phase finale, il libère une onde de choc autour de lui toutes les quelques secondes : bougez et frappez entre les impulsions."
+  "bestiary.aptitudes.boss_eclipse_herald.tip": "Apparaît pendant l'Éclipse en armure de netherite. En phase finale, il libère une onde de choc autour de lui toutes les quelques secondes : bougez et frappez entre les impulsions.",
+  "item.aptitudes.role_item": "Objet de rôle : %s",
+  "item.aptitudes.hitscan.stats": "Dégâts %s · Portée %s blocs · Recharge %s s",
+  "item.aptitudes.hitscan.lifesteal": "Vole %s %% des dégâts en vie",
+  "item.aptitudes.stats.dps": "≈ %s dégâts par seconde",
+  "item.aptitudes.rarity.uncommon": "Rareté : peu commun",
+  "item.aptitudes.rarity.rare": "Rareté : rare",
+  "item.aptitudes.rarity.epic": "Rareté : épique"
 }

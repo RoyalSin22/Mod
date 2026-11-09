@@ -13,6 +13,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   vuelo corto que se dirige con la mirada.
 
 ### Cambiado
+- **v62 — Armas y objetos.** Las 40 armas de evolución y 12 armas de rol tienen volumen en la mano, en
+  el suelo y en los marcos; el inventario conserva su icono plano. Las texturas ganan destellos en
+  metales y gemas y veta en madera y cuero. Los tooltips muestran el sello del rol, el daño por
+  segundo de las armas cuerpo a cuerpo, las cifras de los disparos y la rareza. Los objetos de rol
+  comunes pasan a poco comunes (solo cambia el color del nombre).
 - **v61 — Grimorio.** Nueva pestaña Bestiario: cada criatura o jefe abre su página al vencerla, con
   modelo, estadísticas, debilidades, consejos y botín; el grupo cercano también la desbloquea.
   Pestaña Progreso con logros, bestiario, jefes, escalones de senda y piedras angulares. Buscador

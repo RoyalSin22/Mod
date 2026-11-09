@@ -96,8 +96,8 @@ public class RoleFocusItem extends Item {
 
 	@Override
 	public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-		tooltip.add(Text.translatable("item.aptitudes.role_weapon.role", Text.translatable(role.translationKey()))
-				.withColor(role.color()));
+		tooltip.add(dev.aptitudes.item.RoleGlyphs.line(role,
+				Text.translatable("item.aptitudes.role_weapon.role", Text.translatable(role.translationKey()))));
 		tooltip.add(Text.translatable("item.aptitudes.role_weapon.focus", tier >= Evolution.ULTIMATE ? 10 : 7,
 				tier >= Evolution.ULTIMATE ? 10 : 8).formatted(Formatting.GRAY));
 	}

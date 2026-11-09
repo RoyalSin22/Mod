@@ -13,7 +13,7 @@ En paralelo, Claude trabaja `docs/PLAN_CLAUDE.md`. **No toques** mientras Claude
 | K1 | HUD: barra de jefe, modo minimalista, presets | `codex/v59-hud` | Medio |
 | K2 | Mejora de frascos y arenas de jefe con muro de niebla | `codex/v60-frascos-arenas` | Medio |
 | K3 | Grimorio: bestiario, buscador, progreso e ilustraciones — **hecho por Claude** (rama `claude/v61-grimorio`); Codex no la repite | `codex/v61-grimorio` | Medio |
-| K4 | Armas 3D en mano y rediseño de objetos | `codex/v62-objetos` | Medio-grande |
+| K4 | Armas 3D en mano y rediseño de objetos — **hecho por Claude** (rama `claude/v62-objetos`); Codex no la repite | `codex/v62-objetos` | Medio-grande |
 | K5 | Modelos y animaciones de los 3 primeros jefes (GeckoLib) | `codex/v63-jefes-modelos` | Grande — **después de C4 de Claude** |
 | K6 | Templos de puzle y Vasos de vida | `codex/v64-templos` | Grande |
 

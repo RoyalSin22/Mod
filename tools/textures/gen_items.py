@@ -946,6 +946,11 @@ for role, color in ROLE_COLORS.items():
 
 # ----------------------------------------------------------------------------- Dibujo
 
+# v62 (A6): materiales con destello especular y con veta.
+SHINY = {'A', 'S', 'G', 'J', 'F'}
+GRAINED = {'W', 'L'}
+
+
 def render(template, colors):
     grid = [row.ljust(16, '.')[:16] for row in template]
     assert len(grid) == 16, f"la plantilla debe tener 16 filas ({len(grid)})"
@@ -987,6 +992,11 @@ def render(template, colors):
                 tone = 1
             if (not dn and not rt) and (up and lf):
                 tone = 1
+            # v62 (A6): más detalle sin tocar las plantillas.
+            if m in SHINY and tone == 3 and mat_at(x - 1, y - 1) != m and (dn or rt):
+                tone = 4  # destello especular en el borde iluminado de metales y gemas
+            elif m in GRAINED and tone == 2 and (x + 2 * y) % 4 == 0:
+                tone = 1  # veta de madera y cuero
             px[x, y] = r[tone]
     # Contorno selectivo (vecinos ortogonales)
     out = img.copy()

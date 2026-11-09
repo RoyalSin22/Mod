@@ -107,5 +107,18 @@ public class HitscanWeaponItem extends Item {
 	public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
 		tooltip.add(Text.translatable("item.aptitudes.hitscan.tooltip", (int) kind.energyCost,
 				Text.translatable(kind.role.translationKey())).formatted(Formatting.GRAY));
+		// v62 (A6): estadísticas base del disparo (el daño crece con el nivel del rol).
+		tooltip.add(Text.translatable("item.aptitudes.hitscan.stats", dev.aptitudes.logic.ItemStatRules.fmt(kind.baseDamage),
+				dev.aptitudes.logic.ItemStatRules.fmt(kind.range), dev.aptitudes.logic.ItemStatRules.seconds(kind.cooldownTicks))
+				.formatted(Formatting.DARK_GREEN));
+		if (kind.lifesteal > 0) {
+			tooltip.add(Text.translatable("item.aptitudes.hitscan.lifesteal", Math.round(kind.lifesteal * 100))
+					.formatted(Formatting.DARK_GREEN));
+		}
+	}
+
+	/** Rol al que pertenece el arma (para el icono del tooltip). */
+	public Role role() {
+		return kind.role;
 	}
 }

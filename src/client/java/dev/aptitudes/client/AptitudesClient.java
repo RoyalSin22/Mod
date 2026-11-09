@@ -60,6 +60,7 @@ public class AptitudesClient implements ClientModInitializer {
 			dev.aptitudes.boss.BossManager.appendTooltip(stack, lines);
 			ForgeWeapons.appendTooltip(stack, lines);
 			if (stack.getItem() instanceof dev.aptitudes.boss.BossCoreItem) lines.add(net.minecraft.text.Text.translatable("boss.aptitudes.core_hint"));
+			ItemTooltips.append(stack, lines); // v62: sello de rol, daño por segundo y rareza
 		});
 		openSkillsKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 				"key.aptitudes.open", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_K, CATEGORY));
@@ -69,6 +70,7 @@ public class AptitudesClient implements ClientModInitializer {
 				"key.aptitudes.cycle_element", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_G, CATEGORY));
 		ClientConfig.load();
 		GuideLookup.register(CATEGORY); // v61
+		dev.aptitudes.client.model.HandheldModels.register(); // v62: armas 3D en la mano
 		dev.aptitudes.item.GuideBookItem.opener = () -> net.minecraft.client.MinecraftClient.getInstance()
 				.setScreen(new dev.aptitudes.client.screen.GuideScreen());
 		toggleHudKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(

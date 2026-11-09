@@ -3670,5 +3670,12 @@
   "bestiary.aptitudes.boss_tower_sentinel.tip": "Wächter auf der Spitze der Türme. In Phase II wird er stärker; in der letzten Phase markiert er einen Kreis um sich, bevor er zuschlägt: verlasse die Markierung.",
   "bestiary.aptitudes.boss_shrine_oracle.tip": "Zauberer der Leuchtfeuerschreine. In Phase II wird er zäher, in der letzten Phase schlägt er in einem verlangsamenden Ring zu: bleib nah bei ihm, innerhalb des Rings.",
   "bestiary.aptitudes.boss_camp_champion.tip": "Anführer der Plündererlager. In der letzten Phase zielt er mit einem Kegel auf den nächsten Spieler: weiche seitlich aus, sobald die Warnung erscheint.",
-  "bestiary.aptitudes.boss_eclipse_herald.tip": "Erscheint während der Finsternis in Netheritrüstung. In der letzten Phase stößt er alle paar Sekunden eine Schockwelle aus: bleib in Bewegung und schlage zwischen den Stößen zu."
+  "bestiary.aptitudes.boss_eclipse_herald.tip": "Erscheint während der Finsternis in Netheritrüstung. In der letzten Phase stößt er alle paar Sekunden eine Schockwelle aus: bleib in Bewegung und schlage zwischen den Stößen zu.",
+  "item.aptitudes.role_item": "Rollengegenstand: %s",
+  "item.aptitudes.hitscan.stats": "Schaden %s · Reichweite %s Blöcke · Abklingzeit %s s",
+  "item.aptitudes.hitscan.lifesteal": "Stiehlt %s %% des Schadens als Leben",
+  "item.aptitudes.stats.dps": "≈ %s Schaden pro Sekunde",
+  "item.aptitudes.rarity.uncommon": "Seltenheit: ungewöhnlich",
+  "item.aptitudes.rarity.rare": "Seltenheit: selten",
+  "item.aptitudes.rarity.epic": "Seltenheit: episch"
 }

@@ -5,6 +5,16 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+### v62 — Objetos y armas 3D (K4, hecho por Claude)
+- A1: 52 modelos 3D generados por `tools/models/gen_weapon_models.py` a partir de las plantillas de
+  `gen_items.py` (grosor por material, misma textura y orientación). `client/model/HandheldModels` los
+  descubre en cada recarga y `HandheldModel` usa el icono 2D en la interfaz y el 3D en el resto. Sin
+  dependencias ni mixins; con un motor sin la API de renderizado de Fabric se ve el icono plano.
+- A6: más detalle en `gen_items.py` (destellos y veta), glifos de rol (`gen_role_glyphs.py`, fuente
+  `aptitudes:role_icons`), tooltips con rol, daño por segundo, cifras de disparo y rareza
+  (`logic/ItemStatRules`, JUnit). Verificado en el cliente de desarrollo (mundo creativo, capturas).
+- Pendiente: probar en partida real con otros mods de renderizado (Sodium/Indium).
+
 ### v61 — Grimorio (K3, hecho por Claude)
 - G1 Bestiario: 40 páginas (32 criaturas, Wither, Dragón, élite, campeón y los 4 jefes propios),
   catálogo puro `guide/BestiaryRules`, attachment `aptitudes:bestiary` con `copyOnDeath`, desbloqueo

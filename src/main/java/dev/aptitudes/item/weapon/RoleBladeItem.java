@@ -56,8 +56,8 @@ public class RoleBladeItem extends SwordItem {
 
 	@Override
 	public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-		tooltip.add(Text.translatable("item.aptitudes.role_weapon.role", Text.translatable(role.translationKey()))
-				.withColor(role.color()));
+		tooltip.add(dev.aptitudes.item.RoleGlyphs.line(role,
+				Text.translatable("item.aptitudes.role_weapon.role", Text.translatable(role.translationKey()))));
 		tooltip.add(Text.translatable(tier >= Evolution.ULTIMATE ? "item.aptitudes.role_weapon.blade_ultimate"
 				: "item.aptitudes.role_weapon.blade_master").formatted(Formatting.GRAY));
 	}

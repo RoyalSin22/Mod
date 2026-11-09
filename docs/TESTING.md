@@ -1,5 +1,23 @@
 # Pruebas de Aptitudes
 
+## v62 — Armas 3D y objetos (K4)
+
+Automáticas: `logic/ItemStatRulesTest`. Generadores con `--check`:
+`python3 tools/models/gen_weapon_models.py src/main/resources/assets/aptitudes/models/item --check` y
+`python3 tools/textures/gen_role_glyphs.py src/main/resources/assets/aptitudes --check`.
+
+1. Toma un arma de evolución y otra de rol (p. ej. `/give @s aptitudes:berserker_weapon_ultimate` y
+   `aptitudes:holy_hammer`). En la barra y el inventario se ven planas; en la mano (primera y tercera
+   persona), en el suelo y en un marco tienen volumen y la misma orientación que el icono.
+2. Tooltip: sello del rol junto a «Arma de rol» u «Objeto de rol»; daño por segundo en las armas cuerpo
+   a cuerpo (mandoble del Bersérker: 10; martillo sagrado: 7,2); cifras de daño, alcance y recarga en
+   bastón, pistola, tomo, revólver, sello y talismán; línea de rareza con su color.
+3. Con un paquete de recursos que borre un `*_3d.json`, esa arma vuelve a verse plana sin errores.
+4. Compara los iconos con la versión anterior: mismos dibujos con destellos y veta.
+
+Verificado por Claude en el cliente de desarrollo (xvfb): carga sin avisos de modelos, iconos 2D en la
+barra, martillo con volumen en primera persona y tooltips del punto 2.
+
 ## v61 — Grimorio (K3)
 
 Automáticas: `guide/BestiaryRulesTest` (catálogo, desbloqueos, topes y saneado) y `guide/GuideRulesTest`

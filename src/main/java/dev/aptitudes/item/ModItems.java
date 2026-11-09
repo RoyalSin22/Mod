@@ -24,17 +24,17 @@ import net.minecraft.util.Rarity;
  */
 public final class ModItems {
 	public static final Item BERSERKER_AXE = register("berserker_axe", new AxeItem(ToolMaterials.IRON,
-			new Item.Settings().attributeModifiers(AxeItem.createAttributeModifiers(ToolMaterials.IRON, 7.0f, -3.0f))));
+			new Item.Settings().rarity(Rarity.UNCOMMON).attributeModifiers(AxeItem.createAttributeModifiers(ToolMaterials.IRON, 7.0f, -3.0f))));
 
 	public static final Item DAGGER = register("dagger", new SwordItem(ToolMaterials.IRON,
-			new Item.Settings().attributeModifiers(SwordItem.createAttributeModifiers(ToolMaterials.IRON, 1, -1.6f))));
+			new Item.Settings().rarity(Rarity.UNCOMMON).attributeModifiers(SwordItem.createAttributeModifiers(ToolMaterials.IRON, 1, -1.6f))));
 
 	public static final Item KATANA = register("katana", new SwordItem(ToolMaterials.IRON,
-			new Item.Settings().attributeModifiers(SwordItem.createAttributeModifiers(ToolMaterials.IRON, 3, -2.1f))));
+			new Item.Settings().rarity(Rarity.UNCOMMON).attributeModifiers(SwordItem.createAttributeModifiers(ToolMaterials.IRON, 3, -2.1f))));
 
 	/** Lanza: más daño, más lenta y +1 bloque de alcance contra entidades. */
 	public static final Item SPEAR = register("spear", new SwordItem(ToolMaterials.IRON,
-			new Item.Settings().attributeModifiers(
+			new Item.Settings().rarity(Rarity.UNCOMMON).attributeModifiers(
 					SwordItem.createAttributeModifiers(ToolMaterials.IRON, 4, -2.8f)
 							.with(EntityAttributes.PLAYER_ENTITY_INTERACTION_RANGE,
 									new EntityAttributeModifier(Aptitudes.id("spear_reach"), 1.0,
@@ -47,9 +47,9 @@ public final class ModItems {
 	public static final Item PLASMA_GUN = register("plasma_gun",
 			new HitscanWeaponItem(HitscanWeaponItem.Kind.PLASMA, new Item.Settings().maxCount(1).rarity(Rarity.RARE)));
 
-	public static final Item HERB_POUCH = register("herb_pouch", new HerbPouchItem(new Item.Settings().maxCount(16)));
+	public static final Item HERB_POUCH = register("herb_pouch", new HerbPouchItem(new Item.Settings().maxCount(16).rarity(Rarity.UNCOMMON)));
 
-	public static final Item WRENCH = register("wrench", new WrenchItem(new Item.Settings().maxCount(1)));
+	public static final Item WRENCH = register("wrench", new WrenchItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
 
 	/** Martillo sagrado (Paladín): lento y contundente. */
 	public static final Item HOLY_HAMMER = register("holy_hammer", new SwordItem(ToolMaterials.IRON,
@@ -59,12 +59,12 @@ public final class ModItems {
 	public static final Item NECRO_TOME = register("necro_tome",
 			new HitscanWeaponItem(HitscanWeaponItem.Kind.NECROTIC, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
 
-	public static final Item OAK_STAFF = register("oak_staff", new OakStaffItem(new Item.Settings().maxCount(1)));
+	public static final Item OAK_STAFF = register("oak_staff", new OakStaffItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
 
-	public static final Item GUILD_SEAL = register("guild_seal", new GuildSealItem(new Item.Settings().maxCount(1)));
+	public static final Item GUILD_SEAL = register("guild_seal", new GuildSealItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
 
 	/** Vendas de puño (Monje): en la mano secundaria dan daño y velocidad de ataque. */
-	public static final Item HAND_WRAPS = register("hand_wraps", new Item(new Item.Settings().maxCount(1)
+	public static final Item HAND_WRAPS = register("hand_wraps", new Item(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)
 			.attributeModifiers(AttributeModifiersComponent.builder()
 					.add(EntityAttributes.GENERIC_ATTACK_DAMAGE,
 							new EntityAttributeModifier(Aptitudes.id("hand_wraps_damage"), 1.0,
@@ -90,7 +90,7 @@ public final class ModItems {
 
 	/** Cuchillo de caza (Cazador): rápido y ligero. */
 	public static final Item HUNTING_KNIFE = register("hunting_knife", new SwordItem(ToolMaterials.IRON,
-			new Item.Settings().attributeModifiers(SwordItem.createAttributeModifiers(ToolMaterials.IRON, 2, -1.8f))));
+			new Item.Settings().rarity(Rarity.UNCOMMON).attributeModifiers(SwordItem.createAttributeModifiers(ToolMaterials.IRON, 2, -1.8f))));
 
 	public static final Item LUTE = register("lute", new LuteItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
 
@@ -98,7 +98,7 @@ public final class ModItems {
 			new HitscanWeaponItem(HitscanWeaponItem.Kind.CURSE, new Item.Settings().maxCount(1).rarity(Rarity.RARE)));
 
 	public static final Item BEAST_WHISTLE = register("beast_whistle",
-			new BeastWhistleItem(new Item.Settings().maxCount(1)));
+			new BeastWhistleItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
 
 	/** Requisito para evolucionar un rol a Maestro (se consume). */
 	public static final Item MASTERY_EMBLEM = register("mastery_emblem",
