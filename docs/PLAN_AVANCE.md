@@ -3,6 +3,21 @@
 Estado: **borrador** (no integrado en `main`). Fuente: decisiones del autor tras los informes de arquitectura y
 diseño. Cada decisión que no esté confirmada aparece en la sección «Pendiente de decisión».
 
+## 0. Dirección elegida
+
+Combinación confirmada por el autor: **B como base + núcleo de combate de A + contenido cooperativo de C**.
+
+- **B (base):** sistemas complementarios existentes (roles, habilidades, Amenaza, eventos, contratos, grupos,
+  alquimia, bestiario), mejorados y conectados entre sí. Sin rediseño del juego base.
+- **A (núcleo de combate, solo jefes, élites y campeones):** postura, guardia perfecta junto al parry pasivo del
+  Espadachín, y etiquetas explícitas de ataque. El combate contra mobs comunes no cambia.
+- **C (contenido):** templos, expediciones y jefes reinvocables pensados para grupo, con recompensas individuales.
+  Un jugador en solitario puede completarlos.
+- **Objetivo:** una experiencia más completa, acorde con la concepción original del mod.
+
+Fuera de alcance: rediseño del combate contra mobs comunes, progreso infinito, tablas globales, economía entre
+jugadores, traducciones nativas (aplazadas).
+
 ## 1. Decisiones registradas
 
 | Tema | Decisión |
