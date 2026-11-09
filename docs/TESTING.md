@@ -1,5 +1,20 @@
 # Pruebas de Aptitudes
 
+## v60 — Arenas con niebla (K2, fase 2)
+
+1. Genera una Torre, un Santuario y un Campamento en terreno nuevo. En Supervivencia,
+   entra en la sala de cada jefe. En la torre sal por completo del hueco de la escalera.
+   Comprueba que la niebla cierre los pasos y que suene el tema solo para quien entra.
+2. Con dos jugadores, deja a uno atravesando el perímetro mientras el otro entra.
+   El cierre debe esperar. Una vez cerrado, si uno sale y otro queda dentro, la niebla
+   se mantiene. Prueba creativo y espectador como únicos visitantes.
+3. Antes de entrar, pon un bloque sólido en un hueco y una antorcha o agua en otro.
+   La niebla no debe borrar ninguno. Retira el obstáculo no sólido y comprueba que cierre.
+   Durante el encuentro prueba romper la niebla y moverla con un pistón.
+4. Vence al jefe, vuelve a probar tras morir o salir de la sala y reinicia el servidor
+   con el muro cerrado. Comprueba que solo se retira la niebla, que el tema se corta
+   al salir y que los jefes de estructuras antiguas y el Heraldo siguen sin muro.
+
 ## v60 — Mejora de frascos (K2, fase 1)
 
 1. En Supervivencia, descansa en una Hoguera y abre **Frascos**. Coloca un Estus, un núcleo

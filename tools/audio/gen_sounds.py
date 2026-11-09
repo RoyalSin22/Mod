@@ -218,6 +218,29 @@ def keystone_sanctuary(rng):
     return fade_out(normalize(x, 0.5))
 
 
+def arena_theme(rng):
+    """Motivo de arena en 16 pulsos, con bordón, timbales y una melodía ascendente."""
+    beat = 0.65
+    t = t_axis(12.0)
+    x = np.zeros_like(t)
+    for start, note in zip((0, 4, 8, 12), (38, 34, 36, 33)):
+        f = 440 * 2 ** ((note - 69) / 12)
+        tt = np.maximum(t - start * beat, 0)
+        chord = sum(np.sin(2 * np.pi * f * ratio * tt) for ratio in (1, 1.5, 2))
+        x += 0.25 * chord * env(tt, 0.16, 1.5) * (t >= start * beat)
+    for start, note in zip((1, 2.5, 4, 6, 7, 8.5, 10, 11, 12, 13.5, 15),
+                           (62, 65, 69, 67, 65, 62, 64, 65, 69, 73, 74)):
+        f = 440 * 2 ** ((note - 69) / 12)
+        tt = np.maximum(t - start * beat, 0)
+        brass = np.sin(2 * np.pi * f * tt) + 0.24 * np.sin(4 * np.pi * f * tt)
+        x += 0.36 * brass * env(tt, 0.06, 0.58) * (t >= start * beat)
+    for start in (0, 2, 4, 5.5, 8, 10, 12, 14, 15.5):
+        tt = np.maximum(t - start * beat, 0)
+        drum = np.sin(2 * np.pi * (68 * tt - 25 * tt ** 2))
+        x += 0.48 * drum * env(tt, 0.004, 0.16) * (t >= start * beat)
+    return fade_out(normalize(x, 0.72), 0.9)
+
+
 SOUNDS = {
     'eclipse_announce': eclipse_announce,
     'eclipse_start': eclipse_start,
@@ -236,6 +259,7 @@ SOUNDS = {
     'keystone_fortune': keystone_fortune,
     'keystone_tempest': keystone_tempest,
     'keystone_sanctuary': keystone_sanctuary,
+    'arena_theme': arena_theme,
 }
 
 

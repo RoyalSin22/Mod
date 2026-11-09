@@ -100,5 +100,11 @@
     "sounds": [
       "aptitudes:keystone_sanctuary"
     ]
+  },
+  "arena_theme": {
+    "subtitle": "subtitles.aptitudes.arena_theme",
+    "sounds": [
+      { "name": "aptitudes:arena_theme", "stream": true }
+    ]
   }
 }

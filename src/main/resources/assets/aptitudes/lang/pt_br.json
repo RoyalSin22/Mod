@@ -3573,5 +3573,7 @@
   "item.aptitudes.flask.rank": "Grau de melhoria %s",
   "item.aptitudes.flask.estus_recovery": "Cura %s PV",
   "item.aptitudes.flask.ether_recovery": "Recupera %s%% de mana",
-  "item.aptitudes.flask.regeneration": "Regeneração breve"
+  "item.aptitudes.flask.regeneration": "Regeneração breve",
+  "block.aptitudes.arena_fog": "Névoa da arena",
+  "subtitles.aptitudes.arena_theme": "O tema da arena começa"
 }

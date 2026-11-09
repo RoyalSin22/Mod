@@ -13,6 +13,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   vuelo corto que se dirige con la mirada.
 
 ### Cambiado
+- **v60 — Arenas de jefe.** La niebla rodea al Centinela, al Oráculo y al Campeón en estructuras
+  nuevas cuando entras a luchar. Al sellarse la arena suena un tema original. La niebla se retira
+  al vencer al jefe o si no queda nadie combatiendo dentro.
 - **v60 — Mejora de frascos.** Descansa en una Hoguera y abre Frascos. Usa Fragmentos de alma y
   un núcleo de jefe para añadir una carga y aumentar la recuperación de Estus o Éter. La mejora
   queda guardada en el propio frasco.

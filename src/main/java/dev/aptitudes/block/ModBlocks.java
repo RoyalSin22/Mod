@@ -4,6 +4,8 @@ import dev.aptitudes.Aptitudes;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
+import net.minecraft.block.TransparentBlock;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -27,6 +29,11 @@ public final class ModBlocks {
 					.strength(2.0f).sounds(BlockSoundGroup.WOOD)));
 	public static final Item CONTRACT_BOARD_ITEM = Registry.register(Registries.ITEM, Aptitudes.id("contract_board"),
 			new BlockItem(CONTRACT_BOARD, new Item.Settings()));
+
+	public static final Block ARENA_FOG = Registry.register(Registries.BLOCK, Aptitudes.id("arena_fog"),
+			new TransparentBlock(AbstractBlock.Settings.create().mapColor(MapColor.PALE_PURPLE)
+					.strength(-1f, 3_600_000f).dropsNothing().pistonBehavior(PistonBehavior.BLOCK)
+					.nonOpaque().suffocates((state, world, pos) -> false)));
 
 	private ModBlocks() {
 	}

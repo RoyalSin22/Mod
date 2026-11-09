@@ -20,6 +20,7 @@ public final class ModSounds {
 	public static final SoundEvent RUNE_REMOVE = register("rune_remove");
 	/** v46.1: un sonido por plantilla de piedra angular ({@code keystone_<plantilla>}). */
 	public static final SoundEvent[] KEYSTONE = keystones();
+	public static final SoundEvent ARENA_THEME = register("arena_theme");
 
 	private ModSounds() {
 	}

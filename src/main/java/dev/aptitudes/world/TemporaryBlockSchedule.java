@@ -29,6 +29,10 @@ public final class TemporaryBlockSchedule {
 		return entries.containsKey(pos);
 	}
 
+	Entry get(long pos) {
+		return entries.get(pos);
+	}
+
 	public Entry remove(long pos) {
 		return entries.remove(pos);
 	}

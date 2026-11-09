@@ -3573,5 +3573,7 @@
   "item.aptitudes.flask.rank": "Aufwertungsrang %s",
   "item.aptitudes.flask.estus_recovery": "Heilt %s LP",
   "item.aptitudes.flask.ether_recovery": "Stellt %s %% Mana wieder her",
-  "item.aptitudes.flask.regeneration": "Kurze Regeneration"
+  "item.aptitudes.flask.regeneration": "Kurze Regeneration",
+  "block.aptitudes.arena_fog": "Arenanebel",
+  "subtitles.aptitudes.arena_theme": "Das Arenathema beginnt"
 }

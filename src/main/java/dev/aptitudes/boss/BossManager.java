@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /** Jefes en estructuras: fases telegráficas, barra de campeón y núcleos para armas de evolución. */
 public final class BossManager {
@@ -89,6 +90,12 @@ public final class BossManager {
 	/** Usa la región de generación para inicializar y guardar el jefe junto con su chunk. */
 	public static MobEntity spawn(StructureWorldAccess world, EntityType<? extends MobEntity> type, BlockPos pos,
 								   BossKind kind, Random random) {
+		return spawn(world, type, pos, kind, random, mob -> {});
+	}
+
+	/** Permite anotar el origen de una arena antes de que el chunk guarde la entidad. */
+	public static MobEntity spawn(StructureWorldAccess world, EntityType<? extends MobEntity> type, BlockPos pos,
+								  BossKind kind, Random random, Consumer<MobEntity> prepare) {
 		MobEntity mob = type.create(world.toServerWorld());
 		if (mob == null) return null;
 		mob.refreshPositionAndAngles(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, random.nextFloat() * 360f, 0);
@@ -113,6 +120,7 @@ public final class BossManager {
 			mob.equipStack(EquipmentSlot.CHEST, new ItemStack(net.minecraft.item.Items.CHAINMAIL_CHESTPLATE));
 		}
 		for (EquipmentSlot slot : EquipmentSlot.values()) mob.setEquipmentDropChance(slot, 0.0f);
+		prepare.accept(mob);
 		world.spawnEntityAndPassengers(mob);
 		return mob;
 	}

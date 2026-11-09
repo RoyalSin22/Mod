@@ -231,6 +231,8 @@ public class AptitudesClient implements ClientModInitializer {
 		// Hoguera: modelo con planos de fuego recortados.
 		net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap.INSTANCE.putBlock(
 				dev.aptitudes.block.ModBlocks.BONFIRE, net.minecraft.client.render.RenderLayer.getCutout());
+		net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap.INSTANCE.putBlock(
+				dev.aptitudes.block.ModBlocks.ARENA_FOG, net.minecraft.client.render.RenderLayer.getTranslucent());
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.OpenRolesPayload.ID,
 				(payload, context) -> context.client().setScreen(new RolesScreen()));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.OpenBonfirePayload.ID,

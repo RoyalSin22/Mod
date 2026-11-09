@@ -3573,5 +3573,7 @@
   "item.aptitudes.flask.rank": "Upgrade rank %s",
   "item.aptitudes.flask.estus_recovery": "Heals %s HP",
   "item.aptitudes.flask.ether_recovery": "Restores %s%% mana",
-  "item.aptitudes.flask.regeneration": "Brief Regeneration"
+  "item.aptitudes.flask.regeneration": "Brief Regeneration",
+  "block.aptitudes.arena_fog": "Arena fog",
+  "subtitles.aptitudes.arena_theme": "Arena theme begins"
 }

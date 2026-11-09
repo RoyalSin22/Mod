@@ -479,6 +479,14 @@ Recompensas: 2 + 2·s esmeraldas (+6 los de Jefe), 15 + 10·s XP de rol, +10 + 1
 Legendario dan además Fragmentos de alma (1 + s/2), y a veces un vale de armería (Élite, 1/3) o un emblema de
 maestría (Legendario, 1/4). Activos: 2 (3 desde Veterano, 300 de reputación).
 
+## Arenas de jefe (v60)
+
+El muro ocupa hasta tres bloques de altura en el perímetro de las tres estructuras nuevas.
+En la torre cubre también la salida de la escalera tras dejar paso al jugador. Se activa si
+el jefe sigue en su sala y hay un jugador vivo en Supervivencia o Aventura dentro.
+Si un hueco está ocupado por un jugador o por el jefe, o contiene un bloque que no cierra
+la entrada, se aplaza el cierre. El Heraldo conserva su encuentro exterior.
+
 ## Mejora de frascos (v60)
 
 Cada mejora añade una carga y conserva los usos ya gastados. Estus mantiene Regeneración I durante

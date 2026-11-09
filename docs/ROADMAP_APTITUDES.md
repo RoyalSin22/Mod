@@ -8,7 +8,10 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 ### v60 — Frascos y arenas (K2)
 - Fase 1. Mejora de Estus y Éter en la Hoguera con núcleos y Fragmentos de alma. Vista previa,
   confirmación de un solo uso, rango por objeto y tope de compra configurable.
-- Fase 2 pendiente. Arenas con muro de niebla y tema de jefe.
+- Fase 2. Las torres, santuarios y campamentos generados con v60 anclan una arena al jefe.
+  La niebla ocupa huecos de aire durante el encuentro y se retira cuando termina. El tema
+  se envía a los jugadores de la arena. Las estructuras generadas con versiones previas
+  conservan su encuentro original.
 
 ### v59 — HUD (K1)
 - Panel inferior para jefes y campeones de Aptitudes. Reúne hasta cuatro encuentros cercanos,

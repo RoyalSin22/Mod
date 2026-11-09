@@ -1571,3 +1571,8 @@ item.aptitudes.flask.estus_recovery¦Cura %s PV¦Rend %s PV¦Heilt %s LP
 item.aptitudes.flask.ether_recovery¦Recupera %s%% de mana¦Rend %s %% de mana¦Stellt %s %% Mana wieder her
 item.aptitudes.flask.regeneration¦Regeneração breve¦Régénération brève¦Kurze Regeneration
 """)
+
+add('', """
+block.aptitudes.arena_fog¦Névoa da arena¦Brume d’arène¦Arenanebel
+subtitles.aptitudes.arena_theme¦O tema da arena começa¦Le thème de l’arène commence¦Das Arenathema beginnt
+""")

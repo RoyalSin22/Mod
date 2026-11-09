@@ -45,9 +45,11 @@ public final class TemporaryBlocks extends PersistentState {
 		PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> {
 			if (!(world instanceof ServerWorld sw)) return true;
 			TemporaryBlocks temp = get(sw);
-			if (!temp.schedule.contains(pos.asLong())) return true;
-			temp.schedule.remove(pos.asLong());
+			if (state.isOf(dev.aptitudes.block.ModBlocks.ARENA_FOG)) return false;
+			var entry = temp.schedule.remove(pos.asLong());
+			if (entry == null) return true;
 			temp.markDirty();
+			if (!Registries.BLOCK.getId(state.getBlock()).toString().equals(entry.block())) return true;
 			sw.setBlockState(pos, Blocks.AIR.getDefaultState());
 			return false;
 		});
@@ -61,6 +63,44 @@ public final class TemporaryBlocks extends PersistentState {
 		temp.markDirty();
 		world.setBlockState(pos, state);
 		return true;
+	}
+
+	/** Las arenas solo ocupan aire y nunca se adueñan de otra colocación temporal. */
+	static boolean placeInAir(ServerWorld world, BlockPos pos, BlockState state, long ticks) {
+		if (!loaded(world, pos) || !world.getBlockState(pos).isAir() || get(world).schedule.contains(pos.asLong())) return false;
+		if (!place(world, pos, state, ticks)) return false;
+		if (world.getBlockState(pos).isOf(state.getBlock())) return true;
+		remove(world, pos, state.getBlock());
+		return false;
+	}
+
+	static boolean renew(ServerWorld world, BlockPos pos, Block block, long ticks) {
+		if (!loaded(world, pos)) return false;
+		TemporaryBlocks temp = get(world);
+		var entry = temp.schedule.get(pos.asLong());
+		if (entry == null || !entry.block().equals(Registries.BLOCK.getId(block).toString())
+				|| !world.getBlockState(pos).isOf(block)) return false;
+		long now = world.getTime();
+		if (entry.expireAt() <= now + ticks / 2) {
+			temp.schedule.add(entry.pos(), entry.block(), now + ticks);
+			temp.markDirty();
+		}
+		return true;
+	}
+
+	static void remove(ServerWorld world, BlockPos pos, Block block) {
+		// Si el chunk se descargó, la agenda conserva la entrada hasta que vuelva a cargar.
+		if (!loaded(world, pos)) return;
+		TemporaryBlocks temp = get(world);
+		var entry = temp.schedule.get(pos.asLong());
+		if (entry == null || !entry.block().equals(Registries.BLOCK.getId(block).toString())) return;
+		if (world.getBlockState(pos).isOf(block)) world.setBlockState(pos, Blocks.AIR.getDefaultState());
+		temp.schedule.remove(entry.pos());
+		temp.markDirty();
+	}
+
+	private static boolean loaded(ServerWorld world, BlockPos pos) {
+		return world.isInBuildLimit(pos) && world.isChunkLoaded(pos.getX() >> 4, pos.getZ() >> 4);
 	}
 
 	private static void tick(MinecraftServer server) {
