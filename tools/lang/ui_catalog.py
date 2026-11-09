@@ -1184,7 +1184,7 @@ blizzard.desc¦Gelo + Água: congela e desacelera intensamente.¦Glace + Eau : g
 eruption¦Erupção¦Éruption¦Eruption
 eruption.desc¦Terra + Magma: lança inimigos no ar, queimando.¦Terre + Magma : projette les ennemis en l'air en les brûlant.¦Erde + Magma: schleudert Feinde brennend in die Luft.
 plague¦Praga¦Peste¦Seuche
-plague.desc¦Planta + Veneno: Veneno II e Decomposição.¦Plante + Poison : Poison II et Wither.¦Pflanze + Gift: Gift II und Ausdörrung.
+plague.desc¦Planta + Sombra: Veneno II e Decomposição.¦Plante + Ombre : Poison II et Wither.¦Pflanze + Schatten: Gift II und Verwesung.
 eclipse¦Eclipse¦Éclipse¦Finsternis
 eclipse.desc¦Luz + Sombra: cega inimigos e cura 4 de vida.¦Lumière + Ombre : aveugle les ennemis et vous soigne de 4.¦Licht + Schatten: blendet Feinde und heilt dich um 4.
 crystal_singularity¦Singularidade de Cristal¦Singularité de cristal¦Kristallsingularität
@@ -1195,6 +1195,10 @@ prism¦Prisma¦Prisme¦Prisma
 prism.desc¦Relâmpago + Cristal: raios extras nos 3 inimigos mais próximos.¦Foudre + Cristal : rayons supplémentaires sur les 3 ennemis les plus proches.¦Blitz + Kristall: zusätzliche Strahlen auf die 3 nächsten Feinde.
 thermal_shock¦Choque Térmico¦Choc thermique¦Temperaturschock
 thermal_shock.desc¦Fogo + Gelo: dano extra pela mudança súbita de temperatura.¦Feu + Glace : dégâts supplémentaires dus au changement brutal de température.¦Feuer + Eis: zusätzlicher Schaden durch den plötzlichen Temperaturwechsel.
+vapor¦Vapor¦Vapeur¦Dampf
+vapor.desc¦Fogo + Água: cegueira e lentidão em área.¦Feu + Eau : cécité et lenteur dans la zone.¦Feuer + Wasser: Blindheit und Verlangsamung im Gebiet.
+green_tide¦Maré verde¦Marée verte¦Grüne Flut
+green_tide.desc¦Água + Planta: cura e regenera os aliados próximos.¦Eau + Plante : soigne et régénère les alliés proches.¦Wasser + Pflanze: heilt und regeneriert nahe Verbündete.
 """)
 
 add('party.', """

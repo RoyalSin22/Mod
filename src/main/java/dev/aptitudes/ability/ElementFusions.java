@@ -30,12 +30,15 @@ public enum ElementFusions {
 	ELECTROCUTION(Element.WATER, Element.LIGHTNING), // Electrocución
 	BLIZZARD(Element.ICE, Element.WATER),          // Ventisca
 	ERUPTION(Element.EARTH, Element.MAGMA),        // Erupción
-	PLAGUE(Element.PLANT, Element.POISON),         // Plaga
+	PLAGUE(Element.PLANT, Element.SHADOW),         // Plaga (v65: el veneno se retira; la sombra aporta la descomposición)
 	ECLIPSE(Element.LIGHT, Element.SHADOW),        // Eclipse
 	CRYSTAL_SINGULARITY(Element.VOID, Element.CRYSTAL), // Singularidad cristalina
 	RESONANCE(Element.SOUND, Element.WIND),        // Resonancia
 	PRISM(Element.LIGHTNING, Element.CRYSTAL),     // Prisma
-	THERMAL_SHOCK(Element.FIRE, Element.ICE);      // Choque térmico
+	THERMAL_SHOCK(Element.FIRE, Element.ICE),      // Choque térmico
+	// v65: añadidas al final (el orden de un enum guarda índices).
+	VAPOR(Element.FIRE, Element.WATER),            // Vapor: ceguera y lentitud en área
+	GREEN_TIDE(Element.WATER, Element.PLANT);      // Marea verde: cura y regenera a los aliados cercanos
 
 	private final Element a;
 	private final Element b;
@@ -95,6 +98,19 @@ public enum ElementFusions {
 					e.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 120, 1));
 					e.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 60, 0));
 				});
+				case VAPOR -> hostiles.forEach(e -> {
+					e.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 80, 0));
+					e.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 1));
+				});
+				case GREEN_TIDE -> {
+					p.heal(2 + r);
+					p.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 60, 0));
+					for (ServerPlayerEntity ally : world.getEntitiesByClass(ServerPlayerEntity.class,
+							p.getBoundingBox().expand(6), other -> other != p)) {
+						ally.heal(2 + r);
+						ally.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 60, 0));
+					}
+				}
 				case ECLIPSE -> {
 					hostiles.forEach(e -> e.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 100, 0)));
 					p.heal(4);

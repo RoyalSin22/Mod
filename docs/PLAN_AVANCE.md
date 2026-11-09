@@ -202,9 +202,12 @@ Ids nuevos y mapeo aprobados; la tabla está en `role/RoleMigrationRules` con pr
   Resonancia, Prisma) son de magia del espacio y del arcano.
 - **Plaga** cambia su ingrediente de Veneno a **Sombra** (descomposición), para que siga existiendo sin el Veneno.
 
-**Hecho en código:** reglas puras de retirada y evolución (`ElementRules`) con 8 pruebas. **Pendiente de cablear:**
-evolución en la pasiva del Arcanista, las fusiones Vapor y Marea verde (con nombres en 11 idiomas), el cambio de
-Plaga, y el daño del estallido del Rayo.
+**Hecho en código:** reglas puras de retirada y evolución (`ElementRules`) con 8 pruebas; fusiones Vapor (Fuego +
+Agua) y Marea verde (Agua + Planta) con su efecto y textos en 11 idiomas; Plaga usa Planta + Sombra. El estallido del
+Rayo ya aplica daño (`ElementEffects`, `damage * 1.5`), así que no requiere cambios.
+
+**Pendiente:** cablear la evolución del Fuego a Magma en la pasiva del Arcanista (el juego todavía no consulta
+`ElementRules.form`; falta relacionar el rango del nodo del elemento con `RoleData`).
 
 ## 5. Ideas descartadas o aplazadas
 
