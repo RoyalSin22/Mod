@@ -88,6 +88,7 @@ public class Aptitudes implements ModInitializer {
 		dev.aptitudes.rune.RuneSocketing.register();
 		dev.aptitudes.event.EclipseManager.register();
 		dev.aptitudes.event.WorldEventManager.register();
+		dev.aptitudes.event.Expeditions.register(); // F5
 		dev.aptitudes.party.PartyManager.register();
 		dev.aptitudes.achievement.Achievements.register();
 		dev.aptitudes.ability.Keystones.register();

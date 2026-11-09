@@ -1740,6 +1740,18 @@ entity.aptitudes.faceless_colossus¦O Colosso Sem Rosto¦Le Colosse sans visage�
 entity.aptitudes.osario_quebrado¦Ossuário Quebrado¦Ossuaire brisé¦Zerbrochenes Beinhaus
 item.aptitudes.osario_quebrado_spawn_egg¦Ovo de aparição do Osario Quebrado¦Œuf d'apparition de l'Ossuaire brisé¦Erscheinungsei des Zerbrochenen Beinhauses
 bestiary.aptitudes.osario_quebrado.tip¦Osso e terra que não descansam. Arrasta um braço e avança ao te ver.¦Os et terre qui refusent le repos. Il traîne un bras et charge dès qu'il vous voit.¦Knochen und Erde, die nicht ruhen wollen. Er schleift einen Arm und stürmt los, sobald er dich sieht.
+item.aptitudes.expedition_token¦Ficha de expedição¦Jeton d'expédition¦Expeditionsmarke
+expedition.aptitudes.started¦Expedição iniciada com %s módulos. Primeiro: %s.¦Expédition lancée avec %s modules. Premier : %s.¦Expedition mit %s Modulen gestartet. Erstes: %s.
+expedition.aptitudes.module_next¦Módulo %s/%s: %s.¦Module %s/%s : %s.¦Modul %s/%s: %s.
+expedition.aptitudes.complete¦Expedição concluída: %s esmeraldas e %s fragmentos de alma.¦Expédition terminée : %s émeraudes et %s fragments d'âme.¦Expedition abgeschlossen: %s Smaragde und %s Seelensplitter.
+expedition.aptitudes.timeout¦A expedição expirou.¦L'expédition a expiré.¦Die Expedition ist abgelaufen.
+expedition.aptitudes.already¦Você já tem uma expedição em andamento.¦Vous avez déjà une expédition en cours.¦Du hast bereits eine laufende Expedition.
+expedition.aptitudes.overworld_only¦As expedições só começam no Overworld.¦Les expéditions ne peuvent commencer que dans le monde principal.¦Expeditionen können nur in der Oberwelt beginnen.
+expedition.aptitudes.module.combat¦Combate¦Combat¦Kampf
+expedition.aptitudes.module.puzzle¦Coleta de almas¦Collecte d'âmes¦Seelensammlung
+expedition.aptitudes.module.elite¦Elite¦Élite¦Elite
+expedition.aptitudes.module.event¦Evento¦Événement¦Ereignis
+expedition.aptitudes.module.boss¦Chefe¦Boss¦Boss
 order.aptitudes.page¦Página %s/%s¦Page %s/%s¦Seite %s/%s
 contract.aptitudes.page.orders¦Pedidos¦Commandes¦Aufträge
 contract.aptitudes.page.contracts¦Contratos¦Contrats¦Verträge

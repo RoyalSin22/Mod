@@ -154,6 +154,7 @@ public final class ContractManager {
 
 	public static void onEventSurvived(ServerPlayerEntity p, dev.aptitudes.event.WorldEventKind kind) {
 		advance(p, Kind.EVENT, kind.ordinal(), 1);
+		dev.aptitudes.event.Expeditions.onEventSurvived(p); // F5: el módulo de evento
 	}
 
 	public static void onBossKilled(ServerPlayerEntity p, dev.aptitudes.boss.BossKind kind) {
