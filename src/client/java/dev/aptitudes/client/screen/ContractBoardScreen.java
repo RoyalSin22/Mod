@@ -1,30 +1,42 @@
 package dev.aptitudes.client.screen;
 
 import dev.aptitudes.client.contract.ContractClientState;
+import dev.aptitudes.client.contract.OrderClientState;
 import dev.aptitudes.contract.ContractBoardScreenHandler;
 import dev.aptitudes.contract.ContractRules;
 import dev.aptitudes.contract.ContractTargets;
+import dev.aptitudes.contract.OrderBookRules;
 import dev.aptitudes.network.ContractActionPayload;
 import dev.aptitudes.network.ContractViewPayload;
 import dev.aptitudes.network.ContractViewPayload.Row;
+import dev.aptitudes.network.OrderActionPayload;
+import dev.aptitudes.network.OrderViewPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 import java.util.Locale;
 
-/** Presentación de la vista de contratos validada por el servidor. */
+/**
+ * Presentación del tablón de contratos validada por el servidor. Tiene dos páginas: contratos (v30) y pedidos entre
+ * jugadores (F4). El cliente solo muestra datos y envía peticiones; el servidor valida cada acción.
+ */
 public final class ContractBoardScreen extends HandledScreen<ContractBoardScreenHandler> {
 	private static final int W = 420;
 	private static final int H = 230;
 	private static final int OFFERS_X = 12;
 	private static final int ACTIVE_X = 216;
 	private static final int CARD_W = 192;
+	private static final int FULL_W = W - 24;
 	private static final int CARD_H = 52;
 	private static final int FIRST_Y = 51;
 	private static final int STEP = 56;
@@ -32,13 +44,21 @@ public final class ContractBoardScreen extends HandledScreen<ContractBoardScreen
 	private static final int ACTION_Y = 34;
 	private static final int ACTION_H = 16;
 	private static final int ACTION_W = 56;
+	private static final int ORDER_ACTION_W = 80;
+	private static final int ORDER_ROWS = 3;
+	private static final int TOP_Y = 4;
+	private static final int TOP_H = 14;
 	private static final int BRASS = 0xFFE1B978;
 	private static final int PARCHMENT = 0xFFE4D5B8;
 	private static final int MUTED = 0xFFB3A48B;
 	private static final int JADE = 0xFF91CAAA;
 
 	private ContractViewPayload shown;
+	private OrderViewPayload ordersShown;
 	private boolean requested;
+	private boolean ordersPage;
+	/** Nivel con el que se publica el siguiente pedido (1–4). */
+	private int tier = 1;
 
 	public ContractBoardScreen(ContractBoardScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
@@ -50,10 +70,46 @@ public final class ContractBoardScreen extends HandledScreen<ContractBoardScreen
 	protected void init() {
 		super.init();
 		shown = ContractClientState.get();
+		ordersShown = OrderClientState.get();
 		if (!requested) {
 			requested = true;
 			send(ContractActionPayload.REQUEST, 0);
+			sendOrder(OrderActionPayload.REQUEST, 0, 0);
 		}
+		addPageButtons();
+		if (ordersPage) {
+			initOrderButtons();
+		} else {
+			initContractButtons();
+		}
+	}
+
+	// ------------------------------------------------------------------ Botones
+
+	private void addPageButtons() {
+		Text label = Text.translatable(ordersPage ? "contract.aptitudes.page.contracts" : "contract.aptitudes.page.orders");
+		addTop(label, x + W - PAD - 80, 80, b -> {
+			ordersPage = !ordersPage;
+			clearAndInit();
+		}, true);
+		if (ordersPage) {
+			addTop(Text.translatable("order.aptitudes.tier", tier), x + W - PAD - 80 - 6 - 40 - 6 - 70, 40, b -> {
+				tier = tier % 4 + 1;
+				clearAndInit();
+			}, true);
+			addTop(Text.translatable("order.aptitudes.publish"), x + W - PAD - 80 - 6 - 70, 70,
+					b -> sendOrder(OrderActionPayload.PUBLISH, 0, tier), true);
+		}
+	}
+
+	private void addTop(Text label, int left, int width, ButtonWidget.PressAction action, boolean active) {
+		ButtonWidget widget = ButtonWidget.builder(UiStyle.fit(textRenderer, label, width - 8), action)
+				.dimensions(this.x + left, this.y + TOP_Y, width, TOP_H).tooltip(Tooltip.of(label)).build();
+		widget.active = active;
+		addDrawableChild(widget);
+	}
+
+	private void initContractButtons() {
 		if (shown == null) return;
 		boolean hasRoom = shown.active().size() < shown.activeLimit();
 		for (int i = 0; i < shown.offers().size(); i++) {
@@ -73,6 +129,35 @@ public final class ContractBoardScreen extends HandledScreen<ContractBoardScreen
 		}
 	}
 
+	private void initOrderButtons() {
+		if (ordersShown == null) return;
+		for (int i = 0; i < Math.min(ORDER_ROWS, ordersShown.rows().size()); i++) {
+			OrderViewPayload.Row row = ordersShown.rows().get(i);
+			int left = FULL_W - PAD - ORDER_ACTION_W + 12;
+			Text label;
+			int action;
+			boolean active;
+			if (row.mine() && !row.closed()) {
+				label = Text.translatable("order.aptitudes.button.cancel");
+				action = OrderActionPayload.CANCEL;
+				active = true;
+			} else if (row.mine()) {
+				label = Text.translatable("order.aptitudes.button.claim");
+				action = OrderActionPayload.CLAIM;
+				active = row.delivered() > row.claimed();
+			} else {
+				label = Text.translatable("order.aptitudes.button.deliver");
+				action = OrderActionPayload.DELIVER;
+				active = !row.closed() && row.delivered() < row.count();
+			}
+			ButtonWidget widget = ButtonWidget.builder(UiStyle.fit(textRenderer, label, ORDER_ACTION_W - 8),
+							b -> sendOrder(action, row.id(), 0))
+					.dimensions(x + left, y + rowY(i) + ACTION_Y, ORDER_ACTION_W, ACTION_H).tooltip(Tooltip.of(label)).build();
+			widget.active = active;
+			addDrawableChild(widget);
+		}
+	}
+
 	private void addAction(String action, int left, int i, int buttonWidth, int packet, int index, boolean active) {
 		Text label = Text.translatable("contract.aptitudes.action." + action);
 		ButtonWidget widget = ButtonWidget.builder(UiStyle.fit(textRenderer, label, buttonWidth - 8), b -> send(packet, index))
@@ -89,11 +174,19 @@ public final class ContractBoardScreen extends HandledScreen<ContractBoardScreen
 		if (ClientPlayNetworking.canSend(ContractActionPayload.ID)) ClientPlayNetworking.send(new ContractActionPayload(action, index));
 	}
 
+	private void sendOrder(int action, long id, int tierValue) {
+		if (ClientPlayNetworking.canSend(OrderActionPayload.ID)) {
+			ClientPlayNetworking.send(new OrderActionPayload(action, id, tierValue));
+		}
+	}
+
 	@Override
 	protected void handledScreenTick() {
 		super.handledScreenTick();
-		if (ContractClientState.get() != shown) clearAndInit();
+		if (ContractClientState.get() != shown || OrderClientState.get() != ordersShown) clearAndInit();
 	}
+
+	// ------------------------------------------------------------------ Dibujo
 
 	@Override
 	protected void drawBackground(DrawContext ctx, float delta, int mouseX, int mouseY) {
@@ -101,28 +194,46 @@ public final class ContractBoardScreen extends HandledScreen<ContractBoardScreen
 		ctx.fill(x + 2, y + 2, x + W - 2, y + H - 2, 0xFF221B1A);
 		ctx.fill(x + 2, y + 3, x + W - 2, y + 32, 0xFF382822);
 		ctx.fill(x + OFFERS_X, y + 32, x + W - OFFERS_X, y + 33, 0xFF7D5841);
+		if (ordersPage) {
+			drawOrderBackground(ctx);
+			return;
+		}
 		ctx.fill(x + 209, y + 42, x + 211, y + H - 9, 0xFF4E3931);
 		if (shown == null) return;
 		for (int i = 0; i < shown.offers().size(); i++) {
-			drawCard(ctx, OFFERS_X, i, shown.offers().get(i).taken() ? 0xFF857564 : BRASS);
+			drawCard(ctx, OFFERS_X, CARD_W, i, shown.offers().get(i).taken() ? 0xFF857564 : BRASS);
 		}
 		for (int i = 0; i < shown.active().size(); i++) {
 			Row row = shown.active().get(i);
-			drawCard(ctx, ACTIVE_X, i, row.progress() >= row.goal() ? JADE : BRASS);
+			drawCard(ctx, ACTIVE_X, CARD_W, i, row.progress() >= row.goal() ? JADE : BRASS);
 		}
 	}
 
-	private void drawCard(DrawContext ctx, int col, int index, int accent) {
+	private void drawOrderBackground(DrawContext ctx) {
+		if (ordersShown == null) return;
+		int rows = Math.min(ORDER_ROWS, ordersShown.rows().size());
+		for (int i = 0; i < rows; i++) {
+			OrderViewPayload.Row row = ordersShown.rows().get(i);
+			int accent = row.closed() ? 0xFF857564 : row.mine() ? JADE : BRASS;
+			drawCard(ctx, OFFERS_X, FULL_W, i, accent);
+		}
+	}
+
+	private void drawCard(DrawContext ctx, int col, int width, int index, int accent) {
 		int rx = x + col;
 		int ry = y + rowY(index);
-		ctx.fill(rx, ry, rx + CARD_W, ry + CARD_H, index % 2 == 0 ? 0xFF372B26 : 0xFF302723);
-		ctx.drawBorder(rx, ry, CARD_W, CARD_H, 0xFF624D3F);
+		ctx.fill(rx, ry, rx + width, ry + CARD_H, index % 2 == 0 ? 0xFF372B26 : 0xFF302723);
+		ctx.drawBorder(rx, ry, width, CARD_H, 0xFF624D3F);
 		ctx.fill(rx + 1, ry + 1, rx + 3, ry + CARD_H - 1, accent);
 	}
 
 	@Override
 	protected void drawForeground(DrawContext ctx, int mouseX, int mouseY) {
-		UiStyle.label(ctx, textRenderer, title, 12, 8, W - 24, BRASS);
+		UiStyle.label(ctx, textRenderer, title, 12, 8, W - 24 - 200, BRASS);
+		if (ordersPage) {
+			drawOrders(ctx);
+			return;
+		}
 		if (shown == null) {
 			ctx.drawCenteredTextWithShadow(textRenderer, Text.translatable("contract.aptitudes.loading"), W / 2, 57, PARCHMENT);
 			return;
@@ -162,10 +273,45 @@ public final class ContractBoardScreen extends HandledScreen<ContractBoardScreen
 		}
 	}
 
+	private void drawOrders(DrawContext ctx) {
+		if (ordersShown == null) {
+			ctx.drawCenteredTextWithShadow(textRenderer, Text.translatable("contract.aptitudes.loading"), W / 2, 57, PARCHMENT);
+			return;
+		}
+		UiStyle.label(ctx, textRenderer, Text.translatable("order.aptitudes.header", ordersShown.rows().size()),
+				12, 20, W - 24, PARCHMENT);
+		if (ordersShown.rows().isEmpty()) {
+			UiStyle.label(ctx, textRenderer, Text.translatable("order.aptitudes.empty"), OFFERS_X + PAD, FIRST_Y + 8,
+					FULL_W - 2 * PAD, MUTED);
+			return;
+		}
+		int rows = Math.min(ORDER_ROWS, ordersShown.rows().size());
+		for (int i = 0; i < rows; i++) {
+			OrderViewPayload.Row row = ordersShown.rows().get(i);
+			int ry = rowY(i);
+			int tx = OFFERS_X + PAD;
+			int color = row.closed() ? MUTED : PARCHMENT;
+			UiStyle.label(ctx, textRenderer, orderLine(row), tx, ry + 5, FULL_W - 2 * PAD - ORDER_ACTION_W, color);
+			ctx.drawText(textRenderer, Text.translatable("order.aptitudes.unit_price", OrderBookRules.unitPrice(row.tier())),
+					tx, ry + 15, MUTED, false);
+			String progress = row.delivered() + "/" + row.count();
+			int barRight = OFFERS_X + FULL_W - PAD - ORDER_ACTION_W - 8;
+			int barW = Math.max(0, barRight - tx);
+			float fraction = row.count() <= 0 ? 0f : Math.clamp(row.delivered() / (float) row.count(), 0f, 1f);
+			ctx.fill(tx, ry + 30, tx + barW, ry + 35, 0xFF181618);
+			ctx.fill(tx, ry + 30, tx + Math.round(barW * fraction), ry + 35, color);
+			ctx.drawText(textRenderer, progress, tx + barW + 4, ry + 28, MUTED, false);
+		}
+		if (ordersShown.rows().size() > ORDER_ROWS) {
+			UiStyle.label(ctx, textRenderer, Text.translatable("order.aptitudes.more", ordersShown.rows().size() - ORDER_ROWS),
+					OFFERS_X + PAD, rowY(ORDER_ROWS) - 2, FULL_W - 2 * PAD, MUTED);
+		}
+	}
+
 	@Override
 	public void render(DrawContext ctx, int mouseX, int mouseY, float delta) {
 		super.render(ctx, mouseX, mouseY, delta);
-		if (shown == null) return;
+		if (ordersPage || shown == null) return;
 		int rx = mouseX - x;
 		int ry = mouseY - y - FIRST_Y;
 		if (ry < 0 || ry % STEP >= ACTION_Y) return;
@@ -192,6 +338,16 @@ public final class ContractBoardScreen extends HandledScreen<ContractBoardScreen
 				: Text.translatable("contract.aptitudes.line", d, k, target, row.goal());
 	}
 
+	private static Text orderLine(OrderViewPayload.Row row) {
+		Identifier id = Identifier.tryParse(row.item());
+		Item item = id == null ? Items.AIR : Registries.ITEM.get(id);
+		Text name = item.getName();
+		Text base = Text.translatable("order.aptitudes.line", name, row.count(), row.tier());
+		if (row.closed()) return base.copy().append(Text.translatable("order.aptitudes.state.closed"));
+		if (row.mine()) return base.copy().append(Text.translatable("order.aptitudes.state.mine"));
+		return base;
+	}
+
 	private static Text rewards(Row row) {
 		MutableText text = Text.translatable("contract.aptitudes.rewards", row.emeralds(), row.roleXp(), row.reputation());
 		if (row.fragments() > 0) text.append(Text.translatable("contract.aptitudes.reward.fragments", row.fragments()));
@@ -204,5 +360,6 @@ public final class ContractBoardScreen extends HandledScreen<ContractBoardScreen
 	public void removed() {
 		super.removed();
 		ContractClientState.clear();
+		OrderClientState.clear();
 	}
 }

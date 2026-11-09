@@ -18,8 +18,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   Al llegar a 100 se entra en trance durante 10 s con +20 % de daño saliente. Se muestra en la barra de acción. Sin
   validar en partida.
 - **v65 — Pedidos del gremio (F4, servidor).** Estado por mundo (`OrderBookState`), acciones de servidor (`OrderBook`:
-  publicar, entregar, recoger y cancelar) y reglas puras con pruebas (`OrderBookRules`). Aún sin pantalla ni red: no
-  está visible para los jugadores.
+  publicar, entregar, recoger y cancelar) y reglas puras con pruebas (`OrderBookRules`).
+- **v65 — Pedidos del gremio (F4, pantalla).** El tablón tiene una página «Pedidos» con tres filas por página, botón
+  de publicar con el objeto de la mano y selector de nivel. Entregar, recoger y cancelar pasan por el servidor
+  (`OrderViewPayload`, `OrderActionPayload`). Sin validar en partida; la paginación de más de tres pedidos queda
+  pendiente.
 
 ### Corregido
 - **v56 — Generación de jefes.** Torres, santuarios y campamentos guardan sus jefes con el terreno al

@@ -1,6 +1,9 @@
 package dev.aptitudes.contract;
 
 import dev.aptitudes.contract.OrderBookState.Order;
+import dev.aptitudes.network.OrderActionPayload;
+import dev.aptitudes.network.OrderViewPayload;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -10,6 +13,9 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Acciones de servidor de los pedidos entre jugadores (F4). Toda validación ocurre aquí; el cliente solo pide.
@@ -124,6 +130,33 @@ public final class OrderBook {
 		if (order.claimed >= order.delivered) state.remove(id);
 		else state.markDirty();
 		owner.sendMessage(Text.translatable("order.aptitudes.cancelled", refund).formatted(Formatting.GRAY), true);
+	}
+
+	/** Despacha una acción del cliente y devuelve la lista actualizada. Lo único que el cliente puede pedir. */
+	public static void handle(ServerPlayerEntity player, int action, long id, int tier) {
+		switch (action) {
+			case OrderActionPayload.PUBLISH -> publish(player, tier);
+			case OrderActionPayload.DELIVER -> deliver(player, id, Integer.MAX_VALUE);
+			case OrderActionPayload.CLAIM -> claim(player, id);
+			case OrderActionPayload.CANCEL -> cancel(player, id);
+			default -> { }
+		}
+		sync(player);
+	}
+
+	/** Envía al jugador los pedidos que puede ver: los abiertos y los suyos con algo pendiente de recoger. */
+	public static void sync(ServerPlayerEntity player) {
+		if (!ServerPlayNetworking.canSend(player, OrderViewPayload.ID)) return;
+		List<OrderViewPayload.Row> rows = new ArrayList<>();
+		for (Order o : state(player).all()) {
+			boolean mine = o.owner.equals(player.getUuid());
+			boolean pendingForOwner = mine && o.delivered > o.claimed;
+			if (o.closed && !pendingForOwner) continue;
+			rows.add(new OrderViewPayload.Row(o.id, o.item, o.count, o.tier, o.delivered, o.claimed, o.closed, mine,
+					o.participants.contains(player.getUuid())));
+			if (rows.size() >= OrderViewPayload.MAX_ROWS) break;
+		}
+		ServerPlayNetworking.send(player, new OrderViewPayload(rows));
 	}
 
 	// ------------------------------------------------------------- Utilidades

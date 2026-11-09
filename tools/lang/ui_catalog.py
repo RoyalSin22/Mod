@@ -1740,6 +1740,20 @@ entity.aptitudes.faceless_colossus¦O Colosso Sem Rosto¦Le Colosse sans visage�
 entity.aptitudes.osario_quebrado¦Ossuário Quebrado¦Ossuaire brisé¦Zerbrochenes Beinhaus
 item.aptitudes.osario_quebrado_spawn_egg¦Ovo de aparição do Osario Quebrado¦Œuf d'apparition de l'Ossuaire brisé¦Erscheinungsei des Zerbrochenen Beinhauses
 bestiary.aptitudes.osario_quebrado.tip¦Osso e terra que não descansam. Arrasta um braço e avança ao te ver.¦Os et terre qui refusent le repos. Il traîne un bras et charge dès qu'il vous voit.¦Knochen und Erde, die nicht ruhen wollen. Er schleift einen Arm und stürmt los, sobald er dich sieht.
+contract.aptitudes.page.orders¦Pedidos¦Commandes¦Aufträge
+contract.aptitudes.page.contracts¦Contratos¦Contrats¦Verträge
+order.aptitudes.tier¦Nv %s¦Niv %s¦St. %s
+order.aptitudes.publish¦Publicar¦Publier¦Veröffentlichen
+order.aptitudes.button.deliver¦Entregar¦Livrer¦Liefern
+order.aptitudes.button.claim¦Recolher¦Récupérer¦Abholen
+order.aptitudes.button.cancel¦Cancelar¦Annuler¦Stornieren
+order.aptitudes.header¦Pedidos abertos: %s¦Commandes ouvertes : %s¦Offene Aufträge: %s
+order.aptitudes.empty¦Nenhum pedido aberto.¦Aucune commande ouverte.¦Keine offenen Aufträge.
+order.aptitudes.unit_price¦%s esmeraldas por unidade¦%s émeraudes par unité¦%s Smaragde pro Einheit
+order.aptitudes.line¦%s ×%s · Nv %s¦%s ×%s · Niv %s¦%s ×%s · St. %s
+order.aptitudes.state.closed¦ · fechado¦ · fermée¦ · geschlossen
+order.aptitudes.state.mine¦ · seu¦ · la vôtre¦ · deiner
+order.aptitudes.more¦+%s mais¦+%s de plus¦+%s weitere
 order.aptitudes.no_item¦Segure na mão principal o item que você quer pedir.¦Tenez dans la main principale l'objet que vous voulez commander.¦Halte den gewünschten Gegenstand in der Haupthand.
 order.aptitudes.limit¦Você já tem 3 pedidos abertos.¦Vous avez déjà 3 commandes ouvertes.¦Du hast bereits 3 offene Aufträge.
 order.aptitudes.too_few¦Este nível precisa de pelo menos uma unidade por participante.¦Ce niveau exige au moins une unité par participant.¦Diese Stufe braucht mindestens eine Einheit pro Teilnehmer.
