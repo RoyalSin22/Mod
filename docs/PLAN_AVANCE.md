@@ -64,8 +64,8 @@ Orden sugerido. Cada fase se integra por separado y con autorización explícita
 
 ### Fase A — Infraestructura de combate (sin contenido nuevo) — **completada, sin commit**
 Implementada: `boss/AttackTags` (etiquetas y reglas de bloqueo, parry y postura), `boss/PostureRules` (postura, aturdimiento
-de 60 ticks, inmunidad de 200 ticks, recuperación) y sus pruebas `AttackTagsTest` y `PostureRulesTest`. Los valores de
-tiempo y multiplicadores son provisionales y pendientes de calibrar con el autor.
+de 60 ticks, inmunidad de 300 ticks, vulnerabilidad ×1,25, recuperación) y sus pruebas `AttackTagsTest` y
+`PostureRulesTest`. Los valores están elegidos sin playtest y quedan pendientes de validar en partida.
 - Etiquetas tácticas de ataque (NORMAL, HEAVY, PARRYABLE, PROJECTILE, GROUND, UNBLOCKABLE) como datos puros.
 - Reglas puras de postura: `posture`, `maxPosture`, `recovery`, `immuneUntil`, con pruebas JUnit.
 - Pruebas parametrizadas para escenarios extremos de combate, sin cambiar balance.

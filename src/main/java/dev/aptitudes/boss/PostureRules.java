@@ -7,15 +7,21 @@ import java.util.Set;
  *
  * <p>Al vaciar la postura, la entidad queda aturdida {@link #STUN_TICKS} ticks, con daño recibido aumentado, y
  * después {@link #IMMUNITY_TICKS} ticks sin poder volver a romperse. Esa inmunidad evita aturdimientos encadenados.
- * Los valores son provisionales: pendientes de calibrar con el autor.</p>
+ * Valores elegidos sin playtest: pendientes de validar en partida con el autor.</p>
  */
 public final class PostureRules {
 	/** Duración del aturdimiento tras romper la postura (3 s). */
 	public static final int STUN_TICKS = 60;
-	/** Tras el aturdimiento, tiempo en el que no puede romperse (10 s). */
-	public static final int IMMUNITY_TICKS = 200;
-	/** Multiplicador del daño recibido mientras está aturdido. */
-	public static final double VULNERABLE_MULTIPLIER = 1.5;
+	/**
+	 * Tras el aturdimiento, tiempo en el que no puede romperse (15 s). Subido desde 10 s: en grupo, varios jugadores
+	 * pueden golpear a la vez y una inmunidad corta permitiría aturdimientos casi continuos.
+	 */
+	public static final int IMMUNITY_TICKS = 300;
+	/**
+	 * Multiplicador del daño recibido mientras está aturdido (+25 %). Bajado desde ×1,5: el aturdimiento debe ser una
+	 * ventana para castigar, no una fase en la que el daño se duplica con cualquier build.
+	 */
+	public static final double VULNERABLE_MULTIPLIER = 1.25;
 
 	/**
 	 * Estado de postura. {@code stunnedUntil} e {@code immuneUntil} son instantes en ticks.
