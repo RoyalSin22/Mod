@@ -1,8 +1,11 @@
 package dev.aptitudes.boss;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * v63: elección y geometría de los ataques de los jefes animados (GeckoLib). Puro (sin Minecraft): se prueba con
@@ -19,13 +22,23 @@ public final class BossMoveRules {
 	 * @param windup   ticks de aviso antes del golpe (el jugador tiene ese margen para esquivar)
 	 * @param cooldown ticks hasta poder repetirlo
 	 * @param weight   peso relativo en el sorteo (≥ 1)
+	 * @param tags     etiquetas tácticas del ataque ({@link AttackTags}); sin ninguna se toma NORMAL
 	 */
-	public record Move(String id, int minPhase, double minRange, double maxRange, int windup, int cooldown, int weight) {
+	public record Move(String id, int minPhase, double minRange, double maxRange, int windup, int cooldown, int weight,
+			Set<AttackTags.Tag> tags) {
 		public Move {
 			if (id == null || id.isBlank()) throw new IllegalArgumentException("id");
 			windup = Math.max(1, windup);
 			cooldown = Math.max(0, cooldown);
 			weight = Math.max(1, weight);
+			tags = tags == null || tags.isEmpty()
+					? AttackTags.of()
+					: Collections.unmodifiableSet(EnumSet.copyOf(tags));
+		}
+
+		/** Ataque sin etiquetas explícitas (NORMAL). */
+		public Move(String id, int minPhase, double minRange, double maxRange, int windup, int cooldown, int weight) {
+			this(id, minPhase, minRange, maxRange, windup, cooldown, weight, null);
 		}
 	}
 

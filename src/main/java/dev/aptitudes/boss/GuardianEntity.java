@@ -34,9 +34,12 @@ import java.util.List;
  * <p>Pendiente: la fase 3 (repetir ataques con menos enfriamiento) aún no tiene variante propia.</p>
  */
 public class GuardianEntity extends AnimatedBossEntity {
-	static final Move VOLLEY = new Move("volley", 1, 4, 14, 20, 50, 3);
-	static final Move RING = new Move("ring", 1, 0, 6, 24, 60, 2);
-	static final Move DIVE = new Move("dive", 2, 4, 16, 26, 80, 2);
+	static final Move VOLLEY = new Move("volley", 1, 4, 14, 20, 50, 3,
+			AttackTags.of(AttackTags.Tag.PROJECTILE));
+	static final Move RING = new Move("ring", 1, 0, 6, 24, 60, 2,
+			AttackTags.of(AttackTags.Tag.GROUND));
+	static final Move DIVE = new Move("dive", 2, 4, 16, 26, 80, 2,
+			AttackTags.of(AttackTags.Tag.HEAVY, AttackTags.Tag.GROUND));
 	private static final List<Move> MOVES = List.of(VOLLEY, RING, DIVE);
 	private static final double BEAM_LENGTH = 12;
 	private static final double BEAM_WIDTH = 1.2;

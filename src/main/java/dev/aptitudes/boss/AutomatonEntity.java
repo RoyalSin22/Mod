@@ -35,9 +35,12 @@ import java.util.List;
  * <p>Pendiente: la fase 3 (dos esferas seguidas y rayo en barrido de 60°) aún no tiene variante propia.</p>
  */
 public class AutomatonEntity extends AnimatedBossEntity {
-	static final Move ORB = new Move("orb", 1, 4, 20, 20, 60, 3);
-	static final Move STOMP = new Move("stomp", 1, 0, 3.5, 18, 50, 2);
-	static final Move BEAM = new Move("beam", 2, 4, 22, 30, 120, 2);
+	static final Move ORB = new Move("orb", 1, 4, 20, 20, 60, 3,
+			AttackTags.of(AttackTags.Tag.PROJECTILE));
+	static final Move STOMP = new Move("stomp", 1, 0, 3.5, 18, 50, 2,
+			AttackTags.of(AttackTags.Tag.GROUND));
+	static final Move BEAM = new Move("beam", 2, 4, 22, 30, 120, 2,
+			AttackTags.of(AttackTags.Tag.PROJECTILE));
 	private static final List<Move> MOVES = List.of(ORB, STOMP, BEAM);
 	private static final double STOMP_RADIUS = 3.5;
 	private static final double BEAM_WIDTH = 1.2;

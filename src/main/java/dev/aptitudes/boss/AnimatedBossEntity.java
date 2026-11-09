@@ -16,6 +16,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -52,6 +53,10 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 	public static final String ACTION_CONTROLLER = "action";
 	protected static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
 	protected static final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
+	/** Postura máxima del jefe (fase 2 del plan de avance). Provisional: validar en partida. */
+	protected static final double POSTURE_MAX = 100;
+	/** Recuperación de postura por tick (2 por segundo). */
+	protected static final double POSTURE_RECOVERY_PER_TICK = 0.1;
 
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	private final ServerBossBar bossBar;
@@ -59,6 +64,7 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 	private int phase = 1;
 	@Nullable private Move current;
 	private int moveTicks;
+	private PostureRules.Posture posture = PostureRules.Posture.fresh(POSTURE_MAX);
 
 	protected AnimatedBossEntity(EntityType<? extends HostileEntity> type, World world, BossBar.Color color) {
 		super(type, world);
@@ -115,11 +121,29 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 		}
 		bossBar.setName(getDisplayName());
 		bossBar.setPercent(getHealth() / getMaxHealth());
+		posture = PostureRules.recover(posture, POSTURE_RECOVERY_PER_TICK, world.getTime());
 	}
 
 	@Override
 	public boolean damage(DamageSource source, float amount) {
-		return super.damage(source, amount * BossMoveRules.damageTaken(phase, crackedBonus()));
+		float mult = BossMoveRules.damageTaken(phase, crackedBonus());
+		if (getWorld() instanceof ServerWorld world) {
+			long now = world.getTime();
+			// Solo los golpes de jugadores drenan la postura; por ahora sin etiquetas por ataque (NORMAL).
+			if (source.getAttacker() instanceof PlayerEntity) {
+				PostureRules.Result r = PostureRules.drain(posture, amount, AttackTags.of(), now);
+				posture = r.state();
+				if (r.broke()) onPostureBroken(world);
+			}
+			mult *= (float) posture.damageMultiplier(now);
+		}
+		return super.damage(source, amount * mult);
+	}
+
+	/** Postura vaciada: aviso sonoro y de partículas. El aturdimiento lo aplica {@link PostureRules}. */
+	private void onPostureBroken(ServerWorld world) {
+		world.playSound(null, getBlockPos(), SoundEvents.ENTITY_IRON_GOLEM_HURT, SoundCategory.HOSTILE, 1.2f, 0.6f);
+		world.spawnParticles(ParticleTypes.CRIT, getX(), getBodyY(0.5), getZ(), 20, 0.5, 0.5, 0.5, 0.1);
 	}
 
 	/** Jugadores y criaturas que pueden recibir un golpe del jefe (no otros jefes ni espectadores). */
@@ -214,6 +238,12 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 			if (!(getWorld() instanceof ServerWorld world)) return;
 			if (target == null || !target.isAlive()) {
 				current = null;
+				return;
+			}
+			// Aturdido por la postura: no empieza ni continúa ningún ataque.
+			if (posture.stunned(world.getTime())) {
+				current = null;
+				getNavigation().stop();
 				return;
 			}
 			getLookControl().lookAt(target, 30f, 30f);

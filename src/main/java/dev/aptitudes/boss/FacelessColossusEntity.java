@@ -28,8 +28,10 @@ import java.util.List;
  */
 public class FacelessColossusEntity extends AnimatedBossEntity {
 	static final Move SWEEP = new Move("sweep", 1, 0, 4.5, 18, 30, 3);
-	static final Move SLAM = new Move("slam", 1, 0, 5.5, 28, 70, 2);
-	static final Move CHARGE = new Move("charge", 2, 5, 18, 16, 90, 2);
+	static final Move SLAM = new Move("slam", 1, 0, 5.5, 28, 70, 2,
+			AttackTags.of(AttackTags.Tag.HEAVY, AttackTags.Tag.GROUND));
+	static final Move CHARGE = new Move("charge", 2, 5, 18, 16, 90, 2,
+			AttackTags.of(AttackTags.Tag.HEAVY));
 	private static final List<Move> MOVES = List.of(SWEEP, SLAM, CHARGE);
 	private static final double SWEEP_ARC = 140;
 

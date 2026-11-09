@@ -70,7 +70,20 @@ de 60 ticks, inmunidad de 300 ticks, vulnerabilidad ×1,25, recuperación) y sus
 - Reglas puras de postura: `posture`, `maxPosture`, `recovery`, `immuneUntil`, con pruebas JUnit.
 - Pruebas parametrizadas para escenarios extremos de combate, sin cambiar balance.
 
-### Fase B — Postura y guardia en jefes, élites y campeones
+### Fase B — Postura y guardia en jefes, élites y campeones — **en curso, sin commit**
+Hecho (B1): postura en los jefes animados (`AnimatedBossEntity`). Solo drenan los golpes de jugadores; al romperse
+el jefe queda aturdido 3 s con daño ×1,25 y no empieza ataques nuevos; se recupera 2 por segundo. Compila y las
+353 pruebas pasan, pero el comportamiento no está validado en partida.
+Pendiente:
+- B2 (hecho en código, sin commit): `BossMoveRules.Move` lleva `tags` (`AttackTags`). Coloso: tajo NORMAL, golpe
+  descendente HEAVY+GROUND, embestida HEAVY. Guardián: volley PROJECTILE, anillo GROUND, picado HEAVY+GROUND.
+  Autómata: orbe PROJECTILE, pisotón GROUND, rayo PROJECTILE. Estas asignaciones son provisionales.
+  Decisión abierta: la postura que causa un golpe del **jugador** (¿qué ataque del jugador es pesado?) no depende de
+  las etiquetas del jefe. Por ahora el drenaje usa NORMAL; hay que definir la regla antes de usar HEAVY en ese caso.
+- B3: guardia perfecta y parry ligados a etiquetas PARRYABLE, validados en el servidor.
+- B4: postura en élites y campeones (hoy solo jefes animados).
+- B5: la postura no se guarda en NBT; decidir si debe persistir al recargar el mundo.
+- B6: animación de aturdimiento y aviso visual (K5).
 - Integrar la postura en los tres jefes animados y en élites y campeones.
 - Guardia perfecta y parry: ventana y respuesta del servidor; sin invulnerabilidad prolongada.
 - Validación en partida con el autor.
