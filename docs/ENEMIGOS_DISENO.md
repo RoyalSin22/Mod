@@ -27,3 +27,39 @@ Cuatro Llaves). Esta especificación recoge lo que se ve en la imagen; las medid
 
 El autor tiene una nueva imagen para las ideas que se descartan. Pendiente de recibirla y de decidir si se usa para
 otro enemigo o para las marcas con partículas.
+
+## Nueva referencia del autor (bestiario y amenazas)
+
+### Osario Quebrado (Niebla de almas, enemigo nuevo)
+
+- **Tamaño:** 1,8 bloques de alto.
+- **Piezas:** `root` (eje, que sostiene el cuerpo), `body`, `head` (cráneo), `arm_left_dragging` (brazo largo de tierra
+  y huesos que arrastra por el suelo).
+- **Materiales:** hueso claro, tierra oscura y raíces; núcleo de ectoplasma verde `#4DE2A6` en el pecho.
+- **Señal:** el núcleo verde y las partículas que se desprenden del brazo al atacar.
+
+### Campeón de élite (referencia visual de los afijos)
+
+- Se mantiene como lo aprobado: **marcas con partículas**, no objetos sólidos.
+- La imagen sugiere un anillo de runas sobre la cabeza y símbolos flotantes en colores de afijo: fuego (rojo), fuerza
+  (ámbar `#FFB000`) y jade (`#2ECC71`), además de escarcha (cian).
+
+### Escorificador de Hierro (Lluvia de brasas, criatura nueva)
+
+- **Tamaño:** 1,8 bloques de alto.
+- **Piezas:** `body` (torso de hierro y roca con rejilla incandescente), `head`, `arms` (brazos pesados con bloques de
+  hierro fundido al final) y una chimenea en la espalda.
+- **Señal:** la rejilla del pecho se enciende antes de un golpe aplastante.
+- Se añade a las criaturas del Nether de la Lluvia de brasas.
+
+### Descartado
+
+- **El Engranaje del Templo** (imagen del autor): descartado.
+
+### Propuesta pendiente: Wither en la Lluvia de brasas
+
+- Aparecería con una probabilidad muy baja.
+- El Wither vanilla destruye bloques al atacar, así que no puede aparecer libremente en el mundo.
+- **Opciones:** (a) que aparezca solo dentro de una arena de jefe (`world/BossArenas`), donde no daña el terreno; (b) que
+  aparezca en el mundo, pero sin daño a bloques, lo que exige un cambio de comportamiento en el jefe.
+- Pendiente de tu decisión.
