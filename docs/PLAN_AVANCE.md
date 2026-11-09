@@ -182,6 +182,22 @@ Ids nuevos y mapeo aprobados; la tabla está en `role/RoleMigrationRules` con pr
 - **Señor de Cadáveres:** máximo 3 cadáveres reanimados durante 60 s con +25 % de daño; explosión de cadáver en 4 bloques con daño 6; cosecha de almas: cada enemigo abatido da 1 alma (máximo 10).
 - **Espíritu del bosque:** invocación única de 120 s, 40 de vida, 4 de daño; ataca, recibe daño de los mobs enemigos y los atrae a 8 bloques (como la provocación de la fase F1); enfriamiento de 90 s.
 
+## Elementos del Arcanista (decisiones del autor)
+
+- **Evolución de elementos:** los elementos pueden evolucionar. **Magma es la evolución del Fuego**, no un elemento
+  aparte. Propuesta de disparador (pendiente de aprobación): la evolución se activa al llegar al rango 3 del nodo del
+  elemento y es permanente para el jugador.
+- **Combinaciones nuevas aprobadas:**
+  - **Vapor** (Fuego + Agua): ceguera y ralentización en área.
+  - **Marea verde** (Agua + Planta): cura a los aliados y los regenera.
+- **Sin más combinaciones nuevas por ahora.**
+- **Estallido del Rayo:** sí hace daño (valor propuesto: 4 en área, provisional).
+- **Elementos antiguos:** no se borran del código (el elemento activo se guarda por índice). Se retiran de la
+  selección si el autor lo decide.
+
+**Pendiente de decisión:** (1) si Veneno se retira de la selección, porque Planta ya cubre el veneno; (2) quién se
+queda con las fusiones de Luz, Vacío, Cristal y Sonido; (3) aprobar el disparador de evolución propuesto.
+
 ## 5. Ideas descartadas o aplazadas
 
 - Casa de subastas global: descartada para un servidor de amigos.
