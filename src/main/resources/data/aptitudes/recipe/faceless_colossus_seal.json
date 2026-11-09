@@ -1,0 +1,21 @@
+{
+  "type": "aptitudes:guild_crafting",
+  "category": "equipment",
+  "pattern": [
+    "SSS",
+    "SHS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "aptitudes:soul_shard"
+    },
+    "H": {
+      "item": "aptitudes:champion_heart"
+    }
+  },
+  "result": {
+    "id": "aptitudes:faceless_colossus_seal",
+    "count": 1
+  }
+}

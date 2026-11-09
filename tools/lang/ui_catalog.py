@@ -382,6 +382,9 @@ accessory.amulet¦Amuleto¦Amulette¦Amulett
 accessory.hint¦Equipe com a tecla Y (Acessórios).¦Équipez-le avec la touche Y (Accessoires).¦Mit Taste Y ausrüsten (Accessoires).
 elite_essence¦Essência de Elite¦Essence d'élite¦Eliteessenz
 champion_heart¦Coração de Campeão¦Cœur de champion¦Championsherz
+faceless_colossus_seal¦Selo do Colosso Sem Rosto¦Sceau du Colosse sans Visage¦Siegel des Gesichtslosen Kolosses
+dismantled_guardian_seal¦Selo do Guardião Desmontado¦Sceau du Gardien Démantelé¦Siegel des Zerlegten Wächters
+ancient_automaton_seal¦Selo do Autômato Antigo¦Sceau de l'Automate Ancien¦Siegel des Uralten Automaten
 ring_of_strength¦Anel da Força¦Anneau de force¦Ring der Stärke
 ring_of_strength.desc¦+1.5 de dano¦+1.5 dégâts¦+1.5 Schaden
 ring_of_vitality¦Anel da Vitalidade¦Anneau de vitalité¦Ring der Vitalität

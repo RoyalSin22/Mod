@@ -110,8 +110,10 @@ Pendiente:
   `dismantled_guardian_seal`, `ancient_automaton_seal`). Usar un sello comprueba `SummonRules`, cobra 4 Fragmentos de
   alma y el material propio, invoca al jefe junto al jugador y lo deja en la fase guardada. Compila, 383 pruebas.
   Limitaciones: la instancia viva solo se busca en el mundo donde se usó el sello; un jefe que nunca se derrotó
-  también puede invocarse con el sello. **Paso 3 pendiente**: texturas, receta, nombres y textos en los 11 idiomas
-  (sin ellos los objetos aparecen sin textura ni nombre y no se pueden fabricar).
+  también puede invocarse con el sello. **Paso 3 hecho** (sin commit): textura de cada sello (`tools/textures/gen_items.py`),
+  modelo, receta de gremio (8 Fragmentos de alma y el material propio en la cuadrícula 3×3) y nombres en los 11 idiomas
+  (`ui_catalog.py` y generadores con `--check`). Pendiente: descripción (tooltip), lista de objetos creativos y
+  validación en partida de la receta y del cobro.
 - C2 (hecho en código, sin commit): `temple/TempleRecurrenceRules` (puro). Un templo resuelto no vuelve antes de 3
   días; luego la probabilidad sube linealmente hasta 25 % en 6 días. La tirada es determinista (0–999). Cada jugador
   reclama una vez por instancia (`claim`/`canClaim`). Provisional. Pendiente: el punto 3 del plan (probabilidad por

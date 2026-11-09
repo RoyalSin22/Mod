@@ -939,6 +939,10 @@ ITEMS = {
     'rebirth_offering': ('offering', {'J': '#ff9f1a', 'K': '#2b2d38', 'C': '#efe6d2', 'G': '#e0b43a', 'A': '#8e44ad'}),
     'armory_voucher': ('voucher', {'W': '#8d5a2b', 'C': '#efe6d2', 'K': '#5d4a3a', 'R': '#b0423a'}),
     'elite_essence': ('essence', {'A': '#c0392b', 'J': '#ffb199'}),
+    # Paso 3 de la reinvocación: sellos de invocación de los jefes animados.
+    'faceless_colossus_seal': ('seal', {'R': '#5d1f1f', 'G': '#e0b43a', 'J': '#ffe08a'}),
+    'dismantled_guardian_seal': ('seal', {'R': '#37474f', 'G': '#90a4ae', 'J': '#cfd8dc'}),
+    'ancient_automaton_seal': ('seal', {'R': '#5d4037', 'G': '#4dd0e1', 'J': '#b2ebf2'}),
     'champion_heart': ('heart', {'R': '#d32f2f', 'G': '#e0b43a', 'J': '#ffffff'}),
     'rune_flame': ('sigil', {'G': '#e0a12a', 'S': '#bd3928', 'J': '#fff176'}),
     'rune_leech': ('sigil', {'G': '#51202d', 'S': '#a3223b', 'J': '#f06277'}),

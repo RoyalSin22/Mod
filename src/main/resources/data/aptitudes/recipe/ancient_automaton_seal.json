@@ -1,0 +1,21 @@
+{
+  "type": "aptitudes:guild_crafting",
+  "category": "equipment",
+  "pattern": [
+    "SSS",
+    "SHS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "aptitudes:soul_shard"
+    },
+    "H": {
+      "item": "aptitudes:elite_essence"
+    }
+  },
+  "result": {
+    "id": "aptitudes:ancient_automaton_seal",
+    "count": 1
+  }
+}
