@@ -112,19 +112,6 @@ public class FacelessColossusEntity extends AnimatedBossEntity {
 		}
 	}
 
-	private boolean hittable(LivingEntity e) {
-		return e != this && e.isAlive() && !(e instanceof AnimatedBossEntity)
-				&& !(e instanceof PlayerEntity p && (p.isCreative() || p.isSpectator()));
-	}
-
-	private void hit(LivingEntity e, float damage, double knockback) {
-		DamageSource source = getDamageSources().mobAttack(this);
-		if (e.damage(source, damage) && knockback > 0) {
-			Vec3d away = e.getPos().subtract(getPos()).normalize();
-			e.takeKnockback(knockback, -away.x, -away.z);
-		}
-	}
-
 	@Override
 	protected void dropEquipment(ServerWorld world, DamageSource source, boolean causedByPlayer) {
 		super.dropEquipment(world, source, causedByPlayer);

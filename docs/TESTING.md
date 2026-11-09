@@ -1,5 +1,22 @@
 # Pruebas de Aptitudes
 
+## v63c — Guardián Desmontado y Autómata Antiguo
+
+Automáticas: `boss/PieceBossRulesTest` y `guide/BestiaryRulesTest` (nueve jefes en el bestiario).
+
+1. `/summon aptitudes:dismantled_guardian` y `/summon aptitudes:ancient_automaton`: ambos se ven con su barra
+   y sus nombres en el idioma del juego.
+2. Guardián: golpea solo la pieza activa (yelmo primero). Al romperla sale el aviso «… rota!» y pasa a estar
+   activa la siguiente. Con las tres caídas aparece «El núcleo queda expuesto!» y el núcleo recibe más daño.
+   Reinicia el mundo con una pieza rota: se conserva.
+3. Autómata: una esfera que lo alcanza sin ser devuelta le hace daño normal. Golpea la esfera para devolverla;
+   si vuelve y le da, aparece «¡Aturdido!» y recibe el doble de daño durante 5 s. Fase 2: el rayo se corta
+   contra bloques sólidos y no lo empujan los golpes.
+4. Venciendo a cualquiera de los dos, la página aparece en el bestiario con botín.
+
+Verificado por Claude en el cliente de desarrollo: invocación, nombres y barras (ver capturas). El combate
+(piezas, esferas, aturdimiento y rayo) aún no se ha probado en partida.
+
 ## v63a — Jefes animados con GeckoLib (C4)
 
 Automáticas: `boss/BossMoveRulesTest`. Recursos: `python3 tools/models/gen_boss_models.py src/main/resources/assets/aptitudes --check`.

@@ -3710,5 +3710,18 @@
   "advancement.aptitudes.life_vessel.description": "Utilisez un Vase de vie.",
   "entity.aptitudes.faceless_colossus": "Le Colosse sans visage",
   "item.aptitudes.faceless_colossus_spawn_egg": "Œuf d'apparition du Colosse sans visage",
-  "bestiary.aptitudes.faceless_colossus.tip": "Guerrier géant armé d'une grande épée. Il annonce un large balayage et un coup plongeant avec onde de choc : sortez du cercle marqué. À mi-vie son armure se fissure : il va plus vite, charge de loin et subit plus de dégâts."
+  "bestiary.aptitudes.faceless_colossus.tip": "Guerrier géant armé d'une grande épée. Il annonce un large balayage et un coup plongeant avec onde de choc : sortez du cercle marqué. À mi-vie son armure se fissure : il va plus vite, charge de loin et subit plus de dégâts.",
+  "entity.aptitudes.dismantled_guardian": "Gardien démantelé",
+  "entity.aptitudes.ancient_automaton": "Automate ancien",
+  "entity.aptitudes.automaton_orb": "Orbe d'énergie",
+  "item.aptitudes.dismantled_guardian_spawn_egg": "Œuf d'apparition du Gardien démantelé",
+  "item.aptitudes.ancient_automaton_spawn_egg": "Œuf d'apparition de l'Automate ancien",
+  "piece.aptitudes.helm": "Heaume",
+  "piece.aptitudes.shield": "Bouclier",
+  "piece.aptitudes.gauntlets": "Gantelets",
+  "guardian.aptitudes.piece_broken": "%s brisé !",
+  "guardian.aptitudes.core_exposed": "Le noyau est exposé !",
+  "automaton.aptitudes.stunned": "Étourdi ! Il subit le double de dégâts.",
+  "bestiary.aptitudes.dismantled_guardian.tip": "Armure vide dont les pièces doivent être brisées dans l'ordre : heaume, bouclier, gantelets. Seule la pièce active subit des dégâts ; quand les trois tombent, le noyau est exposé et subit 50 % de dégâts en plus. Ses attaques sont annoncées.",
+  "bestiary.aptitudes.ancient_automaton.tip": "Construct de pierre et de bronze. Ses orbes d'énergie peuvent être renvoyées : celle qui l'atteint l'étourdit 5 s, et pendant ce temps il subit le double de dégâts. En phase deux, il tire un rayon arrêté par les blocs solides. Il ne peut pas être repoussé."
 }

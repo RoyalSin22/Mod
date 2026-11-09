@@ -41,6 +41,7 @@ COLOSSUS_BONES = [
 MATERIALS = {
     'plate': (58, 61, 72), 'iron': (96, 100, 112), 'greave': (46, 48, 58), 'helm': (70, 73, 84),
     'leather': (92, 64, 44), 'crest': (176, 66, 58), 'blade': (178, 186, 196),
+    'brass': (176, 132, 60), 'gauntlet': (150, 124, 62), 'core': (235, 70, 60), 'shield': (84, 96, 120),
 }
 
 # Animaciones: {nombre: (duración, bucle, {hueso: {'rotation'|'position': {t: [x, y, z]}}})}
@@ -81,7 +82,96 @@ COLOSSUS_ANIMS = {
     }),
 }
 
-BOSSES = {'faceless_colossus': (COLOSSUS_BONES, COLOSSUS_ANIMS)}
+# ------------------------------------------------------------------ Guardián Desmontado
+# Piezas: yelmo (cabeza), escudo (brazo izquierdo) y guanteletes (ambos brazos). Solo el núcleo (pecho) brilla.
+GUARDIAN_BONES = [
+    ('root', None, [0, 0, 0], None, []),
+    ('left_leg', 'root', [2, 12, 0], None, [([-0.5, 0, -2.5], [4, 12, 5], 'iron')]),
+    ('right_leg', 'root', [-2, 12, 0], None, [([-3.5, 0, -2.5], [4, 12, 5], 'iron')]),
+    ('body', 'root', [0, 12, 0], None, [([-5, 12, -3], [10, 12, 6], 'plate'),
+                                        ([-4, 21, -2.5], [8, 4, 5], 'brass'),
+                                        ([-1.5, 14, -3.4], [3, 3, 1], 'core')]),
+    ('head', 'body', [0, 24, 0], None, [([-3, 24, -3], [6, 8, 6], 'helm'),
+                                        ([-0.5, 30, -3.5], [1, 3, 1], 'core')]),
+    ('left_arm', 'body', [5, 22, 0], None, [([5, 12, -1.5], [3, 12, 3], 'iron'),
+                                            ([4, 18, -4], [5, 8, 1.5], 'shield')]),
+    ('right_arm', 'body', [-5, 22, 0], None, [([-8, 12, -1.5], [3, 12, 3], 'iron'),
+                                              ([-9, 11, -1.5], [4, 4, 3], 'gauntlet')]),
+]
+
+GUARDIAN_ANIMS = {
+    'idle': (3.0, True, {
+        'body': {'rotation': {0: [0, 0, 0], 1.5: [1, 0, 0], 3.0: [0, 0, 0]}},
+        'head': {'rotation': {0: [0, 0, 0], 1.5: [-3, 0, 0], 3.0: [0, 0, 0]}},
+    }),
+    'walk': (1.2, True, {
+        'right_leg': {'rotation': {0: [25, 0, 0], 0.6: [-25, 0, 0], 1.2: [25, 0, 0]}},
+        'left_leg': {'rotation': {0: [-25, 0, 0], 0.6: [25, 0, 0], 1.2: [-25, 0, 0]}},
+    }),
+    # Tajo a distancia: el brazo con el guantelete adelanta 0,9 s y golpea.
+    'volley': (1.5, False, {
+        'right_arm': {'rotation': {0: [0, 0, 0], 0.9: [-100, 0, 0], 1.1: [-100, 0, 0], 1.5: [0, 0, 0]}},
+    }),
+    # Giro del anillo: el cuerpo da una vuelta mientras se carga (1,2 s).
+    'ring': (1.7, False, {
+        'body': {'rotation': {0: [0, 0, 0], 1.2: [0, 360, 0], 1.7: [0, 0, 0]}},
+    }),
+    # Caída sobre el objetivo: el cuerpo se inclina hacia delante.
+    'dive': (1.8, False, {
+        'body': {'rotation': {0: [0, 0, 0], 1.0: [60, 0, 0], 1.3: [60, 0, 0], 1.8: [0, 0, 0]}},
+    }),
+    'phase_two': (1.5, False, {
+        'head': {'rotation': {0: [0, 0, 0], 0.25: [0, 25, 0], 0.5: [0, -25, 0], 0.75: [0, 20, 0], 1.5: [0, 0, 0]}},
+    }),
+}
+
+# ------------------------------------------------------------------ Autómata Antiguo
+AUTOMATON_BONES = [
+    ('root', None, [0, 0, 0], None, []),
+    ('left_leg', 'root', [2.5, 12, 0], None, [([0.5, 0, -2], [4, 12, 4], 'iron')]),
+    ('right_leg', 'root', [-2.5, 12, 0], None, [([-4.5, 0, -2], [4, 12, 4], 'iron')]),
+    ('body', 'root', [0, 12, 0], None, [([-5, 12, -4], [10, 12, 8], 'plate'),
+                                        ([-3, 22, -3], [6, 4, 6], 'brass')]),
+    ('head', 'body', [0, 24, 0], None, [([-3, 24, -3], [6, 6, 6], 'plate'),
+                                        ([-1, 27, -3.5], [2, 2, 1], 'core')]),
+    ('left_arm', 'body', [5, 22, 0], None, [([5, 14, -1.5], [4, 10, 3], 'iron')]),
+    ('right_arm', 'body', [-5, 22, 0], None, [([-9, 14, -1.5], [4, 10, 3], 'iron'),
+                                              ([-9, 8, -2], [4, 4, 4], 'brass')]),
+]
+
+AUTOMATON_ANIMS = {
+    'idle': (3.0, True, {
+        'head': {'rotation': {0: [0, 0, 0], 1.5: [0, 25, 0], 3.0: [0, 0, 0]}},
+    }),
+    'walk': (1.2, True, {
+        'right_leg': {'rotation': {0: [25, 0, 0], 0.6: [-25, 0, 0], 1.2: [25, 0, 0]}},
+        'left_leg': {'rotation': {0: [-25, 0, 0], 0.6: [25, 0, 0], 1.2: [-25, 0, 0]}},
+    }),
+    # Esfera: el brazo derecho se levanta 1 s (20 ticks) y suelta.
+    'orb': (1.5, False, {
+        'right_arm': {'rotation': {0: [0, 0, 0], 1.0: [-120, 0, 0], 1.2: [-120, 0, 0], 1.5: [0, 0, 0]}},
+    }),
+    # Pisotón: ambos brazos caen (0,9 s) y se levantan.
+    'stomp': (1.6, False, {
+        'left_arm': {'rotation': {0: [0, 0, 0], 0.9: [-150, 0, 0], 1.1: [-150, 0, 0], 1.6: [0, 0, 0]}},
+        'right_arm': {'rotation': {0: [0, 0, 0], 0.9: [-150, 0, 0], 1.1: [-150, 0, 0], 1.6: [0, 0, 0]}},
+        'body': {'position': {0: [0, 0, 0], 0.9: [0, -1, 0], 1.6: [0, 0, 0]}},
+    }),
+    # Rayo: el torso gira (1,5 s) apuntando.
+    'beam': (2.2, False, {
+        'body': {'rotation': {0: [0, 0, 0], 0.6: [0, -30, 0], 1.5: [0, 30, 0], 2.2: [0, 0, 0]}},
+        'right_arm': {'rotation': {0: [0, 0, 0], 0.6: [-90, 0, 0], 1.8: [-90, 0, 0], 2.2: [0, 0, 0]}},
+    }),
+    'phase_two': (1.5, False, {
+        'body': {'rotation': {0: [0, 0, 0], 0.25: [0, 0, 6], 0.5: [0, 0, -6], 0.75: [0, 0, 5], 1.5: [0, 0, 0]}},
+    }),
+}
+
+BOSSES = {
+    'faceless_colossus': (COLOSSUS_BONES, COLOSSUS_ANIMS),
+    'dismantled_guardian': (GUARDIAN_BONES, GUARDIAN_ANIMS),
+    'ancient_automaton': (AUTOMATON_BONES, AUTOMATON_ANIMS),
+}
 
 
 def pack(bones):

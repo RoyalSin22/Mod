@@ -1727,3 +1727,20 @@ entity.aptitudes.faceless_colossus¦O Colosso Sem Rosto¦Le Colosse sans visage�
 item.aptitudes.faceless_colossus_spawn_egg¦Ovo gerador do Colosso Sem Rosto¦Œuf d'apparition du Colosse sans visage¦Spawn-Ei des gesichtslosen Kolosses
 bestiary.aptitudes.faceless_colossus.tip¦Guerreiro gigante com espadão. Anuncia um golpe amplo e um golpe descendente com onda: saia do círculo marcado. Com metade da vida sua armadura racha: fica mais rápido, investe de longe e recebe mais dano.¦Guerrier géant armé d'une grande épée. Il annonce un large balayage et un coup plongeant avec onde de choc : sortez du cercle marqué. À mi-vie son armure se fissure : il va plus vite, charge de loin et subit plus de dégâts.¦Riesiger Krieger mit Zweihänder. Er kündigt einen weiten Hieb und einen Abwärtsschlag mit Schockwelle an: Verlasse den markierten Kreis. Bei halber Lebenskraft bricht seine Rüstung: Er wird schneller, stürmt aus der Ferne an und erleidet mehr Schaden.
 """)
+
+# v63b-c (jefes): Guardián Desmontado y Autómata Antiguo.
+add('', """
+entity.aptitudes.dismantled_guardian¦Guardião Desmontado¦Gardien démantelé¦Zerlegter Wächter
+entity.aptitudes.ancient_automaton¦Autômato Antigo¦Automate ancien¦Uralter Automat
+entity.aptitudes.automaton_orb¦Esfera de energia¦Orbe d'énergie¦Energiekugel
+item.aptitudes.dismantled_guardian_spawn_egg¦Ovo de aparição do Guardião Desmontado¦Œuf d'apparition du Gardien démantelé¦Spawn-Ei des zerlegten Wächters
+item.aptitudes.ancient_automaton_spawn_egg¦Ovo de aparição do Autômato Antigo¦Œuf d'apparition de l'Automate ancien¦Spawn-Ei des uralten Automaten
+piece.aptitudes.helm¦Elmo¦Heaume¦Helm
+piece.aptitudes.shield¦Escudo¦Bouclier¦Schild
+piece.aptitudes.gauntlets¦Manoplas¦Gantelets¦Handschuhe
+guardian.aptitudes.piece_broken¦%s quebrado!¦%s brisé !¦%s zerbrochen!
+guardian.aptitudes.core_exposed¦O núcleo está exposto!¦Le noyau est exposé !¦Der Kern liegt frei!
+automaton.aptitudes.stunned¦Atordoado! Recebe o dobro de dano.¦Étourdi ! Il subit le double de dégâts.¦Betäubt! Doppelter Schaden.
+bestiary.aptitudes.dismantled_guardian.tip¦Armadura vazia cujas peças devem ser quebradas em ordem: elmo, escudo e manoplas. Só a peça ativa recebe dano; quando as três caem, o núcleo fica exposto e recebe 50 % a mais. Seus ataques são anunciados antes de atingir.¦Armure vide dont les pièces doivent être brisées dans l'ordre : heaume, bouclier, gantelets. Seule la pièce active subit des dégâts ; quand les trois tombent, le noyau est exposé et subit 50 % de dégâts en plus. Ses attaques sont annoncées.¦Leere Rüstung, deren Teile in der Reihenfolge Helm, Schild, Handschuhe zerbrochen werden müssen. Nur das aktive Teil nimmt Schaden; sind alle drei gefallen, liegt der Kern frei und erleidet 50 % mehr Schaden. Angriffe werden vorher angekündigt.
+bestiary.aptitudes.ancient_automaton.tip¦Construto de pedra e bronze. Suas esferas de energia podem ser rebatidas: a que o atinge o atordoa por 5 s, e enquanto estiver atordoado recebe o dobro de dano. Na fase 2 dispara um raio que para nos blocos sólidos. Não pode ser empurrado.¦Construct de pierre et de bronze. Ses orbes d'énergie peuvent être renvoyées : celle qui l'atteint l'étourdit 5 s, et pendant ce temps il subit le double de dégâts. En phase deux, il tire un rayon arrêté par les blocs solides. Il ne peut pas être repoussé.¦Konstrukt aus Stein und Bronze. Seine Energiekugeln können zurückgeschlagen werden: Die Kugel, die ihn trifft, betäubt ihn für 5 s, und während dieser Zeit erleidet er doppelten Schaden. In Phase zwei feuert er einen Strahl, der an festen Blöcken endet. Er lässt sich nicht wegstoßen.
+""")

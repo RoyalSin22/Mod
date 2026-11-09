@@ -26,12 +26,42 @@ public final class BossEntities {
 	public static final Item FACELESS_COLOSSUS_EGG = Registry.register(Registries.ITEM, Aptitudes.id("faceless_colossus_spawn_egg"),
 			new SpawnEggItem(FACELESS_COLOSSUS, 0x2B2D38, 0xB0423A, new Item.Settings()));
 
+	public static final EntityType<GuardianEntity> DISMANTLED_GUARDIAN = Registry.register(Registries.ENTITY_TYPE,
+			Aptitudes.id("dismantled_guardian"),
+			EntityType.Builder.create(GuardianEntity::new, SpawnGroup.MONSTER)
+					.dimensions(1.2f, 3.0f).eyeHeight(2.7f).maxTrackingRange(10).makeFireImmune()
+					.build("dismantled_guardian"));
+
+	public static final EntityType<AutomatonEntity> ANCIENT_AUTOMATON = Registry.register(Registries.ENTITY_TYPE,
+			Aptitudes.id("ancient_automaton"),
+			EntityType.Builder.create(AutomatonEntity::new, SpawnGroup.MONSTER)
+					.dimensions(1.4f, 2.8f).eyeHeight(2.4f).maxTrackingRange(10).makeFireImmune()
+					.build("ancient_automaton"));
+
+	public static final EntityType<AutomatonOrbEntity> AUTOMATON_ORB = Registry.register(Registries.ENTITY_TYPE,
+			Aptitudes.id("automaton_orb"),
+			EntityType.Builder.<AutomatonOrbEntity>create(AutomatonOrbEntity::new, SpawnGroup.MISC)
+					.dimensions(0.4f, 0.4f).maxTrackingRange(8).trackingTickInterval(5)
+					.build("automaton_orb"));
+
+	public static final Item DISMANTLED_GUARDIAN_EGG = Registry.register(Registries.ITEM, Aptitudes.id("dismantled_guardian_spawn_egg"),
+			new SpawnEggItem(DISMANTLED_GUARDIAN, 0x3A3D48, 0xC9A54C, new Item.Settings()));
+
+	public static final Item ANCIENT_AUTOMATON_EGG = Registry.register(Registries.ITEM, Aptitudes.id("ancient_automaton_spawn_egg"),
+			new SpawnEggItem(ANCIENT_AUTOMATON, 0x6B5A3E, 0x3FB6C9, new Item.Settings()));
+
 	private BossEntities() {
 	}
 
 	public static void register() {
 		FabricDefaultAttributeRegistry.register(FACELESS_COLOSSUS, FacelessColossusEntity.createAttributes());
+		FabricDefaultAttributeRegistry.register(DISMANTLED_GUARDIAN, GuardianEntity.createAttributes());
+		FabricDefaultAttributeRegistry.register(ANCIENT_AUTOMATON, AutomatonEntity.createAttributes());
 		ItemGroupEvents.modifyEntriesEvent(RegistryKey.of(RegistryKeys.ITEM_GROUP, Aptitudes.id("items")))
-				.register(entries -> entries.add(FACELESS_COLOSSUS_EGG));
+				.register(entries -> {
+					entries.add(FACELESS_COLOSSUS_EGG);
+					entries.add(DISMANTLED_GUARDIAN_EGG);
+					entries.add(ANCIENT_AUTOMATON_EGG);
+				});
 	}
 }

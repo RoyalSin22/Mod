@@ -3710,5 +3710,18 @@
   "advancement.aptitudes.life_vessel.description": "Benutze ein Lebensgefäß.",
   "entity.aptitudes.faceless_colossus": "Der gesichtslose Koloss",
   "item.aptitudes.faceless_colossus_spawn_egg": "Spawn-Ei des gesichtslosen Kolosses",
-  "bestiary.aptitudes.faceless_colossus.tip": "Riesiger Krieger mit Zweihänder. Er kündigt einen weiten Hieb und einen Abwärtsschlag mit Schockwelle an: Verlasse den markierten Kreis. Bei halber Lebenskraft bricht seine Rüstung: Er wird schneller, stürmt aus der Ferne an und erleidet mehr Schaden."
+  "bestiary.aptitudes.faceless_colossus.tip": "Riesiger Krieger mit Zweihänder. Er kündigt einen weiten Hieb und einen Abwärtsschlag mit Schockwelle an: Verlasse den markierten Kreis. Bei halber Lebenskraft bricht seine Rüstung: Er wird schneller, stürmt aus der Ferne an und erleidet mehr Schaden.",
+  "entity.aptitudes.dismantled_guardian": "Zerlegter Wächter",
+  "entity.aptitudes.ancient_automaton": "Uralter Automat",
+  "entity.aptitudes.automaton_orb": "Energiekugel",
+  "item.aptitudes.dismantled_guardian_spawn_egg": "Spawn-Ei des zerlegten Wächters",
+  "item.aptitudes.ancient_automaton_spawn_egg": "Spawn-Ei des uralten Automaten",
+  "piece.aptitudes.helm": "Helm",
+  "piece.aptitudes.shield": "Schild",
+  "piece.aptitudes.gauntlets": "Handschuhe",
+  "guardian.aptitudes.piece_broken": "%s zerbrochen!",
+  "guardian.aptitudes.core_exposed": "Der Kern liegt frei!",
+  "automaton.aptitudes.stunned": "Betäubt! Doppelter Schaden.",
+  "bestiary.aptitudes.dismantled_guardian.tip": "Leere Rüstung, deren Teile in der Reihenfolge Helm, Schild, Handschuhe zerbrochen werden müssen. Nur das aktive Teil nimmt Schaden; sind alle drei gefallen, liegt der Kern frei und erleidet 50 % mehr Schaden. Angriffe werden vorher angekündigt.",
+  "bestiary.aptitudes.ancient_automaton.tip": "Konstrukt aus Stein und Bronze. Seine Energiekugeln können zurückgeschlagen werden: Die Kugel, die ihn trifft, betäubt ihn für 5 s, und während dieser Zeit erleidet er doppelten Schaden. In Phase zwei feuert er einen Strahl, der an festen Blöcken endet. Er lässt sich nicht wegstoßen."
 }

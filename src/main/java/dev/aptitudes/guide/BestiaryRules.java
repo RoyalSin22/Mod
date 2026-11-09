@@ -95,6 +95,10 @@ public final class BestiaryRules {
 		out.add(new Entry("faceless_colossus", Kind.BOSS, Region.OVERWORLD, "aptitudes:faceless_colossus", null,
 				"aptitudes:faceless_colossus_spawn_egg",
 				List.of("aptitudes:champion_heart", "aptitudes:soul_shard", "aptitudes:elite_essence")));
+		out.add(new Entry("dismantled_guardian", Kind.BOSS, Region.OVERWORLD, "aptitudes:dismantled_guardian", null,
+				"aptitudes:dismantled_guardian_spawn_egg", List.of("aptitudes:soul_shard", "aptitudes:elite_essence")));
+		out.add(new Entry("ancient_automaton", Kind.BOSS, Region.OVERWORLD, "aptitudes:ancient_automaton", null,
+				"aptitudes:ancient_automaton_spawn_egg", List.of("aptitudes:soul_shard", "aptitudes:elite_essence")));
 		ENTRIES = Collections.unmodifiableList(out);
 		for (Entry e : ENTRIES) {
 			if (BY_ID.put(e.id(), e) != null) throw new IllegalStateException("Entrada duplicada: " + e.id());

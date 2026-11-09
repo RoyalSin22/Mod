@@ -5,6 +5,13 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+### v63c — Guardián Desmontado y Autómata Antiguo (Claude)
+- `boss/GuardianEntity` (piezas en orden, núcleo expuesto ×1,5) y `boss/AutomatonEntity` + `AutomatonOrbEntity`
+  (esferas devolvibles, aturdimiento ×2, rayo que se corta en bloques). Reglas en `boss/PieceBossRules` (JUnit).
+- Modelos, animaciones y texturas de prueba generados por `tools/models/gen_boss_models.py`; huevos, bestiario
+  con nueve jefes y textos en 11 idiomas. Verificados en el cliente: invocación, nombres y barras.
+- Pendiente: validar el combate en partida y las fases 3 de ambos.
+
 ### v63a — Base de GeckoLib (C4, Claude)
 - GeckoLib 4.7.7 obligatoria (sin transitivas). `boss/AnimatedBossEntity`: fases, `BossMoveRules`
   (JUnit), aviso y golpe en el servidor, animaciones disparadas en el cliente, barra de jefe.

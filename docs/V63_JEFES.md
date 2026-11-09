@@ -1,8 +1,8 @@
 # V63 — Jefes animados (GeckoLib): diseño de los tres primeros
 
-Estado: **C4 hecho** (base y Coloso Sin Rostro jugable con modelo de prueba). Pendiente: Guardián Desmontado y
-Autómata Antiguo (lógica, tarea siguiente de Claude), modelos y animaciones definitivos (K5, Codex) y sus
-estructuras con arena.
+Estado: **base, Coloso Sin Rostro, Guardián Desmontado y Autómata Antiguo jugables** con modelos de prueba.
+Pendiente: fase 3 de los dos últimos (variantes propias), validación de combate en partida (esferas, devolución,
+aturdimiento, piezas), modelos y animaciones definitivos (K5, Codex) y las estructuras con arena.
 
 Criterio (§0 de `IDEAS_v47_v55.md`): inspiración de tono, nombres, formas y ataques **originales**.
 
@@ -49,7 +49,14 @@ Guerrero gigante (1,6 × 3,4 bloques) de armadura oscura sin rostro, con espadó
 - Cómo se vence: castigar tras el `slam` (largo enfriamiento) y salir del arco del `sweep`; en fase 2, romper la
   línea de la embestida con columnas.
 
-## 3. El Guardián Desmontado (diseño)
+## 3. El Guardián Desmontado (`aptitudes:dismantled_guardian`) — jugable
+
+Implementado en `boss/GuardianEntity` con `PieceBossRules`: tres piezas en orden (yelmo, escudo, guanteletes),
+solo la activa absorbe daño, sin piezas el núcleo recibe ×1,5. Ataques: `volley` (tajo lineal de 12 bloques,
+fase 1+), `ring` (anillo entre 3 y 6 bloques, centro seguro, fase 1+), `dive` (caída sobre el objetivo, radio 3,
+fase 2+). Vida 260, armadura 8, daño 9. Botín: fragmentos de alma y esencia de élite.
+
+Diseño original:
 
 Armadura vacía cuyas piezas flotan. **Mecánica central**: tres piezas (yelmo, escudo, guanteletes) orbitan y
 absorben el daño; hay que romperlas **en orden** (la que brilla) para dejar el núcleo expuesto.
@@ -64,7 +71,14 @@ absorben el daño; hay que romperlas **en orden** (la que brilla) para dejar el 
 - Botín: Fragmentos de alma, Esencia de élite y el núcleo propio.
 - Implementación prevista: las piezas como entidades ligeras hijas (sin IA) o huesos con estado sincronizado.
 
-## 4. El Autómata Antiguo (diseño)
+## 4. El Autómata Antiguo (`aptitudes:ancient_automaton`) — jugable
+
+Implementado en `boss/AutomatonEntity` y `boss/AutomatonOrbEntity` con `PieceBossRules`: las esferas vuelan rectas;
+un jugador que las golpea las devuelve, y la esfera devuelta que alcanza al Autómata lo aturde 5 s (recibe ×2).
+Ataques: `orb` (esfera, fase 1+), `stomp` (pisotón, radio 3,5, fase 1+), `beam` (rayo que se corta en bloques
+sólidos, fase 2+). Vida 300, armadura 16, daño 7. Inmune al empuje.
+
+Diseño original:
 
 Constructo de piedra y bronce con un ojo que carga un rayo. **Mecánica central**: lanza esferas lentas que el
 jugador puede **devolver golpeándolas**; si una devuelta lo alcanza queda **aturdido** 5 s y recibe ×2 de daño.
@@ -80,6 +94,7 @@ jugador puede **devolver golpeándolas**; si una devuelta lo alcanza queda **atu
 
 ## 5. Pendientes
 
-1. Lógica del Guardián y del Autómata sobre la base (Claude).
-2. Modelos, texturas y animaciones definitivos de los tres (K5, Codex) respetando el contrato del §1.
-3. Estructuras (Ruinas de batalla, Santuario profundo, Templo mecánico) con arena de niebla y núcleo propio.
+1. Fase 3 del Guardián (ataques más rápidos) y del Autómata (dos esferas seguidas, rayo en barrido de 60°).
+2. Validar en partida el combate de ambos (piezas en orden, esferas devueltas, aturdimiento, rayo cortado por bloques).
+3. Modelos, texturas y animaciones definitivos de los tres (K5, Codex) respetando el contrato del §1.
+4. Estructuras (Ruinas de batalla, Santuario profundo, Templo mecánico) con arena de niebla y núcleo propio.

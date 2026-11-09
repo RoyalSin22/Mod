@@ -22,6 +22,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -119,6 +120,25 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 	@Override
 	public boolean damage(DamageSource source, float amount) {
 		return super.damage(source, amount * BossMoveRules.damageTaken(phase, crackedBonus()));
+	}
+
+	/** Jugadores y criaturas que pueden recibir un golpe del jefe (no otros jefes ni espectadores). */
+	protected boolean hittable(LivingEntity e) {
+		return e != this && e.isAlive() && !(e instanceof AnimatedBossEntity)
+				&& !(e instanceof PlayerEntity p && (p.isCreative() || p.isSpectator()));
+	}
+
+	/** Golpe del jefe: daño con su fuente y empuje si el golpe llega. */
+	protected void hit(LivingEntity e, float damage, double knockback) {
+		if (e.damage(getDamageSources().mobAttack(this), damage) && knockback > 0) {
+			Vec3d away = e.getPos().subtract(getPos()).multiply(1, 0, 1).normalize();
+			e.takeKnockback(knockback, -away.x, -away.z);
+		}
+	}
+
+	/** Entidades golpeables dentro de un radio alrededor del jefe. */
+	protected List<LivingEntity> victims(World world, double radius) {
+		return world.getEntitiesByClass(LivingEntity.class, getBoundingBox().expand(radius), this::hittable);
 	}
 
 	/** Daño extra recibido en la fase 2+ (0 = ninguno). */

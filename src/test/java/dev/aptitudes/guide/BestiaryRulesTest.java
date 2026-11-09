@@ -26,7 +26,7 @@ public class BestiaryRulesTest {
 			assertEquals(Kind.BOSS, e.kind());
 			assertEquals("boss.aptitudes." + boss, BestiaryRules.nameKey(e));
 		}
-		assertEquals(7, BestiaryRules.total(Kind.BOSS)); // v63: + Coloso Sin Rostro
+		assertEquals(9, BestiaryRules.total(Kind.BOSS)); // v63: + Coloso, Guardián y Autómata
 		assertEquals(2, BestiaryRules.total(Kind.ELITE));
 		assertEquals(BestiaryRules.entries().size(), BestiaryRules.total(null));
 		assertTrue(BestiaryRules.entries().size() <= BestiaryRules.MAX_ENTRIES);
@@ -65,6 +65,8 @@ public class BestiaryRulesTest {
 	@Test public void animatedBossesUnlockByEntityType() {
 		assertEquals(List.of("faceless_colossus"), BestiaryRules.unlockedBy("aptitudes:faceless_colossus", null, false, false));
 		assertEquals("entity.aptitudes.faceless_colossus", BestiaryRules.nameKey(BestiaryRules.byId("faceless_colossus")));
+		assertEquals(List.of("dismantled_guardian"), BestiaryRules.unlockedBy("aptitudes:dismantled_guardian", null, false, false));
+		assertEquals(List.of("ancient_automaton"), BestiaryRules.unlockedBy("aptitudes:ancient_automaton", null, false, false));
 	}
 
 	@Test public void vanillaBossesAreCreaturePages() {

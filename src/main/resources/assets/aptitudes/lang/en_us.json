@@ -3710,5 +3710,18 @@
   "advancement.aptitudes.life_vessel.description": "Use a Life Vessel.",
   "entity.aptitudes.faceless_colossus": "The Faceless Colossus",
   "item.aptitudes.faceless_colossus_spawn_egg": "Faceless Colossus Spawn Egg",
-  "bestiary.aptitudes.faceless_colossus.tip": "Giant warrior with a greatsword. It telegraphs a wide sweep and an overhead slam with a shock wave; step out of the marked circle. At half health its armor cracks: it moves faster, charges from afar and takes more damage."
+  "bestiary.aptitudes.faceless_colossus.tip": "Giant warrior with a greatsword. It telegraphs a wide sweep and an overhead slam with a shock wave; step out of the marked circle. At half health its armor cracks: it moves faster, charges from afar and takes more damage.",
+  "entity.aptitudes.dismantled_guardian": "Dismantled Guardian",
+  "entity.aptitudes.ancient_automaton": "Ancient Automaton",
+  "entity.aptitudes.automaton_orb": "Energy Orb",
+  "item.aptitudes.dismantled_guardian_spawn_egg": "Dismantled Guardian Spawn Egg",
+  "item.aptitudes.ancient_automaton_spawn_egg": "Ancient Automaton Spawn Egg",
+  "piece.aptitudes.helm": "Helm",
+  "piece.aptitudes.shield": "Shield",
+  "piece.aptitudes.gauntlets": "Gauntlets",
+  "guardian.aptitudes.piece_broken": "%s broken!",
+  "guardian.aptitudes.core_exposed": "The core is exposed!",
+  "automaton.aptitudes.stunned": "Stunned! Double damage.",
+  "bestiary.aptitudes.dismantled_guardian.tip": "Empty armor whose pieces must be broken in order: helm, shield, gauntlets. Only the active piece takes damage; when the three fall, the core is exposed and takes 50 % more damage. Its volley, ring and dive are telegraphed.",
+  "bestiary.aptitudes.ancient_automaton.tip": "Stone and bronze construct. Its energy orbs can be struck back: the orb that reaches it stuns it for 5 s, and while stunned it takes double damage. In phase two it fires a beam that stops at solid blocks. It cannot be pushed."
 }
