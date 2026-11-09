@@ -62,12 +62,6 @@ public final class TempleRules {
 		return 0.25 * clampRing(ring);
 	}
 
-	/** Tipo de guardián: 0 = vindicador (I–II), 1 = esqueleto wither (II–III), 2 = invocador (IV–V). */
-	public static int guardianKind(int ring) {
-		int r = clampRing(ring);
-		return r <= 1 ? 0 : r <= 3 ? 1 : 2;
-	}
-
 	public static int clampRing(int ring) {
 		return Math.max(0, Math.min(5, ring));
 	}

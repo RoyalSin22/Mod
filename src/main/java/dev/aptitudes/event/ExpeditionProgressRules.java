@@ -38,6 +38,11 @@ public final class ExpeditionProgressRules {
 		return distanceSquared <= (double) radius * radius;
 	}
 
+	/** Fragmentos nuevos del grupo desde la última vez: nunca negativos (gastar fragmentos no resta progreso). */
+	public static int shardGain(int groupTotal, int seen) {
+		return Math.max(0, groupTotal - seen);
+	}
+
 	/** ¿Ha caducado la expedición? */
 	public static boolean expired(long startTick, long now) {
 		return expired(startTick, now, TIME_LIMIT_TICKS);

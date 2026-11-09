@@ -92,6 +92,21 @@ public final class OrderBookRules {
 		return (long) Math.max(0, remaining) * unitPrice(tier, base);
 	}
 
+	/** Unidades que el dueño puede recoger: lo entregado que todavía no ha recogido. */
+	public static int claimable(int delivered, int claimed) {
+		return Math.max(0, delivered - claimed);
+	}
+
+	/** ¿Se puede recoger ya? Solo cuando el pedido está cerrado (completado o cancelado). */
+	public static boolean canClaim(boolean closed) {
+		return closed;
+	}
+
+	/** ¿Se borra el pedido? Cuando está cerrado y no queda nada por recoger. */
+	public static boolean removable(boolean closed, int delivered, int claimed) {
+		return closed && claimed >= delivered;
+	}
+
 	private static int clampTier(int tier) {
 		return Math.max(1, Math.min(4, tier));
 	}

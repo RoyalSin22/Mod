@@ -70,4 +70,22 @@ class OrderBookRulesTest {
 		assertEquals(3 * 2, OrderBookRules.refund(3, 1));
 		assertEquals(0, OrderBookRules.refund(0, 4));
 	}
+
+	@Test void claimableIsWhatWasDeliveredAndNotYetCollected() {
+		assertEquals(3, OrderBookRules.claimable(5, 2));
+		assertEquals(0, OrderBookRules.claimable(2, 2));
+		assertEquals(0, OrderBookRules.claimable(0, 0));
+	}
+
+	@Test void claimingNeedsAClosedOrder() {
+		assertFalse(OrderBookRules.canClaim(false));
+		assertTrue(OrderBookRules.canClaim(true));
+	}
+
+	@Test void anOrderIsRemovedOnlyWhenClosedAndFullyCollected() {
+		assertFalse(OrderBookRules.removable(false, 4, 4));  // abierto: aún admite entregas
+		assertFalse(OrderBookRules.removable(true, 4, 3));   // cerrado, pero falta recoger una unidad
+		assertTrue(OrderBookRules.removable(true, 4, 4));
+		assertTrue(OrderBookRules.removable(true, 0, 0));    // cancelado sin entregas
+	}
 }

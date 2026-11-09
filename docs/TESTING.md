@@ -3,8 +3,8 @@
 ## v65 — Pruebas nuevas
 
 - `ability/TranceRulesTest`: ganancia con tope, sintonía llena y ventana del trance (con duración configurable).
-- `contract/OrderBookRulesTest`: precio por nivel, escrow con tope, comisión, cupos de participantes, reserva que evita el bloqueo y devolución.
-- `event/ExpeditionProgressRulesTest`: metas por módulo, radio de la zona y caducidad.
+- `contract/OrderBookRulesTest`: precio por nivel, escrow con tope, comisión, cupos de participantes, reserva que evita el bloqueo, devolución, recogida y cuándo se borra un pedido.
+- `event/ExpeditionProgressRulesTest`: metas por módulo, radio de la zona, caducidad y ganancia de fragmentos del grupo (sin restar al gastar).
 - `event/ExpeditionRulesTest` (existente): composición y modificadores de la semilla.
 - `souls/SoulStainRulesTest` (existente, con el porcentaje configurable).
 - `elite/GlyphRulesTest` (ampliado): los afijos Espinoso y Abrasador tienen forma propia y distinta.

@@ -33,4 +33,10 @@ class ExpeditionProgressRulesTest {
 		assertFalse(ExpeditionProgressRules.expired(100, 100 + limit - 1));
 		assertTrue(ExpeditionProgressRules.expired(100, 100 + limit));
 	}
+
+	@Test void shardGainIgnoresSpendingAndCountsOnlyNewShards() {
+		assertEquals(3, ExpeditionProgressRules.shardGain(8, 5));
+		assertEquals(0, ExpeditionProgressRules.shardGain(4, 5)); // gastó fragmentos: no resta progreso
+		assertEquals(0, ExpeditionProgressRules.shardGain(5, 5));
+	}
 }

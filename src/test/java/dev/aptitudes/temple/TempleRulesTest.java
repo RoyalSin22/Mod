@@ -61,8 +61,5 @@ public class TempleRulesTest {
 		assertEquals(0.0, TempleRules.guardianHealthBonus(0), 1e-9);
 		assertEquals(1.25, TempleRules.guardianHealthBonus(5), 1e-9);
 		assertEquals(1.25, TempleRules.guardianHealthBonus(12), 1e-9);
-		assertEquals(0, TempleRules.guardianKind(1));
-		assertEquals(1, TempleRules.guardianKind(3));
-		assertEquals(2, TempleRules.guardianKind(4));
 	}
 }

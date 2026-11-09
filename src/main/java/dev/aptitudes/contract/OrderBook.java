@@ -108,12 +108,12 @@ public final class OrderBook {
 			fail(owner, "order.aptitudes.not_ready");
 			return;
 		}
-		int claimable = order.delivered - order.claimed;
+		int claimable = OrderBookRules.claimable(order.delivered, order.claimed);
 		if (claimable > 0) {
 			giveItems(owner, itemOf(order), claimable);
 			order.claimed += claimable;
 		}
-		if (order.claimed >= order.delivered) state.remove(id);
+		if (OrderBookRules.removable(order.closed, order.delivered, order.claimed)) state.remove(id);
 		else state.markDirty();
 		owner.sendMessage(Text.translatable("order.aptitudes.claimed", claimable).formatted(Formatting.GREEN), true);
 	}
@@ -127,7 +127,7 @@ public final class OrderBook {
 		order.escrow = 0;
 		order.closed = true;
 		giveEmeralds(owner, refund);
-		if (order.claimed >= order.delivered) state.remove(id);
+		if (OrderBookRules.removable(order.closed, order.delivered, order.claimed)) state.remove(id);
 		else state.markDirty();
 		owner.sendMessage(Text.translatable("order.aptitudes.cancelled", refund).formatted(Formatting.GRAY), true);
 	}

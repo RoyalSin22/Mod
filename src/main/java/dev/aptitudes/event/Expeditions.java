@@ -216,7 +216,7 @@ public final class Expeditions {
 			}
 			if (e.modifiers.contains("elite_surge")) applyEliteSurge(server, e);
 			if (e.current() == ExpeditionRules.Module.PUZZLE && anyInZone && shards > e.shardsSeen) {
-				e.progress = Math.min(ExpeditionProgressRules.goal(e.current()), e.progress + (shards - e.shardsSeen));
+				e.progress = Math.min(ExpeditionProgressRules.goal(e.current()), e.progress + ExpeditionProgressRules.shardGain(shards, e.shardsSeen));
 				if (e.progress >= ExpeditionProgressRules.goal(e.current())) {
 					e.shardsSeen = shards; // antes de cambiar de módulo: lo ya contado no puntúa en el siguiente
 					nextModule(server, e, state);
