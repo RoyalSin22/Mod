@@ -142,6 +142,8 @@ entre jugadores; expediciones. Orden de implementación, cada paso con su valida
 
 - **F1 — Provocación (agro) en élites y campeones.** Un mob con provocación prioriza al jugador que la aplica. Solo
   élites y campeones en la primera versión; no afecta a jefes. Pendiente: radio y duración (provisionales).
+  **Hecho en código (sin cablear):** `ability/TauntRules` (puro, 11 pruebas): solo élites y campeones, radio 8,
+  duración 6 s, espera 20 s. **Pendiente:** qué rol provoca (decisión del autor) y el cableado en los mobs.
 - **F2 — Trance de combate (sintonía).** Barra de sintonía que se llena con golpes críticos y habilidades; al llenarse,
   una ventana corta de burst. Se apoya en los combos existentes (`Combos`, `ComboCounter`). Pendiente: duración y
   cuánto se llena.
