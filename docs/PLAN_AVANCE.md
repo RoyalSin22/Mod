@@ -220,6 +220,17 @@ afinidad del elemento activo llega a 3 (`passiveRank`, nodo `elemental_affinity`
 no existe, el rango usado es el del nodo de afinidad actual; cuando se cree el árbol del Arcanista, el rango se
 leerá de su nodo de elemento.
 
+## Enemigos nuevos (decisiones del autor)
+
+- **Marcas de campeón con partículas (hecho en código, sin modelo):** `elite/GlyphRules` (puro, 13 pruebas) y
+  `elite/EliteGlyphs`. Cada uno de los nueve afijos tiene su forma y su partícula; cada 20 ticks se dibujan hasta tres
+  marcas (base, pecho y cabeza) sobre los élites cercanos a un jugador. Pendiente: validar en partida la legibilidad.
+- **Niebla de almas:** enemigos nuevos (tipos propios). Primero el Errante Velado, con textura de 64×64.
+- **Lluvia de brasas:** aparecen las criaturas del Nether vanilla (hoglin, piglin bruto, zombi piglin, blaze, ghast,
+  cubo de magma, esqueleto wither). No necesitan modelos nuevos.
+- **Templo sellado:** Custodio de las Cuatro Llaves, confirmado, con textura de 128×128.
+- **Texturas:** jefes 256×256; enemigos comunes 64×64; guardián del templo 128×128.
+
 ## 5. Ideas descartadas o aplazadas
 
 - Casa de subastas global: descartada para un servidor de amigos.
