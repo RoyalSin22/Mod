@@ -7,9 +7,10 @@ Sistema RPG con tres capas que se combinan:
 - **Maná + recurso de rol**: todas las habilidades gastan Maná; cada rol tiene además un recurso propio (Furia, Sangre, Chi…) que **potencia** sus habilidades.
 - **20 roles** (clases) en **5 categorías**. Eliges uno **principal** y uno **secundario**; ambos conservan su progreso, árbol de talentos, habilidades equipables y evoluciones. Nivel máximo inicial 50, una senda exclusiva por rol y una piedra angular al final.
 - **Evolución de roles**: Base → **Maestro** → **Definitivo** (nivel + prueba + ítem), con títulos propios, una **habilidad característica** al llegar a Maestro (tecla `Z`) y una **definitiva** al llegar a Definitivo (tecla `R`).
-- **16 habilidades legendarias** (tecla `H`; catálogo con `U`): la exclusividad por servidor es opcional y está desactivada por defecto.
+- **16 habilidades legendarias** (tecla `H`; se eligen en el árbol de talentos): la exclusividad por servidor es opcional y está desactivada por defecto.
 - **Armas, armaduras, accesorios, runas y cuatro pociones propias**, con recetas consultables en el grimorio.
-- **GUI** rediseñada (`K` atributos/habilidades, `J` roles, `U` únicas, `G` cambiar elemento), **HUD** de energía, enfriamientos y elemento activo, **comandos** y **configuración JSON**.
+- **Grimorio** con bestiario que se desbloquea al vencer a cada criatura o jefe, progreso, buscador, marcadores y sendas de cada rol (v61).
+- **GUI** rediseñada (`K` atributos/habilidades, `J` roles, `G` cambiar elemento, `U` ver un objeto en el grimorio desde un inventario), **HUD** de energía, enfriamientos y elemento activo, **comandos** y **configuración JSON**.
 
 ## Documentación técnica
 

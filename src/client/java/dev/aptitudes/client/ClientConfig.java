@@ -41,6 +41,8 @@ public final class ClientConfig {
 	public Boolean hudMinimal = false;
 	public Boolean hudAnimations = true;
 	public String hudPreset = HudPreset.CLASSIC.id();
+	/** v61: marcadores del grimorio ({@code chapter:…}, {@code item:…}, {@code beast:…}, {@code role:…}). */
+	public java.util.List<String> guideBookmarks = new java.util.ArrayList<>();
 
 	public HudPreset preset() {
 		return HudPreset.fromId(hudPreset);
@@ -76,6 +78,7 @@ public final class ClientConfig {
 		if (config.hudMinimal == null) config.hudMinimal = false;
 		if (config.hudAnimations == null) config.hudAnimations = true;
 		config.hudPreset = config.preset().id();
+		config.guideBookmarks = dev.aptitudes.guide.GuideRules.sanitizeBookmarks(config.guideBookmarks);
 		config.hudScale = AbilityHudLayout.validatedScale(config.hudScale);
 		config.hudOffsetX = Math.clamp(config.hudOffsetX, -4096, 4096);
 		config.hudOffsetY = Math.clamp(config.hudOffsetY, -4096, 4096);

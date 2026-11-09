@@ -13,6 +13,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   vuelo corto que se dirige con la mirada.
 
 ### Cambiado
+- **v61 — Grimorio.** Nueva pestaña Bestiario: cada criatura o jefe abre su página al vencerla, con
+  modelo, estadísticas, debilidades, consejos y botín; el grupo cercano también la desbloquea.
+  Pestaña Progreso con logros, bestiario, jefes, escalones de senda y piedras angulares. Buscador
+  global (capítulos, objetos, criaturas descubiertas y roles) y marcadores con ☆. En Sendas, cada rol
+  muestra sus tres sendas con iconos y piedra angular. Con el grimorio en el inventario, U sobre un
+  objeto de Aptitudes abre su ficha. Si hay un paso de tutorial pendiente, una pestaña lleva a su
+  capítulo. Los capítulos estrenan ilustraciones de cabecera.
 - **v60 — Arenas de jefe.** La niebla rodea al Centinela, al Oráculo y al Campeón en estructuras
   nuevas cuando entras a luchar. Al sellarse la arena suena un tema original. La niebla se retira
   al vencer al jefe o si no queda nadie combatiendo dentro.

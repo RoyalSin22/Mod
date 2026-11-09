@@ -54,6 +54,7 @@ Y: acessórios.
 O: alternar HUD; Shift + O: ajustes do HUD.
 Na árvore: arraste para mover, roda para zoom, C para centralizar. Se a janela não couber (escala de interface grande), use a roda fora da árvore ou PgUp/PgDn para rolar.
 No grimório: ↑/↓ mudam o capítulo; clique em um item para ver sua receita; Backspace ou botão lateral do mouse voltam; ←/→ alternam a receita.
+U (em um inventário, sobre um item do Aptitudes): abre sua página no grimório. Abas no topo: Bestiário, Progresso, Busca e Marcadores (☆ em qualquer página).
 Tudo pode ser alterado em Opções → Controles.""",
     """K : attributs et compétences.
 J : rôles et arbre de talents.
@@ -67,6 +68,7 @@ Y : accessoires.
 O : afficher/masquer l'ATH ; Maj + O : réglages de l'ATH.
 Dans l'arbre : glisser pour déplacer, molette pour zoomer, C pour centrer. Si la fenêtre dépasse l'écran (grande échelle d'interface), défilez avec la molette hors de l'arbre ou Page préc./suiv.
 Dans le grimoire : ↑/↓ changent de chapitre ; cliquez sur un objet pour sa recette ; Retour arrière ou bouton latéral de la souris pour revenir ; ←/→ changent de recette.
+U (dans un inventaire, sur un objet d'Aptitudes) : ouvre sa page dans le grimoire. Onglets en haut : Bestiaire, Progression, Recherche et Signets (☆ sur n'importe quelle page).
 Tout est modifiable dans Options → Contrôles.""",
     """K: Attribute und Fertigkeiten.
 J: Rollen und Talentbaum.
@@ -80,6 +82,7 @@ Y: Accessoires.
 O: HUD umschalten; Umschalt + O: HUD-Einstellungen.
 Im Baum: Ziehen zum Verschieben, Mausrad zum Zoomen, C zum Zentrieren. Passt das Fenster nicht (große GUI-Skalierung), scrolle mit dem Mausrad außerhalb des Baums oder Bild auf/ab.
 Im Grimoire: ↑/↓ wechseln das Kapitel; ein Klick auf einen Gegenstand zeigt sein Rezept; Rücktaste oder seitliche Maustaste gehen zurück; ←/→ wechseln das Rezept.
+U (in einem Inventar, über einem Aptitudes-Gegenstand): öffnet seine Seite im Grimoire. Reiter oben: Bestiarium, Fortschritt, Suche und Lesezeichen (☆ auf jeder Seite).
 Alles lässt sich unter Optionen → Steuerung ändern."""))
 
 chapter('bonfire', ('A Fogueira', 'Le feu de camp', 'Das Leuchtfeuer'), (
@@ -457,7 +460,9 @@ Santuário: a cada 5 s, cura você e aliados em 8 blocos em 2 pontos de vida.
 
 Fortuna: ao abater, 25%% de chance de uma tirada extra de saque; elites também têm 10%% de chance de deixar uma esmeralda.
 
-Legião: +1 servo máximo; seus servos curam você em 10%% do dano que causam.""",
+Legião: +1 servo máximo; seus servos curam você em 10%% do dano que causam.
+
+No capítulo Caminhos do grimório, clique em uma classe para ver seus três caminhos com ícones, níveis e pedra angular.""",
     """Chaque rôle possède trois voies : A, B et C. Apprendre le premier rang en choisit UNE et verrouille les deux autres. Réinitialisez l'arbre pour changer de voie.
 
 Dans J, le bouton «Voies» ouvre la vue complète du rôle sélectionné : onglets A/B/C, niveaux, prérequis et confirmation du choix. S1–S3 apparaissent aussi dans la grille de l'arbre.
@@ -489,7 +494,9 @@ Sanctuaire : toutes les 5 s, vous rend 2 points de santé, à vous et aux allié
 
 Fortune : à l'élimination, 25%% de chance d'un tirage de butin supplémentaire ; les élites ont aussi 10%% de chance de lâcher une émeraude.
 
-Légion : +1 serviteur maximal ; vos serviteurs vous soignent de 10%% de leurs dégâts.""",
+Légion : +1 serviteur maximal ; vos serviteurs vous soignent de 10%% de leurs dégâts.
+
+Dans le chapitre Voies du grimoire, cliquez sur un rôle pour voir ses trois voies avec leurs icônes, niveaux et pierre angulaire.""",
     """Jede Rolle besitzt drei Pfade: A, B und C. Mit dem ersten Rang wählst du EINEN und sperrst die beiden anderen. Setze den Baum zurück, um den Pfad zu wechseln.
 
 In J öffnet «Pfade» die vollständige Pfadansicht der gewählten Rolle: A/B/C-Reiter, Stufen, Voraussetzungen und Wahlbestätigung. S1–S3 stehen auch im Baumraster.
@@ -521,7 +528,9 @@ Zuflucht: Heilt dich und Verbündete in 8 Blöcken alle 5 s um 2 Leben.
 
 Glück: Bei Tötung 25%% Chance auf einen weiteren Beutewurf; Elitegegner lassen zudem mit 10%% Chance einen Smaragd fallen.
 
-Legion: +1 maximaler Diener; deine Diener heilen dich um 10%% ihres verursachten Schadens."""))
+Legion: +1 maximaler Diener; deine Diener heilen dich um 10%% ihres verursachten Schadens.
+
+Klicke im Kapitel Pfade des Grimoires auf eine Rolle, um ihre drei Pfade mit Symbolen, Stufen und Schlüsselstein zu sehen."""))
 
 chapter('achievements', ('Conquistas', 'Succès', 'Fortschritte'), (
     """Abra os progressos do Minecraft e selecione a aba «Aptitudes». São 17 conquistas, concedidas automaticamente pelo servidor quando os requisitos são cumpridos. Passe o mouse sobre um progresso para ler o objetivo.

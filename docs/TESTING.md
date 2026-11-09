@@ -1,5 +1,33 @@
 # Pruebas de Aptitudes
 
+## v61 — Grimorio (K3)
+
+Automáticas: `guide/BestiaryRulesTest` (catálogo, desbloqueos, topes y saneado) y `guide/GuideRulesTest`
+(buscador sin tildes, marcadores, porcentajes y progreso de sendas). Cabeceras:
+`python3 tools/textures/gen_guide_headers.py src/main/resources/assets/aptitudes/textures/gui/guide --check`.
+
+1. Abre el grimorio en un mundo nuevo: pestañas Bestiario, Progreso, Buscar y Marcadores a la derecha
+   del título, más Tutorial si hay un paso pendiente (lleva al capítulo recomendado y lo indica en amarillo).
+2. Mata un zombi: aviso «Bestiario: nueva página» y sonido. En Bestiario, su icono deja de ser «?»; la
+   página muestra el modelo (sigue al ratón), Vida 20 · Armadura 2 · Daño 3, «Vulnerable a Castigo», el
+   consejo y el botín. Las páginas cerradas no se abren ni aparecen en el buscador.
+3. Mata una élite y un campeón: se abren Élite y Campeón además de la criatura. Vence a un jefe propio:
+   se abren su página y la de la criatura base, pero no las de élite. En grupo, un compañero a menos de
+   64 bloques recibe las mismas páginas; uno lejano o en otra dimensión, no.
+4. Muere, desconéctate y reinicia: el bestiario se conserva. Con `/advancement grant` sobre un logro de
+   Aptitudes, reabre el grimorio: Progreso actualiza el recuento (petición limitada a una por segundo).
+5. Buscar: «hoguera», «HOGUERA» y «éter»/«eter» dan resultados; capítulos, objetos, criaturas
+   descubiertas y roles llevan a su página y «Volver» regresa a la búsqueda.
+6. Pulsa ☆ en un capítulo, objeto, criatura y rol; aparecen en Marcadores (tope 24) y se quitan con ×.
+   Edita `guideBookmarks` con un id inválido: se descarta al cargar.
+7. En el capítulo Sendas, pulsa un rol: tres filas S1–S7 con iconos, rangos propios en dorado y la
+   piedra angular con borde morado; el tooltip muestra nombre, escalón, nivel y descripción.
+8. Con el grimorio en el inventario, pasa el ratón por un objeto de Aptitudes: el tooltip indica «U: ver
+   en el grimorio». U abre su ficha y Esc vuelve al inventario. Sin grimorio, con algo en el cursor o
+   escribiendo en el buscador del modo creativo o en un yunque, U no hace nada. En un cofre, el cofre se
+   cierra antes de abrir la ficha.
+9. Repite en alemán a 426×240: pestañas, cabeceras y filas caben sin solaparse.
+
 ## v60 — Arenas con niebla (K2, fase 2)
 
 1. Genera una Torre, un Santuario y un Campamento en terreno nuevo. En Supervivencia,

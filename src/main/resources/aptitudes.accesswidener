@@ -2,3 +2,4 @@ accessWidener v2 named
 
 # Solo lectura del contador para observar y completar la operación vanilla una vez.
 accessible field net/minecraft/block/entity/BrewingStandBlockEntity propertyDelegate Lnet/minecraft/screen/PropertyDelegate;
+accessible field net/minecraft/client/gui/screen/ingame/HandledScreen focusedSlot Lnet/minecraft/screen/slot/Slot;

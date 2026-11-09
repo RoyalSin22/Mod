@@ -1,7 +1,30 @@
 package dev.aptitudes.client.screen;
 
 import dev.aptitudes.Aptitudes;
+import dev.aptitudes.client.ClientConfig;
+import dev.aptitudes.client.ClientGrimoire;
+import dev.aptitudes.client.ClientRoleState;
+import dev.aptitudes.client.ClientTutorial;
+import dev.aptitudes.guide.BestiaryRules;
+import dev.aptitudes.guide.GuideRules;
 import dev.aptitudes.item.ModItems;
+import dev.aptitudes.network.RoleSyncPayload;
+import dev.aptitudes.role.PathRules;
+import dev.aptitudes.role.RoleNode;
+import dev.aptitudes.role.RoleTree;
+import dev.aptitudes.tutorial.TutorialRules;
+import dev.aptitudes.tutorial.TutorialView;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.attribute.DefaultAttributeRegistry;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.EntityTypeTags;
+import net.minecraft.util.Identifier;
 import dev.aptitudes.world.GuildShapelessRecipe;
 import dev.aptitudes.item.RoleArmor;
 import dev.aptitudes.item.weapon.RoleWeapons;
@@ -51,8 +74,11 @@ import java.util.function.Supplier;
  *       llegan sincronizadas del servidor, así que siempre coinciden), varias recetas con ‹ ›, «Se usa en»
  *       y navegación por ingredientes con historial (Volver / Retroceso).</li>
  *   <li><b>Recetario</b>: catálogo de todos los objetos fabricables del mod con buscador.</li>
+ *   <li>v61: <b>Bestiario</b> (páginas que se desbloquean al vencer a cada criatura o jefe), <b>Progreso</b>,
+ *       <b>buscador</b> global, <b>marcadores</b>, sendas de cada rol con sus iconos, enlace al capítulo del
+ *       tutorial e ilustraciones de cabecera generadas ({@code tools/textures/gen_guide_headers.py}).</li>
  * </ul>
- * Solo lee datos del cliente: no envía nada al servidor.
+ * Solo lee datos del cliente; lo único que envía es la petición de refresco del bestiario al abrirse.
  */
 public class GuideScreen extends Screen {
 	private record Chapter(String id, Item icon, Supplier<List<Item>> items) {}
@@ -89,6 +115,31 @@ public class GuideScreen extends Screen {
 			chapter("achievements", Items.GOLDEN_APPLE, List::of),
 			chapter("alchemy", Items.BREWING_STAND, () -> List.of(ModItems.HERB_PETALS)));
 
+	/** Capítulo recomendado para cada paso del tutorial (enlace desde el tutorial, G2). */
+	private static final Map<TutorialRules.Step, String> TUTORIAL_CHAPTERS = Map.of(
+			TutorialRules.Step.GUIDE, "start", TutorialRules.Step.BONFIRE, "bonfire",
+			TutorialRules.Step.PRIMARY_ROLE, "roles", TutorialRules.Step.ACTIVE, "tree",
+			TutorialRules.Step.COMBO, "skills", TutorialRules.Step.GUILD_CRAFT, "guild");
+
+	/** Qué se muestra a la derecha del índice. */
+	private enum Page { CHAPTER, ITEM, BESTIARY, BEAST, PROGRESS, SEARCH, BOOKMARKS, ROLE }
+
+	/** Posición en el historial (Volver / Retroceso). */
+	private record Loc(Page page, int chapter, @Nullable Item item, @Nullable BestiaryRules.Entry beast, @Nullable Role role) {}
+
+	/** Pestañas de la barra de título. */
+	private record Tab(Page page, Item icon, String key) {}
+
+	private static final List<Tab> TABS = List.of(
+			new Tab(Page.BESTIARY, Items.SKELETON_SKULL, "screen.aptitudes.guide.tab.bestiary"),
+			new Tab(Page.PROGRESS, Items.CLOCK, "screen.aptitudes.guide.tab.progress"),
+			new Tab(Page.SEARCH, Items.SPYGLASS, "screen.aptitudes.guide.tab.search"),
+			new Tab(Page.BOOKMARKS, Items.NAME_TAG, "screen.aptitudes.guide.tab.bookmarks"));
+
+	/** Ilustraciones de cabecera: 384×34, generadas por {@code tools/textures/gen_guide_headers.py}. */
+	private static final int BANNER_W = 384;
+	private static final int BANNER_H = 34;
+
 	/** Último capítulo abierto (dura la sesión de juego). */
 	private static int lastChapter;
 
@@ -102,10 +153,26 @@ public class GuideScreen extends Screen {
 	private int chapter;
 	private double scroll;
 
-	/** Ficha abierta (null = capítulo). */
+	private Page page = Page.CHAPTER;
+	/** Ficha de objeto abierta (solo en {@link Page#ITEM}). */
 	@Nullable private Item viewing;
+	@Nullable private BestiaryRules.Entry beast;
+	@Nullable private Role role;
 	private int recipeIndex;
-	private final Deque<Item> history = new ArrayDeque<>();
+	private final Deque<Loc> history = new ArrayDeque<>();
+	/** Pantalla a la que se vuelve al cerrar (el inventario, si se abrió desde él). */
+	@Nullable private final Supplier<Screen> returnTo;
+
+	// Buscador global (G2): resultados recalculados solo al cambiar la consulta.
+	private TextFieldWidget finder;
+	private String finderQuery = "";
+	private record Result(Text title, ItemStack icon, String kindKey, Runnable open) {}
+	private List<Result> results = List.of();
+
+	/** Criaturas para el modelo del bestiario (creadas una vez por pantalla). */
+	private final Map<String, LivingEntity> models = new HashMap<>();
+	/** Tipos sin modelo dibujable (no vivos o con renderizador que falla): se usa su icono. */
+	private final Set<String> noModel = new java.util.HashSet<>();
 
 	// Recetas del mod, construidas una vez al abrir.
 	private final Map<Item, List<RecipeEntry<?>>> recipesFor = new HashMap<>();
@@ -127,8 +194,21 @@ public class GuideScreen extends Screen {
 	private final List<Hit> hits = new ArrayList<>();
 
 	public GuideScreen() {
+		this(null);
+	}
+
+	private GuideScreen(@Nullable Supplier<Screen> returnTo) {
 		super(Text.translatable("screen.aptitudes.guide"));
 		this.chapter = MathHelper.clamp(lastChapter, 0, CHAPTERS.size() - 1);
+		this.returnTo = returnTo;
+	}
+
+	/** Abre directamente la ficha de un objeto («ver en el grimorio» desde un inventario). */
+	public static GuideScreen forItem(Item item, @Nullable Supplier<Screen> returnTo) {
+		GuideScreen screen = new GuideScreen(returnTo);
+		screen.page = Page.ITEM;
+		screen.viewing = item;
+		return screen;
 	}
 
 	private static Chapter chapter(String id, Item icon, Supplier<List<Item>> items) {
@@ -170,6 +250,19 @@ public class GuideScreen extends Screen {
 		});
 		search.setMaxLength(40);
 		addSelectableChild(search);
+		finder = new TextFieldWidget(textRenderer, pageX(), top + 40, Math.min(200, pageW()), 14,
+				Text.translatable("screen.aptitudes.guide.tab.search"));
+		finder.setPlaceholder(Text.translatable("screen.aptitudes.guide.tab.search").formatted(Formatting.DARK_GRAY));
+		finder.setMaxLength(GuideRules.MAX_QUERY);
+		finder.setText(finderQuery);
+		finder.setChangedListener(s -> {
+			finderQuery = s;
+			scroll = 0;
+			results = findResults(s);
+		});
+		addSelectableChild(finder);
+		results = findResults(finderQuery);
+		ClientGrimoire.request();
 	}
 
 	/** Índice de recetas del mod a partir de las recetas sincronizadas por el servidor. */
@@ -224,7 +317,11 @@ public class GuideScreen extends Screen {
 	private int pageX() { return left + LIST_W + 14; }
 	private int pageW() { return W - LIST_W - 22; }
 	private int rowH() { return MathHelper.clamp((H - 32) / CHAPTERS.size(), 9, 13); }
-	private boolean recipesMode() { return viewing == null && CHAPTERS.get(chapter).id().equals(RECIPES_CHAPTER); }
+	private boolean recipesMode() { return page == Page.CHAPTER && CHAPTERS.get(chapter).id().equals(RECIPES_CHAPTER); }
+	private boolean alchemyMode() { return page == Page.CHAPTER && CHAPTERS.get(chapter).id().equals("alchemy"); }
+	private boolean typing() {
+		return (recipesMode() && search.isFocused()) || (page == Page.SEARCH && finder.isFocused());
+	}
 
 	// ------------------------------------------------------------ Dibujo
 
@@ -233,30 +330,114 @@ public class GuideScreen extends Screen {
 		super.render(ctx, mouseX, mouseY, delta);
 		hits.clear();
 		UiStyle.window(ctx, left, top, W, H);
-		ctx.drawTextWithShadow(textRenderer, title, left + 10, top + 8, UiStyle.GOLD);
+		ctx.drawTextWithShadow(textRenderer, UiStyle.fit(textRenderer, title, LIST_W + 6), left + 10, top + 8, UiStyle.GOLD);
+		Tooltip tip = new Tooltip();
+		renderTabs(ctx, mouseX, mouseY, tip);
 		renderIndex(ctx, mouseX, mouseY);
 
 		int px = pageX();
 		int pw = pageW();
 		UiStyle.panel(ctx, px - 4, top + 22, pw + 8, H - 30);
-		Tooltip tip = new Tooltip();
 		search.visible = recipesMode(); // invisible fuera del Recetario: no recibe clics
-		if (viewing != null) {
-			renderItemPage(ctx, mouseX, mouseY, tip);
-		} else if (recipesMode()) {
-			renderRecipeBook(ctx, mouseX, mouseY, delta, tip);
-		} else {
-			renderChapter(ctx, mouseX, mouseY, tip);
+		finder.visible = page == Page.SEARCH;
+		switch (page) {
+			case ITEM -> {
+				if (viewing != null) renderItemPage(ctx, mouseX, mouseY, tip);
+			}
+			case BESTIARY -> renderBestiary(ctx, mouseX, mouseY, tip);
+			case BEAST -> renderBeast(ctx, mouseX, mouseY, tip);
+			case PROGRESS -> renderProgress(ctx);
+			case SEARCH -> renderSearch(ctx, mouseX, mouseY, delta);
+			case BOOKMARKS -> renderBookmarks(ctx, mouseX, mouseY);
+			case ROLE -> renderRole(ctx, mouseX, mouseY, tip);
+			case CHAPTER -> {
+				if (recipesMode()) renderRecipeBook(ctx, mouseX, mouseY, delta, tip);
+				else renderChapter(ctx, mouseX, mouseY, tip);
+			}
 		}
 		tip.draw(ctx, mouseX, mouseY);
+	}
+
+	/** Pestañas a la derecha del título; la de Tutorial solo aparece con un paso pendiente. */
+	private void renderTabs(DrawContext ctx, int mouseX, int mouseY, Tooltip tip) {
+		int tutorial = tutorialChapter();
+		int count = TABS.size() + (tutorial >= 0 ? 1 : 0);
+		int x = left + W - 8 - count * 20;
+		for (int i = 0; i < count; i++) {
+			boolean isTutorial = i == TABS.size();
+			Tab tab = isTutorial ? null : TABS.get(i);
+			boolean active = tab != null && page == tab.page();
+			boolean hover = mouseX >= x && mouseX < x + 18 && mouseY >= top + 4 && mouseY < top + 20;
+			ctx.fill(x, top + 4, x + 18, top + 20, active ? 0x60C9A54C : hover ? 0x40303850 : 0x20303850);
+			ctx.drawBorder(x, top + 4, 18, 16, active || hover ? UiStyle.GOLD : UiStyle.BORDER);
+			ctx.drawItem(new ItemStack(isTutorial ? Items.WRITABLE_BOOK : tab.icon()), x + 1, top + 4);
+			if (hover) {
+				tip.set(List.of(isTutorial ? Text.translatable("screen.aptitudes.guide.tab.tutorial", tutorialText())
+						: Text.translatable(tab.key())));
+			}
+			final int target = tutorial;
+			hits.add(new Hit(x, top + 4, 18, 16, isTutorial ? () -> openChapter(target) : () -> openPage(tab.page())));
+			x += 20;
+		}
+	}
+
+	/** Índice del capítulo del paso de tutorial pendiente, o −1. */
+	private int tutorialChapter() {
+		TutorialView view = ClientTutorial.view();
+		if (view == null || !view.visible() || view.nextStep() < 0 || view.nextStep() >= TutorialRules.ORDER.size()) return -1;
+		String id = TUTORIAL_CHAPTERS.get(TutorialRules.ORDER.get(view.nextStep()));
+		for (int i = 0; i < CHAPTERS.size(); i++) if (CHAPTERS.get(i).id().equals(id)) return i;
+		return -1;
+	}
+
+	private Text tutorialText() {
+		TutorialView view = ClientTutorial.view();
+		if (view == null || view.nextStep() < 0) return Text.empty();
+		return Text.translatable("screen.aptitudes.guide.tutorial", view.nextStep() + 1, TutorialRules.ORDER.size(),
+				Text.translatable("tutorial.aptitudes.step." + TutorialRules.ORDER.get(view.nextStep()).key()));
+	}
+
+	// -------------------------------------------------------- Cabeceras (G4)
+
+	/**
+	 * Cabecera común: ilustración generada, título, subtítulo, icono y marcador. Devuelve la primera fila útil.
+	 *
+	 * @param bookmark id del marcador o null si la página no se puede marcar
+	 */
+	private int header(DrawContext ctx, String banner, Text heading, Text subtitle, ItemStack icon,
+					   @Nullable String bookmark, int mouseX, int mouseY, Tooltip tip) {
+		int px = pageX();
+		int pw = pageW();
+		Identifier texture = Aptitudes.id("textures/gui/guide/" + banner + ".png");
+		ctx.drawTexture(texture, px - 2, top + 24, 0f, 0f, Math.min(pw + 4, BANNER_W), BANNER_H, BANNER_W, BANNER_H);
+		bigItem(ctx, icon, px + pw - 34, top + 25);
+		int textW = pw - 40 - (bookmark != null ? 14 : 0);
+		ctx.drawTextWithShadow(textRenderer, UiStyle.fit(textRenderer, heading.copy().formatted(Formatting.BOLD), textW),
+				px + 2, top + 30, UiStyle.GOLD);
+		ctx.drawTextWithShadow(textRenderer, UiStyle.fit(textRenderer, subtitle, textW), px + 2, top + 43, UiStyle.TEXT);
+		if (bookmark != null) star(ctx, bookmark, px + pw - 48, top + 29, mouseX, mouseY, tip);
+		UiStyle.line(ctx, px, top + 59, px + pw, top + 59, UiStyle.GOLD_DARK);
+		return top + 63;
+	}
+
+	/** Estrella de marcador (☆ / ★); el clic añade o quita la página. */
+	private void star(DrawContext ctx, String bookmark, int x, int y, int mouseX, int mouseY, Tooltip tip) {
+		boolean marked = ClientConfig.get().guideBookmarks.contains(bookmark);
+		boolean hover = mouseX >= x - 2 && mouseX < x + 10 && mouseY >= y - 2 && mouseY < y + 10;
+		ctx.drawTextWithShadow(textRenderer, Text.literal(marked ? "★" : "☆"), x, y, marked || hover ? UiStyle.GOLD : UiStyle.MUTED);
+		if (hover) tip.set(List.of(Text.translatable(marked ? "screen.aptitudes.guide.bookmark.remove" : "screen.aptitudes.guide.bookmark.add")));
+		hits.add(new Hit(x - 2, y - 2, 12, 12, () -> {
+			ClientConfig.get().guideBookmarks = GuideRules.toggle(ClientConfig.get().guideBookmarks, bookmark);
+			ClientConfig.save();
+		}));
 	}
 
 	private void renderIndex(DrawContext ctx, int mouseX, int mouseY) {
 		int rh = rowH();
 		for (int i = 0; i < CHAPTERS.size(); i++) {
 			int y = top + 24 + i * rh;
-			boolean sel = i == chapter && viewing == null;
-			boolean current = i == chapter;
+			boolean sel = i == chapter && page == Page.CHAPTER;
+			boolean current = i == chapter && (page == Page.CHAPTER || page == Page.ITEM || page == Page.ROLE);
 			boolean hover = mouseX >= left + 6 && mouseX < left + 6 + LIST_W && mouseY >= y && mouseY < y + rh;
 			if (current || hover) ctx.fill(left + 6, y, left + 6 + LIST_W, y + rh, sel ? 0x60C9A54C : current ? 0x40C9A54C : 0x30303850);
 			// Con 23 capítulos, la ventana mínima usa filas e iconos de 9 px para que quepa el índice.
@@ -277,22 +458,36 @@ public class GuideScreen extends Screen {
 		int px = pageX();
 		int pw = pageW();
 		Chapter c = CHAPTERS.get(chapter);
-		// Cabecera con ilustración grande
-		bigItem(ctx, new ItemStack(c.icon()), px + pw - 34, top + 25);
-		ctx.drawTextWithShadow(textRenderer, Text.translatable("guide.aptitudes." + c.id() + ".title").formatted(Formatting.BOLD),
-				px, top + 30, UiStyle.GOLD);
+		// Cabecera con ilustración generada; si el tutorial recomienda este capítulo, lo dice en el subtítulo.
 		Text counter = Text.translatable("screen.aptitudes.guide.chapter", chapter + 1, CHAPTERS.size());
-		ctx.drawText(textRenderer, counter, px, top + 42, UiStyle.MUTED, false);
-		UiStyle.line(ctx, px, top + 59, px + pw, top + 59, UiStyle.GOLD_DARK);
+		Text subtitle = tutorialChapter() == chapter ? tutorialText().copy().formatted(Formatting.YELLOW) : counter;
+		int y = header(ctx, c.id(), Text.translatable("guide.aptitudes." + c.id() + ".title"), subtitle,
+				new ItemStack(c.icon()), "chapter:" + c.id(), mouseX, mouseY, tip);
 		if (c.id().equals("alchemy")) {
 			renderAlchemy(ctx, mouseX, mouseY, tip);
 			return;
 		}
-		int y = top + 63;
 
-		// Ilustraciones clicables
+		// Ilustraciones clicables (en Sendas, un icono por rol que abre sus sendas: G5)
 		List<Item> items = c.items().get();
-		if (!items.isEmpty()) {
+		if (c.id().equals("paths")) {
+			Role[] roles = Role.values();
+			int perRow = Math.max(1, pw / 20);
+			for (int i = 0; i < roles.length; i++) {
+				int ix = px + (i % perRow) * 20;
+				int iy = y + (i / perRow) * 20;
+				Role r = roles[i];
+				boolean hover = mouseX >= ix && mouseX < ix + 18 && mouseY >= iy && mouseY < iy + 18;
+				slot(ctx, ix, iy, hover);
+				NodeIconRenderer.drawRole(ctx, r, NodeIconRenderer.Badge.CORE, ix + 1, iy + 1);
+				if (hover) {
+					tip.set(List.of(Text.translatable(r.translationKey()),
+							Text.translatable("screen.aptitudes.guide.role.click").formatted(Formatting.GRAY)));
+				}
+				hits.add(new Hit(ix, iy, 18, 18, () -> openRole(r)));
+			}
+			y += ((roles.length + perRow - 1) / perRow) * 20 + 4;
+		} else if (!items.isEmpty()) {
 			int perRow = Math.max(1, pw / 20);
 			for (int i = 0; i < items.size(); i++) {
 				int ix = px + (i % perRow) * 20;
@@ -421,6 +616,7 @@ public class GuideScreen extends Screen {
 		boolean backHover = mouseX >= px && mouseX < px + textRenderer.getWidth(back) + 4 && mouseY >= top + 25 && mouseY < top + 35;
 		ctx.drawText(textRenderer, back, px, top + 26, backHover ? UiStyle.GOLD : UiStyle.MUTED, false);
 		hits.add(new Hit(px, top + 25, textRenderer.getWidth(back) + 4, 10, this::goBack));
+		star(ctx, "item:" + Registries.ITEM.getId(item), px + pw - 10, top + 26, mouseX, mouseY, tip);
 
 		// Cabecera: objeto grande + nombre + descripción
 		int y = top + 38;
@@ -497,6 +693,447 @@ public class GuideScreen extends Screen {
 				hits.add(new Hit(ix, y, 18, 18, () -> openItem(use, true)));
 				ix += 20;
 			}
+		}
+	}
+
+	// ------------------------------------------------------- Bestiario (G1)
+
+	private static final BestiaryRules.Kind[] SECTIONS = {BestiaryRules.Kind.CREATURE, BestiaryRules.Kind.ELITE, BestiaryRules.Kind.BOSS};
+
+	private void renderBestiary(DrawContext ctx, int mouseX, int mouseY, Tooltip tip) {
+		int px = pageX(), pw = pageW();
+		Text count = Text.translatable("screen.aptitudes.guide.bestiary.count",
+				BestiaryRules.unlocked(ClientGrimoire.kills(), null), BestiaryRules.total(null));
+		int start = header(ctx, "bestiary", Text.translatable("screen.aptitudes.guide.tab.bestiary"), count,
+				new ItemStack(Items.SKELETON_SKULL), null, mouseX, mouseY, tip);
+		int bottom = top + H - 12;
+		int perRow = Math.max(1, (pw - 6) / 20);
+		int total = 0;
+		for (BestiaryRules.Kind kind : SECTIONS) {
+			int n = BestiaryRules.total(kind);
+			total += 12 + ((n + perRow - 1) / perRow) * 20 + 4;
+		}
+		int visible = bottom - start;
+		int maxScroll = Math.max(0, total - visible);
+		scroll = MathHelper.clamp(scroll, 0, maxScroll);
+		int y = start - (int) scroll;
+		ctx.enableScissor(px - 2, start, px + pw, bottom);
+		for (BestiaryRules.Kind kind : SECTIONS) {
+			ctx.drawText(textRenderer, Text.translatable("bestiary.aptitudes.section." + kind.name().toLowerCase(Locale.ROOT)),
+					px, y + 2, UiStyle.GOLD, false);
+			y += 12;
+			int i = 0;
+			for (BestiaryRules.Entry entry : BestiaryRules.entries()) {
+				if (entry.kind() != kind) continue;
+				int ix = px + (i % perRow) * 20;
+				int iy = y + (i / perRow) * 20;
+				i++;
+				boolean open = ClientGrimoire.unlocked(entry.id());
+				boolean inside = mouseY >= Math.max(start, iy) && mouseY < Math.min(bottom, iy + 18);
+				boolean hover = inside && mouseX >= ix && mouseX < ix + 18;
+				slot(ctx, ix, iy, hover && open);
+				if (open) {
+					ctx.drawItem(icon(entry), ix + 1, iy + 1);
+				} else {
+					ctx.fill(ix + 1, iy + 1, ix + 17, iy + 17, 0xFF0B0D13);
+					ctx.drawText(textRenderer, "?", ix + 7, iy + 5, UiStyle.MUTED, false);
+				}
+				if (hover) {
+					tip.set(open ? List.of(Text.translatable(BestiaryRules.nameKey(entry)),
+							Text.translatable("bestiary.aptitudes.kills", ClientGrimoire.kills(entry.id())).formatted(Formatting.GRAY))
+							: List.of(Text.translatable("bestiary.aptitudes.locked"),
+							Text.translatable("bestiary.aptitudes.locked.hint").formatted(Formatting.GRAY)));
+				}
+				if (open && iy >= start && iy + 18 <= bottom) hits.add(new Hit(ix, iy, 18, 18, () -> openBeast(entry)));
+			}
+			y += ((i + perRow - 1) / perRow) * 20 + 4;
+		}
+		ctx.disableScissor();
+		scrollBar(ctx, px + pw - 2, start, bottom, scroll, maxScroll, visible, total);
+	}
+
+	private static ItemStack icon(BestiaryRules.Entry entry) {
+		Item item = Registries.ITEM.get(Identifier.of(entry.icon()));
+		return new ItemStack(item == Items.AIR ? Items.BOOK : item);
+	}
+
+	private void renderBeast(DrawContext ctx, int mouseX, int mouseY, Tooltip tip) {
+		BestiaryRules.Entry entry = beast;
+		if (entry == null) return;
+		int px = pageX(), pw = pageW(), bottom = top + H - 10;
+		Text back = Text.translatable("screen.aptitudes.guide.back");
+		boolean backHover = mouseX >= px && mouseX < px + textRenderer.getWidth(back) + 4 && mouseY >= top + 25 && mouseY < top + 35;
+		ctx.drawText(textRenderer, back, px, top + 26, backHover ? UiStyle.GOLD : UiStyle.MUTED, false);
+		hits.add(new Hit(px, top + 25, textRenderer.getWidth(back) + 4, 10, this::goBack));
+		star(ctx, "beast:" + entry.id(), px + pw - 10, top + 26, mouseX, mouseY, tip);
+
+		// Modelo (la criatura base) o, si no hay, el icono grande.
+		int bx = px, by = top + 38, bw = 64, bh = 76;
+		ctx.fill(bx, by, bx + bw, by + bh, 0xFF141824);
+		ctx.drawBorder(bx, by, bw, bh, UiStyle.GOLD_DARK);
+		if (!drawModel(ctx, entry, bx + 1, by + 1, bx + bw - 1, by + bh - 1, mouseX, mouseY)) {
+			bigItem(ctx, icon(entry), bx + bw / 2 - 16, by + bh / 2 - 16);
+		}
+
+		int ix = px + bw + 6, iw = pw - bw - 6, y = by + 1;
+		ctx.drawTextWithShadow(textRenderer, UiStyle.fit(textRenderer,
+				Text.translatable(BestiaryRules.nameKey(entry)).formatted(Formatting.BOLD), iw), ix, y, UiStyle.GOLD);
+		y += 12;
+		Text kind = Text.translatable("bestiary.aptitudes.kind." + entry.kind().name().toLowerCase(Locale.ROOT))
+				.append(" · ").append(Text.translatable("bestiary.aptitudes.region." + entry.region().name().toLowerCase(Locale.ROOT)));
+		ctx.drawText(textRenderer, UiStyle.fit(textRenderer, kind, iw), ix, y, UiStyle.MUTED, false);
+		y += 10;
+		ctx.drawText(textRenderer, UiStyle.fit(textRenderer, Text.translatable("bestiary.aptitudes.kills",
+				ClientGrimoire.kills(entry.id())), iw), ix, y, UiStyle.TEXT, false);
+		y += 10;
+		for (Text line : facts(entry)) {
+			if (y > by + bh - 9) break;
+			ctx.drawText(textRenderer, UiStyle.fit(textRenderer, line, iw), ix, y, UiStyle.UP, false);
+			y += 10;
+		}
+
+		// Consejo (ataques y debilidades) y botín.
+		y = by + bh + 5;
+		for (OrderedText line : textRenderer.wrapLines(Text.translatable(entry.tipKey()), pw - 4)) {
+			if (y > bottom - 34) break;
+			ctx.drawText(textRenderer, line, px, y, UiStyle.TEXT, false);
+			y += 10;
+		}
+		if (entry.drops().isEmpty() || y > bottom - 30) return;
+		y += 3;
+		ctx.drawText(textRenderer, Text.translatable("bestiary.aptitudes.drops"), px, y, UiStyle.GOLD, false);
+		y += 11;
+		int dx = px;
+		for (String id : entry.drops()) {
+			Item item = Registries.ITEM.get(Identifier.of(id));
+			if (item == Items.AIR || dx + 18 > px + pw) continue;
+			boolean hover = mouseX >= dx && mouseX < dx + 18 && mouseY >= y && mouseY < y + 18;
+			slot(ctx, dx, y, hover);
+			ItemStack stack = new ItemStack(item);
+			ctx.drawItem(stack, dx + 1, y + 1);
+			if (hover) tip.item(stack);
+			if (isModItem(item)) hits.add(new Hit(dx, y, 18, 18, () -> openItem(item, true)));
+			dx += 20;
+		}
+	}
+
+	/** Estadísticas base del juego y debilidades por etiqueta (la lista se adapta a los datapacks). */
+	private List<Text> facts(BestiaryRules.Entry entry) {
+		List<Text> out = new ArrayList<>();
+		EntityType<?> type = entry.entity() == null ? null : Registries.ENTITY_TYPE.get(Identifier.of(entry.entity()));
+		if (type == null) return out;
+		if (entry.bossKind() != null) {
+			out.add(Text.translatable("bestiary.aptitudes.boss_stats"));
+		} else if (entry.kind() == BestiaryRules.Kind.CREATURE || entry.kind() == BestiaryRules.Kind.BOSS) {
+			@SuppressWarnings("unchecked")
+			EntityType<? extends LivingEntity> living = (EntityType<? extends LivingEntity>) type;
+			if (DefaultAttributeRegistry.hasDefinitionFor(living)) {
+				DefaultAttributeContainer attrs = DefaultAttributeRegistry.get(living);
+				out.add(Text.translatable("bestiary.aptitudes.stats", stat(attrs, EntityAttributes.GENERIC_MAX_HEALTH),
+						stat(attrs, EntityAttributes.GENERIC_ARMOR), stat(attrs, EntityAttributes.GENERIC_ATTACK_DAMAGE)));
+			}
+		}
+		if (type.isIn(EntityTypeTags.SENSITIVE_TO_SMITE)) out.add(Text.translatable("bestiary.aptitudes.weak.smite"));
+		if (type.isIn(EntityTypeTags.SENSITIVE_TO_BANE_OF_ARTHROPODS)) out.add(Text.translatable("bestiary.aptitudes.weak.bane"));
+		if (type.isIn(EntityTypeTags.SENSITIVE_TO_IMPALING)) out.add(Text.translatable("bestiary.aptitudes.weak.impaling"));
+		if (type.isFireImmune()) out.add(Text.translatable("bestiary.aptitudes.fire_immune"));
+		return out;
+	}
+
+	private static String stat(DefaultAttributeContainer attrs, RegistryEntry<EntityAttribute> attribute) {
+		return attrs.has(attribute) ? UiStyle.fmt(attrs.getBaseValue(attribute)) : "—";
+	}
+
+	/** Dibuja la criatura con el ratón como mirada; si el renderizador falla, se recuerda y se usa el icono. */
+	private boolean drawModel(DrawContext ctx, BestiaryRules.Entry entry, int x1, int y1, int x2, int y2, int mouseX, int mouseY) {
+		if (entry.entity() == null || client == null || client.world == null || noModel.contains(entry.entity())) return false;
+		LivingEntity model = models.computeIfAbsent(entry.entity(), id -> {
+			Entity created = Registries.ENTITY_TYPE.get(Identifier.of(id)).create(client.world);
+			return created instanceof LivingEntity living ? living : null;
+		});
+		if (model == null) {
+			noModel.add(entry.entity());
+			return false;
+		}
+		float tallest = Math.max(model.getHeight(), model.getWidth() * 0.9f);
+		int size = MathHelper.clamp(Math.round((y2 - y1 - 14) / Math.max(0.5f, tallest)), 4, 30);
+		try {
+			InventoryScreen.drawEntity(ctx, x1, y1, x2, y2, size, 0.0625f, mouseX, mouseY, model);
+			return true;
+		} catch (RuntimeException e) {
+			Aptitudes.LOGGER.warn("No se pudo dibujar {} en el bestiario", entry.entity(), e);
+			noModel.add(entry.entity());
+			return false;
+		}
+	}
+
+	// --------------------------------------------------------- Progreso (G3)
+
+	private void renderProgress(DrawContext ctx) {
+		int px = pageX(), pw = pageW();
+		var kills = ClientGrimoire.kills();
+		RoleSyncPayload data = ClientRoleState.data();
+		List<String> roles = new ArrayList<>();
+		for (Role r : Role.values()) roles.add(r.key());
+		GuideRules.PathProgress paths = GuideRules.pathProgress(
+				id -> data == null ? 0 : data.ranks().getOrDefault(id, 0), roles);
+		long[][] rows = {
+				{ClientGrimoire.achievementsDone(), ClientGrimoire.achievementsTotal()},
+				{BestiaryRules.unlocked(kills, null), BestiaryRules.total(null)},
+				{BestiaryRules.unlocked(kills, BestiaryRules.Kind.BOSS), BestiaryRules.total(BestiaryRules.Kind.BOSS)},
+				{paths.steps(), paths.maxSteps()},
+				{paths.keystones(), paths.maxKeystones()}};
+		String[] labels = {"achievements", "bestiary", "bosses", "steps", "keystones"};
+		int sum = 0;
+		for (long[] row : rows) sum += GuideRules.percent(row[0], row[1]);
+		int overall = sum / rows.length;
+		Text subtitle = ClientGrimoire.received()
+				? Text.translatable("screen.aptitudes.guide.progress.total", overall)
+				: Text.translatable("screen.aptitudes.guide.progress.waiting");
+		int y = header(ctx, "progress", Text.translatable("screen.aptitudes.guide.tab.progress"), subtitle,
+				new ItemStack(Items.CLOCK), null, 0, 0, new Tooltip());
+		for (int i = 0; i < rows.length; i++) {
+			if (y + 20 > top + H - 8) break;
+			long done = rows[i][0], total = rows[i][1];
+			int pct = GuideRules.percent(done, total);
+			ctx.drawText(textRenderer, UiStyle.fit(textRenderer, Text.translatable("screen.aptitudes.guide.progress." + labels[i]), pw - 90),
+					px, y, UiStyle.TEXT, false);
+			Text value = Text.translatable("screen.aptitudes.guide.progress.value", done, total, pct);
+			ctx.drawText(textRenderer, value, px + pw - textRenderer.getWidth(value), y, UiStyle.MUTED, false);
+			int barY = y + 11, barW = pw;
+			ctx.fill(px, barY, px + barW, barY + 5, 0xFF1B1F2B);
+			ctx.fill(px, barY, px + barW * pct / 100, barY + 5, pct >= 100 ? UiStyle.GOOD : UiStyle.GOLD);
+			ctx.drawBorder(px - 1, barY - 1, barW + 2, 7, UiStyle.BORDER);
+			y += 24;
+		}
+	}
+
+	// ------------------------------------------------- Buscador global (G2)
+
+	private List<Result> findResults(String query) {
+		List<String> terms = GuideRules.terms(query);
+		if (terms.isEmpty()) return List.of();
+		record Scored(Result result, int score) {}
+		List<Scored> found = new ArrayList<>();
+		for (int i = 0; i < CHAPTERS.size(); i++) {
+			Chapter c = CHAPTERS.get(i);
+			Text name = Text.translatable("guide.aptitudes." + c.id() + ".title");
+			int score = GuideRules.score(terms, GuideRules.normalize(name.getString()),
+					GuideRules.normalize(Text.translatable("guide.aptitudes." + c.id() + ".body").getString()));
+			final int index = i;
+			if (score > 0) found.add(new Scored(new Result(name, new ItemStack(c.icon()), "chapter", () -> openChapter(index)), score));
+		}
+		for (Item item : Registries.ITEM) {
+			if (!isModItem(item)) continue;
+			Text name = item.getName();
+			int score = GuideRules.score(terms, GuideRules.normalize(name.getString()), "");
+			if (score > 0) found.add(new Scored(new Result(name, new ItemStack(item), "item", () -> openItem(item, true)), score));
+		}
+		for (BestiaryRules.Entry entry : BestiaryRules.entries()) {
+			if (!ClientGrimoire.unlocked(entry.id())) continue; // las páginas cerradas no se revelan
+			Text name = Text.translatable(BestiaryRules.nameKey(entry));
+			int score = GuideRules.score(terms, GuideRules.normalize(name.getString()),
+					GuideRules.normalize(Text.translatable(entry.tipKey()).getString()));
+			if (score > 0) found.add(new Scored(new Result(name, icon(entry), "beast", () -> openBeast(entry)), score));
+		}
+		for (Role r : Role.values()) {
+			Text name = Text.translatable(r.translationKey());
+			StringBuilder body = new StringBuilder();
+			for (int path = 1; path <= PathRules.PATHS; path++) body.append(' ').append(Text.translatable(RoleTree.pathKey(r, path)).getString());
+			int score = GuideRules.score(terms, GuideRules.normalize(name.getString()), GuideRules.normalize(body.toString()));
+			if (score > 0) found.add(new Scored(new Result(name, r.iconStack(), "role", () -> openRole(r)), score));
+		}
+		found.sort(Comparator.comparingInt(Scored::score).reversed()
+				.thenComparing(s -> s.result().title().getString()));
+		List<Result> out = new ArrayList<>();
+		for (int i = 0; i < found.size() && i < 100; i++) out.add(found.get(i).result());
+		return out;
+	}
+
+	private void renderSearch(DrawContext ctx, int mouseX, int mouseY, float delta) {
+		int px = pageX(), pw = pageW();
+		ctx.drawTextWithShadow(textRenderer, Text.translatable("screen.aptitudes.guide.tab.search").formatted(Formatting.BOLD),
+				px, top + 28, UiStyle.GOLD);
+		finder.setX(px);
+		finder.setY(top + 40);
+		finder.setWidth(Math.min(200, pw));
+		finder.render(ctx, mouseX, mouseY, delta);
+		int y = top + 60;
+		if (finderQuery.isBlank() || results.isEmpty()) {
+			Text hint = Text.translatable(finderQuery.isBlank() ? "screen.aptitudes.guide.search.empty" : "screen.aptitudes.guide.search.none");
+			for (OrderedText line : textRenderer.wrapLines(hint, pw)) {
+				ctx.drawText(textRenderer, line, px, y, UiStyle.MUTED, false);
+				y += 10;
+			}
+			return;
+		}
+		renderRows(ctx, y, mouseX, mouseY, results.size(), (i, ry, hover) -> {
+			Result r = results.get(i);
+			Text kind = Text.translatable("screen.aptitudes.guide.kind." + r.kindKey());
+			drawRow(ctx, ry, r.icon(), r.title(), kind, hover);
+			return r.open();
+		});
+	}
+
+	@FunctionalInterface
+	private interface RowRenderer {
+		/** Dibuja la fila {@code index} y devuelve su acción al hacer clic (o null). */
+		@Nullable Runnable draw(int index, int y, boolean hover);
+	}
+
+	/** Lista de filas de 20 px con desplazamiento por filas. */
+	private void renderRows(DrawContext ctx, int y, int mouseX, int mouseY, int count, RowRenderer renderer) {
+		int px = pageX(), pw = pageW(), bottom = top + H - 10;
+		int visible = Math.max(1, (bottom - y) / 20);
+		int maxScroll = Math.max(0, count - visible);
+		scroll = MathHelper.clamp(scroll, 0, maxScroll);
+		for (int i = (int) scroll; i < count && i < (int) scroll + visible; i++) {
+			int ry = y + (i - (int) scroll) * 20;
+			boolean hover = mouseX >= px && mouseX < px + pw - 4 && mouseY >= ry && mouseY < ry + 19;
+			Runnable action = renderer.draw(i, ry, hover);
+			if (action != null) hits.add(new Hit(px, ry, pw - 18, 19, action));
+		}
+		scrollBar(ctx, px + pw - 2, y, bottom, scroll, maxScroll, visible, count);
+	}
+
+	private void drawRow(DrawContext ctx, int y, ItemStack icon, Text title, Text kind, boolean hover) {
+		int px = pageX(), pw = pageW();
+		if (hover) ctx.fill(px, y, px + pw - 4, y + 19, 0x30C9A54C);
+		ctx.drawItem(icon, px + 1, y + 1);
+		int kindW = textRenderer.getWidth(kind);
+		ctx.drawText(textRenderer, UiStyle.fit(textRenderer, title, pw - kindW - 40), px + 21, y + 6, hover ? UiStyle.GOLD : UiStyle.TEXT, false);
+		ctx.drawText(textRenderer, kind, px + pw - kindW - 20, y + 6, UiStyle.MUTED, false);
+	}
+
+	// ------------------------------------------------------ Marcadores (G2)
+
+	/** Resuelve un marcador guardado; null si ya no existe (se puede quitar igualmente). */
+	@Nullable
+	private Result resolve(String bookmark) {
+		int colon = bookmark.indexOf(':');
+		String kind = bookmark.substring(0, colon);
+		String id = bookmark.substring(colon + 1);
+		switch (kind) {
+			case "chapter" -> {
+				for (int i = 0; i < CHAPTERS.size(); i++) {
+					Chapter c = CHAPTERS.get(i);
+					final int index = i;
+					if (c.id().equals(id)) return new Result(Text.translatable("guide.aptitudes." + id + ".title"),
+							new ItemStack(c.icon()), "chapter", () -> openChapter(index));
+				}
+			}
+			case "item" -> {
+				Identifier itemId = Identifier.tryParse(id);
+				Item item = itemId == null ? Items.AIR : Registries.ITEM.get(itemId);
+				if (item != Items.AIR) return new Result(item.getName(), new ItemStack(item), "item", () -> openItem(item, true));
+			}
+			case "beast" -> {
+				BestiaryRules.Entry entry = BestiaryRules.byId(id);
+				if (entry != null && ClientGrimoire.unlocked(id)) {
+					return new Result(Text.translatable(BestiaryRules.nameKey(entry)), icon(entry), "beast", () -> openBeast(entry));
+				}
+			}
+			case "role" -> {
+				var found = Role.byKey(id);
+				if (found.isPresent()) {
+					Role r = found.get();
+					return new Result(Text.translatable(r.translationKey()), r.iconStack(), "role", () -> openRole(r));
+				}
+			}
+			default -> { }
+		}
+		return null;
+	}
+
+	private void renderBookmarks(DrawContext ctx, int mouseX, int mouseY) {
+		int px = pageX(), pw = pageW();
+		List<String> marks = List.copyOf(ClientConfig.get().guideBookmarks);
+		int y = header(ctx, "bookmarks", Text.translatable("screen.aptitudes.guide.tab.bookmarks"),
+				Text.translatable("screen.aptitudes.guide.bookmarks.count", marks.size(), GuideRules.MAX_BOOKMARKS),
+				new ItemStack(Items.NAME_TAG), null, 0, 0, new Tooltip());
+		if (marks.isEmpty()) {
+			for (OrderedText line : textRenderer.wrapLines(Text.translatable("screen.aptitudes.guide.bookmarks.empty"), pw)) {
+				ctx.drawText(textRenderer, line, px, y, UiStyle.MUTED, false);
+				y += 10;
+			}
+			return;
+		}
+		renderRows(ctx, y, mouseX, mouseY, marks.size(), (i, ry, hover) -> {
+			String mark = marks.get(i);
+			Result r = resolve(mark);
+			if (r == null) {
+				drawRow(ctx, ry, new ItemStack(Items.BARRIER), Text.literal(mark).formatted(Formatting.DARK_GRAY),
+						Text.translatable("screen.aptitudes.guide.kind.missing"), hover);
+			} else {
+				drawRow(ctx, ry, r.icon(), r.title(), Text.translatable("screen.aptitudes.guide.kind." + r.kindKey()), hover);
+			}
+			// Quitar: la «×» de la derecha.
+			int xx = px + pw - 14;
+			boolean overX = mouseX >= xx - 2 && mouseX < xx + 8 && mouseY >= ry && mouseY < ry + 19;
+			ctx.drawText(textRenderer, "×", xx, ry + 6, overX ? UiStyle.DOWN : UiStyle.MUTED, false);
+			hits.add(new Hit(xx - 2, ry, 10, 19, () -> {
+				ClientConfig.get().guideBookmarks = GuideRules.toggle(ClientConfig.get().guideBookmarks, mark);
+				ClientConfig.save();
+			}));
+			return r == null ? null : r.open();
+		});
+	}
+
+	// -------------------------------------------- Sendas de un rol (G5)
+
+	private void renderRole(DrawContext ctx, int mouseX, int mouseY, Tooltip tip) {
+		Role r = role;
+		if (r == null) return;
+		int px = pageX(), pw = pageW();
+		Text back = Text.translatable("screen.aptitudes.guide.back");
+		boolean backHover = mouseX >= px && mouseX < px + textRenderer.getWidth(back) + 4 && mouseY >= top + 25 && mouseY < top + 35;
+		ctx.drawText(textRenderer, back, px, top + 26, backHover ? UiStyle.GOLD : UiStyle.MUTED, false);
+		hits.add(new Hit(px, top + 25, textRenderer.getWidth(back) + 4, 10, this::goBack));
+		star(ctx, "role:" + r.key(), px + pw - 10, top + 26, mouseX, mouseY, tip);
+
+		int y = top + 38;
+		NodeIconRenderer.drawRole(ctx, r, NodeIconRenderer.Badge.CORE, px, y);
+		ctx.drawTextWithShadow(textRenderer, UiStyle.fit(textRenderer,
+				Text.translatable("screen.aptitudes.guide.role.paths", Text.translatable(r.translationKey())).formatted(Formatting.BOLD),
+				pw - 22), px + 20, y + 4, UiStyle.GOLD);
+		y += 20;
+		UiStyle.line(ctx, px, y, px + pw, y, UiStyle.GOLD_DARK);
+		y += 4;
+		RoleSyncPayload data = ClientRoleState.data();
+		java.util.function.ToIntFunction<String> rankOf = id -> data == null ? 0 : data.ranks().getOrDefault(id, 0);
+		int chosen = PathRules.chosenPath(rankOf, r.key());
+		for (int path = 1; path <= PathRules.PATHS; path++) {
+			if (y + 30 > top + H - 6) break;
+			boolean mine = chosen == path;
+			Text name = Text.translatable(RoleTree.pathKey(r, path));
+			if (mine) name = name.copy().append(" · ").append(Text.translatable("screen.aptitudes.guide.role.chosen"));
+			ctx.drawText(textRenderer, UiStyle.fit(textRenderer, name, pw), px, y, mine ? UiStyle.GOLD : UiStyle.TEXT, false);
+			y += 10;
+			int x = px;
+			for (PathRules.Step step : PathRules.Step.values()) {
+				String id = PathRules.nodeId(r.key(), path, step);
+				RoleNode node = RoleTree.get(id);
+				if (node == null) continue;
+				boolean owned = rankOf.applyAsInt(id) > 0;
+				boolean hover = mouseX >= x && mouseX < x + 18 && mouseY >= y && mouseY < y + 18;
+				ctx.fill(x, y, x + 18, y + 18, 0xFF1B1F2B);
+				NodeIconRenderer.draw(ctx, node, x + 1, y + 1);
+				ctx.getMatrices().push();
+				ctx.getMatrices().translate(0, 0, 200); // encima del icono (drawItem dibuja más arriba)
+				if (!owned) ctx.fill(x + 1, y + 1, x + 17, y + 17, 0x70000000);
+				ctx.drawBorder(x, y, 18, 18, owned ? UiStyle.GOLD : step == PathRules.Step.S7 ? 0xFF7E57C2 : UiStyle.BORDER);
+				ctx.getMatrices().pop();
+				if (hover) {
+					List<OrderedText> lines = new ArrayList<>();
+					lines.add(Text.translatable("node.aptitudes." + id).formatted(Formatting.GOLD).asOrderedText());
+					lines.add(Text.translatable("screen.aptitudes.guide.role.step", step.suffix().toUpperCase(Locale.ROOT), step.level())
+							.formatted(Formatting.GRAY).asOrderedText());
+					lines.addAll(textRenderer.wrapLines(Text.translatable("node.aptitudes." + id + ".desc"), 200));
+					tip.ordered(lines);
+				}
+				x += 19;
+			}
+			y += 22;
 		}
 	}
 
@@ -586,55 +1223,102 @@ public class GuideScreen extends Screen {
 	/** Tooltip diferido: se dibuja al final, encima de todo. */
 	private final class Tooltip {
 		@Nullable private List<Text> lines;
+		@Nullable private List<OrderedText> ordered;
 		@Nullable private ItemStack stack;
 
 		void set(List<Text> lines) {
 			this.lines = lines;
 			this.stack = null;
+			this.ordered = null;
 		}
 
 		void item(ItemStack stack) {
 			this.stack = stack;
 			this.lines = null;
+			this.ordered = null;
+		}
+
+		/** Líneas ya ajustadas al ancho (descripciones largas). */
+		void ordered(List<OrderedText> ordered) {
+			this.ordered = ordered;
+			this.lines = null;
+			this.stack = null;
 		}
 
 		void draw(DrawContext ctx, int mx, int my) {
 			if (stack != null) ctx.drawItemTooltip(textRenderer, stack, mx, my);
 			else if (lines != null) ctx.drawTooltip(textRenderer, lines, mx, my);
+			else if (ordered != null) ctx.drawOrderedTooltip(textRenderer, ordered, mx, my);
 		}
 	}
 
 	// ------------------------------------------------------- Navegación
 
-	private void openChapter(int index) {
-		if (index == chapter && viewing == null) return;
-		chapter = MathHelper.clamp(index, 0, CHAPTERS.size() - 1);
-		lastChapter = chapter;
-		viewing = null;
-		history.clear();
+	private Loc here() {
+		return new Loc(page, chapter, viewing, beast, role);
+	}
+
+	/** Cambia de página; con {@code remember} la actual queda en el historial (Volver). */
+	private void show(Loc loc, boolean remember) {
+		if (remember && page != Page.CHAPTER) history.push(here());
+		if (history.size() > 64) history.removeLast();
+		page = loc.page();
+		chapter = MathHelper.clamp(loc.chapter(), 0, CHAPTERS.size() - 1);
+		viewing = loc.page() == Page.ITEM ? loc.item() : null;
+		beast = loc.page() == Page.BEAST ? loc.beast() : null;
+		role = loc.page() == Page.ROLE ? loc.role() : null;
+		recipeIndex = 0;
 		scroll = 0;
 		dropSearchFocus();
 		pageSound();
 	}
 
+	private void openChapter(int index) {
+		if (index == chapter && page == Page.CHAPTER) return;
+		history.clear();
+		lastChapter = MathHelper.clamp(index, 0, CHAPTERS.size() - 1);
+		show(new Loc(Page.CHAPTER, index, null, null, null), false);
+	}
+
+	/** Pestañas: empiezan un recorrido nuevo (sin historial). */
+	private void openPage(Page target) {
+		if (page == target) return;
+		history.clear();
+		show(new Loc(target, chapter, null, null, null), false);
+	}
+
 	private void openItem(Item item, boolean remember) {
-		if (remember && viewing != null) history.push(viewing);
-		viewing = item;
-		recipeIndex = 0;
-		dropSearchFocus();
-		pageSound();
+		show(new Loc(Page.ITEM, chapter, item, null, null), remember);
+	}
+
+	private void openBeast(BestiaryRules.Entry entry) {
+		if (!ClientGrimoire.unlocked(entry.id())) return;
+		show(new Loc(Page.BEAST, chapter, null, entry, null), true);
+	}
+
+	private void openRole(Role target) {
+		show(new Loc(Page.ROLE, chapter, null, null, target), true);
 	}
 
 	private void goBack() {
-		viewing = history.isEmpty() ? null : history.pop();
-		recipeIndex = 0;
-		pageSound();
+		Loc previous = history.isEmpty() ? new Loc(Page.CHAPTER, chapter, null, null, null) : history.pop();
+		show(previous, false);
 	}
 
-	/** El buscador nunca conserva el foco fuera del Recetario (si no, se «comería» las teclas). */
+	/** Los buscadores nunca conservan el foco fuera de su página (si no, se «comerían» las teclas). */
 	private void dropSearchFocus() {
-		if (getFocused() == search) setFocused(null);
+		if (search == null || finder == null) return; // antes de init (forItem)
+		if (getFocused() == search || getFocused() == finder) setFocused(null);
 		search.setFocused(false);
+		finder.setFocused(false);
+		if (page == Page.SEARCH) setFocused(finder);
+	}
+
+	@Override
+	public void close() {
+		Screen back = returnTo == null ? null : returnTo.get();
+		if (back != null && client != null) client.setScreen(back);
+		else super.close();
 	}
 
 	private void pageSound() {
@@ -647,6 +1331,10 @@ public class GuideScreen extends Screen {
 			setFocused(search);
 			return true;
 		}
+		if (page == Page.SEARCH && finder.mouseClicked(mouseX, mouseY, button)) {
+			setFocused(finder);
+			return true;
+		}
 		if (button == 0) {
 			// Copia: la acción puede cambiar de página (y la lista se rehace en el siguiente fotograma).
 			for (Hit hit : List.copyOf(hits)) {
@@ -656,48 +1344,54 @@ public class GuideScreen extends Screen {
 				}
 			}
 		}
-		if (button == 3 && viewing != null) { // botón «atrás» del ratón
+		if (button == 3 && hasBack()) { // botón «atrás» del ratón
 			goBack();
 			return true;
 		}
 		return super.mouseClicked(mouseX, mouseY, button);
 	}
 
+	/** Páginas con «Volver». */
+	private boolean hasBack() {
+		return page == Page.ITEM || page == Page.BEAST || page == Page.ROLE;
+	}
+
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
-		scroll -= verticalAmount * (viewing == null && CHAPTERS.get(chapter).id().equals("alchemy") ? 18 : recipesMode() ? 1 : 2);
+		double step = alchemyMode() || page == Page.BESTIARY ? 18 : recipesMode() || page == Page.SEARCH || page == Page.BOOKMARKS ? 1 : 2;
+		scroll -= verticalAmount * step;
 		return true;
 	}
 
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		boolean typing = recipesMode() && search.isFocused();
-		if (typing && keyCode != GLFW.GLFW_KEY_ESCAPE) {
-			return search.keyPressed(keyCode, scanCode, modifiers) || super.keyPressed(keyCode, scanCode, modifiers);
+		if (typing() && keyCode != GLFW.GLFW_KEY_ESCAPE) {
+			TextFieldWidget field = recipesMode() ? search : finder;
+			return field.keyPressed(keyCode, scanCode, modifiers) || super.keyPressed(keyCode, scanCode, modifiers);
 		}
 		switch (keyCode) {
 			case GLFW.GLFW_KEY_DOWN -> {
-				openChapter(Math.min(CHAPTERS.size() - 1, chapter + 1));
+				openChapter(Math.min(CHAPTERS.size() - 1, chapter + (page == Page.CHAPTER ? 1 : 0)));
 				return true;
 			}
 			case GLFW.GLFW_KEY_UP -> {
-				openChapter(Math.max(0, chapter - 1));
+				openChapter(Math.max(0, chapter - (page == Page.CHAPTER ? 1 : 0)));
 				return true;
 			}
 			case GLFW.GLFW_KEY_BACKSPACE -> {
-				if (viewing != null) {
+				if (hasBack()) {
 					goBack();
 					return true;
 				}
 			}
 			case GLFW.GLFW_KEY_LEFT -> {
-				if (viewing != null) {
+				if (page == Page.ITEM) {
 					recipeIndex--;
 					return true;
 				}
 			}
 			case GLFW.GLFW_KEY_RIGHT -> {
-				if (viewing != null) {
+				if (page == Page.ITEM) {
 					recipeIndex++;
 					return true;
 				}
@@ -711,6 +1405,7 @@ public class GuideScreen extends Screen {
 	@Override
 	public boolean charTyped(char chr, int modifiers) {
 		if (recipesMode() && search.isFocused()) return search.charTyped(chr, modifiers);
+		if (page == Page.SEARCH && finder.isFocused()) return finder.charTyped(chr, modifiers);
 		return super.charTyped(chr, modifiers);
 	}
 

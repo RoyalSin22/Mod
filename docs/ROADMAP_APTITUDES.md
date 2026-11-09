@@ -5,6 +5,18 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+### v61 — Grimorio (K3, hecho por Claude)
+- G1 Bestiario: 40 páginas (32 criaturas, Wither, Dragón, élite, campeón y los 4 jefes propios),
+  catálogo puro `guide/BestiaryRules`, attachment `aptitudes:bestiary` con `copyOnDeath`, desbloqueo
+  para quien remata y su grupo a 64 bloques. Modelo 3D, estadísticas base, debilidades por etiqueta,
+  consejo y botín.
+- G2 Buscador global, marcadores (cliente, `guideBookmarks`), enlace desde el tutorial (pestaña con el
+  capítulo recomendado) y desde los tooltips (tecla U en inventarios).
+- G3 Progreso: logros (servidor), bestiario, jefes, escalones de senda y piedras angulares.
+- G4 Cabeceras generadas por `tools/textures/gen_guide_headers.py` (25 ilustraciones, `--check`).
+- G5 Sendas por rol con iconos S1–S7 y piedra angular.
+- Pendiente: revisión nativa de los textos nuevos en pt_br/fr_fr/de_de; logro del bestiario (idea).
+
 ### v60 — Frascos y arenas (K2)
 - Fase 1. Mejora de Estus y Éter en la Hoguera con núcleos y Fragmentos de alma. Vista previa,
   confirmación de un solo uso, rango por objeto y tope de compra configurable.

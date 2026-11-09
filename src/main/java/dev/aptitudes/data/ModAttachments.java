@@ -86,6 +86,16 @@ public final class ModAttachments {
 			.persistent(ThreatData.CODEC)
 			.buildAndRegister(Aptitudes.id("threat"));
 
+	/** v61: bestiario del grimorio (id de entrada → criaturas vencidas); se conserva al morir. */
+	public static final AttachmentType<java.util.Map<String, Integer>> BESTIARY =
+			AttachmentRegistry.<java.util.Map<String, Integer>>builder()
+					.persistent(com.mojang.serialization.Codec.unboundedMap(com.mojang.serialization.Codec.STRING,
+									com.mojang.serialization.Codec.INT)
+							.xmap(dev.aptitudes.guide.BestiaryRules::sanitize, java.util.Map::copyOf))
+					.copyOnDeath()
+					.initializer(java.util.TreeMap::new)
+					.buildAndRegister(Aptitudes.id("bestiary"));
+
 	private ModAttachments() {
 	}
 

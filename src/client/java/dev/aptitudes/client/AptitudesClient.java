@@ -68,6 +68,7 @@ public class AptitudesClient implements ClientModInitializer {
 		cycleElementKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 				"key.aptitudes.cycle_element", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_G, CATEGORY));
 		ClientConfig.load();
+		GuideLookup.register(CATEGORY); // v61
 		dev.aptitudes.item.GuideBookItem.opener = () -> net.minecraft.client.MinecraftClient.getInstance()
 				.setScreen(new dev.aptitudes.client.screen.GuideScreen());
 		toggleHudKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
@@ -157,6 +158,8 @@ public class AptitudesClient implements ClientModInitializer {
 				(payload, context) -> dev.aptitudes.client.hud.ThreatHud.onPayload(payload));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.PartySyncPayload.ID,
 				(payload, context) -> PartyClientState.onSync(payload));
+		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.GrimoirePayload.ID,
+				(payload, context) -> ClientGrimoire.onPayload(payload));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.TutorialPayload.ID,
 				(payload, context) -> ClientTutorial.onPayload(payload));
 		ClientPlayNetworking.registerGlobalReceiver(EnergyPayload.ID,
@@ -201,6 +204,7 @@ public class AptitudesClient implements ClientModInitializer {
 			ClientServerConfig.clear();
 			PartyClientState.clear();
 			ClientTutorial.clear();
+			ClientGrimoire.clear();
 			dev.aptitudes.client.hud.TutorialHud.clear();
 			dev.aptitudes.client.hud.ComboHud.clear();
 			dev.aptitudes.client.hud.ThreatHud.clear();

@@ -87,6 +87,7 @@ public class Aptitudes implements ModInitializer {
 		dev.aptitudes.ability.Keystones.register();
 		dev.aptitudes.config.ConfigSync.register();
 		dev.aptitudes.tutorial.TutorialManager.register();
+		dev.aptitudes.guide.GrimoireManager.register();
 		dev.aptitudes.logic.ThreatManager.register();
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			AptitudesCommand.register(dispatcher);

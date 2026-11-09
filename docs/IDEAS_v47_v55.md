@@ -180,7 +180,7 @@ Las **animaciones e iconos** ya se pueden cambiar con un **resource pack** (text
 |---|---|---|
 | v59 | Rendimiento R1–R3 + resto de HUD (H2 barra de jefe, H3 minimalista, H4 presets) | Claude (R) / Codex (H) |
 | v60 | Souls «suaves»: S2 mejora de frascos, S7 arenas con niebla, §2b convocar el Eclipse (cuando se decida) | Codex / Claude (§2b) |
-| v61 | Grimorio G1–G5 (bestiario y buscador) | Codex |
+| v61 | Grimorio G1–G5 (bestiario y buscador) | Claude ✔ (2026-11-09) |
 | v62 | Objetos y gráficos A1, A6 (sin dependencias) | Codex (generadores) |
 | v63 | Primer bloque de jefes originales (Coloso Sin Rostro, Guardián Desmontado, Autómata Antiguo) + estructuras, con **GeckoLib** | Claude (diseño) + Codex |
 | v64 | Templos de puzle y Vasos de vida | Codex |

@@ -48,6 +48,7 @@ Las probabilidades, tamaños y presupuestos se vuelven a acotar en las reglas pu
 | `hudPreset` | `classic` | `classic` / `centered` / `compact` | Clásico conserva el anclaje de v50. Centrado coloca las habilidades sobre los avisos de la hotbar y del evento. Compacto las alinea a la derecha y usa el 75 % de la escala en las habilidades y barras Souls. Seleccionar un preset en el editor borra el desplazamiento manual y conserva la escala solicitada. Un valor desconocido o `null` recupera Clásico. |
 | `hudMinimal` | false | true / false | Oculta avisos de XP y tutorial, contador de combos, mecánicas de rol y números de daño. Conserva las barras, habilidades, piedras angulares, avisos de amenaza, eventos, jefes y grupo. `null` recupera false. |
 | `hudAnimations` | true | true / false | Transiciones de vida, maná, jefes y XP, entrada de avisos y pulso de nivel en la tarjeta de XP. Al desactivarlas, el HUD muestra los cambios de inmediato y sus indicadores de estado dejan de latir. `null` recupera true. Los efectos del mundo y del cielo tienen sus propios interruptores. |
+| `guideBookmarks` | `[]` | hasta 24 ids `chapter:` / `item:` / `beast:` / `role:` | Marcadores del grimorio (v61). Se guardan al pulsar ☆; los ids no válidos o repetidos se descartan al cargar. |
 | `castAnimations` | true | true / false | Remates 3D de las habilidades, desde Mayús + O → Animaciones 3D. Un `null` explícito recupera true en `ClientConfig.validated(...)`. |
 
 ## Tutorial (v44)
