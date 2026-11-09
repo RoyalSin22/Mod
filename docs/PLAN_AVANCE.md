@@ -195,8 +195,16 @@ Ids nuevos y mapeo aprobados; la tabla está en `role/RoleMigrationRules` con pr
 - **Elementos antiguos:** no se borran del código (el elemento activo se guarda por índice). Se retiran de la
   selección si el autor lo decide.
 
-**Pendiente de decisión:** (1) si Veneno se retira de la selección, porque Planta ya cubre el veneno; (2) quién se
-queda con las fusiones de Luz, Vacío, Cristal y Sonido; (3) aprobar el disparador de evolución propuesto.
+**Decisiones tomadas:**
+- **Veneno se retira** de la selección (`role/ElementRules.RETIRED`).
+- **Disparador de evolución aprobado:** rango 3 del nodo del elemento (`ElementRules.EVOLUTION_RANK`).
+- **Luz, Vacío, Cristal y Sonido** se quedan con el Arcanista: sus fusiones (Eclipse, Singularidad cristalina,
+  Resonancia, Prisma) son de magia del espacio y del arcano.
+- **Plaga** cambia su ingrediente de Veneno a **Sombra** (descomposición), para que siga existiendo sin el Veneno.
+
+**Hecho en código:** reglas puras de retirada y evolución (`ElementRules`) con 8 pruebas. **Pendiente de cablear:**
+evolución en la pasiva del Arcanista, las fusiones Vapor y Marea verde (con nombres en 11 idiomas), el cambio de
+Plaga, y el daño del estallido del Rayo.
 
 ## 5. Ideas descartadas o aplazadas
 
