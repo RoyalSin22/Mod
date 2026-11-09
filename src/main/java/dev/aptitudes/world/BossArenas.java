@@ -42,6 +42,8 @@ public final class BossArenas {
 		final BossArenaLayout layout;
 		final List<BlockPos> wall;
 		Seal seal;
+		/** Ya se avisó a los participantes de que las ruinas no se pueden cerrar. */
+		boolean warnedBlocked;
 
 		Arena(MobEntity boss, ServerWorld world, BlockPos center, BossArenaLayout layout) {
 			this.boss = boss;
@@ -197,7 +199,16 @@ public final class BossArenas {
 				arena.open();
 				continue;
 			}
-			if (arena.seal == null) arena.seal = arena.close();
+			if (arena.seal == null) {
+				arena.seal = arena.close();
+				if (arena.seal == null && arena.layout == BossArenaLayout.RUINS && !arena.warnedBlocked) {
+					arena.warnedBlocked = true;
+					for (ServerPlayerEntity player : participants) {
+						player.sendMessage(net.minecraft.text.Text.translatable("boss.aptitudes.ruins_blocked")
+								.formatted(net.minecraft.util.Formatting.GRAY), false);
+					}
+				}
+			}
 			else if (!arena.renew()) arena.open();
 			if (arena.seal != null) {
 				for (ServerPlayerEntity player : participants) listeners.putIfAbsent(player, arena.boss.getUuid());

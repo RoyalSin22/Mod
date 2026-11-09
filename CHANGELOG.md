@@ -37,7 +37,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   El Autómata Antiguo lanza dos esferas en abanico y su rayo barre un cono de 60°. Sin validar en partida.
 
 - **v65 — Ruinas de batalla del Coloso.** Al invocar al Coloso con el sello, se levantan ocho columnas rotas (20 min) y
-  una sala circular de 21 bloques que se cierra con niebla mientras se lucha dentro. Sin validar en partida.
+  una sala circular de 21 bloques y 4 bloques de alto que se cierra con niebla mientras se lucha dentro. Si el
+  terreno no deja cerrarla, los participantes lo ven en el chat. Sin validar en partida.
 
 ### Corregido
 - **v56 — Generación de jefes.** Torres, santuarios y campamentos guardan sus jefes con el terreno al

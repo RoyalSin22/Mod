@@ -3727,6 +3727,7 @@
   "entity.aptitudes.osario_quebrado": "Broken Ossuary",
   "item.aptitudes.osario_quebrado_spawn_egg": "Broken Ossuary Spawn Egg",
   "bestiary.aptitudes.osario_quebrado.tip": "Bone and earth that will not rest. It drags one arm and charges when it sees you.",
+  "boss.aptitudes.ruins_blocked": "The ruins cannot be sealed: the ground around the summon is blocked.",
   "expedition.aptitudes.modifier.fog": "Fog",
   "expedition.aptitudes.modifier.ember_rain": "Ember rain",
   "expedition.aptitudes.modifier.elite_surge": "Elite surge",

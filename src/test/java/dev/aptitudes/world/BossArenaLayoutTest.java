@@ -20,12 +20,12 @@ class BossArenaLayoutTest {
 	void boundsTheFloorAndNeverIncludesTheOutsideOrTheFloorBelow() {
 		for (BossArenaLayout layout : BossArenaLayout.values()) {
 			assertFalse(layout.contains(0.5, -1, 0.5));
-			assertFalse(layout.contains(0.5, 3, 0.5));
+			assertFalse(layout.contains(0.5, layout.height(), 0.5));
 			assertFalse(layout.contains(100, 0, 0.5));
 			assertFalse(layout.contains(Double.NaN, 0, 0.5));
 			assertEquals(layout.wall().size(), new HashSet<>(layout.wall()).size());
-			// Límite de rendimiento: el anillo de 21 bloques (RUINS) tiene 168 celdas en tres capas.
-			assertTrue(layout.wall().size() < 200);
+			// Límite de rendimiento: el anillo de 21 bloques (RUINS) tiene 56 celdas por capa y 4 capas (224).
+			assertTrue(layout.wall().size() < 240);
 		}
 	}
 
@@ -33,6 +33,9 @@ class BossArenaLayoutTest {
 	void ruinsEnclosesTheColossusFootprintAroundTheSummonPoint() {
 		assertTrue(BossArenaLayout.RUINS.contains(0.5, 0, 0.5));
 		assertTrue(BossArenaLayout.RUINS.contains(9.5, 0, 0.5));
+		// El Coloso mide 3,8 bloques: la sala lo cubre entero.
+		assertTrue(BossArenaLayout.RUINS.contains(0.5, 3.8 - 0.01, 0.5));
+		assertFalse(BossArenaLayout.RUINS.contains(0.5, 4, 0.5));
 		assertFalse(BossArenaLayout.RUINS.contains(11.5, 0, 0.5));
 	}
 
@@ -55,7 +58,7 @@ class BossArenaLayoutTest {
 						int nx = x + direction[0];
 						int nz = z + direction[1];
 						if (layout.contains(nx + 0.5, 0, nz + 0.5)) continue;
-						for (int y = 0; y < 3; y++) assertTrue(wall.contains(new BossArenaLayout.Cell(nx, y, nz)));
+						for (int y = 0; y < layout.height(); y++) assertTrue(wall.contains(new BossArenaLayout.Cell(nx, y, nz)));
 					}
 				}
 			}

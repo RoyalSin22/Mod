@@ -3727,6 +3727,7 @@
   "entity.aptitudes.osario_quebrado": "Zerbrochenes Beinhaus",
   "item.aptitudes.osario_quebrado_spawn_egg": "Erscheinungsei des Zerbrochenen Beinhauses",
   "bestiary.aptitudes.osario_quebrado.tip": "Knochen und Erde, die nicht ruhen wollen. Er schleift einen Arm und stürmt los, sobald er dich sieht.",
+  "boss.aptitudes.ruins_blocked": "Die Ruinen können nicht versiegelt werden: Der Boden um die Beschwörung ist blockiert.",
   "expedition.aptitudes.modifier.fog": "Nebel",
   "expedition.aptitudes.modifier.ember_rain": "Glutregen",
   "expedition.aptitudes.modifier.elite_surge": "Elitenwelle",

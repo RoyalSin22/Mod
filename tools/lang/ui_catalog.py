@@ -1740,6 +1740,7 @@ entity.aptitudes.faceless_colossus¦O Colosso Sem Rosto¦Le Colosse sans visage�
 entity.aptitudes.osario_quebrado¦Ossuário Quebrado¦Ossuaire brisé¦Zerbrochenes Beinhaus
 item.aptitudes.osario_quebrado_spawn_egg¦Ovo de aparição do Osario Quebrado¦Œuf d'apparition de l'Ossuaire brisé¦Erscheinungsei des Zerbrochenen Beinhauses
 bestiary.aptitudes.osario_quebrado.tip¦Osso e terra que não descansam. Arrasta um braço e avança ao te ver.¦Os et terre qui refusent le repos. Il traîne un bras et charge dès qu'il vous voit.¦Knochen und Erde, die nicht ruhen wollen. Er schleift einen Arm und stürmt los, sobald er dich sieht.
+boss.aptitudes.ruins_blocked¦As ruínas não podem ser fechadas: o terreno ao redor da invocação está ocupado.¦Les ruines ne peuvent pas être scellées : le terrain autour de l'invocation est encombré.¦Die Ruinen können nicht versiegelt werden: Der Boden um die Beschwörung ist blockiert.
 elite.aptitudes.thorny¦Espinhoso¦Épineux¦Dornig
 elite.aptitudes.searing¦Abrasador¦Brûlant¦Versengend
 expedition.aptitudes.modifier.fog¦Névoa¦Brouillard¦Nebel

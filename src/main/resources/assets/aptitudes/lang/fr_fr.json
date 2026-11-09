@@ -3727,6 +3727,7 @@
   "entity.aptitudes.osario_quebrado": "Ossuaire brisé",
   "item.aptitudes.osario_quebrado_spawn_egg": "Œuf d'apparition de l'Ossuaire brisé",
   "bestiary.aptitudes.osario_quebrado.tip": "Os et terre qui refusent le repos. Il traîne un bras et charge dès qu'il vous voit.",
+  "boss.aptitudes.ruins_blocked": "Les ruines ne peuvent pas être scellées : le terrain autour de l'invocation est encombré.",
   "expedition.aptitudes.modifier.fog": "Brouillard",
   "expedition.aptitudes.modifier.ember_rain": "Pluie de braises",
   "expedition.aptitudes.modifier.elite_surge": "Déferlante d'élites",
