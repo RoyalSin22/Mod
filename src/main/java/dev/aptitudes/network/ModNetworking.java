@@ -27,6 +27,7 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playS2C().register(CooldownPayload.ID, CooldownPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(ComboPayload.ID, ComboPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(EclipsePayload.ID, EclipsePayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(BossHudPayload.ID, BossHudPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(ConfigSyncPayload.ID, ConfigSyncPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(OpenConfigPayload.ID, OpenConfigPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(MorphPayload.ID, MorphPayload.CODEC);

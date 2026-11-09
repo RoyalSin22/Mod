@@ -1,10 +1,15 @@
 package dev.aptitudes.elite;
 
 import dev.aptitudes.Aptitudes;
+import dev.aptitudes.boss.BossKind;
+import dev.aptitudes.boss.BossRules;
 import dev.aptitudes.item.ModItems;
+import dev.aptitudes.network.BossHudPayload;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.LivingEntity;
@@ -35,11 +40,14 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -71,7 +79,11 @@ public final class Elites {
 	public static final String ELITE = Aptitudes.MOD_ID + ".elite";
 	public static final String CHAMPION = Aptitudes.MOD_ID + ".champion";
 
-	private static final Map<UUID, ServerBossBar> BARS = new HashMap<>();
+	private record ChampionBar(ServerBossBar vanilla, Set<ServerPlayerEntity> hudViewers) {}
+	private record NearbyBoss(UUID id, double distanceSq, BossHudPayload.Entry entry) {}
+
+	private static final Map<UUID, ChampionBar> BARS = new HashMap<>();
+	private static final Set<ServerPlayerEntity> BOSS_HUD_VIEWERS = new HashSet<>();
 	private static final Map<UUID, Integer> BLINK_READY = new HashMap<>();
 
 	private Elites() {
@@ -98,6 +110,10 @@ public final class Elites {
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			if (server.getTicks() % 20 == 0) tick(server);
 		});
+		ServerLifecycleEvents.SERVER_STOPPED.register(server -> {
+			BARS.clear();
+			BOSS_HUD_VIEWERS.clear();
+		});
 	}
 
 	public static boolean isElite(Entity e) {
@@ -114,8 +130,8 @@ public final class Elites {
 
 	/** Actualiza el título de la barra compartida cuando un campeón tiene nombre propio. */
 	public static void setChampionBarName(Entity entity, Text name) {
-		ServerBossBar bar = BARS.get(entity.getUuid());
-		if (bar != null) bar.setName(name);
+		ChampionBar bar = BARS.get(entity.getUuid());
+		if (bar != null) bar.vanilla().setName(name);
 	}
 
 	/** Convierte un monstruo en élite (o campeón). Se puede llamar durante la generación del mundo. */
@@ -213,8 +229,8 @@ public final class Elites {
 		if (has(mob, Mod.EXPLOSIVE)) {
 			world.createExplosion(mob, mob.getX(), mob.getY(), mob.getZ(), 2.5f, World.ExplosionSourceType.NONE);
 		}
-		ServerBossBar bar = BARS.remove(mob.getUuid());
-		if (bar != null) bar.clearPlayers();
+		ChampionBar bar = BARS.remove(mob.getUuid());
+		if (bar != null) bar.vanilla().clearPlayers();
 		if (champion && source.getAttacker() instanceof ServerPlayerEntity killer) {
 			server.getServer().getPlayerManager().broadcast(Text.translatable("elite.aptitudes.champion_slain",
 					killer.getDisplayName(), mob.getDisplayName()).formatted(Formatting.GOLD), false);
@@ -227,33 +243,78 @@ public final class Elites {
 		BARS.computeIfAbsent(mob.getUuid(), k -> {
 			ServerBossBar bar = new ServerBossBar(mob.getDisplayName(), BossBar.Color.YELLOW, BossBar.Style.NOTCHED_10);
 			bar.setDarkenSky(false);
-			return bar;
+			return new ChampionBar(bar, new HashSet<>());
 		});
 	}
 
-	private static void tick(MinecraftServer server) {
-		Iterator<Map.Entry<UUID, ServerBossBar>> it = BARS.entrySet().iterator();
+	/** Comparte la audiencia de las barras existentes. Cada conexión recibe un solo formato. */
+	private static void syncBossBars(MinecraftServer server) {
+		Map<ServerPlayerEntity, List<NearbyBoss>> nearby = new HashMap<>();
+		Iterator<Map.Entry<UUID, ChampionBar>> it = BARS.entrySet().iterator();
 		while (it.hasNext()) {
-			Map.Entry<UUID, ServerBossBar> e = it.next();
+			var e = it.next();
 			Entity entity = null;
 			for (ServerWorld world : server.getWorlds()) {
 				entity = world.getEntity(e.getKey());
 				if (entity != null) break;
 			}
-			ServerBossBar bar = e.getValue();
+			ChampionBar tracked = e.getValue();
+			ServerBossBar bar = tracked.vanilla();
 			if (!(entity instanceof MobEntity mob) || !mob.isAlive()) {
 				bar.clearPlayers();
 				it.remove();
 				continue;
 			}
-			bar.setPercent(mob.getHealth() / mob.getMaxHealth());
+			float fraction = mob.getHealth() / mob.getMaxHealth();
+			float health = Float.isFinite(fraction) ? Math.clamp(fraction, 0f, 1f) : 0f;
+			bar.setPercent(health);
 			for (ServerPlayerEntity p : List.copyOf(bar.getPlayers())) {
-				if (p.isRemoved() || p.getWorld() != mob.getWorld() || p.squaredDistanceTo(mob) > 48 * 48) bar.removePlayer(p);
+				if (!nearBoss(p, mob, 48) || ServerPlayNetworking.canSend(p, BossHudPayload.ID)) bar.removePlayer(p);
 			}
-			for (ServerPlayerEntity p : ((ServerWorld) mob.getWorld()).getPlayers(pl -> pl.squaredDistanceTo(mob) <= 32 * 32)) {
-				bar.addPlayer(p);
+			var viewers = tracked.hudViewers();
+			viewers.removeIf(p -> !p.isAlive() || !nearBoss(p, mob, 48)
+					|| !ServerPlayNetworking.canSend(p, BossHudPayload.ID));
+			for (ServerPlayerEntity p : ((ServerWorld) mob.getWorld()).getPlayers(pl -> nearBoss(pl, mob, 32))) {
+				if (ServerPlayNetworking.canSend(p, BossHudPayload.ID)) {
+					if (p.isAlive()) viewers.add(p);
+				} else {
+					bar.addPlayer(p);
+				}
+			}
+			if (viewers.isEmpty()) continue;
+			int phase = mob.getCommandTags().stream().anyMatch(tag -> BossKind.fromTag(tag) != null)
+					? BossRules.phase(health) : 0;
+			var entry = new BossHudPayload.Entry(bar.getName(), health, phase);
+			for (ServerPlayerEntity viewer : viewers) {
+				nearby.computeIfAbsent(viewer, key -> new ArrayList<>())
+						.add(new NearbyBoss(e.getKey(), viewer.squaredDistanceTo(mob), entry));
 			}
 		}
+
+		for (var audience : nearby.entrySet()) {
+			List<NearbyBoss> bosses = audience.getValue();
+			List<BossHudPayload.Entry> entries = bosses.stream()
+					.sorted(Comparator.comparing((NearbyBoss boss) -> boss.entry().phase() == 0)
+							.thenComparingDouble(NearbyBoss::distanceSq).thenComparing(NearbyBoss::id))
+					.limit(BossHudPayload.MAX_ENTRIES).map(NearbyBoss::entry).toList();
+			ServerPlayNetworking.send(audience.getKey(), new BossHudPayload(entries, bosses.size()));
+		}
+		// El vaciado se envía una sola vez al salir del último encuentro.
+		for (ServerPlayerEntity previous : BOSS_HUD_VIEWERS) {
+			if (!nearby.containsKey(previous) && !previous.isRemoved() && ServerPlayNetworking.canSend(previous, BossHudPayload.ID)) {
+				ServerPlayNetworking.send(previous, BossHudPayload.EMPTY);
+			}
+		}
+		BOSS_HUD_VIEWERS.clear();
+		BOSS_HUD_VIEWERS.addAll(nearby.keySet());
+	}
+
+	private static boolean nearBoss(ServerPlayerEntity player, MobEntity boss, int radius) {
+		return !player.isRemoved() && player.getWorld() == boss.getWorld() && player.squaredDistanceTo(boss) <= radius * radius;
+	}
+
+	private static void tick(MinecraftServer server) {
+		syncBossBars(server);
 		// Regeneración de las élites que la tienen
 		java.util.Set<UUID> healed = new java.util.HashSet<>();
 		for (ServerWorld world : server.getWorlds()) {

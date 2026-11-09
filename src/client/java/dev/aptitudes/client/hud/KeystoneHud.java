@@ -16,6 +16,7 @@ import java.util.List;
 public final class KeystoneHud {
 	private static List<KeystonePayload.Entry> entries = List.of();
 	private static final int SIZE = 18;
+	private static final int ROW_Y = -47;
 
 	private KeystoneHud() {
 	}
@@ -28,9 +29,13 @@ public final class KeystoneHud {
 		entries = List.of();
 	}
 
+	static int occupiedAbove() {
+		return entries.isEmpty() ? 0 : -ROW_Y;
+	}
+
 	static void draw(DrawContext ctx) {
 		int x = 0;
-		int y = -47;
+		int y = ROW_Y;
 		KeystoneRules.Template[] all = KeystoneRules.Template.values();
 		long now = Util.getMeasuringTimeMs();
 		for (KeystonePayload.Entry e : entries) {

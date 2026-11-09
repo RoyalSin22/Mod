@@ -3,6 +3,7 @@ package dev.aptitudes.client;
 import dev.aptitudes.ability.AbilityManager;
 import dev.aptitudes.client.fx.CastAnimations;
 import dev.aptitudes.client.hud.AbilityHud;
+import dev.aptitudes.client.hud.BossHud;
 import dev.aptitudes.client.screen.AptitudesScreen;
 import dev.aptitudes.client.screen.ForgeScreen;
 import dev.aptitudes.client.screen.RolesScreen;
@@ -12,6 +13,7 @@ import dev.aptitudes.network.ForgePreviewPayload;
 import dev.aptitudes.network.CastAnimationPayload;
 import dev.aptitudes.network.FormSyncPayload;
 import dev.aptitudes.network.MorphPayload;
+import dev.aptitudes.network.BossHudPayload;
 import dev.aptitudes.network.UniqueSyncPayload;
 import dev.aptitudes.network.CooldownPayload;
 import dev.aptitudes.network.EnergyPayload;
@@ -162,6 +164,8 @@ public class AptitudesClient implements ClientModInitializer {
 				(payload, context) -> dev.aptitudes.client.hud.KeystoneHud.onPayload(payload)); // v46.1
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.EclipsePayload.ID,
 				(payload, context) -> ClientEclipse.onPayload(payload));
+		ClientPlayNetworking.registerGlobalReceiver(BossHudPayload.ID,
+				(payload, context) -> BossHud.onPayload(context.client(), payload));
 		// v40: configuración del servidor (valores reales en tooltips y pantalla de configuración).
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.ConfigSyncPayload.ID,
 				(payload, context) -> ClientServerConfig.onSync(payload));
@@ -185,6 +189,7 @@ public class AptitudesClient implements ClientModInitializer {
 			dev.aptitudes.client.hud.ClientFx.clear();
 			CastAnimations.clear();
 			AbilityHud.clear();
+			BossHud.clear();
 			ClientEclipse.clear();
 			ClientServerConfig.clear();
 			PartyClientState.clear();
@@ -196,6 +201,7 @@ public class AptitudesClient implements ClientModInitializer {
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.ClientFx::renderHud);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.ComboHud::render);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.EclipseHud::render);
+		HudRenderCallback.EVENT.register(BossHud::render);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.PartyHud::render);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.TutorialHud::render);
 		HudRenderCallback.EVENT.register(dev.aptitudes.client.hud.ThreatHud::render);

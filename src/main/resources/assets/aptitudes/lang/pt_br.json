@@ -3550,5 +3550,8 @@
   "forge.aptitudes.status.needs_reforge": "Reforje a arma na Mesa da Guilda primeiro.",
   "forge.aptitudes.status.max_rank": "A têmpera já está no grau II.",
   "forge.aptitudes.status.missing": "Adicione os ingredientes necessários.",
-  "forge.aptitudes.status.ready": "Pronto para confirmar."
+  "forge.aptitudes.status.ready": "Pronto para confirmar.",
+  "hud.aptitudes.boss.phase": "Fase %s",
+  "hud.aptitudes.boss.health": "%s%%",
+  "hud.aptitudes.boss.more": "+%s por perto"
 }

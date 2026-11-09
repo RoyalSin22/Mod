@@ -1539,3 +1539,9 @@ status.max_rank¦A têmpera já está no grau II.¦La trempe est déjà au rang 
 status.missing¦Adicione os ingredientes necessários.¦Ajoutez les ingrédients requis.¦Lege die benötigten Zutaten ein.
 status.ready¦Pronto para confirmar.¦Prêt à confirmer.¦Bereit zur Bestätigung.
 """)
+
+add('hud.aptitudes.boss.', """
+phase¦Fase %s¦Phase %s¦Phase %s
+health¦%s%%¦%s %%¦%s %%
+more¦+%s por perto¦+%s à proximité¦+%s in der Nähe
+""")

@@ -3550,5 +3550,8 @@
   "forge.aptitudes.status.needs_reforge": "Reforgez d’abord l’arme à la Table de guilde.",
   "forge.aptitudes.status.max_rank": "La trempe est déjà au rang II.",
   "forge.aptitudes.status.missing": "Ajoutez les ingrédients requis.",
-  "forge.aptitudes.status.ready": "Prêt à confirmer."
+  "forge.aptitudes.status.ready": "Prêt à confirmer.",
+  "hud.aptitudes.boss.phase": "Phase %s",
+  "hud.aptitudes.boss.health": "%s %%",
+  "hud.aptitudes.boss.more": "+%s à proximité"
 }

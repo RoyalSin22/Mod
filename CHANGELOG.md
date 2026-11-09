@@ -13,6 +13,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   vuelo corto que se dirige con la mirada.
 
 ### Cambiado
+- **v59 — Barra de jefes.** Los jefes y campeones de Aptitudes comparten un panel centrado cerca de la
+  parte inferior. Muestra su vida, la fase de los jefes y un recuento si hay más enemigos cerca.
 - **v57 — Atlas y Sendas.** Las dos opciones de la bifurcación tienen filas separadas y el rango
   queda alineado a la derecha. La ficha envuelve los requisitos y el lienzo de Talentos despeja
   el fondo y usa conectores más finos.

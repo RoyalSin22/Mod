@@ -1,5 +1,21 @@
 # Pruebas de Aptitudes
 
+## v59 — Barra de jefes (K1, fase 1)
+
+1. Entra a menos de 32 bloques de un jefe de Aptitudes. Verifica que el panel inferior centrado
+   muestre su nombre y porcentaje de vida. Baja su vida a dos tercios y luego a un tercio.
+   Comprueba que cambie de fase y que la barra de este jefe aparezca una sola vez.
+2. Acércate a dos jefes y a un campeón común. Los tres deben compartir panel, sin fase para el
+   campeón común. Con más de cuatro, verifica el recuento adicional y que se muestren los más cercanos.
+   Comprueba que un jefe tenga prioridad sobre campeones comunes aunque esté más lejos.
+   Repite cerca de un jefe de Minecraft y comprueba que conserve su propia barra superior.
+3. Con dos clientes, deja a uno cerca del jefe y al otro fuera de 48 bloques o en otra dimensión.
+   El panel solo debe aparecer para quien se acerque. Aléjate más de 48 bloques, cambia de dimensión,
+   muere o desconéctate. Comprueba que el panel se limpie y se recupere al volver al encuentro.
+4. Alterna F1 y prueba en creativo y espectador. Reduce la ventana, desplaza la barra de habilidades
+   con Mayús + O y activa un Eclipse. Comprueba que el panel se ajuste y que los avisos se puedan leer.
+   Repite en alemán y verifica los textos, incluidos los porcentajes.
+
 ## v58 — Cambiaformas
 
 1. Con Cambiaformas, activa la forma de murciélago y cambia a tercera persona con F5. Revisa que

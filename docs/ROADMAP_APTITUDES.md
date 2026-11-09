@@ -5,6 +5,13 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+### v59 — HUD (K1, fase 1)
+- Panel inferior para jefes y campeones de Aptitudes. Reúne hasta cuatro encuentros cercanos,
+  muestra su vida y la fase del jefe. Prioriza jefes sobre campeones y, dentro de cada tipo,
+  el orden es por cercanía. Conserva los radios existentes de entrada y salida
+  y ofrece la barra habitual a las conexiones que no admiten el nuevo mensaje.
+- Fase 2 pendiente. Modo minimalista, disposiciones y animaciones.
+
 ### v58 — Cambiaformas
 - Animación del murciélago, la gallina y el slime en el modelo de transformación. El poder del
   murciélago permite dirigir el vuelo corto con la mirada.

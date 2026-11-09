@@ -43,6 +43,8 @@ public final class AbilityHud {
 	private static final int GAP = 2;
 	private static final int GROUP_GAP = 6;
 	private static final int BAR_W = 92;
+	private static final int KEY_Y = -9;
+	private static final int MECHANIC_Y = -24;
 
 	/** Orden visual de las ranuras y separación de grupos. */
 	private static final int[] ORDER = {0, 1, 2, 3, AbilityManager.SIGNATURE_SLOT, AbilityManager.ULTIMATE_SLOT,
@@ -86,7 +88,7 @@ public final class AbilityHud {
 		ClientConfig cfg = ClientConfig.get();
 
 		if (cfg.soulsBars) renderSoulsBars(ctx, text, data, client);
-		if (data.primaryRole() == null && data.secondaryRole() == null && ownUnique() == null) return;
+		if (!hasAbilities(data)) return;
 		if (!cfg.soulsBars) renderBars(ctx, text, data, w, h);
 		renderAbilityBar(ctx, text, data, w, h, client.player.age);
 	}
@@ -107,6 +109,24 @@ public final class AbilityHud {
 	/** Ancho total (sin escala) de la barra de habilidades. */
 	public static int barWidth() {
 		return ORDER.length * SLOT + (ORDER.length - 1) * GAP + 3 * GROUP_GAP;
+	}
+
+	@Nullable
+	static AbilityHudLayout activeBarLayout(int w, int h) {
+		var client = MinecraftClient.getInstance();
+		var data = ClientRoleState.data();
+		ClientConfig cfg = ClientConfig.get();
+		if (client.player == null || client.player.isSpectator() || !cfg.hudVisible || data == null || !hasAbilities(data)) {
+			return null;
+		}
+		var layout = barLayout(w, h);
+		int above = Math.max(cfg.showMechanic && !mechanics.isEmpty() ? 1 - MECHANIC_Y : -KEY_Y, KeystoneHud.occupiedAbove());
+		int top = layout.y() - (int) Math.ceil(above * layout.scale());
+		return new AbilityHudLayout(layout.x(), layout.y(), layout.scale(), layout.left(), top, layout.right(), layout.bottom());
+	}
+
+	private static boolean hasAbilities(RoleSyncPayload data) {
+		return data.primaryRole() != null || data.secondaryRole() != null || ownUnique() != null;
 	}
 
 	public static AbilityHudLayout barLayout(int w, int h) {
@@ -230,7 +250,7 @@ public final class AbilityHud {
 	/** Iconos de la mecánica sobre la barra: pips de acumulación o el estado con nombre. */
 	private static void renderMechanics(DrawContext ctx, TextRenderer text) {
 		int x = 0;
-		int y = -24;
+		int y = MECHANIC_Y;
 		for (MechanicPayload.Entry e : mechanics) {
 			if (x + 22 >= barWidth()) break;
 			RoleNode node = RoleTree.get(e.node());
@@ -369,7 +389,7 @@ public final class AbilityHud {
 		ctx.fill(x + SLOT - 3, y + SLOT, x + SLOT + 1, y + SLOT + 1, corner);
 		ctx.fill(x + SLOT, y + SLOT - 3, x + SLOT + 1, y + SLOT + 1, corner);
 		Text key = UiStyle.fit(text, AptitudesClient.abilityKey(slot).getBoundKeyLocalizedText(), (int) ((SLOT - 2) / 0.7f));
-		ctx.fill(x + 1, y - 9, x + SLOT - 1, y - 1, 0xEC151620);
+		ctx.fill(x + 1, y + KEY_Y, x + SLOT - 1, y - 1, 0xEC151620);
 		small(ctx, text, key, x + SLOT / 2 - (int) (text.getWidth(key) * 0.35f), y - 8,
 				view == null ? UiStyle.MUTED : UiStyle.TEXT);
 		if (view == null) return;

@@ -3550,5 +3550,8 @@
   "forge.aptitudes.status.needs_reforge": "Schmiede die Waffe zuerst am Gildentisch um.",
   "forge.aptitudes.status.max_rank": "Die Waffe ist bereits auf Rang II gehärtet.",
   "forge.aptitudes.status.missing": "Lege die benötigten Zutaten ein.",
-  "forge.aptitudes.status.ready": "Bereit zur Bestätigung."
+  "forge.aptitudes.status.ready": "Bereit zur Bestätigung.",
+  "hud.aptitudes.boss.phase": "Phase %s",
+  "hud.aptitudes.boss.health": "%s %%",
+  "hud.aptitudes.boss.more": "+%s in der Nähe"
 }
