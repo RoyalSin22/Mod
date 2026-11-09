@@ -10,18 +10,17 @@ import java.util.Set;
  * Valores elegidos sin playtest: pendientes de validar en partida con el autor.</p>
  */
 public final class PostureRules {
-	/** Duración del aturdimiento tras romper la postura (3 s). */
-	public static final int STUN_TICKS = 60;
+	/** Duración del aturdimiento tras romper la postura (5 s). Decisión del autor. */
+	public static final int STUN_TICKS = 100;
 	/**
 	 * Tras el aturdimiento, tiempo en el que no puede romperse (15 s). Subido desde 10 s: en grupo, varios jugadores
 	 * pueden golpear a la vez y una inmunidad corta permitiría aturdimientos casi continuos.
 	 */
 	public static final int IMMUNITY_TICKS = 300;
 	/**
-	 * Multiplicador del daño recibido mientras está aturdido (+25 %). Bajado desde ×1,5: el aturdimiento debe ser una
-	 * ventana para castigar, no una fase en la que el daño se duplica con cualquier build.
+	 * Multiplicador del daño recibido mientras está aturdido (×1,5). Decisión del autor.
 	 */
-	public static final double VULNERABLE_MULTIPLIER = 1.25;
+	public static final double VULNERABLE_MULTIPLIER = 1.5;
 
 	/**
 	 * Estado de postura. {@code stunnedUntil} e {@code immuneUntil} son instantes en ticks.

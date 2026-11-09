@@ -64,7 +64,7 @@ Orden sugerido. Cada fase se integra por separado y con autorización explícita
 
 ### Fase A — Infraestructura de combate (sin contenido nuevo) — **completada, sin commit**
 Implementada: `boss/AttackTags` (etiquetas y reglas de bloqueo, parry y postura), `boss/PostureRules` (postura, aturdimiento
-de 60 ticks, inmunidad de 300 ticks, vulnerabilidad ×1,25, recuperación) y sus pruebas `AttackTagsTest` y
+de 100 ticks, inmunidad de 300 ticks, vulnerabilidad ×1,5, recuperación) y sus pruebas `AttackTagsTest` y
 `PostureRulesTest`. Los valores están elegidos sin playtest y quedan pendientes de validar en partida.
 - Etiquetas tácticas de ataque (NORMAL, HEAVY, PARRYABLE, PROJECTILE, GROUND, UNBLOCKABLE) como datos puros.
 - Reglas puras de postura: `posture`, `maxPosture`, `recovery`, `immuneUntil`, con pruebas JUnit.
@@ -72,7 +72,7 @@ de 60 ticks, inmunidad de 300 ticks, vulnerabilidad ×1,25, recuperación) y sus
 
 ### Fase B — Postura y guardia en jefes, élites y campeones — **en curso, sin commit**
 Hecho (B1): postura en los jefes animados (`AnimatedBossEntity`). Solo drenan los golpes de jugadores; al romperse
-el jefe queda aturdido 3 s con daño ×1,25 y no empieza ataques nuevos; se recupera 2 por segundo. Compila y las
+el jefe queda aturdido 5 s con daño ×1,5 y no empieza ataques nuevos; se recupera 2 por segundo. Compila y las
 353 pruebas pasan, pero el comportamiento no está validado en partida.
 Pendiente:
 - B2 (hecho en código, sin commit): `BossMoveRules.Move` lleva `tags` (`AttackTags`). Coloso: tajo NORMAL, golpe
