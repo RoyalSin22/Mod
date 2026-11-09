@@ -103,16 +103,16 @@ public class AutomatonEntity extends AnimatedBossEntity {
 	@Override
 	protected void telegraph(ServerWorld world, Move move, LivingEntity target, int ticksLeft) {
 		if (ticksLeft % 4 != 0) return;
-		if (move == ORB) {
+		if (is(move, ORB)) {
 			Vec3d p = headPosition();
 			world.spawnParticles(ParticleTypes.ELECTRIC_SPARK, p.x, p.y, p.z, 4, 0.2, 0.2, 0.2, 0.02);
-		} else if (move == STOMP) {
+		} else if (is(move, STOMP)) {
 			for (int i = 0; i < 16; i++) {
 				double a = i * Math.PI / 8;
 				world.spawnParticles(ParticleTypes.CRIT, getX() + Math.cos(a) * STOMP_RADIUS, getY() + 0.1,
 						getZ() + Math.sin(a) * STOMP_RADIUS, 1, 0, 0, 0, 0);
 			}
-		} else if (move == BEAM) {
+		} else if (is(move, BEAM)) {
 			Vec3d dir = beamDirection(target);
 			for (double t = 1; t <= BEAM_MAX; t += 1.5) {
 				Vec3d p = headPosition().add(dir.multiply(t));
@@ -124,23 +124,35 @@ public class AutomatonEntity extends AnimatedBossEntity {
 	@Override
 	protected void strike(ServerWorld world, Move move, LivingEntity target) {
 		float base = (float) getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-		if (move == ORB) {
+		if (is(move, ORB)) {
 			world.playSound(null, getBlockPos(), SoundEvents.BLOCK_BEACON_POWER_SELECT, SoundCategory.HOSTILE, 1f, 1.2f);
 			Vec3d from = headPosition();
 			Vec3d aim = target.getEyePos().subtract(from);
 			Vec3d velocity = aim.normalize().multiply(PieceBossRules.ORB_SPEED);
 			world.spawnEntity(AutomatonOrbEntity.launch(world, this, from, velocity));
-		} else if (move == STOMP) {
+			if (phase() >= 3) { // fase 3 (v65): segunda esfera en abanico de 8 grados
+				double rad = Math.toRadians(8);
+				Vec3d turned = new Vec3d(velocity.x * Math.cos(rad) - velocity.z * Math.sin(rad), velocity.y,
+						velocity.x * Math.sin(rad) + velocity.z * Math.cos(rad));
+				world.spawnEntity(AutomatonOrbEntity.launch(world, this, from, turned));
+			}
+		} else if (is(move, STOMP)) {
 			world.playSound(null, getBlockPos(), SoundEvents.ENTITY_IRON_GOLEM_STEP, SoundCategory.HOSTILE, 1.4f, 0.6f);
 			world.spawnParticles(ParticleTypes.EXPLOSION, getX(), getY() + 0.2, getZ(), 3, 1.5, 0.1, 1.5, 0);
 			for (LivingEntity e : victims(world, STOMP_RADIUS)) {
 				if (Math.hypot(e.getX() - getX(), e.getZ() - getZ()) <= STOMP_RADIUS) hit(e, base * 1.1f, 0.8);
 			}
-		} else if (move == BEAM) {
+		} else if (is(move, BEAM)) {
 			world.playSound(null, getBlockPos(), SoundEvents.ENTITY_LIGHTNING_BOLT_THUNDER, SoundCategory.HOSTILE, 1.3f, 1.0f);
 			Vec3d from = headPosition();
 			Vec3d dir = beamDirection(target);
 			double length = Math.min(BEAM_MAX, blockDistance(world, from, dir));
+			if (phase() >= 3) { // fase 3 (v65): barrido de 60 grados al frente del Autómata
+				for (LivingEntity e : victims(world, BEAM_MAX + 1)) {
+					if (BossMoveRules.inArc(e.getX() - getX(), e.getZ() - getZ(), getYaw(), 60, BEAM_MAX)) hit(e, base * 1.4f, 0.4);
+				}
+				return;
+			}
 			for (LivingEntity e : victims(world, BEAM_MAX + 1)) {
 				Vec3d rel = e.getPos().add(0, 1, 0).subtract(from);
 				double along = rel.dotProduct(dir);
@@ -172,5 +184,10 @@ public class AutomatonEntity extends AnimatedBossEntity {
 		super.dropEquipment(world, source, causedByPlayer);
 		dropStack(new ItemStack(dev.aptitudes.item.ModItems.SOUL_SHARD, 6 + getRandom().nextInt(4)));
 		dropStack(new ItemStack(dev.aptitudes.item.ModItems.ELITE_ESSENCE, 2));
+	}
+
+	/** Compara por id: la fase 3 usa movimientos distintos con el mismo id (y la misma animación). */
+	private static boolean is(Move move, Move reference) {
+		return move.id().equals(reference.id());
 	}
 }

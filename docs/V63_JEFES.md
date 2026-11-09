@@ -1,7 +1,7 @@
 # V63 — Jefes animados (GeckoLib): diseño de los tres primeros
 
 Estado: **base, Coloso Sin Rostro, Guardián Desmontado y Autómata Antiguo jugables** con modelos de prueba.
-Pendiente: fase 3 de los dos últimos (variantes propias), validación de combate en partida (esferas, devolución,
+Fase 3 implementada en v65 (provisional, ver §3 y §4). Pendiente: validación de combate en partida (esferas, devolución,
 aturdimiento, piezas), modelos y animaciones definitivos (K5, Codex) y las estructuras con arena.
 
 Criterio (§0 de `IDEAS_v47_v55.md`): inspiración de tono, nombres, formas y ataques **originales**.
@@ -94,7 +94,7 @@ jugador puede **devolver golpeándolas**; si una devuelta lo alcanza queda **atu
 
 ## 5. Pendientes
 
-1. Fase 3 del Guardián (ataques más rápidos) y del Autómata (dos esferas seguidas, rayo en barrido de 60°).
+1. Hecho en v65: fase 3 del Guardián (`volley` 30 t y `dive` 50 t de enfriamiento) y del Autómata (dos esferas en abanico de 8° en vez de seguidas, rayo en barrido de 60°). El aviso del rayo sigue dibujando una línea y el barrido no corta por bloques sólidos.
 2. Validar en partida el combate de ambos (piezas en orden, esferas devueltas, aturdimiento, rayo cortado por bloques).
 3. Modelos, texturas y animaciones definitivos de los tres (K5, Codex) respetando el contrato del §1.
 4. Estructuras (Ruinas de batalla, Santuario profundo, Templo mecánico) con arena de niebla y núcleo propio.

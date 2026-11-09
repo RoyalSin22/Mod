@@ -41,6 +41,12 @@ public class GuardianEntity extends AnimatedBossEntity {
 	static final Move DIVE = new Move("dive", 2, 4, 16, 26, 80, 2,
 			AttackTags.of(AttackTags.Tag.HEAVY, AttackTags.Tag.GROUND));
 	private static final List<Move> MOVES = List.of(VOLLEY, RING, DIVE);
+	/** Fase 3 (v65): mismo id (misma animación) con menos enfriamiento. */
+	static final Move VOLLEY_FAST = new Move("volley", 1, 4, 14, 20, 30, 3,
+			AttackTags.of(AttackTags.Tag.PROJECTILE));
+	static final Move DIVE_FAST = new Move("dive", 2, 4, 16, 26, 50, 2,
+			AttackTags.of(AttackTags.Tag.HEAVY, AttackTags.Tag.GROUND));
+	private static final List<Move> MOVES_PHASE3 = List.of(VOLLEY_FAST, RING, DIVE_FAST);
 	private static final double BEAM_LENGTH = 12;
 	private static final double BEAM_WIDTH = 1.2;
 	private static final double RING_INNER = 3;
@@ -67,7 +73,7 @@ public class GuardianEntity extends AnimatedBossEntity {
 
 	@Override
 	protected List<Move> moves() {
-		return MOVES;
+		return phase() >= 3 ? MOVES_PHASE3 : MOVES;
 	}
 
 	/** El daño extra de la fase 2 ya está en la mecánica de piezas: aquí no se suma nada más. */
@@ -126,16 +132,16 @@ public class GuardianEntity extends AnimatedBossEntity {
 	@Override
 	protected void telegraph(ServerWorld world, Move move, LivingEntity target, int ticksLeft) {
 		if (ticksLeft % 4 != 0) return;
-		if (move == VOLLEY) {
+		if (is(move, VOLLEY)) {
 			Vec3d dir = beamDirection(target);
 			for (double t = 1; t <= BEAM_LENGTH; t += 1.5) {
 				Vec3d p = getPos().add(dir.multiply(t)).add(0, 1.2, 0);
 				world.spawnParticles(ParticleTypes.ELECTRIC_SPARK, p.x, p.y, p.z, 1, 0, 0, 0, 0);
 			}
-		} else if (move == RING) {
+		} else if (is(move, RING)) {
 			circle(world, getX(), getY() + 0.1, getZ(), RING_INNER, ParticleTypes.CRIT);
 			circle(world, getX(), getY() + 0.1, getZ(), RING_OUTER, ParticleTypes.CRIT);
-		} else if (move == DIVE) {
+		} else if (is(move, DIVE)) {
 			circle(world, target.getX(), target.getY() + 0.1, target.getZ(), DIVE_RADIUS, ParticleTypes.SOUL_FIRE_FLAME);
 		}
 	}
@@ -143,7 +149,7 @@ public class GuardianEntity extends AnimatedBossEntity {
 	@Override
 	protected void strike(ServerWorld world, Move move, LivingEntity target) {
 		float base = (float) getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
-		if (move == VOLLEY) {
+		if (is(move, VOLLEY)) {
 			world.playSound(null, getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.HOSTILE, 1f, 0.6f);
 			Vec3d dir = beamDirection(target);
 			for (LivingEntity e : victims(world, BEAM_LENGTH + 1)) {
@@ -152,13 +158,13 @@ public class GuardianEntity extends AnimatedBossEntity {
 				double across = rel.subtract(dir.multiply(along)).length();
 				if (along >= 0 && along <= BEAM_LENGTH && across <= BEAM_WIDTH) hit(e, base * 0.7f, 0.5);
 			}
-		} else if (move == RING) {
+		} else if (is(move, RING)) {
 			world.playSound(null, getBlockPos(), SoundEvents.ENTITY_IRON_GOLEM_ATTACK, SoundCategory.HOSTILE, 1.1f, 0.8f);
 			for (LivingEntity e : victims(world, RING_OUTER)) {
 				double d = Math.hypot(e.getX() - getX(), e.getZ() - getZ());
 				if (d >= RING_INNER && d <= RING_OUTER) hit(e, base * 0.7f, 0.6);
 			}
-		} else if (move == DIVE) {
+		} else if (is(move, DIVE)) {
 			// Cae sobre el lugar marcado: el círculo del aviso está donde estaba el objetivo.
 			world.playSound(null, target.getBlockPos(), SoundEvents.ENTITY_RAVAGER_STEP, SoundCategory.HOSTILE, 1.2f, 0.7f);
 			world.spawnParticles(ParticleTypes.EXPLOSION, target.getX(), target.getY() + 0.2, target.getZ(), 2, 1, 0.1, 1, 0);
@@ -201,5 +207,10 @@ public class GuardianEntity extends AnimatedBossEntity {
 		super.dropEquipment(world, source, causedByPlayer);
 		dropStack(new ItemStack(ModItems.SOUL_SHARD, 6 + getRandom().nextInt(4)));
 		dropStack(new ItemStack(ModItems.ELITE_ESSENCE, 2));
+	}
+
+	/** Compara por id: la fase 3 usa movimientos distintos con el mismo id (y la misma animación). */
+	private static boolean is(Move move, Move reference) {
+		return move.id().equals(reference.id());
 	}
 }
