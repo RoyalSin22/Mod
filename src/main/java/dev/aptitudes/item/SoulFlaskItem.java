@@ -4,6 +4,9 @@ import dev.aptitudes.ability.AbilityManager;
 import dev.aptitudes.ability.ParticleFx;
 import dev.aptitudes.role.RoleData;
 import dev.aptitudes.role.RoleManager;
+import dev.aptitudes.souls.FlaskRules;
+import dev.aptitudes.souls.FlaskUpgrades;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -28,14 +31,14 @@ import java.util.List;
  * Frascos recargables al estilo Souls. Las cargas son la durabilidad: beber gasta
  * una y, al descansar en una Hoguera, se rellenan todas. Nunca se rompen.
  * <ul>
- *   <li><b>Estus</b>: cura 8 de vida y da Regeneración I 3 s.</li>
- *   <li><b>Éter</b>: recupera el 40 % del maná máximo.</li>
+ *   <li><b>Estus</b>: cura 8 de vida de base y da Regeneración I 3 s.</li>
+ *   <li><b>Éter</b>: recupera el 40 % del maná máximo de base.</li>
  * </ul>
  */
 public class SoulFlaskItem extends Item {
 	public enum Kind { ESTUS, ETHER }
 
-	public static final int CHARGES = 5;
+	public static final int CHARGES = FlaskRules.BASE_CHARGES;
 	private final Kind kind;
 
 	public SoulFlaskItem(Kind kind, Settings settings) {
@@ -44,12 +47,22 @@ public class SoulFlaskItem extends Item {
 	}
 
 	public static int charges(ItemStack stack) {
-		return stack.getMaxDamage() - stack.getDamage();
+		return FlaskRules.remaining(FlaskUpgrades.rank(stack), stack.getDamage());
+	}
+
+	public Kind kind() {
+		return kind;
 	}
 
 	/** Rellena todas las cargas (Hoguera). */
 	public static void refill(ItemStack stack) {
-		stack.setDamage(0);
+		setSpent(stack, FlaskUpgrades.rank(stack), 0);
+	}
+
+	private static void setSpent(ItemStack stack, int rank, int spent) {
+		int capacity = FlaskRules.capacity(rank);
+		if (stack.getMaxDamage() != capacity) stack.set(DataComponentTypes.MAX_DAMAGE, capacity);
+		stack.setDamage(spent);
 	}
 
 	@Override
@@ -65,19 +78,21 @@ public class SoulFlaskItem extends Item {
 
 	@Override
 	public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-		if (!world.isClient() && user instanceof ServerPlayerEntity player && charges(stack) > 0) {
+		int rank = FlaskUpgrades.rank(stack);
+		if (!world.isClient() && user instanceof ServerPlayerEntity player && player.isAlive() && !player.isSpectator()
+				&& FlaskRules.remaining(rank, stack.getDamage()) > 0) {
 			if (kind == Kind.ESTUS) {
-				player.heal(8.0f);
+				player.heal(FlaskRules.estusHealing(rank));
 				player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 60, 0));
 				ParticleFx.spiral(player.getServerWorld(), player.getPos(), 0.6, 2.0, ParticleFx.dust(0xFFA726, 1.0f), 30, 2);
 			} else {
 				RoleData data = RoleManager.get(player);
 				double max = AbilityManager.maxEnergy(player);
-				data.setEnergy(Math.min(max, data.energy() + max * 0.4));
+				data.setEnergy(Math.min(max, data.energy() + max * (FlaskRules.etherPercent(rank) / 100.0)));
 				AbilityManager.sendEnergy(player, true);
 				ParticleFx.spiral(player.getServerWorld(), player.getPos(), 0.6, 2.0, ParticleFx.dust(0x4FC3F7, 1.0f), 30, 2);
 			}
-			if (!player.isCreative()) stack.setDamage(stack.getDamage() + 1);
+			if (!player.isCreative()) setSpent(stack, rank, Math.max(0, stack.getDamage()) + 1);
 			world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_GENERIC_DRINK,
 					SoundCategory.PLAYERS, 0.8f, kind == Kind.ESTUS ? 0.9f : 1.3f);
 		}
@@ -101,10 +116,20 @@ public class SoulFlaskItem extends Item {
 
 	@Override
 	public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-		tooltip.add(Text.translatable("item.aptitudes.flask.charges", charges(stack), stack.getMaxDamage())
-				.formatted(kind == Kind.ESTUS ? Formatting.GOLD : Formatting.AQUA));
-		tooltip.add(Text.translatable("item.aptitudes." + (kind == Kind.ESTUS ? "estus_flask" : "ether_flask") + ".tooltip")
-				.formatted(Formatting.GRAY));
+		int rank = FlaskUpgrades.rank(stack);
+		tooltip.add(Text.translatable("item.aptitudes.flask.charges", FlaskRules.remaining(rank, stack.getDamage()),
+				FlaskRules.capacity(rank)).formatted(kind == Kind.ESTUS ? Formatting.GOLD : Formatting.AQUA));
+		if (rank > 0) tooltip.add(Text.translatable("item.aptitudes.flask.rank", rank).formatted(Formatting.GOLD));
+		tooltip.add(recovery(kind, rank).copy().formatted(Formatting.GRAY));
+		if (kind == Kind.ESTUS) {
+			tooltip.add(Text.translatable("item.aptitudes.flask.regeneration").formatted(Formatting.GRAY));
+		}
 		tooltip.add(Text.translatable("item.aptitudes.flask.refill").formatted(Formatting.DARK_GRAY));
+	}
+
+	public static Text recovery(Kind kind, int rank) {
+		return kind == Kind.ESTUS
+				? Text.translatable("item.aptitudes.flask.estus_recovery", FlaskRules.estusHealing(rank))
+				: Text.translatable("item.aptitudes.flask.ether_recovery", FlaskRules.etherPercent(rank));
 	}
 }

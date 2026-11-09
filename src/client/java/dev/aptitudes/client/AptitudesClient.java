@@ -6,8 +6,11 @@ import dev.aptitudes.client.hud.AbilityHud;
 import dev.aptitudes.client.hud.BossHud;
 import dev.aptitudes.client.screen.AptitudesScreen;
 import dev.aptitudes.client.screen.ForgeScreen;
+import dev.aptitudes.client.screen.FlaskScreen;
 import dev.aptitudes.client.screen.RolesScreen;
 import dev.aptitudes.forge.ForgeScreenHandler;
+import dev.aptitudes.souls.FlaskScreenHandler;
+import dev.aptitudes.network.FlaskQuotePayload;
 import dev.aptitudes.forge.ForgeWeapons;
 import dev.aptitudes.network.ForgePreviewPayload;
 import dev.aptitudes.network.CastAnimationPayload;
@@ -79,6 +82,10 @@ public class AptitudesClient implements ClientModInitializer {
 				dev.aptitudes.client.screen.GuildDeskScreen::new);
 		net.minecraft.client.gui.screen.ingame.HandledScreens.register(ForgeScreenHandler.REFORGE, ForgeScreen::new);
 		net.minecraft.client.gui.screen.ingame.HandledScreens.register(ForgeScreenHandler.TEMPER, ForgeScreen::new);
+		net.minecraft.client.gui.screen.ingame.HandledScreens.register(FlaskScreenHandler.TYPE, FlaskScreen::new);
+		ClientPlayNetworking.registerGlobalReceiver(FlaskQuotePayload.ID, (payload, context) -> {
+			if (context.client().currentScreen instanceof FlaskScreen screen) screen.setQuote(payload);
+		});
 		ClientPlayNetworking.registerGlobalReceiver(ForgePreviewPayload.ID, (payload, context) -> context.client().execute(() -> {
 			if (context.client().currentScreen instanceof ForgeScreen screen) screen.setPreview(payload);
 		}));

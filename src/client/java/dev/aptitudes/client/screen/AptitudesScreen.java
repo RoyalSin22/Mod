@@ -66,6 +66,7 @@ public class AptitudesScreen extends Screen {
 	private ButtonWidget confirmButton;
 	private ButtonWidget resetButton;
 	private ButtonWidget temperButton;
+	private ButtonWidget flaskButton;
 
 	/** {@code true} si se abrió descansando en una Hoguera: permite comprar niveles de alma. */
 	private final boolean bonfire;
@@ -116,6 +117,12 @@ public class AptitudesScreen extends Screen {
 							ForgeActionPayload.OPEN_TEMPER, 0));
 				}
 			}).dimensions(left + 232, top + H - 44, 112, 20).build());
+			flaskButton = addDrawableChild(ButtonWidget.builder(Text.translatable("flask.aptitudes.open"), button -> {
+				if (client.player != null && ClientPlayNetworking.canSend(ForgeActionPayload.ID)) {
+					ClientPlayNetworking.send(new ForgeActionPayload(client.player.playerScreenHandler.syncId,
+							ForgeActionPayload.OPEN_FLASKS, 0));
+				}
+			}).dimensions(left + 350, top + H - 44, 70, 20).build());
 		}
 		requestStats();
 		updateButtons();
@@ -194,6 +201,10 @@ public class AptitudesScreen extends Screen {
 		boolean attributes = tab == Tab.ATTRIBUTES;
 		confirmButton.visible = resetButton.visible = attributes;
 		if (temperButton != null) temperButton.visible = attributes;
+		if (flaskButton != null) {
+			flaskButton.visible = attributes;
+			flaskButton.active = client.player != null && !client.player.isCreative() && !client.player.isSpectator();
+		}
 		SyncProgressPayload data = ClientCache.get();
 		confirmButton.active = stagedTotal() > 0 && data != null && (!bonfire || canAfford(data, levelsToBuy(data)));
 		resetButton.active = stagedTotal() > 0;

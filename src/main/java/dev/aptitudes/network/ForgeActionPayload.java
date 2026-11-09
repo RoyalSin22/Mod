@@ -10,6 +10,8 @@ public record ForgeActionPayload(int syncId, int action, long revision) implemen
 	public static final int SELECT_RESERVE = 1;
 	public static final int SELECT_IMPETUS = 2;
 	public static final int CONFIRM = 3;
+	public static final int OPEN_FLASKS = 4;
+	public static final int CONFIRM_FLASKS = 5;
 	public static final Id<ForgeActionPayload> ID = new Id<>(Aptitudes.id("forge_action"));
 	public static final PacketCodec<PacketByteBuf, ForgeActionPayload> CODEC =
 			PacketCodec.of(ForgeActionPayload::write, ForgeActionPayload::read);

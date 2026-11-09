@@ -59,16 +59,22 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playS2C().register(MasteryPayload.ID, MasteryPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(ThreatPayload.ID, ThreatPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(ForgePreviewPayload.ID, ForgePreviewPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(FlaskQuotePayload.ID, FlaskQuotePayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(ForgeActionPayload.ID, ForgeActionPayload.CODEC);
 		ServerPlayNetworking.registerGlobalReceiver(ForgeActionPayload.ID, (payload, context) -> {
 			var player = context.player();
-			if (payload.action() == ForgeActionPayload.OPEN_TEMPER) {
-				if (payload.syncId() == player.playerScreenHandler.syncId
-						&& player.currentScreenHandler == player.playerScreenHandler
-						&& player.currentScreenHandler.getCursorStack().isEmpty()) {
+			if (payload.action() == ForgeActionPayload.OPEN_TEMPER || payload.action() == ForgeActionPayload.OPEN_FLASKS) {
+				if (payload.syncId() != player.playerScreenHandler.syncId
+						|| player.currentScreenHandler != player.playerScreenHandler
+						|| !player.currentScreenHandler.getCursorStack().isEmpty()) return;
+				if (payload.action() == ForgeActionPayload.OPEN_TEMPER) {
 					dev.aptitudes.souls.SoulsManager.openTempering(player);
+				} else if (payload.revision() == 0) {
+					dev.aptitudes.souls.SoulsManager.openFlaskUpgrades(player);
 				}
 			} else if (player.currentScreenHandler instanceof dev.aptitudes.forge.ForgeScreenHandler handler) {
+				handler.handle(player, payload);
+			} else if (player.currentScreenHandler instanceof dev.aptitudes.souls.FlaskScreenHandler handler) {
 				handler.handle(player, payload);
 			}
 		});

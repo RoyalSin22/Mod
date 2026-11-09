@@ -281,6 +281,8 @@ public class AptitudesConfig {
 	public int levelCostMax = 10;
 	/** Cada cuántos niveles de alma se gana 1 punto de atributo. */
 	public int soulLevelsPerPoint = 3;
+	/** Rango máximo que se puede comprar para cada frasco en la Hoguera. */
+	public int flaskUpgradeMaxRank = dev.aptitudes.souls.FlaskRules.DEFAULT_RANK_LIMIT;
 	/** Bonificación de los atributos afines del rol principal / secundario (0.5 = +50 %). */
 	public double primaryAffinityBonus = 0.5;
 	public double secondaryAffinityBonus = 0.25;
@@ -425,6 +427,7 @@ public class AptitudesConfig {
 		c.levelCostDivisor = Math.max(1, c.levelCostDivisor);
 		c.levelCostMax = Math.max(1, c.levelCostMax);
 		c.soulLevelsPerPoint = Math.max(1, c.soulLevelsPerPoint);
+		c.flaskUpgradeMaxRank = dev.aptitudes.souls.FlaskRules.rank(c.flaskUpgradeMaxRank);
 		if (dev.aptitudes.logic.AttributeScaling.Mode.parse(c.attributeScaling) == null) {
 			Aptitudes.LOGGER.warn("[Aptitudes] Config 'attributeScaling' inválido ({}); válidos: LINEAR, SOFTCAP, SATURATION. Se usa LINEAR",
 					c.attributeScaling);

@@ -1,5 +1,23 @@
 # Pruebas de Aptitudes
 
+## v60 — Mejora de frascos (K2, fase 1)
+
+1. En Supervivencia, descansa en una Hoguera y abre **Frascos**. Coloca un Estus, un núcleo
+   de jefe y 8 Fragmentos de alma. Comprueba la vista previa y confirma. Debe quedar el mismo
+   objeto con rango I, seis cargas máximas y curación de 10, a cambio de esos materiales.
+2. Repite con Éter y dos rangos. Prueba núcleos de diferentes jefes. Bebe hasta agotar el frasco:
+   consume una carga por uso, el objeto vacío sigue en el inventario y descansar lo rellena.
+   Mejora un frasco usado y verifica que gane una carga sin borrar los usos gastados.
+3. Deja materiales de sobra y confirma dos veces con la misma oferta. Solo debe cobrarse una vez.
+   Cambia un ingrediente antes de confirmar, intenta usar un material incorrecto, aléjate,
+   rompe la Hoguera o cambia de modo con la pantalla abierta. No deben gastarse materiales.
+4. Comprueba el tope por defecto y cambia `flaskUpgradeMaxRank` a 0 y 3. Revisa que reducir el
+   tope no reduzca mejoras adquiridas. Prueba cerrar con ingredientes dentro, morir,
+   desconectar, reiniciar y entregar el frasco a otro jugador. El rango y las cargas deben
+   seguir al objeto y la operación no debe modificar XP ni inventarios de otros jugadores.
+5. Repite con dos jugadores en la misma Hoguera y con la interfaz en alemán a 426×240.
+   Cada jugador debe ver sus propias ranuras y la vista previa debe distinguir vida y maná.
+
 ## v59 — Barra de jefes (K1, fase 1)
 
 1. Entra a menos de 32 bloques de un jefe de Aptitudes. Verifica que el panel inferior centrado

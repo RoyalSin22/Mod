@@ -33,6 +33,12 @@ No se fuerzan chunks. Al cargar o reiniciar se cuentan las criaturas existentes 
 si cargar criaturas guardadas supera un límite, se suspenden las nuevas apariciones, sin borrar las antiguas.
 Las probabilidades, tamaños y presupuestos se vuelven a acotar en las reglas puras.
 
+## Frascos (v60)
+
+| Campo | Defecto | Dominio | Descripción |
+|---|---:|---|---|
+| `flaskUpgradeMaxRank` | 2 | 0–3 | Rango máximo que se puede comprar en la Hoguera. 0 desactiva compras. Los rangos ya guardados conservan su capacidad y recuperación. |
+
 ## HUD (cliente)
 
 | Campo de `aptitudes-client.json` | Defecto | Dominio | Descripción |

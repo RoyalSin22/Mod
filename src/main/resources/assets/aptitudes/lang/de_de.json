@@ -3560,5 +3560,18 @@
   "screen.aptitudes.hud.animations": "HUD-Animationen",
   "screen.aptitudes.hud.preset.classic": "Klassisch",
   "screen.aptitudes.hud.preset.centered": "Zentriert",
-  "screen.aptitudes.hud.preset.compact": "Kompakt"
+  "screen.aptitudes.hud.preset.compact": "Kompakt",
+  "flask.aptitudes.open": "Phiolen",
+  "flask.aptitudes.title": "Phiolen verbessern",
+  "flask.aptitudes.input.flask": "Phiole",
+  "flask.aptitudes.input.core": "Bosskern",
+  "flask.aptitudes.insert": "Lege eine Estus- oder Ätherphiole ein.",
+  "flask.aptitudes.limit": "Aufwertungslimit erreicht.",
+  "flask.aptitudes.unavailable": "Raste im Überlebensmodus an einem nahen Leuchtfeuer, um Phiolen zu verbessern.",
+  "flask.aptitudes.current": "Aktuell · Rang %s · %s Ladungen · %s",
+  "flask.aptitudes.next": "Danach · Rang %s · %s Ladungen · %s",
+  "item.aptitudes.flask.rank": "Aufwertungsrang %s",
+  "item.aptitudes.flask.estus_recovery": "Heilt %s LP",
+  "item.aptitudes.flask.ether_recovery": "Stellt %s %% Mana wieder her",
+  "item.aptitudes.flask.regeneration": "Kurze Regeneration"
 }

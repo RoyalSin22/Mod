@@ -60,6 +60,7 @@ public class Aptitudes implements ModInitializer {
 		dev.aptitudes.world.GuildVillagers.init();
 		dev.aptitudes.world.GuildCrafting.init();
 		dev.aptitudes.forge.ForgeScreenHandler.init();
+		dev.aptitudes.souls.FlaskScreenHandler.init();
 		dev.aptitudes.accessory.Accessories.init();
 		dev.aptitudes.elite.Elites.register();
 		dev.aptitudes.boss.BossManager.register();

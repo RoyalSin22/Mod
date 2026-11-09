@@ -3560,5 +3560,18 @@
   "screen.aptitudes.hud.animations": "Animations de l’interface",
   "screen.aptitudes.hud.preset.classic": "Classique",
   "screen.aptitudes.hud.preset.centered": "Centré",
-  "screen.aptitudes.hud.preset.compact": "Compact"
+  "screen.aptitudes.hud.preset.compact": "Compact",
+  "flask.aptitudes.open": "Fioles",
+  "flask.aptitudes.title": "Améliorer les fioles",
+  "flask.aptitudes.input.flask": "Fiole",
+  "flask.aptitudes.input.core": "Noyau",
+  "flask.aptitudes.insert": "Insérez une fiole d’Estus ou d’éther.",
+  "flask.aptitudes.limit": "Limite d’amélioration atteinte.",
+  "flask.aptitudes.unavailable": "Reposez-vous à un feu de camp proche en Survie pour améliorer les fioles.",
+  "flask.aptitudes.current": "Actuel · Rang %s · %s charges · %s",
+  "flask.aptitudes.next": "Après · Rang %s · %s charges · %s",
+  "item.aptitudes.flask.rank": "Rang d’amélioration %s",
+  "item.aptitudes.flask.estus_recovery": "Rend %s PV",
+  "item.aptitudes.flask.ether_recovery": "Rend %s %% de mana",
+  "item.aptitudes.flask.regeneration": "Régénération brève"
 }

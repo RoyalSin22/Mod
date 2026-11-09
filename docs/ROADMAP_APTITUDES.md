@@ -5,6 +5,11 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+### v60 — Frascos y arenas (K2)
+- Fase 1. Mejora de Estus y Éter en la Hoguera con núcleos y Fragmentos de alma. Vista previa,
+  confirmación de un solo uso, rango por objeto y tope de compra configurable.
+- Fase 2 pendiente. Arenas con muro de niebla y tema de jefe.
+
 ### v59 — HUD (K1)
 - Panel inferior para jefes y campeones de Aptitudes. Reúne hasta cuatro encuentros cercanos,
   muestra su vida y la fase del jefe. Prioriza jefes sobre campeones y, dentro de cada tipo,

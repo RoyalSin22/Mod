@@ -3560,5 +3560,18 @@
   "screen.aptitudes.hud.animations": "Animaciones del HUD",
   "screen.aptitudes.hud.preset.classic": "Clásico",
   "screen.aptitudes.hud.preset.centered": "Centrado",
-  "screen.aptitudes.hud.preset.compact": "Compacto"
+  "screen.aptitudes.hud.preset.compact": "Compacto",
+  "flask.aptitudes.open": "Frascos",
+  "flask.aptitudes.title": "Mejorar frascos",
+  "flask.aptitudes.input.flask": "Frasco",
+  "flask.aptitudes.input.core": "Núcleo",
+  "flask.aptitudes.insert": "Coloca un frasco de Estus o Éter.",
+  "flask.aptitudes.limit": "Tope de mejora alcanzado.",
+  "flask.aptitudes.unavailable": "Descansa en una Hoguera cercana en Supervivencia para mejorar frascos.",
+  "flask.aptitudes.current": "Actual · Rango %s · %s cargas · %s",
+  "flask.aptitudes.next": "Mejora · Rango %s · %s cargas · %s",
+  "item.aptitudes.flask.rank": "Rango de mejora %s",
+  "item.aptitudes.flask.estus_recovery": "Cura %s de vida",
+  "item.aptitudes.flask.ether_recovery": "Recupera %s %% de maná",
+  "item.aptitudes.flask.regeneration": "Regeneración breve"
 }

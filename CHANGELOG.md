@@ -13,6 +13,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   vuelo corto que se dirige con la mirada.
 
 ### Cambiado
+- **v60 — Mejora de frascos.** Descansa en una Hoguera y abre Frascos. Usa Fragmentos de alma y
+  un núcleo de jefe para añadir una carga y aumentar la recuperación de Estus o Éter. La mejora
+  queda guardada en el propio frasco.
 - **v59 — Editor del HUD.** Mayús + O ofrece tres disposiciones para la barra de habilidades y un
   modo minimalista. Las barras de vida, maná y XP y los avisos cambian con transiciones suaves.
   La tarjeta de XP se ilumina al subir de nivel. Puedes desactivar estas animaciones.

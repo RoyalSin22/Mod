@@ -58,6 +58,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 | Barra de jefes (v59, K1 fase 1): panel inferior común para jefes y campeones cercanos, fase, vida y recuento | `elite/Elites` (audiencia), `network/BossHudPayload` (S2C), `logic/BossHudLayout` (puro), cliente `hud/BossHud` |
 | Tiempos de espera persistentes (habilidades, definitiva, firma, legendaria, Inmortalidad carmesí) | `ability/CooldownBook` + attachment `COOLDOWNS`; usa `AbilityManager.cooldowns(p)` y `gameTime(p)` |
 | Filtro de objetivos: `MobEntityMixin` (setTarget) + `BrainTargetFilter` (mobs con IA Brain) | `ability/AbilityState.shouldBlockTarget` es la única regla: amplíala ahí |
+| Mejora de frascos (v60, K2 fase 1): Estus y Éter, confirmación de un solo uso y rango guardado en el objeto | `souls/FlaskRules` (puro, JUnit), `FlaskUpgrades`, `FlaskScreenHandler`, `item/SoulFlaskItem`, cliente `screen/FlaskScreen` |
 | Bloques temporales de habilidades (persistentes, sin drops) | `world/TemporaryBlocks.place(...)`; nunca `setBlockState` + `schedule` para bloques temporales |
 | Runas de armas v32 | `rune/RuneSocketing`, `rune/RuneRules`; hasta dos por arma, engarzadas en la Mesa del gremio |
 | Runas+ v35 (Escarcha, Trueno, Guardia; quitar runas; valores configurables) | `rune/RuneSocketing` (esperas en memoria, `UseBlockCallback` para Mayús + clic en la Mesa), `rune/RuneRules` |

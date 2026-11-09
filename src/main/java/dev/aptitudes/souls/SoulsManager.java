@@ -180,6 +180,13 @@ public final class SoulsManager {
 		}
 	}
 
+	public static void openFlaskUpgrades(ServerPlayerEntity player) {
+		Bonfire bonfire = RESTED.get(player.getUuid());
+		if (bonfire == null || !FlaskScreenHandler.open(player, bonfire.pos())) {
+			player.sendMessage(Text.translatable("flask.aptitudes.unavailable"), true);
+		}
+	}
+
 	/**
 	 * Asigna los puntos pedidos. Los que excedan los puntos libres se compran como
 	 * niveles de alma, pagando XP vanilla. Todo o nada.

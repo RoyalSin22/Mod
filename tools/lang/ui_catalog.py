@@ -1555,3 +1555,19 @@ preset.classic¦Clássico¦Classique¦Klassisch
 preset.centered¦Centralizado¦Centré¦Zentriert
 preset.compact¦Compacto¦Compact¦Kompakt
 """)
+
+add('', """
+flask.aptitudes.open¦Frascos¦Fioles¦Phiolen
+flask.aptitudes.title¦Melhorar frascos¦Améliorer les fioles¦Phiolen verbessern
+flask.aptitudes.input.flask¦Frasco¦Fiole¦Phiole
+flask.aptitudes.input.core¦Núcleo¦Noyau¦Bosskern
+flask.aptitudes.insert¦Coloque um frasco de Estus ou Éter.¦Insérez une fiole d’Estus ou d’éther.¦Lege eine Estus- oder Ätherphiole ein.
+flask.aptitudes.limit¦Limite de melhoria atingido.¦Limite d’amélioration atteinte.¦Aufwertungslimit erreicht.
+flask.aptitudes.unavailable¦Descanse em uma fogueira próxima no Sobrevivência para melhorar frascos.¦Reposez-vous à un feu de camp proche en Survie pour améliorer les fioles.¦Raste im Überlebensmodus an einem nahen Leuchtfeuer, um Phiolen zu verbessern.
+flask.aptitudes.current¦Atual · Grau %s · %s cargas · %s¦Actuel · Rang %s · %s charges · %s¦Aktuell · Rang %s · %s Ladungen · %s
+flask.aptitudes.next¦Melhoria · Grau %s · %s cargas · %s¦Après · Rang %s · %s charges · %s¦Danach · Rang %s · %s Ladungen · %s
+item.aptitudes.flask.rank¦Grau de melhoria %s¦Rang d’amélioration %s¦Aufwertungsrang %s
+item.aptitudes.flask.estus_recovery¦Cura %s PV¦Rend %s PV¦Heilt %s LP
+item.aptitudes.flask.ether_recovery¦Recupera %s%% de mana¦Rend %s %% de mana¦Stellt %s %% Mana wieder her
+item.aptitudes.flask.regeneration¦Regeneração breve¦Régénération brève¦Kurze Regeneration
+""")

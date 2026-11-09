@@ -478,3 +478,17 @@ Se conserva el consumo y cancelación vanilla. Un chunk descargado no se acelera
 Recompensas: 2 + 2·s esmeraldas (+6 los de Jefe), 15 + 10·s XP de rol, +10 + 10·s reputación; Élite y
 Legendario dan además Fragmentos de alma (1 + s/2), y a veces un vale de armería (Élite, 1/3) o un emblema de
 maestría (Legendario, 1/4). Activos: 2 (3 desde Veterano, 300 de reputación).
+
+## Mejora de frascos (v60)
+
+Cada mejora añade una carga y conserva los usos ya gastados. Estus mantiene Regeneración I durante
+3 s. Éter calcula la recuperación sobre el maná máximo del usuario y se detiene al llenarlo.
+
+| Rango | Cargas | Estus, puntos de vida | Éter, maná máximo | Coste para subir |
+|---:|---:|---:|---:|---|
+| 0 | 5 | 8 | 40 % | — |
+| I | 6 | 10 | 50 % | 1 núcleo de jefe y 8 Fragmentos de alma |
+| II | 7 | 12 | 60 % | 1 núcleo de jefe y 16 Fragmentos de alma |
+| III | 8 | 14 | 70 % | 1 núcleo de jefe y 24 Fragmentos de alma |
+
+El límite de compra por defecto es II. Descansar en la Hoguera rellena la capacidad del objeto.

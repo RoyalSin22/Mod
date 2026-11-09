@@ -3560,5 +3560,18 @@
   "screen.aptitudes.hud.animations": "HUD animations",
   "screen.aptitudes.hud.preset.classic": "Classic",
   "screen.aptitudes.hud.preset.centered": "Centered",
-  "screen.aptitudes.hud.preset.compact": "Compact"
+  "screen.aptitudes.hud.preset.compact": "Compact",
+  "flask.aptitudes.open": "Flasks",
+  "flask.aptitudes.title": "Upgrade flasks",
+  "flask.aptitudes.input.flask": "Flask",
+  "flask.aptitudes.input.core": "Boss core",
+  "flask.aptitudes.insert": "Insert an Estus or Ether flask.",
+  "flask.aptitudes.limit": "Upgrade limit reached.",
+  "flask.aptitudes.unavailable": "Rest at a nearby bonfire in Survival to upgrade flasks.",
+  "flask.aptitudes.current": "Now · Rank %s · %s charges · %s",
+  "flask.aptitudes.next": "Next · Rank %s · %s charges · %s",
+  "item.aptitudes.flask.rank": "Upgrade rank %s",
+  "item.aptitudes.flask.estus_recovery": "Heals %s HP",
+  "item.aptitudes.flask.ether_recovery": "Restores %s%% mana",
+  "item.aptitudes.flask.regeneration": "Brief Regeneration"
 }
