@@ -241,6 +241,34 @@ def arena_theme(rng):
     return fade_out(normalize(x, 0.72), 0.9)
 
 
+# ---------------------------------------------------------------- Interfaz del árbol (v65): sonidos metálicos
+
+def ui_metal_select(rng):
+    """Clic metálico corto: al elegir un nodo del árbol."""
+    t = t_axis(0.25)
+    x = _tone(t, 2400, 0.001, 0.05, 0.4) + 0.5 * _tone(t, 3650, 0.001, 0.03)
+    click = lowpass(rng.standard_normal(len(t)), 6000) * env(t, 0.0005, 0.01)
+    return fade_out(normalize(x + 0.4 * click, 0.55), 0.02)
+
+
+def ui_metal_unlock(rng):
+    """Campana metálica con chispa: el nodo se desbloquea."""
+    t = t_axis(1.2)
+    x = np.zeros_like(t)
+    for f, a in ((1046.5, 1.0), (1567.9, 0.6), (2093.0, 0.35)):
+        x += a * _tone(t, f, 0.002, 0.45, 0.25)
+    spark = lowpass(rng.standard_normal(len(t)), 9000) * env(t, 0.001, 0.03) * (t < 0.04)
+    return fade_out(normalize(x + 0.5 * spark, 0.7))
+
+
+def ui_metal_denied(rng):
+    """Golpe sordo: el nodo está bloqueado o no se puede pagar."""
+    t = t_axis(0.35)
+    x = _tone(t, 170, 0.002, 0.12, 0.6)
+    rattle = lowpass(rng.standard_normal(len(t)), 2000) * env(t, 0.001, 0.05)
+    return fade_out(normalize(x + 0.3 * rattle, 0.6))
+
+
 SOUNDS = {
     'eclipse_announce': eclipse_announce,
     'eclipse_start': eclipse_start,
@@ -252,6 +280,9 @@ SOUNDS = {
     'keystone_carnage': keystone_carnage,
     'keystone_bulwark': keystone_bulwark,
     'keystone_overload': keystone_overload,
+    'ui_metal_select': ui_metal_select,
+    'ui_metal_unlock': ui_metal_unlock,
+    'ui_metal_denied': ui_metal_denied,
     'keystone_detonation': keystone_detonation,
     'keystone_contagion': keystone_contagion,
     'keystone_legion': keystone_legion,

@@ -106,5 +106,23 @@
     "sounds": [
       { "name": "aptitudes:arena_theme", "stream": true }
     ]
+  },
+  "ui_metal_select": {
+    "subtitle": "subtitles.aptitudes.ui_metal_select",
+    "sounds": [
+      "aptitudes:ui_metal_select"
+    ]
+  },
+  "ui_metal_unlock": {
+    "subtitle": "subtitles.aptitudes.ui_metal_unlock",
+    "sounds": [
+      "aptitudes:ui_metal_unlock"
+    ]
+  },
+  "ui_metal_denied": {
+    "subtitle": "subtitles.aptitudes.ui_metal_denied",
+    "sounds": [
+      "aptitudes:ui_metal_denied"
+    ]
   }
 }

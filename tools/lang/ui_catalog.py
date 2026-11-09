@@ -473,15 +473,15 @@ for suffix, names in {
 add('role.aptitudes.', """
 berserker¦Berserker¦Berserker¦Berserker
 berserker.desc¦Guerreiro de machado que se torna mais letal quanto mais ferido está. XP: acertar com machados.¦Guerrier à la hache, d'autant plus meurtrier qu'il est blessé. XP : frapper avec des haches.¦Axtkrieger, der mit seinen Verletzungen gefährlicher wird. EP: Treffer mit Äxten.
-mage¦Mago¦Mage¦Magier
-mage.desc¦Magia arcana pura: runas, distorção do espaço e tempo, barreiras e projéteis arcanos. Sem elementos: esse é o domínio do Elementalista. XP: cajado arcano e feitiços.¦Magie arcanique pure : runes, distorsion de l'espace et du temps, protections et projectiles arcaniques. Aucun élément : c'est le domaine de l'Élémentaliste. XP : bâton arcanique et sorts.¦Reine arkane Magie: Runen, Raum- und Zeitverzerrung, Schutzzauber und arkane Geschosse. Keine Elemente: Diese gehören zum Elementaristen. EP: Arkaner Stab und Zauber.
+mage¦Arcanista¦Arcaniste¦Arkanist
+mage.desc¦Magia arcana e elemental: runas, distorção do espaço e do tempo, escudos e projéteis arcanos, além de fogo, raio e gelo.¦Magie arcanique et élémentaire : runes, distorsion de l'espace et du temps, boucliers et projectiles arcaniques, plus feu, foudre et givre.¦Arkane und elementare Magie: Runen, Raum- und Zeitverzerrung, Schilde und arkane Geschosse, dazu Feuer, Blitz und Frost.
 assassin¦Assassino¦Assassin¦Assassine
 assassin.desc¦Furtividade, invisibilidade e ataques pelas costas. XP: acertar com a adaga.¦Furtivité, invisibilité et attaques dans le dos. XP : frapper avec la dague.¦Heimlichkeit, Unsichtbarkeit und Angriffe in den Rücken. EP: Treffer mit dem Dolch.
-herbalist¦Herborista¦Herboriste¦Kräuterkundiger
+herbalist¦Boticário¦Apothicaire¦Apotheker
 herbalist.desc¦Cura, regeneração e venenos. XP: colher plantações, flores e bagas; usar ervas.¦Soins, régénération et poisons. XP : récolter cultures, fleurs et baies ; utiliser des herbes.¦Heilung, Regeneration und Gifte. EP: Pflanzen, Blumen und Beeren ernten; Kräuter nutzen.
 lancer¦Lanceiro¦Lancier¦Lanzer
 lancer.desc¦Alcance e investidas devastadoras. XP: acertar com lança ou tridente.¦Allonge et charges dévastatrices. XP : frapper avec une lance ou un trident.¦Reichweite und verheerende Anstürme. EP: Treffer mit Speer oder Dreizack.
-swordsman¦Espadachim¦Épéiste¦Schwertkämpfer
+swordsman¦Duelista¦Duelliste¦Duellant
 swordsman.desc¦Mestre da espada: lâmina, aparos e contra-ataques. XP: acertar com espadas.¦Maître de l'épée : tranchant, parades et ripostes. XP : frapper avec des épées.¦Schwertmeister: Klingen, Paraden und Gegenangriffe. EP: Treffer mit Schwertern.
 engineer¦Engenheiro¦Ingénieur¦Ingenieur
 engineer.desc¦Tecnologia prática e avançada: alcance, blindagem, baterias, propulsores e torretas. XP: redstone, máquinas, chave inglesa e arma de plasma.¦Technologie pratique et avancée : portée, blindage, batteries, propulseurs et tourelles. XP : redstone, machines, clé à molette et fusil à plasma.¦Praktische und fortschrittliche Technik: Reichweite, Panzerung, Batterien, Antriebe und Geschütztürme. EP: Redstone, Maschinen, Schraubenschlüssel und Plasmagewehr.
@@ -491,11 +491,11 @@ necromancer¦Necromante¦Nécromancien¦Nekromant
 necromancer.desc¦Invoca servos aliados que crescem com seu nível e drena vida. A evolução libera artes de sangue: pagar habilidades com vida, causar sangramento e, como Soberano Carmesim, evitar a morte. XP: tomo, drenagem e dano dos servos.¦Invoque des serviteurs alliés qui progressent avec votre niveau et vole la vie. L'évolution ouvre les arts du sang : payer les capacités en santé, faire saigner et, en Souverain carmin, tromper la mort. XP : grimoire, drain et dégâts des serviteurs.¦Beschwört verbündete Diener, die mit deiner Stufe wachsen, und entzieht Leben. Entwicklung schaltet Blutkünste frei: Fähigkeiten mit Leben bezahlen, Blutungen verursachen und als Purpurfürst dem Tod entgehen. EP: Foliant, Lebensentzug und Dienerschaden.
 druid¦Druida¦Druide¦Druide
 druid.desc¦Guardião da floresta: crescimento, raízes e forma de urso. XP: plantar mudas, reproduzir animais, usar o cajado.¦Gardien des forêts : croissance, racines et forme d'ours. XP : planter des pousses, élever des animaux, utiliser le bâton.¦Waldhüter: Wachstum, Wurzeln und Bärengestalt. EP: Setzlinge pflanzen, Tiere züchten, den Stab nutzen.
-merchant¦Mercador¦Marchand¦Händler
+merchant¦Mercador tático¦Marchand tactique¦Taktischer Händler
 merchant.desc¦Comércio e astúcia: descontos, lucro extra e subornos. XP: negociar com aldeões.¦Commerce et ruse : remises, profits supplémentaires et pots-de-vin. XP : commercer avec les villageois.¦Handel und List: Rabatte, Zusatzgewinne und Bestechung. EP: Handel mit Dorfbewohnern.
 monk¦Monge¦Moine¦Mönch
 monk.desc¦Artes marciais desarmadas: punhos de ferro, esquiva e meditação. XP: acertar com as mãos vazias.¦Arts martiaux à mains nues : poings de fer, esquive et méditation. XP : frapper à mains nues.¦Unbewaffnete Kampfkunst: Eisenfäuste, Ausweichen und Meditation. EP: Treffer mit bloßen Händen.
-elementalist¦Elementalista¦Élémentaliste¦Elementarist
+elementalist¦Xamã¦Chaman¦Schamane
 elementalist.desc¦Domina até 3 de 9 elementos (nos níveis 1, 10 e 20). As habilidades mudam com o elemento ativo (tecla G).¦Maîtrise jusqu'à 3 éléments sur 9 (aux niveaux 1, 10 et 20). Les capacités changent avec l'élément actif (touche G).¦Meistert bis zu 3 von 9 Elementen (auf Stufe 1, 10 und 20). Fähigkeiten ändern sich mit dem aktiven Element (Taste G).
 shapeshifter¦Metamorfo¦Métamorphe¦Gestaltwandler
 shapeshifter.desc¦Transforma-se em criaturas (desbloqueadas ao derrotá-las) e usa seus poderes. Outros jogadores veem você como a criatura. XP: usar transformações e poderes.¦Se transforme en créatures (débloquées en les vainquant) et utilise leurs pouvoirs. Les autres joueurs voient la créature. XP : transformations et pouvoirs.¦Verwandelt sich in Kreaturen (durch Besiegen freigeschaltet) und nutzt deren Kräfte. Andere Spieler sehen dich als diese Kreatur. EP: Verwandlungen und Kräfte nutzen.
@@ -507,7 +507,7 @@ hunter¦Caçador¦Chasseur¦Jäger
 hunter.desc¦Marca presas, coloca armadilhas, dispara chuvas de flechas e caça com um falcão. XP: flechas e Faca de Caça.¦Marque ses proies, pose des pièges, fait pleuvoir les flèches et chasse avec un faucon. XP : flèches et Couteau de chasse.¦Markiert Beute, legt Fallen, lässt Pfeile regnen und jagt mit einem Falken. EP: Pfeile und Jagdmesser.
 bard¦Bardo¦Barde¦Barde
 bard.desc¦Canções de apoio em área para aliados e notas que atordoam inimigos. XP: tocar Alaúde e canções.¦Chants de soutien de zone pour les alliés et notes étourdissant les ennemis. XP : jouer du Luth et chanter.¦Unterstützende Flächenlieder für Verbündete und betäubende Töne für Feinde. EP: Laute spielen und Lieder nutzen.
-warlock¦Bruxo¦Sorcier¦Hexenmeister
+warlock¦Bruxo abissal¦Sorcier abyssal¦Abyssaler Hexenmeister
 warlock.desc¦Feitiçaria sombria: maldições, projéteis abissais e diabretes, alimentados pela sua vida. XP: Talismã Amaldiçoado e feitiços.¦Sorcellerie obscure : malédictions, projectiles abyssaux et diablotins, alimentés par votre vie. XP : Talisman maudit et sorts.¦Dunkle Zauberei: Flüche, Abgrundgeschosse und Wichte, gespeist durch dein Leben. EP: Verfluchter Talisman und Zauber.
 tamer¦Domador¦Dompteur¦Tierbändiger
 tamer.desc¦Fortalece animais domesticados e luta ao lado deles. XP: dano dos animais, Apito e habilidades.¦Renforce les animaux apprivoisés et combat à leurs côtés. XP : dégâts des animaux, Sifflet et capacités.¦Stärkt gezähmte Tiere und kämpft an ihrer Seite. EP: Tierschaden, Pfeife und Fähigkeiten.
@@ -1425,6 +1425,9 @@ herald_spawn¦O Arauto chega¦Le Héraut arrive¦Der Herold erscheint
 combo_finisher¦Finalização de combo¦Coup final de combo¦Komboabschluss
 rune_socket¦Runa engastada¦Rune sertie¦Rune eingesetzt
 rune_remove¦Runa removida¦Rune retirée¦Rune entfernt
+ui_metal_select¦Clique metálico¦Clic métallique¦Metallklick
+ui_metal_unlock¦Desbloqueio metálico¦Déverrouillage métallique¦Metallfreischaltung
+ui_metal_denied¦Metal bloqueado¦Métal verrouillé¦Metall gesperrt
 keystone_carnage¦Carnificina: batimento cardíaco¦Carnage : battement de cœur¦Blutbad: Herzschlag
 keystone_bulwark¦Baluarte: escudo¦Rempart : bouclier¦Bollwerk: Schild
 keystone_overload¦Sobrecarga: descarga¦Surcharge : décharge¦Überladung: Entladung

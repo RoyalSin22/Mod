@@ -17,6 +17,10 @@ public final class ModSounds {
 	public static final SoundEvent HERALD_SPAWN = register("herald_spawn");
 	public static final SoundEvent COMBO_FINISHER = register("combo_finisher");
 	public static final SoundEvent RUNE_SOCKET = register("rune_socket");
+	// Árbol de talentos (v65): sonidos metálicos de la interfaz.
+	public static final SoundEvent UI_METAL_SELECT = register("ui_metal_select");
+	public static final SoundEvent UI_METAL_UNLOCK = register("ui_metal_unlock");
+	public static final SoundEvent UI_METAL_DENIED = register("ui_metal_denied");
 	public static final SoundEvent RUNE_REMOVE = register("rune_remove");
 	/** v46.1: un sonido por plantilla de piedra angular ({@code keystone_<plantilla>}). */
 	public static final SoundEvent[] KEYSTONE = keystones();
