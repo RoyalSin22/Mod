@@ -54,4 +54,16 @@ class AttackTagsTest {
 		assertTrue(AttackTags.parryable(tags));
 		assertEquals(AttackTags.HEAVY_POSTURE_MULTIPLIER, AttackTags.postureMultiplier(tags), 1e-9);
 	}
+
+	@ParameterizedTest
+	@CsvSource({
+			"1.0,  true,  HEAVY",
+			"0.9,  true,  HEAVY",
+			"0.89, true,  NORMAL",
+			"1.0,  false, NORMAL",
+			"0.0,  true,  NORMAL",
+	})
+	void playerHitIsHeavyOnlyWithAFullMeleeCharge(float charge, boolean melee, Tag expected) {
+		assertEquals(java.util.Set.of(expected), AttackTags.playerHit(charge, melee));
+	}
 }

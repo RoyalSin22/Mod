@@ -63,6 +63,7 @@ public class Aptitudes implements ModInitializer {
 		dev.aptitudes.souls.FlaskScreenHandler.init();
 		dev.aptitudes.accessory.Accessories.init();
 		dev.aptitudes.elite.Elites.register();
+		dev.aptitudes.boss.GuardTracker.register();
 		dev.aptitudes.boss.BossManager.register();
 		ModAttachments.init();
 		ModNetworking.registerCommon();

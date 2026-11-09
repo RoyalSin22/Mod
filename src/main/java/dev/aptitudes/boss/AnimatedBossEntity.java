@@ -39,6 +39,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * v63 (C4): base de los jefes animados con GeckoLib. El servidor decide (fase por vida, ataque con
@@ -140,15 +141,17 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 		if (getWorld() instanceof ServerWorld world) {
 			long now = world.getTime();
 			// Solo los golpes de jugadores drenan la postura; por ahora sin etiquetas por ataque (NORMAL).
-			if (source.getAttacker() instanceof PlayerEntity) drainPosture(world, amount);
+			if (source.getAttacker() instanceof PlayerEntity player) {
+				drainPosture(world, amount, AttackTags.playerHit(player.getAttackCooldownProgress(0.5f), source.getSource() == player));
+			}
 			mult *= (float) posture.damageMultiplier(now);
 		}
 		return super.damage(source, amount * mult);
 	}
 
 	/** Drena la postura con un golpe (sin etiquetas: NORMAL) y avisa si se rompe. */
-	private void drainPosture(ServerWorld world, double amount) {
-		PostureRules.Result r = PostureRules.drain(posture, amount, AttackTags.of(), world.getTime());
+	private void drainPosture(ServerWorld world, double amount, Set<AttackTags.Tag> tags) {
+		PostureRules.Result r = PostureRules.drain(posture, amount, tags, world.getTime());
 		posture = r.state();
 		if (r.broke()) onPostureBroken(world);
 	}
@@ -159,9 +162,10 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 	 */
 	protected boolean parried(LivingEntity e, Move move) {
 		if (!(e instanceof ServerPlayerEntity player) || !(getWorld() instanceof ServerWorld world)) return false;
-		if (GuardRules.resolve(move.tags(), player.isBlocking()) != GuardRules.Outcome.PARRY) return false;
+		int raised = GuardTracker.ticksSinceRaised(player.getUuid(), world.getServer().getTicks());
+		if (GuardRules.resolve(move.tags(), raised) != GuardRules.Outcome.PARRY) return false;
 		world.playSound(null, player.getBlockPos(), SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.PLAYERS, 1f, 1.2f);
-		drainPosture(world, GuardRules.PARRY_POSTURE_DAMAGE);
+		drainPosture(world, GuardRules.PARRY_POSTURE_DAMAGE, AttackTags.of());
 		return true;
 	}
 

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -48,7 +49,8 @@ public final class ElitePosture {
 			Tracked previous = TRACKED.get(mob.getUuid());
 			PostureRules.Posture posture = previous == null ? PostureRules.Posture.fresh(MAX) : previous.posture();
 			boolean paused = previous != null && previous.aiPaused();
-			PostureRules.Result r = PostureRules.drain(posture, damageTaken, AttackTags.of(), world.getTime());
+			Set<AttackTags.Tag> tags = AttackTags.playerHit(((PlayerEntity) source.getAttacker()).getAttackCooldownProgress(0.5f), source.getSource() == source.getAttacker());
+			PostureRules.Result r = PostureRules.drain(posture, damageTaken, tags, world.getTime());
 			if (r.broke()) {
 				mob.setAiDisabled(true);
 				paused = true;

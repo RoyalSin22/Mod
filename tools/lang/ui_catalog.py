@@ -383,8 +383,11 @@ accessory.hint¦Equipe com a tecla Y (Acessórios).¦Équipez-le avec la touche 
 elite_essence¦Essência de Elite¦Essence d'élite¦Eliteessenz
 champion_heart¦Coração de Campeão¦Cœur de champion¦Championsherz
 faceless_colossus_seal¦Selo do Colosso Sem Rosto¦Sceau du Colosse sans Visage¦Siegel des Gesichtslosen Kolosses
+faceless_colossus_seal.tooltip¦Invoca o Colosso Sem Rosto. Custa 4 Fragmentos de alma e um Coração de campeão. Fica disponível de novo 20 minutos após a última derrota.¦Invoque le Colosse sans Visage. Coûte 4 Fragments d'âme et un Cœur de champion. Disponible à nouveau 20 minutes après sa dernière défaite.¦Beschwört den Gesichtslosen Koloss. Kostet 4 Seelensplitter und ein Champion-Herz. Wieder verfügbar 20 Minuten nach der letzten Niederlage.
 dismantled_guardian_seal¦Selo do Guardião Desmontado¦Sceau du Gardien Démantelé¦Siegel des Zerlegten Wächters
+dismantled_guardian_seal.tooltip¦Invoca o Guardião Desmontado. Custa 4 Fragmentos de alma e uma Essência de elite. Fica disponível de novo 20 minutos após a última derrota.¦Invoque le Gardien démantelé. Coûte 4 Fragments d'âme et une Essence d'élite. Disponible à nouveau 20 minutes après sa dernière défaite.¦Beschwört den Zerlegten Wächter. Kostet 4 Seelensplitter und eine Elitenessenz. Wieder verfügbar 20 Minuten nach der letzten Niederlage.
 ancient_automaton_seal¦Selo do Autômato Antigo¦Sceau de l'Automate Ancien¦Siegel des Uralten Automaten
+ancient_automaton_seal.tooltip¦Invoca o Autômato Antigo. Custa 4 Fragmentos de alma e uma Essência de elite. Fica disponível de novo 20 minutos após a última derrota.¦Invoque l'Automate ancien. Coûte 4 Fragments d'âme et une Essence d'élite. Disponible à nouveau 20 minutes après sa dernière défaite.¦Beschwört den Uralten Automaten. Kostet 4 Seelensplitter und eine Elitenessenz. Wieder verfügbar 20 Minuten nach der letzten Niederlage.
 ring_of_strength¦Anel da Força¦Anneau de force¦Ring der Stärke
 ring_of_strength.desc¦+1.5 de dano¦+1.5 dégâts¦+1.5 Schaden
 ring_of_vitality¦Anel da Vitalidade¦Anneau de vitalité¦Ring der Vitalität

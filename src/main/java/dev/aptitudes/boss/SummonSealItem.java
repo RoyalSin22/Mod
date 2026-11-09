@@ -9,14 +9,18 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -39,6 +43,12 @@ public final class SummonSealItem extends Item {
 		super(settings);
 		this.bossName = bossName;
 		this.secondary = secondary;
+	}
+
+	/** Descripción breve: qué invoca, qué cuesta y cuándo vuelve a estar disponible. */
+	@Override
+	public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+		tooltip.add(Text.translatable("item.aptitudes." + bossName + "_seal.tooltip").formatted(Formatting.GRAY));
 	}
 
 	/** Id del jefe en el registro de estado ({@link SummonState}). */

@@ -99,6 +99,11 @@ Pendiente:
 - Guardia perfecta y parry: ventana y respuesta del servidor; sin invulnerabilidad prolongada.
 - Validación en partida con el autor.
 
+**Actualización (decisiones del autor):** HEAVY cuenta como postura: el golpe cuerpo a cuerpo con la carga casi
+completa (≥ 0,9) es pesado y multiplica la postura ×2, en jefes y élites. La guardia perfecta usa una ventana de 4 ticks
+desde que se levanta el escudo, medida por `GuardTracker`; fuera de ella el escudo solo reduce daño. Los sellos tienen
+tooltip en los 11 idiomas. Pendiente: validar todo en partida.
+
 ### Fase C — Reinvocación y templos regenerables
 - C1 (hecho en código, sin commit): `boss/SummonRules` (puro) fija la espera de reinvocación: 20 minutos desde la
   última derrota, y solo si no hay otra instancia viva. Provisional.

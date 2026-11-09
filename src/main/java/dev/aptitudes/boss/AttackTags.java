@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
+
 /**
  * Fase A del plan de avance: etiquetas tácticas de los ataques de jefes, élites y campeones. Puro (sin Minecraft).
  *
@@ -29,8 +30,21 @@ public final class AttackTags {
 
 	/** Multiplicador de daño de postura de un ataque pesado. */
 	public static final double HEAVY_POSTURE_MULTIPLIER = 2.0;
+	/** Carga del ataque cuerpo a cuerpo a partir de la cual el golpe cuenta como pesado (0–1). Provisional. */
+	public static final float HEAVY_CHARGE = 0.9f;
 
 	private AttackTags() {}
+
+	/**
+	 * Etiquetas de un golpe de jugador. Decisión del autor: cuenta como pesado el golpe cuerpo a cuerpo con la carga
+	 * casi completa; el golpe a distancia o con la carga incompleta es NORMAL.
+	 *
+	 * @param chargeProgress carga del ataque del jugador (0–1)
+	 * @param melee          el daño viene directamente del jugador (no de un proyectil)
+	 */
+	public static Set<Tag> playerHit(float chargeProgress, boolean melee) {
+		return melee && chargeProgress >= HEAVY_CHARGE ? of(Tag.HEAVY) : of();
+	}
 
 	/** Conjunto de etiquetas; sin ninguna, el ataque es {@link Tag#NORMAL}. Inmutable. */
 	public static Set<Tag> of(Tag... tags) {
