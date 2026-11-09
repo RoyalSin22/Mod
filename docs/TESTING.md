@@ -1,5 +1,18 @@
 # Pruebas de Aptitudes
 
+## v65 — Pruebas nuevas
+
+- `ability/TranceRulesTest`: ganancia con tope, sintonía llena y ventana del trance (con duración configurable).
+- `contract/OrderBookRulesTest`: precio por nivel, escrow con tope, comisión, cupos de participantes, reserva que evita el bloqueo y devolución.
+- `event/ExpeditionProgressRulesTest`: metas por módulo, radio de la zona y caducidad.
+- `event/ExpeditionRulesTest` (existente): composición y modificadores de la semilla.
+- `souls/SoulStainRulesTest` (existente, con el porcentaje configurable).
+- `elite/GlyphRulesTest` (ampliado): los afijos Espinoso y Abrasador tienen forma propia y distinta.
+- `config/V65ConfigValidationTest`: valores por defecto (sin cambio de comportamiento) y límites de las opciones nuevas.
+
+Todo lo anterior se ejecuta con `./gradlew build`. Las pruebas de servidor (`OrderBook`, `Expeditions`, `Trance`, fases de
+los jefes) no existen: dependen de Minecraft y se validan en partida.
+
 ## v63d — Correcciones: aldeano del gremio, modelos y esferas
 
 1. Aldeano del gremio: en un mundo con operador, `/summon minecraft:villager` junto a dos

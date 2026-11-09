@@ -100,7 +100,8 @@ public final class SoulsManager {
 		SoulsData stain = data(player);
 		// F3: la mancha anterior no se pierde entera; al volver a morir antes de recuperarla pierde un 25 % y el resto
 		// se suma a la nueva mancha, que queda donde ha caído el jugador.
-		long kept = stain.hasStain() ? SoulStainRules.afterDeathWhileStained(stain.xp) : 0L;
+		long kept = stain.hasStain() ? SoulStainRules.afterDeathWhileStained(stain.xp,
+				Aptitudes.config().soulStainLossPercent) : 0L;
 		long lost = stain.hasStain() ? stain.xp - kept : 0L;
 		if (lost > 0) {
 			player.sendMessage(Text.translatable("aptitudes.souls.stain_lost", lost).formatted(Formatting.GRAY), false);

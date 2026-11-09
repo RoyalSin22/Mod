@@ -30,11 +30,21 @@ public final class ExpeditionProgressRules {
 
 	/** ¿Está el jugador dentro de la zona? Compara distancias al cuadrado para no usar raíces. */
 	public static boolean inZone(double distanceSquared) {
-		return distanceSquared <= (double) ZONE_RADIUS * ZONE_RADIUS;
+		return inZone(distanceSquared, ZONE_RADIUS);
+	}
+
+	/** Igual, con el radio de la configuración. */
+	public static boolean inZone(double distanceSquared, int radius) {
+		return distanceSquared <= (double) radius * radius;
 	}
 
 	/** ¿Ha caducado la expedición? */
 	public static boolean expired(long startTick, long now) {
-		return now - startTick >= TIME_LIMIT_TICKS;
+		return expired(startTick, now, TIME_LIMIT_TICKS);
+	}
+
+	/** Igual, con el límite de la configuración (en ticks). */
+	public static boolean expired(long startTick, long now, long limitTicks) {
+		return now - startTick >= limitTicks;
 	}
 }

@@ -328,7 +328,7 @@ public final class ContractBoardScreen extends HandledScreen<ContractBoardScreen
 			int tx = OFFERS_X + PAD;
 			int color = row.closed() ? MUTED : PARCHMENT;
 			UiStyle.label(ctx, textRenderer, orderLine(row), tx, ry + 5, FULL_W - 2 * PAD - ORDER_ACTION_W, color);
-			ctx.drawText(textRenderer, Text.translatable("order.aptitudes.unit_price", OrderBookRules.unitPrice(row.tier())),
+			ctx.drawText(textRenderer, Text.translatable("order.aptitudes.unit_price", OrderBookRules.unitPrice(row.tier(), dev.aptitudes.Aptitudes.config().orderUnitPriceBase)),
 					tx, ry + 15, MUTED, false);
 			String progress = row.delivered() + "/" + row.count();
 			int barRight = OFFERS_X + FULL_W - PAD - ORDER_ACTION_W - 8;

@@ -487,6 +487,27 @@ Recompensas: 2 + 2·s esmeraldas (+6 los de Jefe), 15 + 10·s XP de rol, +10 + 1
 Legendario dan además Fragmentos de alma (1 + s/2), y a veces un vale de armería (Élite, 1/3) o un emblema de
 maestría (Legendario, 1/4). Activos: 2 (3 desde Veterano, 300 de reputación).
 
+## v65 — Trance, mancha, pedidos, expediciones, afijos y fase 3 de jefes
+
+Valores provisionales. Cada uno puede cambiarse con la opción indicada en `docs/CONFIGURATION.md`; los que no tienen
+opción están en el código.
+
+| Sistema | Valor | Motivo | Estado |
+|---|---|---|---|
+| Trance | sintonía 100; +10 crítico, +15 habilidad; 10 s; +20 % daño | Ventana corta de burst sin cambiar los valores de los roles | Provisional, validar |
+| Crítico (trance) | caer sin tocar el suelo y sin correr | Aproximación de la condición de crítico de Minecraft | Provisional |
+| Mancha de XP | pierde 25 %; el resto se suma a la nueva mancha | Cambio de balance aprobado en el plan (F3) | Aprobado, validar |
+| Pedidos | precio = 2 × nivel esmeraldas por unidad; 3 abiertos; 1–64 unidades | Pago al entregar; comisión del 10 % no va a nadie | Provisional |
+| Pedidos (cupos) | cada participante reserva unidades para los cupos que faltan | Evita que un solo jugador bloquee un pedido de nivel alto | Regla de diseño |
+| Expedición | 4 módulos; zona 48 bloques; 15 min; 8 esmeraldas y 2 fragmentos | Desafío de 10–20 min del plan (F5) | Provisional |
+| Expedición (metas) | combate 10, puzle 5, élite 1, evento 1, jefe 1 | Una acción por módulo dentro de la zona | Provisional |
+| Modificadores | 2 por expedición: niebla (lentitud I), lluvia de brasas (fuego 2 s), oleada élite (Fuerza I a élites de la zona), hambre (Hambre I), jefe aturdido (+20 % a jefes de la zona), botín abundante (x2) | El catálogo del plan no definía efectos; «cura reducida» pasa a «hambre» porque es aplicable | Provisional, validar |
+| Afijo Espinoso | devuelve 15 % del daño recibido | Afijo nuevo de élite | Provisional |
+| Afijo Abrasador | prende fuego al jugador 3 s al golpear | Afijo nuevo de élite | Provisional |
+| Afijos de élite | 11 en vez de 9 | Con más afijos, cada uno aparece con menos frecuencia | Revisar equilibrio |
+| Guardián, fase 3 | `volley` 30 t y `dive` 50 t de enfriamiento (antes 50 y 80) | Ataques más rápidos en la fase final | Provisional |
+| Autómata, fase 3 | `orb` dos esferas en abanico de 8°; `beam` cono de 60° | La especificación pedía dos esferas seguidas y barrido de 60°; sin cola de disparos se usa abanico | Provisional |
+
 ## Arenas de jefe (v60)
 
 El muro ocupa hasta tres bloques de altura en el perímetro de las tres estructuras nuevas.

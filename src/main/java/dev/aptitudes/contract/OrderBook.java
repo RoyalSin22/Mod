@@ -35,10 +35,10 @@ public final class OrderBook {
 			return;
 		}
 		OrderBookState state = state(owner);
-		int count = Math.min(hand.getCount(), OrderBookRules.MAX_COUNT);
+		int count = Math.min(hand.getCount(), cfg().orderMaxCount);
 		int open = state.openBy(owner.getUuid());
 		int required = OrderRules.requiredParticipants(tier);
-		if (open >= OrderBookRules.MAX_OPEN_PER_OWNER) {
+		if (open >= cfg().orderMaxOpen) {
 			fail(owner, "order.aptitudes.limit");
 			return;
 		}
@@ -46,12 +46,12 @@ public final class OrderBook {
 			fail(owner, "order.aptitudes.too_few");
 			return;
 		}
-		long cost = OrderBookRules.escrow(count, tier);
+		long cost = OrderBookRules.escrow(count, tier, cfg().orderUnitPriceBase);
 		if (countEmeralds(owner) < cost) {
 			fail(owner, "order.aptitudes.no_emeralds");
 			return;
 		}
-		if (!OrderBookRules.canPublish(count, tier, open)) {
+		if (!OrderBookRules.canPublish(count, tier, open, cfg().orderMaxOpen, cfg().orderMaxCount)) {
 			fail(owner, "order.aptitudes.cannot_publish");
 			return;
 		}
@@ -90,7 +90,7 @@ public final class OrderBook {
 		removeItem(fulfiller, item, quantity);
 		order.delivered += quantity;
 		order.participants.add(fulfiller.getUuid());
-		long gross = OrderBookRules.gross(quantity, order.tier);
+		long gross = OrderBookRules.gross(quantity, order.tier, cfg().orderUnitPriceBase);
 		order.escrow = Math.max(0, order.escrow - gross);
 		long pay = OrderBookRules.net(gross);
 		giveEmeralds(fulfiller, pay);
@@ -160,6 +160,10 @@ public final class OrderBook {
 	}
 
 	// ------------------------------------------------------------- Utilidades
+
+	private static dev.aptitudes.config.AptitudesConfig cfg() {
+		return dev.aptitudes.Aptitudes.config();
+	}
 
 	private static OrderBookState state(ServerPlayerEntity player) {
 		return OrderBookState.get(player.getServer().getOverworld());

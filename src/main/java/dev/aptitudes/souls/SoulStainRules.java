@@ -14,7 +14,13 @@ public final class SoulStainRules {
 
 	/** Mancha que queda tras volver a morir antes de recuperarla. Nunca negativa. */
 	public static long afterDeathWhileStained(long stain) {
+		return afterDeathWhileStained(stain, LOSS_PERCENT);
+	}
+
+	/** Igual que {@link #afterDeathWhileStained(long)} con el porcentaje de la configuración. */
+	public static long afterDeathWhileStained(long stain, int lossPercent) {
 		if (stain <= 0) return 0;
-		return stain - stain / 100 * LOSS_PERCENT - stain % 100 * LOSS_PERCENT / 100;
+		int loss = Math.max(0, Math.min(100, lossPercent));
+		return stain - stain / 100 * loss - stain % 100 * loss / 100;
 	}
 }

@@ -34,6 +34,11 @@ public final class TranceRules {
 
 	/** ¿Sigue activo el trance iniciado en {@code startTick}? */
 	public static boolean active(long startTick, long now) {
-		return startTick != NONE && now >= startTick && now - startTick < DURATION_TICKS;
+		return active(startTick, now, DURATION_TICKS);
+	}
+
+	/** Igual que {@link #active(long, long)} con la duración de la configuración. */
+	public static boolean active(long startTick, long now, long durationTicks) {
+		return startTick != NONE && now >= startTick && now - startTick < durationTicks;
 	}
 }

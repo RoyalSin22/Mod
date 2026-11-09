@@ -106,6 +106,30 @@ El nombre generado por la conversión natural de élite conserva su instantánea
 ya comprobados y sin instantánea no reciben escalado retroactivo. El aviso usa `hudVisible` y F1;
 se oculta en creativo/espectador, al morir o salir del Mundo Normal. No se añaden opciones del cliente.
 
+## Trance, mancha, pedidos y expediciones (v65)
+
+Todos los valores por defecto son los que ya tenía el código: al actualizar, el comportamiento no cambia. Los valores
+son provisionales hasta validarlos en partida. Los límites se aplican en `AptitudesConfig.validated`.
+
+| Opción | Defecto | Validación | Descripción |
+|---|---|---|---|
+| `tranceGainCritical` | 10 | [0, 100] | Sintonía que da un golpe crítico a una criatura (sintonía de 100). |
+| `tranceGainSkill` | 15 | [0, 100] | Sintonía que da usar una habilidad. |
+| `tranceDurationSeconds` | 10.0 | [1, 60] | Duración del trance al llenarse la sintonía. |
+| `tranceDamageMultiplier` | 1.2 | [1, 3] | Multiplicador de daño saliente durante el trance (1.2 = +20 %). |
+| `soulStainLossPercent` | 25 | [0, 100] | Porcentaje de la mancha de XP que se pierde al volver a morir antes de recuperarla. |
+| `orderUnitPriceBase` | 2 | [1, 64] | Esmeraldas por unidad de un pedido de nivel 1; el precio es base × nivel. |
+| `orderMaxOpen` | 3 | [1, 10] | Pedidos abiertos a la vez por jugador. |
+| `orderMaxCount` | 64 | [1, 64] | Unidades máximas de un pedido. |
+| `expeditionZoneRadius` | 48 | [8, 128] | Radio de la zona de una expedición, en bloques. |
+| `expeditionTimeLimitMinutes` | 15 | [1, 120] | Minutos antes de que caduque una expedición. |
+| `expeditionRewardEmeralds` | 8 | [0, 64] | Esmeraldas de recompensa al completar una expedición (x2 con «botín abundante»). |
+| `expeditionRewardSoulShards` | 2 | [0, 64] | Fragmentos de alma de recompensa al completar una expedición (x2 con «botín abundante»). |
+
+Los números negativos o no finitos vuelven al valor por defecto, como en el resto de opciones (`validated`, paso 1).
+El multiplicador de «jefe aturdido» (+20 %) y el efecto de los modificadores de expedición no son opciones: están
+en el código y se documentan en `docs/BALANCE.md`.
+
 ## Validación al cargar
 
 1. **General (nuevo):** cualquier número negativo, `NaN` o infinito vuelve a su valor por defecto y se

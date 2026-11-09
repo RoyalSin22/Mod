@@ -120,6 +120,31 @@ public class AptitudesConfig {
 	public double comboDamagePerHit = 0.03;
 	/** Tope de la bonificación de combo (0.15 = +15 %). */
 	public double comboMaxBonus = 0.15;
+	// ---------- Trance, mancha, pedidos y expediciones (v65) ----------
+	/** Sintonía que da un golpe crítico a una criatura (0–100). */
+	public int tranceGainCritical = 10;
+	/** Sintonía que da usar una habilidad (0–100). */
+	public int tranceGainSkill = 15;
+	/** Segundos que dura el trance al llenarse la sintonía. */
+	public double tranceDurationSeconds = 10.0;
+	/** Multiplicador de daño saliente durante el trance (1.2 = +20 %). */
+	public double tranceDamageMultiplier = 1.2;
+	/** Porcentaje de la mancha de XP que se pierde al volver a morir antes de recuperarla. */
+	public int soulStainLossPercent = 25;
+	/** Esmeraldas por unidad de un pedido de nivel 1 (el precio es base × nivel). */
+	public int orderUnitPriceBase = 2;
+	/** Pedidos abiertos a la vez por jugador. */
+	public int orderMaxOpen = 3;
+	/** Unidades máximas de un pedido. */
+	public int orderMaxCount = 64;
+	/** Radio de la zona de una expedición, en bloques. */
+	public int expeditionZoneRadius = 48;
+	/** Minutos antes de que caduque una expedición. */
+	public int expeditionTimeLimitMinutes = 15;
+	/** Esmeraldas de recompensa al completar una expedición. */
+	public int expeditionRewardEmeralds = 8;
+	/** Fragmentos de alma de recompensa al completar una expedición. */
+	public int expeditionRewardSoulShards = 2;
 	/** Golpes necesarios para que el siguiente sea un remate. */
 	public int comboFinisherHits = 5;
 	/** Espera mínima entre remates, en segundos. */
@@ -455,6 +480,18 @@ public class AptitudesConfig {
 		c.comboWindowSeconds = Math.max(0.25, Math.min(30.0, c.comboWindowSeconds));
 		c.comboDamagePerHit = Math.min(1.0, c.comboDamagePerHit);
 		c.comboMaxBonus = Math.min(2.0, c.comboMaxBonus);
+		c.tranceGainCritical = clamp(c.tranceGainCritical, 0, 100);
+		c.tranceGainSkill = clamp(c.tranceGainSkill, 0, 100);
+		c.tranceDurationSeconds = Math.max(1.0, Math.min(60.0, c.tranceDurationSeconds));
+		c.tranceDamageMultiplier = Math.max(1.0, Math.min(3.0, c.tranceDamageMultiplier));
+		c.soulStainLossPercent = clamp(c.soulStainLossPercent, 0, 100);
+		c.orderUnitPriceBase = clamp(c.orderUnitPriceBase, 1, 64);
+		c.orderMaxOpen = clamp(c.orderMaxOpen, 1, 10);
+		c.orderMaxCount = clamp(c.orderMaxCount, 1, 64);
+		c.expeditionZoneRadius = clamp(c.expeditionZoneRadius, 8, 128);
+		c.expeditionTimeLimitMinutes = clamp(c.expeditionTimeLimitMinutes, 1, 120);
+		c.expeditionRewardEmeralds = clamp(c.expeditionRewardEmeralds, 0, 64);
+		c.expeditionRewardSoulShards = clamp(c.expeditionRewardSoulShards, 0, 64);
 		c.comboFinisherHits = clamp(c.comboFinisherHits, 2, 50);
 		c.comboFinisherCooldownSeconds = Math.min(600.0, c.comboFinisherCooldownSeconds);
 		c.partyMaxSize = clamp(c.partyMaxSize, 2, 5);

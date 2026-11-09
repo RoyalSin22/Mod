@@ -19,19 +19,35 @@ public final class OrderBookRules {
 
 	private OrderBookRules() {}
 
-	/** Esmeraldas por unidad según el nivel (1–4; se ajusta fuera de rango). Provisional: 2 × nivel. */
+	/** Precio base por defecto: 2 esmeraldas × nivel. */
+	public static final int DEFAULT_UNIT_PRICE_BASE = 2;
+
+	/** Esmeraldas por unidad según el nivel (1–4). Por defecto: 2 × nivel. */
 	public static long unitPrice(int tier) {
-		return 2L * clampTier(tier);
+		return unitPrice(tier, DEFAULT_UNIT_PRICE_BASE);
+	}
+
+	/** Esmeraldas por unidad con el precio base de la configuración. */
+	public static long unitPrice(int tier, int base) {
+		return (long) Math.max(1, base) * clampTier(tier);
 	}
 
 	/** Esmeraldas que el dueño deposita al publicar: el precio de todas las unidades. */
 	public static long escrow(int count, int tier) {
-		return (long) clampCount(count) * unitPrice(tier);
+		return escrow(count, tier, DEFAULT_UNIT_PRICE_BASE);
+	}
+
+	public static long escrow(int count, int tier, int base) {
+		return (long) clampCount(count) * unitPrice(tier, base);
 	}
 
 	/** Precio bruto de {@code quantity} unidades. */
 	public static long gross(int quantity, int tier) {
-		return (long) Math.max(0, quantity) * unitPrice(tier);
+		return gross(quantity, tier, DEFAULT_UNIT_PRICE_BASE);
+	}
+
+	public static long gross(int quantity, int tier, int base) {
+		return (long) Math.max(0, quantity) * unitPrice(tier, base);
 	}
 
 	/** Lo que cobra quien entrega: el bruto menos la comisión del gremio. */
@@ -41,8 +57,11 @@ public final class OrderBookRules {
 
 	/** ¿Puede publicarse un pedido? Debe tener al menos una unidad por participante exigido y no superar el tope. */
 	public static boolean canPublish(int count, int tier, int openByOwner) {
-		return count >= OrderRules.requiredParticipants(tier) && count <= MAX_COUNT
-				&& openByOwner < MAX_OPEN_PER_OWNER;
+		return canPublish(count, tier, openByOwner, MAX_OPEN_PER_OWNER, MAX_COUNT);
+	}
+
+	public static boolean canPublish(int count, int tier, int openByOwner, int maxOpen, int maxCount) {
+		return count >= OrderRules.requiredParticipants(tier) && count <= maxCount && openByOwner < maxOpen;
 	}
 
 	/**
@@ -66,7 +85,11 @@ public final class OrderBookRules {
 
 	/** Esmeraldas a devolver al dueño al cancelar: lo que quedó sin entregar. */
 	public static long refund(int remaining, int tier) {
-		return (long) Math.max(0, remaining) * unitPrice(tier);
+		return refund(remaining, tier, DEFAULT_UNIT_PRICE_BASE);
+	}
+
+	public static long refund(int remaining, int tier, int base) {
+		return (long) Math.max(0, remaining) * unitPrice(tier, base);
 	}
 
 	private static int clampTier(int tier) {

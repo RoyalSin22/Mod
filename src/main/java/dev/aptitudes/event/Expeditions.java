@@ -100,7 +100,7 @@ public final class Expeditions {
 		List<ServerPlayerEntity> group = new ArrayList<>();
 		for (ServerPlayerEntity member : PartyManager.onlineMembers(player)) {
 			if (member.getWorld() == overworld
-					&& ExpeditionProgressRules.inZone(member.squaredDistanceTo(player.getX(), player.getY(), player.getZ()))) {
+					&& zone(member.squaredDistanceTo(player.getX(), player.getY(), player.getZ()))) {
 				group.add(member);
 			}
 		}
@@ -133,7 +133,7 @@ public final class Expeditions {
 		if (!(player.getWorld() instanceof ServerWorld world)) return;
 		ExpeditionState state = ExpeditionState.get(world.getServer().getOverworld());
 		Expedition e = state.get(player.getUuid());
-		if (e == null || !ExpeditionProgressRules.inZone(entity.squaredDistanceTo(e.x, e.y, e.z))) return;
+		if (e == null || !zone(entity.squaredDistanceTo(e.x, e.y, e.z))) return;
 		ExpeditionRules.Module current = e.current();
 		if (current == ExpeditionRules.Module.COMBAT && entity instanceof Monster) {
 			advance(world.getServer(), e, state);
@@ -150,7 +150,7 @@ public final class Expeditions {
 		ExpeditionState state = ExpeditionState.get(world.getServer().getOverworld());
 		Expedition e = state.get(player.getUuid());
 		if (e == null || e.current() != ExpeditionRules.Module.EVENT) return;
-		if (!ExpeditionProgressRules.inZone(player.squaredDistanceTo(e.x, e.y, e.z))) return;
+		if (!zone(player.squaredDistanceTo(e.x, e.y, e.z))) return;
 		advance(world.getServer(), e, state);
 	}
 
@@ -162,7 +162,7 @@ public final class Expeditions {
 		if (!(attacker.getWorld() instanceof ServerWorld world) || !isBoss(target)) return 1f;
 		Expedition e = ExpeditionState.get(world.getServer().getOverworld()).get(attacker.getUuid());
 		if (e == null || !e.modifiers.contains("boss_stagger")) return 1f;
-		return ExpeditionProgressRules.inZone(target.squaredDistanceTo(e.x, e.y, e.z)) ? BOSS_STAGGER_DAMAGE : 1f;
+		return zone(target.squaredDistanceTo(e.x, e.y, e.z)) ? BOSS_STAGGER_DAMAGE : 1f;
 	}
 
 	private static void advance(MinecraftServer server, Expedition e, ExpeditionState state) {
@@ -182,8 +182,8 @@ public final class Expeditions {
 			int multiplier = e.modifiers.contains("loot_boost") ? 2 : 1;
 			for (ServerPlayerEntity member : onlineMembers(server, e)) reward(member, multiplier);
 			say(server, e, Text.translatable("expedition.aptitudes.complete",
-					ExpeditionProgressRules.REWARD_EMERALDS * multiplier,
-					ExpeditionProgressRules.REWARD_SOUL_SHARDS * multiplier).formatted(Formatting.GREEN), false);
+					Aptitudes.config().expeditionRewardEmeralds * multiplier,
+					Aptitudes.config().expeditionRewardSoulShards * multiplier).formatted(Formatting.GREEN), false);
 			return;
 		}
 		state.markDirty();
@@ -199,7 +199,7 @@ public final class Expeditions {
 		ExpeditionState state = ExpeditionState.get(server.getOverworld());
 		long now = server.getOverworld().getTime();
 		for (Expedition e : new ArrayList<>(list(state))) {
-			if (ExpeditionProgressRules.expired(e.startTick, now)) {
+			if (ExpeditionProgressRules.expired(e.startTick, now, limitTicks())) {
 				state.remove(e.owner);
 				say(server, e, Text.translatable("expedition.aptitudes.timeout").formatted(Formatting.GRAY), true);
 				continue;
@@ -209,7 +209,7 @@ public final class Expeditions {
 			int shards = 0;
 			for (ServerPlayerEntity member : members) {
 				shards += countItem(member, ModItems.SOUL_SHARD);
-				if (ExpeditionProgressRules.inZone(member.squaredDistanceTo(e.x, e.y, e.z))) {
+				if (zone(member.squaredDistanceTo(e.x, e.y, e.z))) {
 					anyInZone = true;
 					applyPlayerEffects(member, e);
 				}
@@ -242,9 +242,9 @@ public final class Expeditions {
 
 	private static void applyEliteSurge(MinecraftServer server, Expedition e) {
 		ServerWorld world = server.getOverworld();
-		Box zone = new Box(e.x - ExpeditionProgressRules.ZONE_RADIUS, e.y - ExpeditionProgressRules.ZONE_RADIUS,
-				e.z - ExpeditionProgressRules.ZONE_RADIUS, e.x + ExpeditionProgressRules.ZONE_RADIUS,
-				e.y + ExpeditionProgressRules.ZONE_RADIUS, e.z + ExpeditionProgressRules.ZONE_RADIUS);
+		Box zone = new Box(e.x - radius(), e.y - radius(),
+				e.z - radius(), e.x + radius(),
+				e.y + radius(), e.z + radius());
 		for (MobEntity mob : world.getEntitiesByClass(MobEntity.class, zone, Elites::isElite)) {
 			mob.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 60, 0));
 		}
@@ -282,9 +282,9 @@ public final class Expeditions {
 	}
 
 	private static void reward(ServerPlayerEntity player, int multiplier) {
-		player.getInventory().offerOrDrop(new ItemStack(Items.EMERALD, ExpeditionProgressRules.REWARD_EMERALDS * multiplier));
+		player.getInventory().offerOrDrop(new ItemStack(Items.EMERALD, Aptitudes.config().expeditionRewardEmeralds * multiplier));
 		player.getInventory().offerOrDrop(new ItemStack(ModItems.SOUL_SHARD,
-				ExpeditionProgressRules.REWARD_SOUL_SHARDS * multiplier));
+				Aptitudes.config().expeditionRewardSoulShards * multiplier));
 	}
 
 	private static boolean isBoss(Entity entity) {
@@ -306,6 +306,18 @@ public final class Expeditions {
 
 	private static Text moduleName(ExpeditionRules.Module module) {
 		return Text.translatable("expedition.aptitudes.module." + module.name().toLowerCase(Locale.ROOT));
+	}
+
+	private static int radius() {
+		return Aptitudes.config().expeditionZoneRadius;
+	}
+
+	private static boolean zone(double distanceSquared) {
+		return ExpeditionProgressRules.inZone(distanceSquared, radius());
+	}
+
+	private static long limitTicks() {
+		return Aptitudes.config().expeditionTimeLimitMinutes * 60L * 20L;
 	}
 
 	private static void fail(ServerPlayerEntity player, String key) {

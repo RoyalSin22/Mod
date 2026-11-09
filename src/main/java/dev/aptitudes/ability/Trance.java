@@ -1,5 +1,6 @@
 package dev.aptitudes.ability;
 
+import dev.aptitudes.Aptitudes;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -22,12 +23,11 @@ import java.util.UUID;
  * con habilidades; al llegar al máximo, el jugador entra en trance durante {@link TranceRules#DURATION_TICKS} ticks y
  * hace más daño. Las reglas puras están en {@link TranceRules}.
  *
- * <p>Sin HUD propio todavía: la sintonía se muestra en la barra de acción. El {@link #DAMAGE_MULTIPLIER} es una decisión
- * provisional de diseño (el plan no fijaba el bonus del trance) y debe validarse en partida.</p>
+ * <p>Sin HUD propio todavía: la sintonía se muestra en la barra de acción. Los valores (ganancias, duración y daño)
+ * vienen de la configuración {@code tranceGainCritical}, {@code tranceGainSkill}, {@code tranceDurationSeconds} y
+ * {@code tranceDamageMultiplier}; los valores por defecto son provisionales y deben validarse en partida.</p>
  */
 public final class Trance {
-	/** Multiplicador de daño saliente durante el trance (provisional). */
-	public static final float DAMAGE_MULTIPLIER = 1.2f;
 
 	private static final Map<UUID, Integer> GAUGE = new HashMap<>();
 	/** Inicio del trance activo por jugador (tick del servidor). */
@@ -53,21 +53,21 @@ public final class Trance {
 	}
 
 	public static void onCritical(ServerPlayerEntity player) {
-		gain(player, TranceRules.GAIN_CRITICAL);
+		gain(player, Aptitudes.config().tranceGainCritical);
 	}
 
 	public static void onSkill(ServerPlayerEntity player) {
-		gain(player, TranceRules.GAIN_SKILL);
+		gain(player, Aptitudes.config().tranceGainSkill);
 	}
 
 	/** Multiplicador de daño saliente del jugador en este momento (1 fuera del trance). */
 	public static float damageMultiplier(ServerPlayerEntity player) {
-		return active(player) ? DAMAGE_MULTIPLIER : 1f;
+		return active(player) ? (float) Aptitudes.config().tranceDamageMultiplier : 1f;
 	}
 
 	public static boolean active(ServerPlayerEntity player) {
 		Long start = START.get(player.getUuid());
-		return start != null && TranceRules.active(start, now(player));
+		return start != null && TranceRules.active(start, now(player), durationTicks());
 	}
 
 	private static void gain(ServerPlayerEntity player, int amount) {
@@ -99,7 +99,7 @@ public final class Trance {
 				it.remove();
 				continue;
 			}
-			if (!TranceRules.active(entry.getValue(), now(player))) {
+			if (!TranceRules.active(entry.getValue(), now(player), durationTicks())) {
 				it.remove();
 				player.sendMessage(Text.literal("El trance termina").formatted(Formatting.GRAY), true);
 			}
@@ -109,6 +109,10 @@ public final class Trance {
 	public static void forget(ServerPlayerEntity player) {
 		GAUGE.remove(player.getUuid());
 		START.remove(player.getUuid());
+	}
+
+	private static long durationTicks() {
+		return Math.round(Aptitudes.config().tranceDurationSeconds * 20);
 	}
 
 	private static long now(ServerPlayerEntity player) {
