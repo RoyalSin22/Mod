@@ -33,6 +33,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 - **v65 — Huevos y Osario.** Los huevos del Osario Quebrado y del Errante Velado aparecen en la pestaña creativa de
   Aptitudes. El Osario emite ectoplasma y polvo de tierra alrededor de los pies. Sin validar en partida.
 
+- **v65 — Fase 3 de los jefes.** El Guardián Desmontado acelera `volley` y `dive` (enfriamientos de 30 y 50 ticks).
+  El Autómata Antiguo lanza dos esferas en abanico y su rayo barre un cono de 60°. Sin validar en partida.
+
 ### Corregido
 - **v56 — Generación de jefes.** Torres, santuarios y campamentos guardan sus jefes con el terreno al
   generarse. Esto corrige el bloqueo que podía detener el mundo e impedir abrir o romper bloques.
