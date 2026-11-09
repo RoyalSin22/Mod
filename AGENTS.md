@@ -96,10 +96,11 @@ retematizaron (p. ej., «Talismán maldito»). **No cambies los ids de registro 
 Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
 
 - Puedes inspeccionar el repositorio, crear ramas, consultar el historial y usar `git add`.
-- **Commit solo con autorización explícita del autor**, una vez por commit. Antes de pedirla, informa:
-  1) archivos incluidos, 2) resumen, 3) resultado REAL de compilación y pruebas, 4) mensaje propuesto
-  (convencional: `feat:`, `fix:`, `docs:`, `build:`…).
-- **Nunca** hagas `git push`, merge a `main` ni abras PR sin autorización explícita.
+- **Commit y push a la rama de trabajo `claude/v63d-correcciones` están permitidos sin pedir autorización
+  por cada commit** (decisión del autor). Antes de commitear, compila y ejecuta las pruebas; el mensaje
+  debe ser convencional (`feat:`, `fix:`, `docs:`, `build:`…) e incluir solo el trailer de sesión.
+- **Nunca** hagas `git push` a otra rama, merge a `main`, ni abras PR sin autorización explícita del autor
+  para esa acción concreta.
 - **Nunca** uses `reset`, `clean`, `checkout` ni `restore` para descartar cambios, ni sobrescribas
   trabajo existente sin autorización. No reinicies el proyecto ni borres trabajo válido.
 - Trabaja en una rama propia (p. ej., `codex/<tema>`), nunca directamente en `main`.

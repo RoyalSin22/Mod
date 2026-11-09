@@ -455,7 +455,7 @@ public class RolesScreen extends Screen {
 				double ly = toLocalY(mouseY);
 				for (NodeView v : visibleNodes) {
 					if (lx >= v.x() && lx < v.x() + 24 && ly >= v.y() && ly < v.y() + 24) {
-						if (tab == TalentTab.TALENTS) {
+						if (tab != TalentTab.PATHS) {
 							RoleSyncPayload clickData = ClientRoleState.data();
 							boolean open = clickData != null && (lit(clickData, v) || available(clickData, v));
 							playUi(open ? dev.aptitudes.sound.ModSounds.UI_METAL_SELECT : dev.aptitudes.sound.ModSounds.UI_METAL_DENIED);
@@ -753,7 +753,7 @@ public class RolesScreen extends Screen {
 				long nowMs = net.minecraft.util.Util.getMeasuringTimeMs();
 				if (before != null && rankNow > before) {
 					LEARNED_AT.put(v.node().id(), nowMs);
-					if (tab == TalentTab.TALENTS) playUi(dev.aptitudes.sound.ModSounds.UI_METAL_UNLOCK);
+					if (tab != TalentTab.PATHS) playUi(dev.aptitudes.sound.ModSounds.UI_METAL_UNLOCK);
 				}
 				Long at = LEARNED_AT.get(v.node().id());
 				if (at != null) learnedFor = nowMs - at;
@@ -765,12 +765,12 @@ public class RolesScreen extends Screen {
 				ctx.drawBorder(v.x() - grow, v.y() - grow, 24 + grow * 2, 24 + grow * 2, (a << 24) | 0xE6C36A);
 				ctx.fill(v.x() - 2, v.y() - 2, v.x() + 26, v.y() + 26, ((int) (120 * (1f - t)) << 24) | 0xFFF3B0);
 			}
-			if (tab == TalentTab.TALENTS && hover) {
+			if (tab != TalentTab.PATHS && hover) {
 				ctx.fill(v.x() - 4, v.y() - 4, v.x() + 28, v.y() + 28, 0x30FFD56A);
 				ctx.fill(v.x() - 2, v.y() - 2, v.x() + 26, v.y() + 26, 0x50FFD56A);
 				ctx.drawBorder(v.x() - 2, v.y() - 2, 28, 28, 0xDDFFE9A0);
 			}
-			if (tab == TalentTab.TALENTS && available && !hover) {
+			if (tab != TalentTab.PATHS && available && !hover) {
 				int pulse = (int) (16 + 14 * (0.5 + 0.5 * Math.sin(pulseNow / 450.0)));
 				ctx.drawBorder(v.x() - 1, v.y() - 1, 26, 26, (pulse << 24) | 0xF0C060);
 			}
