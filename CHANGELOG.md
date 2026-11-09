@@ -13,6 +13,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   vuelo corto que se dirige con la mirada.
 
 ### Cambiado
+- **v59 — Editor del HUD.** Mayús + O ofrece tres disposiciones para la barra de habilidades y un
+  modo minimalista. Las barras de vida, maná y XP y los avisos cambian con transiciones suaves.
+  La tarjeta de XP se ilumina al subir de nivel. Puedes desactivar estas animaciones.
 - **v59 — Barra de jefes.** Los jefes y campeones de Aptitudes comparten un panel centrado cerca de la
   parte inferior. Muestra su vida, la fase de los jefes y un recuento si hay más enemigos cerca.
 - **v57 — Atlas y Sendas.** Las dos opciones de la bifurcación tienen filas separadas y el rango

@@ -3553,5 +3553,12 @@
   "forge.aptitudes.status.ready": "Bereit zur Bestätigung.",
   "hud.aptitudes.boss.phase": "Phase %s",
   "hud.aptitudes.boss.health": "%s %%",
-  "hud.aptitudes.boss.more": "+%s in der Nähe"
+  "hud.aptitudes.boss.more": "+%s in der Nähe",
+  "screen.aptitudes.hud.layout": "Anordnung",
+  "screen.aptitudes.hud.indicators": "Anzeigen",
+  "screen.aptitudes.hud.minimal": "Minimalmodus",
+  "screen.aptitudes.hud.animations": "HUD-Animationen",
+  "screen.aptitudes.hud.preset.classic": "Klassisch",
+  "screen.aptitudes.hud.preset.centered": "Zentriert",
+  "screen.aptitudes.hud.preset.compact": "Kompakt"
 }

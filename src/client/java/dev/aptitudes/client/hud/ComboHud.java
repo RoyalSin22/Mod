@@ -1,5 +1,6 @@
 package dev.aptitudes.client.hud;
 
+import dev.aptitudes.client.ClientConfig;
 import dev.aptitudes.network.ComboPayload;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -29,23 +30,29 @@ public final class ComboHud {
 		if (payload.finisher()) finisherAt = now;
 	}
 
+	public static void clear() {
+		count = 0;
+		updatedAt = finisherAt = -VISIBLE_MS;
+	}
+
 	public static void render(DrawContext ctx, RenderTickCounter tickCounter) {
 		MinecraftClient client = MinecraftClient.getInstance();
-		if (client.player == null || client.options.hudHidden) return;
+		ClientConfig cfg = ClientConfig.get();
+		if (client.player == null || client.options.hudHidden || cfg.hudMinimal) return;
 		long now = Util.getMeasuringTimeMs();
 		int cx = ctx.getScaledWindowWidth() / 2;
 		int cy = ctx.getScaledWindowHeight() / 2;
 		long sinceFinisher = now - finisherAt;
 		if (sinceFinisher < 700) {
 			float t = sinceFinisher / 700f;
-			float scale = 1.6f - 0.4f * t;
-			int alpha = (int) (255 * (1f - t));
+			float scale = cfg.hudAnimations ? 1.6f - 0.4f * t : 1f;
+			int alpha = cfg.hudAnimations ? (int) (255 * (1f - t)) : 255;
 			Text text = Text.translatable("hud.aptitudes.combo.finisher").formatted(Formatting.BOLD);
 			draw(ctx, client, text, cx, cy - 26, scale, (Math.max(8, alpha) << 24) | 0xFF5252);
 		}
 		if (count < 2 || now - updatedAt > VISIBLE_MS) return;
 		long since = now - updatedAt;
-		float pop = since < 150 ? 1f + 0.5f * (1f - since / 150f) : 1f; // crece al subir
+		float pop = cfg.hudAnimations && since < 150 ? 1f + 0.5f * (1f - since / 150f) : 1f; // crece al subir
 		boolean ready = count >= 5;
 		int color = ready ? 0xFFE6C36A : 0xFFFFFFFF;
 		Text text = Text.literal("×" + count).formatted(Formatting.BOLD);

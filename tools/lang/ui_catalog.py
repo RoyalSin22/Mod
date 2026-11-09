@@ -1545,3 +1545,13 @@ phase¦Fase %s¦Phase %s¦Phase %s
 health¦%s%%¦%s %%¦%s %%
 more¦+%s por perto¦+%s à proximité¦+%s in der Nähe
 """)
+
+add('screen.aptitudes.hud.', """
+layout¦Disposição¦Disposition¦Anordnung
+indicators¦Indicadores¦Indicateurs¦Anzeigen
+minimal¦Modo minimalista¦Mode minimaliste¦Minimalmodus
+animations¦Animações da interface¦Animations de l’interface¦HUD-Animationen
+preset.classic¦Clássico¦Classique¦Klassisch
+preset.centered¦Centralizado¦Centré¦Zentriert
+preset.compact¦Compacto¦Compact¦Kompakt
+""")

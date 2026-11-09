@@ -33,12 +33,15 @@ No se fuerzan chunks. Al cargar o reiniciar se cuentan las criaturas existentes 
 si cargar criaturas guardadas supera un límite, se suspenden las nuevas apariciones, sin borrar las antiguas.
 Las probabilidades, tamaños y presupuestos se vuelven a acotar en las reglas puras.
 
-## Barra de habilidades (cliente)
+## HUD (cliente)
 
 | Campo de `aptitudes-client.json` | Defecto | Dominio | Descripción |
 |---|---:|---|---|
 | `hudScale` | 1.0 | 0.5–2.0 | Escala solicitada en Mayús + O. La barra usa una escala menor cuando lo exige la ventana. Un valor no finito se sustituye por 1.0. |
 | `hudOffsetX`, `hudOffsetY` | 0 | −4096–4096 | Desplazamiento en píxeles de interfaz. La posición efectiva se acota al área visible junto con las filas de mecánicas y piedras angulares. |
+| `hudPreset` | `classic` | `classic` / `centered` / `compact` | Clásico conserva el anclaje de v50. Centrado coloca las habilidades sobre los avisos de la hotbar y del evento. Compacto las alinea a la derecha y usa el 75 % de la escala en las habilidades y barras Souls. Seleccionar un preset en el editor borra el desplazamiento manual y conserva la escala solicitada. Un valor desconocido o `null` recupera Clásico. |
+| `hudMinimal` | false | true / false | Oculta avisos de XP y tutorial, contador de combos, mecánicas de rol y números de daño. Conserva las barras, habilidades, piedras angulares, avisos de amenaza, eventos, jefes y grupo. `null` recupera false. |
+| `hudAnimations` | true | true / false | Transiciones de vida, maná, jefes y XP, entrada de avisos y pulso de nivel en la tarjeta de XP. Al desactivarlas, el HUD muestra los cambios de inmediato y sus indicadores de estado dejan de latir. `null` recupera true. Los efectos del mundo y del cielo tienen sus propios interruptores. |
 | `castAnimations` | true | true / false | Remates 3D de las habilidades, desde Mayús + O → Animaciones 3D. Un `null` explícito recupera true en `ClientConfig.validated(...)`. |
 
 ## Tutorial (v44)

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.aptitudes.Aptitudes;
 import dev.aptitudes.logic.AbilityHudLayout;
+import dev.aptitudes.logic.HudPreset;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.Reader;
@@ -36,6 +37,14 @@ public final class ClientConfig {
 	public boolean eclipseSkyEffects = true;
 	/** Recordatorio del tutorial. Boolean permite recuperar de forma segura un null escrito a mano. */
 	public Boolean showTutorial = true;
+	/** Reduce avisos y adornos secundarios sin cambiar los interruptores individuales. */
+	public Boolean hudMinimal = false;
+	public Boolean hudAnimations = true;
+	public String hudPreset = HudPreset.CLASSIC.id();
+
+	public HudPreset preset() {
+		return HudPreset.fromId(hudPreset);
+	}
 
 	private static Path path() {
 		return FabricLoader.getInstance().getConfigDir().resolve(Aptitudes.MOD_ID + "-client.json");
@@ -64,6 +73,9 @@ public final class ClientConfig {
 		// Su dominio es booleano; un null explícito conserva el valor seguro por defecto.
 		if (config.showTutorial == null) config.showTutorial = true;
 		if (config.castAnimations == null) config.castAnimations = true;
+		if (config.hudMinimal == null) config.hudMinimal = false;
+		if (config.hudAnimations == null) config.hudAnimations = true;
+		config.hudPreset = config.preset().id();
 		config.hudScale = AbilityHudLayout.validatedScale(config.hudScale);
 		config.hudOffsetX = Math.clamp(config.hudOffsetX, -4096, 4096);
 		config.hudOffsetY = Math.clamp(config.hudOffsetY, -4096, 4096);

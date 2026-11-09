@@ -1,10 +1,14 @@
 package dev.aptitudes.client.hud;
 
 import dev.aptitudes.client.ClientConfig;
+import dev.aptitudes.client.ClientTutorial;
+import dev.aptitudes.client.screen.UiStyle;
 import dev.aptitudes.data.Skill;
+import dev.aptitudes.logic.HudMotion;
 import dev.aptitudes.network.DamageNumberPayload;
 import dev.aptitudes.network.ScreenFxPayload;
 import dev.aptitudes.network.SkillXpPayload;
+import dev.aptitudes.sync.ClientCache;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -59,6 +63,8 @@ public final class ClientFx {
 		final Skill skill;
 		int amount, xp, needed, level;
 		long start;
+		long pulseAt = -650;
+		final HudMotion.Fill fill = new HudMotion.Fill();
 		XpToast(Skill skill) {
 			this.skill = skill;
 		}
@@ -89,7 +95,8 @@ public final class ClientFx {
 	}
 
 	public static void onDamageNumber(DamageNumberPayload p) {
-		if (!ClientConfig.get().damageNumbers) return;
+		ClientConfig cfg = ClientConfig.get();
+		if (!cfg.damageNumbers || cfg.hudMinimal) return;
 		String text = p.amount() >= 10 ? String.valueOf(Math.round(p.amount()))
 				: String.format(java.util.Locale.ROOT, "%.1f", p.amount());
 		if (NUMBERS.size() > 40) NUMBERS.remove(0);
@@ -98,20 +105,25 @@ public final class ClientFx {
 	}
 
 	public static void onSkillXp(SkillXpPayload p) {
-		if (p.skill() < 0 || p.skill() >= Skill.values().length) return;
+		if (ClientConfig.get().hudMinimal || p.skill() < 0 || p.skill() >= Skill.values().length) return;
+		long now = Util.getMeasuringTimeMs();
+		TOASTS.removeIf(t -> now - t.start >= TOAST_MS);
 		Skill skill = Skill.values()[p.skill()];
+		var progress = ClientCache.get();
 		XpToast toast = null;
 		for (XpToast t : TOASTS) if (t.skill == skill) toast = t;
 		if (toast == null) {
 			toast = new XpToast(skill);
+			toast.level = progress == null ? p.level() : progress.level(skill);
 			TOASTS.add(toast);
 			if (TOASTS.size() > MAX_TOASTS) TOASTS.remove(0);
 		}
-		toast.amount += p.amount(); // se acumula mientras la tarjeta siga visible
+		if (p.level() > toast.level) toast.pulseAt = now;
+		toast.amount = (int) Math.clamp((long) toast.amount + p.amount(), 0, Integer.MAX_VALUE);
 		toast.xp = p.xp();
 		toast.needed = p.needed();
 		toast.level = p.level();
-		toast.start = Util.getMeasuringTimeMs();
+		toast.start = now;
 	}
 
 	public static void clear() {
@@ -149,7 +161,18 @@ public final class ClientFx {
 		int w = ctx.getScaledWindowWidth();
 		int h = ctx.getScaledWindowHeight();
 		renderFlash(ctx, now, w, h);
-		renderToasts(ctx, client.textRenderer, now, w, h);
+		ClientConfig cfg = ClientConfig.get();
+		if (cfg.hudMinimal) {
+			TOASTS.clear();
+			return;
+		}
+		int top = h / 2 - 40;
+		var tutorial = ClientTutorial.view();
+		if (cfg.hudVisible && cfg.showTutorial && client.currentScreen == null && client.player.isAlive()
+				&& !client.player.isCreative() && !client.player.isSpectator() && tutorial != null && tutorial.visible()) {
+			top = Math.max(top, TutorialHud.top(cfg, h) + 39);
+		}
+		renderToasts(ctx, client.textRenderer, now, w, top, cfg.hudAnimations);
 	}
 
 	/** Viñeta de color: bordes con degradado hacia el centro, que se apaga en ~0,45 s. */
@@ -177,19 +200,17 @@ public final class ClientFx {
 	}
 
 	/** Tarjetas de XP apiladas en el lado derecho de la pantalla, con entrada deslizante. */
-	private static void renderToasts(DrawContext ctx, TextRenderer text, long now, int w, int h) {
+	private static void renderToasts(DrawContext ctx, TextRenderer text, long now, int w, int top, boolean animated) {
 		Iterator<XpToast> it = TOASTS.iterator();
 		while (it.hasNext()) if (now - it.next().start >= TOAST_MS) it.remove();
 		int cardW = 132;
 		int cardH = 26;
-		int y = h / 2 - 40;
+		int y = top;
 		for (int i = TOASTS.size() - 1; i >= 0; i--) {
 			XpToast t = TOASTS.get(i);
 			long age = now - t.start;
-			float in = MathHelper.clamp(age / 180f, 0f, 1f);
-			float out = MathHelper.clamp((TOAST_MS - age) / 400f, 0f, 1f);
-			float vis = Math.min(in, out);
-			int x = w - (int) ((cardW + 6) * easeOut(vis));
+			float vis = HudMotion.notice(age, TOAST_MS, animated);
+			int x = w - Math.round((cardW + 6) * vis);
 			int a = (int) (230 * vis);
 			if (a < 8) continue;
 			// Marco oscuro con borde dorado.
@@ -199,18 +220,22 @@ public final class ClientFx {
 			ctx.fill(x, y + cardH - 1, x + cardW, y + cardH, gold);
 			ctx.fill(x, y, x + 1, y + cardH, gold);
 			ctx.drawItem(t.skill.iconStack(), x + 4, y + 5);
+			float pulse = animated ? HudMotion.levelPulse(now - t.pulseAt) : 0f;
+			if (pulse > 0f) ctx.drawBorder(x + 1, y + 1, cardW - 2, cardH - 2,
+					(Math.round(a * pulse) << 24) | 0xFFF1A0);
 			int textAlpha = Math.max(4, a) << 24;
-			ctx.drawText(text, Text.literal("+" + t.amount + " ").append(Text.translatable(t.skill.translationKey())),
-					x + 24, y + 4, textAlpha | 0xFFE08A, true);
-			ctx.drawText(text, Text.translatable("aptitudes.toast.level", t.level), x + cardW - 4
-					- text.getWidth(Text.translatable("aptitudes.toast.level", t.level)), y + 4, textAlpha | 0xBFB49A, false);
+			Text level = Text.translatable("aptitudes.toast.level", t.level);
+			int levelX = x + cardW - 4 - text.getWidth(level);
+			Text gain = Text.literal("+" + t.amount + " ").append(Text.translatable(t.skill.translationKey()));
+			ctx.drawText(text, UiStyle.fit(text, gain, levelX - x - 28), x + 24, y + 4, textAlpha | 0xFFE08A, true);
+			ctx.drawText(text, level, levelX, y + 4, textAlpha | 0xBFB49A, false);
 			// Barra de progreso hacia el siguiente nivel.
 			int barX = x + 24;
 			int barW = cardW - 30;
 			int barY = y + 16;
 			ctx.fill(barX, barY, barX + barW, barY + 4, (a << 24) | 0x2A241A);
 			float frac = t.needed <= 0 ? 1f : MathHelper.clamp(t.xp / (float) t.needed, 0f, 1f);
-			int fill = (int) (barW * frac);
+			int fill = Math.round(barW * t.fill.update(frac, now, animated ? 200 : 0));
 			ctx.fill(barX, barY, barX + fill, barY + 4, (a << 24) | 0x7CC24A);
 			ctx.fill(barX, barY, barX + fill, barY + 1, (a << 24) | 0xB6F07A);
 			y += cardH + 3;
@@ -226,6 +251,7 @@ public final class ClientFx {
 
 	/** Números de daño como carteles orientados a la cámara (como las etiquetas de nombre). */
 	public static void renderWorld(WorldRenderContext context) {
+		if (ClientConfig.get().hudMinimal) NUMBERS.clear();
 		if (NUMBERS.isEmpty()) return;
 		MinecraftClient client = MinecraftClient.getInstance();
 		VertexConsumerProvider consumers = context.consumers();

@@ -46,6 +46,36 @@ class AbilityHudLayoutTest {
 		assertInside(layout, 480, 270);
 	}
 
+	@Test
+	void centersTheBarAndReservesSpaceForTheEvent() {
+		var centered = AbilityHudLayout.place(426, 240, BAR, 1, 0, 0, HudPreset.CENTERED, false);
+		var event = AbilityHudLayout.place(426, 240, BAR, 1, 0, 0, HudPreset.CENTERED, true);
+
+		assertEquals((426 - BAR) / 2, centered.x());
+		assertEquals(240 - 78, centered.bottom());
+		assertEquals(240 - 108, event.bottom());
+		assertInside(event, 426, 240);
+	}
+
+	@Test
+	void scalesAndRightAlignsTheCompactBarBeforeApplyingOffsets() {
+		var compact = AbilityHudLayout.place(426, 240, BAR, 1, 0, 0, HudPreset.COMPACT, false);
+		var moved = AbilityHudLayout.place(426, 240, BAR, 1, -20, -30, HudPreset.COMPACT, false);
+
+		assertEquals(0.75f, compact.scale());
+		assertEquals(424, compact.right());
+		assertEquals(compact.x() - 20, moved.x());
+		assertEquals(compact.y() - 30, moved.y());
+		assertInside(moved, 426, 240);
+	}
+
+	@Test
+	void readsStablePresetIdsAndFallsBackForOldOrInvalidPreferences() {
+		assertEquals(HudPreset.CLASSIC, HudPreset.fromId(null));
+		assertEquals(HudPreset.CLASSIC, HudPreset.fromId("unknown"));
+		for (var preset : HudPreset.values()) assertEquals(preset, HudPreset.fromId(preset.id()));
+	}
+
 	private static void assertInside(AbilityHudLayout layout, int width, int height) {
 		assertTrue(layout.left() >= 0);
 		assertTrue(layout.top() >= 0);

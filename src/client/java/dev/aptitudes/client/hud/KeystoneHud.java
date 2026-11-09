@@ -1,5 +1,6 @@
 package dev.aptitudes.client.hud;
 
+import dev.aptitudes.client.ClientConfig;
 import dev.aptitudes.client.screen.NodeIconRenderer;
 import dev.aptitudes.network.KeystonePayload;
 import dev.aptitudes.role.KeystoneRules;
@@ -52,7 +53,7 @@ public final class KeystoneHud {
 			}
 			int border = 0xFF7E57C2;
 			if (e.armed()) {
-				int alpha = 150 + (int) (105 * (0.5 + 0.5 * Math.sin(now / 150.0)));
+				int alpha = ClientConfig.get().hudAnimations ? 150 + (int) (105 * (0.5 + 0.5 * Math.sin(now / 150.0))) : 255;
 				border = (alpha << 24) | 0xE6C36A;
 			}
 			ctx.drawBorder(x, y, SIZE, SIZE, border);

@@ -194,6 +194,8 @@ public class AptitudesClient implements ClientModInitializer {
 			ClientServerConfig.clear();
 			PartyClientState.clear();
 			ClientTutorial.clear();
+			dev.aptitudes.client.hud.TutorialHud.clear();
+			dev.aptitudes.client.hud.ComboHud.clear();
 			dev.aptitudes.client.hud.ThreatHud.clear();
 		});
 

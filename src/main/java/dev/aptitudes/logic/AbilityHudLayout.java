@@ -11,9 +11,14 @@ public record AbilityHudLayout(int x, int y, float scale, int left, int top, int
 	}
 
 	public static AbilityHudLayout place(int width, int height, int barWidth, float scale, int offsetX, int offsetY) {
+		return place(width, height, barWidth, scale, offsetX, offsetY, HudPreset.CLASSIC, false);
+	}
+
+	public static AbilityHudLayout place(int width, int height, int barWidth, float scale, int offsetX, int offsetY,
+										 HudPreset preset, boolean event) {
 		int horizontal = Math.max(1, width - 2);
 		int vertical = Math.max(1, height - 2);
-		float fit = Math.min(validatedScale(scale),
+		float fit = Math.min(validatedScale(scale) * preset.scaleFactor(),
 				Math.min(horizontal / (float) (barWidth + 2 * MARGIN), vertical / (float) (ABOVE + BELOW)));
 		int margin = (int) Math.ceil(MARGIN * fit);
 		int above = (int) Math.ceil(ABOVE * fit);
@@ -22,9 +27,12 @@ public record AbilityHudLayout(int x, int y, float scale, int left, int top, int
 		int farRight = width - rightExtent;
 		int anchorX = width / 2 + 103;
 		int anchorY = height - below - 2;
-		if (anchorX > farRight) {
-			anchorX = farRight - 2;
-			anchorY -= 44;
+		if (preset == HudPreset.CENTERED) {
+			anchorX = Math.round((width - barWidth * fit) / 2f);
+			anchorY = height - below - (event ? 108 : 78);
+		} else {
+			if (anchorX > farRight) anchorY -= 44;
+			if (anchorX > farRight || preset == HudPreset.COMPACT) anchorX = farRight - 2;
 		}
 		anchorX = Math.clamp(anchorX, margin, Math.max(margin, farRight));
 		anchorY = Math.clamp(anchorY, above, Math.max(above, height - below));

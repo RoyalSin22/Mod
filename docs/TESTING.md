@@ -16,6 +16,21 @@
    con Mayús + O y activa un Eclipse. Comprueba que el panel se ajuste y que los avisos se puedan leer.
    Repite en alemán y verifica los textos, incluidos los porcentajes.
 
+## v59 — Disposición e indicadores (K1, fase 2)
+
+1. Entra con un archivo de cliente anterior a v59 y comprueba que se mantengan escala, desplazamiento
+   y anclaje clásico. Abre Mayús + O y elige Clásico, Centrado y Compacto. Comprueba los tres con
+   el HUD de habilidades visible, arrastra la vista previa, cambia la escala y pulsa Hecho.
+2. Sal y vuelve a abrir el juego. Verifica los ajustes y que Restablecer recupere Clásico, escala
+   100 % y desplazamientos cero. Repite con un id desconocido y valores `null` en las opciones
+   nuevas. Comprueba los botones a 426×240 y en alemán. Abre K y verifica sus 10 tarjetas.
+3. Activa Modo minimalista y gana XP, inicia un combo y prueba el tutorial. Comprueba que los
+   avisos secundarios desaparezcan mientras se ven habilidades, jefes, eventos y miembros del
+   grupo. Desactívalo y verifica que se restauren las preferencias individuales.
+4. Cambia la vida y el maná, daña a un jefe, cruza un anillo de Amenaza y sube una habilidad.
+   Verifica el llenado progresivo, el aviso que aparece y se desvanece y el pulso de nivel.
+   Repite con Animaciones del HUD desactivadas. Comprueba F1, muerte y reconexión.
+
 ## v58 — Cambiaformas
 
 1. Con Cambiaformas, activa la forma de murciélago y cambia a tercera persona con F5. Revisa que

@@ -5,14 +5,17 @@ import dev.aptitudes.ability.Signatures;
 import dev.aptitudes.client.AptitudesClient;
 import dev.aptitudes.client.ClientConfig;
 import dev.aptitudes.client.ClientExtraState;
+import dev.aptitudes.client.ClientEclipse;
 import dev.aptitudes.client.ClientRoleState;
 import dev.aptitudes.network.RoleSyncPayload;
 import dev.aptitudes.network.UniqueSyncPayload;
 import dev.aptitudes.role.Element;
 import dev.aptitudes.role.Evolution;
+import dev.aptitudes.client.screen.HudConfigScreen;
 import dev.aptitudes.client.screen.NodeIconRenderer;
 import dev.aptitudes.client.screen.UiStyle;
 import dev.aptitudes.logic.AbilityHudLayout;
+import dev.aptitudes.logic.HudMotion;
 import dev.aptitudes.role.Role;
 import dev.aptitudes.role.RoleNode;
 import dev.aptitudes.role.RoleResource;
@@ -21,8 +24,10 @@ import dev.aptitudes.unique.UniqueSkill;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.text.Text;
+import net.minecraft.util.Util;
 import dev.aptitudes.network.MechanicPayload;
 import org.jetbrains.annotations.Nullable;
 
@@ -62,8 +67,10 @@ public final class AbilityHud {
 	/** Animación de "lista": tick hasta el que brilla cada ranura tras terminar su enfriamiento. */
 	private static final int[] READY_FLASH = new int[AbilityManager.SLOTS];
 	private static final int[] LAST_COOLDOWN = new int[AbilityManager.SLOTS];
-	/** Vida mostrada con retraso (el "trozo" amarillo que se vacía tras recibir daño, como en Souls). */
-	private static float laggedHealth = -1;
+	private static final HudMotion.Fill HEALTH = new HudMotion.Fill();
+	private static final HudMotion.Fill HEALTH_TRAIL = new HudMotion.Fill();
+	private static final HudMotion.Fill MANA = new HudMotion.Fill();
+	private static ClientPlayerEntity barsPlayer;
 
 	public static void onMechanics(MechanicPayload payload) {
 		mechanics = List.copyOf(payload.entries());
@@ -71,10 +78,17 @@ public final class AbilityHud {
 
 	public static void clear() {
 		mechanics = List.of();
-		laggedHealth = -1;
+		resetBars(null);
+		KeystoneHud.clear();
+	}
+
+	private static void resetBars(ClientPlayerEntity player) {
+		barsPlayer = player;
+		HEALTH.clear();
+		HEALTH_TRAIL.clear();
+		MANA.clear();
 		java.util.Arrays.fill(READY_FLASH, 0);
 		java.util.Arrays.fill(LAST_COOLDOWN, 0);
-		KeystoneHud.clear();
 	}
 
 	public static void render(DrawContext ctx, RenderTickCounter tickCounter) {
@@ -87,10 +101,14 @@ public final class AbilityHud {
 		int h = ctx.getScaledWindowHeight();
 		ClientConfig cfg = ClientConfig.get();
 
-		if (cfg.soulsBars) renderSoulsBars(ctx, text, data, client);
+		if (barsPlayer != client.player) resetBars(client.player);
+		long now = Util.getMeasuringTimeMs();
+		float manaFill = MANA.update(ClientRoleState.energy() / Math.max(1f, ClientRoleState.maxEnergy()),
+				now, cfg.hudAnimations ? 180 : 0);
+		if (cfg.soulsBars) renderSoulsBars(ctx, text, data, client, now, manaFill);
 		if (!hasAbilities(data)) return;
-		if (!cfg.soulsBars) renderBars(ctx, text, data, w, h);
-		renderAbilityBar(ctx, text, data, w, h, client.player.age);
+		if (!cfg.soulsBars) renderBars(ctx, text, data, w, h, manaFill);
+		if (!(client.currentScreen instanceof HudConfigScreen)) renderAbilityBar(ctx, text, data, w, h, client.player.age);
 	}
 
 	/** Dibuja la barra y sus dos filas auxiliares con la misma escala y el mismo anclaje. */
@@ -101,7 +119,7 @@ public final class AbilityHud {
 		ctx.getMatrices().translate(layout.x(), layout.y(), 0);
 		ctx.getMatrices().scale(layout.scale(), layout.scale(), 1f);
 		renderSlots(ctx, text, data, age);
-		if (cfg.showMechanic) renderMechanics(ctx, text);
+		if (cfg.showMechanic && !cfg.hudMinimal) renderMechanics(ctx, text);
 		KeystoneHud.draw(ctx);
 		ctx.getMatrices().pop();
 	}
@@ -120,7 +138,8 @@ public final class AbilityHud {
 			return null;
 		}
 		var layout = barLayout(w, h);
-		int above = Math.max(cfg.showMechanic && !mechanics.isEmpty() ? 1 - MECHANIC_Y : -KEY_Y, KeystoneHud.occupiedAbove());
+		boolean showMechanic = cfg.showMechanic && !cfg.hudMinimal && !mechanics.isEmpty();
+		int above = Math.max(showMechanic ? 1 - MECHANIC_Y : -KEY_Y, KeystoneHud.occupiedAbove());
 		int top = layout.y() - (int) Math.ceil(above * layout.scale());
 		return new AbilityHudLayout(layout.x(), layout.y(), layout.scale(), layout.left(), top, layout.right(), layout.bottom());
 	}
@@ -131,7 +150,13 @@ public final class AbilityHud {
 
 	public static AbilityHudLayout barLayout(int w, int h) {
 		ClientConfig cfg = ClientConfig.get();
-		return AbilityHudLayout.place(w, h, barWidth(), cfg.hudScale, cfg.hudOffsetX, cfg.hudOffsetY);
+		return barLayout(w, h, cfg.hudOffsetX, cfg.hudOffsetY);
+	}
+
+	public static AbilityHudLayout barLayout(int w, int h, int offsetX, int offsetY) {
+		ClientConfig cfg = ClientConfig.get();
+		return AbilityHudLayout.place(w, h, barWidth(), cfg.hudScale, offsetX, offsetY, cfg.preset(),
+				ClientEclipse.active() && ClientEclipse.phase() > 0);
 	}
 
 	// ----------------------------------------------------- Barras Souls
@@ -140,31 +165,37 @@ public final class AbilityHud {
 	 * Barras arriba a la izquierda: icono + barra redondeada con degradado y brillo, valor
 	 * dentro de la barra. La longitud crece con el máximo (como en Souls).
 	 */
-	private static void renderSoulsBars(DrawContext ctx, TextRenderer text, RoleSyncPayload data, MinecraftClient client) {
+	private static void renderSoulsBars(DrawContext ctx, TextRenderer text, RoleSyncPayload data, MinecraftClient client,
+										long now, float manaFill) {
 		ClientConfig cfg = ClientConfig.get();
 		var player = client.player;
 		int age = player.age;
 		ctx.getMatrices().push();
 		ctx.getMatrices().translate(6, 6, 0);
-		ctx.getMatrices().scale(cfg.hudScale, cfg.hudScale, 1f);
+		float scale = cfg.hudScale * cfg.preset().scaleFactor();
+		ctx.getMatrices().scale(scale, scale, 1f);
 		int y = 0;
 
 		// Vida: trozo retrasado (daño reciente), absorción y latido con poca vida.
 		float health = player.getHealth();
 		float maxHealth = Math.max(1f, player.getMaxHealth());
-		if (laggedHealth < 0 || laggedHealth < health) laggedHealth = health;
-		else laggedHealth = Math.max(health, laggedHealth - Math.max(0.05f, (laggedHealth - health) * 0.04f));
+		float healthFill = HEALTH.update(health / maxHealth, now, cfg.hudAnimations ? 160 : 0);
+		float trail = HEALTH_TRAIL.update(health / maxHealth, now, cfg.hudAnimations ? 440 : 0);
 		int hw = Math.min(200, 60 + (int) (maxHealth * 3));
 		boolean low = health / maxHealth < 0.25f;
-		icon(ctx, HEART, 0, y, low && (age / 5) % 2 == 0 ? 0xFFFF8A80 : 0xFFE53935);
-		pill(ctx, 12, y, hw, 9, laggedHealth / maxHealth, 0xFFFFF59D, 0xFFFFCA28, false);
-		pill(ctx, 12, y, hw, 9, health / maxHealth, 0xFFFF6E6E, 0xFFB71C1C, true);
+		icon(ctx, HEART, 0, y, low && (!cfg.hudAnimations || (age / 5) % 2 == 0) ? 0xFFFF8A80 : 0xFFE53935);
+		pill(ctx, 12, y, hw, 9, 0f, 0, 0, true);
+		if (trail > healthFill) pill(ctx, 12, y, hw, 9, trail, 0xFFFFF59D, 0xFFFFCA28, false);
+		pill(ctx, 12, y, hw, 9, healthFill, 0xFFFF6E6E, 0xFFB71C1C, false);
 		float absorption = player.getAbsorptionAmount();
 		if (absorption > 0) {
 			int aw = (int) ((hw - 2) * Math.min(1f, absorption / maxHealth));
 			ctx.fill(13, y + 7, 13 + aw, y + 8, 0xFFFFD54F);
 		}
-		if (low) ctx.drawBorder(11, y - 1, hw + 2, 11, (((age % 20) < 10 ? 0xC0 : 0x60) << 24) | 0xFF1744);
+		if (low) {
+			int alpha = !cfg.hudAnimations || age % 20 < 10 ? 0xC0 : 0x60;
+			ctx.drawBorder(11, y - 1, hw + 2, 11, (alpha << 24) | 0xFF1744);
+		}
 		centered(ctx, text, (int) Math.ceil(health) + " / " + (int) maxHealth, 12, y + 2, hw);
 		y += 12;
 
@@ -173,7 +204,7 @@ public final class AbilityHud {
 		float maxMana = Math.max(1f, ClientRoleState.maxEnergy());
 		int mw = Math.min(200, 50 + (int) (maxMana * 0.8f));
 		icon(ctx, GEM, 0, y, 0xFF42A5F5);
-		pill(ctx, 12, y, mw, 8, mana / maxMana, 0xFF82CFFF, 0xFF1565C0, true);
+		pill(ctx, 12, y, mw, 8, manaFill, 0xFF82CFFF, 0xFF1565C0, true);
 		centered(ctx, text, (int) mana + " / " + (int) maxMana, 12, y + 1, mw);
 		y += 11;
 
@@ -190,7 +221,7 @@ public final class AbilityHud {
 			float value = ClientRoleState.resource(role == data.primaryRole());
 			int color = 0xFF000000 | resource.color();
 			boolean ready = value >= RoleResource.EMPOWER_COST;
-			ctx.fill(2, y, 8, y + 4, ready && (age / 4) % 2 == 0 ? 0xFFFFE082 : color);
+			ctx.fill(2, y, 8, y + 4, ready && (!cfg.hudAnimations || (age / 4) % 2 == 0) ? 0xFFFFE082 : color);
 			pill(ctx, 12, y, 70, 4, value / RoleResource.MAX, lighter(color), darker(color), true);
 			small(ctx, text, Text.translatable(resource.translationKey()), 86, y - 1, ready ? 0xFFFFE082 : color);
 			y += 7;
@@ -287,15 +318,15 @@ public final class AbilityHud {
 
 	// ------------------------------------------------------------ Barras
 
-	private static void renderBars(DrawContext ctx, TextRenderer text, RoleSyncPayload data, int w, int h) {
+	private static void renderBars(DrawContext ctx, TextRenderer text, RoleSyncPayload data, int w, int h, float manaFill) {
 		int right = w / 2 - 91 - 30; // deja sitio a la mano secundaria
 		int x = Math.max(4, right - BAR_W);
 		int y = h - 22;
 
 		// Maná
 		float mana = ClientRoleState.energy();
-		float max = ClientRoleState.maxEnergy();
-		bar(ctx, x, y, BAR_W, 9, mana / max, 0xFF2D7DDB, 0xFF5AB0FF);
+		float max = Math.max(1f, ClientRoleState.maxEnergy());
+		bar(ctx, x, y, BAR_W, 9, manaFill, 0xFF2D7DDB, 0xFF5AB0FF);
 		small(ctx, text, Text.translatable("hud.aptitudes.mana", (int) mana, (int) max), x + 3, y + 2, 0xFFFFFFFF);
 
 		// Recursos de rol
@@ -395,7 +426,7 @@ public final class AbilityHud {
 		if (view == null) return;
 		// v24: al lanzar, el icono rebota (×1,35 → ×1) y la ranura destella con el color del rol (350 ms).
 		long since = ClientRoleState.sinceCast(slot);
-		if (since < 350) {
+		if (ClientConfig.get().hudAnimations && since < 350) {
 			float t = since / 350f;
 			float scale = 1f + 0.35f * (1f - t) * (1f - t);
 			int rgb = view.role() != null ? view.role().color() : 0xB388FF;
@@ -443,7 +474,7 @@ public final class AbilityHud {
 		// Destello al quedar lista
 		if (LAST_COOLDOWN[slot] > 0 && cooldown == 0) READY_FLASH[slot] = age + 8;
 		LAST_COOLDOWN[slot] = cooldown;
-		if (READY_FLASH[slot] > age) {
+		if (ClientConfig.get().hudAnimations && READY_FLASH[slot] > age) {
 			int alpha = (READY_FLASH[slot] - age) * 24;
 			ctx.fill(x + 1, y + 1, x + SLOT - 1, y + SLOT - 1, (Math.min(200, alpha) << 24) | 0xFFF3C0);
 			ctx.drawBorder(x - 2, y - 2, SLOT + 4, SLOT + 4, (Math.min(255, alpha + 60) << 24) | 0xFFE082);
@@ -456,7 +487,7 @@ public final class AbilityHud {
 		} else if (ClientRoleState.energy() < view.cost()) {
 			ctx.drawBorder(x, y, SLOT, SLOT, 0xFF537AC8); // falta maná
 		} else if (view.role() != null && empowerReady(data, view.role())) {
-			int pulse = (age / 4) % 2 == 0 ? 0xFFFFE082 : 0xFFFFB300;
+			int pulse = !ClientConfig.get().hudAnimations || (age / 4) % 2 == 0 ? 0xFFFFE082 : 0xFFFFB300;
 			ctx.drawBorder(x - 1, y - 1, SLOT + 2, SLOT + 2, pulse); // se potenciará
 		}
 		String cost = String.valueOf(view.cost());
