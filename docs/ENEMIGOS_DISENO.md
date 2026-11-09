@@ -20,10 +20,10 @@ Cuatro Llaves). Esta especificación recoge lo que se ve en la imagen; las medid
   luminoso en el centro.
 - **Textura:** 128×128.
 
-## Diferencias con las decisiones anteriores (a confirmar)
+## Decisiones sobre las diferencias (autor)
 
-1. **Cascorio Incandescente aparece en la imagen**, pero la Lluvia de brasas usa criaturas del Nether vanilla
-   (decisión del autor). ¿Lo descartamos o lo añadimos como criatura propia de la lluvia?
-2. **Marcas de campeón:** en la imagen son objetos sólidos sobre el mob (un hexágono en el pecho, cuatro cuadrados
-   en el hombro y dos cuadrados en el pie). Lo aprobado es con partículas. Para objetos sólidos hace falta una capa de
-   render, que el proyecto no tiene.
+1. **Cascorio Incandescente: descartado.** La Lluvia de brasas usa criaturas del Nether vanilla.
+2. **Marcas de campeón sólidas: descartadas.** Las marcas de campeón se dibujan con partículas, como ya está aprobado.
+
+El autor tiene una nueva imagen para las ideas que se descartan. Pendiente de recibirla y de decidir si se usa para
+otro enemigo o para las marcas con partículas.
