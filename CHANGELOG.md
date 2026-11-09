@@ -17,6 +17,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 - **v65 — Trance de combate (F2).** La sintonía se llena con golpes críticos a criaturas (+10) y con habilidades (+15).
   Al llegar a 100 se entra en trance durante 10 s con +20 % de daño saliente. Se muestra en la barra de acción. Sin
   validar en partida.
+- **v65 — Pedidos del gremio (F4, servidor).** Estado por mundo (`OrderBookState`), acciones de servidor (`OrderBook`:
+  publicar, entregar, recoger y cancelar) y reglas puras con pruebas (`OrderBookRules`). Aún sin pantalla ni red: no
+  está visible para los jugadores.
 
 ### Corregido
 - **v56 — Generación de jefes.** Torres, santuarios y campamentos guardan sus jefes con el terreno al
