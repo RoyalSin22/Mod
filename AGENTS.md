@@ -109,6 +109,8 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
 - **Trabajas en un worktree propio** (la app de Codex lo crea en `%USERPROFILE%\.codex\worktrees\…`). Al
   terminar, indica en el informe la **ruta del worktree** y la **rama**, para que el autor haga el commit
   y el push ahí antes de cerrar la tarea (si la tarea se cierra sin commit, el trabajo se pierde).
+- **Atribución**: el trailer de sesión (`Claude-Session: …`) es lo único que se añade a los commits. No se
+  incluye ningún nombre o identificador de modelo en commits, PRs, código ni documentación del repositorio.
 - **Una versión por tarea y por rama.** No mezcles en el mismo directorio cambios de dos versiones.
 - **Formato**: respeta `.editorconfig` y `.gitattributes` (LF; Java con tabulación; idiomas JSON con
   2 espacios). **No reformatees archivos existentes**: un cambio de sangría convierte 17 claves nuevas en
@@ -175,3 +177,39 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
 
 Entrega un informe breve con: qué cambiaste y por qué, archivos tocados, resultado real de
 `gradlew build`, riesgos o efectos de balance, y el commit propuesto (sin ejecutarlo).
+
+## 9. Herramientas del proyecto (plugins, skills y conectores)
+
+Lista revisada el 2026-11-09. Úsalas cuando encajen; el resto de herramientas instaladas (Vercel, Expo, Figma,
+Unity, Zapier, Supabase, Cloudflare, datos, diseño) **no aplican a este mod**: no las uses sin pedirlo.
+
+**Disponibles y recomendadas**
+
+| Herramienta | Para qué en este mod | Cuándo |
+|---|---|---|
+| `minecraft-modding` (skill) | Diagnóstico de Loom, mixins, GeckoLib, registro de bloques/objetos y pantallas en negro | Errores de arranque, render o registro |
+| `headlessmc` (skill) | Lanzar cliente o servidor sin pantalla y pruebas de humo en CI (`MC-Runtime-Test`) | Sustituye las capturas manuales con Xvfb; evaluar antes de adoptar |
+| `java-backend-skills:java-unit-testing` | Pruebas JUnit de las reglas puras (estilo y fixtures) | Cualquier regla nueva en `logic/`, `role/`, `boss/`… |
+| `java-backend-skills:java-concurrency` | Ciclo de vida de jefes, temporizadores y colas por servidor | Tareas de servidor con estado en memoria |
+| `superpowers:test-driven-development` | Escribir la prueba de la regla antes del código | Reglas puras nuevas |
+| `superpowers:verification-before-completion` | Exigir la salida real de `./gradlew build` antes de decir que algo funciona | Siempre, antes de informar |
+| `superpowers:using-git-worktrees` / `finishing-a-development-branch` | Worktrees por tarea (política de §4) | Al empezar una tarea |
+| `pr-review-toolkit:silent-failure-hunter`, `type-design-analyzer` | Revisión de catch vacíos y de tipos nuevos | Antes de integrar en `main` |
+| `coderabbit:code-review` | Revisión previa al commit (requiere la CLI de CodeRabbit) | Si la CLI está instalada |
+| `sonarqube:sonar-analyze` | Calidad y seguridad (requiere un proyecto en SonarQube) | Cuando el autor lo active |
+| Context7 (`mcp__Context7__resolve-library-id`, `query-docs`, vía ToolSearch) | Documentación actual de Fabric, Yarn, GeckoLib y Loom | **Antes de escribir una API de Minecraft o de GeckoLib** |
+
+**No conectadas desde esta sesión** (no las des por disponibles; avisa al autor si hacen falta)
+
+- `engineering:github` y `github:github`: fallo de túnel del proxy. Para integrar se usa `git` (funciona) y `gh`
+  no está autenticado (`GH_TOKEN` rechazado).
+- `desktop-commander`: conecta desde esta sesión, pero no hace falta para este mod: usa las herramientas de archivos y `git` del propio repositorio.
+
+**Reglas de uso**
+
+- Antes de usar una API de Fabric, Yarn o GeckoLib, consulta Context7 o el jar en la caché de Gradle; no la
+  deduzcas de memoria (ya hubo nombres de método equivocados).
+- Las herramientas que escriben fuera del repositorio (publicar, PRs, comentarios, Slack, tableros) solo tras
+  autorización explícita del autor.
+- Si una herramienta necesita una cuenta o un host que no está permitido, pide el cambio con el procedimiento
+  del entorno y no improvises credenciales.
