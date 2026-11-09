@@ -3,6 +3,7 @@ package dev.aptitudes.ability;
 import dev.aptitudes.Aptitudes;
 import dev.aptitudes.logic.AttributeApplier;
 import dev.aptitudes.role.Element;
+import dev.aptitudes.role.ElementRules;
 import dev.aptitudes.role.RoleData;
 import dev.aptitudes.role.RoleManager;
 import net.minecraft.entity.EntityType;
@@ -43,6 +44,7 @@ public final class ElementEffects {
 	// ------------------------------------------------------------- Proyectil
 
 	public static boolean bolt(ServerPlayerEntity p, Element element, int r) {
+		element = form(p, element);
 		LivingEntity target = Targeting.raycastLiving(p, 24);
 		Vec3d end = target != null ? target.getPos().add(0, target.getHeight() / 2, 0) : Targeting.lookEnd(p, 24);
 		Targeting.particleLine(p.getServerWorld(), element.particle(), p.getEyePos(), end);
@@ -141,6 +143,7 @@ public final class ElementEffects {
 	// ------------------------------------------------------------- Estallido
 
 	public static boolean burst(ServerPlayerEntity p, Element element, int r) {
+		element = form(p, element);
 		ServerWorld world = p.getServerWorld();
 		double radius = 4 + r;
 		float damage = 3 + r;
@@ -246,6 +249,15 @@ public final class ElementEffects {
 		return element == data.activeElement()
 				? RoleManager.activeRank(player, "elemental_affinity")
 				: RoleManager.activeRank(player, "elemental_dominion");
+	}
+
+	/**
+	 * Forma del elemento según su rango (v65): el Fuego evoluciona a Magma al rango {@link ElementRules#EVOLUTION_RANK}
+	 * del nodo de afinidad. Sin evolución definida devuelve el mismo elemento.
+	 */
+	static Element form(ServerPlayerEntity player, Element element) {
+		String id = ElementRules.form(element.name().toLowerCase(java.util.Locale.ROOT), passiveRank(player, element));
+		return Element.valueOf(id.toUpperCase(java.util.Locale.ROOT));
 	}
 
 	private record ElementAttribute(Element element, RegistryEntry<EntityAttribute> attribute, Operation op,
