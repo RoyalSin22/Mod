@@ -30,6 +30,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   creativa. Cada expedición tiene dos de seis modificadores (niebla, lluvia de brasas, oleada élite, hambre, jefe
   aturdido, botín abundante). Sin validar en partida.
 
+- **v65 — Huevos y Osario.** Los huevos del Osario Quebrado y del Errante Velado aparecen en la pestaña creativa de
+  Aptitudes. El Osario emite ectoplasma y polvo de tierra alrededor de los pies. Sin validar en partida.
+
 ### Corregido
 - **v56 — Generación de jefes.** Torres, santuarios y campamentos guardan sus jefes con el terreno al
   generarse. Esto corrige el bloqueo que podía detener el mundo e impedir abrir o romper bloques.

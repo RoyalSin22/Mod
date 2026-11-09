@@ -5,6 +5,9 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.Registries;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.Registry;
 
 /** Registro del Osario Quebrado (v65). Se llama desde la inicialización del mod. */
@@ -24,5 +27,7 @@ public final class OsarioEntities {
 
 	public static void register() {
 		FabricDefaultAttributeRegistry.register(OSARIO, OsarioEntity.createAttributes());
+		ItemGroupEvents.modifyEntriesEvent(RegistryKey.of(RegistryKeys.ITEM_GROUP, Aptitudes.id("items")))
+				.register(entries -> entries.add(OSARIO_EGG)); // huevo en la pestaña creativa
 	}
 }

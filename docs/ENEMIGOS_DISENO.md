@@ -73,7 +73,8 @@ otro enemigo o para las marcas con partículas.
 - Nombre en los 11 idiomas.
 - **Hecho después:** el barrido `heavy_swipe` se dispara al atacar; huevo de aparición
   (`osario_quebrado_spawn_egg`); entrada en el bestiario, con texto en los 11 idiomas.
-- **Pendiente:** partículas de ectoplasma y de tierra; añadir el huevo a la pestaña creativa; probar en partida.
+- **Hecho en v65:** partículas de ectoplasma y de tierra alrededor de los pies (`tickMovement`); huevo en la pestaña creativa.
+- **Pendiente:** probar en partida.
 
 ## Estado del Errante Velado y del Custodio (implementados, sin validar en partida)
 

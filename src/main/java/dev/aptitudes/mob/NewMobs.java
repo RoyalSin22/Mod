@@ -8,6 +8,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Item.Settings;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.registry.Registries;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.Registry;
 
 /** Registro de los enemigos nuevos de v65: Errante Velado (Niebla) y Custodio de las Cuatro Llaves (templo). */
@@ -32,5 +35,7 @@ public final class NewMobs {
 	public static void register() {
 		FabricDefaultAttributeRegistry.register(ERRANTE, ErranteEntity.createAttributes());
 		FabricDefaultAttributeRegistry.register(CUSTODIO, CustodioEntity.createAttributes());
+		ItemGroupEvents.modifyEntriesEvent(RegistryKey.of(RegistryKeys.ITEM_GROUP, Aptitudes.id("items")))
+				.register(entries -> entries.add(ERRANTE_EGG)); // huevo en la pestaña creativa
 	}
 }

@@ -1,5 +1,9 @@
 package dev.aptitudes.mob;
 
+import net.minecraft.block.Blocks;
+import net.minecraft.particle.BlockStateParticleEffect;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
@@ -55,6 +59,16 @@ public class OsarioEntity extends HostileEntity implements GeoEntity {
 		// El barrido del brazo largo se dispara al atacar (el golpe llega al final de la animación).
 		if (!getWorld().isClient()) triggerAnim("action", "heavy_swipe");
 		return super.tryAttack(target);
+	}
+
+	/** Ectoplasma y polvo de tierra alrededor de los pies (v65): se ve que no descansa. */
+	@Override
+	public void tickMovement() {
+		super.tickMovement();
+		if (!(getWorld() instanceof ServerWorld world) || random.nextInt(4) != 0) return;
+		world.spawnParticles(ParticleTypes.SOUL, getX(), getY() + 0.2, getZ(), 1, 0.2, 0.3, 0.2, 0.01);
+		world.spawnParticles(new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.DIRT.getDefaultState()),
+				getX(), getY() + 0.1, getZ(), 2, 0.3, 0.05, 0.3, 0);
 	}
 
 	@Override
