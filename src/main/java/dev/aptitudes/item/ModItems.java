@@ -228,6 +228,7 @@ public final class ModItems {
 						entries.add(ULTIMATE_CORE);
 						entries.add(GUIDE_BOOK);
 						entries.add(SOUL_SHARD);
+						entries.add(dev.aptitudes.event.Expeditions.TOKEN); // F5: ficha de expedición
 						entries.add(REBIRTH_OFFERING);
 						entries.add(ARMORY_VOUCHER);
 						entries.add(ELITE_ESSENCE);

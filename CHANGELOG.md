@@ -26,7 +26,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   la nueva mancha, en el lugar de la muerte. Antes se perdía entera. Sin validar en partida.
 - **v65 — Expediciones de Amenaza (F5, primera parte).** La ficha de expedición inicia un recorrido de cuatro módulos
   (combate, élite, jefe, evento o recolección de fragmentos) dentro de 48 bloques, con límite de 15 minutos y
-  recompensa provisional. Los 6 modificadores y las expediciones de grupo quedan pendientes. Sin validar en partida.
+  recompensa provisional. Los miembros de la party en la zona comparten la expedición. La ficha está en la pestaña
+  creativa. Los 6 modificadores quedan pendientes. Sin validar en partida.
 
 ### Corregido
 - **v56 — Generación de jefes.** Torres, santuarios y campamentos guardan sus jefes con el terreno al
