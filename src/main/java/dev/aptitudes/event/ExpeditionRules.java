@@ -18,7 +18,7 @@ public final class ExpeditionRules {
 
 	/** Modificadores disponibles. Valores de catálogo, no de balance. */
 	public static final List<String> MODIFIERS = List.of(
-			"fog", "ember_rain", "elite_surge", "reduced_healing", "boss_stagger", "loot_boost");
+			"fog", "ember_rain", "elite_surge", "hunger", "boss_stagger", "loot_boost");
 
 	/** Módulos del centro entre el combate inicial y el jefe final. */
 	private static final List<Module> MIDDLE = List.of(Module.PUZZLE, Module.ELITE, Module.EVENT);

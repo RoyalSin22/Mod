@@ -30,6 +30,8 @@ public final class GlyphRules {
 			case "frost" -> List.of(new Point(0, 0), new Point(0, 1), new Point(0, -1), new Point(0.87, 0.5), new Point(0.87, -0.5), new Point(-0.87, 0.5), new Point(-0.87, -0.5));
 			case "blinking" -> List.of(new Point(-1.2, 1), new Point(-1.2, 0), new Point(-1.2, -1), new Point(1.2, 1), new Point(1.2, 0), new Point(1.2, -1));
 			case "giant" -> List.of(new Point(0, 1), new Point(0.7, 0.7), new Point(1, 0), new Point(0.7, -0.7), new Point(0, -1), new Point(-0.7, -0.7), new Point(-1, 0), new Point(-0.7, 0.7));
+			case "thorny" -> List.of(new Point(0, 1), new Point(0.3, 0.3), new Point(1, 0), new Point(0.3, -0.3), new Point(0, -1), new Point(-0.3, -0.3), new Point(-1, 0), new Point(-0.3, 0.3));
+			case "searing" -> List.of(new Point(0, 1), new Point(0.87, -0.5), new Point(-0.87, -0.5), new Point(0, 0));
 			default -> List.of();
 		};
 	}

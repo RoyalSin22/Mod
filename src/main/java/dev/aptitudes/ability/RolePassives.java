@@ -189,7 +189,10 @@ public final class RolePassives {
 	public static float modifyOutgoingDamage(LivingEntity target, DamageSource source, float amount) {
 		if (amount <= 0 || target.getWorld().isClient()) return amount;
 		// F2: el trance aumenta el daño que hace el jugador.
-		if (source.getAttacker() instanceof ServerPlayerEntity attacker) amount *= Trance.damageMultiplier(attacker);
+		if (source.getAttacker() instanceof ServerPlayerEntity attacker) {
+			amount *= Trance.damageMultiplier(attacker);
+			amount *= dev.aptitudes.event.Expeditions.damageMultiplier(attacker, target); // F5: jefe aturdido
+		}
 		amount = dev.aptitudes.alchemy.AlchemyEffects.incoming(target, source, amount);
 		// Sendas – daño entrante al jugador (reducción, espinas).
 		if (target instanceof ServerPlayerEntity victim) {

@@ -12,6 +12,8 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,10 +25,12 @@ import net.minecraft.registry.Registry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -36,12 +40,14 @@ import java.util.UUID;
 
 /**
  * Expediciones de Amenaza (F5). Un jugador usa la ficha de expedición en el Overworld: se fija el punto de inicio, la
- * lista de módulos (semilla del mundo y del día) y el grupo: los miembros de la party que están en la zona. Cada módulo
- * se completa con una acción de cualquier miembro dentro de la zona; al terminar todos, hay recompensa para cada uno.
- * Caducan a los 15 minutos. Reglas puras en {@link ExpeditionRules} y {@link ExpeditionProgressRules}.
+ * lista de módulos y dos modificadores (semilla del mundo y del día), y el grupo: los miembros de la party que están en
+ * la zona. Cada módulo se completa con una acción de cualquier miembro dentro de la zona; al terminar todos, hay
+ * recompensa para cada uno. Caducan a los 15 minutos. Reglas puras en {@link ExpeditionRules} y
+ * {@link ExpeditionProgressRules}.
  *
- * <p>Pendiente: los modificadores del catálogo no se aplican todavía. La recolección cuenta solo los fragmentos del
- * dueño.</p>
+ * <p>Efectos de los modificadores (decisión provisional, a validar): niebla = lentitud I a los miembros en la zona;
+ * lluvia de brasas = fuego de 2 s; oleada élite = Fuerza I a los élites de la zona; hambre = Hambre I; jefe aturdido =
+ * +20 % de daño a los jefes de la zona; botín abundante = recompensa doble.</p>
  */
 public final class Expeditions {
 	/** Ficha que inicia la expedición. Aparece en la pestaña creativa de Aptitudes. */
@@ -50,6 +56,10 @@ public final class Expeditions {
 
 	/** Dificultad fija del MVP: 4 módulos. */
 	private static final int DIFFICULTY = 1;
+	/** Modificadores por expedición. */
+	private static final int MODIFIER_COUNT = 2;
+	/** Multiplicador de daño a los jefes con «jefe aturdido». */
+	private static final float BOSS_STAGGER_DAMAGE = 1.2f;
 
 	private Expeditions() {}
 
@@ -107,9 +117,12 @@ public final class Expeditions {
 		Expedition expedition = new Expedition(player.getUuid(), player.getX(), player.getY(), player.getZ(), modules,
 				overworld.getTime());
 		for (ServerPlayerEntity member : group) expedition.members.add(member.getUuid());
+		expedition.modifiers.addAll(ExpeditionRules.modifiers(seed, MODIFIER_COUNT));
 		state.put(expedition);
 		say(player.getServer(), expedition, Text.translatable("expedition.aptitudes.started", modules.size(),
 				moduleName(modules.get(0))).formatted(Formatting.GOLD), true);
+		say(player.getServer(), expedition, Text.translatable("expedition.aptitudes.modifiers", modifierNames(expedition))
+				.formatted(Formatting.GRAY), false);
 		return true;
 	}
 
@@ -141,6 +154,17 @@ public final class Expeditions {
 		advance(world.getServer(), e, state);
 	}
 
+	/**
+	 * Multiplicador de daño que aporta la expedición del atacante: «jefe aturdido» en un jefe de la zona. Lo usa
+	 * {@code RolePassives.modifyOutgoingDamage}.
+	 */
+	public static float damageMultiplier(ServerPlayerEntity attacker, LivingEntity target) {
+		if (!(attacker.getWorld() instanceof ServerWorld world) || !isBoss(target)) return 1f;
+		Expedition e = ExpeditionState.get(world.getServer().getOverworld()).get(attacker.getUuid());
+		if (e == null || !e.modifiers.contains("boss_stagger")) return 1f;
+		return ExpeditionProgressRules.inZone(target.squaredDistanceTo(e.x, e.y, e.z)) ? BOSS_STAGGER_DAMAGE : 1f;
+	}
+
 	private static void advance(MinecraftServer server, Expedition e, ExpeditionState state) {
 		e.progress++;
 		if (e.progress >= ExpeditionProgressRules.goal(e.current())) {
@@ -155,9 +179,11 @@ public final class Expeditions {
 		e.progress = 0;
 		if (e.index >= e.modules.size()) {
 			state.remove(e.owner);
-			for (ServerPlayerEntity member : onlineMembers(server, e)) reward(member);
-			say(server, e, Text.translatable("expedition.aptitudes.complete", ExpeditionProgressRules.REWARD_EMERALDS,
-					ExpeditionProgressRules.REWARD_SOUL_SHARDS).formatted(Formatting.GREEN), false);
+			int multiplier = e.modifiers.contains("loot_boost") ? 2 : 1;
+			for (ServerPlayerEntity member : onlineMembers(server, e)) reward(member, multiplier);
+			say(server, e, Text.translatable("expedition.aptitudes.complete",
+					ExpeditionProgressRules.REWARD_EMERALDS * multiplier,
+					ExpeditionProgressRules.REWARD_SOUL_SHARDS * multiplier).formatted(Formatting.GREEN), false);
 			return;
 		}
 		state.markDirty();
@@ -165,7 +191,10 @@ public final class Expeditions {
 				moduleName(e.current())).formatted(Formatting.GOLD), true);
 	}
 
-	/** Cada 20 ticks: caduca las expediciones y cuenta los fragmentos de alma del dueño en la zona (módulo de puzle). */
+	/**
+	 * Cada 20 ticks: caduca las expediciones, aplica los efectos de los modificadores y cuenta la recolección del grupo
+	 * (fragmentos de alma de los miembros conectados, si alguno está en la zona).
+	 */
 	private static void tick(MinecraftServer server) {
 		ExpeditionState state = ExpeditionState.get(server.getOverworld());
 		long now = server.getOverworld().getTime();
@@ -175,11 +204,18 @@ public final class Expeditions {
 				say(server, e, Text.translatable("expedition.aptitudes.timeout").formatted(Formatting.GRAY), true);
 				continue;
 			}
-			ServerPlayerEntity owner = server.getPlayerManager().getPlayer(e.owner);
-			if (owner == null) continue;
-			int shards = countItem(owner, ModItems.SOUL_SHARD);
-			if (e.current() == ExpeditionRules.Module.PUZZLE && shards > e.shardsSeen
-					&& ExpeditionProgressRules.inZone(owner.squaredDistanceTo(e.x, e.y, e.z))) {
+			List<ServerPlayerEntity> members = onlineMembers(server, e);
+			boolean anyInZone = false;
+			int shards = 0;
+			for (ServerPlayerEntity member : members) {
+				shards += countItem(member, ModItems.SOUL_SHARD);
+				if (ExpeditionProgressRules.inZone(member.squaredDistanceTo(e.x, e.y, e.z))) {
+					anyInZone = true;
+					applyPlayerEffects(member, e);
+				}
+			}
+			if (e.modifiers.contains("elite_surge")) applyEliteSurge(server, e);
+			if (e.current() == ExpeditionRules.Module.PUZZLE && anyInZone && shards > e.shardsSeen) {
 				e.progress = Math.min(ExpeditionProgressRules.goal(e.current()), e.progress + (shards - e.shardsSeen));
 				if (e.progress >= ExpeditionProgressRules.goal(e.current())) {
 					e.shardsSeen = shards; // antes de cambiar de módulo: lo ya contado no puntúa en el siguiente
@@ -190,6 +226,28 @@ public final class Expeditions {
 			e.shardsSeen = shards;
 		}
 		state.markDirty();
+	}
+
+	private static void applyPlayerEffects(ServerPlayerEntity player, Expedition e) {
+		if (e.modifiers.contains("fog")) {
+			player.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 0));
+		}
+		if (e.modifiers.contains("hunger")) {
+			player.addStatusEffect(new StatusEffectInstance(StatusEffects.HUNGER, 60, 0));
+		}
+		if (e.modifiers.contains("ember_rain") && !player.isFireImmune()) {
+			player.setOnFireFor(2);
+		}
+	}
+
+	private static void applyEliteSurge(MinecraftServer server, Expedition e) {
+		ServerWorld world = server.getOverworld();
+		Box zone = new Box(e.x - ExpeditionProgressRules.ZONE_RADIUS, e.y - ExpeditionProgressRules.ZONE_RADIUS,
+				e.z - ExpeditionProgressRules.ZONE_RADIUS, e.x + ExpeditionProgressRules.ZONE_RADIUS,
+				e.y + ExpeditionProgressRules.ZONE_RADIUS, e.z + ExpeditionProgressRules.ZONE_RADIUS);
+		for (MobEntity mob : world.getEntitiesByClass(MobEntity.class, zone, Elites::isElite)) {
+			mob.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 60, 0));
+		}
 	}
 
 	// ----------------------------------------------------------- Utilidades
@@ -214,9 +272,19 @@ public final class Expeditions {
 		for (ServerPlayerEntity member : onlineMembers(server, e)) member.sendMessage(text, actionBar);
 	}
 
-	private static void reward(ServerPlayerEntity player) {
-		player.getInventory().offerOrDrop(new ItemStack(Items.EMERALD, ExpeditionProgressRules.REWARD_EMERALDS));
-		player.getInventory().offerOrDrop(new ItemStack(ModItems.SOUL_SHARD, ExpeditionProgressRules.REWARD_SOUL_SHARDS));
+	private static Text modifierNames(Expedition e) {
+		MutableText out = Text.empty();
+		for (int i = 0; i < e.modifiers.size(); i++) {
+			if (i > 0) out.append(", ");
+			out.append(Text.translatable("expedition.aptitudes.modifier." + e.modifiers.get(i)));
+		}
+		return out;
+	}
+
+	private static void reward(ServerPlayerEntity player, int multiplier) {
+		player.getInventory().offerOrDrop(new ItemStack(Items.EMERALD, ExpeditionProgressRules.REWARD_EMERALDS * multiplier));
+		player.getInventory().offerOrDrop(new ItemStack(ModItems.SOUL_SHARD,
+				ExpeditionProgressRules.REWARD_SOUL_SHARDS * multiplier));
 	}
 
 	private static boolean isBoss(Entity entity) {

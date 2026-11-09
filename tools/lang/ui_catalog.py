@@ -1740,6 +1740,15 @@ entity.aptitudes.faceless_colossus¦O Colosso Sem Rosto¦Le Colosse sans visage�
 entity.aptitudes.osario_quebrado¦Ossuário Quebrado¦Ossuaire brisé¦Zerbrochenes Beinhaus
 item.aptitudes.osario_quebrado_spawn_egg¦Ovo de aparição do Osario Quebrado¦Œuf d'apparition de l'Ossuaire brisé¦Erscheinungsei des Zerbrochenen Beinhauses
 bestiary.aptitudes.osario_quebrado.tip¦Osso e terra que não descansam. Arrasta um braço e avança ao te ver.¦Os et terre qui refusent le repos. Il traîne un bras et charge dès qu'il vous voit.¦Knochen und Erde, die nicht ruhen wollen. Er schleift einen Arm und stürmt los, sobald er dich sieht.
+elite.aptitudes.thorny¦Espinhoso¦Épineux¦Dornig
+elite.aptitudes.searing¦Abrasador¦Brûlant¦Versengend
+expedition.aptitudes.modifier.fog¦Névoa¦Brouillard¦Nebel
+expedition.aptitudes.modifier.ember_rain¦Chuva de brasas¦Pluie de braises¦Glutregen
+expedition.aptitudes.modifier.elite_surge¦Onda de elites¦Déferlante d'élites¦Elitenwelle
+expedition.aptitudes.modifier.hunger¦Fome¦Faim¦Hunger
+expedition.aptitudes.modifier.boss_stagger¦Chefe atordoado¦Boss étourdi¦Boss betäubt
+expedition.aptitudes.modifier.loot_boost¦Saque abundante¦Butin abondant¦Reiche Beute
+expedition.aptitudes.modifiers¦Modificadores: %s¦Modificateurs : %s¦Modifikatoren: %s
 item.aptitudes.expedition_token¦Ficha de expedição¦Jeton d'expédition¦Expeditionsmarke
 expedition.aptitudes.started¦Expedição iniciada com %s módulos. Primeiro: %s.¦Expédition lancée avec %s modules. Premier : %s.¦Expedition mit %s Modulen gestartet. Erstes: %s.
 expedition.aptitudes.module_next¦Módulo %s/%s: %s.¦Module %s/%s : %s.¦Modul %s/%s: %s.

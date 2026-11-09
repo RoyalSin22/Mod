@@ -15,10 +15,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GlyphRulesTest {
 	private static final List<String> AFFIXES = List.of("fast", "armored", "vampiric", "brutal", "regenerating",
-			"explosive", "frost", "blinking", "giant");
+			"explosive", "frost", "blinking", "giant", "thorny", "searing");
 
 	@ParameterizedTest
-	@ValueSource(strings = {"fast", "armored", "vampiric", "brutal", "regenerating", "explosive", "frost", "blinking", "giant"})
+	@ValueSource(strings = {"fast", "armored", "vampiric", "brutal", "regenerating", "explosive", "frost", "blinking", "giant", "thorny", "searing"})
 	void everyAffixHasAVisibleShape(String affix) {
 		assertTrue(GlyphRules.shape(affix).size() >= 3);
 	}

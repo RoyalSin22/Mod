@@ -64,7 +64,7 @@ import java.util.UUID;
 public final class Elites {
 	/** Modificadores de élite. */
 	public enum Mod {
-		FAST, ARMORED, VAMPIRIC, BRUTAL, REGENERATING, EXPLOSIVE, FROST, BLINKING, GIANT;
+		FAST, ARMORED, VAMPIRIC, BRUTAL, REGENERATING, EXPLOSIVE, FROST, BLINKING, GIANT, THORNY, SEARING;
 
 		public String tag() {
 			return Aptitudes.MOD_ID + ".elite." + name().toLowerCase(Locale.ROOT);
@@ -188,12 +188,20 @@ public final class Elites {
 		if (amount <= 0 || target.getWorld().isClient()) return amount;
 		amount = dev.aptitudes.logic.ThreatManager.modifyDamage(target, source, amount);
 		Entity attacker = source.getAttacker();
+		// Espinoso (v65): devuelve el 15 % del daño recibido al atacante. La rama no se reentra: el daño de espinas
+		// lo recibe un jugador, que no es élite.
+		if (target instanceof MobEntity thorny && isElite(thorny) && has(thorny, Mod.THORNY)
+				&& attacker instanceof LivingEntity living && living != target) {
+			living.damage(target.getDamageSources().thorns(target), amount * 0.15f);
+		}
 		if (attacker instanceof MobEntity elite && isElite(elite)) {
 			if (has(elite, Mod.VAMPIRIC)) elite.heal(amount * 0.3f);
 			if (has(elite, Mod.FROST)) {
 				target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 1));
 				target.setFrozenTicks(Math.max(target.getFrozenTicks(), target.getMinFreezeDamageTicks() + 20));
 			}
+			// Abrasador (v65): prende fuego a quien golpea durante 3 s.
+			if (has(elite, Mod.SEARING)) target.setOnFireFor(3);
 		}
 		if (target instanceof MobEntity elite && isElite(elite) && has(elite, Mod.BLINKING)
 				&& elite.getWorld() instanceof ServerWorld world) {

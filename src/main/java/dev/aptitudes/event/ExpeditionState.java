@@ -33,6 +33,8 @@ public final class ExpeditionState extends PersistentState {
 		public final List<ExpeditionRules.Module> modules;
 		/** Todos los que comparten la expedición (incluye al dueño). */
 		public final Set<UUID> members = new LinkedHashSet<>();
+		/** Modificadores activos (ids de {@link ExpeditionRules#MODIFIERS}). */
+		public final List<String> modifiers = new ArrayList<>();
 		/** Módulo actual (índice en {@link #modules}). */
 		public int index;
 		/** Acciones hechas en el módulo actual. */
@@ -105,6 +107,9 @@ public final class ExpeditionState extends PersistentState {
 			NbtList members = new NbtList();
 			for (UUID m : e.members) members.add(NbtString.of(m.toString()));
 			entry.put("members", members);
+			NbtList mods = new NbtList();
+			for (String m : e.modifiers) mods.add(NbtString.of(m));
+			entry.put("modifiers", mods);
 			list.add(entry);
 		}
 		nbt.put("expeditions", list);
@@ -140,6 +145,11 @@ public final class ExpeditionState extends PersistentState {
 				} catch (IllegalArgumentException ignored) {
 					// Miembro corrupto: se omite.
 				}
+			}
+			NbtList mods = entry.getList("modifiers", NbtElement.STRING_TYPE);
+			for (int j = 0; j < Math.min(mods.size(), 3); j++) {
+				String m = mods.getString(j);
+				if (ExpeditionRules.MODIFIERS.contains(m)) e.modifiers.add(m);
 			}
 			state.active.put(e.owner, e);
 		}

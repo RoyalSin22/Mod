@@ -68,6 +68,8 @@ public final class EliteGlyphs {
 			case "regenerating" -> ParticleTypes.HAPPY_VILLAGER;
 			case "explosive" -> ParticleTypes.SMOKE;
 			case "frost" -> ParticleTypes.SNOWFLAKE;
+			case "thorny" -> ParticleTypes.ENCHANTED_HIT;
+			case "searing" -> ParticleTypes.FLAME;
 			case "blinking" -> ParticleTypes.PORTAL;
 			default -> ParticleTypes.END_ROD;
 		};
