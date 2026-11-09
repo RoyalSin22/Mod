@@ -112,8 +112,9 @@ Pendiente:
   Limitaciones: la instancia viva solo se busca en el mundo donde se usó el sello; un jefe que nunca se derrotó
   también puede invocarse con el sello. **Paso 3 hecho** (sin commit): textura de cada sello (`tools/textures/gen_items.py`),
   modelo, receta de gremio (8 Fragmentos de alma y el material propio en la cuadrícula 3×3) y nombres en los 11 idiomas
-  (`ui_catalog.py` y generadores con `--check`). Pendiente: descripción (tooltip), lista de objetos creativos y
-  validación en partida de la receta y del cobro.
+  (`ui_catalog.py` y generadores con `--check`). Añadidos a la pestaña creativa (sin commit). Sin descripción (tooltip): el
+  proyecto no tiene ese patrón para objetos, así que no lo introduzco sin decisión tuya. Pendiente: validación en partida
+  de la receta y del cobro.
 - C2 (hecho en código, sin commit): `temple/TempleRecurrenceRules` (puro). Un templo resuelto no vuelve antes de 3
   días; luego la probabilidad sube linealmente hasta 25 % en 6 días. La tirada es determinista (0–999). Cada jugador
   reclama una vez por instancia (`claim`/`canClaim`). Provisional. Pendiente: el punto 3 del plan (probabilidad por
@@ -128,6 +129,28 @@ Pendiente:
 - Game Tests mínimos: registro, persistencia y networking. El autor los prueba; yo reproduzco los fallos.
 - Árbol de habilidades en datapack (diseño y migración a planificar tras la fase B).
 - Desglose de build para depuración y para el jugador.
+
+### Fase F — Contenido nuevo aprobado por el autor (informe de investigación)
+
+Aprobado: cambios de balance de la mancha de XP y de los afijos; provocación controlada por la IA de los mobs; pedidos
+entre jugadores; expediciones. Orden de implementación, cada paso con su validación:
+
+- **F1 — Provocación (agro) en élites y campeones.** Un mob con provocación prioriza al jugador que la aplica. Solo
+  élites y campeones en la primera versión; no afecta a jefes. Pendiente: radio y duración (provisionales).
+- **F2 — Trance de combate (sintonía).** Barra de sintonía que se llena con golpes críticos y habilidades; al llenarse,
+  una ventana corta de burst. Se apoya en los combos existentes (`Combos`, `ComboCounter`). Pendiente: duración y
+  cuánto se llena.
+- **F3 — Afijos y mancha de XP (cambios de balance aprobados).** Ampliar los afijos de élites y degradar la mancha
+  de XP un 25 % si el jugador vuelve a morir antes de recuperarla. Valores provisionales, a validar en partida.
+- **F4 — Pedidos del gremio entre jugadores.** Un jugador publica un pedido; otro lo completa a cambio de comisión. El
+  servidor es dueño del estado del pedido. Algunos pedidos pueden exigir hasta 4 o 5 jugadores participando (interpretado
+  como requisito de grupo por pedido, no global). Pendiente: comisión y reglas de reparto.
+- **F5 — Expediciones de Amenaza.** Desafíos de 10–20 minutos con módulos hechos a mano (combate, puzle, élite, evento,
+  jefe) y modificadores rotativos. Sin generación procedural libre. Depende de F1 y F3. Pendiente: el número de módulos
+  y el catálogo de modificadores.
+
+Descartado del informe por solapamiento: estados elementales (ya hay fusiones), auras, recursos por rol y loadouts en la
+hoguera (ya existen en parte). Reminiscencia de jefes queda pendiente hasta cerrar la reinvocación en partida.
 
 ## 5. Ideas descartadas o aplazadas
 

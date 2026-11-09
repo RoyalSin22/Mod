@@ -232,6 +232,9 @@ public final class ModItems {
 						entries.add(ARMORY_VOUCHER);
 						entries.add(ELITE_ESSENCE);
 						entries.add(CHAMPION_HEART);
+						entries.add(FACELESS_COLOSSUS_SEAL);
+						entries.add(DISMANTLED_GUARDIAN_SEAL);
+						entries.add(ANCIENT_AUTOMATON_SEAL);
 						entries.add(RUNE_FLAME);
 						entries.add(RUNE_LEECH);
 						entries.add(RUNE_SWIFT);
