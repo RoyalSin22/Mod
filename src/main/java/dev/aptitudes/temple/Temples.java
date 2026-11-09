@@ -22,8 +22,6 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -121,18 +119,14 @@ public final class Temples {
 	/** Hace aparecer al guardián del sello (élite campeón, más vida por anillo) y devuelve su id. */
 	@Nullable
 	static UUID spawnGuardian(ServerWorld world, TempleSealBlockEntity seal) {
-		EntityType<? extends MobEntity> type = switch (TempleRules.guardianKind(seal.ring)) {
-			case 0 -> EntityType.VINDICATOR;
-			case 1 -> EntityType.WITHER_SKELETON;
-			default -> EntityType.EVOKER;
-		};
+		// v65: el guardián del sello es el Custodio de las Cuatro Llaves; el bono de vida por anillo se mantiene.
+		EntityType<? extends MobEntity> type = dev.aptitudes.mob.NewMobs.CUSTODIO;
 		MobEntity mob = type.create(world);
 		if (mob == null) return null;
 		BlockPos at = seal.getPos().add(seal.guardianSpawn);
 		mob.refreshPositionAndAngles(at.getX() + 0.5, at.getY(), at.getZ() + 0.5, world.random.nextFloat() * 360f, 0);
 		mob.initialize(world, world.getLocalDifficulty(at), SpawnReason.EVENT, null);
 		Elites.makeElite(mob, true, world.random);
-		if (type == EntityType.WITHER_SKELETON) mob.equipStack(EquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
 		for (EquipmentSlot slot : EquipmentSlot.values()) mob.setEquipmentDropChance(slot, 0f);
 		var health = mob.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
 		if (health != null) {

@@ -74,3 +74,15 @@ otro enemigo o para las marcas con partículas.
 - **Hecho después:** el barrido `heavy_swipe` se dispara al atacar; huevo de aparición
   (`osario_quebrado_spawn_egg`); entrada en el bestiario, con texto en los 11 idiomas.
 - **Pendiente:** partículas de ectoplasma y de tierra; añadir el huevo a la pestaña creativa; probar en partida.
+
+## Estado del Errante Velado y del Custodio (implementados, sin validar en partida)
+
+- **Errante Velado:** modelo, animaciones y textura 64×64 generados por `tools/models/gen_mob_models.py` (`--check`).
+  Entidad `mob/ErranteEntity` (cuerpo a cuerpo, barrido `rasgado` al atacar), registro en `mob/NewMobs`, huevo
+  `errante_velado_spawn_egg`, entrada en el bestiario y nombres en los 11 idiomas.
+- **Reparto de la Niebla de almas** (`mob/FogMobRules`, pruebas en `FogMobRulesTest`): Osario 10 %, Errante 10 %,
+  el resto son no muertos vanilla.
+- **Custodio de las Cuatro Llaves:** modelo y textura 128×128 generados; entidad `mob/CustodioEntity` (80 de vida,
+  inmune al fuego, no desaparece). Sustituye al guardián vanilla de los templos sellados en `temple/Temples`.
+  Nombre en los 11 idiomas. Pendiente: su propio bono de vida y su comportamiento en partida.
+- Renderizadores registrados en `client/render/MobRenderers`.

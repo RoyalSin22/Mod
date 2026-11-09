@@ -5,6 +5,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Añadido
+- **v65 — Enemigos nuevos.** El Errante Velado aparece en la Niebla de almas (10 % de las apariciones, junto al
+  Osario Quebrado con otro 10 %) y tiene huevo de aparición y entrada en el bestiario. El Custodio de las Cuatro
+  Llaves sustituye al guardián vanilla de los templos sellados. Ambos tienen modelo y animaciones generados por
+  `tools/models/gen_mob_models.py` (`--check`). Sin validar en partida.
+
 ### Corregido
 - **v56 — Generación de jefes.** Torres, santuarios y campamentos guardan sus jefes con el terreno al
   generarse. Esto corrige el bloqueo que podía detener el mundo e impedir abrir o romper bloques.

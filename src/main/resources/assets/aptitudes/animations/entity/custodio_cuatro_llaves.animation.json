@@ -1,0 +1,127 @@
+{
+ "format_version": "1.8.0",
+ "animations": {
+  "animation.custodio_cuatro_llaves.idle": {
+   "animation_length": 2.0,
+   "bones": {
+    "body": {
+     "rotation": {
+      "0": [
+       0,
+       0,
+       0
+      ],
+      "1": [
+       0,
+       3,
+       0
+      ],
+      "2": [
+       0,
+       0,
+       0
+      ]
+     }
+    }
+   },
+   "loop": true
+  },
+  "animation.custodio_cuatro_llaves.walk": {
+   "animation_length": 1.2,
+   "bones": {
+    "leg_left": {
+     "rotation": {
+      "0": [
+       -12,
+       0,
+       0
+      ],
+      "0.6": [
+       12,
+       0,
+       0
+      ],
+      "1.2": [
+       -12,
+       0,
+       0
+      ]
+     }
+    },
+    "leg_right": {
+     "rotation": {
+      "0": [
+       12,
+       0,
+       0
+      ],
+      "0.6": [
+       -12,
+       0,
+       0
+      ],
+      "1.2": [
+       12,
+       0,
+       0
+      ]
+     }
+    }
+   },
+   "loop": true
+  },
+  "animation.custodio_cuatro_llaves.keys_turn": {
+   "animation_length": 1.5,
+   "bones": {
+    "arm_left": {
+     "rotation": {
+      "0": [
+       0,
+       0,
+       0
+      ],
+      "0.7": [
+       40,
+       0,
+       -30
+      ],
+      "1": [
+       -30,
+       0,
+       20
+      ],
+      "1.5": [
+       0,
+       0,
+       0
+      ]
+     }
+    },
+    "arm_right": {
+     "rotation": {
+      "0": [
+       0,
+       0,
+       0
+      ],
+      "0.7": [
+       40,
+       0,
+       30
+      ],
+      "1": [
+       -30,
+       0,
+       -20
+      ],
+      "1.5": [
+       0,
+       0,
+       0
+      ]
+     }
+    }
+   }
+  }
+ }
+}
