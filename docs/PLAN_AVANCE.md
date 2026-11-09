@@ -157,7 +157,7 @@ entre jugadores; expediciones. Orden de implementación, cada paso con su valida
   y el catálogo de modificadores.
 
 **Estado de la fase F (reglas puras con pruebas, sin cablear al juego):**
-- **F1 Provocación:** `ability/TauntRules`. Rol aprobado: **Paladín**. Pendiente: cablear la provocación al Paladín y a los mobs.
+- **F1 Provocación:** `ability/TauntRules` y `ability/Taunts`. Cableada a **Consagración** del Paladín: al usarla, los élites y campeones cercanos (nunca jefes) cambian su objetivo al Paladín durante 6 s. Pendiente: validar en partida el aspecto y el sonido.
 - **F2 Trance:** `ability/TranceRules`. Decisión mía: sintonía de 100; +10 por crítico, +15 por habilidad; trance de 10 s.
 - **F3 Mancha de XP:** `souls/SoulStainRules`. Al volver a morir antes de recuperarla, pierde un 25 %. Pendiente: afijos nuevos (nombres por decidir) y cablear la mancha.
 - **F4 Pedidos del gremio:** `contract/OrderRules`. Decisión mía: comisión del 10 %; pedidos de nivel 1–4 exigen 1, 2, 4 o 5 jugadores; el reparto es exacto. Pendiente: cablear pedidos en la Mesa del gremio.

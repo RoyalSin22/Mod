@@ -265,6 +265,7 @@ final class AbilitiesExtra {
 		// ---------------- Paladín ----------------
 		// Consagración: suelo sagrado 6 s que daña enemigos (doble a no-muertos) y cura aliados.
 		Abilities.register("consecration", (p, r) -> {
+			Taunts.apply(p); // F1: provoca a los élites y campeones cercanos (no a los jefes)
 			Vec3d center = p.getPos();
 			double radius = 4 + 0.5 * r;
 			AbilityState.repeat(server(p), 6, 20, i -> {
