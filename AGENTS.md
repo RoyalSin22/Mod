@@ -9,6 +9,8 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 - Mod de Minecraft **Aptitudes**: Fabric, Minecraft **1.21.1**, Java **21**, paquete `dev.aptitudes`.
 - Versiones fijadas (no las cambies): Loom 1.10.5, Yarn `1.21.1+build.3`, Fabric Loader 0.16.14,
   Fabric API `0.116.6+1.21.1`, Gradle 8.14.3. Mod Menu `11.0.3` solo como `modCompileOnly` (v40, opcional).
+  **GeckoLib `4.7.7`** (v63, aprobado por el autor): dependencia **obligatoria** para los jefes animados
+  (`modImplementation` sin transitivas, repositorio `dl.cloudsmith.io`); no la subas a 4.8+ (pide Loader 0.17).
 - Compilar y probar: `.\gradlew.bat build` en Windows (o `./gradlew build`). **Nunca digas que algo
   compila o que las pruebas pasan sin haberlo ejecutado**; si no pudiste ejecutarlo, dilo.
 - Documentación viva: `CHANGELOG.md` (añade una entrada por versión), `README.md`, `docs/ROADMAP_APTITUDES.md` (estado real y pendientes),
@@ -37,6 +39,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 | Armas 3D en la mano (v62, K4 A1): icono 2D en la interfaz y modelo vóxel en mano, suelo y marcos | `tools/models/gen_weapon_models.py` (lee las plantillas de `gen_items.py`; no editar los `*_3d.json`), cliente `client/model/HandheldModels` y `HandheldModel` (API de carga de modelos y de renderizado de Fabric) |
 | Tooltips de objetos (v62, K4 A6): sello de rol, daño por segundo, cifras de disparo y rareza | `item/RoleGlyphs` (fuente `aptitudes:role_icons` de `tools/textures/gen_role_glyphs.py`), `logic/ItemStatRules` (puro, JUnit), cliente `ItemTooltips`; texturas con detalle en `gen_items.py` (`SHINY`, `GRAINED`) |
 | Templos sellados y Vasos de vida (v64, K6): puzle por anillo de Amenaza, guardián, llave del templo, Relicario y +1 corazón por vaso | `temple/TempleRules` y `VesselRules` (puros, JUnit), `Temples` (registro, guardián, vida extra), `TempleSealBlockEntity`, `ReliquaryBlockEntity`, `LifeVesselItem` + `LifeVesselState`, attachment `LIFE_VESSELS` (`copyOnDeath`), `world/TempleFeature`; texturas con `tools/textures/gen_temple_blocks.py` y `gen_items.py`; campo `lifeVesselMax` |
+| Jefes animados con GeckoLib (v63, C4): base con fases, ataques avisados y animaciones disparadas; Coloso Sin Rostro jugable | `boss/AnimatedBossEntity`, `BossMoveRules` (puro, JUnit), `FacelessColossusEntity`, `BossEntities`; cliente `client/render/BossRenderers`; recursos de prueba con `tools/models/gen_boss_models.py` (`--check`); diseño y contrato de modelos en `docs/V63_JEFES.md` |
 | Efectos de lanzamiento e impacto de TODAS las habilidades (sello animado, remate por categoría, gesto) | `ability/CastFx` (`onCast`, `impact`); no dupliques estos efectos en cada habilidad |
 | Remates 3D al lanzar habilidades (v54): cinco categorías, alcance de 40 bloques, ajuste solo visual | `ability/CastFx`, `logic/CastAnimationRules` (puro), `network/CastAnimationPayload`, cliente `fx/CastAnimations` y `ClientConfig.castAnimations` |
 | Combos de combate (contador, bonificación y remates por categoría) | `ability/Combos` + `logic/ComboCounter`; HUD `client/hud/ComboHud` |
@@ -146,7 +149,7 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
   `role/LoadoutCodecTest`, `role/EvolutionPointsTest`, `morph/MorphSizeRulesTest`, `logic/ComboCounterTest`,
   `role/RoleRulesTest`, `data/ProgressRulesTest` y
   `rune/RuneRulesTest`, `boss/BossRulesTest`, `event/EclipseRulesTest`, `rune/RuneBalanceTest`, `logic/PlacedBlockPersistenceTest`, `config/ConfigFieldRulesTest`, `event/WorldEventRulesTest`, `party/PartyRulesTest`, `contract/ContractRulesTest`, `achievement/AchievementCatalogTest`, `event/SoulFogRulesTest`, `event/StrongEventRulesTest`, `role/PathRulesTest`, `config/ConfigMigrationTest`, `role/KeystoneRulesTest`,
-  `config/AptitudesConfigValidationTest`, `guide/BestiaryRulesTest`, `guide/GuideRulesTest`, `logic/ItemStatRulesTest`, `temple/TempleRulesTest`, `temple/VesselRulesTest`.
+  `config/AptitudesConfigValidationTest`, `guide/BestiaryRulesTest`, `guide/GuideRulesTest`, `logic/ItemStatRulesTest`, `temple/TempleRulesTest`, `temple/VesselRulesTest`, `boss/BossMoveRulesTest`.
 - **No escribas pruebas que llamen a métodos que no existen.** Si una prueba necesita una API nueva,
   impleméntala en el código principal en el mismo cambio y explícalo.
 - Prueba lógica pura; las clases que cargan registros de Minecraft no se prueban con JUnit simple.

@@ -5,6 +5,14 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+### v63a — Base de GeckoLib (C4, Claude)
+- GeckoLib 4.7.7 obligatoria (sin transitivas). `boss/AnimatedBossEntity`: fases, `BossMoveRules`
+  (JUnit), aviso y golpe en el servidor, animaciones disparadas en el cliente, barra de jefe.
+- Coloso Sin Rostro jugable con modelo, animaciones y textura de prueba (`tools/models/gen_boss_models.py`),
+  huevo y página de bestiario. Verificado en el cliente de desarrollo (render, barra, golpes).
+- Diseño de los tres jefes y contrato de modelos: `docs/V63_JEFES.md`. Pendiente: Guardián Desmontado y
+  Autómata Antiguo, modelos definitivos (K5) y estructuras.
+
 ### v64 — Templos sellados y Vasos de vida (K6, hecho por Claude)
 - `world/TempleFeature` (15×15, radio 7, sin entidades al generarse; rareza 1/400 por chunk) con paleta y
   puzle por anillo: 3–4 palancas con patrón visible, placas por velas desde el anillo II (3 o 4).

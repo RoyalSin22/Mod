@@ -1,5 +1,19 @@
 # Pruebas de Aptitudes
 
+## v63a — Jefes animados con GeckoLib (C4)
+
+Automáticas: `boss/BossMoveRulesTest`. Recursos: `python3 tools/models/gen_boss_models.py src/main/resources/assets/aptitudes --check`.
+
+1. Arranca con GeckoLib 4.7.7 (sin ella el juego indica la dependencia que falta).
+2. `/summon aptitudes:faceless_colossus` o su huevo: se ve el modelo, camina con animación y muestra la barra.
+3. En supervivencia: avisa antes de cada golpe (barrido, círculo de críticos, humo) y el golpe llega al
+   acabar el aviso; sal del arco o del círculo para esquivar. Por debajo del 66 %: sacudida, mensaje de fase,
+   más velocidad, más daño recibido y embestidas a distancia.
+4. Reinicia el mundo con el Coloso herido: conserva la fase. Vencido: botín y página «El Coloso Sin Rostro»
+   en el bestiario.
+
+Verificado por Claude en el cliente de desarrollo: puntos 1–3 (render, barra y golpes recibidos).
+
 ## v64 — Templos sellados y Vasos de vida (K6)
 
 Automáticas: `temple/TempleRulesTest` y `temple/VesselRulesTest`. Texturas:

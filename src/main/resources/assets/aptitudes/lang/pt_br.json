@@ -3707,5 +3707,8 @@
   "advancement.aptitudes.temple_opened.title": "Sem selo",
   "advancement.aptitudes.temple_opened.description": "Abra o Relicário de um templo com sua chave.",
   "advancement.aptitudes.life_vessel.title": "Coração pleno",
-  "advancement.aptitudes.life_vessel.description": "Use um Vaso de vida."
+  "advancement.aptitudes.life_vessel.description": "Use um Vaso de vida.",
+  "entity.aptitudes.faceless_colossus": "O Colosso Sem Rosto",
+  "item.aptitudes.faceless_colossus_spawn_egg": "Ovo gerador do Colosso Sem Rosto",
+  "bestiary.aptitudes.faceless_colossus.tip": "Guerreiro gigante com espadão. Anuncia um golpe amplo e um golpe descendente com onda: saia do círculo marcado. Com metade da vida sua armadura racha: fica mais rápido, investe de longe e recebe mais dano."
 }

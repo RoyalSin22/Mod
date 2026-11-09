@@ -71,6 +71,7 @@ public class AptitudesClient implements ClientModInitializer {
 		ClientConfig.load();
 		GuideLookup.register(CATEGORY); // v61
 		dev.aptitudes.client.model.HandheldModels.register(); // v62: armas 3D en la mano
+		dev.aptitudes.client.render.BossRenderers.register(); // v63: jefes animados (GeckoLib)
 		dev.aptitudes.item.GuideBookItem.opener = () -> net.minecraft.client.MinecraftClient.getInstance()
 				.setScreen(new dev.aptitudes.client.screen.GuideScreen());
 		toggleHudKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(

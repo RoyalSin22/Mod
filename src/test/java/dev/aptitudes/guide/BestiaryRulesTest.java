@@ -26,7 +26,7 @@ public class BestiaryRulesTest {
 			assertEquals(Kind.BOSS, e.kind());
 			assertEquals("boss.aptitudes." + boss, BestiaryRules.nameKey(e));
 		}
-		assertEquals(6, BestiaryRules.total(Kind.BOSS));
+		assertEquals(7, BestiaryRules.total(Kind.BOSS)); // v63: + Coloso Sin Rostro
 		assertEquals(2, BestiaryRules.total(Kind.ELITE));
 		assertEquals(BestiaryRules.entries().size(), BestiaryRules.total(null));
 		assertTrue(BestiaryRules.entries().size() <= BestiaryRules.MAX_ENTRIES);
@@ -60,6 +60,11 @@ public class BestiaryRulesTest {
 				BestiaryRules.unlockedBy("minecraft:evoker", "shrine_oracle", true, true));
 		// Un jefe desconocido (datos de otra versión) no rompe nada.
 		assertEquals(List.of("zombie"), BestiaryRules.unlockedBy("minecraft:zombie", "future_boss", true, true));
+	}
+
+	@Test public void animatedBossesUnlockByEntityType() {
+		assertEquals(List.of("faceless_colossus"), BestiaryRules.unlockedBy("aptitudes:faceless_colossus", null, false, false));
+		assertEquals("entity.aptitudes.faceless_colossus", BestiaryRules.nameKey(BestiaryRules.byId("faceless_colossus")));
 	}
 
 	@Test public void vanillaBossesAreCreaturePages() {

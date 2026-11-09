@@ -3707,5 +3707,8 @@
   "advancement.aptitudes.temple_opened.title": "Sin sello",
   "advancement.aptitudes.temple_opened.description": "Abre el Relicario de un templo con su llave.",
   "advancement.aptitudes.life_vessel.title": "Corazón colmado",
-  "advancement.aptitudes.life_vessel.description": "Usa un Vaso de vida."
+  "advancement.aptitudes.life_vessel.description": "Usa un Vaso de vida.",
+  "entity.aptitudes.faceless_colossus": "El Coloso Sin Rostro",
+  "item.aptitudes.faceless_colossus_spawn_egg": "Huevo de aparición del Coloso Sin Rostro",
+  "bestiary.aptitudes.faceless_colossus.tip": "Guerrero gigante con espadón. Anuncia un tajo amplio y un golpe descendente con onda: sal del círculo marcado. A media vida su armadura se agrieta: se mueve más rápido, embiste desde lejos y recibe más daño."
 }

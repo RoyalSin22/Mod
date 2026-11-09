@@ -1,0 +1,319 @@
+{
+ "format_version": "1.12.0",
+ "minecraft:geometry": [
+  {
+   "description": {
+    "identifier": "geometry.faceless_colossus",
+    "texture_width": 128,
+    "texture_height": 128,
+    "visible_bounds_width": 5,
+    "visible_bounds_height": 5,
+    "visible_bounds_offset": [
+     0,
+     2,
+     0
+    ]
+   },
+   "bones": [
+    {
+     "name": "root",
+     "pivot": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "name": "right_leg",
+     "pivot": [
+      -5,
+      24,
+      0
+     ],
+     "parent": "root",
+     "cubes": [
+      {
+       "origin": [
+        -8.5,
+        0,
+        -4
+       ],
+       "size": [
+        7,
+        24,
+        8
+       ],
+       "uv": [
+        0,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "name": "left_leg",
+     "pivot": [
+      5,
+      24,
+      0
+     ],
+     "parent": "root",
+     "cubes": [
+      {
+       "origin": [
+        1.5,
+        0,
+        -4
+       ],
+       "size": [
+        7,
+        24,
+        8
+       ],
+       "uv": [
+        30,
+        0
+       ]
+      }
+     ]
+    },
+    {
+     "name": "body",
+     "pivot": [
+      0,
+      24,
+      0
+     ],
+     "parent": "root",
+     "cubes": [
+      {
+       "origin": [
+        -9.5,
+        24,
+        -5.5
+       ],
+       "size": [
+        19,
+        3,
+        11
+       ],
+       "uv": [
+        60,
+        0
+       ]
+      },
+      {
+       "origin": [
+        -9,
+        27,
+        -5
+       ],
+       "size": [
+        18,
+        17,
+        10
+       ],
+       "uv": [
+        0,
+        32
+       ]
+      }
+     ]
+    },
+    {
+     "name": "head",
+     "pivot": [
+      0,
+      44,
+      0
+     ],
+     "parent": "body",
+     "cubes": [
+      {
+       "origin": [
+        -5,
+        44,
+        -5
+       ],
+       "size": [
+        10,
+        10,
+        10
+       ],
+       "uv": [
+        56,
+        32
+       ]
+      },
+      {
+       "origin": [
+        -1,
+        54,
+        -4
+       ],
+       "size": [
+        2,
+        2,
+        8
+       ],
+       "uv": [
+        96,
+        32
+       ]
+      }
+     ]
+    },
+    {
+     "name": "right_arm",
+     "pivot": [
+      -12,
+      41,
+      0
+     ],
+     "parent": "body",
+     "cubes": [
+      {
+       "origin": [
+        -17,
+        37,
+        -5
+       ],
+       "size": [
+        8,
+        7,
+        10
+       ],
+       "uv": [
+        0,
+        59
+       ]
+      },
+      {
+       "origin": [
+        -16,
+        21,
+        -3
+       ],
+       "size": [
+        6,
+        16,
+        6
+       ],
+       "uv": [
+        36,
+        59
+       ]
+      }
+     ]
+    },
+    {
+     "name": "left_arm",
+     "pivot": [
+      12,
+      41,
+      0
+     ],
+     "parent": "body",
+     "cubes": [
+      {
+       "origin": [
+        9,
+        37,
+        -5
+       ],
+       "size": [
+        8,
+        7,
+        10
+       ],
+       "uv": [
+        60,
+        59
+       ]
+      },
+      {
+       "origin": [
+        10,
+        21,
+        -3
+       ],
+       "size": [
+        6,
+        16,
+        6
+       ],
+       "uv": [
+        96,
+        59
+       ]
+      }
+     ]
+    },
+    {
+     "name": "sword",
+     "pivot": [
+      -13,
+      23,
+      0
+     ],
+     "parent": "right_arm",
+     "rotation": [
+      -60,
+      0,
+      0
+     ],
+     "cubes": [
+      {
+       "origin": [
+        -14,
+        19,
+        -1
+       ],
+       "size": [
+        2,
+        8,
+        2
+       ],
+       "uv": [
+        120,
+        59
+       ]
+      },
+      {
+       "origin": [
+        -16.5,
+        17,
+        -2
+       ],
+       "size": [
+        7,
+        2,
+        4
+       ],
+       "uv": [
+        0,
+        81
+       ]
+      },
+      {
+       "origin": [
+        -15,
+        -9,
+        -1
+       ],
+       "size": [
+        4,
+        26,
+        2
+       ],
+       "uv": [
+        22,
+        81
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

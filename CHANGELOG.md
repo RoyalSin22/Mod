@@ -13,6 +13,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   vuelo corto que se dirige con la mirada.
 
 ### Añadido
+- **v63 — Jefes animados.** El mod requiere ahora **GeckoLib 4.7.7**. Primer jefe animado: el Coloso Sin
+  Rostro (tajo en arco, golpe descendente con onda y, con la armadura agrietada, embestida). De momento se
+  invoca con su huevo; su estructura llegará con los otros dos jefes. Tiene página en el bestiario.
 - **v64 — Templos sellados y Vasos de vida.** Un templo de 15×15 aparece en el Mundo Normal con el
   aspecto y el puzle de su anillo de Amenaza: imita con las palancas las luces sobre la puerta sellada
   y, desde el anillo II, pisa las placas en el orden de sus velas. Al abrirse despierta el Guardián del

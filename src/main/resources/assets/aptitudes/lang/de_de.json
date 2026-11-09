@@ -3707,5 +3707,8 @@
   "advancement.aptitudes.temple_opened.title": "Entsiegelt",
   "advancement.aptitudes.temple_opened.description": "Öffne das Reliquiar eines Tempels mit seinem Schlüssel.",
   "advancement.aptitudes.life_vessel.title": "Volles Herz",
-  "advancement.aptitudes.life_vessel.description": "Benutze ein Lebensgefäß."
+  "advancement.aptitudes.life_vessel.description": "Benutze ein Lebensgefäß.",
+  "entity.aptitudes.faceless_colossus": "Der gesichtslose Koloss",
+  "item.aptitudes.faceless_colossus_spawn_egg": "Spawn-Ei des gesichtslosen Kolosses",
+  "bestiary.aptitudes.faceless_colossus.tip": "Riesiger Krieger mit Zweihänder. Er kündigt einen weiten Hieb und einen Abwärtsschlag mit Schockwelle an: Verlasse den markierten Kreis. Bei halber Lebenskraft bricht seine Rüstung: Er wird schneller, stürmt aus der Ferne an und erleidet mehr Schaden."
 }

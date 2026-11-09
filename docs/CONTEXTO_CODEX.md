@@ -25,12 +25,13 @@ explicando las decisiones, ventajas, limitaciones y riesgos. Si te falta informa
 | Fabric Loader | **0.16.14** |
 | Fabric API | **0.116.6+1.21.1** |
 | Mod Menu (v40, solo `modCompileOnly`, opcional) | **11.0.3** (repositorio `maven.terraformersmc.com/releases`) |
+| GeckoLib (v63, obligatoria, aprobada) | **4.7.7** (repositorio `dl.cloudsmith.io/public/geckolib3/geckolib/maven/`; 4.8+ exige Loader 0.17) |
 | Mappings | **Yarn 1.21.1+build.3** (nombres Yarn, NO Mojang) |
 | Fabric Loom | 1.10 (`fabric-loom` `1.10-SNAPSHOT` en `build.gradle`) |
 | Gradle | **8.14.3** (wrapper incluido: usa siempre `gradlew`) |
 | Pruebas | JUnit Platform: **Jupiter 5.10.2** (JUnit 5) + **Vintage** con **JUnit 4.13.2** |
 
-- **No añadas bibliotecas** (ni Cloth Config, ni GeckoLib, ni Mod Menu, ni nada) sin pedir permiso.
+- **No añadas bibliotecas** (ni Cloth Config, ni Mod Menu, ni nada) sin pedir permiso. GeckoLib ya está aprobada (v63) solo para jefes y criaturas nuevos.
 - **No cambies** `gradle.properties`, la versión de Loom ni el wrapper de Gradle.
 - Usa solo la API de Minecraft 1.21.1 con nombres Yarn. Ojo con métodos de versiones posteriores: por
   ejemplo, en 1.21.1 se usa `DrawContext.drawItemInSlot(...)` (no `drawStackOverlay`, que es de 1.21.2+).

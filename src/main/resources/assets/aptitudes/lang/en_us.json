@@ -3707,5 +3707,8 @@
   "advancement.aptitudes.temple_opened.title": "Unsealed",
   "advancement.aptitudes.temple_opened.description": "Open a temple Reliquary with its key.",
   "advancement.aptitudes.life_vessel.title": "Fuller Heart",
-  "advancement.aptitudes.life_vessel.description": "Use a Life Vessel."
+  "advancement.aptitudes.life_vessel.description": "Use a Life Vessel.",
+  "entity.aptitudes.faceless_colossus": "The Faceless Colossus",
+  "item.aptitudes.faceless_colossus_spawn_egg": "Faceless Colossus Spawn Egg",
+  "bestiary.aptitudes.faceless_colossus.tip": "Giant warrior with a greatsword. It telegraphs a wide sweep and an overhead slam with a shock wave; step out of the marked circle. At half health its armor cracks: it moves faster, charges from afar and takes more damage."
 }

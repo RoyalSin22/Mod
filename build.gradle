@@ -30,6 +30,12 @@ repositories {
 		name = "TerraformersMC"
 		url = "https://maven.terraformersmc.com/releases/"
 	}
+	// v63: GeckoLib (dependencia obligatoria para los jefes animados). Excepción aprobada por el autor; ver AGENTS.md.
+	maven {
+		name = "GeckoLib"
+		url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/"
+		content { includeGroup "software.bernie.geckolib" }
+	}
 }
 
 dependencies {
@@ -39,6 +45,8 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	// v40: integración opcional con Mod Menu (no se incluye en el .jar ni es obligatoria).
 	modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+	// v63: GeckoLib fijado; sin transitivas para no mover las versiones fijadas de Loader y Fabric API.
+	modImplementation("software.bernie.geckolib:geckolib-fabric-1.21.1:${project.geckolib_version}") { transitive = false }
 
 	// Pruebas unitarias (src/test/java). Se ejecutan con ./gradlew test (y en build).
 	// JUnit Platform con dos motores: Jupiter (JUnit 5) y Vintage (JUnit 4), así conviven pruebas de ambos tipos.

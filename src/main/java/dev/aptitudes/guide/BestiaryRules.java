@@ -91,6 +91,10 @@ public final class BestiaryRules {
 		boss(out, "shrine_oracle", Region.OVERWORLD, "minecraft:evoker", "aptitudes:shrine_sigil");
 		boss(out, "camp_champion", Region.OVERWORLD, "minecraft:vindicator", "aptitudes:warlord_medallion");
 		boss(out, "eclipse_herald", Region.OVERWORLD, "minecraft:wither_skeleton", "aptitudes:eclipse_core");
+		// v63: jefes animados (GeckoLib); se añaden al final.
+		out.add(new Entry("faceless_colossus", Kind.BOSS, Region.OVERWORLD, "aptitudes:faceless_colossus", null,
+				"aptitudes:faceless_colossus_spawn_egg",
+				List.of("aptitudes:champion_heart", "aptitudes:soul_shard", "aptitudes:elite_essence")));
 		ENTRIES = Collections.unmodifiableList(out);
 		for (Entry e : ENTRIES) {
 			if (BY_ID.put(e.id(), e) != null) throw new IllegalStateException("Entrada duplicada: " + e.id());

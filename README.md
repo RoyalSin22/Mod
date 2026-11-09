@@ -28,6 +28,7 @@ Sistema RPG con tres capas que se combinan:
 | Java (JDK) | 21 |
 | Fabric Loader | ≥ 0.16.0 |
 | Fabric API | 0.116.6+1.21.1 (cualquier versión para 1.21.1 debería servir) |
+| GeckoLib | 4.7.7 (obligatoria desde v63, para los jefes animados) |
 | Gradle | 8.14.3 (incluido mediante el wrapper) |
 
 > Las versiones están en `gradle.properties`. Si alguna no se resuelve, consulta las vigentes en <https://fabricmc.net/develop>.
