@@ -156,6 +156,13 @@ entre jugadores; expediciones. Orden de implementación, cada paso con su valida
   jefe) y modificadores rotativos. Sin generación procedural libre. Depende de F1 y F3. Pendiente: el número de módulos
   y el catálogo de modificadores.
 
+**Estado de la fase F (reglas puras con pruebas, sin cablear al juego):**
+- **F1 Provocación:** `ability/TauntRules`. Rol aprobado: **Paladín**. Pendiente: cablear la provocación al Paladín y a los mobs.
+- **F2 Trance:** `ability/TranceRules`. Decisión mía: sintonía de 100; +10 por crítico, +15 por habilidad; trance de 10 s.
+- **F3 Mancha de XP:** `souls/SoulStainRules`. Al volver a morir antes de recuperarla, pierde un 25 %. Pendiente: afijos nuevos (nombres por decidir) y cablear la mancha.
+- **F4 Pedidos del gremio:** `contract/OrderRules`. Decisión mía: comisión del 10 %; pedidos de nivel 1–4 exigen 1, 2, 4 o 5 jugadores; el reparto es exacto. Pendiente: cablear pedidos en la Mesa del gremio.
+- **F5 Expediciones:** `event/ExpeditionRules`. Decisión mía: 3 a 5 módulos (combate al inicio, jefe al final, puzle/élite/evento en medio), semilla determinista y 6 modificadores de catálogo. Pendiente: cablear las expediciones.
+
 Descartado del informe por solapamiento: estados elementales (ya hay fusiones), auras, recursos por rol y loadouts en la
 hoguera (ya existen en parte). Reminiscencia de jefes queda pendiente hasta cerrar la reinvocación en partida.
 
