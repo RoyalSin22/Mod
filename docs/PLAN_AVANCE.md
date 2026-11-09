@@ -100,7 +100,9 @@ Pendiente:
 - Validación en partida con el autor.
 
 ### Fase C — Reinvocación y templos regenerables
-- Reinvocación de jefes con coste y espera definidos (pendiente, punto 5).
+- C1 (hecho en código, sin commit): `boss/SummonRules` (puro) fija la espera de reinvocación: 20 minutos desde la
+  última derrota, y solo si no hay otra instancia viva. Provisional. Pendiente (decisiones del autor): cómo se invoca
+  (objeto, altar o estructura), su coste y si el jefe conserva su fase al reinvocarse.
 - Templos regenerables con probabilidad por mundo y recompensa individual (pendiente, punto 3).
 
 ### Fase D — Contenido de endgame finito
