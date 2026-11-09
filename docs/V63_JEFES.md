@@ -29,7 +29,7 @@ Criterio (§0 de `IDEAS_v47_v55.md`): inspiración de tono, nombres, formas y at
 
 ## 2. El Coloso Sin Rostro (`aptitudes:faceless_colossus`) — jugable
 
-Guerrero gigante (1,6 × 3,4 bloques) de armadura oscura sin rostro, con espadón.
+Guerrero gigante (1,6 × 3,8 bloques; v65 lo subió desde 3,4 según la hoja de arte) de armadura oscura sin rostro, con espadón.
 
 | Valor | Fase 1 | Fase 2–3 |
 |---|---|---|

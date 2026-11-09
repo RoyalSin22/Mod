@@ -3724,6 +3724,8 @@
   "entity.aptitudes.osario_quebrado": "Osario Quebrado",
   "item.aptitudes.osario_quebrado_spawn_egg": "Huevo de aparición del Osario Quebrado",
   "bestiary.aptitudes.osario_quebrado.tip": "Hueso y tierra que no descansan. Arrastra un brazo y carga al verte.",
+  "item.aptitudes.automaton_orb": "Esfera del Autómata",
+  "item.aptitudes.automaton_orb_deflected": "Esfera devuelta del Autómata",
   "entity.aptitudes.errante_velado": "Errante Velado",
   "item.aptitudes.errante_velado_spawn_egg": "Huevo de aparición del Errante Velado",
   "bestiary.aptitudes.errante_velado.tip": "Un sudario de niebla de almas que flota hacia los vivos. Se queda suspendido y luego desgarra con su brazo largo y con garra.",

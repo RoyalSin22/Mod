@@ -411,6 +411,25 @@ T['wraps'] = [
     "................",
 ]
 
+T['automaton_orb'] = [
+    "................",
+    ".....DDDDDD.....",
+    "...DDSSSSSSDD...",
+    "..DSSBBBBBBSSD..",
+    ".DSBBBAAAABBBSD.",
+    ".DSBBAAAAAABBSD.",
+    ".DSBBAAAAAABBSD.",
+    ".DSBBAAAAAABBSD.",
+    ".DSBBBAAAABBBSD.",
+    "..DSBBBBBBBBSD..",
+    "..DSSBBBBBBSSD..",
+    "...DDSSSSSSDD...",
+    ".....DDDDDD.....",
+    "................",
+    "................",
+    "................",
+]
+
 T['orb'] = [
     "................",
     "................",
@@ -943,6 +962,8 @@ ITEMS = {
     'faceless_colossus_seal': ('seal', {'R': '#5d1f1f', 'G': '#e0b43a', 'J': '#ffe08a'}),
     'dismantled_guardian_seal': ('seal', {'R': '#37474f', 'G': '#90a4ae', 'J': '#cfd8dc'}),
     'ancient_automaton_seal': ('seal', {'R': '#5d4037', 'G': '#4dd0e1', 'J': '#b2ebf2'}),
+    'automaton_orb': ('automaton_orb', {'S': '#7d7a72', 'B': '#9e6c38', 'A': '#ffa434', 'D': '#3b3a38'}),
+    'automaton_orb_deflected': ('automaton_orb', {'S': '#3d7f8a', 'B': '#4dd0e1', 'A': '#b2ebf2', 'D': '#1b3a40'}),
     'champion_heart': ('heart', {'R': '#d32f2f', 'G': '#e0b43a', 'J': '#ffffff'}),
     'rune_flame': ('sigil', {'G': '#e0a12a', 'S': '#bd3928', 'J': '#fff176'}),
     'rune_leech': ('sigil', {'G': '#51202d', 'S': '#a3223b', 'J': '#f06277'}),

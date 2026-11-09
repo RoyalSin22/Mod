@@ -3725,6 +3725,8 @@
   "entity.aptitudes.osario_quebrado": "Ossuaire brisé",
   "item.aptitudes.osario_quebrado_spawn_egg": "Œuf d'apparition de l'Ossuaire brisé",
   "bestiary.aptitudes.osario_quebrado.tip": "Os et terre qui refusent le repos. Il traîne un bras et charge dès qu'il vous voit.",
+  "item.aptitudes.automaton_orb": "Orbe de l'Automate",
+  "item.aptitudes.automaton_orb_deflected": "Orbe de l'Automate renvoyé",
   "entity.aptitudes.errante_velado": "Errant voilé",
   "item.aptitudes.errante_velado_spawn_egg": "Œuf d'apparition de l'Errant voilé",
   "bestiary.aptitudes.errante_velado.tip": "Un voile de brume d'âmes qui dérive vers les vivants. Il reste suspendu puis déchire avec son long bras griffu.",

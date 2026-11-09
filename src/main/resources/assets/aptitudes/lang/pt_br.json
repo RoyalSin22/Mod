@@ -3725,6 +3725,8 @@
   "entity.aptitudes.osario_quebrado": "Ossuário Quebrado",
   "item.aptitudes.osario_quebrado_spawn_egg": "Ovo de aparição do Osario Quebrado",
   "bestiary.aptitudes.osario_quebrado.tip": "Osso e terra que não descansam. Arrasta um braço e avança ao te ver.",
+  "item.aptitudes.automaton_orb": "Esfera do Autômato",
+  "item.aptitudes.automaton_orb_deflected": "Esfera devolvida do Autômato",
   "entity.aptitudes.errante_velado": "Andarilho Velado",
   "item.aptitudes.errante_velado_spawn_egg": "Ovo de aparição do Andarilho Velado",
   "bestiary.aptitudes.errante_velado.tip": "Um véu de névoa de almas que flutua até os vivos. Fica suspenso e depois rasga com seu braço longo e com garra.",

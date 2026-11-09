@@ -1740,6 +1740,8 @@ entity.aptitudes.faceless_colossus¦O Colosso Sem Rosto¦Le Colosse sans visage�
 entity.aptitudes.osario_quebrado¦Ossuário Quebrado¦Ossuaire brisé¦Zerbrochenes Beinhaus
 item.aptitudes.osario_quebrado_spawn_egg¦Ovo de aparição do Osario Quebrado¦Œuf d'apparition de l'Ossuaire brisé¦Erscheinungsei des Zerbrochenen Beinhauses
 bestiary.aptitudes.osario_quebrado.tip¦Osso e terra que não descansam. Arrasta um braço e avança ao te ver.¦Os et terre qui refusent le repos. Il traîne un bras et charge dès qu'il vous voit.¦Knochen und Erde, die nicht ruhen wollen. Er schleift einen Arm und stürmt los, sobald er dich sieht.
+item.aptitudes.automaton_orb¦Esfera do Autômato¦Orbe de l'Automate¦Kugel des Automaten
+item.aptitudes.automaton_orb_deflected¦Esfera devolvida do Autômato¦Orbe de l'Automate renvoyé¦Zurückgeworfene Kugel des Automaten
 entity.aptitudes.errante_velado¦Andarilho Velado¦Errant voilé¦Verschleierter Wanderer
 item.aptitudes.errante_velado_spawn_egg¦Ovo de aparição do Andarilho Velado¦Œuf d'apparition de l'Errant voilé¦Erscheinungsei des Verschleierten Wanderers
 bestiary.aptitudes.errante_velado.tip¦Um véu de névoa de almas que flutua até os vivos. Fica suspenso e depois rasga com seu braço longo e com garra.¦Un voile de brume d'âmes qui dérive vers les vivants. Il reste suspendu puis déchire avec son long bras griffu.¦Ein Schleier aus Seelennebel, der auf die Lebenden zutreibt. Er schwebt und reißt dann mit seinem langen, krallenbewehrten Arm zu.

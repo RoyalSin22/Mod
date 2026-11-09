@@ -3725,6 +3725,8 @@
   "entity.aptitudes.osario_quebrado": "Zerbrochenes Beinhaus",
   "item.aptitudes.osario_quebrado_spawn_egg": "Erscheinungsei des Zerbrochenen Beinhauses",
   "bestiary.aptitudes.osario_quebrado.tip": "Knochen und Erde, die nicht ruhen wollen. Er schleift einen Arm und stürmt los, sobald er dich sieht.",
+  "item.aptitudes.automaton_orb": "Kugel des Automaten",
+  "item.aptitudes.automaton_orb_deflected": "Zurückgeworfene Kugel des Automaten",
   "entity.aptitudes.errante_velado": "Verschleierter Wanderer",
   "item.aptitudes.errante_velado_spawn_egg": "Erscheinungsei des Verschleierten Wanderers",
   "bestiary.aptitudes.errante_velado.tip": "Ein Schleier aus Seelennebel, der auf die Lebenden zutreibt. Er schwebt und reißt dann mit seinem langen, krallenbewehrten Arm zu.",

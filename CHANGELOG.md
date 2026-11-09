@@ -10,6 +10,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   Osario Quebrado con otro 10 %) y tiene huevo de aparición y entrada en el bestiario. El Custodio de las Cuatro
   Llaves sustituye al guardián vanilla de los templos sellados. Ambos tienen modelo y animaciones generados por
   `tools/models/gen_mob_models.py` (`--check`). Sin validar en partida.
+- **v65 — Rediseño de jefes (hoja de arte).** El Coloso Sin Rostro pasa a 3,8 bloques de alto y adopta netherita,
+  pizarra y energía roja. El Guardián Desmontado tiene escudo carmesí con cruz dorada y cuerpo de piedra lisa. El
+  Autómata Antiguo usa piedra tallada, bronce, cobre, ojo ámbar y dos esferas auxiliares. La esfera del Autómata tiene
+  sprite propio: bronce y núcleo ámbar, y cian al ser devuelta (indicador de aturdimiento). Sin validar en partida.
 
 ### Corregido
 - **v56 — Generación de jefes.** Torres, santuarios y campamentos guardan sus jefes con el terreno al

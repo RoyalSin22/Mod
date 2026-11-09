@@ -3725,6 +3725,8 @@
   "entity.aptitudes.osario_quebrado": "Broken Ossuary",
   "item.aptitudes.osario_quebrado_spawn_egg": "Broken Ossuary Spawn Egg",
   "bestiary.aptitudes.osario_quebrado.tip": "Bone and earth that will not rest. It drags one arm and charges when it sees you.",
+  "item.aptitudes.automaton_orb": "Ancient Automaton Orb",
+  "item.aptitudes.automaton_orb_deflected": "Deflected Automaton Orb",
   "entity.aptitudes.errante_velado": "Veiled Wanderer",
   "item.aptitudes.errante_velado_spawn_egg": "Veiled Wanderer Spawn Egg",
   "bestiary.aptitudes.errante_velado.tip": "A veil of soul fog that drifts toward the living. It hovers, then tears with its long, clawed arm.",

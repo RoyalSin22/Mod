@@ -6,7 +6,6 @@ import net.minecraft.entity.FlyingItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
@@ -47,10 +46,10 @@ public class AutomatonOrbEntity extends ProjectileEntity implements FlyingItemEn
 		return deflected;
 	}
 
-	/** Se dibuja como una bola de fuego: brillante y lo bastante grande para verla venir. */
+	/** Bronce y núcleo ámbar; tras la devolución, cian: así se ve que ya puede aturdir al Autómata. */
 	@Override
 	public ItemStack getStack() {
-		return new ItemStack(Items.FIRE_CHARGE);
+		return new ItemStack(deflected ? BossEntities.AUTOMATON_ORB_DEFLECTED_ITEM : BossEntities.AUTOMATON_ORB_ITEM);
 	}
 
 	@Override

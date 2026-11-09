@@ -24,10 +24,17 @@ MATERIALS = {
     'dark': (30, 32, 40), 'leather': (96, 66, 46), 'cloth': (100, 30, 38), 'bone': (214, 204, 176),
     'spike': (122, 118, 130), 'brass': (182, 138, 64), 'gauntlet': (154, 128, 66), 'shield': (84, 98, 124),
     'core': (240, 74, 62), 'crest': (178, 68, 60), 'blade': (182, 190, 200),
+    # Rediseño v65 (hoja de arte): Coloso, Guardián y Autómata.
+    'netherite': (58, 54, 68), 'slate': (78, 84, 94), 'dark_gold': (150, 116, 56),
+    'cracked': (104, 100, 96), 'ember': (255, 84, 48), 'smooth_stone': (156, 156, 152),
+    'crimson': (128, 30, 42), 'carved': (128, 124, 116), 'bronze': (158, 108, 56),
+    'copper': (96, 160, 144), 'amber': (255, 166, 52),
 }
 
 # Materiales con relieve en la textura: remaches (plate, iron, helm…), tejido (cloth), rejilla (dark), etc.
-RIVETED = {'plate', 'iron', 'helm', 'greave', 'shield', 'gauntlet'}
+RIVETED = {'plate', 'iron', 'helm', 'greave', 'shield', 'gauntlet', 'netherite'}
+# Materiales que brillan desde dentro: el centro es más intenso y el borde se aclara.
+CORE_LIKE = {'core', 'ember', 'amber'}
 
 
 def box(x, y, z, w, h, d, mat):
@@ -40,32 +47,32 @@ def box(x, y, z, w, h, d, mat):
 COLOSSUS_BONES = [
     ('root', None, [0, 0, 0], None, []),
     ('right_leg', 'root', [-5, 24, 0], None, [
-        box(-9, 0, -4, 8, 22, 8, 'greave'), box(-9.5, 0, -4.5, 9, 3, 9, 'dark'),
-        box(-8.5, 15, -4.6, 7, 4, 1, 'plate'), box(-8, 4, -4.6, 6, 6, 1, 'cloth')]),
+        box(-9, 0, -4, 8, 22, 8, 'netherite'), box(-9.5, 0, -4.5, 9, 3, 9, 'slate'),
+        box(-8.5, 15, -4.6, 7, 4, 1, 'netherite'), box(-8, 4, -4.6, 6, 6, 1, 'cloth')]),
     ('left_leg', 'root', [5, 24, 0], None, [
-        box(1, 0, -4, 8, 22, 8, 'greave'), box(0.5, 0, -4.5, 9, 3, 9, 'dark'),
-        box(1.5, 15, -4.6, 7, 4, 1, 'plate'), box(2, 4, -4.6, 6, 6, 1, 'cloth')]),
+        box(1, 0, -4, 8, 22, 8, 'netherite'), box(0.5, 0, -4.5, 9, 3, 9, 'slate'),
+        box(1.5, 15, -4.6, 7, 4, 1, 'netherite'), box(2, 4, -4.6, 6, 6, 1, 'cloth')]),
     ('body', 'root', [0, 24, 0], None, [
-        box(-9.5, 24, -5.5, 19, 3, 11, 'leather'), box(-9, 27, -5, 18, 17, 10, 'plate'),
-        box(-6, 31, -5.6, 12, 2, 1, 'iron'), box(-1.5, 34, -5.7, 3, 3, 1, 'core'),
-        box(-1, 24, -5.7, 2, 2, 1, 'brass'), box(-6, 42, -3, 12, 2, 6, 'iron')]),
-    ('cape', 'body', [0, 40, 5], None, [box(-7, 20, 5, 14, 22, 1, 'cloth'), box(-7, 20, 5.8, 3, 3, 0.4, 'dark')]),
+        box(-9.5, 24, -5.5, 19, 3, 11, 'leather'), box(-9, 27, -5, 18, 17, 10, 'netherite'),
+        box(-6, 31, -5.6, 12, 2, 1, 'cracked'), box(-1.5, 34, -5.7, 3, 3, 1, 'ember'),
+        box(-1, 24, -5.7, 2, 2, 1, 'dark_gold'), box(-6, 42, -3, 12, 2, 6, 'cracked')]),
+    ('cape', 'body', [0, 40, 5], None, [box(-7, 20, 5, 14, 22, 1, 'cloth'), box(-7, 20, 5.8, 3, 3, 0.4, 'slate')]),
     ('head', 'body', [0, 44, 0], None, [
-        box(-5, 44, -5, 10, 10, 10, 'helm'), box(-4, 47, -5.4, 8, 2, 0.6, 'dark'),
-        box(-0.5, 52, -4, 1, 4, 8, 'crest'), box(-7, 50, -2, 2, 4, 2, 'bone'), box(5, 50, -2, 2, 4, 2, 'bone')]),
+        box(-5, 44, -5, 10, 10, 10, 'netherite'), box(-4, 47, -5.4, 8, 2, 0.6, 'slate'),
+        box(-0.5, 52, -4, 1, 9, 8, 'crest'), box(-7, 50, -2, 2, 4, 2, 'bone'), box(5, 50, -2, 2, 4, 2, 'bone')]),
     ('right_arm', 'body', [-12, 41, 0], None, [
-        box(-17, 37, -5, 8, 7, 10, 'plate'), box(-18, 35, -5.5, 10, 2, 11, 'iron'),
+        box(-17, 37, -5, 8, 7, 10, 'netherite'), box(-18, 35, -5.5, 10, 2, 11, 'cracked'),
         box(-18, 44, -3, 2, 3, 2, 'spike'), box(-14, 45, -3, 2, 3, 2, 'spike'), box(-10, 44, -3, 2, 3, 2, 'spike'),
-        box(-16, 21, -3, 6, 16, 6, 'iron'), box(-16.5, 15, -3.5, 7, 6, 7, 'gauntlet')]),
+        box(-16, 21, -3, 6, 16, 6, 'cracked'), box(-16.5, 15, -3.5, 7, 6, 7, 'gauntlet')]),
     ('left_arm', 'body', [12, 41, 0], None, [
-        box(9, 37, -5, 8, 7, 10, 'plate'), box(8, 35, -5.5, 10, 2, 11, 'iron'),
+        box(9, 37, -5, 8, 7, 10, 'netherite'), box(8, 35, -5.5, 10, 2, 11, 'cracked'),
         box(16, 44, -3, 2, 3, 2, 'spike'), box(12, 45, -3, 2, 3, 2, 'spike'), box(8, 44, -3, 2, 3, 2, 'spike'),
-        box(10, 21, -3, 6, 16, 6, 'iron'), box(9, 17, -4, 8, 8, 7, 'shield'), box(9.5, 15, -3, 7, 4, 5, 'gauntlet')]),
+        box(10, 21, -3, 6, 16, 6, 'cracked'), box(9, 17, -4, 8, 8, 7, 'shield'), box(9.5, 15, -3, 7, 4, 5, 'gauntlet')]),
     # Espadón en la mano derecha, apuntando al frente y abajo.
     ('sword', 'right_arm', [-13, 23, 0], [-60, 0, 0], [
-        box(-14, 19, -1, 2, 8, 2, 'leather'), box(-16.5, 17, -2, 7, 2, 4, 'iron'),
-        box(-14.5, 16, -1.5, 3, 2, 3, 'brass'), box(-15, -9, -1, 4, 26, 2, 'blade'),
-        box(-14.5, -8, -1.6, 1, 24, 0.4, 'iron')]),
+        box(-14, 19, -1, 2, 8, 2, 'leather'), box(-16.5, 17, -2, 7, 2, 4, 'cracked'),
+        box(-14.5, 16, -1.5, 3, 2, 3, 'dark_gold'), box(-15, -9, -1, 4, 26, 2, 'blade'),
+        box(-14.5, -8, -1.6, 1, 24, 0.4, 'cracked')]),
 ]
 
 COLOSSUS_ANIMS = {
@@ -115,14 +122,14 @@ GUARDIAN_BONES = [
     ('right_leg', 'root', [-2, 12, 0], None, [
         box(-3.5, 0, -2.5, 4, 12, 5, 'iron'), box(-4, 0, -3, 5, 3, 6, 'dark'), box(-3.5, 6, -2.8, 4, 3, 1, 'plate')]),
     ('body', 'root', [0, 12, 0], None, [
-        box(-5, 12, -3, 10, 4, 6, 'plate'), box(-4, 16, -2, 8, 1, 4, 'dark'), box(-5, 17, -3, 10, 7, 6, 'plate'),
+        box(-5, 12, -3, 10, 4, 6, 'smooth_stone'), box(-4, 16, -2, 8, 1, 4, 'dark'), box(-5, 17, -3, 10, 7, 6, 'smooth_stone'),
         box(-4, 21, -2.5, 8, 4, 5, 'brass'), box(-1.5, 14, -3.4, 3, 3, 1, 'core'), box(-3, 22, -3.4, 6, 1, 1, 'iron'),
         box(-6, 12, -1, 1, 8, 1, 'iron'), box(5, 12, 1, 1, 8, 1, 'iron')]),
     ('head', 'body', [0, 24, 0], None, [
         box(-3, 24, -3, 6, 8, 6, 'helm'), box(-2, 27, -3.4, 4, 2, 0.6, 'dark'),
         box(-0.5, 30, -3.5, 1, 3, 1, 'core'), box(-3.5, 31, -2, 1, 2, 4, 'brass'), box(2.5, 31, -2, 1, 2, 4, 'brass')]),
     ('left_arm', 'body', [5, 22, 0], None, [
-        box(5, 12, -1.5, 3, 12, 3, 'iron'), box(4, 18, -4, 5, 8, 1.5, 'shield'), box(5, 16, -3, 4, 4, 4, 'shield'),
+        box(5, 12, -1.5, 3, 12, 3, 'iron'), box(4, 18, -4, 5, 8, 1.5, 'crimson'), box(5, 16, -3, 4, 4, 4, 'crimson'),
         box(5.5, 21, -4.2, 2, 2, 0.4, 'core')]),
     ('right_arm', 'body', [-5, 22, 0], None, [
         box(-8, 12, -1.5, 3, 12, 3, 'iron'), box(-9, 11, -1.5, 4, 4, 3, 'gauntlet'),
@@ -160,21 +167,22 @@ GUARDIAN_ANIMS = {
 AUTOMATON_BONES = [
     ('root', None, [0, 0, 0], None, []),
     ('left_leg', 'root', [2.5, 12, 0], None, [
-        box(0.5, 0, -2, 4, 12, 4, 'iron'), box(1, 4, -2.6, 3, 8, 1, 'brass'), box(0, 0, -3, 6, 2, 6, 'dark')]),
+        box(0.5, 0, -2, 4, 12, 4, 'copper'), box(1, 4, -2.6, 3, 8, 1, 'bronze'), box(0, 0, -3, 6, 2, 6, 'dark')]),
     ('right_leg', 'root', [-2.5, 12, 0], None, [
-        box(-4.5, 0, -2, 4, 12, 4, 'iron'), box(-4, 4, -2.6, 3, 8, 1, 'brass'), box(-5, 0, -3, 6, 2, 6, 'dark')]),
+        box(-4.5, 0, -2, 4, 12, 4, 'copper'), box(-4, 4, -2.6, 3, 8, 1, 'bronze'), box(-5, 0, -3, 6, 2, 6, 'dark')]),
     ('body', 'root', [0, 12, 0], None, [
-        box(-5, 12, -4, 10, 12, 8, 'plate'), box(-3, 22, -3, 6, 4, 6, 'brass'),
-        box(-5.5, 14, -4.2, 11, 1, 0.6, 'brass'), box(-5.5, 20, -4.2, 11, 1, 0.6, 'brass'),
-        box(-3, 16, -4.3, 6, 3, 0.5, 'dark'), box(-1, 17, -4.5, 2, 2, 0.5, 'core')]),
+        box(-5, 12, -4, 10, 12, 8, 'carved'), box(-3, 22, -3, 6, 4, 6, 'bronze'),
+        box(-5.5, 14, -4.2, 11, 1, 0.6, 'bronze'), box(-5.5, 20, -4.2, 11, 1, 0.6, 'bronze'),
+        box(-3, 16, -4.3, 6, 3, 0.5, 'dark'), box(-1, 17, -4.5, 2, 2, 0.5, 'amber'),
+        box(6, 25, -1, 3, 3, 3, 'amber'), box(-9, 25, -1, 3, 3, 3, 'amber')]),
     ('head', 'body', [0, 24, 0], None, [
-        box(-3, 24, -3, 6, 6, 6, 'plate'), box(-1.5, 26, -3.4, 3, 3, 1, 'core'), box(-2, 25.5, -3.6, 4, 4, 0.4, 'brass'),
-        box(-0.5, 30, -0.5, 1, 4, 1, 'brass')]),
+        box(-3, 24, -3, 6, 6, 6, 'carved'), box(-1.5, 26, -3.4, 3, 3, 1, 'amber'), box(-2, 25.5, -3.6, 4, 4, 0.4, 'bronze'),
+        box(-0.5, 30, -0.5, 1, 4, 1, 'bronze')]),
     ('left_arm', 'body', [5, 22, 0], None, [
-        box(5, 14, -1.5, 4, 10, 3, 'iron'), box(4, 21, -2, 5, 4, 4, 'brass'), box(5, 9, -2, 4, 5, 4, 'plate')]),
+        box(5, 14, -1.5, 4, 10, 3, 'copper'), box(4, 21, -2, 5, 4, 4, 'bronze'), box(5, 9, -2, 4, 5, 4, 'carved')]),
     ('right_arm', 'body', [-5, 22, 0], None, [
-        box(-9, 14, -1.5, 4, 10, 3, 'iron'), box(-9, 21, -2, 5, 4, 4, 'brass'),
-        box(-11, 11, -3, 3, 3, 8, 'dark'), box(-11.5, 11.5, -4, 4, 4, 1, 'brass'), box(-9, 8, -2, 4, 4, 4, 'brass')]),
+        box(-9, 14, -1.5, 4, 10, 3, 'copper'), box(-9, 21, -2, 5, 4, 4, 'bronze'),
+        box(-11, 11, -3, 3, 3, 8, 'dark'), box(-11.5, 11.5, -4, 4, 4, 1, 'bronze'), box(-9, 8, -2, 4, 4, 4, 'bronze')]),
 ]
 
 AUTOMATON_ANIMS = {
@@ -279,17 +287,19 @@ def detail(mat, xx, yy, fw, fh, edge, base, rnd):
         return -8  # tejido
     if mat == 'dark' and xx % 3 == 0:
         return -10  # rejilla
-    if mat == 'brass' and yy % 3 == 0:
+    if mat in ('brass', 'bronze') and yy % 3 == 0:
         return 26  # estría
+    if mat == 'cracked' and (xx * 3 + yy * 7) % 11 == 0:
+        return -18  # grieta
     if mat == 'leather' and xx % 5 == 0 and not edge:
         return -14  # puntada
     if mat == 'bone' and rnd.random() < 0.06:
         return -22  # grieta
-    if mat == 'core':
+    if mat in CORE_LIKE:
         cx, cy = (fw - 1) / 2, (fh - 1) / 2
         d = ((xx - cx) ** 2 + (yy - cy) ** 2) ** 0.5 / max(1, (cx + cy) / 2)
         return int(60 * (1 - min(1, d)))  # gradiente: el centro brilla más
-    if mat == 'shield' and (abs(xx - (fw - 1) / 2) < 1 or abs(yy - (fh - 1) / 2) < 1):
+    if mat in ('shield', 'crimson') and (abs(xx - (fw - 1) / 2) < 1 or abs(yy - (fh - 1) / 2) < 1):
         return 22  # cruz del escudo
     if mat == 'blade' and xx in (0, fw - 1):
         return 0  # filo (el color se cambia abajo)
@@ -318,7 +328,7 @@ def texture(boss, bones):
                     c = [max(0, min(255, int(ch * k) + n + extra)) for ch in base]
                     if mat == 'blade' and xx in (0, fw - 1):
                         c = [200, 70, 60]  # filo rojizo
-                    if mat == 'core' and edge:
+                    if mat in CORE_LIKE and edge:
                         c = [min(255, ch + 40) for ch in c]  # aro brillante alrededor del núcleo
                     px[fx + xx, fy + yy] = tuple(c) + (255,)
     buf = BytesIO()

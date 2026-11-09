@@ -20,7 +20,7 @@ public final class BossEntities {
 	public static final EntityType<FacelessColossusEntity> FACELESS_COLOSSUS = Registry.register(Registries.ENTITY_TYPE,
 			Aptitudes.id("faceless_colossus"),
 			EntityType.Builder.create(FacelessColossusEntity::new, SpawnGroup.MONSTER)
-					.dimensions(1.6f, 3.4f).eyeHeight(3.0f).maxTrackingRange(10).makeFireImmune()
+					.dimensions(1.6f, 3.8f).eyeHeight(3.4f).maxTrackingRange(10).makeFireImmune()
 					.build("faceless_colossus"));
 
 	public static final Item FACELESS_COLOSSUS_EGG = Registry.register(Registries.ITEM, Aptitudes.id("faceless_colossus_spawn_egg"),
@@ -43,6 +43,13 @@ public final class BossEntities {
 			EntityType.Builder.<AutomatonOrbEntity>create(AutomatonOrbEntity::new, SpawnGroup.MISC)
 					.dimensions(0.4f, 0.4f).maxTrackingRange(8).trackingTickInterval(5)
 					.build("automaton_orb"));
+
+	/** Aspecto de la esfera del Autómata (solo para dibujarla; no se entrega como objeto). v65. */
+	public static final Item AUTOMATON_ORB_ITEM = Registry.register(Registries.ITEM, Aptitudes.id("automaton_orb"),
+			new Item(new Item.Settings()));
+	/** Esfera devuelta: cian; al impactar aturde al Autómata. */
+	public static final Item AUTOMATON_ORB_DEFLECTED_ITEM = Registry.register(Registries.ITEM,
+			Aptitudes.id("automaton_orb_deflected"), new Item(new Item.Settings()));
 
 	public static final Item DISMANTLED_GUARDIAN_EGG = Registry.register(Registries.ITEM, Aptitudes.id("dismantled_guardian_spawn_egg"),
 			new SpawnEggItem(DISMANTLED_GUARDIAN, 0x3A3D48, 0xC9A54C, new Item.Settings()));
