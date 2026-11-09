@@ -131,6 +131,7 @@ public class PathsScreen extends Screen {
 	private void learn() {
 		RoleSyncPayload data = ClientRoleState.data();
 		RoleNode node = selectedNode();
+		if (data != null && node != null && canLearn(data, node)) playUi(dev.aptitudes.sound.ModSounds.UI_METAL_UNLOCK);
 		if (data == null || node == null || selected == null || !canLearn(data, node)) return;
 		// Confirmación: elegir senda (la primera vez en este rol) o elegir rama en la bifurcación es permanente.
 		Text name = Text.translatable(node.translationKey());
@@ -148,6 +149,11 @@ public class PathsScreen extends Screen {
 			if (ok) send(node);
 			client.setScreen(this);
 		}, Text.translatable("screen.aptitudes.paths.confirm_title"), message));
+	}
+
+	private static void playUi(net.minecraft.sound.SoundEvent sound) {
+		net.minecraft.client.MinecraftClient.getInstance().getSoundManager()
+				.play(net.minecraft.client.sound.PositionedSoundInstance.master(sound, 1.0f));
 	}
 
 	private void send(RoleNode node) {
@@ -252,9 +258,14 @@ public class PathsScreen extends Screen {
 			int end = left + panelX - GAP - 3;
 			int rankColor = rank > 0 ? color : UiStyle.MUTED;
 			ctx.fill(step.branch() ? branchRail : railX, y + 8, x, y + 9, rank > 0 || available ? color : UiStyle.BORDER);
+			if (!excluded && overStep(mouseX, mouseY, step)) ctx.fill(x - 2, y - 2, end + 2, y + ROW_H + 1, 0x30FFD56A);
 			UiStyle.row(ctx, x, y, end - x, ROW_H - 1, rowOf(step), step == selected);
 			int frame = step == Step.S7 ? 0xFF7E57C2 : UiStyle.BORDER;
 			ctx.drawBorder(x + 1, y + 1, 16, 16, rank > 0 || available ? color : frame);
+			if (available) {
+				int pulse = (int) (16 + 14 * (0.5 + 0.5 * Math.sin(net.minecraft.util.Util.getMeasuringTimeMs() / 450.0)));
+				ctx.drawBorder(x, y, 18, 18, (pulse << 24) | 0xF0C060);
+			}
 			NodeIconRenderer.draw(ctx, node, x + 1, y + 1);
 			if (rank == 0 && !available) {
 				ctx.fill(x + 1, y + 1, x + 17, y + 17, excluded ? 0x90401010 : 0x60101018);
@@ -351,6 +362,10 @@ public class PathsScreen extends Screen {
 		if (super.mouseClicked(mouseX, mouseY, button)) return true;
 		for (Step step : Step.values()) {
 			if (node(step) != null && overStep(mouseX, mouseY, step)) {
+				RoleSyncPayload clickData = ClientRoleState.data();
+				RoleNode clicked = node(step);
+				boolean open = clickData != null && (clickData.rank(clicked.id()) > 0 || canLearn(clickData, clicked));
+				playUi(open ? dev.aptitudes.sound.ModSounds.UI_METAL_SELECT : dev.aptitudes.sound.ModSounds.UI_METAL_DENIED);
 				selected = step;
 				updateButtons();
 				return true;
