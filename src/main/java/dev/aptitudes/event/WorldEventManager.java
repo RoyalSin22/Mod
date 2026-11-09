@@ -182,6 +182,7 @@ public final class WorldEventManager {
 			fogWave(world, cfg);
 		} else if (active == WorldEventKind.EMBER_RAIN) {
 			emberRain(world);
+			emberMobs(world);
 		}
 	}
 
@@ -311,6 +312,37 @@ public final class WorldEventManager {
 	// ------------------------------------------------------------------ Lluvia de brasas
 
 	/** Cada segundo, cada jugador tiene un 4 % de probabilidad de ver caer un meteorito cerca (≈ uno cada 25 s). */
+	/** Criaturas del Nether de la Lluvia de brasas: una oportunidad por segundo y jugador, con tope cerca. */
+	private static void emberMobs(ServerWorld world) {
+		if (world.getTime() % 20 != 0) return;
+		for (ServerPlayerEntity player : world.getPlayers()) {
+			if (!player.isAlive() || player.isSpectator() || player.isCreative() || world.random.nextFloat() >= 0.03f) continue;
+			long nearby = world.getEntitiesByClass(MobEntity.class, player.getBoundingBox().expand(48),
+					mob -> mob.isAlive() && mob.getCommandTags().contains(TAG)).size();
+			if (nearby >= EmberMobRules.MAX_NEARBY) continue;
+			BlockPos pos = EclipseManager.findSpawn(world, player.getBlockPos(), 14, 28);
+			if (pos == null) continue;
+			MobEntity mob = emberType(EmberMobRules.choose(world.random.nextInt(100))).create(world);
+			if (mob == null) continue;
+			mob.refreshPositionAndAngles(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, world.random.nextFloat() * 360f, 0);
+			mob.initialize(world, world.getLocalDifficulty(pos), SpawnReason.EVENT, null);
+			mob.addCommandTag(TAG);
+			world.spawnEntity(mob);
+		}
+	}
+
+	private static EntityType<? extends MobEntity> emberType(EmberMobRules.EmberMob mob) {
+		return switch (mob) {
+			case ZOMBIFIED_PIGLIN -> EntityType.ZOMBIFIED_PIGLIN;
+			case HOGLIN -> EntityType.HOGLIN;
+			case PIGLIN_BRUTE -> EntityType.PIGLIN_BRUTE;
+			case BLAZE -> EntityType.BLAZE;
+			case GHAST -> EntityType.GHAST;
+			case MAGMA_CUBE -> EntityType.MAGMA_CUBE;
+			case WITHER_SKELETON -> EntityType.WITHER_SKELETON;
+		};
+	}
+
 	private static void emberRain(ServerWorld world) {
 		for (ServerPlayerEntity player : world.getPlayers()) {
 			if (!player.isAlive() || player.isSpectator() || world.random.nextFloat() >= 0.04f || METEORS.size() > 32) continue;

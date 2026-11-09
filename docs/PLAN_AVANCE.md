@@ -227,7 +227,7 @@ leerá de su nodo de elemento.
   marcas (base, pecho y cabeza) sobre los élites cercanos a un jugador. Pendiente: validar en partida la legibilidad.
 - **Niebla de almas:** enemigos nuevos (tipos propios). Primero el Errante Velado, con textura de 64×64.
 - **Lluvia de brasas:** aparecen las criaturas del Nether vanilla (hoglin, piglin bruto, zombi piglin, blaze, ghast,
-  cubo de magma, esqueleto wither). No necesitan modelos nuevos.
+  cubo de magma, esqueleto wither). No necesitan modelos nuevos. **Cableado (hecho):** `event/EmberMobRules` (puro, 7 pruebas) y `WorldEventManager.emberMobs`: cada segundo, cada jugador tiene un 3 % de probabilidad de que aparezca una criatura cerca, con tope de 4 por jugador, etiquetada como criatura del evento.
 - **Templo sellado:** Custodio de las Cuatro Llaves, confirmado, con textura de 128×128.
 - **Texturas:** jefes 256×256; enemigos comunes 64×64; guardián del templo 128×128.
 
