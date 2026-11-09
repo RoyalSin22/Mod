@@ -157,6 +157,31 @@ entre jugadores; expediciones. Orden de implementación, cada paso con su valida
 Descartado del informe por solapamiento: estados elementales (ya hay fusiones), auras, recursos por rol y loadouts en la
 hoguera (ya existen en parte). Reminiscencia de jefes queda pendiente hasta cerrar la reinvocación en partida.
 
+## Roles renombrados (decisiones aprobadas por el autor)
+
+Ids nuevos y mapeo aprobados; la tabla está en `role/RoleMigrationRules` con pruebas.
+
+| Antiguo | Nuevo (id) | Nombre | Función aprobada |
+|---|---|---|---|
+| Mago (`mage`) | Arcanista (`arcanist`) | Arcanista | Magia arcana y elemental; se añaden elementos del antiguo Elementalista (pendiente: cuáles) |
+| Elementalista (`elementalist`) | Chamán (`shaman`) | Chamán | Tótems y resonancia (diseño de ChatGPT) |
+| Herbolista (`herbalist`) | Boticario (`apothecary`) | Boticario | Brebajes y bombas (diseño de ChatGPT) |
+| Espadachín (`swordsman`) | Duelista (`duelist`) | Duelista | Desvío, Temple y estocadas (diseño de ChatGPT) |
+| Mercader (`merchant`) | Mercader táctico (`tactical_merchant`) | Mercader táctico | Soporte de grupo (diseño de ChatGPT) |
+| Brujo (`warlock`) | Brujo abisal (`abyssal_warlock`) | Brujo abisal | Maldiciones que dañan con el tiempo y sacrificios de vida; sin diablillos |
+| Nigromante (`necromancer`) | Señor de Cadáveres (mismo id) | Nigromante | Control de cadáveres, pocos esbirros fuertes, cosecha de almas |
+| Druida (`druid`) | Druida (mismo id) | Druida | Invoca un espíritu del bosque que ataca y recibe daño de los mobs |
+
+**Valores propuestos (provisionales, pendientes de tu aprobación):**
+- **Arcanista:** cargas arcanas hasta 5; cada carga suma 18 % de daño al siguiente hechizo.
+- **Chamán:** máximo 2 tótems a la vez; tótem de tormenta: 3 de daño cada 3 s en radio de 6 bloques, durante 30 s.
+- **Boticario:** bomba de esporas: área de 3 bloques, veneno durante 6 s.
+- **Duelista:** ventana de desvío de 4 ticks; cada desvío da 1 de Temple (máximo 5).
+- **Mercader táctico:** marca de objetivo: +10 % de daño de grupo durante 15 s; estandarte: −15 % de daño recibido a 6 bloques durante 20 s.
+- **Brujo abisal:** maldición de agonía: 1 de daño cada 2 s durante 12 s, máximo 3 por objetivo; sacrificio: pierde 2 corazones para infligir 8 de daño mágico.
+- **Señor de Cadáveres:** máximo 3 cadáveres reanimados durante 60 s con +25 % de daño; explosión de cadáver en 4 bloques con daño 6; cosecha de almas: cada enemigo abatido da 1 alma (máximo 10).
+- **Espíritu del bosque:** invocación única de 120 s, 40 de vida, 4 de daño; ataca, recibe daño de los mobs enemigos y los atrae a 8 bloques (como la provocación de la fase F1); enfriamiento de 90 s.
+
 ## 5. Ideas descartadas o aplazadas
 
 - Casa de subastas global: descartada para un servidor de amigos.
