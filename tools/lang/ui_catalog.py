@@ -1740,6 +1740,7 @@ entity.aptitudes.faceless_colossus¦O Colosso Sem Rosto¦Le Colosse sans visage�
 entity.aptitudes.osario_quebrado¦Ossuário Quebrado¦Ossuaire brisé¦Zerbrochenes Beinhaus
 item.aptitudes.osario_quebrado_spawn_egg¦Ovo de aparição do Osario Quebrado¦Œuf d'apparition de l'Ossuaire brisé¦Erscheinungsei des Zerbrochenen Beinhauses
 bestiary.aptitudes.osario_quebrado.tip¦Osso e terra que não descansam. Arrasta um braço e avança ao te ver.¦Os et terre qui refusent le repos. Il traîne un bras et charge dès qu'il vous voit.¦Knochen und Erde, die nicht ruhen wollen. Er schleift einen Arm und stürmt los, sobald er dich sieht.
+order.aptitudes.page¦Página %s/%s¦Page %s/%s¦Seite %s/%s
 contract.aptitudes.page.orders¦Pedidos¦Commandes¦Aufträge
 contract.aptitudes.page.contracts¦Contratos¦Contrats¦Verträge
 order.aptitudes.tier¦Nv %s¦Niv %s¦St. %s

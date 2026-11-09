@@ -3725,6 +3725,7 @@
   "entity.aptitudes.osario_quebrado": "Zerbrochenes Beinhaus",
   "item.aptitudes.osario_quebrado_spawn_egg": "Erscheinungsei des Zerbrochenen Beinhauses",
   "bestiary.aptitudes.osario_quebrado.tip": "Knochen und Erde, die nicht ruhen wollen. Er schleift einen Arm und stürmt los, sobald er dich sieht.",
+  "order.aptitudes.page": "Seite %s/%s",
   "contract.aptitudes.page.orders": "Aufträge",
   "contract.aptitudes.page.contracts": "Verträge",
   "order.aptitudes.tier": "St. %s",

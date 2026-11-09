@@ -3724,6 +3724,7 @@
   "entity.aptitudes.osario_quebrado": "Osario Quebrado",
   "item.aptitudes.osario_quebrado_spawn_egg": "Huevo de aparición del Osario Quebrado",
   "bestiary.aptitudes.osario_quebrado.tip": "Hueso y tierra que no descansan. Arrastra un brazo y carga al verte.",
+  "order.aptitudes.page": "Página %s/%s",
   "contract.aptitudes.page.orders": "Pedidos",
   "contract.aptitudes.page.contracts": "Contratos",
   "order.aptitudes.tier": "Nv %s",

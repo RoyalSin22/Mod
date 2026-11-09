@@ -24,6 +24,7 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -59,6 +60,8 @@ public final class ContractBoardScreen extends HandledScreen<ContractBoardScreen
 	private boolean ordersPage;
 	/** Nivel con el que se publica el siguiente pedido (1–4). */
 	private int tier = 1;
+	/** Página de la lista de pedidos (0 = primera). */
+	private int orderPage;
 
 	public ContractBoardScreen(ContractBoardScreenHandler handler, PlayerInventory inventory, Text title) {
 		super(handler, inventory, title);
@@ -71,6 +74,7 @@ public final class ContractBoardScreen extends HandledScreen<ContractBoardScreen
 		super.init();
 		shown = ContractClientState.get();
 		ordersShown = OrderClientState.get();
+		orderPage = Math.min(orderPage, pageCount() - 1);
 		if (!requested) {
 			requested = true;
 			send(ContractActionPayload.REQUEST, 0);
@@ -99,7 +103,38 @@ public final class ContractBoardScreen extends HandledScreen<ContractBoardScreen
 			}, true);
 			addTop(Text.translatable("order.aptitudes.publish"), x + W - PAD - 80 - 6 - 70, 70,
 					b -> sendOrder(OrderActionPayload.PUBLISH, 0, tier), true);
+			if (pageCount() > 1) {
+				addBottom("<", x + W / 2 - 34, 14, b -> {
+					orderPage = Math.max(0, orderPage - 1);
+					clearAndInit();
+				}, orderPage > 0);
+				addBottom(">", x + W / 2 + 20, 14, b -> {
+					orderPage = Math.min(pageCount() - 1, orderPage + 1);
+					clearAndInit();
+				}, orderPage < pageCount() - 1);
+			}
 		}
+	}
+
+	/** Pedidos de la página actual (tres por página). */
+	private List<OrderViewPayload.Row> pageRows() {
+		if (ordersShown == null) return List.of();
+		List<OrderViewPayload.Row> all = ordersShown.rows();
+		int from = Math.min(orderPage * ORDER_ROWS, all.size());
+		return all.subList(from, Math.min(from + ORDER_ROWS, all.size()));
+	}
+
+	/** Número de páginas (al menos 1). */
+	private int pageCount() {
+		int size = ordersShown == null ? 0 : ordersShown.rows().size();
+		return Math.max(1, (size + ORDER_ROWS - 1) / ORDER_ROWS);
+	}
+
+	private void addBottom(String label, int left, int width, ButtonWidget.PressAction action, boolean active) {
+		ButtonWidget widget = ButtonWidget.builder(Text.literal(label), action)
+				.dimensions(left, this.y + H - 14, width, 12).build();
+		widget.active = active;
+		addDrawableChild(widget);
 	}
 
 	private void addTop(Text label, int left, int width, ButtonWidget.PressAction action, boolean active) {
@@ -131,8 +166,9 @@ public final class ContractBoardScreen extends HandledScreen<ContractBoardScreen
 
 	private void initOrderButtons() {
 		if (ordersShown == null) return;
-		for (int i = 0; i < Math.min(ORDER_ROWS, ordersShown.rows().size()); i++) {
-			OrderViewPayload.Row row = ordersShown.rows().get(i);
+		List<OrderViewPayload.Row> page = pageRows();
+		for (int i = 0; i < page.size(); i++) {
+			OrderViewPayload.Row row = page.get(i);
 			int left = FULL_W - PAD - ORDER_ACTION_W + 12;
 			Text label;
 			int action;
@@ -211,9 +247,9 @@ public final class ContractBoardScreen extends HandledScreen<ContractBoardScreen
 
 	private void drawOrderBackground(DrawContext ctx) {
 		if (ordersShown == null) return;
-		int rows = Math.min(ORDER_ROWS, ordersShown.rows().size());
-		for (int i = 0; i < rows; i++) {
-			OrderViewPayload.Row row = ordersShown.rows().get(i);
+		List<OrderViewPayload.Row> page = pageRows();
+		for (int i = 0; i < page.size(); i++) {
+			OrderViewPayload.Row row = page.get(i);
 			int accent = row.closed() ? 0xFF857564 : row.mine() ? JADE : BRASS;
 			drawCard(ctx, OFFERS_X, FULL_W, i, accent);
 		}
@@ -285,9 +321,9 @@ public final class ContractBoardScreen extends HandledScreen<ContractBoardScreen
 					FULL_W - 2 * PAD, MUTED);
 			return;
 		}
-		int rows = Math.min(ORDER_ROWS, ordersShown.rows().size());
-		for (int i = 0; i < rows; i++) {
-			OrderViewPayload.Row row = ordersShown.rows().get(i);
+		List<OrderViewPayload.Row> page = pageRows();
+		for (int i = 0; i < page.size(); i++) {
+			OrderViewPayload.Row row = page.get(i);
 			int ry = rowY(i);
 			int tx = OFFERS_X + PAD;
 			int color = row.closed() ? MUTED : PARCHMENT;
@@ -302,9 +338,10 @@ public final class ContractBoardScreen extends HandledScreen<ContractBoardScreen
 			ctx.fill(tx, ry + 30, tx + Math.round(barW * fraction), ry + 35, color);
 			ctx.drawText(textRenderer, progress, tx + barW + 4, ry + 28, MUTED, false);
 		}
-		if (ordersShown.rows().size() > ORDER_ROWS) {
-			UiStyle.label(ctx, textRenderer, Text.translatable("order.aptitudes.more", ordersShown.rows().size() - ORDER_ROWS),
-					OFFERS_X + PAD, rowY(ORDER_ROWS) - 2, FULL_W - 2 * PAD, MUTED);
+		int pages = pageCount();
+		if (pages > 1) {
+			ctx.drawCenteredTextWithShadow(textRenderer, Text.translatable("order.aptitudes.page", orderPage + 1, pages),
+					W / 2, H - 14, MUTED);
 		}
 	}
 

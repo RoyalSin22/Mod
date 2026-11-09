@@ -98,16 +98,21 @@ public final class SoulsManager {
 		if (player.getMainHandStack().isOf(Items.TOTEM_OF_UNDYING) || player.getOffHandStack().isOf(Items.TOTEM_OF_UNDYING)) return;
 		int xp = player.totalExperience;
 		SoulsData stain = data(player);
-		if (stain.hasStain()) {
-			player.sendMessage(Text.translatable("aptitudes.souls.stain_lost", stain.xp).formatted(Formatting.GRAY), false);
+		// F3: la mancha anterior no se pierde entera; al volver a morir antes de recuperarla pierde un 25 % y el resto
+		// se suma a la nueva mancha, que queda donde ha caído el jugador.
+		long kept = stain.hasStain() ? SoulStainRules.afterDeathWhileStained(stain.xp) : 0L;
+		long lost = stain.hasStain() ? stain.xp - kept : 0L;
+		if (lost > 0) {
+			player.sendMessage(Text.translatable("aptitudes.souls.stain_lost", lost).formatted(Formatting.GRAY), false);
 		}
 		stain.clear();
-		if (xp > 0) {
+		long total = Math.min(Integer.MAX_VALUE, (long) xp + kept);
+		if (total > 0) {
 			stain.world = player.getWorld().getRegistryKey().getValue().toString();
 			stain.x = player.getX();
 			stain.y = player.getY();
 			stain.z = player.getZ();
-			stain.xp = xp;
+			stain.xp = (int) total;
 		}
 		// Se vacía ANTES de que vanilla suelte orbes: toda la XP queda en la mancha.
 		player.experienceLevel = 0;

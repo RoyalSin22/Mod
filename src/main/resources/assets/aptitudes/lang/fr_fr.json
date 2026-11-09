@@ -3725,6 +3725,7 @@
   "entity.aptitudes.osario_quebrado": "Ossuaire brisé",
   "item.aptitudes.osario_quebrado_spawn_egg": "Œuf d'apparition de l'Ossuaire brisé",
   "bestiary.aptitudes.osario_quebrado.tip": "Os et terre qui refusent le repos. Il traîne un bras et charge dès qu'il vous voit.",
+  "order.aptitudes.page": "Page %s/%s",
   "contract.aptitudes.page.orders": "Commandes",
   "contract.aptitudes.page.contracts": "Contrats",
   "order.aptitudes.tier": "Niv %s",

@@ -3725,6 +3725,7 @@
   "entity.aptitudes.osario_quebrado": "Broken Ossuary",
   "item.aptitudes.osario_quebrado_spawn_egg": "Broken Ossuary Spawn Egg",
   "bestiary.aptitudes.osario_quebrado.tip": "Bone and earth that will not rest. It drags one arm and charges when it sees you.",
+  "order.aptitudes.page": "Page %s/%s",
   "contract.aptitudes.page.orders": "Orders",
   "contract.aptitudes.page.contracts": "Contracts",
   "order.aptitudes.tier": "Lv %s",

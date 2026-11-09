@@ -21,8 +21,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   publicar, entregar, recoger y cancelar) y reglas puras con pruebas (`OrderBookRules`).
 - **v65 — Pedidos del gremio (F4, pantalla).** El tablón tiene una página «Pedidos» con tres filas por página, botón
   de publicar con el objeto de la mano y selector de nivel. Entregar, recoger y cancelar pasan por el servidor
-  (`OrderViewPayload`, `OrderActionPayload`). Sin validar en partida; la paginación de más de tres pedidos queda
-  pendiente.
+  (`OrderViewPayload`, `OrderActionPayload`). La lista se pagina de tres en tres. Sin validar en partida.
+- **v65 — Mancha de XP (F3).** Al volver a morir antes de recuperar la mancha, se pierde un 25 % y el resto se suma a
+  la nueva mancha, en el lugar de la muerte. Antes se perdía entera. Sin validar en partida.
 
 ### Corregido
 - **v56 — Generación de jefes.** Torres, santuarios y campamentos guardan sus jefes con el terreno al
