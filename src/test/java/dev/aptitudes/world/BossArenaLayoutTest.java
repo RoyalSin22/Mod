@@ -24,8 +24,16 @@ class BossArenaLayoutTest {
 			assertFalse(layout.contains(100, 0, 0.5));
 			assertFalse(layout.contains(Double.NaN, 0, 0.5));
 			assertEquals(layout.wall().size(), new HashSet<>(layout.wall()).size());
-			assertTrue(layout.wall().size() < 160);
+			// Límite de rendimiento: el anillo de 21 bloques (RUINS) tiene 168 celdas en tres capas.
+			assertTrue(layout.wall().size() < 200);
 		}
+	}
+
+	@Test
+	void ruinsEnclosesTheColossusFootprintAroundTheSummonPoint() {
+		assertTrue(BossArenaLayout.RUINS.contains(0.5, 0, 0.5));
+		assertTrue(BossArenaLayout.RUINS.contains(9.5, 0, 0.5));
+		assertFalse(BossArenaLayout.RUINS.contains(11.5, 0, 0.5));
 	}
 
 	@Test

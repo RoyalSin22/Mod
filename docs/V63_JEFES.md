@@ -44,7 +44,7 @@ Guerrero gigante (1,6 × 3,8 bloques; v65 lo subió desde 3,4 según la hoja de 
 | `charge` (embestida) | 2+ | 5–18 | 16 t (humo) | 90 t | Se lanza hacia el objetivo; daño ×0,9 y gran empuje si llega |
 
 - Botín: 8–12 Fragmentos de alma, Corazón de campeón, 3 Esencias de élite (núcleo propio con la estructura).
-- Arena prevista: **Ruinas de batalla**, círculo de 21 bloques con columnas rotas como cobertura; muro de niebla
+- Arena: **Ruinas de batalla** (v65), círculo de 21 bloques con columnas rotas como cobertura. Se levanta al invocar el sello (las columnas duran 20 min) y se cierra con niebla al entrar; muro de niebla
   de las arenas v60 (`BossArenas`).
 - Cómo se vence: castigar tras el `slam` (largo enfriamiento) y salir del arco del `sweep`; en fase 2, romper la
   línea de la embestida con columnas.

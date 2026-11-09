@@ -36,6 +36,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 - **v65 — Fase 3 de los jefes.** El Guardián Desmontado acelera `volley` y `dive` (enfriamientos de 30 y 50 ticks).
   El Autómata Antiguo lanza dos esferas en abanico y su rayo barre un cono de 60°. Sin validar en partida.
 
+- **v65 — Ruinas de batalla del Coloso.** Al invocar al Coloso con el sello, se levantan ocho columnas rotas (20 min) y
+  una sala circular de 21 bloques que se cierra con niebla mientras se lucha dentro. Sin validar en partida.
+
 ### Corregido
 - **v56 — Generación de jefes.** Torres, santuarios y campamentos guardan sus jefes con el terreno al
   generarse. Esto corrige el bloqueo que podía detener el mundo e impedir abrir o romper bloques.

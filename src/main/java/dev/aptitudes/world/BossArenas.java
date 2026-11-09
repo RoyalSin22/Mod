@@ -28,6 +28,8 @@ public final class BossArenas {
 	private static final String ANCHOR = "aptitudes.arena.";
 	private static final int INTERVAL = 10;
 	private static final long LEASE = 40;
+	/** Las columnas de las ruinas duran 20 minutos (24000 ticks). */
+	private static final long RUINS_LEASE = 24_000;
 	private static final Map<UUID, Arena> ARENAS = new HashMap<>();
 	private static final Map<ServerPlayerEntity, UUID> LISTENERS = new HashMap<>();
 
@@ -112,7 +114,8 @@ public final class BossArenas {
 
 	private BossArenas() {}
 
-	static void mark(MobEntity boss, BlockPos center) {
+	/** Ancla la sala al punto {@code center} (lo llama el sello del Coloso antes de invocarlo). */
+	public static void mark(MobEntity boss, BlockPos center) {
 		boss.addCommandTag(ANCHOR + center.asLong());
 	}
 
@@ -151,7 +154,28 @@ public final class BossArenas {
 				};
 			}
 		}
+		// El Coloso no tiene etiqueta de jefe: su sala es la de las ruinas.
+		if (layout == null && boss instanceof dev.aptitudes.boss.FacelessColossusEntity) layout = BossArenaLayout.RUINS;
 		if (center != null && layout != null) ARENAS.put(boss.getUuid(), new Arena(boss, world, center, layout));
+	}
+
+	/** Columnas rotas como cobertura dentro de las ruinas, temporales (no dejan restos). */
+	public static void raiseRuins(ServerWorld world, BlockPos center) {
+		for (int i = 0; i < 8; i++) {
+			double angle = i * Math.PI / 4;
+			int x = (int) Math.round(Math.cos(angle) * 6);
+			int z = (int) Math.round(Math.sin(angle) * 6);
+			int height = 2 + world.getRandom().nextInt(3);
+			for (int y = 0; y < height; y++) {
+				BlockPos pos = center.add(x, y, z);
+				if (!world.isInBuildLimit(pos)) continue;
+				boolean top = y == height - 1;
+				var state = top && world.getRandom().nextBoolean()
+						? net.minecraft.block.Blocks.CRACKED_STONE_BRICKS.getDefaultState()
+						: net.minecraft.block.Blocks.STONE_BRICKS.getDefaultState();
+				TemporaryBlocks.placeInAir(world, pos, state, RUINS_LEASE);
+			}
+		}
 	}
 
 	private static void forget(Entity entity) {

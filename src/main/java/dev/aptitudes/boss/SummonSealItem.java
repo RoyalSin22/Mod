@@ -1,5 +1,6 @@
 package dev.aptitudes.boss;
 
+import dev.aptitudes.world.BossArenas;
 import dev.aptitudes.Aptitudes;
 import dev.aptitudes.item.ModItems;
 import net.minecraft.entity.Entity;
@@ -76,6 +77,10 @@ public final class SummonSealItem extends Item {
 		takeCost(sp.getInventory());
 		boss.setPosition(player.getX(), player.getY(), player.getZ());
 		if (boss instanceof AnimatedBossEntity animated) animated.restorePhase(state.lastPhase(id));
+		if (boss instanceof FacelessColossusEntity colossus) { // v65: el Coloso aparece en sus ruinas
+			BossArenas.mark(colossus, player.getBlockPos());
+			BossArenas.raiseRuins(server, player.getBlockPos());
+		}
 		server.spawnEntity(boss);
 		state.setActive(id, boss.getUuid());
 		stack.decrement(1);

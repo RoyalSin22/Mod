@@ -5,7 +5,9 @@ import java.util.List;
 
 /** Geometría fija de las salas, relativa al centro del suelo transitable. */
 public enum BossArenaLayout {
-	TOWER(3, 17, 0), SHRINE(4, 19, 0), CAMP(5, 30, -1.0 / 16);
+	TOWER(3, 17, 0), SHRINE(4, 19, 0), CAMP(5, 30, -1.0 / 16),
+	/** v65: Ruinas de batalla del Coloso Sin Rostro, círculo de 21 bloques; se levanta al invocarlo. */
+	RUINS(10, 100, 0);
 
 	private static final int HEIGHT = 3;
 	private final int radius;
