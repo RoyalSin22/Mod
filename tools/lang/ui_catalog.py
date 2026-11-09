@@ -1737,6 +1737,7 @@ advancement.aptitudes.life_vessel.description¦Use um Vaso de vida.¦Utilisez un
 # v63 (C4): jefes animados (GeckoLib).
 add('', """
 entity.aptitudes.faceless_colossus¦O Colosso Sem Rosto¦Le Colosse sans visage¦Der gesichtslose Koloss
+entity.aptitudes.osario_quebrado¦Ossuário Quebrado¦Ossuaire brisé¦Zerbrochenes Beinhaus
 item.aptitudes.faceless_colossus_spawn_egg¦Ovo gerador do Colosso Sem Rosto¦Œuf d'apparition du Colosse sans visage¦Spawn-Ei des gesichtslosen Kolosses
 bestiary.aptitudes.faceless_colossus.tip¦Guerreiro gigante com espadão. Anuncia um golpe amplo e um golpe descendente com onda: saia do círculo marcado. Com metade da vida sua armadura racha: fica mais rápido, investe de longe e recebe mais dano.¦Guerrier géant armé d'une grande épée. Il annonce un large balayage et un coup plongeant avec onde de choc : sortez du cercle marqué. À mi-vie son armure se fissure : il va plus vite, charge de loin et subit plus de dégâts.¦Riesiger Krieger mit Zweihänder. Er kündigt einen weiten Hieb und einen Abwärtsschlag mit Schockwelle an: Verlasse den markierten Kreis. Bei halber Lebenskraft bricht seine Rüstung: Er wird schneller, stürmt aus der Ferne an und erleidet mehr Schaden.
 """)

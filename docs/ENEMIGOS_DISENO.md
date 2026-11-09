@@ -62,4 +62,14 @@ otro enemigo o para las marcas con partículas.
 - El Wither vanilla destruye bloques al atacar, así que no puede aparecer libremente en el mundo.
 - **Opciones:** (a) que aparezca solo dentro de una arena de jefe (`world/BossArenas`), donde no daña el terreno; (b) que
   aparezca en el mundo, pero sin daño a bloques, lo que exige un cambio de comportamiento en el jefe.
-- Pendiente de tu decisión.
+- **Descartado por el autor.** No aparecerá en la Lluvia de brasas.
+
+## Estado del Osario Quebrado (implementado, sin validar en partida)
+
+- Modelo, animaciones y textura de prueba: `tools/models/gen_mob_models.py` (64×64, `--check` correcto).
+- Entidad `mob/OsarioEntity` (combate cuerpo a cuerpo y animaciones de reposo y caminar), registro `mob/OsarioEntities`,
+  renderizador `client/render/MobRenderers`.
+- Aparece en la Niebla de almas con un 10 % de las apariciones (`mob/OsarioRules`, 5 pruebas).
+- Nombre en los 11 idiomas.
+- **Pendiente:** la animación `heavy_swipe` aún no se dispara desde el ataque; huevo de aparición; entrada en el
+  bestiario; y las partículas de ectoplasma y de tierra. Probar en partida la aparición y el combate.

@@ -272,7 +272,8 @@ public final class WorldEventManager {
 				ServerPlayerEntity target = group.get(i % groupSize);
 				BlockPos pos = EclipseManager.findSpawn(world, target.getBlockPos(), 14, 28);
 				if (pos == null) continue;
-				EntityType<? extends MobEntity> type = fogType(world, pos);
+				EntityType<? extends MobEntity> type = dev.aptitudes.mob.OsarioRules.spawnsOsario(world.random.nextInt(100))
+						? dev.aptitudes.mob.OsarioEntities.OSARIO : fogType(world, pos);
 				MobEntity mob = type.create(world);
 				if (mob == null) continue;
 				mob.refreshPositionAndAngles(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, world.random.nextFloat() * 360f, 0);

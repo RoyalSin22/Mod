@@ -3722,6 +3722,7 @@
   "advancement.aptitudes.life_vessel.title": "Fuller Heart",
   "advancement.aptitudes.life_vessel.description": "Use a Life Vessel.",
   "entity.aptitudes.faceless_colossus": "The Faceless Colossus",
+  "entity.aptitudes.osario_quebrado": "Broken Ossuary",
   "item.aptitudes.faceless_colossus_spawn_egg": "Faceless Colossus Spawn Egg",
   "bestiary.aptitudes.faceless_colossus.tip": "Giant warrior with a greatsword. It telegraphs a wide sweep and an overhead slam with a shock wave; step out of the marked circle. At half health its armor cracks: it moves faster, charges from afar and takes more damage.",
   "entity.aptitudes.dismantled_guardian": "Dismantled Guardian",
