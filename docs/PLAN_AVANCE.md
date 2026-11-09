@@ -91,7 +91,10 @@ Pendiente:
 - B5 (hecho en código, sin commit): decisión mía. Los **jefes** guardan su postura actual en NBT
   (`aptitudes_posture`); el aturdimiento y la inmunidad no se guardan, así que al recargar no hay aturdimiento. Los
   **élites y campeones** no persisten su postura: son mobs comunes y su estado se pierde al recargar.
-- B6: animación de aturdimiento y aviso visual (K5).
+- B6 (hecho en código, sin commit): animación `stun` (2 s, un disparo: cabeza que se sacude y cuerpo que se hunde)
+  en los tres jefes, generada por `tools/models/gen_boss_models.py` (`--check` correcto). Se dispara al romper la
+  postura. Indicador: partículas de encantamiento sobre la cabeza mientras dura el aturdimiento. Las animaciones
+  definitivas siguen pendientes de K5; esta es de prueba.
 - Integrar la postura en los tres jefes animados y en élites y campeones.
 - Guardia perfecta y parry: ventana y respuesta del servidor; sin invulnerabilidad prolongada.
 - Validación en partida con el autor.

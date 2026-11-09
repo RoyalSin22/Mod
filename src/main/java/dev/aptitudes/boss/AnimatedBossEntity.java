@@ -122,6 +122,10 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 		bossBar.setName(getDisplayName());
 		bossBar.setPercent(getHealth() / getMaxHealth());
 		posture = PostureRules.recover(posture, POSTURE_RECOVERY_PER_TICK, world.getTime());
+		// B6: indicador visible mientras dura el aturdimiento (estrellas sobre la cabeza, cada 10 ticks).
+		if (posture.stunned(world.getTime()) && world.getTime() % 10 == 0) {
+			world.spawnParticles(ParticleTypes.ENCHANT, getX(), getBodyY(1.1), getZ(), 8, 0.6, 0.3, 0.6, 0.1);
+		}
 	}
 
 	@Override
@@ -157,6 +161,7 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 
 	/** Postura vaciada: aviso sonoro y de partículas. El aturdimiento lo aplica {@link PostureRules}. */
 	private void onPostureBroken(ServerWorld world) {
+		triggerAnim(ACTION_CONTROLLER, "stun");
 		world.playSound(null, getBlockPos(), SoundEvents.ENTITY_IRON_GOLEM_HURT, SoundCategory.HOSTILE, 1.2f, 0.6f);
 		world.spawnParticles(ParticleTypes.CRIT, getX(), getBodyY(0.5), getZ(), 20, 0.5, 0.5, 0.5, 0.1);
 	}
@@ -298,6 +303,7 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 				state -> state.setAndContinue(state.isMoving() ? WALK : IDLE)));
 		AnimationController<AnimatedBossEntity> actions = new AnimationController<>(this, ACTION_CONTROLLER, 2, state -> PlayState.STOP);
 		actions.triggerableAnim("phase_two", RawAnimation.begin().thenPlay("phase_two"));
+		actions.triggerableAnim("stun", RawAnimation.begin().thenPlay("stun"));
 		for (Move move : moves()) actions.triggerableAnim(move.id(), RawAnimation.begin().thenPlay(move.id()));
 		controllers.add(actions);
 	}

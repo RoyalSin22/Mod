@@ -326,9 +326,18 @@ def texture(boss, bones):
     return buf.getvalue(), img
 
 
+# B6: aturdimiento por postura (todos los jefes). Un disparo de 2 s: la cabeza se sacude y el cuerpo se hunde; el
+# aturdimiento dura 5 s y después el jefe vuelve a su idle. Huesos comunes a los tres modelos: body y head.
+STUN_ANIM = (2.0, False, {
+    'body': {'rotation': {0: [0, 0, 0], 0.5: [12, 0, 0], 1.5: [12, 0, 0], 2.0: [0, 0, 0]}},
+    'head': {'rotation': {0: [0, 0, 0], 0.4: [-30, 0, 0], 0.8: [-10, 0, 0], 1.2: [-30, 0, 0], 2.0: [0, 0, 0]}},
+})
+
+
 def files(assets):
     out = {}
     for boss, (bones, anims) in BOSSES.items():
+        anims = {**anims, 'stun': STUN_ANIM}
         out[assets / f'geo/entity/{boss}.geo.json'] = (json.dumps(geometry(boss, bones), indent=1) + '\n').encode()
         out[assets / f'animations/entity/{boss}.animation.json'] = (json.dumps(animations(anims), indent=1) + '\n').encode()
         out[assets / f'textures/entity/{boss}.png'] = texture(boss, bones)[0]
