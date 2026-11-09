@@ -22,6 +22,9 @@ import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
@@ -257,7 +260,23 @@ public final class ElementEffects {
 	 */
 	static Element form(ServerPlayerEntity player, Element element) {
 		String id = ElementRules.form(element.name().toLowerCase(java.util.Locale.ROOT), passiveRank(player, element));
-		return Element.valueOf(id.toUpperCase(java.util.Locale.ROOT));
+		Element formed = Element.valueOf(id.toUpperCase(java.util.Locale.ROOT));
+		if (formed != element) evolutionFx(player, formed);
+		return formed;
+	}
+
+	/** Señal visible de la evolución en cada lanzamiento: anillo de lava, chispas de la forma nueva y un chasquido. */
+	private static void evolutionFx(ServerPlayerEntity player, Element formed) {
+		ServerWorld world = player.getServerWorld();
+		double x = player.getX();
+		double y = player.getBodyY(0.5);
+		double z = player.getZ();
+		for (int i = 0; i < 16; i++) {
+			double a = i * Math.PI / 8;
+			world.spawnParticles(ParticleTypes.LAVA, x + Math.cos(a) * 1.4, y, z + Math.sin(a) * 1.4, 1, 0, 0.15, 0, 0);
+		}
+		world.spawnParticles(formed.particle(), x, y, z, 14, 0.5, 0.6, 0.5, 0.06);
+		world.playSound(null, player.getBlockPos(), SoundEvents.BLOCK_LAVA_POP, SoundCategory.PLAYERS, 1.0f, 0.8f);
 	}
 
 	private record ElementAttribute(Element element, RegistryEntry<EntityAttribute> attribute, Operation op,

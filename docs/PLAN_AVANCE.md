@@ -206,7 +206,7 @@ Ids nuevos y mapeo aprobados; la tabla está en `role/RoleMigrationRules` con pr
 Agua) y Marea verde (Agua + Planta) con su efecto y textos en 11 idiomas; Plaga usa Planta + Sombra. El estallido del
 Rayo ya aplica daño (`ElementEffects`, `damage * 1.5`), así que no requiere cambios.
 
-**Evolución cableada:** el Fuego se convierte en Magma en `ElementEffects.bolt` y `burst` cuando el rango de
+**Evolución cableada:** Cada lanzamiento evolucionado muestra un anillo de lava, chispas de la forma nueva y un chasquido (`ElementEffects.evolutionFx`).  el Fuego se convierte en Magma en `ElementEffects.bolt` y `burst` cuando el rango de
 afinidad del elemento activo llega a 3 (`passiveRank`, nodo `elemental_affinity`). Como el árbol del Arcanista aún
 no existe, el rango usado es el del nodo de afinidad actual; cuando se cree el árbol del Arcanista, el rango se
 leerá de su nodo de elemento.
