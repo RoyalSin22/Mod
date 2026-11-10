@@ -370,13 +370,19 @@ STUN_ANIM = (2.0, False, {
 })
 
 
+# Jefes con textura pintada a mano (fuente de verdad: el PNG del repositorio). El generador no la escribe ni
+# la comprueba; solo geometría y animaciones.
+PAINTED_TEXTURES = {'faceless_colossus'}
+
+
 def files(assets):
     out = {}
     for boss, (bones, anims) in BOSSES.items():
         anims = {**anims, 'stun': STUN_ANIM}
         out[assets / f'geo/entity/{boss}.geo.json'] = (json.dumps(geometry(boss, bones), indent=1) + '\n').encode()
         out[assets / f'animations/entity/{boss}.animation.json'] = (json.dumps(animations(anims), indent=1) + '\n').encode()
-        out[assets / f'textures/entity/{boss}.png'] = texture(boss, bones)[0]
+        if boss not in PAINTED_TEXTURES:
+            out[assets / f'textures/entity/{boss}.png'] = texture(boss, bones)[0]
     return out
 
 
