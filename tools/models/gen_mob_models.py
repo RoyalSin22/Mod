@@ -22,6 +22,9 @@ SKULL = '#D9D6C3'
 ARENISCA = '#C9B88A'
 COBRE = '#5FA59A'
 LUZ = '#FFF3C4'
+ESCORIA = '#5A5550'
+HIERRO = '#3A3D48'
+FUNDIDO = '#FF8A3D'
 
 # (nombre, padre, pivote, [(origen, tamaño, uv, color)])
 OSARIO = {
@@ -91,6 +94,46 @@ ERRANTE = {
     },
 }
 
+ESCORIFICADOR = {
+    'name': 'escorificador_hierro', 'tex': 64,
+    'bounds': (3, 2),
+    'bones': [
+        ('root', None, [0, 0, 0], []),
+        ('body', 'root', [0, 12, 0], [
+            ([-4, 12, -2.5], [8, 7, 5], [0, 0], ESCORIA),
+            ([-5, 19, -3], [10, 5, 6], [0, 14], HIERRO),
+            ([-2, 24, 1], [4, 6, 3], [46, 22], ESCORIA),
+        ]),
+        ('grille', 'body', [0, 15.5, -3], [([-2.5, 14, -3.2], [5, 3, 1], [34, 0], FUNDIDO)]),
+        ('head', 'body', [0, 24, 0], [([-3.5, 24, -3], [7, 7, 6], [0, 27], HIERRO)]),
+        ('arm_left', 'body', [5, 22, 0], [
+            ([4, 12, -1.5], [3, 10, 3], [34, 8], HIERRO),
+            ([4, 8, -1.5], [3, 3, 3], [48, 8], FUNDIDO),
+        ]),
+        ('arm_right', 'body', [-5, 22, 0], [
+            ([-7, 12, -1.5], [3, 10, 3], [34, 22], HIERRO),
+            ([-7, 8, -1.5], [3, 3, 3], [48, 16], FUNDIDO),
+        ]),
+        ('leg_left', 'root', [2, 12, 0], [([1, 0, -1.5], [3, 12, 3], [0, 36], ESCORIA)]),
+        ('leg_right', 'root', [-2, 12, 0], [([-4, 0, -1.5], [3, 12, 3], [12, 36], ESCORIA)]),
+    ],
+    'anims': {
+        'idle': (2.0, True, {
+            'body': {'rotation': {0: [0, 0, 0], 1.0: [2, 0, 0], 2.0: [0, 0, 0]}},
+        }),
+        'walk': (1.0, True, {
+            'leg_left': {'rotation': {0: [-20, 0, 0], 0.5: [20, 0, 0], 1.0: [-20, 0, 0]}},
+            'leg_right': {'rotation': {0: [20, 0, 0], 0.5: [-20, 0, 0], 1.0: [20, 0, 0]}},
+        }),
+        # Golpe aplastante: la rejilla se enciende (señal) y los brazos caen de golpe.
+        'slam': (1.5, False, {
+            'grille': {'scale': {0: [1, 1, 1], 0.5: [1.35, 1.35, 1.35], 1.0: [1.35, 1.35, 1.35], 1.5: [1, 1, 1]}},
+            'arm_left': {'rotation': {0: [0, 0, 0], 0.7: [-150, 0, 0], 0.9: [-150, 0, 0], 1.1: [0, 0, 0]}},
+            'arm_right': {'rotation': {0: [0, 0, 0], 0.7: [-150, 0, 0], 0.9: [-150, 0, 0], 1.1: [0, 0, 0]}},
+        }),
+    },
+}
+
 CUSTODIO = {
     'name': 'custodio_cuatro_llaves', 'tex': 128,
     'bounds': (4, 3),
@@ -131,7 +174,7 @@ CUSTODIO = {
     },
 }
 
-SPECS = [OSARIO, ERRANTE, CUSTODIO]
+SPECS = [OSARIO, ERRANTE, CUSTODIO, ESCORIFICADOR]
 
 
 def geometry(spec):

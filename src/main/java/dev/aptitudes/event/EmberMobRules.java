@@ -6,7 +6,7 @@ package dev.aptitudes.event;
  */
 public final class EmberMobRules {
 	/** Criaturas del Nether vanilla del evento. Se añaden al final: el orden no guarda datos. */
-	public enum EmberMob { ZOMBIFIED_PIGLIN, HOGLIN, PIGLIN_BRUTE, BLAZE, GHAST, MAGMA_CUBE, WITHER_SKELETON }
+	public enum EmberMob { ZOMBIFIED_PIGLIN, HOGLIN, PIGLIN_BRUTE, BLAZE, GHAST, MAGMA_CUBE, WITHER_SKELETON, ESCORIFICADOR }
 
 	/** Tope de criaturas del evento cerca de cada jugador. */
 	public static final int MAX_NEARBY = 4;
@@ -27,13 +27,14 @@ public final class EmberMobRules {
 	/** Pesos: suman 100. Los piglins y los hoglins son los más comunes; los jefes menores, los menos. */
 	public static int weight(EmberMob mob) {
 		return switch (mob) {
-			case ZOMBIFIED_PIGLIN -> 25;
+			case ZOMBIFIED_PIGLIN -> 15;
 			case HOGLIN -> 15;
 			case PIGLIN_BRUTE -> 10;
 			case BLAZE -> 15;
 			case GHAST -> 10;
 			case MAGMA_CUBE -> 15;
 			case WITHER_SKELETON -> 10;
+			case ESCORIFICADOR -> 10; // v65
 		};
 	}
 }

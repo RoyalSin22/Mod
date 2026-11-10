@@ -104,6 +104,9 @@ public final class BestiaryRules {
 				"aptitudes:osario_quebrado_spawn_egg", List.of("aptitudes:soul_shard")));
 		out.add(new Entry("errante_velado", Kind.CREATURE, Region.OVERWORLD, "aptitudes:errante_velado", null,
 				"aptitudes:errante_velado_spawn_egg", List.of("aptitudes:soul_shard")));
+		// v65: escorificador de hierro (Nether y Lluvia de brasas).
+		out.add(new Entry("escorificador_hierro", Kind.CREATURE, Region.NETHER, "aptitudes:escorificador_hierro", null,
+				"aptitudes:escorificador_hierro_spawn_egg", List.of("aptitudes:soul_shard")));
 		ENTRIES = Collections.unmodifiableList(out);
 		for (Entry e : ENTRIES) {
 			if (BY_ID.put(e.id(), e) != null) throw new IllegalStateException("Entrada duplicada: " + e.id());

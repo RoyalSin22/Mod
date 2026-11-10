@@ -15,6 +15,12 @@ public final class MobRenderers {
 	private MobRenderers() {}
 
 	public static void register() {
+		EntityRendererRegistry.register(NewMobs.ESCORIFICADOR, ctx -> {
+			GeoEntityRenderer<dev.aptitudes.mob.EscorificadorEntity> renderer = new GeoEntityRenderer<>(ctx,
+					new DefaultedEntityGeoModel<>(Aptitudes.id("escorificador_hierro")));
+			renderer.withScale(1.0f);
+			return renderer;
+		});
 		EntityRendererRegistry.register(NewMobs.ERRANTE, ctx -> {
 			GeoEntityRenderer<ErranteEntity> renderer = new GeoEntityRenderer<>(ctx,
 					new DefaultedEntityGeoModel<>(Aptitudes.id("errante_velado")));

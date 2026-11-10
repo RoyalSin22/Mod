@@ -506,6 +506,7 @@ opción están en el código.
 | Afijo Abrasador | prende fuego al jugador 3 s al golpear | Afijo nuevo de élite | Provisional |
 | Afijos de élite | 11 en vez de 9 | Con más afijos, cada uno aparece con menos frecuencia | Revisar equilibrio |
 | Guardián, fase 3 | `volley` 30 t y `dive` 50 t de enfriamiento (antes 50 y 80) | Ataques más rápidos en la fase final | Provisional |
+| Escorificador de Hierro | 40 de vida, 8 de daño, velocidad 0,21; aparece en el Nether (peso 6, grupos de 1–2) y en la Lluvia de brasas (peso 10 de 100; los piglins zombis bajan de 25 a 15) | Decisión del autor: vuelve a entrar en el Nether y en la Lluvia de brasas | Provisional, validar |
 | Autómata, fase 3 | `orb` dos esferas en abanico de 8°; `beam` cono de 60° | La especificación pedía dos esferas seguidas y barrido de 60°; sin cola de disparos se usa abanico | Provisional |
 
 ## Arenas de jefe (v60)

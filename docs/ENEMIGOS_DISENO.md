@@ -51,6 +51,7 @@ otro enemigo o para las marcas con partículas.
   hierro fundido al final) y una chimenea en la espalda.
 - **Señal:** la rejilla del pecho se enciende antes de un golpe aplastante.
 - Se añade a las criaturas del Nether de la Lluvia de brasas.
+- **Estado (v65):** implementado. Aparece de forma natural en el Nether y en la Lluvia de brasas (peso 10 de 100). Decisión del autor que revierte el descarte anterior. Modelo y animación `slam` generados por `tools/models/gen_mob_models.py`; textura de 64×64. Sin validar en partida.
 
 ### Descartado
 

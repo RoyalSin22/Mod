@@ -8,6 +8,7 @@
 - `event/ExpeditionRulesTest` (existente): composición y modificadores de la semilla.
 - `souls/SoulStainRulesTest` (existente, con el porcentaje configurable).
 - `elite/GlyphRulesTest` (ampliado): los afijos Espinoso y Abrasador tienen forma propia y distinta.
+- `event/EmberMobRulesTest` (actualizado): los pesos incluyen al Escorificador de Hierro y el piglin zombi baja a 15.
 - `world/BossArenaLayoutTest` (ampliado): las ruinas del Coloso cubren su sitio de invocación; el límite de celdas del muro sube a 200.
 - `config/V65ConfigValidationTest`: valores por defecto (sin cambio de comportamiento) y límites de las opciones nuevas.
 

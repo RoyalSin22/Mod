@@ -23,7 +23,7 @@ class EmberMobRulesTest {
 	}
 
 	@ParameterizedTest
-	@CsvSource({"0, ZOMBIFIED_PIGLIN", "24, ZOMBIFIED_PIGLIN", "25, HOGLIN", "-5, ZOMBIFIED_PIGLIN", "999, WITHER_SKELETON"})
+	@CsvSource({"0, ZOMBIFIED_PIGLIN", "14, ZOMBIFIED_PIGLIN", "15, HOGLIN", "25, HOGLIN", "-5, ZOMBIFIED_PIGLIN", "999, ESCORIFICADOR"})
 	void rollsMapToTheirBand(int roll, EmberMob expected) {
 		assertEquals(expected, EmberMobRules.choose(roll));
 	}

@@ -1,6 +1,8 @@
 package dev.aptitudes.mob;
 
 import dev.aptitudes.Aptitudes;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -27,6 +29,16 @@ public final class NewMobs {
 					.dimensions(1.15f, 2.35f).maxTrackingRange(12).makeFireImmune()
 					.build("custodio_cuatro_llaves"));
 
+	/** Escorificador de Hierro (v65): Nether natural y Lluvia de brasas. Inmune al fuego. */
+	public static final EntityType<EscorificadorEntity> ESCORIFICADOR = Registry.register(Registries.ENTITY_TYPE,
+			Aptitudes.id("escorificador_hierro"),
+			EntityType.Builder.create(EscorificadorEntity::new, SpawnGroup.MONSTER)
+					.dimensions(1.0f, 1.8f).maxTrackingRange(10).makeFireImmune()
+					.build("escorificador_hierro"));
+
+	public static final Item ESCORIFICADOR_EGG = Registry.register(Registries.ITEM, Aptitudes.id("escorificador_hierro_spawn_egg"),
+			new SpawnEggItem(ESCORIFICADOR, 0x3A3D48, 0xFF8A3D, new Settings()));
+
 	public static final Item ERRANTE_EGG = Registry.register(Registries.ITEM, Aptitudes.id("errante_velado_spawn_egg"),
 			new SpawnEggItem(ERRANTE, 0x34383D, 0x65D6D0, new Settings()));
 
@@ -35,7 +47,13 @@ public final class NewMobs {
 	public static void register() {
 		FabricDefaultAttributeRegistry.register(ERRANTE, ErranteEntity.createAttributes());
 		FabricDefaultAttributeRegistry.register(CUSTODIO, CustodioEntity.createAttributes());
+		FabricDefaultAttributeRegistry.register(ESCORIFICADOR, EscorificadorEntity.createAttributes());
+		// Aparece de forma natural en el Nether (cualquier bioma de Nether).
+		BiomeModifications.addSpawn(BiomeSelectors.foundInTheNether(), SpawnGroup.MONSTER, ESCORIFICADOR, 6, 1, 2);
 		ItemGroupEvents.modifyEntriesEvent(RegistryKey.of(RegistryKeys.ITEM_GROUP, Aptitudes.id("items")))
-				.register(entries -> entries.add(ERRANTE_EGG)); // huevo en la pestaña creativa
+				.register(entries -> {
+					entries.add(ERRANTE_EGG); // huevos en la pestaña creativa
+					entries.add(ESCORIFICADOR_EGG);
+				});
 	}
 }

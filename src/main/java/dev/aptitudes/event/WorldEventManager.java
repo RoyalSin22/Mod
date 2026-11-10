@@ -344,6 +344,7 @@ public final class WorldEventManager {
 			case GHAST -> EntityType.GHAST;
 			case MAGMA_CUBE -> EntityType.MAGMA_CUBE;
 			case WITHER_SKELETON -> EntityType.WITHER_SKELETON;
+			case ESCORIFICADOR -> dev.aptitudes.mob.NewMobs.ESCORIFICADOR;
 		};
 	}
 
