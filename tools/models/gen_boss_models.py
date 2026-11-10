@@ -455,18 +455,42 @@ STUN_ANIM = (2.0, False, {
 
 # Jefes con textura pintada a mano (fuente de verdad: el PNG del repositorio). El generador no la escribe ni
 # la comprueba; solo geometría y animaciones.
-PAINTED_TEXTURES = set()  # v65d: el Coloso vuelve a generarse con el generador (512 px)
+# Jefes cuyo geo y textura son de Blockbench (fuente de verdad: los archivos del repositorio). El generador no los
+# escribe; solo comprueba el contrato (huesos y tamaño de textura). Las animaciones siguen siendo del generador.
+HAND_EDITED_GEO = {'faceless_colossus'}
+PAINTED_TEXTURES = {'faceless_colossus'}
 
 
 def files(assets):
     out = {}
     for boss, (bones, anims) in BOSSES.items():
         anims = {**anims, 'stun': STUN_ANIM}
-        out[assets / f'geo/entity/{boss}.geo.json'] = (json.dumps(geometry(boss, bones), indent=1) + '\n').encode()
+        if boss not in HAND_EDITED_GEO:
+            out[assets / f'geo/entity/{boss}.geo.json'] = (json.dumps(geometry(boss, bones), indent=1) + '\n').encode()
         out[assets / f'animations/entity/{boss}.animation.json'] = (json.dumps(animations(anims), indent=1) + '\n').encode()
         if boss not in PAINTED_TEXTURES:
             out[assets / f'textures/entity/{boss}.png'] = texture(boss, bones)[0]
     return out
+
+
+def check_hand_geo(path, boss, bones):
+    """Contrato del geo editado en Blockbench: existen todos los huesos de este archivo, con su padre, y el
+    tamaño de textura coincide con BOSS_TEX. Devuelve un mensaje de error o None."""
+    if not path.is_file():
+        return f'{path}: falta el geo de Blockbench'
+    geo = json.loads(path.read_text(encoding='utf-8'))['minecraft:geometry'][0]
+    found = {b['name']: b.get('parent') for b in geo['bones']}
+    missing = [name for name, parent, *_ in bones if name not in found]
+    if missing:
+        return f'{path}: faltan huesos del contrato: {", ".join(missing)}'
+    wrong_parent = [name for name, parent, *_ in bones if parent and found.get(name) != parent]
+    if wrong_parent:
+        return f'{path}: huesos con padre distinto al del contrato: {", ".join(wrong_parent)}'
+    desc = geo['description']
+    want = BOSS_TEX.get(boss, TEX)
+    if desc.get('texture_width') != want or desc.get('texture_height') != want:
+        return f'{path}: la textura debe ser {want}x{want}'
+    return None
 
 
 def main():
@@ -476,6 +500,11 @@ def main():
     parser.add_argument('--preview', type=Path, help='Hoja de texturas de los tres jefes (solo para revisar)')
     args = parser.parse_args()
     stale = []
+    for boss, (bones, _) in BOSSES.items():
+        if boss in HAND_EDITED_GEO:
+            problem = check_hand_geo(args.assets / f'geo/entity/{boss}.geo.json', boss, bones)
+            if problem:
+                stale.append(problem)
     for path, data in files(args.assets).items():
         if args.check:
             if not path.is_file() or path.read_bytes() != data:
