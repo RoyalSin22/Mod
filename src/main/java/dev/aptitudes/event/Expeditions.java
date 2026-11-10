@@ -180,7 +180,10 @@ public final class Expeditions {
 		if (e.index >= e.modules.size()) {
 			state.remove(e.owner);
 			int multiplier = e.modifiers.contains("loot_boost") ? 2 : 1;
-			for (ServerPlayerEntity member : onlineMembers(server, e)) reward(member, multiplier);
+			for (ServerPlayerEntity member : onlineMembers(server, e)) {
+				reward(member, multiplier);
+				dev.aptitudes.contract.ContractManager.expeditionDone(member);
+			}
 			say(server, e, Text.translatable("expedition.aptitudes.complete",
 					Aptitudes.config().expeditionRewardEmeralds * multiplier,
 					Aptitudes.config().expeditionRewardSoulShards * multiplier).formatted(Formatting.GREEN), false);

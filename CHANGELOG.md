@@ -5,6 +5,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Añadido
+- **v65 — Tablón por niveles.** Los contratos de Oficial y Veterano pagan más esmeraldas, fragmentos y más vales. Tres
+  encargos nuevos: caza en el Nether, criaturas nuevas (Osario, Errante, Escorificador y Custodio) y expedición. Sin
+  validar en partida.
+
 ### Cambiado
 - **v65 — Ajustes tras la prueba en partida.** Se retira el sistema de pedidos del gremio (no encaja con un servidor de
   amigos). Los pasos del tutorial ya no dan esmeraldas. El trance va más lento: +5 crítico, +8 habilidad, 6 s y +10 % de

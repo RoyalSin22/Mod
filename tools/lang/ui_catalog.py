@@ -1740,6 +1740,9 @@ entity.aptitudes.faceless_colossus¦O Colosso Sem Rosto¦Le Colosse sans visage�
 entity.aptitudes.osario_quebrado¦Ossuário Quebrado¦Ossuaire brisé¦Zerbrochenes Beinhaus
 item.aptitudes.osario_quebrado_spawn_egg¦Ovo de aparição do Osario Quebrado¦Œuf d'apparition de l'Ossuaire brisé¦Erscheinungsei des Zerbrochenen Beinhauses
 bestiary.aptitudes.osario_quebrado.tip¦Osso e terra que não descansam. Arrasta um braço e avança ao te ver.¦Os et terre qui refusent le repos. Il traîne un bras et charge dès qu'il vous voit.¦Knochen und Erde, die nicht ruhen wollen. Er schleift einen Arm und stürmt los, sobald er dich sieht.
+contract.aptitudes.kind.nether¦Caça no Nether¦Chasse au Nether¦Jagd im Nether
+contract.aptitudes.kind.new_mob¦Criaturas novas¦Créatures nouvelles¦Neue Kreaturen
+contract.aptitudes.kind.expedition¦Expedição¦Expédition¦Expedition
 entity.aptitudes.escorificador_hierro¦Escorificador de Ferro¦Scorificateur de fer¦Eisenschlacker
 item.aptitudes.escorificador_hierro_spawn_egg¦Ovo de aparição do Escorificador de Ferro¦Œuf d'apparition du Scorificateur de fer¦Erscheinungsei des Eisenschlackers
 bestiary.aptitudes.escorificador_hierro.tip¦Ferro e rocha com uma grelha incandescente no peito. A grelha acende antes de um golpe esmagador: saia do caminho.¦Fer et roche avec une grille incandescente sur la poitrine. La grille s'allume juste avant un coup écrasant : écartez-vous.¦Eisen und Gestein mit einem glühenden Gitter auf der Brust. Das Gitter leuchtet kurz vor einem zermalmenden Schlag auf: Weich aus.
