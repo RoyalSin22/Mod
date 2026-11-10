@@ -6,6 +6,7 @@ import dev.aptitudes.boss.AutomatonOrbEntity;
 import dev.aptitudes.boss.BossEntities;
 import dev.aptitudes.boss.FacelessColossusEntity;
 import dev.aptitudes.boss.GuardianEntity;
+import dev.aptitudes.boss.IronColossusEntity;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
@@ -24,6 +25,12 @@ public final class BossRenderers {
 		EntityRendererRegistry.register(BossEntities.FACELESS_COLOSSUS, ctx -> {
 			GeoEntityRenderer<FacelessColossusEntity> renderer = new GeoEntityRenderer<>(ctx,
 					new DefaultedEntityGeoModel<>(Aptitudes.id("faceless_colossus"), true));
+			renderer.withScale(1.0f);
+			return renderer;
+		});
+		EntityRendererRegistry.register(BossEntities.IRON_COLOSSUS, ctx -> {
+			GeoEntityRenderer<IronColossusEntity> renderer = new GeoEntityRenderer<>(ctx,
+					new DefaultedEntityGeoModel<>(Aptitudes.id("iron_colossus"), true));
 			renderer.withScale(1.0f);
 			return renderer;
 		});
