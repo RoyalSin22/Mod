@@ -306,6 +306,26 @@ def detail(mat, xx, yy, fw, fh, edge, base, rnd):
     return 0
 
 
+def accent(mat, xx, yy, fw, fh, edge, rnd):
+    """Color de acento por material (hoja de arte): grietas de energía, filigrana, engranajes, pátina y juntas.
+    Devuelve un RGB o None si el material no tiene acento en ese píxel."""
+    if mat == 'netherite' and not edge and (xx + 2 * yy) % 9 == 0:
+        return (200, 40, 34)  # grieta de energía roja (Coloso)
+    if mat == 'cracked' and (xx * 3 + yy * 7) % 11 == 0:
+        return (150, 40, 30)  # la grieta arde (Coloso)
+    if mat == 'dark_gold' and (xx + yy) % 4 == 0:
+        return (235, 190, 90)  # filigrana dorada (Coloso)
+    if mat == 'bronze' and edge and (xx + yy) % 2 == 0:
+        return (120, 80, 40)  # dientes de engranaje (Autómata)
+    if mat == 'copper' and rnd.random() < 0.25:
+        return (120, 200, 170)  # pátina verde (Autómata)
+    if mat == 'carved' and (xx % 8 == 0 or yy % 8 == 0):
+        return (80, 78, 72)  # juntas de la piedra tallada (Autómata)
+    if mat in ('shield', 'crimson') and (abs(xx - (fw - 1) / 2) < 1 or abs(yy - (fh - 1) / 2) < 1):
+        return (210, 165, 70)  # cruz dorada del escudo (Guardián)
+    return None
+
+
 def texture(boss, bones):
     rnd = random.Random('tex-' + boss)
     img = Image.new('RGBA', (TEX, TEX), (0, 0, 0, 0))
@@ -326,6 +346,9 @@ def texture(boss, bones):
                     k = light * (0.8 if edge else 1.0)
                     extra = detail(mat, xx, yy, fw, fh, edge, base, rnd)
                     c = [max(0, min(255, int(ch * k) + n + extra)) for ch in base]
+                    acc = accent(mat, xx, yy, fw, fh, edge, rnd)
+                    if acc is not None:
+                        c = [min(255, max(0, int(ch * k) + n)) for ch in acc]
                     if mat == 'blade' and xx in (0, fw - 1):
                         c = [200, 70, 60]  # filo rojizo
                     if mat in CORE_LIKE and edge:
