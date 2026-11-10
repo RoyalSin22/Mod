@@ -54,8 +54,6 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playC2S().register(PartyActionPayload.ID, PartyActionPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(ContractActionPayload.ID, ContractActionPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(ContractViewPayload.ID, ContractViewPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(OrderActionPayload.ID, OrderActionPayload.CODEC); // F4
-		PayloadTypeRegistry.playS2C().register(OrderViewPayload.ID, OrderViewPayload.CODEC); // F4
 		PayloadTypeRegistry.playS2C().register(KeystonePayload.ID, KeystonePayload.CODEC); // v46.1
 		PayloadTypeRegistry.playS2C().register(TutorialPayload.ID, TutorialPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(MasteryPayload.ID, MasteryPayload.CODEC);
@@ -95,15 +93,6 @@ public final class ModNetworking {
 				default -> { }
 			}
 			dev.aptitudes.contract.ContractManager.sync(player); // la pantalla ve el resultado al momento
-		});
-		// F4: los pedidos validan cada acción en OrderBook; el cliente solo pide.
-		ServerPlayNetworking.registerGlobalReceiver(OrderActionPayload.ID, (payload, context) -> {
-			var player = context.player();
-			if (payload.action() == OrderActionPayload.REQUEST) {
-				dev.aptitudes.contract.OrderBook.sync(player);
-				return;
-			}
-			dev.aptitudes.contract.OrderBook.handle(player, payload.action(), payload.id(), payload.tier());
 		});
 		ServerPlayNetworking.registerGlobalReceiver(PartyActionPayload.ID, (payload, context) -> {
 			var player = context.player();

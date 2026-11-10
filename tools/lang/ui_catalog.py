@@ -1765,35 +1765,6 @@ expedition.aptitudes.module.puzzle¦Coleta de almas¦Collecte d'âmes¦Seelensam
 expedition.aptitudes.module.elite¦Elite¦Élite¦Elite
 expedition.aptitudes.module.event¦Evento¦Événement¦Ereignis
 expedition.aptitudes.module.boss¦Chefe¦Boss¦Boss
-order.aptitudes.page¦Página %s/%s¦Page %s/%s¦Seite %s/%s
-contract.aptitudes.page.orders¦Pedidos¦Commandes¦Aufträge
-contract.aptitudes.page.contracts¦Contratos¦Contrats¦Verträge
-order.aptitudes.tier¦Nv %s¦Niv %s¦St. %s
-order.aptitudes.publish¦Publicar¦Publier¦Veröffentlichen
-order.aptitudes.button.deliver¦Entregar¦Livrer¦Liefern
-order.aptitudes.button.claim¦Recolher¦Récupérer¦Abholen
-order.aptitudes.button.cancel¦Cancelar¦Annuler¦Stornieren
-order.aptitudes.header¦Pedidos abertos: %s¦Commandes ouvertes : %s¦Offene Aufträge: %s
-order.aptitudes.empty¦Nenhum pedido aberto.¦Aucune commande ouverte.¦Keine offenen Aufträge.
-order.aptitudes.unit_price¦%s esmeraldas por unidade¦%s émeraudes par unité¦%s Smaragde pro Einheit
-order.aptitudes.line¦%s ×%s · Nv %s¦%s ×%s · Niv %s¦%s ×%s · St. %s
-order.aptitudes.state.closed¦ · fechado¦ · fermée¦ · geschlossen
-order.aptitudes.state.mine¦ · seu¦ · la vôtre¦ · deiner
-order.aptitudes.more¦+%s mais¦+%s de plus¦+%s weitere
-order.aptitudes.no_item¦Segure na mão principal o item que você quer pedir.¦Tenez dans la main principale l'objet que vous voulez commander.¦Halte den gewünschten Gegenstand in der Haupthand.
-order.aptitudes.limit¦Você já tem 3 pedidos abertos.¦Vous avez déjà 3 commandes ouvertes.¦Du hast bereits 3 offene Aufträge.
-order.aptitudes.too_few¦Este nível precisa de pelo menos uma unidade por participante.¦Ce niveau exige au moins une unité par participant.¦Diese Stufe braucht mindestens eine Einheit pro Teilnehmer.
-order.aptitudes.no_emeralds¦Você não tem esmeraldas suficientes para pagar antecipadamente.¦Vous n'avez pas assez d'émeraudes pour payer d'avance.¦Du hast nicht genug Smaragde für die Vorauszahlung.
-order.aptitudes.cannot_publish¦Não é possível publicar o pedido.¦La commande ne peut pas être publiée.¦Der Auftrag kann nicht veröffentlicht werden.
-order.aptitudes.published¦Pedido publicado: %s × %s, %s esmeraldas em reserva.¦Commande publiée : %s × %s, %s émeraudes en réserve.¦Auftrag veröffentlicht: %s × %s, %s Smaragde in Reserve.
-order.aptitudes.not_open¦Este pedido já está fechado.¦Cette commande est fermée.¦Dieser Auftrag ist geschlossen.
-order.aptitudes.own_order¦Você não pode completar o seu próprio pedido.¦Vous ne pouvez pas remplir votre propre commande.¦Du kannst deinen eigenen Auftrag nicht erfüllen.
-order.aptitudes.missing_items¦Você não tem o item pedido.¦Vous n'avez pas l'objet demandé.¦Du hast den gewünschten Gegenstand nicht.
-order.aptitudes.reserved¦As unidades restantes estão reservadas para outros participantes.¦Les unités restantes sont réservées aux autres participants.¦Die übrigen Einheiten sind für andere Teilnehmer reserviert.
-order.aptitudes.delivered¦Entregues %s unidades: %s esmeraldas.¦%s unités livrées : %s émeraudes.¦%s Einheiten geliefert: %s Smaragde.
-order.aptitudes.not_ready¦O pedido ainda está aberto.¦La commande est encore ouverte.¦Der Auftrag ist noch offen.
-order.aptitudes.claimed¦Recolhidas %s unidades.¦%s unités récupérées.¦%s Einheiten abgeholt.
-order.aptitudes.cancelled¦Pedido cancelado. %s esmeraldas devolvidas.¦Commande annulée. %s émeraudes remboursées.¦Auftrag storniert. %s Smaragde erstattet.
 item.aptitudes.automaton_orb¦Esfera do Autômato¦Orbe de l'Automate¦Kugel des Automaten
 item.aptitudes.automaton_orb_deflected¦Esfera devolvida do Autômato¦Orbe de l'Automate renvoyé¦Zurückgeworfene Kugel des Automaten
 entity.aptitudes.errante_velado¦Andarilho Velado¦Errant voilé¦Verschleierter Wanderer

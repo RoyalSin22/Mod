@@ -88,7 +88,8 @@ public final class TutorialRules {
 	}
 
 	/** Recompensa pequeña fija: una esmeralda por paso, nunca XP ni objetos de evolución. */
-	public static int emeralds(Step step) { return step == null ? 0 : 1; }
+	/** Los pasos del tutorial ya no dan esmeraldas (decisión del autor, v65). */
+	public static int emeralds(Step step) { return 0; }
 
 	public static boolean comboReached(int count) { return count >= COMBO_GOAL; }
 

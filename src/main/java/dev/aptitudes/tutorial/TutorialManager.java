@@ -121,9 +121,9 @@ public final class TutorialManager {
 			for (int i = 0; i < TutorialRules.ORDER.size(); i++) {
 				TutorialRules.Step step = TutorialRules.pendingReward(data(player).state());
 				if (step == null) return;
-				ItemStack reward = new ItemStack(Items.EMERALD, TutorialRules.emeralds(step));
+				int amount = TutorialRules.emeralds(step);
 				// Una sola unidad: si no cabe no se insertó nada, y el cobro sigue pendiente.
-				if (!player.getInventory().insertStack(reward)) return;
+				if (amount > 0 && !player.getInventory().insertStack(new ItemStack(Items.EMERALD, amount))) return;
 				// La guarda bloquea entregas anidadas. Se conserva cualquier observación hecha al insertar.
 				player.setAttached(ModAttachments.TUTORIAL, data(player).claim(step));
 			}

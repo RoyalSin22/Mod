@@ -5,6 +5,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Cambiado
+- **v65 — Ajustes tras la prueba en partida.** Se retira el sistema de pedidos del gremio (no encaja con un servidor de
+  amigos). Los pasos del tutorial ya no dan esmeraldas. El trance va más lento: +5 crítico, +8 habilidad, 6 s y +10 % de
+  daño por defecto. Las texturas de los jefes ya están en `main`.
+
 ### Añadido
 - **v65 — Enemigos nuevos.** El Errante Velado aparece en la Niebla de almas (10 % de las apariciones, junto al
   Osario Quebrado con otro 10 %) y tiene huevo de aparición y entrada en el bestiario. El Custodio de las Cuatro
