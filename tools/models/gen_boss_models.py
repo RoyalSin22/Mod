@@ -55,7 +55,10 @@ COLOSSUS_BONES = [
     ('body', 'root', [0, 24, 0], None, [
         box(-9.5, 24, -5.5, 19, 3, 11, 'leather'), box(-9, 27, -5, 18, 17, 10, 'netherite'),
         box(-6, 31, -5.6, 12, 2, 1, 'cracked'), box(-1.5, 34, -5.7, 3, 3, 1, 'ember'),
-        box(-1, 24, -5.7, 2, 2, 1, 'dark_gold'), box(-6, 42, -3, 12, 2, 6, 'cracked')]),
+        box(-1.5, 24, -5.9, 3, 3, 0.6, 'dark_gold'), box(-6, 42, -3, 12, 2, 6, 'cracked'),
+        # v65b: tabardo ritual bajo el cinturón, con cruz dorada (la hoja de arte).
+        box(-4, 13, -5.9, 8, 11, 0.6, 'cloth'), box(-0.5, 15, -6.1, 1, 7, 0.4, 'dark_gold'),
+        box(-2.5, 18, -6.1, 5, 1, 0.4, 'dark_gold')]),
     ('cape', 'body', [0, 40, 5], None, [box(-7, 20, 5, 14, 22, 1, 'cloth'), box(-7, 20, 5.8, 3, 3, 0.4, 'slate')]),
     ('head', 'body', [0, 44, 0], None, [
         box(-5, 44, -5, 10, 10, 10, 'netherite'), box(-4, 47, -5.4, 8, 2, 0.6, 'slate'),
