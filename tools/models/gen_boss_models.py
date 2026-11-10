@@ -493,6 +493,15 @@ def check_hand_geo(path, boss, bones):
     return None
 
 
+def same_asset(path, data):
+    """Compara un recurso con lo que generaría el script. Los PNG se comparan por píxeles: el resultado de zlib
+    depende de la versión de Pillow y del sistema, y los bytes del archivo no son fiables entre máquinas."""
+    if path.suffix != '.png':
+        return path.read_bytes() == data
+    with Image.open(path) as a, Image.open(BytesIO(data)) as b:
+        return a.convert('RGBA').tobytes() == b.convert('RGBA').tobytes() and a.size == b.size
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('assets', type=Path)
@@ -507,7 +516,7 @@ def main():
                 stale.append(problem)
     for path, data in files(args.assets).items():
         if args.check:
-            if not path.is_file() or path.read_bytes() != data:
+            if not path.is_file() or not same_asset(path, data):
                 stale.append(str(path))
         else:
             path.parent.mkdir(parents=True, exist_ok=True)
