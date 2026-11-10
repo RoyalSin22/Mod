@@ -6,6 +6,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **v66 — Coloso de Hierro.** Nuevo jefe animado (`aptitudes:iron_colossus`): guerrero blindado con espadón a dos manos. Ataques: barrido en arco, golpe vertical contra el suelo con onda de choque (partícula propia `aptitudes:iron_colossus_shockwave` disparada desde la animación en el locator `impact`) y, desde la fase 2, embestida. Tiene huevo de aparición y `/summon aptitudes:iron_colossus`; no aparece de forma natural. Sin validar en partida.
 - **v65 — Enemigos nuevos.** El Errante Velado aparece en la Niebla de almas (10 % de las apariciones, junto al
   Osario Quebrado con otro 10 %) y tiene huevo de aparición y entrada en el bestiario. El Custodio de las Cuatro
   Llaves sustituye al guardián vanilla de los templos sellados. Ambos tienen modelo y animaciones generados por

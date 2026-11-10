@@ -5,6 +5,12 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+### v66 — Coloso de Hierro (Claude, sin validar en partida)
+- Jefe `aptitudes:iron_colossus`: entidad, renderizador GeckoLib, modelo de 20 huesos, textura de 512 px,
+  animaciones (idle, walk, phase_two, sweep, slam, charge) y huevo de aparición. Detalles en `docs/V63_JEFES.md` §6.
+- Partícula de onda `aptitudes:iron_colossus_shockwave`, disparada desde la animación `slam`.
+- Pendiente: validar en partida la partícula, el aspecto de la textura y el golpe; daño de área de la onda.
+
 ### v65 — Pedidos, expediciones, trance, mancha, afijos, jefes y ruinas (Claude, sin validar en partida)
 - Trance de combate (F2), mancha de XP con 25 % (F3), pedidos del gremio entre jugadores (F4: estado del servidor,
   red y página en el tablón, con paginación) y expediciones de Amenaza (F5: ficha, módulos, grupo, modificadores).

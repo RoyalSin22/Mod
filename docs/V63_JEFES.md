@@ -98,3 +98,24 @@ jugador puede **devolver golpeándolas**; si una devuelta lo alcanza queda **atu
 2. Validar en partida el combate de ambos (piezas en orden, esferas devueltas, aturdimiento, rayo cortado por bloques).
 3. Modelos, texturas y animaciones definitivos de los tres (K5, Codex) respetando el contrato del §1.
 4. Estructuras (Ruinas de batalla, Santuario profundo, Templo mecánico) con arena de niebla y núcleo propio.
+
+
+## 6. El Coloso de Hierro (`aptitudes:iron_colossus`) — v66, sin validar en partida
+
+- **Clase:** `boss/IronColossusEntity` (extiende `AnimatedBossEntity`). Vida 280, armadura 10, daño 9, velocidad 0,22.
+  Fase 2 (armadura agrietada): +25 % de velocidad y +20 % de daño recibido.
+- **Ataques:** `sweep` (arco de 140°, desde la fase 1), `slam` (golpe vertical, radio 5,5, empuje hacia arriba) y
+  `charge` (embestida a 5–18 bloques, desde la fase 2).
+- **Modelo:** `geo/entity/iron_colossus.geo.json`, 20 huesos y textura de 512 px. Fuente: `tools/models/blockbench/iron_colossus.bbmodel`.
+- **Contrato ampliado respecto del §1:** además de `root`, `body`, `head`, `cape`, `right_arm`, `left_arm`, `sword`,
+  `right_leg` y `left_leg`, el modelo añade `chest` (cintura, pivote en y=28), `right_shoulder` y `left_shoulder`,
+  `right_forearm` y `right_hand` (la espada cuelga de la mano), `left_forearm` y `left_hand`, `right_shin` y
+  `left_shin` (rodillas), y `right_foot` y `left_foot` (tobillos, hijos de la espinilla).
+- **Animaciones:** `idle` (2 s, bucle), `walk` (2 s, bucle), `phase_two` (2 s, mantiene el último fotograma), `sweep`
+  (1 s), `slam` (1,1 s) y `charge` (1 s). En reposo y en los ataques las dos manos sujetan la espada.
+- **Evento de partícula:** la animación `slam` dispara `aptitudes:iron_colossus_shockwave` en el locator `impact`
+  (punto de contacto de la hoja, delante del personaje) y el sonido `minecraft:entity.generic.explode` en t≈0,58.
+  La partícula está en `particles/iron_colossus_shockwave.json` con su textura de anillo (32×32).
+- **Huevo:** `aptitudes:iron_colossus_spawn_egg` en la pestaña creativa. Sin estructura ni aparición natural.
+- **Pendiente:** validar en partida la partícula disparada desde la animación, el aspecto de la textura y la postura
+  del golpe; y convertir la onda visual en daño de área (hoy solo el empuje de `slam` hace daño).
