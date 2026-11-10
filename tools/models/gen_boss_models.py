@@ -76,6 +76,13 @@ COLOSSUS_BONES = [
         box(-14, 19, -1, 2, 8, 2, 'leather'), box(-16.5, 17, -2, 7, 2, 4, 'cracked'),
         box(-14.5, 16, -1.5, 3, 2, 3, 'dark_gold'), box(-15, -9, -1, 4, 26, 2, 'blade'),
         box(-14.5, -8, -1.6, 1, 24, 0.4, 'cracked')]),
+    # v65c: biseles y remaches del pecho. Va al FINAL de la lista a propósito: pack() reparte las UV
+    # en orden, así que cubos nuevos aquí no desplazan las UV de la textura pintada existente.
+    ('trim', 'body', [0, 24, 0], None, [
+        box(-9.2, 43.2, -5.4, 18.4, 0.8, 0.8, 'dark_gold'),
+        box(-9.4, 27, -5.4, 0.8, 16, 0.8, 'slate'), box(8.6, 27, -5.4, 0.8, 16, 0.8, 'slate'),
+        box(-7.5, 29.5, -5.6, 1, 1, 0.6, 'dark_gold'), box(6.5, 29.5, -5.6, 1, 1, 0.6, 'dark_gold'),
+        box(-7.5, 40.5, -5.6, 1, 1, 0.6, 'dark_gold'), box(6.5, 40.5, -5.6, 1, 1, 0.6, 'dark_gold')]),
 ]
 
 COLOSSUS_ANIMS = {

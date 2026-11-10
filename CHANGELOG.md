@@ -14,6 +14,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   pizarra y energía roja. El Guardián Desmontado tiene escudo carmesí con cruz dorada y cuerpo de piedra lisa. El
   Autómata Antiguo usa piedra tallada, bronce, cobre, ojo ámbar y dos esferas auxiliares. La esfera del Autómata tiene
   sprite propio: bronce y núcleo ámbar, y cian al ser devuelta (indicador de aturdimiento). Sin validar en partida.
+- **v65 — Coloso: brillo y detalle.** Las grietas de netherita brillan a plena luz (máscara `faceless_colossus_glowmask.png`,
+  `tools/textures/gen_faceless_glowmask.py`). El pecho tiene biseles y cuatro remaches (hueso `trim`, al final del
+  modelo para no mover las UV existentes; textura repintada con `tools/textures/paint_faceless_trim.py`). Sin validar en partida.
 - **v65 — Trance de combate (F2).** La sintonía se llena con golpes críticos a criaturas (+10) y con habilidades (+15).
   Al llegar a 100 se entra en trance durante 10 s con +20 % de daño saliente. Se muestra en la barra de acción. Sin
   validar en partida.
