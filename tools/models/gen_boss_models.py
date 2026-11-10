@@ -18,6 +18,7 @@ from pathlib import Path
 from PIL import Image
 
 TEX = 256
+BOSS_TEX = {'faceless_colossus': 512}  # v65d: el Coloso tiene más cubos y detalle
 
 MATERIALS = {
     'plate': (60, 63, 76), 'iron': (98, 102, 116), 'greave': (48, 50, 62), 'helm': (72, 75, 88),
@@ -44,45 +45,118 @@ def box(x, y, z, w, h, d, mat):
 
 # ------------------------------------------------------------------ Coloso Sin Rostro
 # Gigante con armadura de placas, capa, hombreras con púas, casco sin rostro y espadón.
+# Coloso Sin Rostro (v65d, textura 512 px). Coordenadas absolutas (px de 1/16, origen en los pies). Los huesos y sus
+# nombres son el contrato de las animaciones: root, right_leg, left_leg, body, cape, head, right_arm, left_arm, sword.
+# Las piezas simétricas se escriben una vez y se reflejan con mirror(); las láminas se generan con shingles().
+def mirror(cube):
+    (x, y, z), (w, h, d), mat = cube
+    return ([-(x + w), y, z], [w, h, d], mat)
+
+
+def shingles(x0, x1, y0, rows, step, z, depth, mat, pitch=2):
+    """Láminas en hileras: cada hilera sobresale un poco más, como las placas de escama de la hoja de arte."""
+    out = []
+    for r in range(rows):
+        y = y0 + r * step
+        for x in range(x0, x1, pitch):
+            out.append(box(x + 0.15, y, z - 0.25 * r, pitch - 0.3, step - 0.3, depth, mat))
+    return out
+
+
+_RIGHT_LEG = [
+    box(-9, 12, -4, 8, 10, 8, 'netherite'),                  # muslo
+    box(-9.6, 10.5, -5.4, 9.2, 5, 1.4, 'slate'),             # rodillera
+    box(-9.2, 8, -4.8, 8.4, 0.8, 0.8, 'dark_gold'),          # correa dorada
+    box(-9, 2, -4, 8, 8, 8, 'netherite'),                    # espinilla
+    box(-9.6, 4, -5.0, 9.2, 6, 1.2, 'cracked'),              # grebas con grietas
+    box(-9.6, 15.5, -4.8, 9.6, 3, 1, 'slate'),               # faldón
+    box(-9.5, 6, -5.4, 9, 1.6, 1.6, 'slate'),                # botín (empeine)
+    box(-9.6, 0, -5.0, 9.2, 2, 9.4, 'dark'),                 # suela
+] + shingles(-9, -1, 16, 2, 2.4, -4.8, 0.8, 'slate', pitch=2)  # láminas del faldón
+
+_RIGHT_ARM = [
+    box(-19.2, 38.5, -5.6, 10.4, 4, 11.2, 'netherite'),      # hombrera superior
+    box(-19.6, 34.5, -5.8, 11.2, 4, 11.6, 'slate'),          # hombrera media
+    box(-19, 31, -5.4, 10, 3.5, 10.8, 'netherite'),          # hombrera inferior
+    box(-19.8, 31.5, -5.8, 0.8, 10.5, 11.6, 'dark_gold'),    # correa exterior
+    box(-14.5, 31.2, -5.9, 1, 10, 0.6, 'dark_gold'),         # correa frontal
+    box(-16.5, 25, -3.5, 7, 6, 7, 'cracked'),                # antebrazo
+    box(-17.6, 30, -4.6, 8, 3, 8, 'slate'),                  # codera
+    box(-17.2, 19, -4.8, 8.4, 6, 8.4, 'smooth_stone'),       # guantelete (sujeta la empuñadura)
+    box(-17, 18.5, -5.4, 8, 1, 1, 'dark_gold'),              # nudillera
+] + shingles(-19, -11, 39, 1, 3.5, -6.0, 0.8, 'slate', pitch=2)
+
+_SWORD = [
+    box(-14, 27, -1, 2, 2, 2, 'dark_gold'),                  # pomo
+    box(-14, 19, -1, 2, 8, 2, 'leather'),                    # empuñadura
+    box(-16.5, 17, -2, 7, 2, 4, 'dark_gold'),                # guarda
+    box(-14.8, 16.8, -2.4, 1.6, 1.6, 1, 'ember'),            # gema de la guarda
+    box(-14.5, 16, -1.5, 3, 1, 3, 'dark_gold'),              # collar
+    box(-15, -9, -1, 4, 26, 2, 'blade'),                     # hoja
+    box(-15.4, -9, -1.1, 0.5, 26, 0.5, 'ember'),             # filo emisivo
+    box(-14.5, -12, -0.8, 2, 3, 1.6, 'blade'),               # punta
+    box(-14.6, -6, -1.4, 1.2, 20, 0.4, 'dark'),              # acanaladura
+]
+
+_BODY_HALF = [  # mitad derecha del torso (x <= 0); la izquierda se refleja
+    box(-9.5, 24, -5.5, 9.5, 3, 11, 'leather'),              # cinturón
+    box(-9, 18, -5.2, 7, 6, 1.2, 'netherite'),               # faldón
+    box(-10, 28, -4.5, 1.2, 12, 9, 'netherite'),             # costado
+    box(-9.5, 39.5, -5.8, 9.5, 3, 1.6, 'slate'),             # cresta pectoral
+    box(-8, 27.5, -5.8, 8, 12, 1.6, 'netherite'),            # peto
+    box(-8.2, 26.8, -5.9, 8.2, 0.8, 1.4, 'dark_gold'),       # banda inferior del peto
+    box(-7, 42, -5.4, 7, 1.6, 1.2, 'netherite'),             # collar
+    box(-8.5, 27, 4.2, 8.5, 15, 0.8, 'netherite'),           # placa trasera
+] + shingles(-8, 0, 20, 3, 2.6, -5.9, 0.8, 'netherite', pitch=2)
+
+_BODY_CENTER = [  # piezas centradas (x cruza 0): no se reflejan
+    box(-2.4, 24.2, -6.0, 4.8, 2.6, 0.8, 'dark_gold'),       # hebilla
+    box(-1.2, 24.8, -6.3, 2.4, 1.4, 0.5, 'dark'),            # hueco de la hebilla
+    box(-4, 12, -6.0, 8, 12, 0.6, 'cloth'),                  # tabardo
+    box(-0.5, 15, -6.4, 1, 7, 0.4, 'dark_gold'),             # cruz del tabardo
+    box(-2.5, 18, -6.4, 5, 1, 0.4, 'dark_gold'),
+    box(-4.4, 11.6, -6.2, 8.8, 0.5, 0.8, 'dark_gold'),       # dobladillo del tabardo
+    box(-1.5, 31, -6.2, 3, 9, 0.8, 'slate'),                 # engaste de la gema (cruz)
+    box(-3.5, 34, -6.2, 7, 3, 0.8, 'slate'),
+    box(-1.2, 34.2, -6.8, 2.4, 2.4, 1, 'ember'),             # gema del pecho
+]
+_BODY_CENTER += [box(-4.4, 12, -6.2, 0.4, 12, 0.8, 'dark_gold'), box(4.0, 12, -6.2, 0.4, 12, 0.8, 'dark_gold')]
+_BODY = _BODY_CENTER + _BODY_HALF + [mirror(c) for c in _BODY_HALF]
+
+_CAPE = [
+    box(-8, 9, 5, 16, 34, 0.8, 'cloth'),                     # capa
+    box(-8.4, 9, 4.9, 0.6, 33, 1.2, 'crimson'),              # borde rojo lateral derecho
+    box(7.8, 9, 4.9, 0.6, 33, 1.2, 'crimson'),               # borde rojo lateral izquierdo
+    box(-8.4, 8.6, 4.9, 16.8, 0.6, 1.2, 'crimson'),          # dobladillo
+    box(-0.5, 22, 5.9, 1, 9, 0.3, 'dark_gold'),              # cruz de la capa
+    box(-2.5, 25, 5.9, 5, 1, 0.3, 'dark_gold'),
+]
+
+_HEAD_HALF = [  # mitad derecha del yelmo; la izquierda se refleja
+    box(-5.8, 44, -4.5, 0.8, 8, 9, 'slate'),                 # mejilla
+]
+_HEAD = [
+    box(-5, 44, -5, 10, 10, 10, 'netherite'),                # yelmo
+    box(-5.4, 53, -5.4, 10.8, 1, 10.8, 'slate'),             # remate
+    box(-4, 48, -5.3, 8, 1.4, 0.6, 'dark'),                  # ranura de la visera
+    box(-3.2, 48.3, -5.6, 6.4, 0.8, 0.4, 'ember'),           # visera encendida
+    box(-0.8, 54, -1, 1.6, 8, 2, 'slate'),                   # cruz de la cresta
+    box(-2.5, 57, -1, 5, 1.6, 2, 'slate'),
+    box(-5, 44, 4.4, 10, 9, 0.6, 'slate'),                   # placa trasera
+    box(-5.5, 42.5, -5.5, 11, 1.5, 11, 'slate'),             # gorguera
+] + _HEAD_HALF + [mirror(c) for c in _HEAD_HALF]
+
 COLOSSUS_BONES = [
     ('root', None, [0, 0, 0], None, []),
-    ('right_leg', 'root', [-5, 24, 0], None, [
-        box(-9, 0, -4, 8, 22, 8, 'netherite'), box(-9.5, 0, -4.5, 9, 3, 9, 'slate'),
-        box(-8.5, 15, -4.6, 7, 4, 1, 'netherite'), box(-8, 4, -4.6, 6, 6, 1, 'cloth')]),
-    ('left_leg', 'root', [5, 24, 0], None, [
-        box(1, 0, -4, 8, 22, 8, 'netherite'), box(0.5, 0, -4.5, 9, 3, 9, 'slate'),
-        box(1.5, 15, -4.6, 7, 4, 1, 'netherite'), box(2, 4, -4.6, 6, 6, 1, 'cloth')]),
-    ('body', 'root', [0, 24, 0], None, [
-        box(-9.5, 24, -5.5, 19, 3, 11, 'leather'), box(-9, 27, -5, 18, 17, 10, 'netherite'),
-        box(-6, 31, -5.6, 12, 2, 1, 'cracked'), box(-1.5, 34, -5.7, 3, 3, 1, 'ember'),
-        box(-1.5, 24, -5.9, 3, 3, 0.6, 'dark_gold'), box(-6, 42, -3, 12, 2, 6, 'cracked'),
-        # v65b: tabardo ritual bajo el cinturón, con cruz dorada (la hoja de arte).
-        box(-4, 13, -5.9, 8, 11, 0.6, 'cloth'), box(-0.5, 15, -6.1, 1, 7, 0.4, 'dark_gold'),
-        box(-2.5, 18, -6.1, 5, 1, 0.4, 'dark_gold')]),
-    ('cape', 'body', [0, 40, 5], None, [box(-7, 20, 5, 14, 22, 1, 'cloth'), box(-7, 20, 5.8, 3, 3, 0.4, 'slate')]),
-    ('head', 'body', [0, 44, 0], None, [
-        box(-5, 44, -5, 10, 10, 10, 'netherite'), box(-4, 47, -5.4, 8, 2, 0.6, 'slate'),
-        box(-0.5, 52, -4, 1, 9, 8, 'crest'), box(-7, 50, -2, 2, 4, 2, 'bone'), box(5, 50, -2, 2, 4, 2, 'bone')]),
-    ('right_arm', 'body', [-12, 41, 0], None, [
-        box(-17, 37, -5, 8, 7, 10, 'netherite'), box(-18, 35, -5.5, 10, 2, 11, 'cracked'),
-        box(-18, 44, -3, 2, 3, 2, 'spike'), box(-14, 45, -3, 2, 3, 2, 'spike'), box(-10, 44, -3, 2, 3, 2, 'spike'),
-        box(-16, 21, -3, 6, 16, 6, 'cracked'), box(-16.5, 15, -3.5, 7, 6, 7, 'gauntlet')]),
-    ('left_arm', 'body', [12, 41, 0], None, [
-        box(9, 37, -5, 8, 7, 10, 'netherite'), box(8, 35, -5.5, 10, 2, 11, 'cracked'),
-        box(16, 44, -3, 2, 3, 2, 'spike'), box(12, 45, -3, 2, 3, 2, 'spike'), box(8, 44, -3, 2, 3, 2, 'spike'),
-        box(10, 21, -3, 6, 16, 6, 'cracked'), box(9, 17, -4, 8, 8, 7, 'shield'), box(9.5, 15, -3, 7, 4, 5, 'gauntlet')]),
+    ('right_leg', 'root', [-5, 24, 0], None, _RIGHT_LEG),
+    ('left_leg', 'root', [5, 24, 0], None, [mirror(c) for c in _RIGHT_LEG]),
+    ('body', 'root', [0, 24, 0], None, _BODY),
+    ('cape', 'body', [0, 40, 5], None, _CAPE),
+    ('head', 'body', [0, 44, 0], None, _HEAD),
+    ('right_arm', 'body', [-12, 41, 0], None, _RIGHT_ARM),
+    ('left_arm', 'body', [12, 41, 0], None, [mirror(c) for c in _RIGHT_ARM]),
     # Espadón en la mano derecha, apuntando al frente y abajo.
-    ('sword', 'right_arm', [-13, 23, 0], [-60, 0, 0], [
-        box(-14, 19, -1, 2, 8, 2, 'leather'), box(-16.5, 17, -2, 7, 2, 4, 'cracked'),
-        box(-14.5, 16, -1.5, 3, 2, 3, 'dark_gold'), box(-15, -9, -1, 4, 26, 2, 'blade'),
-        box(-14.5, -8, -1.6, 1, 24, 0.4, 'cracked')]),
-    # v65c: biseles y remaches del pecho. Va al FINAL de la lista a propósito: pack() reparte las UV
-    # en orden, así que cubos nuevos aquí no desplazan las UV de la textura pintada existente.
-    ('trim', 'body', [0, 24, 0], None, [
-        box(-9.2, 43.2, -5.4, 18.4, 0.8, 0.8, 'dark_gold'),
-        box(-9.4, 27, -5.4, 0.8, 16, 0.8, 'slate'), box(8.6, 27, -5.4, 0.8, 16, 0.8, 'slate'),
-        box(-7.5, 29.5, -5.6, 1, 1, 0.6, 'dark_gold'), box(6.5, 29.5, -5.6, 1, 1, 0.6, 'dark_gold'),
-        box(-7.5, 40.5, -5.6, 1, 1, 0.6, 'dark_gold'), box(6.5, 40.5, -5.6, 1, 1, 0.6, 'dark_gold')]),
+    ('sword', 'right_arm', [-13, 23, 0], [-60, 0, 0], _SWORD),
 ]
 
 COLOSSUS_ANIMS = {
@@ -230,7 +304,7 @@ BOSSES = {
 }
 
 
-def pack(bones):
+def pack(bones, tex=TEX):
     """Reparte las UV en «estantes» de la textura (cada cubo usa el desplegado estándar de Bedrock)."""
     x = y = shelf = 0
     out = []
@@ -238,10 +312,10 @@ def pack(bones):
         for origin, size, mat in cubes:
             w, h, d = (int(round(v)) for v in size)
             uw, uh = 2 * (d + w), d + h
-            if x + uw > TEX:
+            if x + uw > tex:
                 x, y, shelf = 0, y + shelf, 0
-            if y + uh > TEX:
-                raise SystemExit(f'La textura de {TEX}×{TEX} no basta para {name}')
+            if y + uh > tex:
+                raise SystemExit(f'La textura de {tex}×{tex} no basta para {name}')
             out.append((name, origin, size, mat, [x, y]))
             x += uw
             shelf = max(shelf, uh)
@@ -249,7 +323,8 @@ def pack(bones):
 
 
 def geometry(boss, bones):
-    cubes = pack(bones)
+    tex = BOSS_TEX.get(boss, TEX)
+    cubes = pack(bones, tex)
     by_bone = {}
     for name, origin, size, mat, uv in cubes:
         by_bone.setdefault(name, []).append({'origin': origin, 'size': size, 'uv': uv})
@@ -266,7 +341,7 @@ def geometry(boss, bones):
     return {
         'format_version': '1.12.0',
         'minecraft:geometry': [{
-            'description': {'identifier': f'geometry.{boss}', 'texture_width': TEX, 'texture_height': TEX,
+            'description': {'identifier': f'geometry.{boss}', 'texture_width': tex, 'texture_height': tex,
                             'visible_bounds_width': 5, 'visible_bounds_height': 5, 'visible_bounds_offset': [0, 2, 0]},
             'bones': out_bones,
         }],
@@ -337,10 +412,11 @@ def accent(mat, xx, yy, fw, fh, edge, rnd):
 
 
 def texture(boss, bones):
+    tex = BOSS_TEX.get(boss, TEX)
     rnd = random.Random('tex-' + boss)
-    img = Image.new('RGBA', (TEX, TEX), (0, 0, 0, 0))
+    img = Image.new('RGBA', (tex, tex), (0, 0, 0, 0))
     px = img.load()
-    for name, origin, size, mat, (u, v) in pack(bones):
+    for name, origin, size, mat, (u, v) in pack(bones, tex):
         w, h, d = (int(round(s)) for s in size)
         base = MATERIALS[mat]
         faces = [  # (x, y, ancho, alto, luz)
@@ -379,7 +455,7 @@ STUN_ANIM = (2.0, False, {
 
 # Jefes con textura pintada a mano (fuente de verdad: el PNG del repositorio). El generador no la escribe ni
 # la comprueba; solo geometría y animaciones.
-PAINTED_TEXTURES = {'faceless_colossus'}
+PAINTED_TEXTURES = set()  # v65d: el Coloso vuelve a generarse con el generador (512 px)
 
 
 def files(assets):
@@ -408,9 +484,11 @@ def main():
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(data)
     if args.preview:
-        sheet = Image.new('RGBA', (TEX * 3, TEX), (40, 42, 54, 255))
-        for i, (boss, (bones, _)) in enumerate(BOSSES.items()):
-            sheet.paste(texture(boss, bones)[1], (i * TEX, 0), texture(boss, bones)[1])
+        imgs = [(boss, texture(boss, bones)[1]) for boss, (bones, _) in BOSSES.items()]
+        cell = max(img.width for _, img in imgs)
+        sheet = Image.new('RGBA', (cell * len(imgs), cell), (40, 42, 54, 255))
+        for i, (_, img) in enumerate(imgs):
+            sheet.paste(img, (i * cell, 0), img)
         sheet.resize((sheet.width * 2, sheet.height * 2), Image.NEAREST).save(args.preview)
     if stale:
         raise SystemExit('Recursos de jefes ausentes o desactualizados:\n' + '\n'.join(stale))
