@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 /**
  * v63 (C4): renderizadores de los jefes animados (GeckoLib). Cada jefe lee
@@ -24,6 +25,8 @@ public final class BossRenderers {
 		EntityRendererRegistry.register(BossEntities.FACELESS_COLOSSUS, ctx -> {
 			GeoEntityRenderer<FacelessColossusEntity> renderer = new GeoEntityRenderer<>(ctx,
 					new DefaultedEntityGeoModel<>(Aptitudes.id("faceless_colossus"), true));
+			// v65: las grietas de netherita brillan a plena luz (máscara faceless_colossus_glowmask.png).
+			renderer.addRenderLayer(new AutoGlowingGeoLayer<>(renderer));
 			renderer.withScale(1.0f);
 			return renderer;
 		});
