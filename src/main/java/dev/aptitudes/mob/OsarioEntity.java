@@ -30,8 +30,11 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class OsarioEntity extends HostileEntity implements GeoEntity {
 	private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
 	private static final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
+	/** Enfriamiento del golpe pesado: 8 s (160 ticks). Entre medias, el golpe normal usa {@code sweep}. */
+	private static final long HEAVY_COOLDOWN_TICKS = 160;
 
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+	private long nextHeavyTick;
 
 	public OsarioEntity(EntityType<? extends HostileEntity> type, World world) {
 		super(type, world);
@@ -39,9 +42,9 @@ public class OsarioEntity extends HostileEntity implements GeoEntity {
 
 	public static DefaultAttributeContainer.Builder createAttributes() {
 		return HostileEntity.createHostileAttributes()
-				.add(EntityAttributes.GENERIC_MAX_HEALTH, 24)
-				.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5)
-				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.27)
+				.add(EntityAttributes.GENERIC_MAX_HEALTH, 60)
+				.add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 12)
+				.add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.22)
 				.add(EntityAttributes.GENERIC_FOLLOW_RANGE, 24);
 	}
 
@@ -57,7 +60,15 @@ public class OsarioEntity extends HostileEntity implements GeoEntity {
 	@Override
 	public boolean tryAttack(net.minecraft.entity.Entity target) {
 		// El barrido del brazo largo se dispara al atacar (el golpe llega al final de la animación).
-		if (!getWorld().isClient()) triggerAnim("action", "heavy_swipe");
+		if (!getWorld().isClient()) {
+			long now = getWorld().getTime();
+			if (now >= nextHeavyTick) {
+				triggerAnim("action", "heavy_swipe");
+				nextHeavyTick = now + HEAVY_COOLDOWN_TICKS;
+			} else {
+				triggerAnim("action", "sweep");
+			}
+		}
 		return super.tryAttack(target);
 	}
 
@@ -78,6 +89,7 @@ public class OsarioEntity extends HostileEntity implements GeoEntity {
 		AnimationController<OsarioEntity> actions = new AnimationController<>(this, "action", 2,
 				state -> software.bernie.geckolib.animation.PlayState.STOP);
 		actions.triggerableAnim("heavy_swipe", RawAnimation.begin().thenPlay("heavy_swipe"));
+			actions.triggerableAnim("sweep", RawAnimation.begin().thenPlay("sweep"));
 		controllers.add(actions);
 	}
 

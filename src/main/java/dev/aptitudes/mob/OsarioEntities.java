@@ -15,7 +15,7 @@ public final class OsarioEntities {
 	public static final EntityType<OsarioEntity> OSARIO = Registry.register(Registries.ENTITY_TYPE,
 			Aptitudes.id("osario_quebrado"),
 			EntityType.Builder.create(OsarioEntity::new, SpawnGroup.MONSTER)
-					.dimensions(0.75f, 1.8f).maxTrackingRange(8)
+					.dimensions(1.2f, 2.6f).maxTrackingRange(8)
 					.build("osario_quebrado"));
 
 	/** Huevo de aparición (para pruebas y para el bestiario). */

@@ -36,7 +36,8 @@ public final class MobRenderers {
 		EntityRendererRegistry.register(OsarioEntities.OSARIO, ctx -> {
 			GeoEntityRenderer<OsarioEntity> renderer = new GeoEntityRenderer<>(ctx,
 					new DefaultedEntityGeoModel<>(Aptitudes.id("osario_quebrado")));
-			renderer.withScale(1.0f);
+			// v65: la caja pasa a 2,6 bloques. Escala provisional del modelo antiguo hasta el geo nuevo.
+			renderer.withScale(1.45f);
 			return renderer;
 		});
 	}
