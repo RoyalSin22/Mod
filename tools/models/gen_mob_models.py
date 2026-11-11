@@ -175,6 +175,8 @@ CUSTODIO = {
 }
 
 SPECS = [OSARIO, ERRANTE, CUSTODIO, ESCORIFICADOR]
+# El editable de Blockbench es la fuente de estos recursos.
+HAND_MADE = {'escorificador_hierro'}
 
 
 def geometry(spec):
@@ -234,6 +236,8 @@ def files(assets):
     out = {}
     for spec in SPECS:
         name = spec['name']
+        if name in HAND_MADE:
+            continue
         out[assets / f'geo/entity/{name}.geo.json'] = (json.dumps(geometry(spec), indent=1) + '\n').encode()
         out[assets / f'animations/entity/{name}.animation.json'] = (json.dumps(animations(spec), indent=1) + '\n').encode()
         out[assets / f'textures/entity/{name}.png'] = texture(spec)
@@ -251,12 +255,12 @@ def main():
         if bad:
             print('Distinto del generador:', *bad, sep='\n  ')
             return 1
-        print(f'{len(SPECS)} mobs: modelos, animaciones y texturas comprobados')
+        print(f'{len(SPECS) - len(HAND_MADE)} mobs: modelos, animaciones y texturas comprobados')
         return 0
     for path, data in wanted.items():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(data)
-    print(f'{len(SPECS)} mobs: modelos, animaciones y texturas generados')
+    print(f'{len(SPECS) - len(HAND_MADE)} mobs: modelos, animaciones y texturas generados')
     return 0
 
 

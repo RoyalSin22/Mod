@@ -46,12 +46,13 @@ otro enemigo o para las marcas con partículas.
 
 ### Escorificador de Hierro (Lluvia de brasas, criatura nueva)
 
-- **Tamaño:** 1,8 bloques de alto.
-- **Piezas:** `body` (torso de hierro y roca con rejilla incandescente), `head`, `arms` (brazos pesados con bloques de
-  hierro fundido al final) y una chimenea en la espalda.
-- **Señal:** la rejilla del pecho se enciende antes de un golpe aplastante.
-- Se añade a las criaturas del Nether de la Lluvia de brasas.
-- **Estado (v65):** implementado. Aparece de forma natural en el Nether y en la Lluvia de brasas (peso 10 de 100). Decisión del autor que revierte el descarte anterior. Modelo y animación `slam` generados por `tools/models/gen_mob_models.py`; textura de 64×64. Sin validar en partida.
+- **Tamaño:** 3,25 bloques de altura visual. Caja de colisión de 1,0 × 1,8 bloques.
+- **Piezas:** torso encorvado con horno de cinco barras, puños articulados y chimenea hueca detrás del hombro derecho.
+- **Recursos (v65):** modelo de 22 huesos y 128 cubos, textura de 256×256 y clips `idle`, `walk` y `slam`. El
+  editable está en `tools/models/blockbench/escorificador_hierro.bbmodel`.
+- Aparece de forma natural en el Nether y en la Lluvia de brasas (peso 10 de 100).
+- **Pendiente en partida:** escala, colisión y sincronización de `slam`. El código intenta aplicar el daño en el
+  tick de disparo del clip. La pose visual de impacto está a 0,50 s en Blockbench.
 
 ### Descartado
 

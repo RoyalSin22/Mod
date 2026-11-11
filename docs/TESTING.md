@@ -15,6 +15,17 @@
 Todo lo anterior se ejecuta con `./gradlew build`. Las pruebas de servidor (`OrderBook`, `Expeditions`, `Trance`, fases de
 los jefes) no existen: dependen de Minecraft y se validan en partida.
 
+### Escorificador de Hierro · Pruebas en partida pendientes
+
+1. Invocar con `/summon aptitudes:escorificador_hierro`, usar el huevo y revisar la ficha del bestiario. Comprobar
+   la aparición natural en el Nether y en la Lluvia de brasas.
+2. Revisar la carga de geometría y textura, la altura visual de 3,25 bloques, la boca de la chimenea y la
+   lectura de ojos, horno y puños desde varios ángulos.
+3. Revisar `idle`, `walk`, la entrada y salida de `slam`, el apoyo de los pies y el paso de los puños junto al
+   suelo. Comparar el tick de daño con el contacto visual del puño, también cuando el daño se rechaza.
+4. Probar selección y alcance con la caja de 1,0 × 1,8 bloques, escalones, terreno irregular, obstáculos y pasos
+   bajos. Repetir con varias entidades en cliente y servidor separados.
+
 ## v63d — Correcciones: aldeano del gremio, modelos y esferas
 
 1. Aldeano del gremio: en un mundo con operador, `/summon minecraft:villager` junto a dos

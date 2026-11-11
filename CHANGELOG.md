@@ -35,8 +35,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   creativa. Cada expedición tiene dos de seis modificadores (niebla, lluvia de brasas, oleada élite, hambre, jefe
   aturdido, botín abundante). Sin validar en partida.
 
-- **v65 — Escorificador de Hierro.** Criatura de 1,8 bloques que aparece en el Nether y en la Lluvia de brasas. Su rejilla
-  se enciende antes de un golpe aplastante. Tiene huevo de aparición y entrada en el bestiario. Sin validar en partida.
+- **v65 — Escorificador de Hierro.** Nuevo modelo de Blockbench de 3,25 bloques de altura visual, rejilla de cinco
+  barras, chimenea hueca y textura de 256×256. Usa los clips `idle`, `walk` y `slam`. Aparece en el Nether y en
+  la Lluvia de brasas, con huevo y entrada en el bestiario. La sincronización visual de `slam` queda pendiente de
+  validación en partida.
 - **v65 — Huevos y Osario.** Los huevos del Osario Quebrado y del Errante Velado aparecen en la pestaña creativa de
   Aptitudes. El Osario emite ectoplasma y polvo de tierra alrededor de los pies. Sin validar en partida.
 
