@@ -8,7 +8,7 @@ manteniendo su registro (`aptitudes:osario_quebrado`) y su aparición en la Nieb
 | Tema | Decisión |
 |---|---|
 | Papel | Enemigo común de la Niebla de almas, muy fuerte. No es jefe: no usa `AnimatedBossEntity`, ni fases, ni arena. |
-| Tamaño | Grande y alto. Propuesta: **2,6 bloques de alto y 1,2 de ancho** (≈ 42 × 20 unidades). Antes: 1,8 × 0,75. |
+| Tamaño | Grande y alto. **2,9 bloques de alto y 1,2 de ancho** (46 unidades, con rodillas). Antes: 1,8 × 0,75. |
 | Textura | **256×256** (antes 64×64). Más píxeles para el detalle de huesos y musgo. |
 | Animaciones | `idle`, `walk`, `heavy_swipe` y **`sweep`** (nueva). |
 | Color | Hueso envejecido, tierra, musgo verde y ectoplasma. Brillo en **ojos, pecho y brazo arrastrado**. |
