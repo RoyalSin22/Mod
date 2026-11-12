@@ -105,9 +105,12 @@ public final class AbilityHud {
 		long now = Util.getMeasuringTimeMs();
 		float manaFill = MANA.update(ClientRoleState.energy() / Math.max(1f, ClientRoleState.maxEnergy()),
 				now, cfg.hudAnimations ? 180 : 0);
-		if (cfg.soulsBars) renderSoulsBars(ctx, text, data, client, now, manaFill);
+		// v66: la esfera de maná sustituye solo a la barra de maná; la vida y el hambre no cambian.
+		boolean orb = NodeIconRenderer.hasManaOrb();
+		if (cfg.soulsBars) renderSoulsBars(ctx, text, data, client, now, manaFill, !orb);
+		if (orb && (cfg.soulsBars || hasAbilities(data))) renderManaOrb(ctx, text, w, h, manaFill);
 		if (!hasAbilities(data)) return;
-		if (!cfg.soulsBars) renderBars(ctx, text, data, w, h, manaFill);
+		if (!cfg.soulsBars) renderBars(ctx, text, data, w, h, manaFill, !orb);
 		if (!(client.currentScreen instanceof HudConfigScreen)) renderAbilityBar(ctx, text, data, w, h, client.player.age);
 	}
 
@@ -166,7 +169,7 @@ public final class AbilityHud {
 	 * dentro de la barra. La longitud crece con el máximo (como en Souls).
 	 */
 	private static void renderSoulsBars(DrawContext ctx, TextRenderer text, RoleSyncPayload data, MinecraftClient client,
-										long now, float manaFill) {
+										long now, float manaFill, boolean showMana) {
 		ClientConfig cfg = ClientConfig.get();
 		var player = client.player;
 		int age = player.age;
@@ -199,14 +202,16 @@ public final class AbilityHud {
 		centered(ctx, text, (int) Math.ceil(health) + " / " + (int) maxHealth, 12, y + 2, hw);
 		y += 12;
 
-		// Maná
-		float mana = ClientRoleState.energy();
-		float maxMana = Math.max(1f, ClientRoleState.maxEnergy());
-		int mw = Math.min(200, 50 + (int) (maxMana * 0.8f));
-		icon(ctx, GEM, 0, y, 0xFF42A5F5);
-		pill(ctx, 12, y, mw, 8, manaFill, 0xFF82CFFF, 0xFF1565C0, true);
-		centered(ctx, text, (int) mana + " / " + (int) maxMana, 12, y + 1, mw);
-		y += 11;
+		// Maná (con la esfera de la dirección de arte se dibuja aparte, junto a la hotbar)
+		if (showMana) {
+			float mana = ClientRoleState.energy();
+			float maxMana = Math.max(1f, ClientRoleState.maxEnergy());
+			int mw = Math.min(200, 50 + (int) (maxMana * 0.8f));
+			icon(ctx, GEM, 0, y, 0xFF42A5F5);
+			pill(ctx, 12, y, mw, 8, manaFill, 0xFF82CFFF, 0xFF1565C0, true);
+			centered(ctx, text, (int) mana + " / " + (int) maxMana, 12, y + 1, mw);
+			y += 11;
+		}
 
 		// Aguante (hambre: en Minecraft es lo que limita esprintar)
 		int food = player.getHungerManager().getFoodLevel();
@@ -318,16 +323,31 @@ public final class AbilityHud {
 
 	// ------------------------------------------------------------ Barras
 
-	private static void renderBars(DrawContext ctx, TextRenderer text, RoleSyncPayload data, int w, int h, float manaFill) {
+	/** v66: esfera de maná junto a la hotbar, alineada por abajo con la antigua barra; el texto va a su izquierda. */
+	private static void renderManaOrb(DrawContext ctx, TextRenderer text, int w, int h, float manaFill) {
+		int right = w / 2 - 91 - 30; // deja sitio a la mano secundaria
+		int size = NodeIconRenderer.MANA_ORB_SIZE;
+		int orbX = Math.max(4, right - size);
+		int orbY = h - 22 + 9 - size;
+		if (!NodeIconRenderer.drawManaOrb(ctx, orbX, orbY, manaFill)) return;
+		Text label = Text.translatable("hud.aptitudes.mana", (int) ClientRoleState.energy(),
+				(int) Math.max(1f, ClientRoleState.maxEnergy()));
+		small(ctx, text, label, Math.max(2, orbX - 3 - (int) (text.getWidth(label) * 0.7f)), h - 22 + 2, 0xFFFFFFFF);
+	}
+
+	private static void renderBars(DrawContext ctx, TextRenderer text, RoleSyncPayload data, int w, int h, float manaFill,
+								   boolean showMana) {
 		int right = w / 2 - 91 - 30; // deja sitio a la mano secundaria
 		int x = Math.max(4, right - BAR_W);
 		int y = h - 22;
 
 		// Maná
-		float mana = ClientRoleState.energy();
-		float max = Math.max(1f, ClientRoleState.maxEnergy());
-		bar(ctx, x, y, BAR_W, 9, manaFill, 0xFF2D7DDB, 0xFF5AB0FF);
-		small(ctx, text, Text.translatable("hud.aptitudes.mana", (int) mana, (int) max), x + 3, y + 2, 0xFFFFFFFF);
+		if (showMana) {
+			float mana = ClientRoleState.energy();
+			float max = Math.max(1f, ClientRoleState.maxEnergy());
+			bar(ctx, x, y, BAR_W, 9, manaFill, 0xFF2D7DDB, 0xFF5AB0FF);
+			small(ctx, text, Text.translatable("hud.aptitudes.mana", (int) mana, (int) max), x + 3, y + 2, 0xFFFFFFFF);
+		}
 
 		// Recursos de rol
 		int ry = y + 11;
@@ -405,27 +425,31 @@ public final class AbilityHud {
 
 	private static void drawSlot(DrawContext ctx, TextRenderer text, RoleSyncPayload data, @Nullable SlotView view,
 								 int slot, int x, int y, int age) {
-		int accent = view == null ? 0xFF565260 : view.border() != 0 ? view.border()
-				: lighter(0xFF000000 | view.role().color());
-		ctx.fill(x - 1, y - 1, x + SLOT + 1, y + SLOT + 1, 0xD0000000);
-		ctx.fillGradient(x, y, x + SLOT, y + SLOT, 0xF02B2734, 0xEF12151F);
-		ctx.drawBorder(x, y, SLOT, SLOT, 0xFF4D4655);
-		int corner = view != null && view.learned() ? accent : darker(accent);
-		ctx.fill(x - 1, y - 1, x + 3, y, corner);
-		ctx.fill(x - 1, y - 1, x, y + 3, corner);
-		ctx.fill(x + SLOT - 3, y - 1, x + SLOT + 1, y, corner);
-		ctx.fill(x + SLOT, y - 1, x + SLOT + 1, y + 3, corner);
-		ctx.fill(x - 1, y + SLOT, x + 3, y + SLOT + 1, corner);
-		ctx.fill(x - 1, y + SLOT - 3, x, y + SLOT + 1, corner);
-		ctx.fill(x + SLOT - 3, y + SLOT, x + SLOT + 1, y + SLOT + 1, corner);
-		ctx.fill(x + SLOT, y + SLOT - 3, x + SLOT + 1, y + SLOT + 1, corner);
+		long castAge = ClientRoleState.sinceCast(slot);
+		// v66: marco de la dirección de arte (categoría del rol y estado de la casilla); si falta, el dibujo anterior.
+		if (view == null || !drawFrame(ctx, view, slot, x, y, castAge)) {
+			int accent = view == null ? 0xFF565260 : view.border() != 0 ? view.border()
+					: lighter(0xFF000000 | view.role().color());
+			ctx.fill(x - 1, y - 1, x + SLOT + 1, y + SLOT + 1, 0xD0000000);
+			ctx.fillGradient(x, y, x + SLOT, y + SLOT, 0xF02B2734, 0xEF12151F);
+			ctx.drawBorder(x, y, SLOT, SLOT, 0xFF4D4655);
+			int corner = view != null && view.learned() ? accent : darker(accent);
+			ctx.fill(x - 1, y - 1, x + 3, y, corner);
+			ctx.fill(x - 1, y - 1, x, y + 3, corner);
+			ctx.fill(x + SLOT - 3, y - 1, x + SLOT + 1, y, corner);
+			ctx.fill(x + SLOT, y - 1, x + SLOT + 1, y + 3, corner);
+			ctx.fill(x - 1, y + SLOT, x + 3, y + SLOT + 1, corner);
+			ctx.fill(x - 1, y + SLOT - 3, x, y + SLOT + 1, corner);
+			ctx.fill(x + SLOT - 3, y + SLOT, x + SLOT + 1, y + SLOT + 1, corner);
+			ctx.fill(x + SLOT, y + SLOT - 3, x + SLOT + 1, y + SLOT + 1, corner);
+		}
 		Text key = UiStyle.fit(text, AptitudesClient.abilityKey(slot).getBoundKeyLocalizedText(), (int) ((SLOT - 2) / 0.7f));
 		ctx.fill(x + 1, y + KEY_Y, x + SLOT - 1, y - 1, 0xEC151620);
 		small(ctx, text, key, x + SLOT / 2 - (int) (text.getWidth(key) * 0.35f), y - 8,
 				view == null ? UiStyle.MUTED : UiStyle.TEXT);
 		if (view == null) return;
 		// v24: al lanzar, el icono rebota (×1,35 → ×1) y la ranura destella con el color del rol (350 ms).
-		long since = ClientRoleState.sinceCast(slot);
+		long since = castAge;
 		if (ClientConfig.get().hudAnimations && since < 350) {
 			float t = since / 350f;
 			float scale = 1f + 0.35f * (1f - t) * (1f - t);
@@ -453,6 +477,19 @@ public final class AbilityHud {
 			padlock(ctx, x + SLOT / 2 - 3, y + 6);
 		}
 		ctx.getMatrices().pop();
+	}
+
+	/** Dibuja el marco de la casilla; falso si la categoría o el sprite no están disponibles. */
+	private static boolean drawFrame(DrawContext ctx, SlotView view, int slot, int x, int y, long castAge) {
+		Role owner = view.role() != null ? view.role() : view.unique() != null ? view.unique().role() : null;
+		if (owner == null) return false;
+		String state;
+		if (ClientConfig.get().hudAnimations && castAge < 350) state = "seleccionada";
+		else if (ClientRoleState.cooldown(slot) > 0) state = "espera";
+		else if (slot == AbilityManager.ULTIMATE_SLOT) state = "definitiva";
+		else if (ClientRoleState.energy() < view.cost()) state = "sin_energia";
+		else state = "lista";
+		return NodeIconRenderer.drawSlotFrame(ctx, owner.category(), state, x, y, SLOT);
 	}
 
 	private static void drawSlotIcon(DrawContext ctx, SlotView view, int slot, int x, int y) {

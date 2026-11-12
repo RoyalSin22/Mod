@@ -6,6 +6,22 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **v66 — HUD: marcos de las casillas de habilidad.** Cada casilla de la barra de habilidades usa un marco de la nueva
+  dirección de arte según la categoría del rol (marcial, arcano, sombra, guardián u oficio) y su estado: lista, en espera,
+  sin energía, seleccionada al lanzar y definitiva. 20×20 px, el tamaño actual de la casilla, así que la disposición no
+  cambia. Arte fuente en `tools/textures/source/hud/casillas/` (ilustraciones suaves de 44×44, no pixel art con rejilla);
+  generador `tools/textures/gen_hud_sprites.py` (admite `--check`). Si el paquete de recursos no trae el marco, o la
+  casilla está vacía, se mantiene el dibujo anterior. Sin validar en partida.
+- **v66 — HUD: esfera de maná.** El maná se muestra con una esfera de 28×28 px junto a la hotbar (a la izquierda, donde
+  estaba la barra) que se llena de forma continua; el texto «Maná a/b» queda a su izquierda. Sustituye solo a la barra o
+  píldora de maná, en el modo clásico y en el de barras Souls: la vida y el hambre no cambian. Sin el sprite se mantiene
+  la barra anterior. Pendiente de la misma entrega: barras de experiencia y de jefe, indicadores de combo y trance y
+  avisos de evento. Sin validar en partida.
+- **v66 — Iconos de rol de la dirección de arte.** Los 20 roles usan los iconos de la nueva dirección de arte en la pantalla
+  de roles, las sendas, el grimorio y el HUD (la insignia principal): 16×16 para el tamaño del árbol y 32×32 para usos
+  grandes. Arte fuente en `tools/textures/source/roles/`; generador `tools/textures/gen_role_icons.py` (admite `--check`).
+  Si el paquete de recursos no trae el icono, se usa el sello anterior. Los tooltips y las insignias de firma y definitiva
+  siguen con los sellos anteriores. Sin validar en partida.
 - **v65 — Enemigos nuevos.** El Errante Velado aparece en la Niebla de almas (10 % de las apariciones, junto al
   Osario Quebrado con otro 10 %) y tiene huevo de aparición y entrada en el bestiario. El Custodio de las Cuatro
   Llaves sustituye al guardián vanilla de los templos sellados. Ambos tienen modelo y animaciones generados por
