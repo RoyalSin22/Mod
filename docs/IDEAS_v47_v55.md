@@ -2,7 +2,7 @@
 
 > **Nota (2026-11-08):** mientras se escribía este documento, Codex integró en `main` las versiones **v47–v58**
 > (Asalto y Persecución del Eclipse, Reforja y Templado, Mesa y Hoguera nuevas, HUD e iconos del árbol, atlas de
-> talentos, remates 3D, **talentos por datapack**, avisos de los jefes y animaciones del Cambiaformas). Por eso la
+> talentos, remates 3D, avisos de los jefes y animaciones del Cambiaformas). Por eso la
 > numeración de §10 empieza en **v59**, y algunas ideas ya están hechas en parte (marcadas «✔ v5x» abajo). El
 > nombre del archivo (`IDEAS_v47_v55.md`) se mantiene para no romper enlaces.
 
@@ -158,21 +158,9 @@ aprobar **A3 (GeckoLib)**, que es el estándar en Fabric; A4 solo si las animaci
 | R3 | `RoleTree.keystone(id)` recorre los 20 roles por llamada | Mapa id → piedra angular construido una vez |
 | R4 | Revisar con **spark** (perfilador) en un servidor con 5–10 jugadores y eventos activos | Medir antes de optimizar más |
 
-## 9. Addon y datapack (contenido por datos)
+## 9. Addon y datapack (descartado)
 
-| Fase | Qué se vuelve configurable por **datapack** (`data/<ns>/aptitudes/...`) | Valor |
-|---|---|---|
-| D0 | ✔ v55: **talentos adicionales por datapack** (rama de ejemplo para el Espadachín) | Base para D1–D3 |
-| D1 | **Valores de balance**: efectos de senda, piedras angulares, runas, eventos | Los servidores ajustan sin recompilar |
-| D2 | **Sendas**: efectos de S1–S6, plantilla de S7, nombres | Paquetes de sendas alternativas |
-| D3 | **Roles y árbol completo** (nodos, requisitos, posiciones) | Addons que añaden roles |
-| D4 | **API Java** (entrypoint `aptitudes`) para que otros mods registren habilidades y plantillas | Ecosistema de addons |
-
-Requisitos técnicos: los datos se sincronizan al cliente al entrar; los ids siguen guardándose por clave
-(compatibles con mundos existentes); validación con mensajes claros en el registro si un datapack es incorrecto.
-Las **animaciones e iconos** ya se pueden cambiar con un **resource pack** (texturas, sonidos y, con A1, modelos).
-
----
+El piloto de talentos por datapack (v55) se retiró en v65 y el resto de fases D1–D4 se descartaron.
 
 ## 10. Propuesta de orden (aprobada; renumerada desde v59)
 
@@ -185,7 +173,6 @@ Las **animaciones e iconos** ya se pueden cambiar con un **resource pack** (text
 | v63 | Primer bloque de jefes originales (Coloso Sin Rostro, Guardián Desmontado, Autómata Antiguo) + estructuras, con **GeckoLib** | Claude (diseño) + Codex |
 | v64 | Templos de puzle y Vasos de vida | Claude ✔ (2026-11-09) |
 | v65 | Sinergias Y1–Y5 | Claude |
-| v66 | Datapack D1–D2 (sobre la base de talentos de v55) | Claude |
 | v67 | Combate avanzado S3 (parada), mensajes en el suelo (S5) y ecos de muerte (S6); S4 (rodar con estamina) si se confirma | Claude |
 
 ## 10b. Decisiones del 2026-11-08 (segunda ronda)

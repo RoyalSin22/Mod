@@ -237,29 +237,6 @@ Automáticas: `guide/BestiaryRulesTest` (catálogo, desbloqueos, topes y saneado
 5. Con dos jugadores, sitúate dentro de la marca y pide al otro que salga. Solo debe recibir el golpe
    el jugador dentro de la marca. En un Eclipse, verifica el ataque y la barra del Heraldo.
 
-## v55 — Catálogo de talentos por datapack
-
-1. Copia [el ejemplo](examples/talentos-piloto/) a `datapacks` de un mundo de prueba. Al cargarlo,
-   revisa en el registro que el catálogo tenga dos nodos en la revisión 1. Repite `/reload` con
-   los mismos archivos y verifica que el número de revisión se conserve.
-2. Cambia el nivel de `paso_ligero` a 999 y ejecuta `/reload`. El registro debe señalar el error
-   y conservar la revisión 1. Prueba también un prerrequisito circular.
-3. Corrige el nivel a 13 y vuelve a recargar. La revisión sube a 2 y se conservan los dos nodos.
-   Deshabilita el datapack y verifica que se publique una revisión vacía.
-4. Reactiva el pack original. Selecciona Espadachín como rol principal y abre **Talentos del pack**
-   desde J a nivel 21 o superior. Verifica que Paso ligero pida `parry` y Paso firme pida Paso ligero.
-   Compra los tres rangos, comprueba que J y Sendas descuenten tres puntos y mide la velocidad
-   con el modificador `aptitudes:datapack/speed` (+2 %, +4 % y +6 % sobre la base).
-5. Repite la misma petición antes de recibir la confirmación. Solo debe gastarse un punto. Intenta
-   comprar con un rol no equipado y en modo espectador. Los puntos deben conservarse en ambos casos.
-   Cambia de rol, muere y reconecta. Comprueba el bonus y los rangos en cada caso.
-6. Con dos jugadores, compra con uno y comprueba que el otro conserva sus puntos y velocidad.
-   Recarga un catálogo inválido y después deshabilita el pack con la pantalla abierta. Comprueba que
-   los rangos solo se reembolsen al deshabilitarlo, que desaparezca el bonus y que los puntos se
-   mantengan tras reiniciar. Reactivar el pack debe mostrar los rangos a cero.
-7. Ejecuta `.\gradlew.bat build`. `TalentPackRulesTest` cubre el JSON estricto, referencias, ciclos,
-   IDs y límites. `TalentProgressRulesTest` cubre guardado acotado, reembolsos, rango esperado y tope.
-
 ## v54 — Animaciones de lanzamiento
 
 1. Lanza una activa con un rol de cada categoría. Observa en F5 el tajo de Marcial, los cristales

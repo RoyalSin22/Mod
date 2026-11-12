@@ -36,7 +36,7 @@ aprendido, disponible y bloqueado se distinguen por forma y borde además del co
 
 ## Árbol ampliable y revisión de roles
 
-1. **Implementado en v55 fase 1.** El [datapack piloto](DATAPACK_TALENTOS.md) define una rama opcional
+1. **Implementado en v55 fase 1 y retirado en v65.** El datapack piloto definía una rama opcional
    para el Espadachín. El servidor valida las definiciones y conserva la revisión anterior si falla
    la recarga del catálogo.
 2. **Implementado en v55 fase 2.** El servidor sincroniza el catálogo y los rangos. En J se pueden

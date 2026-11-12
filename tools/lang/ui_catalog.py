@@ -1513,13 +1513,6 @@ either¦%s ou %s¦%s ou %s¦%s oder %s
 """)
 
 add('', """
-screen.aptitudes.datapack.tab¦Talentos do pacote¦Talents du pack¦Paket-Talente
-screen.aptitudes.datapack.title¦Talentos do pacote · %s¦Talents du pack · %s¦Paket-Talente · %s
-screen.aptitudes.datapack.empty¦Esta classe não tem talentos do pacote.¦Ce rôle n’a aucun talent de pack.¦Für diese Rolle gibt es keine Paket-Talente.
-screen.aptitudes.datapack.speed¦Velocidade de movimento +%s%% por grau · limite total +%s%%¦Vitesse de déplacement +%s%% par rang · plafond total +%s%%¦Bewegungstempo +%s%% pro Rang · insgesamt bis +%s%%
-screen.aptitudes.datapack.prerequisite¦Requer %s¦Requiert %s¦Erfordert %s
-aptitudes.role.upgrade.datapack_stale¦Seus talentos do pacote mudaram. Confira o grau e tente novamente.¦Vos talents de pack ont changé. Vérifiez le rang et réessayez.¦Deine Paket-Talente haben sich geändert. Prüfe den Rang und versuche es erneut.
-aptitudes.role.upgrade.datapack_unavailable¦Só é possível aprender talentos do pacote com vida e fora do modo espectador.¦Vous devez être en vie et hors du mode spectateur pour apprendre un talent de pack.¦Paket-Talente kannst du nur lebend und außerhalb des Zuschauermodus lernen.
 talent.aptitudes_piloto.paso_ligero.name¦Passo leve¦Pas léger¦Leichter Schritt
 talent.aptitudes_piloto.paso_firme.name¦Passo firme¦Pas assuré¦Sicherer Schritt
 """)

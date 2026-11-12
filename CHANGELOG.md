@@ -5,6 +5,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Retirado
+- **v65 — Talentos por datapack.** Se retira el piloto de la v55: `role/datapack/*`, los payloads
+  `TalentCatalogPayload` y `TalentPurchasePayload`, la pantalla «Talentos del pack», el ejemplo `docs/examples/talentos-piloto`,
+  sus pruebas y las siete claves de texto. El campo `datapack_ranks` deja de guardarse: las partidas antiguas lo
+  ignoran y los puntos gastados en esas ramas vuelven a estar disponibles.
+
 ### Añadido
 - **v66 — HUD: marcos de las casillas de habilidad.** Cada casilla de la barra de habilidades usa un marco de la nueva
   dirección de arte según la categoría del rol (marcial, arcano, sombra, guardián u oficio) y su estado: lista, en espera,
@@ -152,7 +158,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   animadas y una cabecera propia al descansar. El grimorio indica qué mesa requiere cada receta.
 
 ### Añadido
-- **v55 — Talentos por datapack.** El pack de ejemplo añade Paso ligero y Paso firme al Espadachín.
+- **v55 — Talentos por datapack (retirado en v65).** El pack de ejemplo añade Paso ligero y Paso firme al Espadachín.
   Con el pack activo, abre **Talentos del pack** desde J para consultar y aprender la rama con puntos
   del rol. Cada rango da +2 % de velocidad de movimiento, hasta +6 % entre ambos roles activos.
   Al retirar el pack o perder un requisito, recuperas los puntos de los rangos afectados.

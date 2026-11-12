@@ -37,12 +37,6 @@ La activa del murciélago aplica diez impulsos separados por cuatro ticks. Cada 
 dirección actual de la mirada, con velocidad horizontal máxima de 0,38 bloques por tick y
 velocidad vertical entre −0,15 y 0,32. Se conserva la caída lenta de 200 ticks de la activa.
 
-## Talentos por datapack (v55)
-
-El piloto comparte el presupuesto de puntos de cada rol. Cada rango de `speed` cuesta un punto y
-suma +2 % de velocidad de movimiento sobre la base del atributo. El modificador de ambos roles
-activos tiene un tope propio de +6 %. Las Sendas conservan sus valores.
-
 ## Maestría (v43, T6 fase 1)
 
 Antes se descartaba toda XP al máximo. Ahora solo la XP nueva elegible suma maestría, incluida la parte

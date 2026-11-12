@@ -1,7 +1,0 @@
-{
-  "role": "swordsman",
-  "prerequisite": "parry",
-  "level": 12,
-  "ranks": 1,
-  "template": "speed"
-}

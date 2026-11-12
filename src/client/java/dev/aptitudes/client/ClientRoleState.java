@@ -4,7 +4,6 @@ import dev.aptitudes.ability.AbilityManager;
 import dev.aptitudes.network.CooldownPayload;
 import dev.aptitudes.network.EnergyPayload;
 import dev.aptitudes.network.RoleSyncPayload;
-import dev.aptitudes.network.TalentCatalogPayload;
 import dev.aptitudes.role.Role;
 import dev.aptitudes.role.RoleTree;
 import org.jetbrains.annotations.Nullable;
@@ -16,7 +15,6 @@ import org.jetbrains.annotations.Nullable;
  */
 public final class ClientRoleState {
 	private static RoleSyncPayload data;
-	private static TalentCatalogPayload talents = TalentCatalogPayload.EMPTY;
 	private static float energy;
 	private static float maxEnergy = 100f;
 	private static float resourcePrimary;
@@ -36,16 +34,8 @@ public final class ClientRoleState {
 		}
 	}
 
-	static void onTalents(TalentCatalogPayload payload) {
-		talents = payload;
-	}
-
-	public static TalentCatalogPayload talents() {
-		return talents;
-	}
-
 	public static int availablePoints(RoleSyncPayload data, Role role) {
-		int spent = talents.spent(role);
+		int spent = 0;
 		for (var node : RoleTree.nodes(role)) spent += data.rank(node.id());
 		return data.rules().earnedPoints(data.level(role), data.tier(role)) - spent;
 	}
@@ -88,7 +78,6 @@ public final class ClientRoleState {
 
 	static void clear() {
 		data = null;
-		talents = TalentCatalogPayload.EMPTY;
 		energy = 0;
 		maxEnergy = 100f;
 		resourcePrimary = 0;

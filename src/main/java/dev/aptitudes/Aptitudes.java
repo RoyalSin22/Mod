@@ -84,7 +84,6 @@ public class Aptitudes implements ModInitializer {
 		dev.aptitudes.souls.SoulsManager.register();
 		ProgressManager.registerLifecycleEvents();
 		RoleManager.registerLifecycleEvents();
-		dev.aptitudes.role.datapack.RoleTalentCatalog.register();
 		dev.aptitudes.rune.RuneSocketing.register();
 		dev.aptitudes.event.EclipseManager.register();
 		dev.aptitudes.event.WorldEventManager.register();
