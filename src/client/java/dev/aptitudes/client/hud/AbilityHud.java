@@ -405,27 +405,31 @@ public final class AbilityHud {
 
 	private static void drawSlot(DrawContext ctx, TextRenderer text, RoleSyncPayload data, @Nullable SlotView view,
 								 int slot, int x, int y, int age) {
-		int accent = view == null ? 0xFF565260 : view.border() != 0 ? view.border()
-				: lighter(0xFF000000 | view.role().color());
-		ctx.fill(x - 1, y - 1, x + SLOT + 1, y + SLOT + 1, 0xD0000000);
-		ctx.fillGradient(x, y, x + SLOT, y + SLOT, 0xF02B2734, 0xEF12151F);
-		ctx.drawBorder(x, y, SLOT, SLOT, 0xFF4D4655);
-		int corner = view != null && view.learned() ? accent : darker(accent);
-		ctx.fill(x - 1, y - 1, x + 3, y, corner);
-		ctx.fill(x - 1, y - 1, x, y + 3, corner);
-		ctx.fill(x + SLOT - 3, y - 1, x + SLOT + 1, y, corner);
-		ctx.fill(x + SLOT, y - 1, x + SLOT + 1, y + 3, corner);
-		ctx.fill(x - 1, y + SLOT, x + 3, y + SLOT + 1, corner);
-		ctx.fill(x - 1, y + SLOT - 3, x, y + SLOT + 1, corner);
-		ctx.fill(x + SLOT - 3, y + SLOT, x + SLOT + 1, y + SLOT + 1, corner);
-		ctx.fill(x + SLOT, y + SLOT - 3, x + SLOT + 1, y + SLOT + 1, corner);
+		long castAge = ClientRoleState.sinceCast(slot);
+		// v66: marco de la dirección de arte (categoría del rol y estado de la casilla); si falta, el dibujo anterior.
+		if (view == null || !drawFrame(ctx, view, slot, x, y, castAge)) {
+			int accent = view == null ? 0xFF565260 : view.border() != 0 ? view.border()
+					: lighter(0xFF000000 | view.role().color());
+			ctx.fill(x - 1, y - 1, x + SLOT + 1, y + SLOT + 1, 0xD0000000);
+			ctx.fillGradient(x, y, x + SLOT, y + SLOT, 0xF02B2734, 0xEF12151F);
+			ctx.drawBorder(x, y, SLOT, SLOT, 0xFF4D4655);
+			int corner = view != null && view.learned() ? accent : darker(accent);
+			ctx.fill(x - 1, y - 1, x + 3, y, corner);
+			ctx.fill(x - 1, y - 1, x, y + 3, corner);
+			ctx.fill(x + SLOT - 3, y - 1, x + SLOT + 1, y, corner);
+			ctx.fill(x + SLOT, y - 1, x + SLOT + 1, y + 3, corner);
+			ctx.fill(x - 1, y + SLOT, x + 3, y + SLOT + 1, corner);
+			ctx.fill(x - 1, y + SLOT - 3, x, y + SLOT + 1, corner);
+			ctx.fill(x + SLOT - 3, y + SLOT, x + SLOT + 1, y + SLOT + 1, corner);
+			ctx.fill(x + SLOT, y + SLOT - 3, x + SLOT + 1, y + SLOT + 1, corner);
+		}
 		Text key = UiStyle.fit(text, AptitudesClient.abilityKey(slot).getBoundKeyLocalizedText(), (int) ((SLOT - 2) / 0.7f));
 		ctx.fill(x + 1, y + KEY_Y, x + SLOT - 1, y - 1, 0xEC151620);
 		small(ctx, text, key, x + SLOT / 2 - (int) (text.getWidth(key) * 0.35f), y - 8,
 				view == null ? UiStyle.MUTED : UiStyle.TEXT);
 		if (view == null) return;
 		// v24: al lanzar, el icono rebota (×1,35 → ×1) y la ranura destella con el color del rol (350 ms).
-		long since = ClientRoleState.sinceCast(slot);
+		long since = castAge;
 		if (ClientConfig.get().hudAnimations && since < 350) {
 			float t = since / 350f;
 			float scale = 1f + 0.35f * (1f - t) * (1f - t);
@@ -453,6 +457,19 @@ public final class AbilityHud {
 			padlock(ctx, x + SLOT / 2 - 3, y + 6);
 		}
 		ctx.getMatrices().pop();
+	}
+
+	/** Dibuja el marco de la casilla; falso si la categoría o el sprite no están disponibles. */
+	private static boolean drawFrame(DrawContext ctx, SlotView view, int slot, int x, int y, long castAge) {
+		Role owner = view.role() != null ? view.role() : view.unique() != null ? view.unique().role() : null;
+		if (owner == null) return false;
+		String state;
+		if (ClientConfig.get().hudAnimations && castAge < 350) state = "seleccionada";
+		else if (ClientRoleState.cooldown(slot) > 0) state = "espera";
+		else if (slot == AbilityManager.ULTIMATE_SLOT) state = "definitiva";
+		else if (ClientRoleState.energy() < view.cost()) state = "sin_energia";
+		else state = "lista";
+		return NodeIconRenderer.drawSlotFrame(ctx, owner.category(), state, x, y, SLOT);
 	}
 
 	private static void drawSlotIcon(DrawContext ctx, SlotView view, int slot, int x, int y) {

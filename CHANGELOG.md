@@ -6,6 +6,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **v66 — HUD: marcos de las casillas de habilidad.** Cada casilla de la barra de habilidades usa un marco de la nueva
+  dirección de arte según la categoría del rol (marcial, arcano, sombra, guardián u oficio) y su estado: lista, en espera,
+  sin energía, seleccionada al lanzar y definitiva. 20×20 px, el tamaño actual de la casilla, así que la disposición no
+  cambia. Arte fuente en `tools/textures/source/hud/casillas/` (ilustraciones suaves de 44×44, no pixel art con rejilla);
+  generador `tools/textures/gen_hud_sprites.py` (admite `--check`). Si el paquete de recursos no trae el marco, o la
+  casilla está vacía, se mantiene el dibujo anterior. Pendiente de la misma entrega: esferas, barras de experiencia y de
+  jefe, indicadores de combo y trance y avisos de evento. Sin validar en partida.
 - **v66 — Iconos de rol de la dirección de arte.** Los 20 roles usan los iconos de la nueva dirección de arte en la pantalla
   de roles, las sendas, el grimorio y el HUD (la insignia principal): 16×16 para el tamaño del árbol y 32×32 para usos
   grandes. Arte fuente en `tools/textures/source/roles/`; generador `tools/textures/gen_role_icons.py` (admite `--check`).

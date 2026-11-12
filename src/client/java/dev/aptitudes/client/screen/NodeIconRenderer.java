@@ -7,6 +7,7 @@ import dev.aptitudes.role.KeystoneRules;
 import dev.aptitudes.role.NodeIcons;
 import dev.aptitudes.role.PathRules;
 import dev.aptitudes.role.Role;
+import dev.aptitudes.role.RoleCategory;
 import dev.aptitudes.role.RoleNode;
 import dev.aptitudes.role.RoleTree;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -121,6 +122,33 @@ public final class NodeIconRenderer {
 		RenderSystem.defaultBlendFunc();
 		try {
 			ctx.drawTexture(texture, x, y, 0.0F, 0.0F, TILE, TILE, TILE, TILE);
+		} finally {
+			RenderSystem.disableBlend();
+		}
+		return true;
+	}
+
+	/**
+	 * v66: marco de una casilla de habilidad del HUD (20×20, generado por gen_hud_sprites.py) según la categoría del rol.
+	 * Estados: lista, espera, sin_energia, seleccionada y definitiva. Falso si el paquete de recursos no lo trae.
+	 */
+	public static boolean drawSlotFrame(DrawContext ctx, RoleCategory category, String state, int x, int y, int size) {
+		String name = switch (category) {
+			case MARTIAL -> "marcial";
+			case ARCANE -> "arcano";
+			case SHADOW -> "sombra";
+			case GUARDIAN -> "guardian";
+			case CRAFT -> "oficio";
+		};
+		Identifier texture = Aptitudes.id("textures/gui/hud/slot/" + name + "_" + state + ".png");
+		boolean present = HAS_TEXTURE.computeIfAbsent("hud-slot/" + name + "_" + state, id ->
+				MinecraftClient.getInstance().getResourceManager().getResource(texture).isPresent());
+		if (!present) return false;
+		// Las esquinas del marco son transparentes: DrawContext.drawTexture en 1.21.1 no activa la mezcla por sí solo.
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		try {
+			ctx.drawTexture(texture, x, y, size, size, 0.0F, 0.0F, size, size, size, size);
 		} finally {
 			RenderSystem.disableBlend();
 		}
