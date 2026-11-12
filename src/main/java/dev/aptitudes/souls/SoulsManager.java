@@ -214,14 +214,14 @@ public final class SoulsManager {
 
 		int free = Math.max(0, ProgressManager.availablePoints(progress));
 		int toBuy = levelsForPoints(progress.getSoulLevel(), (int) Math.max(0, total - free)); // total ≤ 1000
-		int cost = 0;
+		long cost = 0; // long: con un coste por nivel alto y muchos niveles, un int se desbordaría
 		for (int i = 0; i < toBuy; i++) cost += levelCost(progress.getSoulLevel() + i);
 		if (!player.isCreative() && player.experienceLevel < cost) {
 			player.sendMessage(Text.translatable("aptitudes.souls.not_enough", cost, player.experienceLevel)
 					.formatted(Formatting.RED), true);
 			return;
 		}
-		if (!player.isCreative() && cost > 0) player.addExperienceLevels(-cost);
+		if (!player.isCreative() && cost > 0) player.addExperienceLevels(-(int) cost); // cost ≤ experienceLevel (int)
 		progress.setSoulLevel(progress.getSoulLevel() + toBuy);
 		for (PlayerAttribute a : attrs) {
 			progress.setAllocated(a, progress.getAllocated(a) + requested[a.ordinal()]);

@@ -71,6 +71,7 @@ public final class Accessories {
 
 	/** Abre la pantalla de accesorios; los cambios se guardan al instante. */
 	public static void open(ServerPlayerEntity player) {
+		if (!player.isAlive() || player.isSpectator()) return; // v66 (auditoría): el cliente puede pedirlo en cualquier estado
 		List<ItemStack> stored = stacks(player);
 		SimpleInventory inv = new SimpleInventory(3);
 		for (int i = 0; i < 3; i++) inv.setStack(i, stored.get(i).copy());
