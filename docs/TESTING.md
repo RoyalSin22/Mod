@@ -1,5 +1,38 @@
 # Pruebas de Aptitudes
 
+## v66 — Auditoría, retiradas y arte de la nueva dirección
+
+Pruebas automáticas nuevas:
+
+- `network/RequestLimiterTest`: el limitador de frecuencia por jugador y acción acepta, rechaza y reinicia la ventana
+  correctamente, trata cada acción y cada jugador por separado, tolera que el reloj retroceda y olvida al desconectar.
+- `config/ConfigUpperBoundsTest`: los valores extremos de la configuración se acotan, el peor caso de compra de niveles de alma
+  cabe en un entero y los valores por defecto no cambian con los máximos.
+- Comprobaciones de recursos (con `--check`): `tools/textures/gen_role_icons.py`, `gen_hud_sprites.py`, `gen_boss_models.py`,
+  `gen_mob_models.py`, `gen_node_icons.py` y `tools/lang/*`. `gen_tree_atlas.py --check` falla en `main` desde antes de v66
+  (compara bytes de PNG y varía con la versión de Pillow); no lo causa ninguno de estos cambios.
+
+Validación en partida (pendiente):
+
+1. **Iconos de rol.** Abre J, Sendas y el grimorio: cada uno de los 20 roles muestra su icono nuevo (16×16, legible). Las
+   insignias de firma y definitiva, y los tooltips de objetos, siguen con el sello anterior.
+2. **Marcos de casilla.** En la barra de habilidades, cada casilla usa el marco de la categoría de su rol: lista (color),
+   en espera (gris con humo), sin energía (azul), seleccionada durante el efecto de lanzamiento (borde dorado) y la
+   definitiva con su marco propio. Las casillas vacías conservan el dibujo anterior. Comprueba con escala de interfaz 2, 3 y 4.
+3. **Esfera de maná.** Con barras Souls activadas y desactivadas: la esfera aparece junto a la hotbar (a la izquierda), se
+   llena de forma continua al regenerar y vaciarse, y el texto «Maná a/b» queda a su izquierda. La vida y el hambre de
+   Minecraft (modo clásico) o las barras de vida y aguante (modo Souls) no cambian. No debe solaparse con la mano secundaria.
+4. **Retirada del datapack de talentos.** Abre un mundo guardado antes de v66: carga sin errores, J no muestra el botón
+   «Talentos del pack» y los puntos gastados en ramas de datapack vuelven a estar disponibles. Un datapack de talentos
+   antiguo en la carpeta `datapacks` no produce errores ni efectos.
+5. **Retirada del Coloso de Hierro.** `/summon aptitudes:iron_colossus` ya no existe y el huevo de aparición no aparece en la
+   pestaña de objetos. Un mundo con esa entidad cargada carga sin errores (se descarta).
+6. **Limitadores.** Pulsa muy rápido la tecla de accesorios: la pantalla se abre una vez. Invita al mismo jugador varias veces
+   seguidas: solo se acepta una invitación cada segundo. Las pantallas de estadísticas y contratos siguen respondiendo con
+   normalidad al uso humano.
+7. **Máximos de configuración.** Pon `levelCostMax` o `miningXpStone` a un valor enorme en `aptitudes.json` y arranca: el
+   valor se reduce a su tope (10 000 y 100 000) y el juego funciona. Los valores por defecto no cambian.
+
 ## v65 — Pruebas nuevas
 
 - `ability/TranceRulesTest`: ganancia con tope, sintonía llena y ventana del trance (con duración configurable).

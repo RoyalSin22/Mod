@@ -15,6 +15,14 @@ public final class ModNetworking {
 	/** Límite por paquete para que un cliente modificado no pueda forzar bucles grandes. */
 	private static final int MAX_AMOUNT_PER_REQUEST = 100;
 
+	/** v66 (auditoría): límite de frecuencia de las peticiones que construyen paquetes, abren pantallas o avisan a otros. */
+	private static final RequestLimiter LIMITER = new RequestLimiter();
+
+	private static boolean allowed(net.minecraft.server.network.ServerPlayerEntity player, String action, long interval) {
+		var server = player.getServer();
+		return server == null || LIMITER.tryAcquire(player.getUuid(), action, server.getTicks(), interval);
+	}
+
 	private ModNetworking() {
 	}
 
@@ -83,6 +91,7 @@ public final class ModNetworking {
 		ServerPlayNetworking.registerGlobalReceiver(ContractActionPayload.ID, (payload, context) -> {
 			if (payload.offer() < 0 || payload.offer() >= dev.aptitudes.contract.ContractRules.OFFERS_PER_DAY) return;
 			var player = context.player();
+			if (!allowed(player, "contract", 3)) return;
 			if (payload.action() == ContractActionPayload.REQUEST) { dev.aptitudes.contract.ContractManager.sync(player); return; }
 			switch (payload.action()) {
 				case ContractActionPayload.ACCEPT -> dev.aptitudes.contract.ContractManager.accept(player, payload.offer());
@@ -107,7 +116,7 @@ public final class ModNetworking {
 			switch (payload.action()) {
 				case PartyActionPayload.REQUEST_SYNC -> dev.aptitudes.party.PartyManager.requestSync(player);
 				case PartyActionPayload.INVITE -> {
-					if (payload.target() == null) return;
+					if (payload.target() == null || !allowed(player, "invite", 20)) return;
 					var target = player.getServer().getPlayerManager().getPlayer(payload.target());
 					if (target != null) dev.aptitudes.party.PartyManager.invite(player, target);
 				}
@@ -131,15 +140,20 @@ public final class ModNetworking {
 		ServerPlayNetworking.registerGlobalReceiver(LevelUpPayload.ID,
 				(payload, context) -> dev.aptitudes.souls.SoulsManager.levelUp(context.player(), payload.allocations()));
 
-		ServerPlayNetworking.registerGlobalReceiver(RequestStatsPayload.ID,
-				(payload, context) -> context.responseSender().sendPacket(
-						dev.aptitudes.logic.StatPreview.build(context.player())));
+		ServerPlayNetworking.registerGlobalReceiver(RequestStatsPayload.ID, (payload, context) -> {
+			if (allowed(context.player(), "stats", 5)) {
+				context.responseSender().sendPacket(dev.aptitudes.logic.StatPreview.build(context.player()));
+			}
+		});
 
 		ServerPlayNetworking.registerGlobalReceiver(UseAbilityPayload.ID,
 				(payload, context) -> AbilityManager.use(context.player(), payload.slot()));
 
-		ServerPlayNetworking.registerGlobalReceiver(OpenAccessoriesPayload.ID,
-				(payload, context) -> dev.aptitudes.accessory.Accessories.open(context.player()));
+		ServerPlayNetworking.registerGlobalReceiver(OpenAccessoriesPayload.ID, (payload, context) -> {
+			if (allowed(context.player(), "accessories", 10)) dev.aptitudes.accessory.Accessories.open(context.player());
+		});
+		net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents.DISCONNECT
+				.register((handler, server) -> LIMITER.forget(handler.player.getUuid()));
 		ServerPlayNetworking.registerGlobalReceiver(RoleActionPayload.ID, (payload, context) -> {
 			var player = context.player();
 			switch (payload.action()) {

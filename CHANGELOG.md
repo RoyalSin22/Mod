@@ -5,6 +5,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Seguridad
+- **v66 — Auditoría de red y configuración.** Se revisaron los 12 payloads cliente → servidor: todos validan su entrada en el
+  servidor y los de forja, frascos y grimorio ya tenían sus propios controles. Cambios: límite de frecuencia por jugador y
+  acción (`network/RequestLimiter`) para estadísticas, accesorios, contratos e invitaciones de grupo; `Accessories.open`
+  exige jugador vivo y no espectador; la compra de niveles de alma acumula el coste en `long`; y 40 campos numéricos de
+  la configuración reciben un máximo (antes solo se exigía no negativo y finito), sin cambiar ningún valor por defecto.
+  `docs/CONFIGURATION.md` documenta los 42 campos que faltaban y `AGENTS.md` lista las 86 clases de prueba reales.
+
 ### Retirado
 - **v65 — Talentos por datapack.** Se retira el piloto de la v55: `role/datapack/*`, los payloads
   `TalentCatalogPayload` y `TalentPurchasePayload`, la pantalla «Talentos del pack», el ejemplo `docs/examples/talentos-piloto`,

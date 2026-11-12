@@ -130,6 +130,48 @@ Los números negativos o no finitos vuelven al valor por defecto, como en el res
 El multiplicador de «jefe aturdido» (+20 %) y el efecto de los modificadores de expedición no son opciones: están
 en el código y se documentan en `docs/BALANCE.md`.
 
+## Progresión, habilidades y roles (campos base)
+
+Opciones de la progresión por uso, los roles y la energía. Hasta v66 no estaban recogidas aquí. Todas pasan por
+`validated(...)` (no negativo y finito) y por los máximos de «Validación al cargar», y se pueden editar desde la pantalla
+de configuración con validación del servidor.
+
+| Opción | Defecto | Rango | Descripción |
+|---|---|---|---|
+| `xpBase` | 20.0 | [1, ∞) | XP de habilidad para pasar del nivel L al L+1: `xpBase × (L+1)^xpExponent`. |
+| `xpExponent` | 1.35 | [0, 4] | Exponente de la fórmula anterior. |
+| `pointsPerSkillLevel` | 0 | [0, 100] | Puntos de atributo por nivel de habilidad. 0: los atributos solo se suben en la Hoguera. |
+| `startingPoints` | 0 | [0, 10 000] | Puntos de atributo iniciales. |
+| `allowSelfRespec` | false | booleano | false: solo un operador (nivel 2) puede reiniciar atributos o árboles con los comandos de reinicio. |
+| `awardXpInCreative` | false | booleano | Concede XP de habilidad a jugadores en Creativo. |
+| `awardXpForPlayerKills` | true | booleano | La XP de combate también cuenta contra jugadores. |
+| `showXpInActionBar` | true | booleano | Muestra la XP ganada en la barra de acción. |
+| `levelUpMessages` | true | booleano | Avisos al subir de nivel de habilidad. |
+| `miningXpStone` / `miningXpOre` | 1 / 10 | [0, 100 000] | XP de Minería por bloque de piedra y por mena. |
+| `excavationXpBlock` | 1 | [0, 100 000] | XP de Excavación por bloque. |
+| `woodcuttingXpLog` | 4 | [0, 100 000] | XP de Tala por tronco. |
+| `farmingXpCrop` | 5 | [0, 100 000] | XP de Agricultura por cultivo. |
+| `agilityXpPer10Blocks` | 2 | [0, 100 000] | XP de Agilidad cada 10 bloques recorridos. |
+| `combatXpPerMaxHealth` | 0.5 | [0, 1000] | XP de Combate por cada punto de vida máxima de la víctima. |
+| `archeryXpPerMaxHealth` | 0.6 | [0, 1000] | XP de Tiro con arco por cada punto de vida máxima de la víctima. |
+| `defenseXpPerDamage` | 1.0 | [0, 1000] | XP de Defensa por punto de daño recibido. |
+| `breakSpeedPerLevel` | 0.02 | [0, ∞) | Velocidad de ruptura por nivel de habilidad de recolección. |
+| `combatDamagePerLevel` / `archeryDamagePerLevel` | 0.01 / 0.015 | [0, 100] | Daño por nivel de Combate y de Tiro con arco. |
+| `defenseToughnessPerLevel` / `defenseArmorPerLevel` / `defenseExplosionPerLevel` | 0.1 / 0.06 / 0.01 | [0, 100] | Dureza, armadura y resistencia al empuje de las explosiones por nivel de Defensa. |
+| `agilitySpeedPerLevel` / `agilitySafeFallPerLevel` | 0.002 / 0.06 | [0, 100] | Velocidad y caída segura por nivel de Agilidad. |
+| `miningArmorPerLevel` / `excavationKnockbackPerLevel` | 0.1 / 0.01 | [0, 100] | Armadura por nivel de Minería y resistencia al empuje por nivel de Excavación. |
+| `woodcuttingHealthPerLevel` / `farmingLuckPerLevel` | 0.2 / 0.04 | [0, 100] | Vida por nivel de Tala y suerte por nivel de Agricultura. |
+| `roleXpBase` / `roleXpExponent` | 30.0 / 1.4 | [1, ∞) / [0, 4] | XP de rol: `roleXpBase × (L+1)^roleXpExponent` para el nivel L al L+1. |
+| `roleXpPerAbilityUse` / `roleXpPerAction` | 5 / 2 | [0, 100 000] | XP de rol por usar una habilidad y por otras acciones del rol. |
+| `roleXpPerDamage` | 0.5 | [0, 1000] | XP de rol por punto de daño infligido. |
+| `baseMaxEnergy` | 100.0 | [1, ∞) | Energía máxima base de las habilidades activas. |
+| `baseEnergyRegenPerSecond` | 2.0 | [0, ∞) | Regeneración de energía base por segundo. |
+| `levelCostMax` | 10 | [1, 10 000] | Coste máximo en niveles de XP de un nivel de alma (ver `levelCostBase/Divisor/Max`). |
+| `soulsBloodstain` | true | booleano | Al morir, la XP queda en una mancha recuperable en el lugar de la muerte. |
+| `morphExplosionsBreakBlocks` | true | booleano | Las explosiones de la forma Creeper del Cambiaformas rompen bloques. |
+| `uniqueGriefing` | true | booleano | Las habilidades únicas con fuego pueden prender bloques. |
+| `uniqueReleaseAfterDays` | 0 | [0, 3650] | Una habilidad única se libera si su dueño no se conecta en esos días (0 = nunca). |
+
 ## Validación al cargar
 
 1. **General (nuevo):** cualquier número negativo, `NaN` o infinito vuelve a su valor por defecto y se
@@ -138,6 +180,12 @@ en el código y se documentan en `docs/BALANCE.md`.
    afinidades ≤ 5, divisores ≥ 1 (`levelCostDivisor`, `soulLevelsPerPoint`, `rolePointsEveryLevels`),
    `attributeSoftCapSecond ≥ attributeSoftCapFirst`, niveles máximos 1-1000, etc.
 3. `attributeScaling` desconocido → `LINEAR` con aviso.
+4. **Máximos (v66, auditoría):** los campos que solo tenían la validación general ahora también tienen un tope, muy
+   por encima de su valor por defecto (los valores por defecto no cambian). Un valor mayor se reduce al tope sin aviso:
+   XP por acción y de rol (enteros) ≤ 100 000; XP por vida máxima, por daño y de rol por daño ≤ 1000; bonificaciones
+   por nivel de habilidad y por punto de atributo ≤ 100; `maxDamageMultiplier` ≤ 1000; `levelCostBase` y `levelCostMax`
+   ≤ 10 000; `levelCostDivisor` ≤ 100 000; `soulLevelsPerPoint` ≤ 100; `uniqueReleaseAfterDays` ≤ 3650. Con esos
+   máximos, comprar niveles de alma cuesta como mucho 10⁹ niveles de XP, que cabe en un entero.
 
 ## Opciones añadidas en este bloque
 
@@ -147,7 +195,7 @@ en el código y se documentan en `docs/BALANCE.md`.
 | `attributeSoftCapFirst` | 40 | SOFTCAP: puntos al 100 % hasta aquí. |
 | `attributeSoftCapSecond` | 60 | SOFTCAP: puntos al 50 % hasta aquí; después al 20 %. |
 | `attributeSaturationPoints` | 50 | SATURATION: límite L de puntos efectivos. |
-| `maxDamageMultiplier` | 6.0 | Tope del multiplicador de daño combinado del mod (0 = sin tope). |
+| `maxDamageMultiplier` | 6.0 | Tope del multiplicador de daño combinado del mod (0 = sin tope). Rango [0, 1000]. |
 | `legendaryExclusive` | false | true: cada legendaria solo la puede tener un jugador del servidor y cada jugador solo una. |
 
 ## Opciones de Pesca y rendimiento decreciente (v15)
@@ -177,8 +225,8 @@ su forma normal de juego.
 | `roleChangeRequiresRitual` | true | Sustituir un rol exige quemar una Ofrenda de renacimiento en una Hoguera. |
 | `roleChangeCooldownMinutes` | 0 | Obsoleto (ya no se usa). |
 | `maxPointsPerAttribute` | 99 | Puntos máximos por atributo. |
-| `soulLevelsPerPoint` | 3 | Niveles de alma por punto de atributo. |
-| `levelCostBase/Divisor/Max` | 1 / 6 / 10 | Coste en XP de cada nivel de alma: `min(Max, Base + nivel/Divisor)`. |
+| `soulLevelsPerPoint` | 3 | Niveles de alma por punto de atributo. Rango [1, 100]. |
+| `levelCostBase/Divisor/Max` | 1 / 6 / 10 | Coste en XP de cada nivel de alma: `min(Max, Base + nivel/Divisor)`. Rangos: Base [0, 10 000], Divisor [1, 100 000], Max [1, 10 000]. |
 | `primaryAffinityBonus` / `secondaryAffinityBonus` | 0.5 / 0.25 | Bonificación de los atributos afines al rol. |
 | `maxRoleLevel` / `rolePointsEveryLevels` | 50 / 3 | Nivel máximo de rol y frecuencia de puntos de árbol. v46: el valor por defecto pasa de 30 a 50; un archivo anterior con 30 se migra solo a 50 (un valor distinto, elegido a mano, se respeta). |
 | `configRevision` | 46 | Interno: revisión del archivo para las migraciones (`config/ConfigMigration`). No aparece en la pantalla de configuración; no lo edites. |
