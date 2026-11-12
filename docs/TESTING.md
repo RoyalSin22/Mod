@@ -3,7 +3,6 @@
 ## v65 — Pruebas nuevas
 
 - `ability/TranceRulesTest`: ganancia con tope, sintonía llena y ventana del trance (con duración configurable).
-- `contract/OrderBookRulesTest`: precio por nivel, escrow con tope, comisión, cupos de participantes, reserva que evita el bloqueo, devolución, recogida y cuándo se borra un pedido.
 - `event/ExpeditionProgressRulesTest`: metas por módulo, radio de la zona, caducidad y ganancia de fragmentos del grupo (sin restar al gastar).
 - `event/ExpeditionRulesTest` (existente): composición y modificadores de la semilla.
 - `souls/SoulStainRulesTest` (existente, con el porcentaje configurable).
@@ -11,8 +10,10 @@
 - `event/EmberMobRulesTest` (actualizado): los pesos incluyen al Escorificador de Hierro y el piglin zombi baja a 15.
 - `world/BossArenaLayoutTest` (ampliado): las ruinas del Coloso cubren su sitio de invocación; el límite de celdas del muro sube a 200.
 - `config/V65ConfigValidationTest`: valores por defecto (sin cambio de comportamiento) y límites de las opciones nuevas.
+- `contract/ContractTierRewardsTest`: recompensas por nivel de reputación (esmeraldas, fragmentos y vales).
+- `contract/ContractAdvanceRulesTest`: un suceso sin objetivo (Nether, criaturas nuevas, expedición) hace avanzar las ofertas sin objetivo (objetivo −1); con objetivo 0 nunca avanzarían (regresión del tablón por niveles).
 
-Todo lo anterior se ejecuta con `./gradlew build`. Las pruebas de servidor (`OrderBook`, `Expeditions`, `Trance`, fases de
+Todo lo anterior se ejecuta con `./gradlew build`. Las pruebas de servidor (`Expeditions`, `Trance`, fases de
 los jefes) no existen: dependen de Minecraft y se validan en partida.
 
 ### Escorificador de Hierro · Pruebas en partida pendientes

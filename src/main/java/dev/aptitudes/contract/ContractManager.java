@@ -122,7 +122,7 @@ public final class ContractManager {
 		boolean changed = false;
 		for (int slot = 0; slot < active.size(); slot++) {
 			Offer o = active.get(slot).offer();
-			if (o.kind() != kind || (target >= 0 && o.target() != target)) continue;
+			if (!ContractRules.advances(o.kind(), o.target(), kind, target)) continue;
 			boolean before = active.get(slot).complete();
 			if (data.progress(slot, amount)) {
 				changed = true;
@@ -136,6 +136,12 @@ public final class ContractManager {
 
 	/** Caza: cuenta para el que mata y para los miembros conectados de su grupo (v29). */
 	public static void onKill(ServerPlayerEntity killer, EntityType<?> victim) {
+		// v65: Nether y criaturas nuevas cuentan para todo el grupo, como la caza.
+		if (ContractTargets.NETHER.contains(victim) || ContractTargets.NEW_MOBS.contains(victim)) {
+			Kind kind = ContractTargets.NETHER.contains(victim) ? Kind.NETHER : Kind.NEW_MOB;
+			// Objetivo −1: estas ofertas no tienen objetivo y se generan con −1 (con 0 nunca avanzarían).
+			for (ServerPlayerEntity member : PartyManager.onlineMembers(killer)) advance(member, kind, -1, 1);
+		}
 		int target = ContractTargets.huntIndex(victim);
 		if (target < 0) return;
 		for (ServerPlayerEntity member : PartyManager.onlineMembers(killer)) advance(member, Kind.HUNT, target, 1);
@@ -151,6 +157,9 @@ public final class ContractManager {
 	public static void enchant(ServerPlayerEntity p, int amount) { advance(p, Kind.ENCHANTING, -1, amount); }
 
 	public static void forge(ServerPlayerEntity p) { advance(p, Kind.FORGE, -1, 1); }
+
+	/** v65: el jugador completó una expedición de Amenaza. */
+	public static void expeditionDone(ServerPlayerEntity p) { advance(p, Kind.EXPEDITION, -1, 1); }
 
 	public static void onEventSurvived(ServerPlayerEntity p, dev.aptitudes.event.WorldEventKind kind) {
 		advance(p, Kind.EVENT, kind.ordinal(), 1);
