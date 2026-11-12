@@ -221,7 +221,7 @@ public class RolesScreen extends Screen {
 		extraView = false;
 		if (option == TalentTab.PATHS) {
 			keepView = true;
-			client.setScreen(new PathsScreen(this, selected));
+			client.setScreen(TreeScreen.open(this, selected));
 			return;
 		}
 		tab = option;

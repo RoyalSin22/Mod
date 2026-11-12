@@ -31,6 +31,8 @@ public final class ClientConfig {
 	public int hudOffsetY = 0;
 	/** Barras de vida/maná/aguante largas arriba a la izquierda (estilo Souls) en lugar de junto a la hotbar. */
 	public boolean soulsBars = true;
+	/** v66: pantalla del árbol con las piezas de la dirección de arte (tres sendas en columnas). false: la vista anterior. */
+	public boolean newTreeScreen = true;
 	/** Indicador de la mecánica del rol (acumulaciones, estados) sobre la barra de habilidades. */
 	public boolean showMechanic = true;
 	/** Eclipse (v34): cielo, niebla y nubes teñidos de rojo y sol eclipsado. Desactívalo si los destellos molestan. */

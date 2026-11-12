@@ -12,7 +12,18 @@ Pruebas automáticas nuevas:
   `gen_mob_models.py`, `gen_node_icons.py` y `tools/lang/*`. `gen_tree_atlas.py --check` falla en `main` desde antes de v66
   (compara bytes de PNG y varía con la versión de Pillow); no lo causa ninguno de estos cambios.
 
+- `logic/TreeScreenLayoutTest`: la geometría de la pantalla del árbol cabe en la ventana con anchos de 426 a 1000 px, ningún
+  elemento se solapa, las dos opciones de la bifurcación son simétricas, y el desplazamiento y el centrado son correctos.
+- `tools/textures/gen_tree_ui.py --check`: las 47 piezas del árbol coinciden con el arte fuente.
+
 Validación en partida (pendiente):
+
+0. **Pantalla del árbol.** En J, elige un rol y pulsa «Sendas»: aparecen las tres sendas en columnas con S1–S7, la cabecera con
+   el icono, el nivel, los puntos y la barra de experiencia, la barra de maestría, la habilidad definitiva y la ficha de detalle.
+   Comprueba con escala de interfaz 2, 3 y 4 (en la 4 la pantalla se desplaza con la rueda). Haz clic en un nodo: se selecciona
+   y la ficha cambia; con el cursor encima sale el detalle completo. Aprende un nodo disponible: pide confirmar la senda la
+   primera vez y la rama en S5; las otras dos sendas quedan oscurecidas. Un nodo activo ya aprendido muestra «Ran. 1» y «Ran. 2».
+   Pon `newTreeScreen` a false en `aptitudes-client.json`: vuelve la vista anterior.
 
 1. **Iconos de rol.** Abre J, Sendas y el grimorio: cada uno de los 20 roles muestra su icono nuevo (16×16, legible). Las
    insignias de firma y definitiva, y los tooltips de objetos, siguen con el sello anterior.
