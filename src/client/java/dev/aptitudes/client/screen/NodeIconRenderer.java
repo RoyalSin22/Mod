@@ -27,6 +27,13 @@ import java.util.Map;
 public final class NodeIconRenderer {
 	public enum Badge { CORE, SIGNATURE, ULTIMATE }
 
+	/** Lado (px) de la esfera de maná del HUD. */
+	public static final int MANA_ORB_SIZE = 28;
+	/** Filas del sprite de 28 px que ocupa el líquido de la esfera: de la 4 a la 22 (la 23 es el fondo del marco). */
+	private static final int ORB_LIQUID_TOP = 4;
+	private static final int ORB_LIQUID_END = 23;
+	private static final Identifier ORB_EMPTY = Aptitudes.id("textures/gui/hud/orb/energia_vacia.png");
+	private static final Identifier ORB_FULL = Aptitudes.id("textures/gui/hud/orb/energia_llena.png");
 	private static final int ATLAS_SIZE = 512;
 	private static final int TILE = 16;
 	private static final int COLUMNS = ATLAS_SIZE / TILE;
@@ -149,6 +156,36 @@ public final class NodeIconRenderer {
 		RenderSystem.defaultBlendFunc();
 		try {
 			ctx.drawTexture(texture, x, y, size, size, 0.0F, 0.0F, size, size, size, size);
+		} finally {
+			RenderSystem.disableBlend();
+		}
+		return true;
+	}
+
+	/** v66: la esfera de maná existe en el paquete de recursos (generada por gen_hud_sprites.py). */
+	public static boolean hasManaOrb() {
+		return HAS_TEXTURE.computeIfAbsent("hud-orb/energia", id -> {
+			ResourceManager manager = MinecraftClient.getInstance().getResourceManager();
+			return manager.getResource(ORB_EMPTY).isPresent() && manager.getResource(ORB_FULL).isPresent();
+		});
+	}
+
+	/**
+	 * v66: esfera de maná de la dirección de arte. Dibuja la esfera vacía y, encima, la llena recortada desde abajo
+	 * según {@code fraction} (0-1). Falso si el paquete de recursos no trae los sprites.
+	 */
+	public static boolean drawManaOrb(DrawContext ctx, int x, int y, float fraction) {
+		if (!hasManaOrb()) return false;
+		float f = Float.isNaN(fraction) ? 0f : Math.max(0f, Math.min(1f, fraction));
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		try {
+			int size = MANA_ORB_SIZE;
+			ctx.drawTexture(ORB_EMPTY, x, y, 0.0F, 0.0F, size, size, size, size);
+			if (f > 0f) {
+				int level = ORB_LIQUID_END - Math.round((ORB_LIQUID_END - ORB_LIQUID_TOP) * f);
+				ctx.drawTexture(ORB_FULL, x, y + level, 0.0F, (float) level, size, size - level, size, size);
+			}
 		} finally {
 			RenderSystem.disableBlend();
 		}
