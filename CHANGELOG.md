@@ -14,6 +14,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   `docs/CONFIGURATION.md` documenta los 42 campos que faltaban y `AGENTS.md` lista las 86 clases de prueba reales.
 
 ### Retirado
+- **v66 — Coloso de Hierro.** Se retira el mob de prueba de modelos: entidad, huevo de aparición, renderizador, geometría,
+  animaciones, texturas, partículas y textos. Los mundos que lo tuvieran lo descartan al cargar. El Coloso Sin Rostro no cambia.
 - **v65 — Talentos por datapack.** Se retira el piloto de la v55: `role/datapack/*`, los payloads
   `TalentCatalogPayload` y `TalentPurchasePayload`, la pantalla «Talentos del pack», el ejemplo `docs/examples/talentos-piloto`,
   sus pruebas y las siete claves de texto. El campo `datapack_ranks` deja de guardarse: las partidas antiguas lo
