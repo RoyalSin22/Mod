@@ -21,6 +21,13 @@ public final class ContractTargets {
 	public static final List<Item> DELIVERY = List.of(Items.IRON_INGOT, Items.WHEAT, Items.CARROT, Items.COD,
 			Items.SALMON, Items.POTATO);
 
+	/** Criaturas del Nether que cuentan para el contrato «Caza en el Nether» (v65). */
+	public static final List<EntityType<?>> NETHER = List.of(EntityType.BLAZE, EntityType.GHAST, EntityType.MAGMA_CUBE,
+			EntityType.WITHER_SKELETON, EntityType.HOGLIN, EntityType.ZOMBIFIED_PIGLIN, EntityType.PIGLIN_BRUTE);
+	/** Criaturas nuevas de v65 para «Criaturas nuevas» (Osario, Errante, Escorificador y Custodio). */
+	public static final List<EntityType<?>> NEW_MOBS = List.of(dev.aptitudes.mob.OsarioEntities.OSARIO,
+			dev.aptitudes.mob.NewMobs.ERRANTE, dev.aptitudes.mob.NewMobs.ESCORIFICADOR, dev.aptitudes.mob.NewMobs.CUSTODIO);
+
 	private ContractTargets() {
 	}
 

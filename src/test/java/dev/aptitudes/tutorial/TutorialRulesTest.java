@@ -34,7 +34,7 @@ class TutorialRulesTest {
 			assertSame(state, TutorialRules.claim(state, step));
 			assertSame(state, TutorialRules.observe(state, step));
 		}
-		assertEquals(6, emeralds);
+		assertEquals(0, emeralds); // el tutorial ya no da esmeraldas (v65)
 		assertEquals(6, state.rewarded().size());
 		assertNull(TutorialRules.next(state));
 		assertNull(TutorialRules.pendingReward(state));

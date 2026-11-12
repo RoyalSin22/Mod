@@ -5,8 +5,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+
 ### Seguridad
-- **v66 — Auditoría de red y configuración.** Se revisaron los 12 payloads cliente → servidor: todos validan su entrada en el
+- **v66 — Auditoría de red y configuración.** Se revisaron todos los payloads cliente → servidor (12 antes de retirar los pedidos, 11 después): todos validan su entrada en el
   servidor y los de forja, frascos y grimorio ya tenían sus propios controles. Cambios: límite de frecuencia por jugador y
   acción (`network/RequestLimiter`) para estadísticas, accesorios, contratos e invitaciones de grupo; `Accessories.open`
   exige jugador vivo y no espectador; la compra de niveles de alma acumula el coste en `long`; y 40 campos numéricos de
@@ -38,6 +39,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   grandes. Arte fuente en `tools/textures/source/roles/`; generador `tools/textures/gen_role_icons.py` (admite `--check`).
   Si el paquete de recursos no trae el icono, se usa el sello anterior. Los tooltips y las insignias de firma y definitiva
   siguen con los sellos anteriores. Sin validar en partida.
+- **v65 — Tablón por niveles.** Los contratos de Oficial y Veterano pagan más esmeraldas, fragmentos y más vales. Tres
+  encargos nuevos: caza en el Nether, criaturas nuevas (Osario, Errante, Escorificador y Custodio) y expedición. Sin
+  validar en partida.
 - **v65 — Enemigos nuevos.** El Errante Velado aparece en la Niebla de almas (10 % de las apariciones, junto al
   Osario Quebrado con otro 10 %) y tiene huevo de aparición y entrada en el bestiario. El Custodio de las Cuatro
   Llaves sustituye al guardián vanilla de los templos sellados. Ambos tienen modelo y animaciones generados por
@@ -49,12 +53,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 - **v65 — Coloso Sin Rostro reconstruido.** Modelo de Blockbench de 3,4 bloques visuales con espadón y capa
   articulados, siete animaciones y dos atlas pintados de 512 × 512. La armadura agrietada y su emisión se
   seleccionan según la fase persistente del servidor. Conserva su caja de colisión y sus ataques.
-- **v65 — Trance de combate (F2).** La sintonía se llena con golpes críticos a criaturas (+10) y con habilidades (+15).
+- **v65 — Trance de combate (F2; valores ajustados, ver «Cambiado»).** La sintonía se llena con golpes críticos a criaturas (+10) y con habilidades (+15).
   Al llegar a 100 se entra en trance durante 10 s con +20 % de daño saliente. Se muestra en la barra de acción. Sin
   validar en partida.
-- **v65 — Pedidos del gremio (F4, servidor).** Estado por mundo (`OrderBookState`), acciones de servidor (`OrderBook`:
+- **v65 — Pedidos del gremio (F4, servidor; retirado, ver «Cambiado»).** Estado por mundo (`OrderBookState`), acciones de servidor (`OrderBook`:
   publicar, entregar, recoger y cancelar) y reglas puras con pruebas (`OrderBookRules`).
-- **v65 — Pedidos del gremio (F4, pantalla).** El tablón tiene una página «Pedidos» con tres filas por página, botón
+- **v65 — Pedidos del gremio (F4, pantalla; retirado, ver «Cambiado»).** El tablón tiene una página «Pedidos» con tres filas por página, botón
   de publicar con el objeto de la mano y selector de nivel. Entregar, recoger y cancelar pasan por el servidor
   (`OrderViewPayload`, `OrderActionPayload`). La lista se pagina de tres en tres. Sin validar en partida.
 - **v65 — Mancha de XP (F3).** Al volver a morir antes de recuperar la mancha, se pierde un 25 % y el resto se suma a
@@ -78,22 +82,6 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 - **v65 — Ruinas de batalla del Coloso.** Al invocar al Coloso con el sello, se levantan ocho columnas rotas (20 min) y
   una sala circular de 21 bloques y 4 bloques de alto que se cierra con niebla mientras se lucha dentro. Si el
   terreno no deja cerrarla, los participantes lo ven en el chat. Sin validar en partida.
-
-### Corregido
-- **v56 — Generación de jefes.** Torres, santuarios y campamentos guardan sus jefes con el terreno al
-  generarse. Esto corrige el bloqueo que podía detener el mundo e impedir abrir o romper bloques.
-- **v58 — Cambiaformas.** El murciélago bate las alas al verse en tercera persona. La gallina
-  agita las alas al caer y el slime se estira durante el salto. El poder del murciélago da un
-  vuelo corto que se dirige con la mirada.
-
-### Corregido
-- **Aldeano del gremio.** Un aldeano sin trabajo ahora se convierte en Maestro del gremio al encontrar una Mesa
-  del gremio. Vanilla solo ofrece como puesto de trabajo los tipos de su etiqueta
-  `minecraft:acquirable_job_site`; el mod la amplía con un dato de etiqueta, sin mixins.
-- **Modelos de los jefes.** Los tres jefes tienen más piezas y detalle (placas, remaches, capa, púas,
-  pistones, lente y cañón). La textura pasa a 256 px.
-
-### Añadido
 - **v63 — Jefes animados.** El mod requiere ahora **GeckoLib 4.7.7**. Tres jefes animados: el Coloso Sin
   Rostro (tajo en arco, golpe descendente con onda y, con la armadura agrietada, embestida), el Guardián
   Desmontado (piezas que hay que romper en orden; con las tres caídas, el núcleo recibe más daño) y el
@@ -105,8 +93,37 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   y, desde el anillo II, pisa las placas en el orden de sus velas. Al abrirse despierta el Guardián del
   templo, cuya llave abre el Relicario: cada jugador recibe un Vaso de vida (+1 corazón permanente,
   hasta 5, `lifeVesselMax`). Un vaso no se puede usar dos veces ni copiar. Dos logros nuevos.
+- **v55 — Talentos por datapack (retirado en v65).** El pack de ejemplo añade Paso ligero y Paso firme al Espadachín.
+  Con el pack activo, abre **Talentos del pack** desde J para consultar y aprender la rama con puntos
+  del rol. Cada rango da +2 % de velocidad de movimiento, hasta +6 % entre ambos roles activos.
+  Al retirar el pack o perder un requisito, recuperas los puntos de los rangos afectados.
+- **v48 — Reforja y Templado.** Aplica Reserva o Impulso a una hoja o foco de evolución en la Mesa del
+  gremio. Templa el arma hasta el rango II en la Hoguera con Corazones de campeón y Fragmentos de alma.
+  Los talleres muestran el efecto actual, el resultado y los ingredientes requeridos antes de confirmar.
+  El arma conserva su rango al cambiar de afijo y mantiene sus runas, núcleos y encantamientos.
+- **v45 — Traducciones, T8 fase 1**: traducción inicial de interfaz y objetos a portugués de Brasil
+  (`pt_br`), francés (`fr_fr`) y alemán (`de_de`), que conviene revisar con hablantes nativos.
+  Cada idioma contiene las 3512 claves de inglés en el mismo orden: 1386 traducidas en esta fase;
+  grimorio y nodos/sendas (2126 claves) conservan el inglés hasta las fases 2 y 3.
+  Los rótulos de interfaz generados se mantienen en sus generadores. Nuevo comprobador de duplicados,
+  claves, orden y marcadores de formato, con pruebas de errores y ejecución en GitHub Actions.
+- **v45 — Traducciones, T8 fase 2**: traducción inicial de los 23 capítulos del grimorio a los tres
+  idiomas, que conviene revisar con hablantes nativos. Incluye sendas, las diez piedras angulares,
+  logros, contratos, eventos y alquimia; las recetas se consultan en el juego.
+  Catálogo y generador reproducibles, con el párrafo de evolución en su generador original, comprobación
+  de ancho con la fuente de Minecraft y pruebas de conservación de las demás traducciones.
+  Acumulado: 1432 claves traducidas por idioma; los 2080 textos de nodos/sendas esperan la fase 3.
+- **v45 — Traducciones, T8 fase 3**: traducción inicial de los nodos base, legendarios, evolucionados
+  y sendas completas S1–S7 a portugués de Brasil, francés y alemán, que conviene revisar con hablantes
+  nativos. Las 3512 claves de cada idioma están cubiertas, con el mismo orden y marcadores que el inglés.
+  Los dos generadores originales incorporan los tres idiomas y `--check`; se comprueban los números,
+  las bifurcaciones y las piedras angulares. Inglés y los siete archivos de español no cambian.
+  El generador de evolución reconoce el párrafo vigente del grimorio y evita duplicar el antiguo al regenerar.
 
 ### Cambiado
+- **v65 — Ajustes tras la prueba en partida.** Se retira el sistema de pedidos del gremio (no encaja con un servidor de
+  amigos). Los pasos del tutorial ya no dan esmeraldas. El trance va más lento: +5 crítico, +8 habilidad, 6 s y +10 % de
+  daño por defecto. Las texturas de los jefes ya están en `main`.
 - **v62 — Armas y objetos.** Las 40 armas de evolución y 12 armas de rol tienen volumen en la mano, en
   el suelo y en los marcos; el inventario conserva su icono plano. Las texturas ganan destellos en
   metales y gemas y veta en madera y cuero. Los tooltips muestran el sello del rol, el daño por
@@ -167,33 +184,17 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   estrena un panel 3×3 de madera, latón y jade. La Hoguera incorpora un brasero de piedra, llamas
   animadas y una cabecera propia al descansar. El grimorio indica qué mesa requiere cada receta.
 
-### Añadido
-- **v55 — Talentos por datapack (retirado en v65).** El pack de ejemplo añade Paso ligero y Paso firme al Espadachín.
-  Con el pack activo, abre **Talentos del pack** desde J para consultar y aprender la rama con puntos
-  del rol. Cada rango da +2 % de velocidad de movimiento, hasta +6 % entre ambos roles activos.
-  Al retirar el pack o perder un requisito, recuperas los puntos de los rangos afectados.
-- **v48 — Reforja y Templado.** Aplica Reserva o Impulso a una hoja o foco de evolución en la Mesa del
-  gremio. Templa el arma hasta el rango II en la Hoguera con Corazones de campeón y Fragmentos de alma.
-  Los talleres muestran el efecto actual, el resultado y los ingredientes requeridos antes de confirmar.
-  El arma conserva su rango al cambiar de afijo y mantiene sus runas, núcleos y encantamientos.
-- **v45 — Traducciones, T8 fase 1**: traducción inicial de interfaz y objetos a portugués de Brasil
-  (`pt_br`), francés (`fr_fr`) y alemán (`de_de`), que conviene revisar con hablantes nativos.
-  Cada idioma contiene las 3512 claves de inglés en el mismo orden: 1386 traducidas en esta fase;
-  grimorio y nodos/sendas (2126 claves) conservan el inglés hasta las fases 2 y 3.
-  Los rótulos de interfaz generados se mantienen en sus generadores. Nuevo comprobador de duplicados,
-  claves, orden y marcadores de formato, con pruebas de errores y ejecución en GitHub Actions.
-- **v45 — Traducciones, T8 fase 2**: traducción inicial de los 23 capítulos del grimorio a los tres
-  idiomas, que conviene revisar con hablantes nativos. Incluye sendas, las diez piedras angulares,
-  logros, contratos, eventos y alquimia; las recetas se consultan en el juego.
-  Catálogo y generador reproducibles, con el párrafo de evolución en su generador original, comprobación
-  de ancho con la fuente de Minecraft y pruebas de conservación de las demás traducciones.
-  Acumulado: 1432 claves traducidas por idioma; los 2080 textos de nodos/sendas esperan la fase 3.
-- **v45 — Traducciones, T8 fase 3**: traducción inicial de los nodos base, legendarios, evolucionados
-  y sendas completas S1–S7 a portugués de Brasil, francés y alemán, que conviene revisar con hablantes
-  nativos. Las 3512 claves de cada idioma están cubiertas, con el mismo orden y marcadores que el inglés.
-  Los dos generadores originales incorporan los tres idiomas y `--check`; se comprueban los números,
-  las bifurcaciones y las piedras angulares. Inglés y los siete archivos de español no cambian.
-  El generador de evolución reconoce el párrafo vigente del grimorio y evita duplicar el antiguo al regenerar.
+### Corregido
+- **v56 — Generación de jefes.** Torres, santuarios y campamentos guardan sus jefes con el terreno al
+  generarse. Esto corrige el bloqueo que podía detener el mundo e impedir abrir o romper bloques.
+- **v58 — Cambiaformas.** El murciélago bate las alas al verse en tercera persona. La gallina
+  agita las alas al caer y el slime se estira durante el salto. El poder del murciélago da un
+  vuelo corto que se dirige con la mirada.
+- **Aldeano del gremio.** Un aldeano sin trabajo ahora se convierte en Maestro del gremio al encontrar una Mesa
+  del gremio. Vanilla solo ofrece como puesto de trabajo los tipos de su etiqueta
+  `minecraft:acquirable_job_site`; el mod la amplía con un dato de etiqueta, sin mixins.
+- **Modelos de los jefes.** Los tres jefes tienen más piezas y detalle (placas, remaches, capa, púas,
+  pistones, lente y cañón). La textura pasa a 256 px.
 
 ## [1.4.0] — 2026-11-06
 

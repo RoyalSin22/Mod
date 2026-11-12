@@ -15,7 +15,7 @@ import java.util.UUID;
  */
 public final class ContractRules {
 	/** Tipos de contrato. Se guardan por ordinal dentro del contrato aceptado: solo se añade al final. */
-	public enum Kind { HUNT, DELIVERY, FISHING, ENCHANTING, PROFESSION, FORGE, EVENT, BOSS }
+	public enum Kind { HUNT, DELIVERY, FISHING, ENCHANTING, PROFESSION, FORGE, EVENT, BOSS, NETHER, NEW_MOB, EXPEDITION }
 	/** Dificultades. Élite con el rol en Maestro y Legendario en Definitivo. Solo se añade al final. */
 	public enum Difficulty { EASY, NORMAL, HARD, ELITE, LEGENDARY }
 
@@ -55,10 +55,12 @@ public final class ContractRules {
 	public static List<Kind> kindsFor(Difficulty difficulty) {
 		return switch (difficulty) {
 			case EASY -> List.of(Kind.HUNT, Kind.DELIVERY, Kind.FISHING, Kind.PROFESSION);
-			case NORMAL -> List.of(Kind.HUNT, Kind.DELIVERY, Kind.FISHING, Kind.PROFESSION, Kind.ENCHANTING, Kind.FORGE);
-			case HARD -> List.of(Kind.HUNT, Kind.DELIVERY, Kind.ENCHANTING, Kind.FORGE, Kind.EVENT);
-			case ELITE -> List.of(Kind.HUNT, Kind.DELIVERY, Kind.ENCHANTING, Kind.FORGE, Kind.EVENT);
-			case LEGENDARY -> List.of(Kind.HUNT, Kind.EVENT, Kind.BOSS);
+			case NORMAL -> List.of(Kind.HUNT, Kind.DELIVERY, Kind.FISHING, Kind.PROFESSION, Kind.ENCHANTING, Kind.FORGE,
+					Kind.NEW_MOB);
+			case HARD -> List.of(Kind.HUNT, Kind.DELIVERY, Kind.ENCHANTING, Kind.FORGE, Kind.EVENT, Kind.NETHER, Kind.NEW_MOB);
+			case ELITE -> List.of(Kind.HUNT, Kind.DELIVERY, Kind.ENCHANTING, Kind.FORGE, Kind.EVENT, Kind.NETHER, Kind.NEW_MOB,
+					Kind.EXPEDITION);
+			case LEGENDARY -> List.of(Kind.HUNT, Kind.EVENT, Kind.BOSS, Kind.NEW_MOB, Kind.EXPEDITION);
 		};
 	}
 
@@ -73,8 +75,20 @@ public final class ContractRules {
 			case ENCHANTING -> 1 + s;
 			case PROFESSION -> 150 * s;
 			case FORGE -> s >= 4 ? 2 : 1;
-			case EVENT, BOSS -> 1;
+			case EVENT, BOSS, EXPEDITION -> 1;
+			case NETHER -> 4 + 4 * s + e;
+			case NEW_MOB -> 1 + s;
 		};
+	}
+
+	/**
+	 * ¿Un suceso de tipo {@code kind} hace avanzar una oferta activa de tipo {@code offerKind} con objetivo
+	 * {@code offerTarget}? Un {@code target} negativo significa «cualquier objetivo»: es lo que usan los tipos que no
+	 * tienen objetivo (Nether, criaturas nuevas, expedición, pesca...) y sus ofertas se generan con objetivo −1.
+	 * Pasar aquí un objetivo ≥ 0 para esos tipos haría que nunca avanzaran (error corregido en v65).
+	 */
+	public static boolean advances(Kind offerKind, int offerTarget, Kind kind, int target) {
+		return offerKind == kind && (target < 0 || offerTarget == target);
 	}
 
 	private static int targetFor(Kind kind, Random random) {
@@ -98,9 +112,14 @@ public final class ContractRules {
 			List<Kind> kinds = kindsFor(difficulty);
 			Kind kind = kinds.get(random.nextInt(kinds.size()));
 			int s = difficulty.ordinal() + 1;
+			int tier = reputationTier(reputation);
+			// Recompensas por nivel (v65): Oficial y Veterano pagan más esmeraldas, fragmentos y vales.
+			int emeralds = 2 + s * 2 + (kind == Kind.BOSS ? 6 : 0) + tier * (2 + s);
+			int fragments = (difficulty.ordinal() >= 3 ? 1 + s / 2 : 0) + (difficulty.ordinal() >= 2 ? tier : 0);
+			boolean voucher = (difficulty == Difficulty.ELITE && random.nextInt(3) == 0)
+					|| (difficulty == Difficulty.HARD && tier == 2 && random.nextInt(4) == 0);
 			offers.add(new Offer(kind, difficulty, targetFor(kind, random), goal(kind, difficulty, random.nextInt(3)),
-					2 + s * 2 + (kind == Kind.BOSS ? 6 : 0), difficulty.ordinal() >= 3 ? 1 + s / 2 : 0, 15 + s * 10,
-					10 + s * 10, difficulty == Difficulty.ELITE && random.nextInt(3) == 0,
+					emeralds, fragments, 15 + s * 10, 10 + s * 10, voucher,
 					difficulty == Difficulty.LEGENDARY && random.nextInt(4) == 0));
 		}
 		return List.copyOf(offers);

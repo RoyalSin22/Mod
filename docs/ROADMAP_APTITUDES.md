@@ -6,8 +6,8 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 ## Estado real
 
 ### v65 — Pedidos, expediciones, trance, mancha, afijos, jefes y ruinas (Claude, sin validar en partida)
-- Trance de combate (F2), mancha de XP con 25 % (F3), pedidos del gremio entre jugadores (F4: estado del servidor,
-  red y página en el tablón, con paginación) y expediciones de Amenaza (F5: ficha, módulos, grupo, modificadores).
+- Trance de combate (F2), mancha de XP con 25 % (F3), pedidos del gremio entre jugadores (F4), retirados después de la
+  prueba en partida por no encajar con un servidor de amigos, y expediciones de Amenaza (F5: ficha, módulos, grupo, modificadores).
 - Afijos de élite Espinoso y Abrasador (11 en total). Fase 3 del Guardián y del Autómata.
 - Coloso Sin Rostro reconstruido a 3,4 bloques visuales, con caja de 1,6 × 3,8. El autor revisó el aspecto en
   partida con los recursos provisionales. Queda la comprobación visual de la transición, la emisión y la recarga

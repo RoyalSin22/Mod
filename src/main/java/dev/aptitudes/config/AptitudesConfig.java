@@ -122,21 +122,15 @@ public class AptitudesConfig {
 	public double comboMaxBonus = 0.15;
 	// ---------- Trance, mancha, pedidos y expediciones (v65) ----------
 	/** Sintonía que da un golpe crítico a una criatura (0–100). */
-	public int tranceGainCritical = 10;
+	public int tranceGainCritical = 5;
 	/** Sintonía que da usar una habilidad (0–100). */
-	public int tranceGainSkill = 15;
+	public int tranceGainSkill = 8;
 	/** Segundos que dura el trance al llenarse la sintonía. */
-	public double tranceDurationSeconds = 10.0;
+	public double tranceDurationSeconds = 6.0;
 	/** Multiplicador de daño saliente durante el trance (1.2 = +20 %). */
-	public double tranceDamageMultiplier = 1.2;
+	public double tranceDamageMultiplier = 1.1;
 	/** Porcentaje de la mancha de XP que se pierde al volver a morir antes de recuperarla. */
 	public int soulStainLossPercent = 25;
-	/** Esmeraldas por unidad de un pedido de nivel 1 (el precio es base × nivel). */
-	public int orderUnitPriceBase = 2;
-	/** Pedidos abiertos a la vez por jugador. */
-	public int orderMaxOpen = 3;
-	/** Unidades máximas de un pedido. */
-	public int orderMaxCount = 64;
 	/** Radio de la zona de una expedición, en bloques. */
 	public int expeditionZoneRadius = 48;
 	/** Minutos antes de que caduque una expedición. */
@@ -524,9 +518,6 @@ public class AptitudesConfig {
 		c.tranceDurationSeconds = Math.max(1.0, Math.min(60.0, c.tranceDurationSeconds));
 		c.tranceDamageMultiplier = Math.max(1.0, Math.min(3.0, c.tranceDamageMultiplier));
 		c.soulStainLossPercent = clamp(c.soulStainLossPercent, 0, 100);
-		c.orderUnitPriceBase = clamp(c.orderUnitPriceBase, 1, 64);
-		c.orderMaxOpen = clamp(c.orderMaxOpen, 1, 10);
-		c.orderMaxCount = clamp(c.orderMaxCount, 1, 64);
 		c.expeditionZoneRadius = clamp(c.expeditionZoneRadius, 8, 128);
 		c.expeditionTimeLimitMinutes = clamp(c.expeditionTimeLimitMinutes, 1, 120);
 		c.expeditionRewardEmeralds = clamp(c.expeditionRewardEmeralds, 0, 64);

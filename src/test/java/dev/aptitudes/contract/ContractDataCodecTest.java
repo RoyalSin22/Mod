@@ -120,7 +120,8 @@ class ContractDataCodecTest {
 		assertEquals(2, data.active().size());
 		assertEquals(new Offer(Kind.HUNT, Difficulty.LEGENDARY, -1, 1, 0, 0, 0, 0, true, true),
 				data.active().get(0).offer());
-		assertEquals(Kind.BOSS, data.active().get(1).offer().kind());
+		// Un índice fuera de rango se ajusta al último tipo del enum (ahora EXPEDITION, tras v65).
+		assertEquals(Kind.values()[Kind.values().length - 1], data.active().get(1).offer().kind());
 		assertEquals(Difficulty.EASY, data.active().get(1).offer().difficulty());
 		assertEquals(0, data.active().get(0).progress());
 		assertEquals(1, data.active().get(1).progress());
