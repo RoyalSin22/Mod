@@ -10,15 +10,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   Osario Quebrado con otro 10 %) y tiene huevo de aparición y entrada en el bestiario. El Custodio de las Cuatro
   Llaves sustituye al guardián vanilla de los templos sellados. Ambos tienen modelo y animaciones generados por
   `tools/models/gen_mob_models.py` (`--check`). Sin validar en partida.
-- **v65 — Rediseño de jefes (hoja de arte).** El Coloso Sin Rostro pasa a 3,8 bloques de alto y adopta netherita,
+- **v65 — Rediseño de jefes (hoja de arte).** El Coloso Sin Rostro tiene una caja de colisión de 3,8 bloques de alto y adopta netherita,
   pizarra y energía roja. El Guardián Desmontado tiene escudo carmesí con cruz dorada y cuerpo de piedra lisa. El
   Autómata Antiguo usa piedra tallada, bronce, cobre, ojo ámbar y dos esferas auxiliares. La esfera del Autómata tiene
   sprite propio: bronce y núcleo ámbar, y cian al ser devuelta (indicador de aturdimiento). Sin validar en partida.
-- **v65 — Coloso: brillo y detalle.** Las grietas de netherita, la gema del pecho, la visera y el filo de la espada brillan
-  a plena luz (máscara `faceless_colossus_glowmask.png`, `tools/textures/gen_faceless_glowmask.py`). El modelo pasa de 51 a
-  134 cubos (hombreras en tres capas con correas doradas, peto con cruz engastada, láminas, capa con borde rojo y cruz,
-  yelmo con cresta en cruz) y la textura es procedural de 512×512 (`tools/models/gen_boss_models.py`, `BOSS_TEX`); deja de
-  ser pintada a mano. Sin validar en partida; hay que reimportar el geo en Blockbench.
+- **v65 — Coloso Sin Rostro reconstruido.** Modelo de Blockbench de 3,4 bloques visuales con espadón y capa
+  articulados, siete animaciones y dos atlas pintados de 512 × 512. La armadura agrietada y su emisión se
+  seleccionan según la fase persistente del servidor. Conserva su caja de colisión y sus ataques.
 - **v65 — Trance de combate (F2).** La sintonía se llena con golpes críticos a criaturas (+10) y con habilidades (+15).
   Al llegar a 100 se entra en trance durante 10 s con +20 % de daño saliente. Se muestra en la barra de acción. Sin
   validar en partida.

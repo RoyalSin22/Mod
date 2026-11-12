@@ -1,6 +1,6 @@
 # V63 — Jefes animados (GeckoLib): diseño de los tres primeros
 
-Estado: **base, Coloso Sin Rostro, Guardián Desmontado y Autómata Antiguo jugables** con modelos de prueba.
+Estado: **base, Coloso Sin Rostro, Guardián Desmontado y Autómata Antiguo jugables**. El Coloso usa el modelo reconstruido.
 Fase 3 implementada en v65 (provisional, ver §3 y §4). Pendiente: validación de combate en partida (esferas, devolución,
 aturdimiento, piezas), modelos y animaciones definitivos (K5, Codex) y las estructuras con arena.
 
@@ -29,7 +29,15 @@ Criterio (§0 de `IDEAS_v47_v55.md`): inspiración de tono, nombres, formas y at
 
 ## 2. El Coloso Sin Rostro (`aptitudes:faceless_colossus`) — jugable
 
-Guerrero gigante (1,6 × 3,8 bloques; v65 lo subió desde 3,4 según la hoja de arte) de armadura oscura sin rostro, con espadón.
+Guerrero gigante de armadura oscura sin rostro, con espadón. El cuerpo mide 3,4 bloques visuales y la caja de
+colisión mide 1,6 × 3,8 bloques. El editable es `tools/models/blockbench/faceless_colossus_rebuild.bbmodel`.
+Un solo rig y un solo mapa UV se usan para los dos atlas de 512 × 512 con sus máscaras de emisión.
+El cliente elige la armadura agrietada en las fases de combate 2 y 3 según un dato sincronizado del servidor.
+Durante las acciones, el casco respeta los fotogramas clave. El seguimiento de la mirada se aplica durante el movimiento libre.
+
+Los recursos de Blockbench son la fuente de verdad. `tools/models/gen_boss_models.py --check` comprueba
+geometría y animaciones con la ruta de recursos indicada en `docs/TESTING.md`. Las herramientas de pintura
+legada se usan únicamente sobre copias del atlas antiguo.
 
 | Valor | Fase 1 | Fase 2–3 |
 |---|---|---|

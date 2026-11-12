@@ -9,9 +9,13 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -27,6 +31,9 @@ import java.util.List;
  * {@code docs/V63_JEFES.md}.
  */
 public class FacelessColossusEntity extends AnimatedBossEntity {
+	private static final TrackedData<Boolean> CRACKED_ARMOR = DataTracker.registerData(
+			FacelessColossusEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+
 	static final Move SWEEP = new Move("sweep", 1, 0, 4.5, 18, 30, 3,
 			AttackTags.of(AttackTags.Tag.PARRYABLE));
 	static final Move SLAM = new Move("slam", 1, 0, 5.5, 28, 70, 2,
@@ -38,6 +45,32 @@ public class FacelessColossusEntity extends AnimatedBossEntity {
 
 	public FacelessColossusEntity(EntityType<? extends HostileEntity> type, World world) {
 		super(type, world, BossBar.Color.RED);
+	}
+
+	@Override
+	protected void initDataTracker(DataTracker.Builder builder) {
+		super.initDataTracker(builder);
+		builder.add(CRACKED_ARMOR, false);
+	}
+
+	public boolean hasCrackedArmor() {
+		return getDataTracker().get(CRACKED_ARMOR);
+	}
+
+	@Override
+	public void restorePhase(int restored) {
+		super.restorePhase(restored);
+		syncArmorPhase();
+	}
+
+	@Override
+	public void readCustomDataFromNbt(NbtCompound nbt) {
+		super.readCustomDataFromNbt(nbt);
+		syncArmorPhase();
+	}
+
+	private void syncArmorPhase() {
+		getDataTracker().set(CRACKED_ARMOR, phase() >= 2);
 	}
 
 	public static DefaultAttributeContainer.Builder createAttributes() {
@@ -63,6 +96,7 @@ public class FacelessColossusEntity extends AnimatedBossEntity {
 
 	@Override
 	protected void onPhase(ServerWorld world, int newPhase) {
+		syncArmorPhase();
 		var speed = getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
 		if (speed != null) {
 			dev.aptitudes.logic.AttributeApplier.set(speed, dev.aptitudes.Aptitudes.id("colossus_cracked"), 0.3,

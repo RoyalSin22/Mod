@@ -453,11 +453,19 @@ STUN_ANIM = (2.0, False, {
 })
 
 
-# Jefes con textura pintada a mano (fuente de verdad: el PNG del repositorio). El generador no la escribe ni
-# la comprueba; solo geometría y animaciones.
-# Jefes cuyo geo y textura son de Blockbench (fuente de verdad: los archivos del repositorio). El generador no los
-# escribe; solo comprueba el contrato (huesos y tamaño de textura). Las animaciones siguen siendo del generador.
-HAND_EDITED_GEO = {'faceless_colossus'}
+# Los recursos de Blockbench son la fuente de verdad. Este contrato protege los puntos de articulación del Coloso.
+HAND_EDITED_GEO = {
+    'faceless_colossus': {
+        'root': None, 'pelvis': 'root', 'body': 'pelvis', 'head': 'body',
+        'left_leg': 'pelvis', 'right_leg': 'pelvis', 'tabard_front': 'pelvis',
+        'left_shoulder': 'body', 'left_arm': 'left_shoulder',
+        'right_shoulder': 'body', 'right_arm': 'right_shoulder', 'right_elbow': 'right_arm',
+        'right_forearm': 'right_elbow', 'right_wrist': 'right_forearm', 'right_hand': 'right_wrist',
+        'sword': 'right_hand', 'cape': 'body', 'cape_root': 'cape',
+        'cape_mid': 'cape_root', 'cape_lower': 'cape_mid',
+    },
+}
+HAND_EDITED_ANIMATIONS = {'faceless_colossus'}
 PAINTED_TEXTURES = {'faceless_colossus'}
 
 
@@ -467,29 +475,45 @@ def files(assets):
         anims = {**anims, 'stun': STUN_ANIM}
         if boss not in HAND_EDITED_GEO:
             out[assets / f'geo/entity/{boss}.geo.json'] = (json.dumps(geometry(boss, bones), indent=1) + '\n').encode()
-        out[assets / f'animations/entity/{boss}.animation.json'] = (json.dumps(animations(anims), indent=1) + '\n').encode()
+        if boss not in HAND_EDITED_ANIMATIONS:
+            out[assets / f'animations/entity/{boss}.animation.json'] = (json.dumps(animations(anims), indent=1) + '\n').encode()
         if boss not in PAINTED_TEXTURES:
             out[assets / f'textures/entity/{boss}.png'] = texture(boss, bones)[0]
     return out
 
 
-def check_hand_geo(path, boss, bones):
-    """Contrato del geo editado en Blockbench: existen todos los huesos de este archivo, con su padre, y el
-    tamaño de textura coincide con BOSS_TEX. Devuelve un mensaje de error o None."""
-    if not path.is_file():
-        return f'{path}: falta el geo de Blockbench'
-    geo = json.loads(path.read_text(encoding='utf-8'))['minecraft:geometry'][0]
-    found = {b['name']: b.get('parent') for b in geo['bones']}
-    missing = [name for name, parent, *_ in bones if name not in found]
+def check_hand_geo(geo, boss, parents):
+    """Comprueba los huesos y el tamaño de atlas del geo editado en Blockbench."""
+    bones = geo['bones']
+    found = {b['name']: b.get('parent') for b in bones}
+    if len(found) != len(bones):
+        return 'hay nombres de hueso duplicados'
+    missing = sorted(parents.keys() - found.keys())
     if missing:
-        return f'{path}: faltan huesos del contrato: {", ".join(missing)}'
-    wrong_parent = [name for name, parent, *_ in bones if parent and found.get(name) != parent]
+        return f'faltan huesos del contrato: {", ".join(missing)}'
+    wrong_parent = [name for name, parent in parents.items() if found[name] != parent]
     if wrong_parent:
-        return f'{path}: huesos con padre distinto al del contrato: {", ".join(wrong_parent)}'
+        return f'huesos con padre distinto al del contrato: {", ".join(wrong_parent)}'
     desc = geo['description']
     want = BOSS_TEX.get(boss, TEX)
+    if desc.get('identifier') != f'geometry.{boss}':
+        return f'el identificador debe ser geometry.{boss}'
     if desc.get('texture_width') != want or desc.get('texture_height') != want:
-        return f'{path}: la textura debe ser {want}x{want}'
+        return f'la textura debe ser {want}x{want}'
+    return None
+
+
+def check_hand_animations(data, names, bones):
+    """Comprueba las claves que consume Java y las referencias a huesos."""
+    clips = data.get('animations', {})
+    if data.get('format_version') != '1.8.0' or clips.keys() != names:
+        return 'formato o nombres de animación distintos al contrato'
+    for name, clip in clips.items():
+        tracks = clip.get('bones', {})
+        if not tracks or tracks.keys() - bones:
+            return f'{name}: pistas ausentes o referencias a huesos inexistentes'
+        if clip.get('loop', False) is not (name in ('idle', 'walk')):
+            return f'{name}: tipo de bucle incorrecto'
     return None
 
 
@@ -509,11 +533,25 @@ def main():
     parser.add_argument('--preview', type=Path, help='Hoja de texturas de los tres jefes (solo para revisar)')
     args = parser.parse_args()
     stale = []
-    for boss, (bones, _) in BOSSES.items():
-        if boss in HAND_EDITED_GEO:
-            problem = check_hand_geo(args.assets / f'geo/entity/{boss}.geo.json', boss, bones)
+    for boss, parents in HAND_EDITED_GEO.items():
+        path = args.assets / f'geo/entity/{boss}.geo.json'
+        if not path.is_file():
+            stale.append(f'{path}: falta el geo de Blockbench')
+            continue
+        geo = json.loads(path.read_text(encoding='utf-8'))['minecraft:geometry'][0]
+        problem = check_hand_geo(geo, boss, parents)
+        if problem:
+            stale.append(f'{path}: {problem}')
+        if boss in HAND_EDITED_ANIMATIONS:
+            path = args.assets / f'animations/entity/{boss}.animation.json'
+            if not path.is_file():
+                stale.append(f'{path}: faltan las animaciones de Blockbench')
+                continue
+            data = json.loads(path.read_text(encoding='utf-8'))
+            problem = check_hand_animations(data, BOSSES[boss][1].keys() | {'stun'},
+                                            {bone['name'] for bone in geo['bones']})
             if problem:
-                stale.append(problem)
+                stale.append(f'{path}: {problem}')
     for path, data in files(args.assets).items():
         if args.check:
             if not path.is_file() or not same_asset(path, data):

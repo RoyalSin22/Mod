@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Pinta las UV de los cubos añadidos a mano en el geo del Coloso (capa y hombreras, v65e).
+"""Pinta las UV del atlas legado del Coloso (capa y hombreras, v65e).
 
 El geo es de Blockbench (fuente de verdad), así que las UV las fija el JSON. Este script solo escribe en las
 cuatro zonas listadas abajo y se niega a pintar si alguna ya tiene píxeles (para no pisar arte existente).
 Tamaños en píxeles: uw = 2·(d + w), uh = d + h, redondeados como en gen_boss_models.pack().
 
 Uso:
-  python3 tools/textures/paint_faceless_additions.py <textures/entity/faceless_colossus.png>
+  python3 tools/textures/paint_faceless_additions.py <copia de faceless_colossus.png> --legacy
   python3 tools/textures/paint_faceless_additions.py <textures/entity/faceless_colossus.png> --check
 """
 import importlib.util
@@ -60,6 +60,10 @@ def main(argv):
         print(__doc__)
         return 2
     path = Path(argv[1])
+    if any(path.with_name(name).exists() for name in ('faceless_colossus_phase2.png', 'faceless_colossus_phase2_glowmask.png')):
+        raise SystemExit('El atlas reconstruido usa otras UV. Esta herramienta solo admite el atlas legado.')
+    if '--check' not in argv and '--legacy' not in argv:
+        raise SystemExit('Indica --legacy para pintar sobre una copia del atlas antiguo.')
     gen = load_generator()
     img = Image.open(path).convert('RGBA')
     if '--check' in argv:

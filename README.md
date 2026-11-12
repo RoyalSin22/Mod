@@ -11,6 +11,7 @@ Sistema RPG con tres capas que se combinan:
 - **Armas, armaduras, accesorios, runas y cuatro pociones propias**, con recetas consultables en el grimorio.
 - **Templos sellados** con puzles, un guardián y Vasos de vida (+1 corazón permanente, hasta 5) (v64).
 - **Grimorio** con bestiario que se desbloquea al vencer a cada criatura o jefe, progreso, buscador, marcadores y sendas de cada rol (v61).
+- **Jefes animados** con ataques anunciados. El Coloso Sin Rostro muestra la armadura agrietada al entrar en su segunda fase.
 - **GUI** rediseñada (`K` atributos/habilidades, `J` roles, `G` cambiar elemento, `U` ver un objeto en el grimorio desde un inventario), **HUD** de energía, enfriamientos y elemento activo, **comandos** y **configuración JSON**.
 
 ## Documentación técnica
