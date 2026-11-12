@@ -26,15 +26,6 @@ public final class BossEntities {
 	public static final Item FACELESS_COLOSSUS_EGG = Registry.register(Registries.ITEM, Aptitudes.id("faceless_colossus_spawn_egg"),
 			new SpawnEggItem(FACELESS_COLOSSUS, 0x2B2D38, 0xB0423A, new Item.Settings()));
 
-	public static final EntityType<IronColossusEntity> IRON_COLOSSUS = Registry.register(Registries.ENTITY_TYPE,
-			Aptitudes.id("iron_colossus"),
-			EntityType.Builder.create(IronColossusEntity::new, SpawnGroup.MONSTER)
-					.dimensions(1.6f, 3.8f).eyeHeight(3.4f).maxTrackingRange(10).makeFireImmune()
-					.build("iron_colossus"));
-
-	public static final Item IRON_COLOSSUS_EGG = Registry.register(Registries.ITEM, Aptitudes.id("iron_colossus_spawn_egg"),
-			new SpawnEggItem(IRON_COLOSSUS, 0x4A4E58, 0xB07A2A, new Item.Settings()));
-
 	public static final EntityType<GuardianEntity> DISMANTLED_GUARDIAN = Registry.register(Registries.ENTITY_TYPE,
 			Aptitudes.id("dismantled_guardian"),
 			EntityType.Builder.create(GuardianEntity::new, SpawnGroup.MONSTER)
@@ -71,13 +62,11 @@ public final class BossEntities {
 
 	public static void register() {
 		FabricDefaultAttributeRegistry.register(FACELESS_COLOSSUS, FacelessColossusEntity.createAttributes());
-		FabricDefaultAttributeRegistry.register(IRON_COLOSSUS, IronColossusEntity.createAttributes());
 		FabricDefaultAttributeRegistry.register(DISMANTLED_GUARDIAN, GuardianEntity.createAttributes());
 		FabricDefaultAttributeRegistry.register(ANCIENT_AUTOMATON, AutomatonEntity.createAttributes());
 		ItemGroupEvents.modifyEntriesEvent(RegistryKey.of(RegistryKeys.ITEM_GROUP, Aptitudes.id("items")))
 				.register(entries -> {
 					entries.add(FACELESS_COLOSSUS_EGG);
-					entries.add(IRON_COLOSSUS_EGG);
 					entries.add(DISMANTLED_GUARDIAN_EGG);
 					entries.add(ANCIENT_AUTOMATON_EGG);
 				});
