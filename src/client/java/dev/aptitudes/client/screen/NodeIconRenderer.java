@@ -101,12 +101,30 @@ public final class NodeIconRenderer {
 	}
 
 	public static void drawRole(DrawContext ctx, Role role, Badge badge, int x, int y) {
+		if (badge == Badge.CORE && drawRoleIcon(ctx, role, x, y)) return;
 		if (drawSprite(ctx, "role/" + role.key() + "/" + badge.name().toLowerCase(Locale.ROOT), x, y)) return;
 		ctx.drawItem(switch (badge) {
 			case CORE -> role.iconStack();
 			case SIGNATURE -> NodeIcons.signature(role);
 			case ULTIMATE -> NodeIcons.ultimate(role);
 		}, x, y);
+	}
+
+	/** v66: icono de rol de la dirección de arte (16×16, generado por gen_role_icons.py); falso si el paquete no lo trae. */
+	private static boolean drawRoleIcon(DrawContext ctx, Role role, int x, int y) {
+		Identifier texture = Aptitudes.id("textures/gui/role/small/" + role.key() + ".png");
+		boolean present = HAS_TEXTURE.computeIfAbsent("role-icon/" + role.key(), id ->
+				MinecraftClient.getInstance().getResourceManager().getResource(texture).isPresent());
+		if (!present) return false;
+		// El medallón tiene esquinas transparentes: DrawContext.drawTexture en 1.21.1 no activa la mezcla por sí solo.
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		try {
+			ctx.drawTexture(texture, x, y, 0.0F, 0.0F, TILE, TILE, TILE, TILE);
+		} finally {
+			RenderSystem.disableBlend();
+		}
+		return true;
 	}
 
 	/** La decoración es opcional para los paquetes de recursos con un índice anterior. */

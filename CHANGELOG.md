@@ -6,6 +6,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **v66 — Iconos de rol de la dirección de arte.** Los 20 roles usan los iconos de la nueva dirección de arte en la pantalla
+  de roles, las sendas, el grimorio y el HUD (la insignia principal): 16×16 para el tamaño del árbol y 32×32 para usos
+  grandes. Arte fuente en `tools/textures/source/roles/`; generador `tools/textures/gen_role_icons.py` (admite `--check`).
+  Si el paquete de recursos no trae el icono, se usa el sello anterior. Los tooltips y las insignias de firma y definitiva
+  siguen con los sellos anteriores. Sin validar en partida.
 - **v65 — Enemigos nuevos.** El Errante Velado aparece en la Niebla de almas (10 % de las apariciones, junto al
   Osario Quebrado con otro 10 %) y tiene huevo de aparición y entrada en el bestiario. El Custodio de las Cuatro
   Llaves sustituye al guardián vanilla de los templos sellados. Ambos tienen modelo y animaciones generados por
