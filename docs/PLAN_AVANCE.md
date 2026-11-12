@@ -33,7 +33,7 @@ jugadores, traducciones nativas (aplazadas).
 | Guardia perfecta y parry | Conviven: el parry pasivo del Espadachín y la guardia nueva. |
 | Postura | Aplica a **jefes, élites y campeones**. |
 | Mundos reales | No hay mundos de jugadores que preservar. La migración de datos puede priorizarse solo si cambia la estructura. |
-| Árbol de habilidades | Se planea moverlo a **datapack** para no sobrecargar el mod. |
+| Árbol de habilidades | Se descartó moverlo a **datapack**: el piloto de la v55 se retiró en v65. |
 | Pruebas en partida | El autor probará los Game Tests; cuando haya un fallo, la IA puede reproducirlo y probarlo. |
 | Traducciones | Se aplazan. No hay hablantes nativos disponibles por ahora. |
 | Nombres | Se renombra la ascensión y se elimina cualquier referencia a «pacto». |
@@ -132,7 +132,6 @@ tooltip en los 11 idiomas. Pendiente: validar todo en partida.
 
 ### Fase E — Infraestructura de pruebas y datos
 - Game Tests mínimos: registro, persistencia y networking. El autor los prueba; yo reproduzco los fallos.
-- Árbol de habilidades en datapack (diseño y migración a planificar tras la fase B).
 - Desglose de build para depuración y para el jugador.
 
 ### Fase F — Contenido nuevo aprobado por el autor (informe de investigación)

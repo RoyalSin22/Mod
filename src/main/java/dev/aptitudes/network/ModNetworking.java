@@ -6,7 +6,6 @@ import dev.aptitudes.logic.ProgressManager;
 import dev.aptitudes.role.Element;
 import dev.aptitudes.role.Role;
 import dev.aptitudes.role.RoleManager;
-import dev.aptitudes.role.datapack.RoleTalentCatalog;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -22,7 +21,6 @@ public final class ModNetworking {
 	public static void registerCommon() {
 		PayloadTypeRegistry.playS2C().register(SyncProgressPayload.ID, SyncProgressPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(RoleSyncPayload.ID, RoleSyncPayload.CODEC);
-		PayloadTypeRegistry.playS2C().register(TalentCatalogPayload.ID, TalentCatalogPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(EnergyPayload.ID, EnergyPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(CooldownPayload.ID, CooldownPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(ComboPayload.ID, ComboPayload.CODEC);
@@ -49,7 +47,6 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playC2S().register(AllocatePointsPayload.ID, AllocatePointsPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(UseAbilityPayload.ID, UseAbilityPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(RoleActionPayload.ID, RoleActionPayload.CODEC);
-		PayloadTypeRegistry.playC2S().register(TalentPurchasePayload.ID, TalentPurchasePayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(ConfigEditPayload.ID, ConfigEditPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(PartyActionPayload.ID, PartyActionPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(ContractActionPayload.ID, ContractActionPayload.CODEC);
@@ -143,17 +140,6 @@ public final class ModNetworking {
 
 		ServerPlayNetworking.registerGlobalReceiver(OpenAccessoriesPayload.ID,
 				(payload, context) -> dev.aptitudes.accessory.Accessories.open(context.player()));
-		ServerPlayNetworking.registerGlobalReceiver(TalentPurchasePayload.ID, (payload, context) -> {
-			var player = context.player();
-			var result = RoleTalentCatalog.purchase(player, payload.nodeId(), payload.revision(), payload.expectedRank());
-			if (result == RoleManager.UpgradeResult.DATAPACK_STALE) {
-				RoleTalentCatalog.sync(player, RoleManager.get(player));
-			}
-			if (result != RoleManager.UpgradeResult.OK) {
-				player.sendMessage(Text.translatable("aptitudes.role.upgrade."
-						+ result.name().toLowerCase(java.util.Locale.ROOT)).formatted(Formatting.RED), true);
-			}
-		});
 		ServerPlayNetworking.registerGlobalReceiver(RoleActionPayload.ID, (payload, context) -> {
 			var player = context.player();
 			switch (payload.action()) {

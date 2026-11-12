@@ -6,7 +6,6 @@ import dev.aptitudes.ability.RolePassives;
 import dev.aptitudes.config.AptitudesConfig;
 import dev.aptitudes.data.ModAttachments;
 import dev.aptitudes.network.RoleSyncPayload;
-import dev.aptitudes.role.datapack.RoleTalentCatalog;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -28,7 +27,7 @@ public final class RoleManager {
 
 	/** Resultado de intentar subir un rango. */
 	public enum UpgradeResult { OK, UNKNOWN_NODE, ROLE_NOT_ACTIVE, MAX_RANK, LEVEL_TOO_LOW, MISSING_PREREQUISITE, NO_POINTS,
-		PATH_LOCKED, LEGEND_TAKEN, LEGEND_LIMIT, TIER_TOO_LOW, BRANCH_LOCKED, DATAPACK_STALE, DATAPACK_UNAVAILABLE }
+		PATH_LOCKED, LEGEND_TAKEN, LEGEND_LIMIT, TIER_TOO_LOW, BRANCH_LOCKED }
 
 	private RoleManager() {
 	}
@@ -445,13 +444,11 @@ public final class RoleManager {
 		RoleData data = get(player);
 		ensureConsistent(player, data);
 		RolePassives.applyAttributes(player);
-		RoleTalentCatalog.applySpeed(player, data);
 		// La afinidad de atributos depende del rol: se recalculan los atributos y la pantalla.
 		dev.aptitudes.logic.AttributeApplier.apply(player, dev.aptitudes.logic.ProgressManager.get(player), Aptitudes.config());
 		dev.aptitudes.logic.ProgressManager.sync(player);
 		data.setEnergy(Math.min(data.energy(), AbilityManager.maxEnergy(player)));
 		sync(player);
-		RoleTalentCatalog.sync(player, data);
 		AbilityManager.sendEnergy(player, true);
 		RoleResources.send(player, true);
 		// Legendarias: dependen de los nodos aprendidos y de los roles activos.
@@ -484,7 +481,6 @@ public final class RoleManager {
 				}
 			}
 		}
-		RoleTalentCatalog.reconcile(player.getServer(), data);
 		for (Role role : Role.values()) {
 			// Si la configuración redujo los puntos, se devuelven los del árbol afectado.
 			if (availablePoints(data, role) < 0

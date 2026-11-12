@@ -6,7 +6,6 @@ import dev.aptitudes.morph.MorphForm;
 import dev.aptitudes.network.FormSyncPayload;
 import dev.aptitudes.network.RoleActionPayload;
 import dev.aptitudes.network.RoleSyncPayload;
-import dev.aptitudes.network.TalentPurchasePayload;
 import dev.aptitudes.role.Element;
 import dev.aptitudes.role.Evolution;
 import dev.aptitudes.role.Role;
@@ -91,7 +90,6 @@ public class RolesScreen extends Screen {
 	private TalentTab tab = TalentTab.TALENTS;
 	private List<NodeView> visibleNodes = List.of();
 
-	private ButtonWidget datapackButton;
 	private ButtonWidget attributesButton;
 	private ButtonWidget doneButton;
 	private ButtonWidget primaryButton;
@@ -213,10 +211,6 @@ public class RolesScreen extends Screen {
 		int footer = top + H - 26;
 		attributesButton = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.tab.attributes"),
 				b -> client.setScreen(new AptitudesScreen())).dimensions(0, footer, 100, 18).build());
-		datapackButton = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.datapack.tab"), b -> {
-			keepView = true;
-			client.setScreen(new TalentPackScreen(this, selected));
-		}).dimensions(width / 2 - 50, footer, 100, 18).build());
 		doneButton = addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, b -> close())
 				.dimensions(0, footer, 100, 18).build());
 		updateButtons();
@@ -270,10 +264,8 @@ public class RolesScreen extends Screen {
 	private void updateButtons() {
 		RoleSyncPayload data = ClientRoleState.data();
 		boolean ready = data != null;
-		datapackButton.visible = ready && ClientPlayNetworking.canSend(TalentPurchasePayload.ID)
-				&& ClientRoleState.talents().entries().values().stream().anyMatch(node -> node.role() == selected);
-		attributesButton.setX(width / 2 - (datapackButton.visible ? 158 : 104));
-		doneButton.setX(width / 2 + (datapackButton.visible ? 58 : 4));
+		attributesButton.setX(width / 2 - 104);
+		doneButton.setX(width / 2 + 4);
 		primaryButton.active = ready && data.primaryRole() != selected;
 		secondaryButton.active = ready && data.secondaryRole() != selected;
 		updateEvolveButton(data);

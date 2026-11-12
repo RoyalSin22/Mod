@@ -95,8 +95,9 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 - Fase 2. El Centinela usa un círculo, el Oráculo un anillo con centro seguro y el Campeón un cono.
   El cono fija su dirección al anunciarse, por lo que se puede esquivar lateralmente.
 
-### v55 — Talentos por datapack (integrado en main)
-- Fase 1. Catálogo opcional, recarga por revisión y [ejemplo del Espadachín](DATAPACK_TALENTOS.md).
+### v55 — Talentos por datapack (integrado en main; retirado en v65)
+- Retirado: el piloto no cumplía lo esperado y se eliminó con su código, pantalla, pruebas y documentación.
+- Fase 1. Catálogo opcional y recarga por revisión.
 - Fase 2. Vista en J, compras validadas por revisión y rango, puntos compartidos y reembolso al perder
   requisitos. La plantilla piloto da +2 % de velocidad por rango, hasta +6 % entre ambos roles activos.
 
@@ -116,7 +117,7 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ### v51 — Mesa y Tablón con más espacio (integrados en main)
 - Mesa con zonas separadas y Tablón con fichas para ofertas y contratos activos.
-- Lienzo unificado y corrección del rótulo de sendas exclusivas. Maqueta y propuestas de asedio, datapack y roles
+- Lienzo unificado y corrección del rótulo de sendas exclusivas. Maqueta y propuestas de asedio y roles
   en [V51_DISENO_Y_FASES.md](V51_DISENO_Y_FASES.md).
 
 ### v50 — HUD e iconos del árbol (integrados en main)
@@ -124,8 +125,8 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
   del HUD. Los 480 PNG de Sendas siguen siendo los mismos.
 - Barra con teclas y costes más legibles, dos filas auxiliares y ajuste al área visible. La vista previa
   usa la misma geometría. Pruebas en partida pendientes.
-- Siguientes fases del bloque: animaciones de habilidades, árbol extensible por datapack y encuentros
-  en estructuras.
+- Siguientes fases del bloque: animaciones de habilidades y encuentros en estructuras (el árbol por datapack
+  se descartó).
 
 ### v49 — Puestos del gremio y la Hoguera (integrados en main)
 - Modelos y texturas propios, llamas animadas, panel 3×3 exclusivo del gremio y cabecera de descanso.
@@ -144,7 +145,7 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
   pendientes. Diseño y límites en `docs/V47_ECLIPSE.md`.
 - Fases posteriores solicitadas: bloques y Mesa del gremio con menús propios, HUD/iconos,
   animaciones de habilidades y encuentros en estructuras. Se permite evaluar una biblioteca de animación;
-  ninguna se añade aquí. El piloto del árbol por datapack se documenta en v55.
+  ninguna se añade aquí. El piloto del árbol por datapack se retiró en v65.
 
 ### v48 — Reforja y Templado (implementados)
 - Dos afijos de arma en la Mesa del gremio y dos rangos de Templado en la Hoguera con trofeos existentes.

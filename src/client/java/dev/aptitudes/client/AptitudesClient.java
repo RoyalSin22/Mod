@@ -22,7 +22,6 @@ import dev.aptitudes.network.CooldownPayload;
 import dev.aptitudes.network.EnergyPayload;
 import dev.aptitudes.network.RoleActionPayload;
 import dev.aptitudes.network.RoleSyncPayload;
-import dev.aptitudes.network.TalentCatalogPayload;
 import dev.aptitudes.network.SyncProgressPayload;
 import dev.aptitudes.network.UseAbilityPayload;
 import dev.aptitudes.sync.ClientCache;
@@ -156,8 +155,6 @@ public class AptitudesClient implements ClientModInitializer {
 				(payload, context) -> ClientCache.update(context.player().getUuid(), payload));
 		ClientPlayNetworking.registerGlobalReceiver(RoleSyncPayload.ID,
 				(payload, context) -> ClientRoleState.onSync(payload));
-		ClientPlayNetworking.registerGlobalReceiver(TalentCatalogPayload.ID,
-				(payload, context) -> ClientRoleState.onTalents(payload));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.MasteryPayload.ID,
 				(payload, context) -> dev.aptitudes.sync.ClientMastery.update(context.player().getUuid(), payload));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.ThreatPayload.ID,

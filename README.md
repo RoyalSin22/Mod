@@ -595,10 +595,6 @@ propios y a los que ves de otros jugadores.
 
 ## Atlas de talentos (v53)
 
-El [piloto de talentos por datapack](docs/DATAPACK_TALENTOS.md) permite añadir ramas de velocidad.
-Cuando el rol seleccionado tiene una rama instalada, **Talentos del pack** en J muestra sus requisitos
-y permite gastar puntos de ese rol.
-
 Pulsa **J** para elegir un rol. La cabecera muestra su sello, nivel y puntos disponibles.
 Cada rol tiene una paleta y un emblema grabado que también aparecen en Sendas.
 **Talentos** muestra los nodos base y sus requisitos. **Sendas** reúne los siete escalones,
@@ -865,7 +861,6 @@ de jugador dentro de un hueco pequeño, el jugador puede asfixiarse como en vani
 
 ### Siguientes pasos sugeridos
 
-- Pasar los árboles de roles a **datapacks** (JSON) para editarlos sin recompilar.
 - Recursos distintos por rol (Furia para el Bersérker, Maná para el Mago) en lugar de una energía común.
 - Más nodos por rol (por ejemplo, una habilidad "definitiva" al nivel 25).
 - Tests: `PlayerProgress`/`ProgressRules` son puros y testeables con JUnit; para la integración, Fabric GameTest.

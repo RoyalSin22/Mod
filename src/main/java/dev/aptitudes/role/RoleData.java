@@ -2,7 +2,6 @@ package dev.aptitudes.role;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.aptitudes.role.datapack.TalentProgressRules;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -38,8 +37,7 @@ public final class RoleData {
 			Codec.STRING.listOf().optionalFieldOf("boss_slain", List.of())
 					.forGetter(d -> d.bossSlain.stream().map(Role::key).toList()),
 			INT_MAP.optionalFieldOf("loadout", Map.of()).forGetter(d -> toNames(d.loadout)),
-			Codec.INT.optionalFieldOf("rebirths", 0).forGetter(d -> d.rebirths),
-			INT_MAP.optionalFieldOf("datapack_ranks", Map.of()).forGetter(d -> d.datapackRanks)
+			Codec.INT.optionalFieldOf("rebirths", 0).forGetter(d -> d.rebirths)
 	).apply(instance, RoleData::new));
 
 	@Nullable private Role primary;
@@ -47,7 +45,6 @@ public final class RoleData {
 	private final EnumMap<Role, Integer> levels;
 	private final EnumMap<Role, Integer> xp;
 	private final Map<String, Integer> ranks;
-	private Map<String, Integer> datapackRanks;
 	private double energy;
 	/** Tiempo del mundo (ticks) del último cambio de rol. */
 	private long lastRoleChange;
@@ -68,14 +65,14 @@ public final class RoleData {
 
 	public RoleData() {
 		this("", "", Map.of(), Map.of(), Map.of(), 0.0, Long.MIN_VALUE, List.of(), 0, Map.of(), Map.of(), List.of(),
-				Map.of(), 0, Map.of());
+				Map.of(), 0);
 	}
 
 	private RoleData(String primary, String secondary, Map<String, Integer> levels, Map<String, Integer> xp,
 					 Map<String, Integer> ranks, double energy, long lastRoleChange,
 					 List<String> elements, int activeElement, Map<String, Integer> tiers,
 					 Map<String, Integer> trials, List<String> bossSlain, Map<String, Integer> loadout,
-					 int rebirths, Map<String, Integer> datapackRanks) {
+					 int rebirths) {
 		this.primary = Role.byKey(primary).orElse(null);
 		this.secondary = Role.byKey(secondary).orElse(null);
 		if (this.secondary == this.primary) this.secondary = null;
@@ -85,7 +82,6 @@ public final class RoleData {
 		ranks.forEach((id, r) -> {
 			if (RoleTree.get(id) != null && r > 0) this.ranks.put(id, Math.min(r, RoleTree.get(id).maxRank()));
 		});
-		this.datapackRanks = TalentProgressRules.readRanks(datapackRanks);
 		this.energy = Math.max(0.0, energy);
 		this.lastRoleChange = lastRoleChange;
 		this.elements = new ArrayList<>();
@@ -157,34 +153,15 @@ public final class RoleData {
 	}
 	public Map<String, Integer> ranks() { return ranks; }
 
-	public Map<String, Integer> datapackRanks() { return Collections.unmodifiableMap(datapackRanks); }
-
-	public void setDatapackRanks(Map<String, Integer> ranks) {
-		datapackRanks = new HashMap<>(ranks);
-	}
-
-	public int datapackRank(Role role, String id) {
-		return datapackRanks.getOrDefault(TalentProgressRules.key(role.key(), id), 0);
-	}
-
-	public void learnDatapackRank(Role role, String id, int rank) {
-		datapackRanks.put(TalentProgressRules.key(role.key(), id), rank);
-	}
-
 	public int spentPoints(Role role) {
 		int sum = 0;
 		for (RoleNode node : RoleTree.nodes(role)) sum += rank(node.id());
-		String prefix = role.key() + "/";
-		for (var entry : datapackRanks.entrySet()) {
-			if (entry.getKey().startsWith(prefix)) sum += entry.getValue();
-		}
 		return sum;
 	}
 
 	/** Reinicia el árbol de un rol. En el Elementalista también libera los elementos dominados. */
 	public void clearRanks(Role role) {
 		for (RoleNode node : RoleTree.nodes(role)) ranks.remove(node.id());
-		datapackRanks.keySet().removeIf(id -> id.startsWith(role.key() + "/"));
 		if (role == Role.ELEMENTALIST) clearElements();
 	}
 
