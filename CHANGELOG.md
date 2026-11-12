@@ -30,8 +30,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   kit. Aprender, la confirmación de senda y de rama, y las ranuras de equipar usan el mismo flujo y las mismas validaciones del
   servidor que antes. La geometría es una clase pura con pruebas (`logic/TreeScreenLayout`). Arte fuente en
   `tools/textures/source/ui/`; generador `tools/textures/gen_tree_ui.py` (admite `--check`). Con `newTreeScreen = false` en
-  `aptitudes-client.json`, o si el paquete de recursos no trae las piezas, se usa la vista de sendas anterior. No incluye el
-  botón «Reiniciar» de la maqueta (el servidor solo admite el reinicio por comando). Sin validar en partida.
+  `aptitudes-client.json`, o si el paquete de recursos no trae las piezas, se usa la vista de sendas anterior. Incluye el
+  botón «Reiniciar»: devuelve todos los puntos del árbol del rol a cambio de niveles de experiencia de Minecraft
+  (`treeRespecEnabled`, `treeRespecLevelsBase`, `treeRespecLevelsPerPoint`, `treeRespecLevelsMax`; el modo creativo no paga).
+  El coste se calcula con `role/RespecRules` (pura, con pruebas); el servidor lo valida y lo cobra
+  (`RoleActionPayload.RESPEC_TREE`, con límite de frecuencia), y el cliente solo muestra el coste y pide confirmación. El
+  nivel y la evolución del rol no cambian. Valores por defecto provisionales (2 + 0,5 por punto, máximo 20): pendientes de
+  que el autor los apruebe. Sin validar en partida.
 - **v66 — HUD: marcos de las casillas de habilidad.** Cada casilla de la barra de habilidades usa un marco de la nueva
   dirección de arte según la categoría del rol (marcial, arcano, sombra, guardián u oficio) y su estado: lista, en espera,
   sin energía, seleccionada al lanzar y definitiva. 20×20 px, el tamaño actual de la casilla, así que la disposición no

@@ -14,7 +14,11 @@ Pruebas automáticas nuevas:
 
 - `logic/TreeScreenLayoutTest`: la geometría de la pantalla del árbol cabe en la ventana con anchos de 426 a 1000 px, ningún
   elemento se solapa, las dos opciones de la bifurcación son simétricas, y el desplazamiento y el centrado son correctos.
-- `tools/textures/gen_tree_ui.py --check`: las 47 piezas del árbol coinciden con el arte fuente.
+- `role/RespecRulesTest`: el coste del reinicio del árbol (base + por punto, redondeo hacia arriba, tope, valores no finitos o
+  desbordados) y la comprobación (desactivado, no disponible, nada que reiniciar, niveles insuficientes, creativo gratis).
+  En partida: con puntos gastados, «Reiniciar» muestra el coste, pide confirmación, cobra los niveles y devuelve los puntos; sin
+  niveles suficientes queda desactivado con el aviso en rojo.
+- `tools/textures/gen_tree_ui.py --check`: las 50 piezas del árbol coinciden con el arte fuente.
 
 Validación en partida (pendiente):
 

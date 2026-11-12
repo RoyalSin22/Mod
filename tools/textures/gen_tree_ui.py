@@ -34,7 +34,7 @@ COPIED = {
     'etiquetas': {f'etiqueta_s{i}.png': (24, 14) for i in range(1, 8)},
     'maestria': {'maestria_20_vacias.png': (248, 24), 'maestria_20_llenas.png': (248, 24)},
     'definitiva': {'definitiva_bloqueada.png': (48, 48), 'definitiva_desbloqueada.png': (48, 48)},
-    'botones': {f'{b}_{s}.png': (80, 18) for b in ('cerrar', 'generico')
+    'botones': {f'{b}_{s}.png': (80, 18) for b in ('cerrar', 'generico', 'reiniciar')
                 for s in ('normal', 'pulsado', 'desactivado')},
 }
 

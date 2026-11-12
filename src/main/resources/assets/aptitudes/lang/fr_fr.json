@@ -3766,5 +3766,16 @@
   "guardian.aptitudes.core_exposed": "Le noyau est exposé !",
   "automaton.aptitudes.stunned": "Étourdi ! Il subit le double de dégâts.",
   "bestiary.aptitudes.dismantled_guardian.tip": "Armure vide dont les pièces doivent être brisées dans l'ordre : heaume, bouclier, gantelets. Seule la pièce active subit des dégâts ; quand les trois tombent, le noyau est exposé et subit 50 % de dégâts en plus. Ses attaques sont annoncées.",
-  "bestiary.aptitudes.ancient_automaton.tip": "Construct de pierre et de bronze. Ses orbes d'énergie peuvent être renvoyées : celle qui l'atteint l'étourdit 5 s, et pendant ce temps il subit le double de dégâts. En phase deux, il tire un rayon arrêté par les blocs solides. Il ne peut pas être repoussé."
+  "bestiary.aptitudes.ancient_automaton.tip": "Construct de pierre et de bronze. Ses orbes d'énergie peuvent être renvoyées : celle qui l'atteint l'étourdit 5 s, et pendant ce temps il subit le double de dégâts. En phase deux, il tire un rayon arrêté par les blocs solides. Il ne peut pas être repoussé.",
+  "aptitudes.respec.done": "Arbre de %s réinitialisé : %s points rendus pour %s niveaux d’expérience.",
+  "aptitudes.respec.disabled": "La réinitialisation de l’arbre est désactivée sur ce serveur.",
+  "aptitudes.respec.unavailable": "Vous ne pouvez pas réinitialiser l’arbre pour le moment.",
+  "aptitudes.respec.nothing_to_reset": "L’arbre de %s n’a aucun point dépensé.",
+  "aptitudes.respec.not_enough_levels": "Il vous faut %2$s niveaux d’expérience pour réinitialiser l’arbre de %1$s.",
+  "screen.aptitudes.respec.button": "Réinitialiser",
+  "screen.aptitudes.respec.confirm_title": "Réinitialiser l’arbre ?",
+  "screen.aptitudes.respec.confirm": "Réinitialiser l’arbre de %1$s rend %2$s points et coûte %3$s niveaux d’expérience. Le niveau et l’évolution du rôle ne changent pas, mais les sentiers choisis redeviennent libres.",
+  "screen.aptitudes.respec.cost": "Coûte %s niveaux d’expérience",
+  "screen.aptitudes.respec.missing": "Il vous faut %s niveaux d’expérience",
+  "screen.aptitudes.respec.nothing": "Aucun point dépensé dans ce rôle"
 }

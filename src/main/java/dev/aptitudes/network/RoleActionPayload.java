@@ -25,6 +25,8 @@ public record RoleActionPayload(int action, int roleIndex, String nodeId) implem
 	public static final int EQUIP_2 = 8;
 	/** Volver a reclamar el arma de evolución del rol {@code roleIndex} (nodeId = "1" Maestro, "2" Definitivo). */
 	public static final int CLAIM_WEAPON = 9;
+	/** Reiniciar el árbol del rol {@code roleIndex} pagando niveles de experiencia (v66, ver {@code RespecRules}). */
+	public static final int RESPEC_TREE = 10;
 
 	public static final Id<RoleActionPayload> ID = new Id<>(Aptitudes.id("role_action"));
 	public static final PacketCodec<RegistryByteBuf, RoleActionPayload> CODEC = PacketCodec.tuple(

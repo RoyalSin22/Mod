@@ -35,8 +35,8 @@ final class SpriteButton extends ButtonWidget {
 		int color = !active ? UiStyle.MUTED : isHovered() || isFocused() ? 0xFFFFE8A0 : UiStyle.TEXT;
 		var tr = MinecraftClient.getInstance().textRenderer;
 		int textY = getY() + (pressed && active ? 6 : 5);
-		// El botón «cerrar» lleva una X pintada a la izquierda: el texto se desplaza para no taparla.
-		int textX = getX() + getWidth() / 2 + ("cerrar".equals(base) ? 6 : 0);
+		// Los botones «cerrar» y «reiniciar» llevan una X pintada a la izquierda: el texto se desplaza para no taparla.
+		int textX = getX() + getWidth() / 2 + ("cerrar".equals(base) || "reiniciar".equals(base) ? 6 : 0);
 		ctx.drawCenteredTextWithShadow(tr, getMessage(), textX, textY, color);
 	}
 }

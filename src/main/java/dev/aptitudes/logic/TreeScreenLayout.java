@@ -122,13 +122,16 @@ public final class TreeScreenLayout {
 
 	private int rightWidth() { return width - rightX() - MARGIN; }
 
-	public Rect detail() { return at(rightX(), 44, rightWidth(), 130); }
+	public Rect detail() { return at(rightX(), 44, rightWidth(), 108); }
 
-	public Rect definitive() { return at(rightX() + (rightWidth() - 48) / 2, 178, 48, 48); }
+	public Rect definitive() { return at(rightX() + (rightWidth() - 48) / 2, 156, 48, 48); }
 
-	public Rect definitiveLabel() { return at(rightX(), 228, rightWidth(), 10); }
+	public Rect definitiveLabel() { return at(rightX(), 206, rightWidth(), 10); }
 
-	public Rect primaryButton() { return at(rightX() + (rightWidth() - 80) / 2, 242, 80, 18); }
+	public Rect primaryButton() { return at(rightX() + (rightWidth() - 80) / 2, 220, 80, 18); }
+
+	/** Reinicio del árbol del rol (de pago en niveles de experiencia). */
+	public Rect respecButton() { return at(rightX() + (rightWidth() - 80) / 2, 242, 80, 18); }
 
 	public Rect closeButton() { return at(rightX() + (rightWidth() - 80) / 2, 264, 80, 18); }
 
@@ -144,6 +147,7 @@ public final class TreeScreenLayout {
 		out.add(definitive());
 		out.add(definitiveLabel());
 		out.add(primaryButton());
+		out.add(respecButton());
 		out.add(closeButton());
 		for (int row = 0; row < ROWS; row++) out.add(label(row));
 		for (int path = 0; path < PATHS; path++) {

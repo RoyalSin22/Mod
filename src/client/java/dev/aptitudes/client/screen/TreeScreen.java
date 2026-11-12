@@ -53,6 +53,7 @@ public class TreeScreen extends Screen {
 	@Nullable private Step selectedStep = Step.S1;
 	private int scroll;
 	private SpriteButton learnButton;
+	private SpriteButton respecButton;
 	private ButtonWidget equip1Button;
 	private ButtonWidget equip2Button;
 
@@ -115,6 +116,8 @@ public class TreeScreen extends Screen {
 		layout = TreeScreenLayout.place(width, height, scroll);
 		learnButton = addDrawableChild(new SpriteButton(layout.primaryButton(),
 				Text.translatable("screen.aptitudes.paths.learn"), "generico", b -> learn()));
+		respecButton = addDrawableChild(new SpriteButton(layout.respecButton(),
+				Text.translatable("screen.aptitudes.respec.button"), "reiniciar", b -> respec()));
 		addDrawableChild(new SpriteButton(layout.closeButton(), ScreenTexts.BACK, "cerrar", b -> close()));
 		Rect d = layout.detail();
 		int ex = d.x() + 9;
@@ -131,6 +134,7 @@ public class TreeScreen extends Screen {
 		RoleNode node = selectedNode();
 		boolean ready = data != null && node != null;
 		learnButton.active = ready && canLearn(data, node);
+		respecButton.active = data != null && respecState(data) == dev.aptitudes.role.RespecRules.Result.OK;
 		boolean equippable = ready && canEquip(data, node);
 		equip1Button.visible = equippable;
 		equip2Button.visible = equippable;
@@ -139,6 +143,55 @@ public class TreeScreen extends Screen {
 	@Override
 	public void tick() {
 		updateButtons(); // los rangos llegan del servidor tras aprender
+	}
+
+	// ------------------------------------------------------------ Reinicio de pago
+
+	private int spentPoints(RoleSyncPayload data) {
+		int spent = 0;
+		for (RoleNode node : RoleTree.nodes(role)) spent += data.rank(node.id());
+		return spent;
+	}
+
+	private dev.aptitudes.config.AptitudesConfig serverConfig() {
+		return dev.aptitudes.client.ClientServerConfig.get();
+	}
+
+	private int respecCost(RoleSyncPayload data) {
+		var c = serverConfig();
+		return dev.aptitudes.role.RespecRules.cost(spentPoints(data), c.treeRespecLevelsBase, c.treeRespecLevelsPerPoint,
+				c.treeRespecLevelsMax);
+	}
+
+	/** Misma comprobación que el servidor (solo para activar el botón y el tooltip). */
+	private dev.aptitudes.role.RespecRules.Result respecState(RoleSyncPayload data) {
+		boolean available = role == data.primaryRole() || role == data.secondaryRole();
+		return dev.aptitudes.role.RespecRules.check(serverConfig().treeRespecEnabled, available, spentPoints(data),
+				client.player == null ? 0 : client.player.experienceLevel, respecCost(data),
+				client.player != null && client.player.isCreative());
+	}
+
+	private void respec() {
+		RoleSyncPayload data = ClientRoleState.data();
+		if (data == null || respecState(data) != dev.aptitudes.role.RespecRules.Result.OK) return;
+		Text roleName = Text.translatable(role.translationKey());
+		Text message = Text.translatable("screen.aptitudes.respec.confirm", roleName, spentPoints(data), respecCost(data));
+		client.setScreen(new ConfirmScreen(ok -> {
+			if (ok) send(RoleActionPayload.RESPEC_TREE, "");
+			client.setScreen(this);
+		}, Text.translatable("screen.aptitudes.respec.confirm_title"), message));
+	}
+
+	@Nullable
+	private List<Text> respecTooltip(RoleSyncPayload data) {
+		int cost = respecCost(data);
+		return switch (respecState(data)) {
+			case OK -> List.of(Text.translatable("screen.aptitudes.respec.cost", cost));
+			case NOT_ENOUGH_LEVELS -> List.of(Text.translatable("screen.aptitudes.respec.missing", cost).formatted(Formatting.RED));
+			case NOTHING_TO_RESET -> List.of(Text.translatable("screen.aptitudes.respec.nothing"));
+			case DISABLED -> List.of(Text.translatable("aptitudes.respec.disabled"));
+			case UNAVAILABLE -> List.of(Text.translatable("aptitudes.respec.unavailable"));
+		};
 	}
 
 	// ------------------------------------------------------------ Acciones
@@ -473,6 +526,10 @@ public class TreeScreen extends Screen {
 			} else {
 				lines.add(Text.translatable("screen.aptitudes.tree.requires_ultimate").formatted(Formatting.RED));
 			}
+		} else if (respecButton.isMouseOver(mouseX, mouseY)) {
+			List<Text> respec = respecTooltip(data);
+			if (respec == null) return null;
+			lines.addAll(respec);
 		} else {
 			return null;
 		}
