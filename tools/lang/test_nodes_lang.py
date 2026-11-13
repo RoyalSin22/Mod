@@ -78,18 +78,20 @@ class NodeTranslationTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'Cobertura'):
                 paths.build('pt_br', self.reference)
 
-    def test_forks_boosts_and_keystones_use_server_tables(self):
+    def test_ranks_boosts_and_keystones_use_server_tables(self):
         effects, templates = paths.java_effects(), paths.keystone_templates()
-        for locale in LOCALES:
+        for locale in LOCALES + ('en_us', 'es_es'):
+            lang = {'en_us': 'en', 'es_es': 'es'}.get(locale, locale)
             result = paths.build(locale, self.reference)
             for role, path, *_ in paths.ROWS:
                 base = f'{role}_{paths.LETTERS[path - 1]}'
-                for suffix in ('5x', '5y'):
-                    self.assertIn(paths.FORK[locale], result[f'node.aptitudes.{base}{suffix}.desc'])
-                self.assertEqual(paths.desc(effects[role][path - 1][3], 1.5, locale,
-                                            [paths.BOOSTED[locale]]), result[f'node.aptitudes.{base}6.desc'])
-                template = paths.TEMPLATE[locale][templates[role][path - 1]][1]
-                self.assertIn(template, result[f'node.aptitudes.{base}7.desc'])
+                for i, suffix in enumerate(('1', '2', '3', '4', '5x', '5y')):
+                    text = result[f'node.aptitudes.{base}{suffix}.desc']
+                    self.assertEqual(paths.desc(effects[role][path - 1][i], 1.0, lang), text)
+                    self.assertIn(paths.RANKS[lang], text)
+                self.assertEqual(paths.desc(effects[role][path - 1][3], 1.5, lang), result[f'node.aptitudes.{base}6.desc'])
+                template = paths.TEMPLATE[lang][templates[role][path - 1]][1]
+                self.assertEqual(template, result[f'node.aptitudes.{base}7.desc'])
 
     def test_regenerating_legacy_locales_keeps_every_byte(self):
         for locale in ('en_us', 'es_es'):

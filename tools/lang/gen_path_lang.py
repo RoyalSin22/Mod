@@ -4,7 +4,8 @@ Genera las Sendas v46 en inglés, español, portugués, francés y alemán.
 Español se copia a sus seis variantes. --check comprueba sin escribir.
 
 - Nombres y descripciones de los escalones nuevos S4, S5x, S5y y S6 de las 60 sendas (240 nodos).
-- Descripción de S1–S3 actualizada: las sendas son exclusivas (antes «2 de las 3»).
+- Descripciones de S1–S7 con el estilo llano (v67): qué hace, hablándole al jugador, y la línea
+  «Rango 1 / 2 / 3: …» con las cifras de cada rango; sin coletillas.
 - Frase de cada senda (path.aptitudes.<rol>_<a|b|c>.desc) y textos de la vista de sendas.
 
 Los EFECTOS se leen de src/main/java/dev/aptitudes/role/RoleTree.java (paths(...) y deeper(...)), así que
@@ -17,7 +18,6 @@ import os
 import re
 
 from check_lang import LOCALES
-from gen_evolved_lang import EFFECT_NAME
 from ui_catalog import TRANSLATIONS as UI_TRANSLATIONS
 
 ROOT = os.path.join(os.path.dirname(__file__), '..', '..')
@@ -37,31 +37,117 @@ CODE = {'L': 'LIFESTEAL', 'C': 'CRIT', 'X': 'EXECUTE', 'T': 'THORNS', 'R': 'DAMA
         'M': 'MANA_REGEN', 'G': 'RESOURCE_GAIN', 'H': 'REGEN', 'P': 'ON_HIT_POISON', 'S': 'ON_HIT_SLOW',
         'F': 'ON_HIT_FIRE', 'W': 'ON_HIT_WITHER', 'N': 'MINION_POWER', 'K': 'KNOCKBACK', 'V': 'SPEED',
         'HP': 'MAX_HEALTH', 'AS': 'ATTACK_SPEED', 'LK': 'LUCK'}
-# Etiqueta del efecto, igual que en las descripciones de S1–S3 que ya existen.
-LABEL = {
-    'es': {'LIFESTEAL': 'Robo de vida', 'CRIT': 'Golpe crítico (×1,5)',
-           'EXECUTE': 'Ejecución (+daño a enemigos bajo el 35 % de vida)', 'THORNS': 'Espinas (devuelve daño cuerpo a cuerpo)',
-           'KNOCKBACK': 'Resistencia al empuje', 'DAMAGE_REDUCTION': 'Reducción de daño', 'ATTACK_SPEED': 'Velocidad de ataque',
-           'SPEED': 'Velocidad', 'REGEN': 'Regeneración de vida (cada 3 s)', 'ON_HIT_WITHER': 'Probabilidad de marchitar',
-           'MANA_REGEN': 'Regeneración de maná (por segundo)', 'RESOURCE_GAIN': 'Carga del recurso de rol',
-           'ON_HIT_SLOW': 'Probabilidad de ralentizar', 'DODGE': 'Esquiva', 'ON_HIT_POISON': 'Probabilidad de envenenar',
-           'MAX_HEALTH': 'Vida máxima', 'LUCK': 'Suerte', 'ON_HIT_FIRE': 'Probabilidad de quemar',
-           'MINION_POWER': 'Poder de los esbirros'},
-    'en': {'LIFESTEAL': 'Lifesteal', 'CRIT': 'Critical hit (×1.5)', 'EXECUTE': 'Execute (+damage vs enemies under 35% health)',
-           'THORNS': 'Thorns (reflects melee damage)', 'KNOCKBACK': 'Knockback resistance', 'DAMAGE_REDUCTION': 'Damage reduction',
-           'ATTACK_SPEED': 'Attack speed', 'SPEED': 'Speed', 'REGEN': 'Health regeneration (every 3 s)',
-           'ON_HIT_WITHER': 'Chance to wither', 'MANA_REGEN': 'Mana regeneration (per second)',
-           'RESOURCE_GAIN': 'Role resource gain', 'ON_HIT_SLOW': 'Chance to slow', 'DODGE': 'Dodge',
-           'ON_HIT_POISON': 'Chance to poison', 'MAX_HEALTH': 'Max health', 'LUCK': 'Luck', 'ON_HIT_FIRE': 'Chance to burn',
-           'MINION_POWER': 'Minion power'},
+# Frase llana de cada efecto, hablándole al jugador. Las cifras deben coincidir entre en/pt/fr/de (decimales con punto).
+SENTENCE = {
+    'es': {
+        'LIFESTEAL': 'Te curas con una parte del daño que haces.',
+        'CRIT': 'Probabilidad de que tus golpes sean críticos (×1,5 de daño).',
+        'EXECUTE': 'Haces más daño a los enemigos con menos del 35 % de vida.',
+        'THORNS': 'Quien te golpea cuerpo a cuerpo recibe una parte de ese daño.',
+        'DAMAGE_REDUCTION': 'Recibes menos daño (como mucho un 40 % en total).',
+        'DODGE': 'Probabilidad de esquivar por completo el ataque de una criatura.',
+        'MANA_REGEN': 'Recuperas más maná cada segundo.',
+        'RESOURCE_GAIN': 'El recurso de tu rol se carga más rápido.',
+        'REGEN': 'Recuperas vida cada 3 s.',
+        'ON_HIT_POISON': 'Probabilidad de envenenar durante 3 s al enemigo que golpeas.',
+        'ON_HIT_SLOW': 'Probabilidad de ralentizar durante 3 s al enemigo que golpeas.',
+        'ON_HIT_FIRE': 'Probabilidad de prender fuego durante 3 s al enemigo que golpeas.',
+        'ON_HIT_WITHER': 'Probabilidad de marchitar durante 3 s al enemigo que golpeas.',
+        'MINION_POWER': 'Tus esbirros tienen más vida y hacen más daño.',
+        'KNOCKBACK': 'Los golpes te empujan menos.',
+        'SPEED': 'Te mueves más rápido.',
+        'MAX_HEALTH': 'Aumenta tu vida máxima.',
+        'ATTACK_SPEED': 'Atacas más rápido.',
+        'LUCK': 'Tienes más suerte: mejor botín y mejor pesca.',
+    },
+    'en': {
+        'LIFESTEAL': 'You heal for part of the damage you deal.',
+        'CRIT': 'Chance for your hits to be critical (×1.5 damage).',
+        'EXECUTE': 'You deal more damage to enemies below 35% health.',
+        'THORNS': 'Whoever hits you in melee takes back part of that damage.',
+        'DAMAGE_REDUCTION': 'You take less damage (40% at most in total).',
+        'DODGE': "Chance to fully dodge a creature's attack.",
+        'MANA_REGEN': 'You regain extra mana every second.',
+        'RESOURCE_GAIN': 'Your role resource charges faster.',
+        'REGEN': 'You regain health every 3 s.',
+        'ON_HIT_POISON': 'Chance to poison the enemy you hit for 3 s.',
+        'ON_HIT_SLOW': 'Chance to slow the enemy you hit for 3 s.',
+        'ON_HIT_FIRE': 'Chance to set the enemy you hit on fire for 3 s.',
+        'ON_HIT_WITHER': 'Chance to wither the enemy you hit for 3 s.',
+        'MINION_POWER': 'Your minions have more health and deal more damage.',
+        'KNOCKBACK': 'Hits push you back less.',
+        'SPEED': 'You move faster.',
+        'MAX_HEALTH': 'Raises your max health.',
+        'ATTACK_SPEED': 'You attack faster.',
+        'LUCK': 'You have more luck: better loot and better fishing.',
+    },
+    'pt_br': {
+        'LIFESTEAL': 'Você se cura com parte do dano que causa.',
+        'CRIT': 'Chance de seus golpes serem críticos (×1.5 de dano).',
+        'EXECUTE': 'Você causa mais dano a inimigos com menos de 35% de vida.',
+        'THORNS': 'Quem te ataca corpo a corpo recebe parte desse dano.',
+        'DAMAGE_REDUCTION': 'Você recebe menos dano (no máximo 40% no total).',
+        'DODGE': 'Chance de esquivar totalmente o ataque de uma criatura.',
+        'MANA_REGEN': 'Você recupera mais mana a cada segundo.',
+        'RESOURCE_GAIN': 'O recurso da sua classe carrega mais rápido.',
+        'REGEN': 'Você recupera vida a cada 3 s.',
+        'ON_HIT_POISON': 'Chance de envenenar por 3 s o inimigo que você golpeia.',
+        'ON_HIT_SLOW': 'Chance de deixar lento por 3 s o inimigo que você golpeia.',
+        'ON_HIT_FIRE': 'Chance de incendiar por 3 s o inimigo que você golpeia.',
+        'ON_HIT_WITHER': 'Chance de definhar por 3 s o inimigo que você golpeia.',
+        'MINION_POWER': 'Seus servos têm mais vida e causam mais dano.',
+        'KNOCKBACK': 'Os golpes te empurram menos.',
+        'SPEED': 'Você se move mais rápido.',
+        'MAX_HEALTH': 'Aumenta sua vida máxima.',
+        'ATTACK_SPEED': 'Você ataca mais rápido.',
+        'LUCK': 'Você tem mais sorte: melhor saque e melhor pesca.',
+    },
+    'fr_fr': {
+        'LIFESTEAL': 'Vous vous soignez d’une partie des dégâts infligés.',
+        'CRIT': 'Chance que vos coups soient critiques (×1.5 dégâts).',
+        'EXECUTE': 'Vous infligez plus de dégâts aux ennemis sous 35% de santé.',
+        'THORNS': 'Qui vous frappe au corps à corps subit une partie de ces dégâts.',
+        'DAMAGE_REDUCTION': 'Vous subissez moins de dégâts (40% au plus au total).',
+        'DODGE': 'Chance d’esquiver entièrement l’attaque d’une créature.',
+        'MANA_REGEN': 'Vous récupérez plus de mana chaque seconde.',
+        'RESOURCE_GAIN': 'La ressource de votre rôle se charge plus vite.',
+        'REGEN': 'Vous récupérez de la santé toutes les 3 s.',
+        'ON_HIT_POISON': 'Chance d’empoisonner pendant 3 s l’ennemi que vous frappez.',
+        'ON_HIT_SLOW': 'Chance de ralentir pendant 3 s l’ennemi que vous frappez.',
+        'ON_HIT_FIRE': 'Chance d’enflammer pendant 3 s l’ennemi que vous frappez.',
+        'ON_HIT_WITHER': 'Chance de flétrir pendant 3 s l’ennemi que vous frappez.',
+        'MINION_POWER': 'Vos serviteurs ont plus de santé et infligent plus de dégâts.',
+        'KNOCKBACK': 'Les coups vous repoussent moins.',
+        'SPEED': 'Vous vous déplacez plus vite.',
+        'MAX_HEALTH': 'Augmente votre santé maximale.',
+        'ATTACK_SPEED': 'Vous attaquez plus vite.',
+        'LUCK': 'Vous avez plus de chance : meilleur butin et meilleure pêche.',
+    },
+    'de_de': {
+        'LIFESTEAL': 'Du heilst dich um einen Teil des Schadens, den du verursachst.',
+        'CRIT': 'Chance, dass deine Treffer kritisch sind (×1.5 Schaden).',
+        'EXECUTE': 'Du verursachst mehr Schaden an Feinden unter 35% Leben.',
+        'THORNS': 'Wer dich im Nahkampf trifft, erleidet einen Teil dieses Schadens.',
+        'DAMAGE_REDUCTION': 'Du erleidest weniger Schaden (insgesamt höchstens 40%).',
+        'DODGE': 'Chance, dem Angriff einer Kreatur ganz auszuweichen.',
+        'MANA_REGEN': 'Du erhältst jede Sekunde zusätzliches Mana.',
+        'RESOURCE_GAIN': 'Deine Rollenressource lädt schneller auf.',
+        'REGEN': 'Du regenerierst alle 3 s Leben.',
+        'ON_HIT_POISON': 'Chance, den getroffenen Feind 3 s lang zu vergiften.',
+        'ON_HIT_SLOW': 'Chance, den getroffenen Feind 3 s lang zu verlangsamen.',
+        'ON_HIT_FIRE': 'Chance, den getroffenen Feind 3 s lang in Brand zu setzen.',
+        'ON_HIT_WITHER': 'Chance, den getroffenen Feind 3 s lang verdorren zu lassen.',
+        'MINION_POWER': 'Deine Diener haben mehr Leben und verursachen mehr Schaden.',
+        'KNOCKBACK': 'Treffer stoßen dich weniger zurück.',
+        'SPEED': 'Du bewegst dich schneller.',
+        'MAX_HEALTH': 'Erhöht dein maximales Leben.',
+        'ATTACK_SPEED': 'Du greifst schneller an.',
+        'LUCK': 'Du hast mehr Glück: bessere Beute und besseres Angeln.',
+    },
 }
-EXCLUSIVE = {'es': 'Las sendas son exclusivas: solo puedes seguir una por rol.',
-             'en': 'Paths are exclusive: you can follow only one per role.'}
-OLD_SENTENCE = {'es': 'Solo puedes seguir 2 de las 3 sendas del rol.',
-                'en': "You can follow only 2 of the role's 3 paths."}
-FORK = {'es': 'Bifurcación: solo puedes aprender una de las dos ramas.',
-        'en': 'Fork: you can learn only one of the two branches.'}
-BOOSTED = {'es': 'Potencia el efecto de S4 (×1,5).', 'en': 'Empowers the S4 effect (×1.5).'}
+# Línea de rangos: «Rango 1 / 2 / 3: +2 % / +4 % / +6 %.»
+RANKS = {'es': 'Rango 1 / 2 / 3:', 'en': 'Rank 1 / 2 / 3:', 'pt_br': 'Grau 1 / 2 / 3:',
+         'fr_fr': 'Rang 1 / 2 / 3 :', 'de_de': 'Rang 1 / 2 / 3:'}
 
 # (rol, senda 1-3, nombres es S4/S5x/S5y/S6, frase es, nombres en, frase en)
 ROWS = [
@@ -155,32 +241,30 @@ KS_JAVA = os.path.join(ROOT, 'src/main/java/dev/aptitudes/role/KeystoneRules.jav
 # Nombre y efecto de cada plantilla con los valores por defecto de la configuración (keystone*).
 TEMPLATE = {
     'es': {
-        'carnage': ('Carnicería', 'Al matar: recuperas el 10 % de tu vida máxima y ganas Prisa II durante 5 s.'),
-        'bulwark': ('Baluarte', 'Al bajar del 30 % de vida: 8 de absorción y Resistencia I durante 6 s (espera de 60 s).'),
-        'overload': ('Sobrecarga', 'Cada 4.ª habilidad no gasta maná y su espera se reduce a la mitad.'),
-        'detonation': ('Detonación', 'Al matar: explosión de 4 de daño a 3 bloques (no rompe bloques ni daña aliados).'),
-        'contagion': ('Contagio', 'Al matar: el veneno, la lentitud, el marchitamiento y el fuego del objetivo pasan a 2 enemigos cercanos.'),
-        'legion': ('Legión', '+1 esbirro máximo; tus esbirros te curan con el 10 % del daño que hacen.'),
-        'specter': ('Espectro', '+5 % de esquiva. Tras esquivar, tu siguiente golpe en 3 s es un crítico seguro.'),
-        'fortune': ('Fortuna', '25 % de una tirada de botín extra al matar criaturas y 10 % de esmeralda al matar élites.'),
-        'tempest': ('Tempestad', 'Tus críticos (y el 15 % de tus golpes) lanzan una chispa de 3 de daño a otro enemigo cercano (espera de 1 s).'),
-        'sanctuary': ('Santuario', 'Cada 5 s curas 2 de vida a ti y a tus aliados del grupo a 8 bloques.'),
+        'carnage': ('Carnicería', 'Cada vez que matas a un enemigo, recuperas el 10 % de tu vida máxima y ganas Prisa II durante 5 s.'),
+        'bulwark': ('Baluarte', 'Si tu vida baja del 30 %, ganas 8 de absorción y Resistencia I durante 6 s. Se recarga en 60 s.'),
+        'overload': ('Sobrecarga', 'Cada 4.ª habilidad que lanzas no gasta maná y su espera se reduce a la mitad.'),
+        'detonation': ('Detonación', 'Cada enemigo que matas explota y hace 4 de daño a 3 bloques a la redonda. No rompe bloques ni daña a tus aliados.'),
+        'contagion': ('Contagio', 'Cada vez que matas a un enemigo, su veneno, lentitud, marchitamiento y fuego pasan a 2 enemigos cercanos.'),
+        'legion': ('Legión', 'Puedes tener 1 esbirro más, y tus esbirros te curan con el 10 % del daño que hacen.'),
+        'specter': ('Espectro', '+5 % de esquiva. Después de esquivar, tu siguiente golpe en menos de 3 s es un crítico seguro.'),
+        'fortune': ('Fortuna', 'Al matar criaturas tienes un 25 % de probabilidad de botín extra, y al matar élites, un 10 % de conseguir una esmeralda.'),
+        'tempest': ('Tempestad', 'Tus críticos (y el 15 % de tus demás golpes) lanzan una chispa que hace 3 de daño a otro enemigo cercano (espera de 1 s).'),
+        'sanctuary': ('Santuario', 'Cada 5 s, tú y tus aliados del grupo a menos de 8 bloques recuperan 2 de vida.'),
     },
     'en': {
-        'carnage': ('Carnage', 'On kill: heal 10% of your max health and gain Haste II for 5 s.'),
-        'bulwark': ('Bulwark', 'Dropping below 30% health: 8 absorption and Resistance I for 6 s (60 s cooldown).'),
-        'overload': ('Overload', 'Every 4th ability costs no mana and its cooldown is halved.'),
-        'detonation': ('Detonation', 'On kill: 4-damage explosion within 3 blocks (no block damage, never hits allies).'),
-        'contagion': ('Contagion', "On kill: the target's poison, slowness, wither and fire spread to 2 nearby enemies."),
-        'legion': ('Legion', '+1 max minion; your minions heal you for 10% of the damage they deal.'),
-        'specter': ('Specter', '+5% dodge. After a dodge, your next hit within 3 s is a guaranteed critical.'),
-        'fortune': ('Fortune', '25% chance of an extra loot roll on kill and 10% chance of an emerald from elites.'),
-        'tempest': ('Tempest', 'Your criticals (and 15% of your hits) throw a 3-damage spark at another nearby enemy (1 s cooldown).'),
-        'sanctuary': ('Sanctuary', 'Every 5 s you heal yourself and party allies within 8 blocks for 2 health.'),
+        'carnage': ('Carnage', 'Each time you kill an enemy, you heal 10% of your max health and gain Haste II for 5 s.'),
+        'bulwark': ('Bulwark', 'If your health drops below 30%, you gain 8 absorption and Resistance I for 6 s. Recharges in 60 s.'),
+        'overload': ('Overload', 'Every 4th ability you cast costs no mana and has its cooldown halved.'),
+        'detonation': ('Detonation', 'Every enemy you kill explodes, dealing 4 damage within 3 blocks. It never breaks blocks or hurts your allies.'),
+        'contagion': ('Contagion', 'Each time you kill an enemy, its poison, slowness, wither and fire spread to 2 nearby enemies.'),
+        'legion': ('Legion', 'You can have 1 more minion, and your minions heal you for 10% of the damage they deal.'),
+        'specter': ('Specter', '+5% dodge. After you dodge, your next hit within 3 s is a guaranteed critical.'),
+        'fortune': ('Fortune', 'Killing creatures has a 25% chance to give extra loot, and killing elites a 10% chance to give an emerald.'),
+        'tempest': ('Tempest', 'Your critical hits (and 15% of your other hits) throw a spark that deals 3 damage to another nearby enemy (1 s cooldown).'),
+        'sanctuary': ('Sanctuary', 'Every 5 s, you and party allies within 8 blocks heal 2 health.'),
     },
 }
-KS_NOTE = {'es': 'Piedra angular (nivel 50, 1 rango). Los valores son los de la configuración por defecto.',
-           'en': 'Keystone (level 50, 1 rank). Values are the default configuration ones.'}
 KS_CAMEL = {'CARNAGE': 'carnage', 'BULWARK': 'bulwark', 'OVERLOAD': 'overload', 'DETONATION': 'detonation',
             'CONTAGION': 'contagion', 'LEGION': 'legion', 'SPECTER': 'specter', 'FORTUNE': 'fortune',
             'TEMPEST': 'tempest', 'SANCTUARY': 'sanctuary'}
@@ -335,20 +419,19 @@ def num(v):
 
 
 def amount(effect, value, lang):
-    per, pct = EFFECTS[effect]
-    if pct:
-        return '+' + num(value * 100) + (' %' if lang == 'es' else '%')
-    return '+' + num(value)
+    """Cifra con signo; en español, coma decimal y espacio antes del %. El resto, punto (lo exigen las pruebas)."""
+    pct = EFFECTS[effect][1]
+    text = '+' + num(value * 100 if pct else value)
+    if lang == 'es':
+        text = text.replace('.', ',')
+    return text + ((' %' if lang == 'es' else '%') if pct else '')
 
 
-def desc(effect, mult, lang, extra):
-    per, _ = EFFECTS[effect]
-    v = per * mult
-    word = {'es': ('por rango', 'máx.'), 'en': ('per rank', 'max'),
-            'pt_br': ('por grau', 'máx.'), 'fr_fr': ('par rang', 'max'),
-            'de_de': ('pro Rang', 'max.')}[lang]
-    text = f"{LABEL[lang][effect]}: {amount(effect, v, lang)} {word[0]} ({word[1]} {amount(effect, v * 3, lang)})."
-    return ' '.join([text] + extra + [EXCLUSIVE[lang]])
+def desc(effect, mult, lang):
+    """Frase llana del efecto y sus valores en los rangos 1, 2 y 3 ({@code mult} 1,5 en S6)."""
+    v = EFFECTS[effect][0] * mult
+    values = ' / '.join(amount(effect, v * r, lang) for r in (1, 2, 3))
+    return f'{SENTENCE[lang][effect]} {RANKS[lang]} {values}.'
 
 
 def keystone_templates():
@@ -378,23 +461,18 @@ def build(lang, data):
         ks_name = KEYSTONES[index][0 if code == 'es' else 1]
         key = f'node.aptitudes.{role}_{LETTERS[path - 1]}7'
         out[key] = ks_name
-        out[key + '.desc'] = f'{TEMPLATE[code][tpl][0]}: {TEMPLATE[code][tpl][1]} {KS_NOTE[code]}'
+        out[key + '.desc'] = TEMPLATE[code][tpl][1]
 
         names = es_names if code == 'es' else en_names
         effs = effects[role][path - 1]
         base = f'{role}_{LETTERS[path - 1]}'
         out[f'path.aptitudes.{base}.desc'] = es_flavor if code == 'es' else en_flavor
-        # S1–S3: solo cambia la frase de la exclusividad.
         for i in range(3):
-            key = f'node.aptitudes.{base}{i + 1}.desc'
-            if key in data:
-                out[key] = data[key].replace(OLD_SENTENCE[code], EXCLUSIVE[code])
+            out[f'node.aptitudes.{base}{i + 1}.desc'] = desc(effs[i], 1.0, code)
         for i, suffix in enumerate(['4', '5x', '5y', '6']):
             key = f'node.aptitudes.{base}{suffix}'
-            effect = effs[3 + i]
-            extra = [FORK[code]] if suffix in ('5x', '5y') else [BOOSTED[code]] if suffix == '6' else []
             out[key] = names[i]
-            out[key + '.desc'] = desc(effect, 1.5 if suffix == '6' else 1.0, code, extra)
+            out[key + '.desc'] = desc(effs[3 + i], 1.5 if suffix == '6' else 1.0, code)
     out.update(UI[lang])
     return out
 
@@ -418,16 +496,15 @@ def build_local(lang):
         for i, rank in enumerate(('I', 'II', 'III')):
             key = f'node.aptitudes.{base}{i + 1}'
             out[key] = f'{title} {rank}'
-            out[key + '.desc'] = desc(effects[role][path - 1][i], 1.0, lang, [])
+            out[key + '.desc'] = desc(effects[role][path - 1][i], 1.0, lang)
         for i, suffix in enumerate(('4', '5x', '5y', '6')):
             key = f'node.aptitudes.{base}{suffix}'
-            extra = [FORK[lang]] if suffix in ('5x', '5y') else [BOOSTED[lang]] if suffix == '6' else []
             out[key] = names[i]
-            out[key + '.desc'] = desc(effects[role][path - 1][3 + i], 1.5 if suffix == '6' else 1.0, lang, extra)
+            out[key + '.desc'] = desc(effects[role][path - 1][3 + i], 1.5 if suffix == '6' else 1.0, lang)
         key = f'node.aptitudes.{base}7'
         name, text = TEMPLATE[lang][templates[role][path - 1]]
         out[key] = keystone
-        out[key + '.desc'] = f'{name}: {text} {KS_NOTE[lang]}'
+        out[key + '.desc'] = text
     return out
 
 
@@ -472,31 +549,6 @@ for index, locale in enumerate(LOCALES):
                         for key in TEMPLATE['en']}
     SUBTITLES[locale] = {key: UI_TRANSLATIONS[f'subtitles.aptitudes.keystone_{key}'][index]
                           for key in TEMPLATE['en']}
-    LABEL[locale] = dict(EFFECT_NAME[locale])
-
-for locale, exclusive, fork, boosted, note, labels in zip(LOCALES, (
-    'Os caminhos são exclusivos: só é possível seguir um por classe.',
-    'Les voies sont exclusives : une seule par rôle.',
-    'Pfade schließen einander aus: nur einer pro Rolle.',
-), (
-    'Bifurcação: só é possível aprender um dos dois ramos.',
-    'Bifurcation : une seule des deux branches peut être apprise.',
-    'Verzweigung: Du kannst nur einen der beiden Zweige erlernen.',
-), (
-    'Potencializa o efeito de S4 (×1.5).',
-    "Renforce l'effet de S4 (×1.5).",
-    'Verstärkt den Effekt von S4 (×1.5).',
-), (
-    'Pedra angular (nível 50, 1 grau). Valores da configuração padrão.',
-    'Pierre angulaire (niveau 50, 1 rang). Valeurs de la configuration par défaut.',
-    'Schlüsselstein (Stufe 50, 1 Rang). Werte der Standardkonfiguration.',
-), (
-    ('Golpe crítico (×1.5)', 'Execução (+dano em inimigos abaixo de 35% de vida)', 'Espinhos (reflete dano corpo a corpo)', 'Regeneração de vida (a cada 3 s)', 'Regeneração de mana (por segundo)'),
-    ('Coup critique (×1.5)', 'Exécution (+dégâts aux ennemis sous 35% de santé)', 'Épines (renvoie les dégâts de mêlée)', 'Régénération de santé (toutes les 3 s)', 'Régénération de mana (par seconde)'),
-    ('Kritischer Treffer (×1.5)', 'Hinrichtung (+Schaden gegen Feinde unter 35% Leben)', 'Dornen (wirft Nahkampfschaden zurück)', 'Lebensregeneration (alle 3 s)', 'Manaregeneration (pro Sekunde)'),
-), strict=True):
-    EXCLUSIVE[locale], FORK[locale], BOOSTED[locale], KS_NOTE[locale] = exclusive, fork, boosted, note
-    LABEL[locale].update(zip(('CRIT', 'EXECUTE', 'THORNS', 'REGEN', 'MANA_REGEN'), labels, strict=True))
 
 
 def update(lang, data):

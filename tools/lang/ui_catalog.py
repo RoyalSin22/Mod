@@ -1449,25 +1449,25 @@ keystone_sanctuary¦Santuário: cura¦Sanctuaire : soin¦Zuflucht: Heilung
 
 add('keystone.aptitudes.', """
 carnage¦Carnificina¦Carnage¦Blutbad
-carnage.desc¦Ao abater: cura 10% da vida máxima e recebe Pressa II por 5 s.¦À l'élimination : récupère 10% de votre santé maximale et accorde Célérité II pendant 5 s.¦Bei Tötung: Heilt 10% deines maximalen Lebens und gewährt Eile II für 5 s.
+carnage.desc¦Cada vez que você abate um inimigo, recupera 10% da vida máxima e recebe Pressa II por 5 s.¦Chaque fois que vous tuez un ennemi, vous récupérez 10% de votre santé maximale et gagnez Célérité II pendant 5 s.¦Jedes Mal, wenn du einen Feind tötest, heilst du 10% deines maximalen Lebens und erhältst Eile II für 5 s.
 bulwark¦Baluarte¦Rempart¦Bollwerk
-bulwark.desc¦Ao cair abaixo de 30% de vida: 8 de absorção e Resistência I por 6 s (60 s de recarga).¦Sous 30% de santé : 8 d'absorption et Résistance I pendant 6 s (recharge de 60 s).¦Unter 30% Leben: 8 Absorption und Resistenz I für 6 s (60 s Abklingzeit).
+bulwark.desc¦Se sua vida cair abaixo de 30%, você ganha 8 de absorção e Resistência I por 6 s. Recarrega em 60 s.¦Si votre santé passe sous 30%, vous gagnez 8 d'absorption et Résistance I pendant 6 s. Se recharge en 60 s.¦Fällt dein Leben unter 30%, erhältst du 8 Absorption und Resistenz I für 6 s. Lädt in 60 s wieder auf.
 overload¦Sobrecarga¦Surcharge¦Überladung
-overload.desc¦A cada 4 habilidades, uma não custa mana e tem metade da recarga.¦Chaque 4e capacité ne coûte aucun mana et sa recharge est divisée par deux.¦Jede 4. Fähigkeit kostet kein Mana und hat halbierte Abklingzeit.
+overload.desc¦A cada 4 habilidades que você usa, uma não custa mana e tem a recarga reduzida pela metade.¦Une capacité sur 4 que vous lancez ne coûte aucun mana et voit sa recharge divisée par deux.¦Jede 4. Fähigkeit, die du wirkst, kostet kein Mana und hat halbierte Abklingzeit.
 detonation¦Detonação¦Détonation¦Detonation
-detonation.desc¦Ao abater: explosão de 4 de dano em 3 blocos (não quebra blocos nem atinge aliados).¦À l'élimination : explosion à 4 dégâts dans un rayon de 3 blocs (sans dégâts aux blocs ni aux alliés).¦Bei Tötung: Explosion mit 4 Schaden im Umkreis von 3 Blöcken (kein Blockschaden, trifft nie Verbündete).
+detonation.desc¦Cada inimigo que você abate explode e causa 4 de dano em até 3 blocos. Nunca quebra blocos nem fere seus aliados.¦Chaque ennemi que vous tuez explose et inflige 4 dégâts dans un rayon de 3 blocs. Ne casse jamais de blocs et ne blesse pas vos alliés.¦Jeder Feind, den du tötest, explodiert und verursacht 4 Schaden im Umkreis von 3 Blöcken. Zerstört nie Blöcke und trifft nie Verbündete.
 contagion¦Contágio¦Contagion¦Ansteckung
-contagion.desc¦Ao abater: veneno, lentidão, decomposição e fogo do alvo se espalham para 2 inimigos próximos.¦À l'élimination : le poison, la lenteur, le Wither et le feu de la cible se propagent à 2 ennemis proches.¦Bei Tötung: Gift, Langsamkeit, Ausdörrung und Feuer des Ziels verbreiten sich auf 2 nahe Feinde.
+contagion.desc¦Cada vez que você abate um inimigo, o veneno, a lentidão, o definhamento e o fogo dele passam para 2 inimigos próximos.¦Chaque fois que vous tuez un ennemi, son poison, sa lenteur, son flétrissement et son feu passent à 2 ennemis proches.¦Jedes Mal, wenn du einen Feind tötest, gehen sein Gift, seine Langsamkeit, seine Ausdörrung und sein Feuer auf 2 nahe Feinde über.
 legion¦Legião¦Légion¦Legion
-legion.desc¦+1 servo máximo; seus servos curam você em 10% do dano que causam.¦+1 serviteur maximal ; vos serviteurs vous soignent de 10% des dégâts infligés.¦+1 maximaler Diener; deine Diener heilen dich um 10% ihres verursachten Schadens.
+legion.desc¦Você pode ter 1 servo a mais, e seus servos te curam com 10% do dano que causam.¦Vous pouvez avoir 1 serviteur de plus, et vos serviteurs vous soignent de 10% des dégâts qu'ils infligent.¦Du kannst 1 Diener mehr haben, und deine Diener heilen dich um 10% des Schadens, den sie verursachen.
 specter¦Espectro¦Spectre¦Gespenst
-specter.desc¦+5% de esquiva. Após esquivar, seu próximo golpe em até 3 s é um crítico garantido.¦+5% d'esquive. Après une esquive, votre prochain coup dans les 3 s est un critique garanti.¦+5% Ausweichen. Nach dem Ausweichen trifft dein nächster Hieb innerhalb von 3 s garantiert kritisch.
+specter.desc¦+5% de esquiva. Depois de esquivar, seu próximo golpe em até 3 s é um crítico garantido.¦+5% d'esquive. Après une esquive, votre prochain coup dans les 3 s est un critique garanti.¦+5% Ausweichen. Nach dem Ausweichen trifft dein nächster Schlag innerhalb von 3 s garantiert kritisch.
 fortune¦Fortuna¦Fortune¦Glück
-fortune.desc¦25% de chance de uma tirada extra de saque ao abater e 10% de chance de esmeralda de elites.¦25% de chance d'un tirage de butin supplémentaire à l'élimination et 10% de chance d'émeraude sur les élites.¦25% Chance auf einen zusätzlichen Beutewurf bei Tötung und 10% Chance auf einen Smaragd von Elitegegnern.
+fortune.desc¦Abater criaturas tem 25% de chance de dar saque extra, e abater elites, 10% de chance de dar uma esmeralda.¦Tuer des créatures a 25% de chance de donner du butin supplémentaire, et tuer des élites 10% de chance de donner une émeraude.¦Das Töten von Kreaturen hat 25% Chance auf zusätzliche Beute, das Töten von Elitegegnern 10% Chance auf einen Smaragd.
 tempest¦Tempestade¦Tempête¦Sturm
-tempest.desc¦Seus críticos (e 15% dos golpes) lançam uma faísca de 3 de dano em outro inimigo próximo (1 s de recarga).¦Vos critiques (et 15% de vos coups) lancent une étincelle à 3 dégâts sur un autre ennemi proche (recharge de 1 s).¦Deine kritischen Treffer (und 15% deiner Treffer) schleudern einen Funken mit 3 Schaden auf einen weiteren nahen Feind (1 s Abklingzeit).
+tempest.desc¦Seus críticos (e 15% dos seus outros golpes) lançam uma faísca que causa 3 de dano a outro inimigo próximo (1 s de recarga).¦Vos coups critiques (et 15% de vos autres coups) lancent une étincelle qui inflige 3 dégâts à un autre ennemi proche (recharge de 1 s).¦Deine kritischen Treffer (und 15% deiner übrigen Treffer) schleudern einen Funken, der einem weiteren nahen Feind 3 Schaden zufügt (1 s Abklingzeit).
 sanctuary¦Santuário¦Sanctuaire¦Zuflucht
-sanctuary.desc¦A cada 5 s, cura 2 de vida em você e aliados do grupo em 8 blocos.¦Toutes les 5 s, vous rend 2 points de santé, à vous et aux alliés du groupe dans un rayon de 8 blocs.¦Heilt dich und Gruppenverbündete im Umkreis von 8 Blöcken alle 5 s um 2 Leben.
+sanctuary.desc¦A cada 5 s, você e os aliados do grupo a até 8 blocos recuperam 2 de vida.¦Toutes les 5 s, vous et les alliés du groupe à moins de 8 blocs récupérez 2 points de santé.¦Alle 5 s heilen du und Gruppenverbündete im Umkreis von 8 Blöcken 2 Leben.
 """)
 
 add('tutorial.aptitudes.', """

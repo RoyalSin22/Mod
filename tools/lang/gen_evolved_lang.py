@@ -6,11 +6,16 @@ Español se copia a sus seis variantes. --check comprueba sin escribir.
 Los valores numéricos salen de los mismos datos que el código (EvolvedTree / EvolvedAbilities):
  - pasivas: valor de senda (PathEffect.perRank) × 1,5 (Maestro, 2 rangos) o × 3 (Definitivo, 1 rango)
  - activas: daño base 6 (Maestro) / 10 (Definitivo) + 1,5 por rango efectivo
+Estilo llano (v67): primero qué hace, hablándole al jugador, y después las cifras; sin coletillas.
 Si cambias esos números en Java, cambia también las constantes de abajo y vuelve a ejecutarlo.
 
 Uso: python3 tools/lang/gen_evolved_lang.py
 """
 from check_lang import LOCALES
+from gen_path_lang import RANKS, SENTENCE, amount as path_amount
+
+RANKS_2 = {lang: text.replace(' / 3', '') for lang, text in RANKS.items()}
+BONUS = {'es': 'Bonificación:', 'en': 'Bonus:', 'pt_br': 'Bônus:', 'fr_fr': 'Bonus :', 'de_de': 'Bonus:'}
 
 # PathEffect: (valor por rango, porcentaje)
 EFFECTS = {
@@ -150,27 +155,6 @@ NAMES = {
                'Beast King', 'Thick Hide', 'Fang', 'Alpha Roar', 'Stampede']),
 }
 
-EFFECT_NAME = {
-    'es': {'LIFESTEAL': 'Robo de vida', 'CRIT': 'Probabilidad de crítico', 'EXECUTE': 'Daño de ejecución',
-           'THORNS': 'Espinas', 'DAMAGE_REDUCTION': 'Reducción de daño', 'DODGE': 'Esquiva',
-           'MANA_REGEN': 'Regeneración de maná', 'RESOURCE_GAIN': 'Carga del recurso de rol',
-           'REGEN': 'Regeneración de vida', 'ON_HIT_POISON': 'Veneno al golpear',
-           'ON_HIT_SLOW': 'Lentitud al golpear', 'ON_HIT_FIRE': 'Fuego al golpear',
-           'ON_HIT_WITHER': 'Marchitamiento al golpear', 'MINION_POWER': 'Poder de los esbirros',
-           'KNOCKBACK': 'Resistencia al empuje', 'SPEED': 'Velocidad', 'MAX_HEALTH': 'Vida máxima',
-           'ATTACK_SPEED': 'Velocidad de ataque', 'LUCK': 'Suerte'},
-    'en': {'LIFESTEAL': 'Lifesteal', 'CRIT': 'Critical chance', 'EXECUTE': 'Execute damage', 'THORNS': 'Thorns',
-           'DAMAGE_REDUCTION': 'Damage reduction', 'DODGE': 'Dodge', 'MANA_REGEN': 'Mana regeneration',
-           'RESOURCE_GAIN': 'Role resource gain', 'REGEN': 'Health regeneration',
-           'ON_HIT_POISON': 'Poison on hit', 'ON_HIT_SLOW': 'Slowness on hit', 'ON_HIT_FIRE': 'Fire on hit',
-           'ON_HIT_WITHER': 'Wither on hit', 'MINION_POWER': 'Minion power', 'KNOCKBACK': 'Knockback resistance',
-           'SPEED': 'Speed', 'MAX_HEALTH': 'Max health', 'ATTACK_SPEED': 'Attack speed', 'LUCK': 'Luck'},
-}
-UNIT = {
-    'es': {'MANA_REGEN': ' de maná por segundo', 'REGEN': ' de vida cada 3 s', 'MAX_HEALTH': ' de vida', 'LUCK': ' de suerte'},
-    'en': {'MANA_REGEN': ' mana per second', 'REGEN': ' health every 3 s', 'MAX_HEALTH': ' health', 'LUCK': ' luck'},
-}
-
 # T8: nombres completos por rol, en orden m1..m5/u1..u5; nunca se traducen por fragmentos.
 LOCAL_NAMES = {locale: {} for locale in LOCALES}
 for row in """
@@ -202,72 +186,42 @@ tamer¦Vínculo/Matilha/Instinto selvagem/Chamado selvagem/Investida/Rei das fer
             raise ValueError(f'Nombres de evolución inválidos: {locale}/{role}')
         LOCAL_NAMES[locale][role] = names
 
-for locale, labels, units, extras, summons in zip(LOCALES, (
-    'Roubo de vida/Chance de crítico/Dano de execução/Espinhos/Redução de dano/Esquiva/Regeneração de mana/Carga do recurso de classe/Regeneração de vida/Veneno ao golpear/Lentidão ao golpear/Fogo ao golpear/Decomposição ao golpear/Poder dos servos/Resistência a repulsão/Velocidade/Vida máxima/Velocidade de ataque/Sorte',
-    'Vol de vie/Chance de critique/Dégâts d\'exécution/Épines/Réduction des dégâts/Esquive/Régénération de mana/Charge de ressource de rôle/Régénération de santé/Poison au coup/Lenteur au coup/Feu au coup/Wither au coup/Puissance des serviteurs/Résistance au recul/Vitesse/Santé maximale/Vitesse d\'attaque/Chance',
-    'Lebensraub/Kritische Trefferchance/Hinrichtungsschaden/Dornen/Schadensreduktion/Ausweichen/Manaregeneration/Rollenressourcengewinn/Lebensregeneration/Gift beim Treffer/Langsamkeit beim Treffer/Feuer beim Treffer/Ausdörrung beim Treffer/Dienerstärke/Rückstoßresistenz/Geschwindigkeit/Maximales Leben/Angriffsgeschwindigkeit/Glück',
-), (
-    (' de mana por segundo', ' de vida a cada 3 s', ' de vida', ' de sorte'),
-    (' de mana par seconde', ' de santé toutes les 3 s', ' de santé', ' de chance'),
-    (' Mana pro Sekunde', ' Leben alle 3 s', ' Leben', ' Glück'),
-), (
-    ('', ' e Lentidão II', ' e incendeia', ' e Decomposição', ' e veneno', ' e lança ao ar', ' e forte repulsão'),
-    ('', ' et Lenteur II', ' et enflamme', ' et Wither', ' et poison', ' et projette en l\'air', ' et fort recul'),
-    ('', ' und Langsamkeit II', ' und entzündet', ' und Ausdörrung', ' und Gift', ' und schleudert hoch', ' und starker Rückstoß'),
+for locale, extras, summons in zip(LOCALES, (
+    ('', ' Também aplica Lentidão II.', ' Também incendeia os inimigos.', ' Também aplica Decomposição.',
+     ' Também os envenena.', ' Também os lança ao ar.', ' Também os empurra com força.'),
+    ('', ' Applique aussi Lenteur II.', ' Enflamme aussi les ennemis.', ' Applique aussi Wither.',
+     ' Les empoisonne aussi.', ' Les projette aussi en l’air.', ' Les repousse aussi violemment.'),
+    ('', ' Verursacht außerdem Langsamkeit II.', ' Setzt Feinde außerdem in Brand.', ' Verursacht außerdem Ausdörrung.',
+     ' Vergiftet sie außerdem.', ' Schleudert sie außerdem hoch.', ' Stößt sie außerdem stark zurück.'),
 ), (
     ('zumbis', 'esqueletos', 'lobos', 'vexes'),
     ('zombies', 'squelettes', 'loups', 'vex'),
     ('Zombies', 'Skelette', 'Wölfe', 'Plagegeister'),
 ), strict=True):
-    EFFECT_NAME[locale] = dict(zip(EFFECTS, labels.split('/'), strict=True))
-    UNIT[locale] = dict(zip(UNIT['en'], units, strict=True))
     # EXTRA y SUMMON se amplían después de definir sus tablas originales.
     LOCAL_NAMES[locale]['_extra'] = extras
     LOCAL_NAMES[locale]['_summon'] = summons
 
 
-def num(v, lang):
-    s = ('%.1f' % v).rstrip('0').rstrip('.')
-    return s.replace('.', ',') if lang == 'es' else s
-
-
-def fmt(effect, value, lang):
-    per, pct = EFFECTS[effect]
-    if pct:
-        return '+' + num(value * 100, lang) + (' %%' if lang == 'es' else '%%')
-    return '+' + num(value, lang) + UNIT[lang][effect]
-
-
 def passive_desc(effect, tier, lang):
-    per, pct = EFFECTS[effect]
-    mult = 1.5 if tier == 1 else 3.0
-    v = per * mult
-    name = EFFECT_NAME[lang][effect]
-    if lang in LOCALES:
-        phrases = {
-            'pt_br': ('por grau', 'máx.', 'Soma aos Caminhos.'),
-            'fr_fr': ('par rang', 'max', "Se cumule avec les Voies."),
-            'de_de': ('pro Rang', 'max.', 'Addiert sich zu den Pfaden.'),
-        }
-        per_rank, maximum, stacks = phrases[lang]
-        value = fmt(effect, v, lang)
-        if tier == 1:
-            value += f' {per_rank} ({maximum} {fmt(effect, v * 2, lang)})'
-        return f'{name}: {value}. {stacks}'
+    """Frase llana del efecto (la misma de las Sendas) y su valor: Maestro × 1,5 en 2 rangos; Definitivo × 3."""
+    v = EFFECTS[effect][0] * (1.5 if tier == 1 else 3.0)
     if tier == 1:
-        if lang == 'es':
-            return f"{name}: {fmt(effect, v, lang)} por rango (máx. {fmt(effect, v * 2, lang)}). Se suma a las Sendas."
-        return f"{name}: {fmt(effect, v, lang)} per rank (max {fmt(effect, v * 2, lang)}). Stacks with Paths."
-    if lang == 'es':
-        return f"{name}: {fmt(effect, v, lang)}. Se suma a las Sendas."
-    return f"{name}: {fmt(effect, v, lang)}. Stacks with Paths."
+        values = f'{RANKS_2[lang]} {path_amount(effect, v, lang)} / {path_amount(effect, v * 2, lang)}.'
+    else:
+        values = f'{BONUS[lang]} {path_amount(effect, v, lang)}.'
+    # Estas claves se han escrito siempre con %% (sin argumentos se muestra como %).
+    return f'{SENTENCE[lang][effect]} {values}'.replace('%', '%%')
 
 
+# Efecto añadido de las activas, como frase aparte.
 EXTRA = {
-    'es': {'NONE': '', 'SLOW': ' y Lentitud II', 'FIRE': ' y prende fuego', 'WITHER': ' y Marchitamiento',
-           'POISON': ' y veneno', 'LAUNCH': ' y lanza por los aires', 'KNOCKBACK': ' y gran empuje'},
-    'en': {'NONE': '', 'SLOW': ' and Slowness II', 'FIRE': ' and sets on fire', 'WITHER': ' and Wither',
-           'POISON': ' and poison', 'LAUNCH': ' and launches into the air', 'KNOCKBACK': ' and heavy knockback'},
+    'es': {'NONE': '', 'SLOW': ' Además, aplica Lentitud II.', 'FIRE': ' Además, prende fuego a los enemigos.',
+           'WITHER': ' Además, aplica Marchitamiento.', 'POISON': ' Además, los envenena.',
+           'LAUNCH': ' Además, los lanza por los aires.', 'KNOCKBACK': ' Además, los empuja con fuerza.'},
+    'en': {'NONE': '', 'SLOW': ' It also applies Slowness II.', 'FIRE': ' It also sets enemies on fire.',
+           'WITHER': ' It also applies Wither.', 'POISON': ' It also poisons them.',
+           'LAUNCH': ' It also launches them into the air.', 'KNOCKBACK': ' It also knocks them back hard.'},
 }
 SUMMON = {'es': {'ZOMBIES': 'zombis', 'SKELETONS': 'esqueletos', 'WOLVES': 'lobos', 'VEXES': 'vexes'},
           'en': {'ZOMBIES': 'zombies', 'SKELETONS': 'skeletons', 'WOLVES': 'wolves', 'VEXES': 'vexes'}}
@@ -277,95 +231,83 @@ for locale in LOCALES:
     SUMMON[locale] = dict(zip(SUMMON['en'], LOCAL_NAMES[locale].pop('_summon'), strict=True))
 
 ACTIVE = {
+    'es': (
+        'Liberas una explosión a tu alrededor que daña a los enemigos cercanos (radio de 5 bloques, algo más con cada rango). Daño: {d}.{x}',
+        'Disparas un rayo recto de 24 bloques que atraviesa a todos los enemigos de la línea. Daño: {d}, más un 15 %%.{x}',
+        'Das un barrido frontal de 6 bloques que daña y empuja a los enemigos. Daño: {d}.{x}',
+        'Embistes hacia delante y dañas a cada enemigo que atraviesas. No recibes daño de caída. Daño: {d}.{x}',
+        'Caen 8 impactos durante 4 s sobre el punto que señalas; cada uno hace el 45 %% del daño. Daño: {d}.{x}',
+        'Atraes a los enemigos hacia el punto que señalas durante 2 s y luego estalla. Daño: {d}.{x}',
+        'Tú, tus aliados cercanos y tus esbirros ganan {buff}. Duración: 12 s, +2 s por rango.',
+        'Te curas a ti y a tus aliados a menos de 8 bloques, y quitas los efectos negativos. Curación: {h} + 1,5 por rango.',
+        'Tú y tus aliados a menos de 6 bloques ganan absorción y Resistencia I. La absorción sube con el rango.',
+        'Invocas de 1 a 3 {who} que luchan a tu lado (más con el rango). Cuentan como esbirros.'),
+    'en': (
+        'You release a blast around you that hits nearby enemies (5-block radius, a little more each rank). Damage: {d}.{x}',
+        'You fire a straight 24-block ray that pierces every enemy in line. Damage: {d}, plus 15%%.{x}',
+        'You sweep 6 blocks in front of you, hitting and knocking back enemies. Damage: {d}.{x}',
+        'You charge forward and hit every enemy you pass through. You take no fall damage. Damage: {d}.{x}',
+        '8 impacts fall over 4 s on the spot you aim at; each deals 45%% of the damage. Damage: {d}.{x}',
+        'You pull enemies toward the spot you aim at for 2 s, then it bursts. Damage: {d}.{x}',
+        'You, nearby allies and your minions gain {buff}. Duration: 12 s, +2 s per rank.',
+        'You heal yourself and allies within 8 blocks and remove harmful effects. Healing: {h} + 1.5 per rank.',
+        'You and allies within 6 blocks gain absorption and Resistance I. Absorption grows with rank.',
+        'You summon 1 to 3 {who} that fight by your side (more with rank). They count as minions.'),
     'pt_br': (
-        'Explosão ao redor (raio 5+): {d} de dano{x}.',
-        'Raio de 24 blocos que atravessa todos os inimigos: {d} de dano (+15%%){x}.',
-        'Varredura frontal de 6 blocos: {d} de dano e repulsão{x}.',
-        'Investida: {d} de dano em cada inimigo atravessado{x}. Sem dano de queda.',
-        '8 impactos em 4 s no local indicado; cada um causa 45%% de {d}{x}.',
-        'Atrai inimigos ao local indicado por 2 s e explode: {d} de dano{x}.',
-        '{buff} para você, aliados próximos e servos (12 s + 2 por grau).',
-        'Cura {h} + 1.5 por grau de vida em você e aliados (8 blocos) e remove efeitos negativos.',
-        'Absorção e Resistência I para você e aliados (6 blocos); absorção aumenta com o grau.',
-        'Invoca de 1 a 3 {who} aliados (mais com o grau). Seguem as regras dos servos.'),
+        'Você libera uma explosão ao seu redor que atinge os inimigos próximos (raio de 5 blocos, um pouco mais a cada grau). Dano: {d}.{x}',
+        'Você dispara um raio reto de 24 blocos que atravessa todos os inimigos da linha. Dano: {d}, mais 15%%.{x}',
+        'Você varre 6 blocos à sua frente, atingindo e empurrando os inimigos. Dano: {d}.{x}',
+        'Você investe para a frente e atinge cada inimigo que atravessa. Não sofre dano de queda. Dano: {d}.{x}',
+        '8 impactos caem durante 4 s no ponto que você mira; cada um causa 45%% do dano. Dano: {d}.{x}',
+        'Você puxa os inimigos para o ponto que mira durante 2 s, e então ele explode. Dano: {d}.{x}',
+        'Você, os aliados próximos e seus servos recebem {buff}. Duração: 12 s, +2 s por grau.',
+        'Você cura a si e aos aliados a até 8 blocos e remove efeitos negativos. Cura: {h} + 1.5 por grau.',
+        'Você e os aliados a até 6 blocos recebem absorção e Resistência I. A absorção aumenta com o grau.',
+        'Você invoca de 1 a 3 {who} que lutam ao seu lado (mais com o grau). Contam como servos.'),
     'fr_fr': (
-        'Explosion autour de vous (rayon 5+) : {d} dégâts{x}.',
-        'Rayon de 24 blocs traversant tous les ennemis : {d} dégâts (+15%%){x}.',
-        'Balayage frontal de 6 blocs : {d} dégâts et recul{x}.',
-        'Charge en avant : {d} dégâts par ennemi traversé{x}. Sans dégâts de chute.',
-        '8 impacts en 4 s sur le point visé ; chacun inflige 45%% de {d}{x}.',
-        'Attire les ennemis au point visé pendant 2 s puis explose : {d} dégâts{x}.',
-        '{buff} pour vous, les alliés proches et vos serviteurs (12 s + 2 par rang).',
-        'Rend {h} + 1.5 de santé par rang à vous et aux alliés (8 blocs) et retire les effets néfastes.',
-        'Absorption et Résistance I pour vous et les alliés (6 blocs) ; l\'absorption croît avec le rang.',
-        'Invoque de 1 à 3 {who} alliés (davantage avec le rang). Suivent les règles des serviteurs.'),
+        'Vous libérez une explosion autour de vous qui frappe les ennemis proches (rayon de 5 blocs, un peu plus à chaque rang). Dégâts : {d}.{x}',
+        'Vous tirez un rayon droit de 24 blocs qui traverse tous les ennemis alignés. Dégâts : {d}, plus 15%%.{x}',
+        'Vous balayez 6 blocs devant vous, frappant et repoussant les ennemis. Dégâts : {d}.{x}',
+        'Vous chargez en avant et frappez chaque ennemi traversé. Vous ne subissez pas de dégâts de chute. Dégâts : {d}.{x}',
+        '8 impacts tombent pendant 4 s sur le point visé ; chacun inflige 45%% des dégâts. Dégâts : {d}.{x}',
+        'Vous attirez les ennemis vers le point visé pendant 2 s, puis il explose. Dégâts : {d}.{x}',
+        'Vous, les alliés proches et vos serviteurs gagnez {buff}. Durée : 12 s, +2 s par rang.',
+        'Vous vous soignez, ainsi que les alliés à moins de 8 blocs, et retirez les effets néfastes. Soin : {h} + 1.5 par rang.',
+        'Vous et les alliés à moins de 6 blocs gagnez absorption et Résistance I. L’absorption croît avec le rang.',
+        'Vous invoquez de 1 à 3 {who} qui combattent à vos côtés (davantage avec le rang). Ils comptent comme serviteurs.'),
     'de_de': (
-        'Explosion um dich (Radius 5+): {d} Schaden{x}.',
-        'Strahl über 24 Blöcke durch alle Feinde: {d} Schaden (+15%%){x}.',
-        'Frontschwung über 6 Blöcke: {d} Schaden und Rückstoß{x}.',
-        'Ansturm nach vorn: {d} Schaden an jedem durchquerten Feind{x}. Kein Fallschaden.',
-        '8 Einschläge über 4 s am Zielpunkt; jeder verursacht 45%% von {d}{x}.',
-        'Zieht Feinde für 2 s zum Zielpunkt und explodiert: {d} Schaden{x}.',
-        '{buff} für dich, nahe Verbündete und deine Diener (12 s + 2 pro Rang).',
-        'Heilt dich und Verbündete (8 Blöcke) um {h} + 1.5 Leben pro Rang und entfernt negative Effekte.',
-        'Absorption und Resistenz I für dich und Verbündete (6 Blöcke); Absorption steigt mit dem Rang.',
-        'Beschwört 1 bis 3 verbündete {who} (mehr mit höherem Rang). Es gelten die Dienerregeln.'),
+        'Du entfesselst eine Explosion um dich, die nahe Feinde trifft (Radius 5 Blöcke, mit jedem Rang etwas mehr). Schaden: {d}.{x}',
+        'Du feuerst einen geraden Strahl über 24 Blöcke, der alle Feinde in der Linie durchdringt. Schaden: {d}, plus 15%%.{x}',
+        'Du fegst 6 Blöcke vor dir, triffst Feinde und stößt sie zurück. Schaden: {d}.{x}',
+        'Du stürmst nach vorn und triffst jeden Feind, den du durchquerst. Du erleidest keinen Fallschaden. Schaden: {d}.{x}',
+        '8 Einschläge fallen über 4 s auf den anvisierten Punkt; jeder verursacht 45%% des Schadens. Schaden: {d}.{x}',
+        'Du ziehst Feinde 2 s lang zum anvisierten Punkt, dann explodiert er. Schaden: {d}.{x}',
+        'Du, nahe Verbündete und deine Diener erhaltet {buff}. Dauer: 12 s, +2 s pro Rang.',
+        'Du heilst dich und Verbündete im Umkreis von 8 Blöcken und entfernst negative Effekte. Heilung: {h} + 1.5 pro Rang.',
+        'Du und Verbündete im Umkreis von 6 Blöcken erhaltet Absorption und Resistenz I. Die Absorption steigt mit dem Rang.',
+        'Du beschwörst 1 bis 3 {who}, die an deiner Seite kämpfen (mehr mit höherem Rang). Sie zählen als Diener.'),
 }
 ACTIVE_KEYS = ('NOVA', 'BEAM', 'CONE', 'DASH', 'ZONE', 'VORTEX', 'AURA', 'HEAL', 'SHIELD', 'SUMMON')
 BUFFS = {
+    'es': ('Fuerza y Resistencia', 'Invisibilidad y Velocidad II', 'Velocidad, Fuerza y Regeneración'),
+    'en': ('Strength and Resistance', 'Invisibility and Speed II', 'Speed, Strength and Regeneration'),
     'pt_br': ('Força e Resistência', 'Invisibilidade e Velocidade II', 'Velocidade, Força e Regeneração'),
     'fr_fr': ('Force et Résistance', 'Invisibilité et Vitesse II', 'Vitesse, Force et Régénération'),
     'de_de': ('Stärke und Resistenz', 'Unsichtbarkeit und Schnelligkeit II', 'Schnelligkeit, Stärke und Regeneration'),
 }
 
 
+PER_RANK = {'es': '1,5 por rango', 'en': '1.5 per rank', 'pt_br': '1.5 por grau', 'fr_fr': '1.5 par rang',
+            'de_de': '1.5 pro Rang'}
+
+
 def active_desc(template, extra, tier, lang):
+    """Qué hace la activa y, después, su cifra: daño 6 (Maestro) o 10 (Definitivo) + 1,5 por rango efectivo."""
     base = 10 if tier == 2 else 6
-    if lang in LOCALES:
-        per_rank = {'pt_br': 'por grau', 'fr_fr': 'par rang', 'de_de': 'pro Rang'}[lang]
-        pattern = dict(zip(ACTIVE_KEYS, ACTIVE[lang], strict=True))[template]
-        buff = dict(zip(('FORCE', 'SHADOW', 'SONG'), BUFFS[lang], strict=True)).get(extra, '')
-        return pattern.format(d=f'{base} + 1.5 {per_rank}', x=EXTRA[lang].get(extra, ''),
-                              buff=buff, h=8 if tier == 2 else 4, who=SUMMON[lang].get(extra, ''))
-    es = lang == 'es'
-    d = f"{base} + 1,5 por rango" if es else f"{base} + 1.5 per rank"
-    x = EXTRA[lang].get(extra, '')
-    if template == 'NOVA':
-        return (f"Explosión a tu alrededor (radio 5+): {d} de daño{x}." if es
-                else f"Explosion around you (radius 5+): {d} damage{x}.")
-    if template == 'BEAM':
-        return (f"Rayo de 24 bloques que atraviesa a todos los enemigos: {d} de daño (+15 %%){x}." if es
-                else f"24-block ray that pierces every enemy: {d} damage (+15%%){x}.")
-    if template == 'CONE':
-        return (f"Barrido frontal de 6 bloques: {d} de daño y empuje{x}." if es
-                else f"6-block frontal sweep: {d} damage and knockback{x}.")
-    if template == 'DASH':
-        return (f"Embestida hacia delante: {d} de daño a cada enemigo que atraviesas{x}. Sin daño de caída." if es
-                else f"Forward charge: {d} damage to every enemy you pass through{x}. No fall damage.")
-    if template == 'ZONE':
-        return (f"Lluvia de 8 impactos en 4 s sobre el punto señalado; cada uno hace el 45 %% de {d}{x}." if es
-                else f"8 impacts over 4 s on the targeted spot; each deals 45%% of {d}{x}.")
-    if template == 'VORTEX':
-        return (f"Atrae a los enemigos al punto señalado durante 2 s y estalla: {d} de daño{x}." if es
-                else f"Pulls enemies to the targeted spot for 2 s, then bursts: {d} damage{x}.")
-    if template == 'AURA':
-        buffs = {'FORCE': ('Fuerza y Resistencia', 'Strength and Resistance'),
-                 'SHADOW': ('Invisibilidad y Velocidad II', 'Invisibility and Speed II'),
-                 'SONG': ('Velocidad, Fuerza y Regeneración', 'Speed, Strength and Regeneration')}[extra]
-        return (f"{buffs[0]} para ti, tus aliados cercanos y tus esbirros (12 s + 2 por rango)." if es
-                else f"{buffs[1]} for you, nearby allies and your minions (12 s + 2 per rank).")
-    if template == 'HEAL':
-        h = 8 if tier == 2 else 4
-        return (f"Cura {h} + 1,5 por rango de vida a ti y a tus aliados (8 bloques) y quita los efectos negativos." if es
-                else f"Heals {h} + 1.5 per rank health to you and allies (8 blocks) and removes harmful effects.")
-    if template == 'SHIELD':
-        return ("Absorción y Resistencia I para ti y tus aliados (6 bloques); la absorción sube con el rango." if es
-                else "Absorption and Resistance I for you and allies (6 blocks); absorption grows with rank.")
-    if template == 'SUMMON':
-        who = SUMMON[lang][extra]
-        return (f"Invoca de 1 a 3 {who} aliados (más con el rango). Siguen las reglas de los esbirros." if es
-                else f"Summons 1 to 3 allied {who} (more with rank). They follow minion rules.")
-    raise ValueError(template)
+    pattern = dict(zip(ACTIVE_KEYS, ACTIVE[lang], strict=True))[template]
+    buff = dict(zip(('FORCE', 'SHADOW', 'SONG'), BUFFS[lang], strict=True)).get(extra, '')
+    return pattern.format(d=f'{base} + {PER_RANK[lang]}', x=EXTRA[lang].get(extra, ''), buff=buff,
+                          h=8 if tier == 2 else 4, who=SUMMON[lang].get(extra, ''))
 
 
 UI = {
