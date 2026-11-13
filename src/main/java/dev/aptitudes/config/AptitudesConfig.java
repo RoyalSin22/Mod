@@ -116,7 +116,7 @@ public class AptitudesConfig {
 	public double roleXpExponent = 1.4;
 	/** El rol secundario recibe esta fracción de la XP de rol. */
 	public double secondaryRoleXpMultiplier = 0.5;
-	/** Puntos de árbol de un rol = 1 + nivel / rolePointsEveryLevels. */
+	/** Puntos de árbol de un rol = 1 + nivel × 3 / rolePointsEveryLevels (con 3: un punto por nivel). Ver RoleRules. */
 	public int rolePointsEveryLevels = 3;
 	// ---------- Combos (v28) ----------
 	public boolean combosEnabled = true;

@@ -12,6 +12,15 @@ Pruebas automáticas nuevas:
   `gen_mob_models.py`, `gen_node_icons.py` y `tools/lang/*`. `gen_tree_atlas.py --check` falla en `main` desde antes de v66
   (compara bytes de PNG y varía con la versión de Pillow); no lo causa ninguno de estos cambios.
 
+- `logic/UnifiedTreeLayoutTest` (v67): secciones en orden y sin solaparse; Veterano y Ascenso no ocupan sitio sin
+  nodos; nodos de senda dentro del lienzo y sin solaparse; conectores sobre los centros, con los engarces ocultos;
+  filas centradas; barra de maestría dentro de su bloque. En partida (J):
+  - el árbol completo se recorre con la rueda y Ctrl + rueda hace zoom;
+  - las pestañas llevan a cada sección y se resaltan al desplazarse;
+  - el minimapa salta a cada sección;
+  - aprender la primera senda o una rama pide confirmación;
+  - una senda descartada se ve apagada;
+  - «Reiniciar» cobra 20 niveles y devuelve los puntos.
 - Fichas de categoría (J): las cinco se distinguen por el emblema; al pasar el ratón cambian a `hover`; la activa
   lleva marco de oro y fondo de su color; el tooltip sigue dando el nombre. Probar a escala de interfaz 2, 3 y 4 (a 3
   puede verse alguna irregularidad leve por la doble densidad).

@@ -1,6 +1,9 @@
 # v67 — Árbol de habilidades unificado y 10 habilidades nuevas por rol (diseño para aprobar)
 
-Estado: **borrador para aprobación del autor**. No hay nada implementado.
+Estado:
+
+- **Diseño aprobado por el autor (2026-11-13).**
+- **F1 implementada:** árbol unificado. El cambio de puntos queda pendiente de confirmar con las cifras reales de la §3.
 
 ## 1. Decisiones del autor (2026-11-13)
 
@@ -55,11 +58,14 @@ cabecera se atenúa y muestra el requisito. Un minimapa lateral, una columna de 
 
 ## 3. Puntos de árbol
 
-| | Ahora | Propuesta |
+> **Corrección (2026-11-13):** la primera versión de esta sección usaba una fórmula equivocada (1 + nivel / 3). La
+> real es `RoleRules.earnedPoints`: **1 + nivel × 3 / `rolePointsEveryLevels`**. Con el valor por defecto (3) se gana un
+> punto por nivel. El cambio de puntos queda **pendiente de que el autor lo confirme** con estas cifras.
+
+| | Ahora (`rolePointsEveryLevels` = 3) | Propuesta inicial (= 2) |
 |---|---|---|
-| Fórmula | 1 + nivel / 3 | 1 + nivel / **2** |
-| Puntos a nivel 50 | 17 | **26** |
-| Más los de Maestría (`masterBonusPoints`) | +10 = **27** | +10 = **36** |
+| Puntos a nivel 50 | 51 | 76 |
+| Más Maestro (10) y Definitivo (5) | **66** | **91** (+25) |
 | Rangos que suman los 10 nodos nuevos | — | 22 |
 
 Se cambia el valor por defecto de `rolePointsEveryLevels` de 3 a 2. Hay una migración en `config/ConfigMigration`, con

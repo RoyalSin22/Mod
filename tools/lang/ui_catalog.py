@@ -177,8 +177,11 @@ node.needs¦Requer: %s¦Nécessite : %s¦Benötigt: %s
 node.legend_taken¦Obtida por %s (lendárias exclusivas)¦Détenue par %s (légendaires exclusives)¦Vergeben an %s (exklusive legendäre Fähigkeiten)
 roles.rebirths¦Trocas de classe: %s¦Changements de rôle : %s¦Rollenwechsel: %s
 roles.need_ritual¦Trocar classe: ritual na Fogueira¦Changer de rôle : rituel au feu de camp¦Rolle wechseln: Leuchtfeuerritual
-tree.hint¦Arrastar: mover · Roda: zoom · C: centralizar¦Glisser : déplacer · Molette : zoom · C : centrer¦Ziehen: verschieben · Mausrad: Zoom · C: zentrieren
-tree.hint_scroll¦Roda: zoom · PgUp/PgDn: janela¦Molette : zoom · Page préc./suiv. : fenêtre¦Mausrad: Zoom · Bild auf/ab: Fenster
+tree.hint¦Arrastar ou roda: mover · Ctrl+roda: zoom · C: centralizar¦Glisser ou molette : déplacer · Ctrl+molette : zoom · C : centrer¦Ziehen oder Mausrad: verschieben · Strg+Mausrad: Zoom · C: zentrieren
+tree.hint_scroll¦Roda: mover · Ctrl+roda: zoom · PgUp/PgDn: janela¦Molette : déplacer · Ctrl+molette : zoom · Page préc./suiv. : fenêtre¦Mausrad: verschieben · Strg+Mausrad: Zoom · Bild auf/ab: Fenster
+tree.section_veteran¦Veterano¦Vétéran¦Veteran
+tree.section_ascent¦Ascensão¦Ascension¦Aufstieg
+tree.section_mastery¦Maestria¦Maîtrise¦Meisterschaft
 hud_config¦Ajustes do HUD¦Réglages de l'ATH¦HUD-Einstellungen
 hud.scale¦Escala: %s%%¦Échelle : %s%%¦Skalierung: %s%%
 hud.souls_bars¦Barras de estado¦Barres d'état¦Statusleisten

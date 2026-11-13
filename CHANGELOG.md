@@ -23,6 +23,21 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   ignoran y los puntos gastados en esas ramas vuelven a estar disponibles.
 
 ### Añadido
+- **v67 (F1) — Árbol de habilidades unificado.**
+  - **Un solo lienzo** en la pantalla de roles (J), con el kit «Berserker»: Talentos, Sendas (tres columnas S1–S7 con
+    los conectores del kit, bifurcación y unión), Maestro, Definitivo y Maestría, cada sección con su cabecera.
+  - **Pestañas como accesos directos:** Talentos, Sendas, Maestro y Definitivo llevan a su sección y se resaltan
+    según la sección visible. Hay un minimapa lateral para saltar entre secciones.
+  - **Navegación:** la rueda desplaza el árbol y Ctrl + rueda hace zoom.
+  - **Confirmaciones:** aprender la primera senda o una rama de la bifurcación pide confirmación, como en la vista
+    anterior.
+  - **Botón «Reiniciar»** en el pie de la pantalla (antes solo estaba en la vista de sendas).
+  - **Geometría pura con pruebas:** `logic/UnifiedTreeLayout`. Las secciones Veterano y Ascenso están preparadas y
+    aparecerán cuando tengan habilidades (F2 en adelante).
+  - **Textos nuevos** en los 5 idiomas.
+  - **Puntos de árbol:** el cambio queda pendiente de confirmar con las cifras reales (ver `docs/V67_ARBOL_UNIFICADO.md`).
+
+  Sin validar en partida.
 - **v66 — Fichas de categoría con emblema (pantalla de roles).** Las cinco fichas pasan a ser emblemas detallados
   (espada y hacha, estrella arcana, luna y daga, escudo con brote, engranaje y martillo) con marco de remaches y tres
   estados: normal, hover (nuevo) y activa. Se dibujan a doble densidad: piezas de 48×32 en el hueco de 24×16, nítidas a
