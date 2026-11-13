@@ -43,6 +43,7 @@ jobs:
           python3 tools/lang/gen_nodes_lang.py --check
           python3 tools/lang/gen_evolved_lang.py --check
           python3 tools/lang/gen_path_lang.py --check
+          python3 tools/lang/base_desc.py --check
 
       - name: Compilar y probar
         run: ./gradlew build --no-daemon --stacktrace
