@@ -20,9 +20,10 @@ class RoleExtrasTest {
 	private static final Set<String> OCCUPIED = Set.of("1,1", "4,1", "7,1", "0,2", "2,2", "6,2", "8,2", "1,3", "7,3",
 			"0,4", "8,4", "1,5", "7,5", "4,6", "8,6");
 
-	/** F2: Bersérker. F3: Mago, Asesino, Herbolista e Ingeniero. F4: Lancero, Espadachín, Paladín y Nigromante. F5: Druida, Mercader, Monje y Chamán. */
+	/** F2: Bersérker. F3: Mago, Asesino, Herbolista e Ingeniero. F4: Lancero, Espadachín, Paladín y Nigromante. F5: Druida, Mercader, Monje y Chamán. F6: Cambiaformas, Pistolero, Invocador de armas y Cazador. */
 	private static final List<String> ROLES = List.of("berserker", "mage", "assassin", "herbalist", "engineer", "lancer",
-			"swordsman", "paladin", "necromancer", "druid", "merchant", "monk", "elementalist");
+			"swordsman", "paladin", "necromancer", "druid", "merchant", "monk", "elementalist",
+				"shapeshifter", "gunslinger", "weapon_summoner", "hunter");
 	/** Pasiva B de cada rol (de la que cuelga N1), según {@code RoleTree}. */
 	private static final java.util.Map<String, String> PASSIVE_B = java.util.Map.ofEntries(
 			java.util.Map.entry("berserker", "bloodlust"), java.util.Map.entry("mage", "clear_mind"),
@@ -31,7 +32,9 @@ class RoleExtrasTest {
 			java.util.Map.entry("swordsman", "parry"), java.util.Map.entry("paladin", "protective_aura"),
 			java.util.Map.entry("necromancer", "life_drain"), java.util.Map.entry("druid", "growth"),
 				java.util.Map.entry("merchant", "deep_pockets"), java.util.Map.entry("monk", "evasion"),
-				java.util.Map.entry("elementalist", "elemental_dominion"));
+				java.util.Map.entry("elementalist", "elemental_dominion"), java.util.Map.entry("shapeshifter", "trickster"),
+				java.util.Map.entry("gunslinger", "eagle_eye"), java.util.Map.entry("weapon_summoner", "blade_guard"),
+				java.util.Map.entry("hunter", "tracker"));
 
 	@Test
 	void everyRoleHasTenNodesInOrder() {
@@ -43,7 +46,7 @@ class RoleExtrasTest {
 				assertEquals(i + 1, extras.get(i).number());
 			}
 		}
-		assertTrue(RoleExtras.of("hunter").isEmpty(), "los demás roles llegan en F6–F7");
+		assertTrue(RoleExtras.of("bard").isEmpty(), "los demás roles llegan en F7");
 	}
 
 	@Test

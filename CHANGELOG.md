@@ -25,6 +25,27 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   ignoran y los puntos gastados en esas ramas vuelven a estar disponibles.
 
 ### Añadido
+- **v67 (F6) — 40 habilidades nuevas: Cambiaformas, Mago pistolero, Invocador de armas y Cazador.** Cada rol tiene 10
+  (5 pasivas y 5 activas) en Talentos, Veterano y Ascenso, igual que en F2–F5; diseño aprobado en
+  `docs/V67_F6_DISENO.md`.
+  - **Cambiaformas:** Metabolismo animal, Sangre fría animal, Mordisco salvaje, Cambio relámpago, Piel de repuesto,
+    Zarpazo múltiple, Presa fácil, Furia de la bestia, Tercer cambio y Estampida primigenia.
+  - **Mago pistolero:** Manos firmes, Cabeza fría, Bala aturdidora, Granada de pólvora, Presión, Disparo a través,
+    Sin remordimientos, Doble pistola, Pulso de tirador y Ejecución.
+  - **Invocador de armas:** Espadas afiladas, Equilibrio, Espada boomerang, Muro de espadas, Hoja de repuesto, Danza de
+    acero, Filo perfecto, Armería viva, Eco de acero y Juicio de acero.
+  - **Cazador:** Mira certera, Presa herida, Red de caza, Flecha explosiva, Trampero experto, Disparo en abanico,
+    Cazador paciente, Vista de halcón, Botín de caza y Cacería final.
+  - **Código:** `ShapeshifterKit`, `GunslingerKit`, `WeaponSummonerKit` y `HunterKit` con sus reglas puras (`*Rules`),
+    enganchados en `ability/ExtraKits`. Estos roles ya tenían su estado en `NewRoles` (espadas flotantes, marcas,
+    tambor), así que se añadieron accesores (`bladeCount`, `isMarkedBy`, `markTarget`…) y ganchos de una línea en
+    `NewRoles` (daño de espadas, tope y ritmo de espadas, Eco de acero, duración de trampas y bala explosiva).
+  - **Textos:** 80 claves nuevas en los 5 idiomas; iconos provisionales con objetos vanilla y encargo de arte en
+    `docs/PROMPT_ARTE_ICONOS_F6.md`. Sin opciones de configuración nuevas (usa `extraSkillDamageScale`).
+  - **Pruebas:** `ShapeshifterRulesTest`, `GunslingerRulesTest`, `WeaponSummonerRulesTest`, `HunterRulesTest` y
+    `RoleExtrasTest` ampliada a los diecisiete roles con datos.
+  - **Diferencias con el diseño aprobado:** ver §7 de `docs/V67_F6_DISENO.md` (por ejemplo, Juicio de acero hace 6 de
+    daño por espada y Botín de caza da experiencia).
 - **v67 (F5) — 40 habilidades nuevas: Druida, Mercader táctico, Monje y Chamán.** Cada rol tiene 10 (5 pasivas y 5
   activas) en Talentos, Veterano y Ascenso, igual que en F2–F4; diseño aprobado en `docs/V67_F5_DISENO.md`.
   - **Druida:** Hierba alta, Zarpas desgarradoras, Látigo de lianas, Rebrote, Letargo, Rugido del oso, Roble firme,

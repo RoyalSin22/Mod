@@ -141,6 +141,23 @@ public final class NodeIcons {
 		put("elementalist_n6", Items.TOTEM_OF_UNDYING); put("elementalist_n7", Items.NETHER_STAR);
 		put("elementalist_n8", Items.DRAGON_BREATH); put("elementalist_n9", Items.MUSIC_DISC_CAT);
 		put("elementalist_n10", Items.END_CRYSTAL);
+		// v67 F6: iconos provisionales (objetos del juego) hasta que llegue el arte de docs/PROMPT_ARTE_ICONOS_F6.md.
+		put("shapeshifter_n1", Items.GOLDEN_CARROT); put("shapeshifter_n2", Items.SNOWBALL); put("shapeshifter_n3", Items.RABBIT_FOOT);
+		put("shapeshifter_n4", Items.ENDER_PEARL); put("shapeshifter_n5", Items.LEATHER_CHESTPLATE); put("shapeshifter_n6", Items.FLINT);
+		put("shapeshifter_n7", Items.BEEF); put("shapeshifter_n8", Items.BLAZE_POWDER); put("shapeshifter_n9", Items.CLOCK);
+		put("shapeshifter_n10", Items.GOAT_HORN);
+		put("gunslinger_n1", Items.SPYGLASS); put("gunslinger_n2", Items.ICE); put("gunslinger_n3", Items.COBWEB);
+		put("gunslinger_n4", Items.FIRE_CHARGE); put("gunslinger_n5", Items.IRON_NUGGET); put("gunslinger_n6", Items.CROSSBOW);
+		put("gunslinger_n7", Items.GUNPOWDER); put("gunslinger_n8", Items.TRIPWIRE_HOOK); put("gunslinger_n9", Items.REPEATER);
+		put("gunslinger_n10", Items.WITHER_SKELETON_SKULL);
+		put("weapon_summoner_n1", Items.GRINDSTONE); put("weapon_summoner_n2", Items.BELL); put("weapon_summoner_n3", Items.TRIDENT);
+		put("weapon_summoner_n4", Items.IRON_BARS); put("weapon_summoner_n5", Items.IRON_SWORD); put("weapon_summoner_n6", Items.GOLDEN_SWORD);
+		put("weapon_summoner_n7", Items.DIAMOND_SWORD); put("weapon_summoner_n8", Items.SMITHING_TABLE); put("weapon_summoner_n9", Items.ECHO_SHARD);
+		put("weapon_summoner_n10", Items.NETHERITE_SWORD);
+		put("hunter_n1", Items.BOW); put("hunter_n2", Items.ROTTEN_FLESH); put("hunter_n3", Items.STRING);
+		put("hunter_n4", Items.TNT); put("hunter_n5", Items.IRON_TRAPDOOR); put("hunter_n6", Items.ARROW);
+		put("hunter_n7", Items.FERN); put("hunter_n8", Items.FEATHER); put("hunter_n9", Items.EXPERIENCE_BOTTLE);
+		put("hunter_n10", Items.TARGET);
 		put("arcane_charges", Items.AMETHYST_CLUSTER);
 		put("mana_shield", Items.LAPIS_BLOCK); put("spell_echo", Items.ECHO_SHARD);
 		put("time_warp", Items.CLOCK); put("arcane_missiles", Items.END_ROD);

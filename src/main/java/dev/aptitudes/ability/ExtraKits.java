@@ -8,8 +8,9 @@ import net.minecraft.server.network.ServerPlayerEntity;
 /**
  * v67 (F2+): punto único de enganche de las habilidades nuevas de cada rol ({@link BerserkerKit}, {@link MageKit},
  * {@link AssassinKit}, {@link HerbalistKit}, {@link EngineerKit}, {@link LancerKit}, {@link SwordsmanKit},
- * {@link PaladinKit}, {@link NecromancerKit}, {@link DruidKit}, {@link MerchantKit}, {@link MonkKit} y
- * {@link ElementalistKit}). El resto del código llama solo aquí, así que un rol nuevo (F6–F7)
+ * {@link PaladinKit}, {@link NecromancerKit}, {@link DruidKit}, {@link MerchantKit}, {@link MonkKit},
+ * {@link ElementalistKit}, {@link ShapeshifterKit}, {@link GunslingerKit}, {@link WeaponSummonerKit} y
+ * {@link HunterKit}). El resto del código llama solo aquí, así que un rol nuevo (F7)
  * añade su kit en esta clase y no toca más ganchos.
  */
 public final class ExtraKits {
@@ -30,6 +31,10 @@ public final class ExtraKits {
 		MerchantKit.registerAll();
 		MonkKit.registerAll();
 		ElementalistKit.registerAll();
+		ShapeshifterKit.registerAll();
+		GunslingerKit.registerAll();
+		WeaponSummonerKit.registerAll();
+		HunterKit.registerAll();
 	}
 
 	/** Bonificación de daño (se suma a las de {@code RoleMechanics.outgoing}). */
@@ -39,7 +44,9 @@ public final class ExtraKits {
 				+ SwordsmanKit.outgoing(p, target, source, direct) + PaladinKit.outgoing(p, target, source, direct)
 				+ NecromancerKit.outgoing(p, target, source, direct) + DruidKit.outgoing(p, target, source, direct)
 				+ MerchantKit.outgoing(p, target, source, direct) + MonkKit.outgoing(p, target, source, direct)
-				+ ElementalistKit.outgoing(p, target, source, direct);
+				+ ElementalistKit.outgoing(p, target, source, direct) + ShapeshifterKit.outgoing(p, target, source, direct)
+				+ GunslingerKit.outgoing(p, target, source, direct) + WeaponSummonerKit.outgoing(p, target, source, direct)
+				+ HunterKit.outgoing(p, target, source, direct);
 	}
 
 	/**
@@ -54,6 +61,8 @@ public final class ExtraKits {
 		amount = PaladinKit.incoming(p, source, amount);
 		amount = NecromancerKit.incoming(p, source, amount);
 		amount = DruidKit.incoming(p, source, amount);
+		amount = ShapeshifterKit.incoming(p, source, amount);
+		amount = WeaponSummonerKit.incoming(p, source, amount);
 		MonkKit.onHurt(p, amount);
 		amount = SwordsmanKit.incoming(p, source, amount);
 		return SwordsmanKit.lethal(p, amount);
@@ -73,11 +82,13 @@ public final class ExtraKits {
 		MerchantKit.afterOutgoing(p, direct, damage);
 		MonkKit.afterOutgoing(p, target, direct, damage);
 		ElementalistKit.afterOutgoing(p, target, direct, damage);
+		GunslingerKit.afterOutgoing(p, target, direct, damage);
 	}
 
 	/** Multiplicador del coste de maná de la activa {@code nodeId}. */
 	public static double costMultiplier(ServerPlayerEntity p, String nodeId) {
-		return MageKit.costMultiplier(p, nodeId) * EngineerKit.costMultiplier(p, nodeId);
+		return MageKit.costMultiplier(p, nodeId) * EngineerKit.costMultiplier(p, nodeId)
+				* ShapeshifterKit.costMultiplier(p, nodeId);
 	}
 
 	/** ¿La próxima activa sale gratis? (Concatenación). Solo consulta: se gasta en {@link #onCast}. */
@@ -105,6 +116,7 @@ public final class ExtraKits {
 		LancerKit.onCast(p, key);
 		MerchantKit.onCast(p, key, spent);
 		ElementalistKit.onCast(p, key, spent);
+		ShapeshifterKit.onCast(p, key);
 	}
 
 	public static void onKill(ServerPlayerEntity p, LivingEntity victim) {
@@ -113,6 +125,7 @@ public final class ExtraKits {
 		SwordsmanKit.onKill(p, victim);
 		PaladinKit.onKill(p, victim);
 		MerchantKit.onKill(p, victim);
+		HunterKit.onKill(p, victim);
 	}
 
 	/** Un esbirro de {@code owner} ha matado a {@code victim} (Banquete). */
@@ -140,6 +153,10 @@ public final class ExtraKits {
 		MerchantKit.tick(server);
 		MonkKit.tick(server);
 		ElementalistKit.tick(server);
+		ShapeshifterKit.tick(server);
+		GunslingerKit.tick(server);
+		WeaponSummonerKit.tick(server);
+		HunterKit.tick(server);
 	}
 
 	/** Al desconectarse un jugador. */
@@ -157,5 +174,9 @@ public final class ExtraKits {
 		MerchantKit.forget(p);
 		MonkKit.forget(p);
 		ElementalistKit.forget(p);
+		ShapeshifterKit.forget(p);
+		GunslingerKit.forget(p);
+		WeaponSummonerKit.forget(p);
+		HunterKit.forget(p);
 	}
 }

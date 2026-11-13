@@ -570,6 +570,24 @@ rango) y de la definitiva.
 Riesgos que vigilar en partida: el sangrado acumulado de Tajos (6/s con 3 cargas en rango 2) y Avatar junto a Furia y
 el Juramento (multiplicadores que se suman, limitados por `maxDamageMultiplier`).
 
+## v67 (F6) — Habilidades nuevas de Cambiaformas, Mago pistolero, Invocador de armas y Cazador
+
+Valores con `extraSkillDamageScale` = 1 (cifras y costes en `docs/V67_F6_DISENO.md`). La escala solo multiplica el daño
+directo de las activas y de los efectos que hacen daño; no cambia curaciones, esperas ni porcentajes.
+
+**Riesgos que vigilar en partida:**
+
+| Rol | Riesgo | Freno actual |
+|---|---|---|
+| Cambiaformas | Furia de la bestia + Presa fácil + Instinto apilan daño | `maxDamageMultiplier`; Furia dura 8–10 s; Presa fácil se gasta con el primer golpe |
+| Cambiaformas | Cambio relámpago permite cambiar de forma sin coste de transformación | Espera de 20 s |
+| Pistolero | Ejecución mata a los enemigos bajo el 25 % de vida | No afecta a jefes; espera de 90 s |
+| Pistolero | Doble pistola + Pulso de tirador + Manos firmes apilan daño a distancia | `maxDamageMultiplier`; Doble pistola dura 8–10 s |
+| Invocador | Juicio de acero con muchas espadas (5 + las flotantes) | 6 de daño por espada; espera de 90 s |
+| Invocador | Armería viva + Eco de acero casi no gastan espadas | 8–10 s; Eco de acero solo actúa sobre el 30–50 % de los golpes |
+| Cazador | Vista de halcón + Marca + La cacería apilan daño contra una presa | `maxDamageMultiplier`; la vista dura 8–10 s |
+| Cazador | Trampero experto duplica la duración de las trampas | Solo duran 30 s base |
+
 ## v67 (F5) — Habilidades nuevas de Druida, Mercader táctico, Monje y Chamán
 
 Valores con `extraSkillDamageScale` = 1 (cifras y costes en `docs/V67_F5_DISENO.md`). La escala solo multiplica el daño

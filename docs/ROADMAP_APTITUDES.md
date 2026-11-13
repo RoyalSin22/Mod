@@ -21,7 +21,10 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
   iconos (`docs/PROMPT_ARTE_ICONOS_F4.md`). Pendiente: validarlas en partida y el arte.
 - **F5 hecha:** 40 habilidades de Druida, Mercader táctico, Monje y Chamán (`docs/V67_F5_DISENO.md`) y encargo de sus
   iconos (`docs/PROMPT_ARTE_ICONOS_F5.md`). Pendiente: validarlas en partida y el arte.
-- **Siguiente:** F6–F7 (resto de roles, de 4 en 4, con diseño para aprobar), grimorio y bestiario
+- **F6 hecha:** 40 habilidades de Cambiaformas, Mago pistolero, Invocador de armas y Cazador
+  (`docs/V67_F6_DISENO.md`) y encargo de sus iconos (`docs/PROMPT_ARTE_ICONOS_F6.md`). Pendiente: validarlas en partida
+  y el arte.
+- **Siguiente:** F7 (resto de roles, de 4 en 4, con diseño para aprobar), grimorio y bestiario
   rediseñados (cartas de pergamino con marco dorado, solo criaturas del mod). Validar F1 en partida.
 
 ### v65 — Errante Velado: combate, Niebla y botín

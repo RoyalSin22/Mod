@@ -1,6 +1,6 @@
 # v67 · F6 — Habilidades nuevas de Cambiaformas, Mago pistolero, Invocador de armas y Cazador (diseño para aprobar)
 
-Estado: **propuesta, sin código.** Mismo patrón que F2–F5 (`docs/V67_F5_DISENO.md`): 10 nodos por rol, 5 pasivas y 5
+Estado: **implementada (2026-11-13); diseño aprobado por el autor.** Mismo patrón que F2–F5 (`docs/V67_F5_DISENO.md`): 10 nodos por rol, 5 pasivas y 5
 activas. Quedarán para F7 el Bardo, el Brujo abisal y el Domador (30 habilidades).
 
 | Nodos | Sección | Posición | Niveles |
@@ -121,3 +121,17 @@ Ya tiene: Depredador, Marca del cazador, Rastreador, Trampa, La cacería, Camufl
 2. Las **40 habilidades**; dime cuáles cambiar. Las del Invocador de armas y el Cazador dependen de estado que ya existe
    (espadas, marca, trampas) y las revisaré primero para no duplicarlo.
 3. ¿Implementarlas **todas de una vez**, como en F4 y F5?
+
+## 7. Diferencias entre el diseño aprobado y la implementación
+
+| Habilidad | Diseño | Implementado | Motivo |
+|---|---|---|---|
+| `gunslinger_n2` Cabeza fría | Críticos a distancia devuelven maná | Cada ataque a distancia tiene un 25 % de devolver 2 / 3 / 4 de maná | Los críticos de Ojo certero no se pueden consultar desde otro kit |
+| `weapon_summoner_n10` Juicio de acero | 8 de daño por espada | 6 de daño por espada al objetivo y 3 a los de alrededor | Con las espadas flotantes más 5 el daño superaba al de las definitivas |
+| `weapon_summoner_n1` Espadas afiladas | Espadas flotantes | También Andanada, Lluvia de espadas, Prisión y las habilidades nuevas de espadas | Es la misma fuente de daño; evita casos raros |
+| `hunter_n5` Trampero experto | Duran más y 2 trampas a la vez | Solo duran más (+50 / 100 %) | El juego no limita el número de trampas |
+| `hunter_n9` Botín de caza | Objetos extra del botín | Experiencia extra (4 / 8) | Tirar el botín de otra criatura no es fiable y duplicaría el de élites y campeones |
+| `hunter_n2` Presa herida | La presa marcada | Cualquier enemigo con menos de la mitad de vida | Más sencillo de entender; no exige marcarlo |
+| `shapeshifter_n4` Cambio relámpago | Forma siguiente | Recorre las formas desbloqueadas y vuelve a humano tras la última | Un ciclo cerrado sin añadir interfaz |
+| `shapeshifter_n6` Zarpazo múltiple | 4 zarpazos en 1 s | 4 zarpazos seguidos en menos de 1 s | Cadencia de la repetición de ticks |
+| Todas las activas | Entidades de efecto | Efectos con partículas y sonidos, sin entidades | Menos riesgo de entidades huérfanas |

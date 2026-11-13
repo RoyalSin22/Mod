@@ -1,5 +1,31 @@
 # Pruebas de Aptitudes
 
+## v67 (F6) — Habilidades nuevas de Cambiaformas, Mago pistolero, Invocador de armas y Cazador
+
+Automáticas: `ShapeshifterRulesTest`, `GunslingerRulesTest`, `WeaponSummonerRulesTest`, `HunterRulesTest` (cifras de cada
+rol) y `RoleExtrasTest` (datos de los diecisiete roles con habilidades nuevas).
+
+Validación en partida (pendiente), con `/roles admin` para subir de nivel y evolucionar:
+
+1. **Árbol (J):** en los cuatro roles, N1 y N2 cuelgan de la pasiva B; N3 y N4, de Presteza; Veterano y Ascenso muestran
+   sus 3 nodos. Aprende cada uno y equipa las activas nuevas (13 por rol): salir y entrar conserva el equipamiento.
+2. **Cambiaformas (con 2 formas desbloqueadas):** Metabolismo y Sangre fría (solo transformado); Mordisco salvaje;
+   Cambio relámpago (pasa a la siguiente forma y vuelve a humano tras la última); Piel de repuesto (absorción al volver
+   a humano); Zarpazo múltiple; Presa fácil (+40 % al primer golpe tras transformarte); Furia de la bestia (velocidad
+   de ataque, se quita al acabar); Tercer cambio (el siguiente Poder de la forma cuesta menos); Estampida primigenia.
+3. **Mago pistolero:** Manos firmes (a 15 bloques o más); Cabeza fría (maná al azar); Bala aturdidora; Granada de
+   pólvora (explota a los 2 s); Presión; Disparo a través; Sin remordimientos (la 6.ª bala recorta esperas); Doble
+   pistola; Pulso de tirador; Ejecución (mata bajo el 25 % de vida, no a jefes).
+4. **Invocador de armas:** Espadas afiladas (también en Andanada, Lluvia y Prisión); Equilibrio (3 o más espadas);
+   Espada boomerang (ida y vuelta); Muro de espadas; Hoja de repuesto (invoca espadas al bajar del 30 %); Danza de
+   acero; Filo perfecto (cada 10.º golpe); Armería viva (+2 espadas y ritmo doble); Eco de acero; Juicio de acero.
+5. **Cazador:** Mira certera (a 12 bloques o más); Presa herida; Red de caza; Flecha explosiva; Trampero experto (las
+   trampas duran más); Disparo en abanico; Cazador paciente (agachado y quieto 3 s); Vista de halcón (las presas
+   marcadas brillan); Botín de caza (experiencia al matar presas marcadas); Cacería final (marca a 10 enemigos).
+6. **Rendimiento y seguridad:** al desconectarse durante la Furia de la bestia, la velocidad de ataque vuelve a la
+   normalidad; al respecer, las pasivas dejan de actuar; con varios jugadores no sube el tick del servidor.
+7. `extraSkillDamageScale = 0.5`: el daño de las habilidades nuevas baja a la mitad.
+
 ## v67 (F5) — Habilidades nuevas de Druida, Mercader táctico, Monje y Chamán
 
 Automáticas: `DruidRulesTest`, `MerchantRulesTest`, `MonkRulesTest`, `ElementalistRulesTest` (cifras de cada rol) y

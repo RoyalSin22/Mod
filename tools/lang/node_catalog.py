@@ -397,6 +397,46 @@ Stable Fusion¦Fusão estável¦Fusion stable¦Stabile Fusion
 Elemental Form¦Forma elemental¦Forme élémentaire¦Elementargestalt
 Elemental Harmony¦Harmonia elemental¦Harmonie élémentaire¦Elementare Harmonie
 Elements Unleashed¦Elementos desencadeados¦Éléments déchaînés¦Entfesselte Elemente
+Animal Metabolism¦Metabolismo animal¦Métabolisme animal¦Tierischer Stoffwechsel
+Cold-Blooded Form¦Sangue frio animal¦Sang-froid bestial¦Kaltblütige Gestalt
+Savage Bite¦Mordida selvagem¦Morsure sauvage¦Wilder Biss
+Lightning Change¦Mudança relâmpago¦Changement éclair¦Blitzwechsel
+Spare Skin¦Pele de reserva¦Peau de rechange¦Ersatzhaut
+Multi Swipe¦Garra múltipla¦Griffade multiple¦Mehrfachhieb
+Easy Prey¦Presa fácil¦Proie facile¦Leichte Beute
+Beast Fury¦Fúria da besta¦Fureur de la bête¦Wut der Bestie
+Third Change¦Terceira mudança¦Troisième changement¦Dritter Wechsel
+Primal Stampede¦Debandada primordial¦Ruée primordiale¦Urzeitliche Stampede
+Steady Hands¦Mãos firmes¦Mains fermes¦Ruhige Hände
+Cool Head¦Cabeça fria¦Tête froide¦Kühler Kopf
+Stun Bullet¦Bala atordoante¦Balle étourdissante¦Betäubungskugel
+Powder Grenade¦Granada de pólvora¦Grenade à poudre¦Pulvergranate
+Suppression¦Pressão¦Pression¦Druck
+Shot Through¦Disparo atravessante¦Tir à travers¦Schuss hindurch
+No Remorse¦Sem remorso¦Sans remords¦Ohne Reue
+Twin Pistols¦Pistola dupla¦Double pistolet¦Doppelpistole
+Shooter’s Pulse¦Pulso do atirador¦Pouls du tireur¦Schützenpuls
+Execution¦Execução¦Exécution¦Hinrichtung
+Honed Blades¦Espadas afiadas¦Lames affûtées¦Geschliffene Klingen
+Balance¦Equilíbrio¦Équilibre¦Gleichgewicht
+Boomerang Sword¦Espada bumerangue¦Épée boomerang¦Bumerang-Schwert
+Wall of Swords¦Muro de espadas¦Mur d’épées¦Schwertwand
+Spare Blade¦Lâmina de reserva¦Lame de rechange¦Ersatzklinge
+Dance of Steel¦Dança de aço¦Danse d’acier¦Tanz aus Stahl
+Perfect Edge¦Fio perfeito¦Fil parfait¦Perfekte Schneide
+Living Armory¦Arsenal vivo¦Armurerie vivante¦Lebendige Waffenkammer
+Steel Echo¦Eco de aço¦Écho d’acier¦Stahlecho
+Steel Judgment¦Julgamento de aço¦Jugement d’acier¦Stahlgericht
+Sure Sight¦Mira certeira¦Visée sûre¦Sicheres Visier
+Wounded Prey¦Presa ferida¦Proie blessée¦Verwundete Beute
+Hunting Net¦Rede de caça¦Filet de chasse¦Jagdnetz
+Explosive Arrow¦Flecha explosiva¦Flèche explosive¦Explosionspfeil
+Expert Trapper¦Armadilheiro experiente¦Piégeur expert¦Fallenstellermeister
+Arrow Fan¦Disparo em leque¦Tir en éventail¦Fächerschuss
+Patient Hunter¦Caçador paciente¦Chasseur patient¦Geduldiger Jäger
+Falcon Sight¦Visão de falcão¦Vue de faucon¦Falkensicht
+Hunt Spoils¦Espólio de caça¦Butin de chasse¦Jagdbeute
+Final Hunt¦Caçada final¦Chasse finale¦Letzte Jagd
 """)
 
 # v67: las descripciones base se escriben en base_desc.py (estilo llano), con sus traducciones.

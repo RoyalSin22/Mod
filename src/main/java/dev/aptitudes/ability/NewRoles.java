@@ -159,7 +159,7 @@ public final class NewRoles {
 				if (!t.isAlive()) return;
 				Targeting.particleLine(world(p), ParticleTypes.ENCHANTED_HIT, p.getEyePos().add(orbit(i, 1.2)), t.getEyePos());
 				t.timeUntilRegen = 0;
-				t.damage(magic(p), 4 + r);
+				t.damage(magic(p), bladeDamage(p, 4 + r));
 				sound(p, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.4f + 0.05f * i);
 			});
 			return true;
@@ -169,7 +169,7 @@ public final class NewRoles {
 			AbilityState.repeat(server(p), 8, 4, i -> {
 				Vec3d hit = center.add((p.getRandom().nextDouble() - 0.5) * 5, 0, (p.getRandom().nextDouble() - 0.5) * 5);
 				Targeting.particleLine(world(p), ParticleTypes.ENCHANTED_HIT, hit.add(0, 6, 0), hit);
-				for (LivingEntity e : around(p, hit, 2.0)) e.damage(magic(p), 3 + r);
+				for (LivingEntity e : around(p, hit, 2.0)) e.damage(magic(p), bladeDamage(p, 3 + r));
 				world(p).playSound(null, hit.x, hit.y, hit.z, SoundEvents.ENTITY_ARROW_HIT, SoundCategory.PLAYERS, 0.8f, 1.2f);
 			});
 			return true;
@@ -187,7 +187,7 @@ public final class NewRoles {
 				if (!t.isAlive()) return;
 				ParticleFx.ring(world(p), t.getPos().add(0, 0.8, 0), 1.2, ParticleTypes.ENCHANTED_HIT, 10);
 				t.timeUntilRegen = 0;
-				t.damage(magic(p), 2 + r);
+				t.damage(magic(p), bladeDamage(p, 2 + r));
 			});
 			sound(p, SoundEvents.BLOCK_CHAIN_PLACE, 0.8f);
 			return true;
@@ -206,7 +206,7 @@ public final class NewRoles {
 		Abilities.register("bear_trap", (p, r) -> {
 			Vec3d spot = Targeting.lookEnd(p, 10);
 			boolean[] sprung = {false};
-			AbilityState.repeat(server(p), 60, 10, i -> {
+			AbilityState.repeat(server(p), (int) (60 * HunterKit.trapFactor(p)), 10, i -> { // v67 F6: Trampero experto
 				if (sprung[0]) return;
 				if (i % 2 == 0) world(p).spawnParticles(ParticleFx.dust(0x8D6E63, 1.0f), spot.x, spot.y + 0.1, spot.z, 4, 0.3, 0, 0.3, 0);
 				for (LivingEntity e : around(p, spot, 1.4)) {
@@ -551,6 +551,7 @@ public final class NewRoles {
 			s.cylinder++;
 			if (s.cylinder >= 6) {
 				s.cylinder = 0;
+				GunslingerKit.onExplosiveBullet(p); // v67 F6: Sin remordimientos
 				bonus += 0.25f + 0.25f * cylinder;
 				for (LivingEntity e : around(p, target.getPos(), 2.5)) {
 					if (e != target) e.damage(magic(p), 3 + cylinder);
@@ -564,12 +565,13 @@ public final class NewRoles {
 		if (armory > 0 && direct) bonus += 0.05f * armory;
 		if (rank(p, "floating_arsenal") > 0 && direct && s.blades > 0) {
 			s.blades--;
+			if (WeaponSummonerKit.echoReturns(p)) s.blades++; // v67 F6: Eco de acero
 			Targeting.particleLine(world(p), ParticleTypes.ENCHANTED_HIT, p.getEyePos().add(orbit(s.blades, 1.2)), target.getEyePos());
 			LivingEntity t = target;
 			AbilityState.schedule(server(p), 2, () -> {
 				if (t.isAlive()) {
 					t.timeUntilRegen = 0;
-					t.damage(magic(p), 3 + rank(p, "floating_arsenal"));
+					t.damage(magic(p), bladeDamage(p, 3 + rank(p, "floating_arsenal")));
 				}
 			});
 		}
@@ -730,7 +732,7 @@ public final class NewRoles {
 		int now = server.getTicks();
 		// Invocador – Arsenal flotante: una espada cada 4 s.
 		if (rank(p, "floating_arsenal") > 0) {
-			if (s.blades < maxBlades(p) && now - s.lastBladeGain >= 80) {
+			if (s.blades < maxBlades(p) && now - s.lastBladeGain >= (WeaponSummonerKit.fastBlades(p) ? 40 : 80)) {
 				s.blades++;
 				s.lastBladeGain = now;
 			}
@@ -801,10 +803,39 @@ public final class NewRoles {
 
 	// ============================================================== Utilidades
 
+	/** v67 (F6): espadas flotantes actuales (para {@code WeaponSummonerKit}). */
+	static int bladeCount(ServerPlayerEntity p) {
+		return state(p).blades;
+	}
+
+	static void setBladeCount(ServerPlayerEntity p, int count) {
+		state(p).blades = Math.max(0, count);
+	}
+
+	static int bladeCap(ServerPlayerEntity p) {
+		return maxBlades(p);
+	}
+
+	/** Daño de una espada del Invocador, con Espadas afiladas. */
+	private static float bladeDamage(ServerPlayerEntity p, float base) {
+		return base * (1f + WeaponSummonerKit.sharpBonus(p));
+	}
+
+	/** v67 (F6): ¿{@code target} está marcado por {@code p} (Marca del cazador)? */
+	static boolean isMarkedBy(ServerPlayerEntity p, LivingEntity target) {
+		Object[] mark = MARKS.get(target.getUuid());
+		return mark != null && p.getUuid().equals(mark[0]) && (Integer) mark[1] >= now(p);
+	}
+
+	/** v67 (F6): marca a {@code target} para {@code p} durante {@code ticks} con {@code percent} % de daño extra. */
+	static void markTarget(ServerPlayerEntity p, LivingEntity target, int ticks, int percent) {
+		MARKS.put(target.getUuid(), new Object[]{p.getUuid(), now(p) + ticks, percent});
+	}
+
 	private static int maxBlades(ServerPlayerEntity p) {
 		// Legendaria Puerta del arsenal: +1 espada máxima.
 		int legend = dev.aptitudes.unique.UniqueManager.has(p, dev.aptitudes.unique.UniqueSkill.GATE_OF_ARMS) ? 1 : 0;
-		return 2 + rank(p, "floating_arsenal") + legend;
+		return 2 + rank(p, "floating_arsenal") + legend + WeaponSummonerKit.extraCap(p); // v67 F6: Armería viva
 	}
 
 	/** Punto de una órbita alrededor del jugador (para las espadas flotantes). */
