@@ -1,0 +1,6 @@
+Coloso Sin Rostro. Fase 6 corregida.
+
+Abre faceless_colossus_rebuild_animated.bbmodel en Blockbench para continuar.
+La carpeta contiene el editable, la geometría, las dos texturas y sus máscaras, y el JSON de animación.
+Conserva los tiempos exactos del editable en los cuatro clips corregidos al volver a exportar.
+Consulta validacion_correcciones.json para ver las mediciones. La prueba en Minecraft queda pendiente.

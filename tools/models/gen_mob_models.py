@@ -175,6 +175,8 @@ CUSTODIO = {
 }
 
 SPECS = [OSARIO, ERRANTE, CUSTODIO, ESCORIFICADOR]
+# Hechos a mano en Blockbench (tools/models/blockbench/<nombre>.bbmodel): el generador no los escribe ni los compara.
+HAND_MADE = {'osario_quebrado'}
 
 
 def geometry(spec):
@@ -234,6 +236,8 @@ def files(assets):
     out = {}
     for spec in SPECS:
         name = spec['name']
+        if name in HAND_MADE:
+            continue
         out[assets / f'geo/entity/{name}.geo.json'] = (json.dumps(geometry(spec), indent=1) + '\n').encode()
         out[assets / f'animations/entity/{name}.animation.json'] = (json.dumps(animations(spec), indent=1) + '\n').encode()
         out[assets / f'textures/entity/{name}.png'] = texture(spec)

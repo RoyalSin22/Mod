@@ -1,0 +1,295 @@
+{
+  "geometria": {
+    "identificador": "geometry.faceless_colossus",
+    "formato": "1.12.0",
+    "dimensiones_antigua_y_nueva_u": {
+      "old": {
+        "body": {
+          "min": [
+            -19.5,
+            0,
+            -6.1
+          ],
+          "max": [
+            19.5,
+            62,
+            5.6
+          ],
+          "xyz": [
+            39.0,
+            62,
+            11.7
+          ]
+        },
+        "body_cape": {
+          "min": [
+            -21,
+            0,
+            -6.1
+          ],
+          "max": [
+            21.0,
+            62,
+            6.2
+          ],
+          "xyz": [
+            42.0,
+            62,
+            12.3
+          ]
+        },
+        "whole": {
+          "min": [
+            -21,
+            0,
+            -6.1
+          ],
+          "max": [
+            21.0,
+            62,
+            28.2128
+          ],
+          "xyz": [
+            42.0,
+            62,
+            34.3128
+          ]
+        },
+        "boots": {}
+      },
+      "new": {
+        "body": {
+          "min": [
+            -14.3378,
+            0,
+            -9.0834
+          ],
+          "max": [
+            12.8,
+            54.4,
+            8.0
+          ],
+          "xyz": [
+            27.1378,
+            54.4,
+            17.0834
+          ]
+        },
+        "body_cape": {
+          "min": [
+            -14.3378,
+            0,
+            -9.0834
+          ],
+          "max": [
+            12.8,
+            54.4,
+            11.53
+          ],
+          "xyz": [
+            27.1378,
+            54.4,
+            20.6134
+          ]
+        },
+        "whole": {
+          "min": [
+            -15.6792,
+            0,
+            -29.7789
+          ],
+          "max": [
+            12.8,
+            54.4,
+            11.53
+          ],
+          "xyz": [
+            28.4792,
+            54.4,
+            41.3089
+          ]
+        },
+        "boots": {
+          "right_foot": {
+            "min": [
+              -8.18,
+              0,
+              -7.41
+            ],
+            "max": [
+              -1.61,
+              5.7,
+              5.36
+            ],
+            "xyz": [
+              6.57,
+              5.7,
+              12.77
+            ]
+          },
+          "left_foot": {
+            "min": [
+              1.61,
+              0,
+              -7.41
+            ],
+            "max": [
+              8.18,
+              5.7,
+              5.36
+            ],
+            "xyz": [
+              6.57,
+              5.7,
+              12.77
+            ]
+          }
+        }
+      }
+    },
+    "cubos_antiguos": 68,
+    "cubos_nuevos": 278,
+    "huesos_antiguos": 9,
+    "huesos_nuevos": 37,
+    "longitud_espadon_u": 51.2,
+    "caras": 1668,
+    "caras_espadon": 168,
+    "pixeles_en_uv": 140196
+  },
+  "texturas": {
+    "1": {
+      "formato": "RGBA PNG",
+      "resolucion": [
+        512,
+        512
+      ],
+      "pixeles_uv_con_alfa_menor_a_255": 0,
+      "pixeles_mascara": 455,
+      "pixeles_mascara_en_uv": 265,
+      "pixeles_mascara_fuera_de_uv": 190,
+      "colores_exactos_de_paleta": [
+        "#262730",
+        "#3A3442",
+        "#6C6272",
+        "#A391A6",
+        "#8C5B2D",
+        "#C99852",
+        "#E3B06B",
+        "#471220",
+        "#6F1930",
+        "#8A1F3A",
+        "#D6A15A",
+        "#A81F2E",
+        "#E1323A",
+        "#FF4A4A",
+        "#FF6A59",
+        "#5D5764",
+        "#867B8E",
+        "#B7A7B8"
+      ]
+    },
+    "2": {
+      "formato": "RGBA PNG",
+      "resolucion": [
+        512,
+        512
+      ],
+      "pixeles_uv_con_alfa_menor_a_255": 0,
+      "pixeles_mascara": 5623,
+      "pixeles_mascara_en_uv": 3631,
+      "pixeles_mascara_fuera_de_uv": 1992,
+      "colores_exactos_de_paleta": [
+        "#262730",
+        "#3A3442",
+        "#6C6272",
+        "#A391A6",
+        "#8C5B2D",
+        "#C99852",
+        "#E3B06B",
+        "#471220",
+        "#6F1930",
+        "#8A1F3A",
+        "#D6A15A",
+        "#A81F2E",
+        "#E1323A",
+        "#FF4A4A",
+        "#FF6A59",
+        "#5D5764",
+        "#867B8E",
+        "#B7A7B8"
+      ]
+    }
+  },
+  "diferencia_visible_entre_fases_en_texels": 13006,
+  "animaciones": {
+    "idle": {
+      "duracion_s": 2.8,
+      "bucle": true,
+      "huesos": 11,
+      "claves": 61
+    },
+    "walk": {
+      "duracion_s": 1.4,
+      "bucle": true,
+      "huesos": 25,
+      "claves": 619
+    },
+    "phase_two": {
+      "duracion_s": 1.5,
+      "bucle": false,
+      "huesos": 26,
+      "claves": 1225
+    },
+    "sweep": {
+      "duracion_s": 1.4,
+      "bucle": false,
+      "huesos": 25,
+      "claves": 2154
+    },
+    "slam": {
+      "duracion_s": 2,
+      "bucle": false,
+      "huesos": 25,
+      "claves": 1320
+    },
+    "charge": {
+      "duracion_s": 1.4,
+      "bucle": false,
+      "huesos": 25,
+      "claves": 1215
+    },
+    "stun": {
+      "duracion_s": 4.9,
+      "bucle": false,
+      "huesos": 25,
+      "claves": 1289
+    }
+  },
+  "claves_totales": 7883,
+  "pistas_vacias": 0,
+  "bake_geckolib": "4.7.7, 37 huesos, 278 cubos, 7883 claves",
+  "sha256_recursos": {
+    "assets/aptitudes/animations/entity/faceless_colossus.animation.json": "84c3359886a519d605f2943049780395ca4d3ce506e1dbd0f12d0a38db83da55",
+    "assets/aptitudes/geo/entity/faceless_colossus.geo.json": "46c24f2809fb60e41911fb4c6c8fc6fbe7c2af1fe117ac0377dbf5934b997ff2",
+    "assets/aptitudes/textures/entity/faceless_colossus.png": "60756f38756c5638f9830c4c8a748f0bf64805c4d20b93345287cbdde29c430b",
+    "assets/aptitudes/textures/entity/faceless_colossus_glowmask.png": "684099276d390bc7ac09fa39d034783f1931e16c0c19998587082144b292523c",
+    "assets/aptitudes/textures/entity/faceless_colossus_phase2.png": "a3b4884327a01bf351e3e9990b1f848e32fc923090ab42329afa6ad47b644a7f",
+    "assets/aptitudes/textures/entity/faceless_colossus_phase2_glowmask.png": "bf761f8eabfb60c97a169b52146223172b19a9849ccc9d828db533d2f04ce310",
+    "faceless_colossus_rebuild_textured_animated.bbmodel": "e2cd275298d3de76ffaaae115dd2549366db138981622fd5f652401a4d193ac6"
+  },
+  "sha256_capturas": {
+    "evidencias/charge-0_7.png": "ba45c58d5a305152f048beaf338194d29706405f9ec282366492557dfffbadec",
+    "evidencias/espadon.png": "63766fe67c1294601aeee15b9a36aac0be53635cd756c14569a58897ad5b893e",
+    "evidencias/fase1-frontal.png": "3c934675fd5883a6c95f60c8283bbd05e65bc638b6bebed4996b09a9de117045",
+    "evidencias/fase1-isometrica.png": "654e4603c602434208c7b5a93a37b25199d33b46ce20dda500349d8efc8932a7",
+    "evidencias/fase1-posterior.png": "27f0d7b690c3b496985ab73476a67cccd88183eb4153b3fc7780224d56013859",
+    "evidencias/fase2-frontal.png": "0258702922dd454cf5820410d8c220d6d004ac8ddda11ac992869ed9d00b464d",
+    "evidencias/fase2-isometrica.png": "1edfee8502cc0ca3ab764a793e61b8e6e5468cf2014a4c2a1aba4f742a1c3594",
+    "evidencias/phase_two-1_05.png": "9230b6e407f3716f75c3e4c50631d7a097396fee474cbe0bb8d6846d36492888",
+    "evidencias/slam-1_3.png": "df5975f381a4aa2294bbf815d398538b75040f78dacf5b0cc49594cd9a0b780f",
+    "evidencias/stun-4_2.png": "0799a037643c3407148d91991daf7c156a45e0db8dde123a877ea3fad161bb8b",
+    "evidencias/sweep-0_8.png": "600890f9bc53fd26c0187b12483fb32053648330d824e8a618b0e79a7cd4644d",
+    "evidencias/sweep-1_125.png": "492e9b0d19f3ca3d7d71e983c3a81d79bcc5c50bfc8038ff0b724bae75b876fe",
+    "evidencias/walk-0_35.png": "b1861725661716ba68df161514e3bba3ab5dc46e484b74feb764eee9462bbc24"
+  }
+}

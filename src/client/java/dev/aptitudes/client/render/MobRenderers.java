@@ -9,6 +9,7 @@ import dev.aptitudes.mob.OsarioEntity;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 /** Renderizadores de los enemigos nuevos (v65), con modelo GeckoLib. */
 public final class MobRenderers {
@@ -36,8 +37,9 @@ public final class MobRenderers {
 		EntityRendererRegistry.register(OsarioEntities.OSARIO, ctx -> {
 			GeoEntityRenderer<OsarioEntity> renderer = new GeoEntityRenderer<>(ctx,
 					new DefaultedEntityGeoModel<>(Aptitudes.id("osario_quebrado")));
-			// v65: la caja pasa a 2,6 bloques. Escala provisional del modelo antiguo hasta el geo nuevo.
-			renderer.withScale(1.45f);
+			// v65: ojos, núcleo del pecho y punta del brazo arrastrado brillan a plena luz (osario_quebrado_glowmask.png).
+			renderer.addRenderLayer(new AutoGlowingGeoLayer<>(renderer));
+			renderer.withScale(1.0f); // el modelo de Blockbench ya mide 2,9 bloques
 			return renderer;
 		});
 	}

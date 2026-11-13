@@ -67,7 +67,8 @@ otro enemigo o para las marcas con partículas.
 
 ## Estado del Osario Quebrado (implementado, sin validar en partida)
 
-- Modelo, animaciones y textura de prueba: `tools/models/gen_mob_models.py` (64×64, `--check` correcto).
+- Modelo y animaciones hechos en Blockbench (`tools/models/blockbench/osario_quebrado.bbmodel`); textura de 256×256 y
+  máscara de brillo pintadas sobre su plantilla UV. Detalle en `docs/V65_OSARIO_QUEBRADO.md`.
 - Entidad `mob/OsarioEntity` (combate cuerpo a cuerpo y animaciones de reposo y caminar), registro `mob/OsarioEntities`,
   renderizador `client/render/MobRenderers`.
 - Aparece en la Niebla de almas con un 10 % de las apariciones (`mob/OsarioRules`, 5 pruebas).

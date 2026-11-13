@@ -1,0 +1,1738 @@
+{
+  "tw": 128,
+  "th": 128,
+  "textures": [
+    {
+      "name": "osario_quebrado",
+      "uuid": "36f8828a-ebc9-abb0-edee-0fc0ca69d613",
+      "w": 256,
+      "h": 256,
+      "uvw": 128,
+      "uvh": 128
+    }
+  ],
+  "cubes": [
+    {
+      "name": "b_torso",
+      "parent": "body",
+      "from": [
+        -7,
+        20,
+        -5
+      ],
+      "to": [
+        7,
+        30,
+        5
+      ],
+      "box_uv": true,
+      "uv_offset": [
+        0,
+        23
+      ],
+      "mirror_uv": false,
+      "faces": {
+        "north": {
+          "uv": [
+            10,
+            33,
+            24,
+            43
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "east": {
+          "uv": [
+            0,
+            33,
+            10,
+            43
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "south": {
+          "uv": [
+            34,
+            33,
+            48,
+            43
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "west": {
+          "uv": [
+            24,
+            33,
+            34,
+            43
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "up": {
+          "uv": [
+            24,
+            33,
+            10,
+            23
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "down": {
+          "uv": [
+            38,
+            23,
+            24,
+            33
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        }
+      }
+    },
+    {
+      "name": "b_spine",
+      "parent": "chest",
+      "from": [
+        -1.5,
+        30,
+        5
+      ],
+      "to": [
+        1.5,
+        34,
+        7
+      ],
+      "box_uv": true,
+      "uv_offset": [
+        78,
+        64
+      ],
+      "mirror_uv": false,
+      "faces": {
+        "north": {
+          "uv": [
+            80,
+            66,
+            83,
+            70
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "east": {
+          "uv": [
+            78,
+            66,
+            80,
+            70
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "south": {
+          "uv": [
+            85,
+            66,
+            88,
+            70
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "west": {
+          "uv": [
+            83,
+            66,
+            85,
+            70
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "up": {
+          "uv": [
+            83,
+            66,
+            80,
+            64
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "down": {
+          "uv": [
+            86,
+            64,
+            83,
+            66
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        }
+      }
+    },
+    {
+      "name": "b_core",
+      "parent": "body",
+      "from": [
+        -2.5,
+        24,
+        -6
+      ],
+      "to": [
+        2.5,
+        29,
+        -5
+      ],
+      "box_uv": true,
+      "uv_offset": [
+        78,
+        30
+      ],
+      "mirror_uv": false,
+      "faces": {
+        "north": {
+          "uv": [
+            79,
+            31,
+            84,
+            36
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "east": {
+          "uv": [
+            78,
+            31,
+            79,
+            36
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "south": {
+          "uv": [
+            85,
+            31,
+            90,
+            36
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "west": {
+          "uv": [
+            84,
+            31,
+            85,
+            36
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "up": {
+          "uv": [
+            84,
+            31,
+            79,
+            30
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "down": {
+          "uv": [
+            89,
+            30,
+            84,
+            31
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        }
+      }
+    },
+    {
+      "name": "h_skull",
+      "parent": "head",
+      "from": [
+        -6,
+        36,
+        -6
+      ],
+      "to": [
+        6,
+        46,
+        6
+      ],
+      "box_uv": true,
+      "uv_offset": [
+        0,
+        0
+      ],
+      "mirror_uv": false,
+      "faces": {
+        "north": {
+          "uv": [
+            12,
+            12,
+            24,
+            22
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "east": {
+          "uv": [
+            0,
+            12,
+            12,
+            22
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "south": {
+          "uv": [
+            36,
+            12,
+            48,
+            22
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "west": {
+          "uv": [
+            24,
+            12,
+            36,
+            22
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "up": {
+          "uv": [
+            24,
+            12,
+            12,
+            0
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "down": {
+          "uv": [
+            36,
+            0,
+            24,
+            12
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        }
+      }
+    },
+    {
+      "name": "h_eye_l",
+      "parent": "head",
+      "from": [
+        -4,
+        39,
+        -6.5
+      ],
+      "to": [
+        -2,
+        41,
+        -6
+      ],
+      "box_uv": false,
+      "uv_offset": [
+        28,
+        50
+      ],
+      "mirror_uv": false,
+      "faces": {
+        "north": {
+          "uv": [
+            46,
+            61,
+            48,
+            63
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "east": {
+          "uv": [
+            17,
+            73,
+            17.5,
+            75
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "south": {
+          "uv": [
+            46,
+            64,
+            48,
+            66
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "west": {
+          "uv": [
+            19,
+            73,
+            19.5,
+            75
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "up": {
+          "uv": [
+            70,
+            57,
+            72,
+            57.5
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "down": {
+          "uv": [
+            21,
+            73,
+            23,
+            73.5
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        }
+      }
+    },
+    {
+      "name": "h_eye_r",
+      "parent": "head",
+      "from": [
+        2,
+        39,
+        -6.5
+      ],
+      "to": [
+        4,
+        41,
+        -6
+      ],
+      "box_uv": false,
+      "uv_offset": [
+        32,
+        50
+      ],
+      "mirror_uv": false,
+      "faces": {
+        "north": {
+          "uv": [
+            46,
+            67,
+            48,
+            69
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "east": {
+          "uv": [
+            24,
+            73,
+            24.5,
+            75
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "south": {
+          "uv": [
+            70,
+            54,
+            72,
+            56
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "west": {
+          "uv": [
+            26,
+            73,
+            26.5,
+            75
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "up": {
+          "uv": [
+            73,
+            54,
+            75,
+            54.5
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "down": {
+          "uv": [
+            73,
+            56,
+            75,
+            56.5
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        }
+      }
+    },
+    {
+      "name": "r_upper",
+      "parent": "arm_right",
+      "from": [
+        -12,
+        20,
+        -2.5
+      ],
+      "to": [
+        -7,
+        34,
+        2.5
+      ],
+      "box_uv": true,
+      "uv_offset": [
+        49,
+        39
+      ],
+      "mirror_uv": false,
+      "faces": {
+        "north": {
+          "uv": [
+            54,
+            44,
+            59,
+            58
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "east": {
+          "uv": [
+            49,
+            44,
+            54,
+            58
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "south": {
+          "uv": [
+            64,
+            44,
+            69,
+            58
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "west": {
+          "uv": [
+            59,
+            44,
+            64,
+            58
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "up": {
+          "uv": [
+            59,
+            44,
+            54,
+            39
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "down": {
+          "uv": [
+            64,
+            39,
+            59,
+            44
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        }
+      }
+    },
+    {
+      "name": "r_fore",
+      "parent": "arm_right",
+      "from": [
+        -11.5,
+        8,
+        -2
+      ],
+      "to": [
+        -7.5,
+        20,
+        2
+      ],
+      "box_uv": true,
+      "uv_offset": [
+        29,
+        61
+      ],
+      "mirror_uv": false,
+      "faces": {
+        "north": {
+          "uv": [
+            33,
+            65,
+            37,
+            77
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "east": {
+          "uv": [
+            29,
+            65,
+            33,
+            77
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "south": {
+          "uv": [
+            41,
+            65,
+            45,
+            77
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "west": {
+          "uv": [
+            37,
+            65,
+            41,
+            77
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "up": {
+          "uv": [
+            37,
+            65,
+            33,
+            61
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "down": {
+          "uv": [
+            41,
+            61,
+            37,
+            65
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        }
+      }
+    },
+    {
+      "name": "r_hand",
+      "parent": "arm_right",
+      "from": [
+        -11,
+        2,
+        -1.5
+      ],
+      "to": [
+        -8,
+        8,
+        1.5
+      ],
+      "box_uv": true,
+      "uv_offset": [
+        78,
+        54
+      ],
+      "mirror_uv": false,
+      "faces": {
+        "north": {
+          "uv": [
+            81,
+            57,
+            84,
+            63
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "east": {
+          "uv": [
+            78,
+            57,
+            81,
+            63
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "south": {
+          "uv": [
+            87,
+            57,
+            90,
+            63
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "west": {
+          "uv": [
+            84,
+            57,
+            87,
+            63
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "up": {
+          "uv": [
+            84,
+            57,
+            81,
+            54
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "down": {
+          "uv": [
+            87,
+            54,
+            84,
+            57
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        }
+      }
+    },
+    {
+      "name": "l_upper",
+      "parent": "drag_upper",
+      "from": [
+        7,
+        10,
+        -4
+      ],
+      "to": [
+        15,
+        22,
+        4
+      ],
+      "box_uv": true,
+      "uv_offset": [
+        49,
+        0
+      ],
+      "mirror_uv": false,
+      "faces": {
+        "north": {
+          "uv": [
+            57,
+            8,
+            65,
+            20
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "east": {
+          "uv": [
+            49,
+            8,
+            57,
+            20
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "south": {
+          "uv": [
+            73,
+            8,
+            81,
+            20
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "west": {
+          "uv": [
+            65,
+            8,
+            73,
+            20
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "up": {
+          "uv": [
+            65,
+            8,
+            57,
+            0
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "down": {
+          "uv": [
+            73,
+            0,
+            65,
+            8
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        }
+      }
+    },
+    {
+      "name": "l_fore",
+      "parent": "drag_forearm",
+      "from": [
+        8,
+        -8,
+        -3
+      ],
+      "to": [
+        14,
+        0,
+        3
+      ],
+      "box_uv": true,
+      "uv_offset": [
+        70,
+        39
+      ],
+      "mirror_uv": false,
+      "faces": {
+        "north": {
+          "uv": [
+            76,
+            45,
+            82,
+            53
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "east": {
+          "uv": [
+            70,
+            45,
+            76,
+            53
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "south": {
+          "uv": [
+            88,
+            45,
+            94,
+            53
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "west": {
+          "uv": [
+            82,
+            45,
+            88,
+            53
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "up": {
+          "uv": [
+            82,
+            45,
+            76,
+            39
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "down": {
+          "uv": [
+            88,
+            39,
+            82,
+            45
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        }
+      }
+    },
+    {
+      "name": "l_hand",
+      "parent": "drag_wrist",
+      "from": [
+        9,
+        -12,
+        -2
+      ],
+      "to": [
+        13,
+        -8,
+        2
+      ],
+      "box_uv": true,
+      "uv_offset": [
+        78,
+        21
+      ],
+      "mirror_uv": false,
+      "faces": {
+        "north": {
+          "uv": [
+            82,
+            25,
+            86,
+            29
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "east": {
+          "uv": [
+            78,
+            25,
+            82,
+            29
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "south": {
+          "uv": [
+            90,
+            25,
+            94,
+            29
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "west": {
+          "uv": [
+            86,
+            25,
+            90,
+            29
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "up": {
+          "uv": [
+            86,
+            25,
+            82,
+            21
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "down": {
+          "uv": [
+            90,
+            21,
+            86,
+            25
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        }
+      }
+    },
+    {
+      "name": "l_leg",
+      "parent": "leg_left",
+      "from": [
+        2,
+        12,
+        -2
+      ],
+      "to": [
+        6,
+        20,
+        2
+      ],
+      "box_uv": true,
+      "uv_offset": [
+        0,
+        73
+      ],
+      "mirror_uv": false,
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            77,
+            8,
+            85
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "east": {
+          "uv": [
+            0,
+            77,
+            4,
+            85
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "south": {
+          "uv": [
+            12,
+            77,
+            16,
+            85
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "west": {
+          "uv": [
+            8,
+            77,
+            12,
+            85
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "up": {
+          "uv": [
+            8,
+            77,
+            4,
+            73
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "down": {
+          "uv": [
+            12,
+            73,
+            8,
+            77
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        }
+      }
+    },
+    {
+      "name": "l_foot",
+      "parent": "leg_left_shin",
+      "from": [
+        0.5,
+        0,
+        -5
+      ],
+      "to": [
+        6.5,
+        3,
+        3
+      ],
+      "box_uv": true,
+      "uv_offset": [
+        49,
+        59
+      ],
+      "mirror_uv": false,
+      "faces": {
+        "north": {
+          "uv": [
+            57,
+            67,
+            63,
+            70
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "east": {
+          "uv": [
+            49,
+            67,
+            57,
+            70
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "south": {
+          "uv": [
+            71,
+            67,
+            77,
+            70
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "west": {
+          "uv": [
+            63,
+            67,
+            71,
+            70
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "up": {
+          "uv": [
+            63,
+            67,
+            57,
+            59
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "down": {
+          "uv": [
+            69,
+            59,
+            63,
+            67
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        }
+      }
+    },
+    {
+      "name": "r_leg",
+      "parent": "leg_right",
+      "from": [
+        -6,
+        12,
+        -2
+      ],
+      "to": [
+        -2,
+        20,
+        2
+      ],
+      "box_uv": true,
+      "uv_offset": [
+        17,
+        78
+      ],
+      "mirror_uv": false,
+      "faces": {
+        "north": {
+          "uv": [
+            21,
+            82,
+            25,
+            90
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "east": {
+          "uv": [
+            17,
+            82,
+            21,
+            90
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "south": {
+          "uv": [
+            29,
+            82,
+            33,
+            90
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "west": {
+          "uv": [
+            25,
+            82,
+            29,
+            90
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "up": {
+          "uv": [
+            25,
+            82,
+            21,
+            78
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "down": {
+          "uv": [
+            29,
+            78,
+            25,
+            82
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        }
+      }
+    },
+    {
+      "name": "r_foot",
+      "parent": "leg_right_shin",
+      "from": [
+        -6.5,
+        0,
+        -5
+      ],
+      "to": [
+        -0.5,
+        3,
+        3
+      ],
+      "box_uv": true,
+      "uv_offset": [
+        0,
+        61
+      ],
+      "mirror_uv": false,
+      "faces": {
+        "north": {
+          "uv": [
+            8,
+            69,
+            14,
+            72
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "east": {
+          "uv": [
+            0,
+            69,
+            8,
+            72
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "south": {
+          "uv": [
+            22,
+            69,
+            28,
+            72
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "west": {
+          "uv": [
+            14,
+            69,
+            22,
+            72
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "up": {
+          "uv": [
+            14,
+            69,
+            8,
+            61
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "down": {
+          "uv": [
+            20,
+            61,
+            14,
+            69
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        }
+      }
+    },
+    {
+      "name": "l_shin",
+      "parent": "leg_left_shin",
+      "from": [
+        2,
+        3,
+        -2
+      ],
+      "to": [
+        6,
+        12,
+        2
+      ],
+      "box_uv": true,
+      "uv_offset": [
+        46,
+        71
+      ],
+      "mirror_uv": false,
+      "faces": {
+        "north": {
+          "uv": [
+            50,
+            75,
+            54,
+            84
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "east": {
+          "uv": [
+            46,
+            75,
+            50,
+            84
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "south": {
+          "uv": [
+            58,
+            75,
+            62,
+            84
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "west": {
+          "uv": [
+            54,
+            75,
+            58,
+            84
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "up": {
+          "uv": [
+            54,
+            75,
+            50,
+            71
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "down": {
+          "uv": [
+            58,
+            71,
+            54,
+            75
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        }
+      }
+    },
+    {
+      "name": "r_shin",
+      "parent": "leg_right_shin",
+      "from": [
+        -6,
+        3,
+        -2
+      ],
+      "to": [
+        -2,
+        12,
+        2
+      ],
+      "box_uv": true,
+      "uv_offset": [
+        63,
+        71
+      ],
+      "mirror_uv": false,
+      "faces": {
+        "north": {
+          "uv": [
+            67,
+            75,
+            71,
+            84
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "east": {
+          "uv": [
+            63,
+            75,
+            67,
+            84
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "south": {
+          "uv": [
+            75,
+            75,
+            79,
+            84
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "west": {
+          "uv": [
+            71,
+            75,
+            75,
+            84
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "up": {
+          "uv": [
+            71,
+            75,
+            67,
+            71
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "down": {
+          "uv": [
+            75,
+            71,
+            71,
+            75
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        }
+      }
+    },
+    {
+      "name": "b_chest_up",
+      "parent": "chest",
+      "from": [
+        -7,
+        30,
+        -5
+      ],
+      "to": [
+        7,
+        36,
+        5
+      ],
+      "box_uv": true,
+      "uv_offset": [
+        0,
+        44
+      ],
+      "mirror_uv": false,
+      "faces": {
+        "north": {
+          "uv": [
+            10,
+            54,
+            24,
+            60
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "east": {
+          "uv": [
+            0,
+            54,
+            10,
+            60
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "south": {
+          "uv": [
+            34,
+            54,
+            48,
+            60
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "west": {
+          "uv": [
+            24,
+            54,
+            34,
+            60
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "up": {
+          "uv": [
+            24,
+            54,
+            10,
+            44
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "down": {
+          "uv": [
+            38,
+            44,
+            24,
+            54
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        }
+      }
+    },
+    {
+      "name": "l_elbow",
+      "parent": "drag_elbow",
+      "from": [
+        7.5,
+        0,
+        -3.5
+      ],
+      "to": [
+        14.5,
+        10,
+        3.5
+      ],
+      "box_uv": true,
+      "uv_offset": [
+        49,
+        21
+      ],
+      "mirror_uv": false,
+      "faces": {
+        "north": {
+          "uv": [
+            56,
+            28,
+            63,
+            38
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "east": {
+          "uv": [
+            49,
+            28,
+            56,
+            38
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "south": {
+          "uv": [
+            70,
+            28,
+            77,
+            38
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "west": {
+          "uv": [
+            63,
+            28,
+            70,
+            38
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "up": {
+          "uv": [
+            63,
+            28,
+            56,
+            21
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "down": {
+          "uv": [
+            70,
+            21,
+            63,
+            28
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        }
+      }
+    },
+    {
+      "name": "l_tip",
+      "parent": "drag_tip",
+      "from": [
+        10,
+        -16,
+        -1.5
+      ],
+      "to": [
+        12,
+        -12,
+        1.5
+      ],
+      "box_uv": true,
+      "uv_offset": [
+        34,
+        78
+      ],
+      "mirror_uv": false,
+      "faces": {
+        "north": {
+          "uv": [
+            37,
+            81,
+            39,
+            85
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "east": {
+          "uv": [
+            34,
+            81,
+            37,
+            85
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "south": {
+          "uv": [
+            42,
+            81,
+            44,
+            85
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "west": {
+          "uv": [
+            39,
+            81,
+            42,
+            85
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "up": {
+          "uv": [
+            39,
+            81,
+            37,
+            78
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        },
+        "down": {
+          "uv": [
+            41,
+            78,
+            39,
+            81
+          ],
+          "rot": 0,
+          "tex": "67e32c7a-9569-1c8f-fdd1-f6cd0c7ac609"
+        }
+      }
+    }
+  ]
+}

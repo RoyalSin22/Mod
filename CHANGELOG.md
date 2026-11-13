@@ -39,6 +39,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   se enciende antes de un golpe aplastante. Tiene huevo de aparición y entrada en el bestiario. Sin validar en partida.
 - **v65 — Huevos y Osario.** Los huevos del Osario Quebrado y del Errante Velado aparecen en la pestaña creativa de
   Aptitudes. El Osario emite ectoplasma y polvo de tierra alrededor de los pies. Sin validar en partida.
+- **v65 — Osario Quebrado: modelo y textura.** Pasa a 2,9 bloques de alto, con rodillas, pecho encorvado y un brazo
+  arrastrado de cinco segmentos (tierra, raíces, madera podrida y hueso). Textura de 256×256 y brillo en ojos, núcleo
+  del pecho y punta del brazo (`osario_quebrado_glowmask.png`). Modelo hecho en Blockbench. Sin validar en partida.
 
 - **v65 — Fase 3 de los jefes.** El Guardián Desmontado acelera `volley` y `dive` (enfriamientos de 30 y 50 ticks).
   El Autómata Antiguo lanza dos esferas en abanico y su rayo barre un cono de 60°. Sin validar en partida.

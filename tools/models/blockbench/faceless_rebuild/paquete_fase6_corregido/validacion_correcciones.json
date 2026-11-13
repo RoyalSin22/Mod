@@ -1,0 +1,104 @@
+{
+  "fase": 6,
+  "proyecto": "faceless_colossus_rebuild_animated.bbmodel",
+  "animaciones": "animations/faceless_colossus_rebuild.animation.json",
+  "version_json": "1.8.0",
+  "fotogramas_clave_por_clip": {
+    "idle": 61,
+    "walk": 619,
+    "phase_two": 1225,
+    "sweep": 2154,
+    "slam": 1320,
+    "charge": 1215,
+    "stun": 1289
+  },
+  "fotogramas_clave_totales": 7883,
+  "pistas_vacias": 0,
+  "frecuencia_de_muestreo_hz": 160,
+  "muestras_de_Blockbench": 1572,
+  "umbral_contacto_u": 0.075,
+  "tolerancia_apoyo_u": 0.1,
+  "resultados": {
+    "sweep": {
+      "frames": 225,
+      "feet": -0.027521069872462056,
+      "weapon": 0.889727677971593,
+      "speed": 28.09193368974406,
+      "barrido": 30.217200755964097,
+      "peak": 0,
+      "peakAt": 0,
+      "noFoot": 0,
+      "contactCount": 0,
+      "contacts": [],
+      "impact": {
+        "t": 0.8,
+        "tipY": 32.401913857656055,
+        "heading": -91.3204721915299,
+        "gripDelta": [
+          0,
+          0,
+          0
+        ],
+        "directionDelta": 0
+      }
+    },
+    "phase_two": {
+      "frames": 241,
+      "feet": -0.020535000781213952,
+      "weapon": 0.889727677971593,
+      "speed": 0,
+      "barrido": 0,
+      "peak": 0.055322927224962015,
+      "peakAt": 1.04375,
+      "noFoot": 0,
+      "contactCount": 0,
+      "contacts": [],
+      "impact": null
+    },
+    "slam": {
+      "frames": 321,
+      "feet": -0.02330381666351089,
+      "weapon": 0.023998693432216833,
+      "speed": 0,
+      "barrido": 0,
+      "peak": 0.04328352986253492,
+      "peakAt": 1.26875,
+      "noFoot": 0,
+      "contactCount": 0,
+      "contacts": [],
+      "impact": {
+        "t": 1.3,
+        "tipY": 0.023998693432216833,
+        "heading": -77.38527220466753,
+        "gripDelta": [
+          0.6600000043491825,
+          -4.676621756516397e-09,
+          0.22000001498398447
+        ],
+        "directionDelta": 0
+      }
+    },
+    "stun": {
+      "frames": 785,
+      "feet": -0.03501497351882543,
+      "weapon": 0.889727677971593,
+      "speed": 0,
+      "barrido": 0,
+      "peak": 0.05135201199078132,
+      "peakAt": 4.2,
+      "noFoot": 0,
+      "contactCount": 0,
+      "contacts": [],
+      "impact": null
+    }
+  },
+  "pico_original_retorno_sweep_grados_por_tick": 43.173,
+  "recursos_identicos_al_paquete_original": [
+    "geo/faceless_colossus_rebuild.geo.json",
+    "textures/faceless_colossus_rebuild_phase1.png",
+    "textures/faceless_colossus_rebuild_phase1_glowmask.png",
+    "textures/faceless_colossus_rebuild_phase2.png",
+    "textures/faceless_colossus_rebuild_phase2_glowmask.png"
+  ],
+  "validacion_en_Minecraft": "pendiente"
+}

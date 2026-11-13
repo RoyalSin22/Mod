@@ -118,10 +118,15 @@ Solo píxeles de `#4DE2A6` y `#7FFFD4` en ojos, pecho y brazo arrastrado. Todo l
 
 ## Estado real
 
-- **Hecho en código:** tamaño 1,2 × 2,6 en `OsarioEntities`; vida 60, daño 12, velocidad 0,22 en `OsarioEntity`;
-  `heavy_swipe` con enfriamiento de 160 ticks (8 s) y `sweep` como golpe normal; animación `sweep` añadida al JSON;
-  escala provisional 1,45 en `MobRenderers` para el modelo antiguo. `./gradlew build` pasa, con pruebas.
-- **Pendiente:** modelo de 7 huesos en la nueva escala, textura 256×256, glowmask. Hasta entonces el modelo
-  antiguo se ve escalado (no es la versión final).
-- **Pendiente de revisión en partida:** sincronizar `sweep` con el impacto del brazo y comprobar la animación de
-  `heavy_swipe` (la del JSON es la antigua, con el brazo arrastrado).
+- **Hecho en código:** tamaño 1,2 × 2,9 en `OsarioEntities`; vida 60, daño 12, velocidad 0,22 en `OsarioEntity`;
+  `heavy_swipe` con enfriamiento de 160 ticks (8 s) y `sweep` como golpe normal. `./gradlew build` pasa, con pruebas.
+- **Modelo (Blockbench, `tools/models/blockbench/osario_quebrado.bbmodel`):** 15 huesos y 21 cubos, 2,9 bloques de
+  alto. El brazo arrastrado es la cadena `arm_left_dragging` → `drag_upper` → `drag_elbow` → `drag_forearm` →
+  `drag_wrist` → `drag_tip`. El geo se exporta desde Blockbench; `gen_mob_models.py` ya no lo escribe (`HAND_MADE`).
+- **Textura:** PNG de 256×256 a 2 px por unidad; en el geo `texture_width` y `texture_height` son 128 (unidades UV,
+  no píxeles). Paleta de §2 más dos tonos derivados que no brillan: `#2E9E78` (ectoplasma apagado) y `#A9C4AD`
+  (hueso teñido).
+- **Brillo:** `osario_quebrado_glowmask.png` (ojos, núcleo, punta del brazo y tres venas del antebrazo) con
+  `AutoGlowingGeoLayer` en `MobRenderers`. El renderizador vuelve a escala 1,0.
+- **Sin validar en partida:** lado del brazo largo, sentido de los giros de `sweep` y `heavy_swipe`, el brillo y el
+  momento del daño (el código lo aplica al empezar la animación, antes del golpe visible).

@@ -1,0 +1,9 @@
+Coloso Sin Rostro · Paquete para retomar después de la Fase 6
+
+Abre faceless_colossus_rebuild_animated.bbmodel en Blockbench. El proyecto incluye los siete clips editables y las dos texturas, cada una con nueve capas.
+
+geo/ contiene la geometría Bedrock 1.12.0.
+animations/ contiene las animaciones Bedrock 1.8.0.
+textures/ contiene los dos PNG RGBA de 512 × 512 y sus máscaras _glowmask.
+
+El paquete es de trabajo. La Fase 7 queda pendiente de autorización e incluye la integración en el mod, el cambio de textura por fase y la comprobación de la sincronía en Minecraft con GeckoLib 4.7.7.
