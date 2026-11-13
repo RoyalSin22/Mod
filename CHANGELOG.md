@@ -46,8 +46,6 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   (`RoleActionPayload.RESPEC_TREE`, con límite de frecuencia), y el cliente solo muestra el coste y pide confirmación. El
   nivel y la evolución del rol no cambian. Coste por defecto aprobado por el autor: 20 niveles fijos (base 20, 0 por punto,
   máximo 20), sea cual sea el número de puntos gastados. Sin validar en partida.
-  nivel y la evolución del rol no cambian. Valores por defecto provisionales (2 + 0,5 por punto, máximo 20): pendientes de
-  que el autor los apruebe. Sin validar en partida.
 - **v66 — Ajustes visuales tras la prueba en partida (árbol, Maestro y Definitivo).** Los nodos bloqueados del árbol enseñan su
   icono atenuado con un candado pequeño (el candado del marco lo tapaba), los nombres largos de las sendas se parten en dos
   líneas en vez de cortarse, el texto de «Reiniciar» y «Volver» ya no pisa el icono del botón y el texto desactivado se lee
