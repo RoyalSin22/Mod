@@ -32,11 +32,11 @@ final class SpriteButton extends ButtonWidget {
 	protected void renderWidget(DrawContext ctx, int mouseX, int mouseY, float delta) {
 		String state = !active ? "desactivado" : pressed && isHovered() ? "pulsado" : "normal";
 		TreeUi.sprite(ctx, "botones/" + base + "_" + state + ".png", getX(), getY(), 80, 18);
-		int color = !active ? UiStyle.MUTED : isHovered() || isFocused() ? 0xFFFFE8A0 : UiStyle.TEXT;
+		int color = !active ? 0xFF9AA0B5 : isHovered() || isFocused() ? 0xFFFFE8A0 : UiStyle.TEXT;
 		var tr = MinecraftClient.getInstance().textRenderer;
 		int textY = getY() + (pressed && active ? 6 : 5);
 		// Los botones «cerrar» y «reiniciar» llevan una X pintada a la izquierda: el texto se desplaza para no taparla.
-		int textX = getX() + getWidth() / 2 + ("cerrar".equals(base) || "reiniciar".equals(base) ? 6 : 0);
+		int textX = getX() + getWidth() / 2 + ("cerrar".equals(base) || "reiniciar".equals(base) ? 12 : 0);
 		ctx.drawCenteredTextWithShadow(tr, getMessage(), textX, textY, color);
 	}
 }

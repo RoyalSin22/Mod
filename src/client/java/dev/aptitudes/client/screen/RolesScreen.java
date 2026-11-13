@@ -71,6 +71,13 @@ public class RolesScreen extends Screen {
 	private static final int[] COL_X = {20, 64, 108, 132, 156, 180, 204, 248, 292};
 	private static final int FIRST_TALENT_Y = 48;
 	private static final int CONTENT_W = 336;
+	/** Maestro y Definitivo: disposición compacta (arriba la firma y el arma, abajo las mejoras) centrada en el lienzo. */
+	private static final int EVO_TOP_Y = 14;
+	private static final int EVO_LANE_Y = 58;
+	private static final int EVO_ROW_Y = 82;
+	private static final int EVO_H = 116;
+	private static final int EVO_PITCH = 44;
+	private int contentW = CONTENT_W;
 
 	private int left;
 	private int top;
@@ -146,9 +153,16 @@ public class RolesScreen extends Screen {
 	private void resetView() {
 		int vw = viewX2() - viewX1();
 		int vh = viewY2() - viewY1();
-		zoom = MathHelper.clamp(Math.min(vw / (float) CONTENT_W, vh / (float) tab.contentHeight), 0.5f, 1.3f);
-		panX = (vw - CONTENT_W * zoom) / 2.0;
-		panY = Math.max(0, (vh - tab.contentHeight * zoom) / 2.0);
+		int ch = contentH();
+		float fit = Math.min(vw / (float) contentW, vh / (float) ch);
+		// Por encima de 1× el zoom avanza en medios pasos para que el píxel quede nítido; por debajo, ajuste continuo.
+		zoom = fit >= 1f ? MathHelper.clamp((float) Math.floor(fit * 2) / 2f, 1f, 2.5f) : Math.max(0.5f, fit);
+		panX = (vw - contentW * zoom) / 2.0;
+		panY = Math.max(0, (vh - ch * zoom) / 2.0);
+	}
+
+	private int contentH() {
+		return tab == TalentTab.TALENTS ? tab.contentHeight : EVO_H;
 	}
 
 	@Override
@@ -393,17 +407,31 @@ public class RolesScreen extends Screen {
 	private List<NodeView> buildNodes() {
 		List<NodeView> out = new ArrayList<>();
 		if (tab == TalentTab.TALENTS) {
+			contentW = CONTENT_W;
 			out.add(new NodeView(NodeKind.CORE, null, COL_X[4], 6));
-		} else {
-			out.add(new NodeView(tab.first, null, 120, 20));
-			out.add(new NodeView(tab == TalentTab.MASTER ? NodeKind.WEAPON_MASTER : NodeKind.WEAPON_ULTIMATE,
-					null, 192, 20));
+			for (RoleNode node : RoleTree.nodes(selected)) {
+				RoleTree.GridPos pos = RoleTree.position(node.id());
+				if (pos == null || node.requiredTier() != tab.tier || node.kind() == RoleNode.Kind.PATH) continue;
+				out.add(new NodeView(NodeKind.NODE, node, COL_X[pos.col()], FIRST_TALENT_Y + (pos.row() - 1) * 32));
+			}
+			return out;
 		}
+		// Maestro y Definitivo: las mejoras se reparten a distancia fija y centradas, sin los huecos de la cuadrícula.
+		List<RoleNode> upgrades = new ArrayList<>();
 		for (RoleNode node : RoleTree.nodes(selected)) {
 			RoleTree.GridPos pos = RoleTree.position(node.id());
 			if (pos == null || node.requiredTier() != tab.tier || node.kind() == RoleNode.Kind.PATH) continue;
-			int y = tab == TalentTab.TALENTS ? FIRST_TALENT_Y + (pos.row() - 1) * 32 : 96;
-			out.add(new NodeView(NodeKind.NODE, node, COL_X[pos.col()], y));
+			upgrades.add(node);
+		}
+		upgrades.sort(java.util.Comparator.comparingInt((RoleNode n) -> RoleTree.position(n.id()).col())
+				.thenComparingInt(n -> RoleTree.position(n.id()).row()));
+		contentW = Math.max(220, upgrades.size() * EVO_PITCH + 40);
+		int mid = contentW / 2 - 12;
+		out.add(new NodeView(tab.first, null, mid - 36, EVO_TOP_Y));
+		out.add(new NodeView(tab == TalentTab.MASTER ? NodeKind.WEAPON_MASTER : NodeKind.WEAPON_ULTIMATE, null, mid + 36, EVO_TOP_Y));
+		int startX = (contentW - upgrades.size() * EVO_PITCH) / 2 + (EVO_PITCH - 24) / 2;
+		for (int i = 0; i < upgrades.size(); i++) {
+			out.add(new NodeView(NodeKind.NODE, upgrades.get(i), startX + i * EVO_PITCH, EVO_ROW_Y));
 		}
 		return out;
 	}
@@ -814,8 +842,8 @@ public class RolesScreen extends Screen {
 			String key = master
 					? (unlocked ? "screen.aptitudes.tree.row_master" : "screen.aptitudes.tree.requires_master")
 					: (unlocked ? "screen.aptitudes.tree.row_ultimate" : "screen.aptitudes.tree.requires_ultimate");
-			ctx.fill(12, 77, CONTENT_W - 12, 78, UiStyle.BORDER);
-			laneTitle(ctx, key, 16, CONTENT_W - 16, 72, unlocked ? theme.accent() : UiStyle.MUTED);
+			ctx.fill(8, EVO_LANE_Y + 5, contentW - 8, EVO_LANE_Y + 6, UiStyle.BORDER);
+			laneTitle(ctx, key, 12, contentW - 12, EVO_LANE_Y, unlocked ? theme.accent() : UiStyle.MUTED);
 		}
 	}
 
