@@ -118,13 +118,20 @@ public class TreeScreen extends Screen {
 				Text.translatable("screen.aptitudes.respec.button"), "reiniciar", b -> respec()));
 		addDrawableChild(new SpriteButton(layout.closeButton(), ScreenTexts.BACK, "cerrar", b -> close()));
 		Rect d = layout.detail();
-		int ex = d.x() + 9;
-		int ey = d.bottom() - 27;
-		equip1Button = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.equip", 1),
-				b -> equip(RoleActionPayload.EQUIP_1)).dimensions(ex, ey, 33, 16).build());
-		equip2Button = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.equip", 2),
-				b -> equip(RoleActionPayload.EQUIP_2)).dimensions(ex + 35, ey, 33, 16).build());
+		// Dentro de la zona de lectura de la ficha (ver drawDetail).
+		int ex = d.x() + 16;
+		int ey = d.bottom() - 31;
+		equip1Button = addDrawableChild(smallButton(Text.translatable("screen.aptitudes.equip", 1), ex, ey,
+				b -> equip(RoleActionPayload.EQUIP_1)));
+		equip2Button = addDrawableChild(smallButton(Text.translatable("screen.aptitudes.equip", 2), ex + 35, ey,
+				b -> equip(RoleActionPayload.EQUIP_2)));
 		updateButtons();
+	}
+
+	/** Botón de 33×16 con el botón largo del kit de roles si está disponible; si no, el vanilla. */
+	private static ButtonWidget smallButton(Text label, int x, int y, ButtonWidget.PressAction action) {
+		if (RolesUi.available()) return new RolesButton(x, y, 33, 16, label, action);
+		return ButtonWidget.builder(label, action).dimensions(x, y, 33, 16).build();
 	}
 
 	private void updateButtons() {
@@ -459,9 +466,14 @@ public class TreeScreen extends Screen {
 		RoleNode node = selectedNode();
 		if (node == null || selectedStep == null) return;
 		Rect d = layout.detail();
-		int x = d.x() + 9, w = d.w() - 18;
-		int bottom = d.bottom() - (equip1Button.visible ? 30 : 10);
-		int y = d.y() + 9;
+		// Zona de lectura dentro del marco (12 px) del panel de piedra: fondo oscuro con filete del kit, para que el
+		// texto no pise el marco ni las grietas.
+		int fx = d.x() + 12, fy = d.y() + 12, fr = d.right() - 12, fb = d.bottom() - 12;
+		ctx.fill(fx, fy, fr, fb, 0xE015141A);
+		ctx.drawBorder(fx, fy, fr - fx, fb - fy, 0xFF2B2A33);
+		int x = fx + 4, w = fr - fx - 8;
+		int bottom = fb - (equip1Button.visible ? 24 : 3);
+		int y = fy + 4;
 		List<Text> lines = stepDetails(data, node, selectedPath, selectedStep);
 		for (int i = 0; i < lines.size(); i++) {
 			for (OrderedText part : textRenderer.wrapLines(lines.get(i), w)) {

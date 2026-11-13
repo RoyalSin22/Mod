@@ -14,7 +14,7 @@ import net.minecraft.util.Identifier;
  * tamaño real; los paneles, pestañas y botones se ajustan repitiendo su tramo central, nunca estirándolo, para
  * conservar el píxel lógico de 2×2. Si el paquete de recursos no trae las piezas, la pantalla usa el dibujo anterior.
  */
-final class KUi {
+public final class KUi {
 	private static final String BASE = "textures/gui/k_ui/";
 	private static final int CORNER = 12;
 	/** Columnas fijas a izquierda y derecha de los botones de 80×18 (el de confirmar lleva una brasa a la izquierda). */
@@ -28,7 +28,7 @@ final class KUi {
 	}
 
 	/** Comprobación en cada apertura de la pantalla (barata: solo consulta el gestor de recursos). */
-	static boolean available() {
+	public static boolean available() {
 		var manager = MinecraftClient.getInstance().getResourceManager();
 		return manager.getResource(id("paneles/k_panel_principal_9slice.png")).isPresent()
 				&& manager.getResource(id("tarjetas/tarjeta_normal.png")).isPresent()
@@ -83,7 +83,7 @@ final class KUi {
 	}
 
 	/** Pieza de altura fija ajustada a {@code w} px repitiendo su tramo central entre dos extremos fijos. */
-	static void slice3(DrawContext ctx, String path, int x, int y, int w, int capStart, int capEnd, int texW, int texH) {
+	public static void slice3(DrawContext ctx, String path, int x, int y, int w, int capStart, int capEnd, int texW, int texH) {
 		Identifier t = id(path);
 		begin();
 		try {
@@ -143,14 +143,29 @@ final class KUi {
 		panel9(ctx, "paneles/k_panel_columna_9slice.png", 64, 64, r);
 	}
 
-	static void detailPanel(DrawContext ctx, Rect r) {
+	public static void detailPanel(DrawContext ctx, Rect r) {
 		panel9(ctx, "paneles/k_panel_detalle_9slice.png", 64, 64, r);
 	}
 
-	/** Cabecera de sección: rombo y filete de la pieza (recortada a {@code width}); el título va en x + 10. */
-	static void sectionHeader(DrawContext ctx, int x, int y, int width) {
-		spriteLeft(ctx, "cabeceras/cabecera_seccion.png", x, y - 1, width, 140, 12);
+	/**
+	 * Cabecera de sección: el rombo de la pieza delante del título (en x + 10) y el punteado a continuación del texto,
+	 * nunca debajo de él, hasta {@code width}. {@code textEnd} es la x donde termina el título.
+	 */
+	static void sectionHeader(DrawContext ctx, int x, int y, int width, int textEnd) {
+		Identifier t = id("cabeceras/cabecera_seccion.png");
+		begin();
+		try {
+			blit(ctx, t, x, y - 1, 0, 0, 10, 12, 140, 12); // rombo
+			int from = textEnd + 4;
+			int len = Math.min(140 - DOTS_X, x + width - from);
+			if (len > 0) blit(ctx, t, from, y - 1, DOTS_X, 0, len, 12, 140, 12);
+		} finally {
+			end();
+		}
 	}
+
+	/** Columna de la pieza de cabecera donde empieza el punteado. */
+	private static final int DOTS_X = 68;
 
 	/** Barra de XP: el canal vacío y, encima, los primeros {@code filled} px de la llena (verde) o la máxima (dorada). */
 	static void xpBar(DrawContext ctx, int x, int y, int filled, boolean maxed) {

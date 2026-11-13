@@ -2,7 +2,9 @@ package dev.aptitudes.client.hud;
 
 import dev.aptitudes.client.ClientConfig;
 import dev.aptitudes.client.ClientEclipse;
+import dev.aptitudes.client.screen.KUi;
 import dev.aptitudes.client.screen.UiStyle;
+import dev.aptitudes.logic.TreeScreenLayout;
 import dev.aptitudes.logic.BossHudLayout;
 import dev.aptitudes.logic.HudMotion;
 import dev.aptitudes.network.BossHudPayload;
@@ -57,8 +59,14 @@ public final class BossHud {
 
 		int x = layout.x();
 		int y = layout.y();
-		ctx.fill(x, y, x + layout.width(), y + layout.height(), 0xE0171012);
-		ctx.drawBorder(x, y, layout.width(), layout.height(), 0xFF89694D);
+		boolean kit = KUi.available();
+		if (kit) {
+			// Panel de detalle del kit, 3 px mayor por lado para que su marco quede fuera del texto.
+			KUi.detailPanel(ctx, new TreeScreenLayout.Rect(x - 3, y - 3, layout.width() + 6, layout.height() + 6));
+		} else {
+			ctx.fill(x, y, x + layout.width(), y + layout.height(), 0xE0171012);
+			ctx.drawBorder(x, y, layout.width(), layout.height(), 0xFF89694D);
+		}
 		TextRenderer text = client.textRenderer;
 		int rowY = y + BossHudLayout.PADDING;
 		int rowX = x + 6;
@@ -68,7 +76,7 @@ public final class BossHud {
 		for (int i = 0; i < layout.rows(); i++) {
 			var entry = view.entries().get(i);
 			float fill = HEALTH[i].update(entry.health(), now, duration);
-			drawEntry(ctx, text, entry, rowX, rowY, rowWidth, fill);
+			drawEntry(ctx, text, entry, rowX, rowY, rowWidth, fill, kit);
 			rowY += BossHudLayout.ROW_HEIGHT;
 		}
 		if (view.total() > layout.rows()) {
@@ -78,7 +86,8 @@ public final class BossHud {
 		}
 	}
 
-	private static void drawEntry(DrawContext ctx, TextRenderer text, BossHudPayload.Entry entry, int x, int y, int width, float fill) {
+	private static void drawEntry(DrawContext ctx, TextRenderer text, BossHudPayload.Entry entry, int x, int y, int width, float fill,
+								  boolean kit) {
 		Text health = Text.translatable("hud.aptitudes.boss.health", Math.round(entry.health() * 100));
 		Text details = entry.phase() == 0 ? health
 				: Text.translatable("hud.aptitudes.boss.phase", PHASES[entry.phase()]).append(" · ").append(health);
@@ -87,8 +96,14 @@ public final class BossHud {
 		UiStyle.label(ctx, text, entry.name(), x, y, detailsX - x - 5, UiStyle.TEXT);
 		ctx.drawText(text, details, detailsX, y, UiStyle.GOLD, false);
 
-		ctx.fill(x, y + 10, x + width, y + 15, 0xFF442124);
 		int filled = Math.round(width * fill);
+		if (kit) {
+			// Canal de la barra de XP del kit y barra de brasa (derivada por gen_k_ui.py), con tramos repetidos.
+			KUi.slice3(ctx, "barras/xp_vacia.png", x, y + 10, width, 4, 4, 160, 6);
+			if (filled > 0) KUi.slice3(ctx, "barras/vida_jefe.png", x, y + 10, filled, 4, 4, 160, 6);
+			return;
+		}
+		ctx.fill(x, y + 10, x + width, y + 15, 0xFF442124);
 		if (filled > 0) ctx.fillGradient(x, y + 10, x + filled, y + 15, 0xFFD95452, 0xFF8C171F);
 	}
 }

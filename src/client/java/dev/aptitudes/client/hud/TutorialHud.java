@@ -28,8 +28,8 @@ public final class TutorialHud {
 	}
 
 	static int top(ClientConfig cfg, int height) {
-		float scale = AbilityHudLayout.validatedScale(cfg.hudScale) * cfg.preset().scaleFactor();
-		return Math.min(height - 36, cfg.soulsBars ? Math.max(58, 6 + (int) Math.ceil(46 * scale)) : 58);
+		// v66: el bloque de estado ya no está arriba a la izquierda (va sobre la barra de hambre).
+		return Math.min(height - 36, 58);
 	}
 
 	public static void render(DrawContext ctx, RenderTickCounter tickCounter) {

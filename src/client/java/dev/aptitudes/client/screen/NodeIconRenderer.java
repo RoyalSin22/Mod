@@ -214,6 +214,31 @@ public final class NodeIconRenderer {
 		return true;
 	}
 
+	/**
+	 * v66: la esfera de maná a la mitad de su tamaño (14×14). Con la rejilla de 2×2 del arte, cada píxel lógico pasa a
+	 * ser un píxel de interfaz y el dibujo se conserva exacto; el nivel del líquido se redondea a filas pares para no
+	 * partir un píxel lógico. Falso si el paquete de recursos no trae los sprites.
+	 */
+	public static boolean drawManaOrbHalf(DrawContext ctx, int x, int y, float fraction) {
+		if (!hasManaOrb()) return false;
+		float f = Float.isNaN(fraction) ? 0f : Math.max(0f, Math.min(1f, fraction));
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		try {
+			int size = MANA_ORB_SIZE, half = size / 2;
+			ctx.drawTexture(ORB_EMPTY, x, y, half, half, 0f, 0f, size, size, size, size);
+			if (f > 0f) {
+				int level = ORB_LIQUID_END - Math.round((ORB_LIQUID_END - ORB_LIQUID_TOP) * f);
+				level = level / 2 * 2;
+				ctx.drawTexture(ORB_FULL, x, y + level / 2, half, half - level / 2, 0f, (float) level, size, size - level,
+						size, size);
+			}
+		} finally {
+			RenderSystem.disableBlend();
+		}
+		return true;
+	}
+
 	/** La decoración es opcional para los paquetes de recursos con un índice anterior. */
 	static void drawCrest(DrawContext ctx, Role role, int x, int y, int size) {
 		// DrawContext.drawTexture en 1.21.1 no activa la mezcla para el alfa del grabado.

@@ -107,7 +107,7 @@ public final class AbilityHud {
 				now, cfg.hudAnimations ? 180 : 0);
 		// v66: la esfera de maná sustituye solo a la barra de maná; la vida y el hambre no cambian.
 		boolean orb = NodeIconRenderer.hasManaOrb();
-		if (cfg.soulsBars) renderSoulsBars(ctx, text, data, client, now, manaFill, !orb);
+		if (cfg.soulsBars) renderSoulsBars(ctx, text, data, client, w, h, manaFill, !orb);
 		if (orb && (cfg.soulsBars || hasAbilities(data))) renderManaOrb(ctx, text, w, h, manaFill);
 		if (!hasAbilities(data)) return;
 		if (!cfg.soulsBars) renderBars(ctx, text, data, w, h, manaFill, !orb);
@@ -162,82 +162,75 @@ public final class AbilityHud {
 				ClientEclipse.active() && ClientEclipse.phase() > 0);
 	}
 
-	// ----------------------------------------------------- Barras Souls
+	// ----------------------------------------------------- Bloque de estado (antes «barras Souls»)
+
+	/** Ancho del bloque: el de la barra de hambre de Minecraft (9 iconos de 9 px). */
+	private static final int STATUS_W = 81;
 
 	/**
-	 * Barras arriba a la izquierda: icono + barra redondeada con degradado y brillo, valor
-	 * dentro de la barra. La longitud crece con el máximo (como en Souls).
+	 * Bloque de estado sobre la barra de hambre, en el HUD central (v66): aguante y recursos de rol en píldoras finas
+	 * del ancho de la barra de hambre, más el elemento activo del Elementalista. Queda por encima de la fila de burbujas
+	 * de aire (y = alto − 49), así que no tapa nada de Minecraft. La vida ya no se repite aquí: la muestran los corazones.
+	 * Con la esfera de maná, el maná se dibuja aparte; sin ella, va aquí como primera fila.
 	 */
 	private static void renderSoulsBars(DrawContext ctx, TextRenderer text, RoleSyncPayload data, MinecraftClient client,
-										long now, float manaFill, boolean showMana) {
+										int w, int h, float manaFill, boolean showMana) {
 		ClientConfig cfg = ClientConfig.get();
 		var player = client.player;
 		int age = player.age;
-		ctx.getMatrices().push();
-		ctx.getMatrices().translate(6, 6, 0);
-		float scale = cfg.hudScale * cfg.preset().scaleFactor();
-		ctx.getMatrices().scale(scale, scale, 1f);
-		int y = 0;
-
-		// Vida: trozo retrasado (daño reciente), absorción y latido con poca vida.
-		float health = player.getHealth();
-		float maxHealth = Math.max(1f, player.getMaxHealth());
-		float healthFill = HEALTH.update(health / maxHealth, now, cfg.hudAnimations ? 160 : 0);
-		float trail = HEALTH_TRAIL.update(health / maxHealth, now, cfg.hudAnimations ? 440 : 0);
-		int hw = Math.min(200, 60 + (int) (maxHealth * 3));
-		boolean low = health / maxHealth < 0.25f;
-		icon(ctx, HEART, 0, y, low && (!cfg.hudAnimations || (age / 5) % 2 == 0) ? 0xFFFF8A80 : 0xFFE53935);
-		pill(ctx, 12, y, hw, 9, 0f, 0, 0, true);
-		if (trail > healthFill) pill(ctx, 12, y, hw, 9, trail, 0xFFFFF59D, 0xFFFFCA28, false);
-		pill(ctx, 12, y, hw, 9, healthFill, 0xFFFF6E6E, 0xFFB71C1C, false);
-		float absorption = player.getAbsorptionAmount();
-		if (absorption > 0) {
-			int aw = (int) ((hw - 2) * Math.min(1f, absorption / maxHealth));
-			ctx.fill(13, y + 7, 13 + aw, y + 8, 0xFFFFD54F);
-		}
-		if (low) {
-			int alpha = !cfg.hudAnimations || age % 20 < 10 ? 0xC0 : 0x60;
-			ctx.drawBorder(11, y - 1, hw + 2, 11, (alpha << 24) | 0xFF1744);
-		}
-		centered(ctx, text, (int) Math.ceil(health) + " / " + (int) maxHealth, 12, y + 2, hw);
-		y += 12;
-
-		// Maná (con la esfera de la dirección de arte se dibuja aparte, junto a la hotbar)
-		if (showMana) {
-			float mana = ClientRoleState.energy();
-			float maxMana = Math.max(1f, ClientRoleState.maxEnergy());
-			int mw = Math.min(200, 50 + (int) (maxMana * 0.8f));
-			icon(ctx, GEM, 0, y, 0xFF42A5F5);
-			pill(ctx, 12, y, mw, 8, manaFill, 0xFF82CFFF, 0xFF1565C0, true);
-			centered(ctx, text, (int) mana + " / " + (int) maxMana, 12, y + 1, mw);
-			y += 11;
-		}
-
-		// Aguante (hambre: en Minecraft es lo que limita esprintar)
+		int x = w / 2 + 10;
+		int bottom = h - 51; // encima de las burbujas de aire
+		final int step = 6;
 		int food = player.getHungerManager().getFoodLevel();
-		icon(ctx, BOLT, 0, y - 2, 0xFF9CCC65);
-		pill(ctx, 12, y, 90, 4, food / 20f, 0xFFC5E1A5, 0xFF558B2F, true);
-		y += 8;
-
-		// Recursos de rol: píldoras finas con el color del recurso; brillan al poder potenciar.
-		for (Role role : new Role[]{data.primaryRole(), data.secondaryRole()}) {
+		// Filas de arriba abajo; la última (aguante) queda pegada a la barra de hambre.
+		int count = 1 + (showMana ? 1 : 0);
+		Role[] roles = {data.primaryRole(), data.secondaryRole()};
+		for (Role role : roles) if (role != null) count++;
+		int y = bottom - count * step;
+		Element element = data.activeElementValue();
+		boolean elementalist = element != null
+				&& (data.primaryRole() == Role.ELEMENTALIST || data.secondaryRole() == Role.ELEMENTALIST);
+		if (elementalist) {
+			Text label = UiStyle.fit(text, Text.translatable("hud.aptitudes.element", Text.translatable(element.translationKey())),
+					(int) (STATUS_W / 0.7f));
+			small(ctx, text, label, x, y - 7, 0xFF000000 | element.color());
+		}
+		if (showMana) {
+			statusRow(ctx, x, y, manaFill, 0xFF42A5F5, 0xFF82CFFF, 0xFF1565C0, false);
+			y += step;
+		}
+		// Recursos de rol: brillan al poder potenciar.
+		for (Role role : roles) {
 			if (role == null) continue;
 			RoleResource resource = RoleResource.of(role);
 			float value = ClientRoleState.resource(role == data.primaryRole());
 			int color = 0xFF000000 | resource.color();
 			boolean ready = value >= RoleResource.EMPOWER_COST;
-			ctx.fill(2, y, 8, y + 4, ready && (!cfg.hudAnimations || (age / 4) % 2 == 0) ? 0xFFFFE082 : color);
-			pill(ctx, 12, y, 70, 4, value / RoleResource.MAX, lighter(color), darker(color), true);
-			small(ctx, text, Text.translatable(resource.translationKey()), 86, y - 1, ready ? 0xFFFFE082 : color);
-			y += 7;
+			boolean flash = ready && (!cfg.hudAnimations || (age / 4) % 2 == 0);
+			statusRow(ctx, x, y, value / RoleResource.MAX, flash ? 0xFFFFE082 : color, lighter(color), darker(color), ready);
+			y += step;
 		}
-		// Elemento activo
-		Element element = data.activeElementValue();
-		if (element != null && (data.primaryRole() == Role.ELEMENTALIST || data.secondaryRole() == Role.ELEMENTALIST)) {
-			small(ctx, text, Text.translatable("hud.aptitudes.element", Text.translatable(element.translationKey())),
-					12, y + 1, 0xFF000000 | element.color());
+		// Aguante (hambre: en Minecraft es lo que limita esprintar), pegado a la barra de hambre.
+		statusRow(ctx, x, y, food / 20f, 0xFF9CCC65, 0xFFC5E1A5, 0xFF558B2F, false);
+	}
+
+	/**
+	 * Fila del bloque de estado: marca de color de 4×4 a la izquierda y canal de 4 px de alto con contorno, al estilo del
+	 * kit (contorno #111017, fondo #202433, relleno en dos tonos).
+	 */
+	private static void statusRow(DrawContext ctx, int x, int y, float fraction, int marker, int light, int dark,
+								  boolean ready) {
+		ctx.fill(x, y, x + 4, y + 4, 0xFF111017);
+		ctx.fill(x + 1, y + 1, x + 3, y + 3, marker);
+		int cx = x + 6, cw = STATUS_W - 6;
+		ctx.fill(cx, y, cx + cw, y + 4, 0xFF111017);
+		ctx.fill(cx + 1, y + 1, cx + cw - 1, y + 3, 0xFF202433);
+		int filled = (int) ((cw - 2) * Math.max(0f, Math.min(1f, fraction)));
+		if (filled > 0) {
+			ctx.fill(cx + 1, y + 1, cx + 1 + filled, y + 3, dark);
+			ctx.fill(cx + 1, y + 1, cx + 1 + filled, y + 2, light);
 		}
-		ctx.getMatrices().pop();
+		if (ready) ctx.drawBorder(cx - 1, y - 1, cw + 2, 6, 0x80FFE082);
 	}
 
 	/** Barra redondeada: fondo oscuro, relleno con degradado vertical y brillo superior. */
@@ -323,16 +316,24 @@ public final class AbilityHud {
 
 	// ------------------------------------------------------------ Barras
 
-	/** v66: esfera de maná junto a la hotbar, alineada por abajo con la antigua barra; el texto va a su izquierda. */
+	/**
+	 * v66: esfera de maná de 14×14 junto a la hotbar (la de 28 a la mitad, exacta en píxel), con el maná actual escrito
+	 * dentro; ya no hay texto al lado. El número se reduce si no cabe (valores de 4 cifras).
+	 */
 	private static void renderManaOrb(DrawContext ctx, TextRenderer text, int w, int h, float manaFill) {
 		int right = w / 2 - 91 - 30; // deja sitio a la mano secundaria
-		int size = NodeIconRenderer.MANA_ORB_SIZE;
+		int size = NodeIconRenderer.MANA_ORB_SIZE / 2;
 		int orbX = Math.max(4, right - size);
 		int orbY = h - 22 + 9 - size;
-		if (!NodeIconRenderer.drawManaOrb(ctx, orbX, orbY, manaFill)) return;
-		Text label = Text.translatable("hud.aptitudes.mana", (int) ClientRoleState.energy(),
-				(int) Math.max(1f, ClientRoleState.maxEnergy()));
-		small(ctx, text, label, Math.max(2, orbX - 3 - (int) (text.getWidth(label) * 0.7f)), h - 22 + 2, 0xFFFFFFFF);
+		if (!NodeIconRenderer.drawManaOrbHalf(ctx, orbX, orbY, manaFill)) return;
+		String value = Integer.toString((int) ClientRoleState.energy());
+		int textW = text.getWidth(value);
+		float scale = Math.min(0.7f, (size + 2) / (float) Math.max(1, textW));
+		ctx.getMatrices().push();
+		ctx.getMatrices().translate(orbX + size / 2f - textW * scale / 2f, orbY + size / 2f - 4 * scale + 0.5f, 200);
+		ctx.getMatrices().scale(scale, scale, 1f);
+		ctx.drawText(text, value, 0, 0, 0xFFFFFFFF, true);
+		ctx.getMatrices().pop();
 	}
 
 	private static void renderBars(DrawContext ctx, TextRenderer text, RoleSyncPayload data, int w, int h, float manaFill,

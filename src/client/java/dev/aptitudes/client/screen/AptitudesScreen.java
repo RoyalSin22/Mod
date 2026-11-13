@@ -397,8 +397,9 @@ public class AptitudesScreen extends Screen {
 			UiStyle.header(ctx, textRenderer, text, x, y, width);
 			return;
 		}
-		KUi.sectionHeader(ctx, x, y, width);
-		ctx.drawTextWithShadow(textRenderer, UiStyle.fit(textRenderer, text, width - 12), x + 10, y, UiStyle.GOLD);
+		Text fitted = UiStyle.fit(textRenderer, text, width - 12);
+		KUi.sectionHeader(ctx, x, y, width, x + 10 + textRenderer.getWidth(fitted));
+		ctx.drawTextWithShadow(textRenderer, fitted, x + 10, y, UiStyle.GOLD);
 	}
 
 	private void renderAttributes(DrawContext ctx, SyncProgressPayload data, int mouseX, int mouseY) {
@@ -417,8 +418,9 @@ public class AptitudesScreen extends Screen {
 		if (bonfire) {
 			int cost = costOf(data, buy);
 			int have = client.player == null ? 0 : client.player.experienceLevel;
-			UiStyle.label(ctx, textRenderer, Text.translatable("screen.aptitudes.xp_cost"), x, top + 39, 80, UiStyle.TEXT);
 			String costText = cost + " / " + have;
+			UiStyle.label(ctx, textRenderer, Text.translatable("screen.aptitudes.xp_cost"), x, top + 39,
+					140 - textRenderer.getWidth(costText) - 6, UiStyle.TEXT);
 			ctx.drawText(textRenderer, costText, x + 140 - textRenderer.getWidth(costText), top + 39,
 					cost > have ? UiStyle.DOWN : UiStyle.GOOD, false);
 		} else if (free > 0) {
@@ -463,6 +465,7 @@ public class AptitudesScreen extends Screen {
 		header(ctx, Text.translatable("screen.aptitudes.base_stats"), sx, top + 30, sw);
 		if (kit) KUi.columnPanel(ctx, KScreenLayout.statsColumn(left, top, STAT_KEYS.length, STAT_ROW_H));
 		int affected = STAT_OF_ATTRIBUTE[selected];
+		int statPad = kit ? 6 : 4; // con el kit, lejos del marco hundido de la columna
 		for (int s = 0; s < STAT_KEYS.length; s++) {
 			int y = top + 46 + s * STAT_ROW_H;
 			if (!kit) {
@@ -470,11 +473,11 @@ public class AptitudesScreen extends Screen {
 				if (s == affected) ctx.drawText(textRenderer, "+", sx - 7, y + 3, UiStyle.GOLD, false);
 			} else if (s == affected) {
 				// Estadística afectada: marco azul alma como la fila seleccionada del kit.
-				ctx.drawBorder(sx, y, sw, STAT_ROW_H - 2, 0xFF4A6BB5);
+				ctx.drawBorder(sx + 2, y, sw - 4, STAT_ROW_H - 2, 0xFF4A6BB5);
 			}
 			Text statName = Text.translatable("stat.aptitudes." + STAT_KEYS[s]);
 			if (stats == null || s >= stats.stats().length) {
-				UiStyle.label(ctx, textRenderer, statName, sx + 4, y + 3, sw - 8, UiStyle.TEXT);
+				UiStyle.label(ctx, textRenderer, statName, sx + statPad, y + 3, sw - 2 * statPad, UiStyle.TEXT);
 				continue;
 			}
 			double cur = stats.stats()[s];
@@ -485,8 +488,8 @@ public class AptitudesScreen extends Screen {
 			String curText = UiStyle.fmt(cur);
 			String nextText = UiStyle.fmt(next);
 			int valueW = textRenderer.getWidth(curText + " → " + nextText);
-			UiStyle.label(ctx, textRenderer, statName, sx + 4, y + 3, sw - 14 - valueW, UiStyle.TEXT);
-			UiStyle.valueArrow(ctx, textRenderer, curText, nextText, sx + sw - 4, y + 3, Math.abs(next - cur) > 1e-6);
+			UiStyle.label(ctx, textRenderer, statName, sx + statPad, y + 3, sw - 2 * statPad - 6 - valueW, UiStyle.TEXT);
+			UiStyle.valueArrow(ctx, textRenderer, curText, nextText, sx + sw - statPad, y + 3, Math.abs(next - cur) > 1e-6);
 		}
 
 		// ---- Columna 3: detalle del atributo seleccionado
@@ -495,25 +498,27 @@ public class AptitudesScreen extends Screen {
 		header(ctx, Text.translatable("screen.aptitudes.details"), dx, top + 30, 130);
 		if (kit) KUi.detailPanel(ctx, KScreenLayout.detailPanel(left, top));
 		else UiStyle.panel(ctx, dx, top + 46, 130, 120);
-		ctx.drawTextWithShadow(textRenderer, Text.translatable(attr.translationKey()), dx + 6, top + 52, UiStyle.GOLD);
+		// Con el kit, el texto entra 12 px para no pisar los adornos de las esquinas del panel.
+		int pad = kit ? 12 : 6;
+		ctx.drawTextWithShadow(textRenderer, Text.translatable(attr.translationKey()), dx + pad, top + 58, UiStyle.GOLD);
 		ctx.drawText(textRenderer, Text.translatable("screen.aptitudes.points_invested", data.allocated(attr)),
-				dx + 6, top + 63, UiStyle.MUTED, false);
+				dx + pad, top + 69, UiStyle.MUTED, false);
 		if (data.affinity(attr) > 0) {
 			ctx.drawText(textRenderer, Text.translatable("screen.aptitudes.affinity", data.affinity(attr)),
-					dx + 6, top + 126, UiStyle.GOLD, false);
+					dx + pad, top + 128, UiStyle.GOLD, false);
 		}
-		List<OrderedText> lines = textRenderer.wrapLines(Text.translatable(attr.descriptionKey()), 118);
-		int ly = top + 78;
+		List<OrderedText> lines = textRenderer.wrapLines(Text.translatable(attr.descriptionKey()), 130 - 2 * pad);
+		int ly = top + 82;
 		for (OrderedText line : lines) {
-			ctx.drawText(textRenderer, line, dx + 6, ly, UiStyle.TEXT, false);
+			ctx.drawText(textRenderer, line, dx + pad, ly, UiStyle.TEXT, false);
 			ly += 10;
 		}
 		double slope = stats != null && selected < stats.slopes().length ? stats.slopes()[selected] : 0;
-		ctx.drawText(textRenderer, Text.translatable("screen.aptitudes.per_point"), dx + 6, top + 138, UiStyle.MUTED, false);
+		ctx.drawText(textRenderer, Text.translatable("screen.aptitudes.per_point"), dx + pad, top + 138, UiStyle.MUTED, false);
 		String perPoint = (slope >= 0 ? "+" : "") + UiStyle.fmt(slope);
-		ctx.drawText(textRenderer, perPoint, dx + 124 - textRenderer.getWidth(perPoint), top + 138, UiStyle.UP, false);
-		ctx.drawText(textRenderer, Text.translatable("screen.aptitudes.limit"), dx + 6, top + 150, UiStyle.MUTED, false);
-		ctx.drawText(textRenderer, String.valueOf(max), dx + 124 - textRenderer.getWidth(String.valueOf(max)), top + 150,
+		ctx.drawText(textRenderer, perPoint, dx + 130 - pad - textRenderer.getWidth(perPoint), top + 138, UiStyle.UP, false);
+		ctx.drawText(textRenderer, Text.translatable("screen.aptitudes.limit"), dx + pad, top + 150, UiStyle.MUTED, false);
+		ctx.drawText(textRenderer, String.valueOf(max), dx + 130 - pad - textRenderer.getWidth(String.valueOf(max)), top + 150,
 				UiStyle.TEXT, false);
 	}
 
@@ -699,19 +704,19 @@ public class AptitudesScreen extends Screen {
 		ctx.drawItem(skill.iconStack(), x + KScreenLayout.ICON_X, y + KScreenLayout.ICON_Y);
 
 		int textX = x + KScreenLayout.TEXT_X;
-		int milestonesW = dev.aptitudes.logic.SkillMilestones.THRESHOLDS.length * 9;
+		int milestonesW = dev.aptitudes.logic.SkillMilestones.THRESHOLDS.length * 9 - 1;
 		int lvW = textRenderer.getWidth(lv);
-		Text name = UiStyle.fit(textRenderer, Text.translatable(skill.translationKey()),
-				KScreenLayout.CARD_W - KScreenLayout.TEXT_X - 6 - lvW - milestonesW - 8);
+		int lvX = x + KScreenLayout.CARD_W - 6 - lvW;
+		// Hitos en una columna fija pegada al nivel: quedan alineados en las diez tarjetas.
+		int milestonesX = lvX - 5 - milestonesW;
+		Text name = UiStyle.fit(textRenderer, Text.translatable(skill.translationKey()), milestonesX - 4 - textX);
 		ctx.drawTextWithShadow(textRenderer, name, textX, y + KScreenLayout.NAME_Y, UiStyle.TEXT);
-		// Hitos (10/20/30/40/50): rombos del kit, encendidos si se alcanzaron.
-		int px = textX + textRenderer.getWidth(name) + 4;
+		int px = milestonesX;
 		for (int m : dev.aptitudes.logic.SkillMilestones.THRESHOLDS) {
 			KUi.sprite(ctx, "hitos/hito_" + (level >= m ? "encendido" : "apagado") + ".png", px, y + KScreenLayout.NAME_Y, 8, 8);
 			px += 9;
 		}
-		ctx.drawTextWithShadow(textRenderer, lv, x + KScreenLayout.CARD_W - 6 - lvW, y + KScreenLayout.NAME_Y,
-				maxed ? UiStyle.GOLD : UiStyle.TEXT);
+		ctx.drawTextWithShadow(textRenderer, lv, lvX, y + KScreenLayout.NAME_Y, maxed ? UiStyle.GOLD : UiStyle.TEXT);
 
 		int barX = x + KScreenLayout.BAR_X, barY = y + KScreenLayout.BAR_Y, barW = KScreenLayout.BAR_W;
 		KUi.xpBar(ctx, barX, barY, KScreenLayout.filled(barW, fill), maxed);
@@ -719,8 +724,14 @@ public class AptitudesScreen extends Screen {
 			int sx = barX + (int) ((now / 6) % (barW + 20)) - 20;
 			ctx.fill(Math.max(barX, sx), barY + 1, Math.min(barX + barW, sx + 8), barY + KScreenLayout.BAR_H - 1, 0x90FFFFFF);
 		}
-		UiStyle.label(ctx, textRenderer, summary, textX, y + KScreenLayout.PASSIVES_Y,
-				KScreenLayout.CARD_W - KScreenLayout.TEXT_X - 6, anyActive ? UiStyle.UP : UiStyle.MUTED);
+		// Pasivas: si no caben, se reducen hasta el 75 % antes de cortarse con «…».
+		int avail = KScreenLayout.CARD_W - KScreenLayout.TEXT_X - 6;
+		float scale = Math.max(0.75f, Math.min(1f, avail / (float) Math.max(1, textRenderer.getWidth(summary))));
+		ctx.getMatrices().push();
+		ctx.getMatrices().translate(textX, y + KScreenLayout.PASSIVES_Y + (1f - scale) * 4f, 0);
+		ctx.getMatrices().scale(scale, scale, 1f);
+		UiStyle.label(ctx, textRenderer, summary, 0, 0, (int) (avail / scale), anyActive ? UiStyle.UP : UiStyle.MUTED);
+		ctx.getMatrices().pop();
 	}
 
 }

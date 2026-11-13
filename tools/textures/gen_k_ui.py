@@ -7,6 +7,9 @@ están a su tamaño final, con píxel lógico de 2×2 px). El script comprueba e
 
 Encargo del arte: `docs/PROMPT_ARTE_PANTALLA_K.md`.
 
+Pieza derivada: `barras/vida_jefe.png` (barra de vida de la barra de jefes) es `xp_llena` con sus tres verdes cambiados
+por los tres rojos de brasa de la paleta del kit, píxel a píxel.
+
 Uso:
   python3 tools/textures/gen_k_ui.py src/main/resources/assets/aptitudes/textures/gui
   python3 tools/textures/gen_k_ui.py src/main/resources/assets/aptitudes/textures/gui --check
@@ -72,7 +75,24 @@ def outputs():
                 raise SystemExit(f'{group}/{name}: se espera {size}, no {image.size}')
             check(image, f'{group}/{name}')
             result[OUT / group / name] = image
+    result[OUT / 'barras' / 'vida_jefe.png'] = recolor(result[OUT / 'barras' / 'xp_llena.png'], EMBER)
     return result
+
+
+# xp_llena (reflejo, tono medio, sombra) -> brasa del kit
+EMBER = {(139, 224, 143, 255): (255, 84, 48, 255), (76, 175, 80, 255): (200, 40, 31, 255),
+         (46, 125, 50, 255): (128, 30, 42, 255)}
+
+
+def recolor(image: Image.Image, mapping) -> Image.Image:
+    out = image.copy()
+    px = out.load()
+    for y in range(out.height):
+        for x in range(out.width):
+            if px[x, y] not in mapping and px[x, y][3] != 0:
+                raise SystemExit(f'Color inesperado {px[x, y]} al derivar la barra de jefe')
+            px[x, y] = mapping.get(px[x, y], px[x, y])
+    return out
 
 
 def main(argv):

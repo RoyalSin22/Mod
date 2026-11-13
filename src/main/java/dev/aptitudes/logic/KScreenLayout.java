@@ -57,7 +57,7 @@ public final class KScreenLayout {
 
 	/** Panel de la columna de estadísticas base ({@code rows} filas de {@code rowStep} px desde {@code top + 46}). */
 	public static Rect statsColumn(int left, int top, int rows, int rowStep) {
-		return new Rect(left + 156, top + 42, 132, rows * rowStep + 6);
+		return new Rect(left + 156, top + 40, 132, rows * rowStep + 12);
 	}
 
 	/** Ficha del atributo seleccionado. */
