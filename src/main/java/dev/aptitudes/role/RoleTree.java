@@ -35,6 +35,8 @@ public final class RoleTree {
 	private static final Map<Role, RoleNode[]> ACTIVES = new EnumMap<>(Role.class);
 	/** Declarado antes del bloque static que llama a {@code define()} (orden de inicialización). */
 	private static final Map<String, GridPos> POSITIONS = new LinkedHashMap<>();
+	/** v67: sección del árbol unificado de los nodos nuevos N1–N10 (ver {@link RoleExtras}). Mismo motivo de orden. */
+	private static final Map<String, RoleExtras.Section> EXTRA_SECTIONS = new LinkedHashMap<>();
 
 	static {
 		// Bersérker: aguanta, se enfurece y castiga más cuanto menos vida tiene.
@@ -611,14 +613,36 @@ public final class RoleTree {
 			nodes.add(new RoleNode(PathRules.nodeId(k, path, PathRules.Step.S7), role, RoleNode.Kind.PATH,
 					PathRules.Step.S7.level(), s6, 0, 0, 0, 1));
 		}
+		// v67 (F2+): habilidades nuevas N1–N10, al final de la lista (no cambia el índice de los nodos anteriores).
+		List<RoleNode> extraActives = new ArrayList<>();
+		for (RoleExtras.Extra extra : RoleExtras.of(role)) {
+			RoleNode node = extra.node(role);
+			if (extra.section() == RoleExtras.Section.TALENTS) {
+				node = at(node, extra.col(), extra.row(), extra.level(), extra.prerequisite());
+			}
+			EXTRA_SECTIONS.put(node.id(), extra.section());
+			nodes.add(node);
+			if (node.active()) extraActives.add(node);
+		}
 		for (RoleNode n : nodes) {
 			if (BY_ID.put(n.id(), n) != null) throw new IllegalStateException("Nodo duplicado: " + n.id());
 		}
 		BY_ROLE.put(role, List.copyOf(nodes));
-		// Activas: A, B, C, D (índices 0-3, como antes) + Maestro 1-2 y Definitivo 1-2 (índices 4-7).
+		// Activas: A, B, C, D (índices 0-3, como antes) + Maestro 1-2 y Definitivo 1-2 (índices 4-7)
+		// + las nuevas de v67 (índices 8 en adelante; ver LoadoutCodec).
 		List<RoleNode> allActives = new ArrayList<>(List.of(aA, aB, aC, aD));
 		allActives.addAll(evolvedActives);
+		allActives.addAll(extraActives);
+		if (allActives.size() > LoadoutCodec.MAX_INDEX + 1) {
+			throw new IllegalStateException("Demasiadas activas para el códec de equipamiento: " + role);
+		}
 		ACTIVES.put(role, allActives.toArray(new RoleNode[0]));
+	}
+
+	/** v67: sección del árbol unificado de un nodo nuevo N1–N10, o null si es un nodo anterior. */
+	@Nullable
+	public static RoleExtras.Section extraSection(String nodeId) {
+		return EXTRA_SECTIONS.get(nodeId);
 	}
 
 	/** Posición del nodo en la cuadrícula (o null si no es un nodo del árbol). */
@@ -627,7 +651,7 @@ public final class RoleTree {
 		return POSITIONS.get(nodeId);
 	}
 
-	/** Las 8 activas del rol (A, B, C, D, Maestro 1-2, Definitivo 1-2). */
+	/** Las activas del rol (A, B, C, D, Maestro 1-2, Definitivo 1-2 y, desde v67, las nuevas N1–N10). */
 	public static List<RoleNode> actives(Role role) {
 		RoleNode[] actives = ACTIVES.get(role);
 		return actives == null ? List.of() : List.of(actives);

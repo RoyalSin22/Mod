@@ -34,6 +34,7 @@ public final class ProgressManager {
 			SkillMilestones.forget(handler.getPlayer());
 			dev.aptitudes.ability.RoleArmorSets.forget(handler.getPlayer());
 			dev.aptitudes.ability.RoleMechanics.forget(handler.getPlayer());
+			dev.aptitudes.ability.BerserkerKit.forget(handler.getPlayer());
 			dev.aptitudes.accessory.Accessories.forget(handler.getPlayer());
 			dev.aptitudes.role.RoleEvents.forget(handler.getPlayer());
 			dev.aptitudes.ability.Combos.forget(handler.getPlayer());

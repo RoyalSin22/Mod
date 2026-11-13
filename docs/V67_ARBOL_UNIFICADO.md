@@ -4,6 +4,8 @@ Estado:
 
 - **Diseño aprobado por el autor (2026-11-13).**
 - **F1 implementada:** árbol unificado.
+- **F2 implementada (2026-11-13):** las 10 habilidades del Bersérker; ver §8. Iconos encargados en
+  `docs/PROMPT_ARTE_ICONOS_BERSERKER.md` (hasta entonces, objetos vanilla de respaldo).
 - **Puntos decididos:** opción b (Maestro 15 y Definitivo 10): **76** puntos a nivel 50 con las dos evoluciones (antes
   66).
 
@@ -132,3 +134,33 @@ Cada habilidad necesita:
 3. Las 10 habilidades del Berserker como **plantilla de estilo y poder** para los demás roles: nombres, mecánicas y
    cifras.
 4. El plan por fases: empezar por F1 mientras se valida el diseño del piloto.
+
+## 8. F2 implementada: Bersérker
+
+Datos en `role/RoleExtras` (al final de la lista del rol; sus activas, en los índices 8–12), cifras en
+`ability/BerserkerRules` (puro, JUnit) y comportamiento en `ability/BerserkerKit`.
+
+**Cambios respecto a la tabla de §4**, para que ninguna línea de Talentos cruce otro nodo (las líneas bajan siempre del
+padre al hijo):
+
+| Nodo | Diseño | Implementado |
+|---|---|---|
+| N1 Cicatrices | Nivel 6, carril de pasivas | Nivel 8, tras Sed de sangre (casilla 2,3) |
+| N2 Sangre hirviente | Tras Sed de sangre | Tras Cicatrices (casilla 2,4) |
+| N3 Hacha arrojadiza | Carril de activas | Tras Presteza (casilla 6,3) |
+| N4 Cadena de sangre | Tras Grito de guerra | Tras Hacha arrojadiza (casilla 6,5) |
+| N6 Desgarro | Solo sangrado | Nombre «Tajos desgarradores» (el Cambiaformas ya tiene «Desgarro») y 2,5 / 3 de daño por tajo además del sangrado |
+
+Veterano (N5–N7) y Ascenso (N8–N10) son filas centradas en su sección (`UnifiedTreeLayout.bridgeNode`), sin
+requisitos entre ellas; Ascenso exige Maestro (`requiredTier`), así que al perder la evolución se devuelven los
+puntos como en las filas de Maestro.
+
+**Equipamiento:** con 13 activas el índice ya no cabía en 3 bits. `LoadoutCodec` escribe ahora 4 bits por ranura con
+una marca nueva y sigue leyendo los dos formatos anteriores. Una versión anterior del mod leería mal un equipamiento
+guardado con esta (no se puede volver atrás sin reequipar).
+
+**Estado en memoria:** cicatrices, ventanas de Cadena y Eco, Juramento, sangrados y fisuras se pierden al reiniciar el
+servidor; los atributos de Avatar son temporales y no se guardan con el jugador.
+
+**Balance:** `extraSkillDamageScale` (1 por defecto) multiplica el daño de todas estas habilidades.
+

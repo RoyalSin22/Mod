@@ -274,6 +274,7 @@ public final class RoleMechanics {
 		// Cambiaformas – Instinto
 		if (rank(p, "instinct") > 0) bonus += 0.05f * s.instinct;
 		bonus += NewRoles.outgoing(p, target, source, direct, amount); // roles nuevos (v11)
+		bonus += BerserkerKit.outgoing(p, target, direct); // v67: habilidades nuevas del Bersérker
 		sync(p);
 
 		return 1.0f + bonus;

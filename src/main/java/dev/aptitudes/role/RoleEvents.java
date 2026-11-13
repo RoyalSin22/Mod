@@ -211,6 +211,7 @@ public final class RoleEvents {
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			int ticks = server.getTicks();
 			if (ticks % 10 == 0) AbilityManager.tickEnergy(server);
+			dev.aptitudes.ability.BerserkerKit.tick(server); // v67: Avatar, Ragnarök, sangrados y fisuras
 			if (ticks % 20 == 0) {
 				RolePassives.tick(server);
 				MorphManager.tick(server);

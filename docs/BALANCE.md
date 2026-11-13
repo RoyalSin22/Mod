@@ -547,3 +547,26 @@ Cada mejora añade una carga y conserva los usos ya gastados. Estus mantiene Reg
 | III | 8 | 14 | 70 % | 1 núcleo de jefe y 24 Fragmentos de alma |
 
 El límite de compra por defecto es II. Descansar en la Hoguera rellena la capacidad del objeto.
+
+## v67 (F2) — Habilidades nuevas del Bersérker
+
+Valores con `extraSkillDamageScale` = 1. «Rango» es el rango efectivo (con evolución, Maestría y recurso puede pasar
+del máximo del árbol; las fórmulas siguen la misma recta). Referencia de poder: por debajo de Terremoto (10 + 1,5 por
+rango) y de la definitiva.
+
+| Nodo | Coste | Cifras |
+|---|---|---|
+| N1 Cicatrices | — | Golpe > 15 % de la vida máxima → 1 cicatriz 20 s; −3 % de daño por cicatriz; máx. 2 + rango |
+| N2 Sangre hirviente | — | Bajo el 50 % de vida: fuego 1 + rango s |
+| N3 Hacha arrojadiza | 25 maná, 14 s | 3,5 + 1,5·rango (16 bloques, atraviesa); sangrado 1/s durante 4 s |
+| N4 Cadena de sangre | 30 maná, 18 s | 12 bloques; siguiente golpe en 3 s: +25 % + 25 %·rango |
+| N5 Rugido intimidante | — | Atacante a ≤ 4 bloques: Debilidad I/II 3 s; una vez cada 5 s por enemigo |
+| N6 Tajos desgarradores | 45 maná, 30 s | 3 tajos (2 + 0,5·rango); sangrado (1 + 0,5·rango)/s por carga, 5 s, máx. 3 cargas |
+| N7 Juramento de sangre | — | Furia: −10 % de la vida actual, ×1,5 de duración, robo de vida 15 % mientras dura |
+| N8 Avatar de la guerra | 60 maná, 45 s | (6 + 4·rango) s: +20 % de tamaño, +30 % de daño, inmune a empuje y Lentitud; después Debilidad I 5 s |
+| N9 Eco de batalla | — | Tras Torbellino o Tajo sísmico, siguiente golpe en 3 s: onda frontal de 4 bloques, 2 + 2·rango |
+| N10 Ragnarök | 80 maná, 90 s | Salto de hasta 16 bloques; fisura de 10 bloques: 14 de daño y suelo ardiendo 4 s |
+
+Riesgos que vigilar en partida: el sangrado acumulado de Tajos (6/s con 3 cargas en rango 2) y Avatar junto a Furia y
+el Juramento (multiplicadores que se suman, limitados por `maxDamageMultiplier`).
+

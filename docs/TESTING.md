@@ -1,5 +1,32 @@
 # Pruebas de Aptitudes
 
+## v67 (F2) — Habilidades nuevas del Bersérker
+
+Automáticas: `BerserkerRulesTest` (cifras), `RoleExtrasTest` (datos, casillas libres, niveles por rango),
+`LoadoutCodecV4Test` (equipamiento de 4 bits sin romper el formato de la v23) y `UnifiedTreeLayoutTest` (filas de
+Veterano y Ascenso).
+
+Validación en partida (pendiente), con un Bersérker y `/roles admin` para subir de nivel:
+
+1. **Árbol (J):** Cicatrices y Sangre hirviente cuelgan de Sed de sangre; Hacha y Cadena, de Presteza; las líneas no
+   cruzan nodos. Aparecen las secciones Veterano (niveles 34–38) y Ascenso (exige Maestro), con sus notas.
+2. **Equipamiento:** equipa Hacha, Cadena, Tajos, Avatar y Ragnarök en las ranuras 1 y 2; sal y vuelve a entrar: se
+   conservan. Un personaje con activas equipadas de antes de la actualización mantiene las suyas.
+3. **Cicatrices:** recibe golpes fuertes (más del 15 % de la vida): salen gotas de sangre y los siguientes duelen menos.
+4. **Sangre hirviente:** por debajo de la mitad de vida, tus golpes prenden fuego.
+5. **Hacha:** atraviesa a varios enemigos en línea, los desangra 4 s y la estela vuelve hacia ti.
+6. **Cadena:** arrastra al enemigo; el siguiente golpe en 3 s hace daño extra (partículas de sangre). Un jefe con
+   resistencia total al empuje no se mueve, pero el golpe extra sí cuenta.
+7. **Rugido:** un enemigo que te golpea de cerca queda con Debilidad (no más de una vez cada 5 s).
+8. **Tajos:** tres tajos frontales; el sangrado sube hasta 3 cargas.
+9. **Juramento:** al usar Furia pierdes un 10 % de vida, Furia dura más y tus golpes te curan.
+10. **Avatar:** creces, no te empujan ni te ralentizan; al acabar, Debilidad I. Si te desconectas durante Avatar,
+    al volver tienes el tamaño normal.
+11. **Eco:** tras Torbellino (o Tajo sísmico), el siguiente golpe lanza una onda que daña a los enemigos de delante.
+12. **Ragnarök:** saltas al punto que miras sin daño de caída; al aterrizar se abre la fisura, lanza a los enemigos
+    y el suelo arde 4 s (no se prende fuego a bloques).
+13. `extraSkillDamageScale = 0.5` en `config/aptitudes.json`: el daño de todas estas habilidades baja a la mitad.
+
 ## v66 — Auditoría, retiradas y arte de la nueva dirección
 
 Pruebas automáticas nuevas:

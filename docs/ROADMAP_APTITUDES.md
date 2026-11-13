@@ -13,7 +13,9 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
   angulares, reescritas en estilo llano en los 5 idiomas. Pendiente: las 40 de firma y definitiva y los tooltips de la
   configuración (es/en primero).
 - **Versión:** número de commits → `a.b.c`. Revisión de mixins en `docs/REVISION_MIXINS.md`.
-- **Siguiente:** F2 (10 habilidades del Berserker y prompt de sus iconos), F3–F7 (resto de roles), grimorio y bestiario
+- **F2 hecha:** 10 habilidades del Bersérker (Talentos, Veterano y Ascenso), equipamiento de 4 bits y encargo de
+  iconos. Pendiente: validarlas en partida y el arte de sus iconos.
+- **Siguiente:** F3–F7 (resto de roles, de 4 en 4, con diseño para aprobar), grimorio y bestiario
   rediseñados (cartas de pergamino con marco dorado, solo criaturas del mod). Validar F1 en partida.
 
 ### v65 — Errante Velado: combate, Niebla y botín

@@ -196,6 +196,7 @@ public final class AbilityManager {
 		}
 		RoleMechanics.onCast(player, role, energyCost);
 		NewRoles.onCast(player, role, cooldownKey, slot);
+		BerserkerKit.onCast(player, cooldownKey); // v67: Juramento de sangre y Eco de batalla
 		sendEnergy(player, false);
 		RoleManager.addRoleXp(player, role, Aptitudes.config().roleXpPerAbilityUse);
 		RoleManager.recordTrial(player, role, Evolution.TrialType.ABILITY_USES, 1);

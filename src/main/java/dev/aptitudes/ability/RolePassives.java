@@ -200,6 +200,7 @@ public final class RolePassives {
 			amount = dev.aptitudes.logic.SkillMilestones.modifyIncoming(victim, source, amount);
 			amount = RoleArmorSets.modifyIncoming(victim, source, amount);
 			amount = RoleMechanics.incoming(victim, source, amount);
+			amount = BerserkerKit.incoming(victim, source, amount); // v67: Cicatrices y Rugido intimidante
 		}
 
 		// Nigromante – Drenaje vital también funciona con el daño de sus esbirros.
@@ -267,6 +268,7 @@ public final class RolePassives {
 		drain(player, result);
 		RoleArmorSets.afterOutgoing(player, result);
 		NewRoles.afterOutgoing(player, result, direct);
+		BerserkerKit.afterOutgoing(player, result); // v67: Juramento de sangre
 		return result;
 	}
 

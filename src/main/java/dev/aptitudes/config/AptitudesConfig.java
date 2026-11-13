@@ -207,6 +207,8 @@ public class AptitudesConfig {
 	public double emberRainHugeChance = 0.05;
 	/** v41.2: probabilidad de que un impacto traiga criaturas del Nether (la mitad en los pequeños). */
 	public double emberRainMobChance = 0.5;
+	/** v67 (F2+): multiplicador del daño de las habilidades nuevas N1–N10 (1 = el de los textos). */
+	public double extraSkillDamageScale = 1.0;
 	// ---------- Piedras angulares de las Sendas (v46.1) ----------
 	/** Carnicería: vida curada al matar (fracción de la vida máxima) y segundos de Prisa II. */
 	public double keystoneCarnageHeal = 0.10;
@@ -565,6 +567,7 @@ public class AptitudesConfig {
 		c.emberRainLargeChance = Math.min(1.0, c.emberRainLargeChance);
 		c.emberRainHugeChance = Math.min(1.0, c.emberRainHugeChance);
 		c.emberRainMobChance = Math.min(1.0, c.emberRainMobChance);
+		c.extraSkillDamageScale = Math.min(3.0, c.extraSkillDamageScale);
 		c.keystoneCarnageHeal = Math.min(1.0, c.keystoneCarnageHeal);
 		c.keystoneCarnageHasteSeconds = Math.min(60.0, c.keystoneCarnageHasteSeconds);
 		c.keystoneBulwarkThreshold = Math.min(1.0, c.keystoneBulwarkThreshold);

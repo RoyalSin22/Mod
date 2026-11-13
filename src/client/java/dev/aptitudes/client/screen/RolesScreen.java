@@ -19,6 +19,7 @@ import dev.aptitudes.role.Role;
 import dev.aptitudes.role.RoleCategory;
 import dev.aptitudes.role.RoleNode;
 import dev.aptitudes.role.RoleRules;
+import dev.aptitudes.role.RoleExtras;
 import dev.aptitudes.role.RoleTree;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.DrawContext;
@@ -565,7 +566,9 @@ public class RolesScreen extends Screen {
 		List<NodeView> out = new ArrayList<>();
 		pathSteps.clear();
 		contentW = UnifiedTreeLayout.WIDTH;
-		blocks = UnifiedTreeLayout.blocks(0, 0);
+		List<RoleNode> veteran = extras(RoleExtras.Section.VETERAN);
+		List<RoleNode> ascent = extras(RoleExtras.Section.ASCENT);
+		blocks = UnifiedTreeLayout.blocks(veteran.size(), ascent.size());
 		Block talents = UnifiedTreeLayout.block(blocks, Section.TALENTS);
 		int ty = talents.bodyY();
 		out.add(new NodeView(NodeKind.CORE, null, COL_X[4], ty + 6));
@@ -586,11 +589,32 @@ public class RolesScreen extends Screen {
 				}
 			}
 		}
+		addBridge(out, Section.VETERAN, veteran);
 		addEvolution(out, UnifiedTreeLayout.block(blocks, Section.MASTER), Evolution.MASTER, NodeKind.SIGNATURE,
 				NodeKind.WEAPON_MASTER);
+		addBridge(out, Section.ASCENT, ascent);
 		addEvolution(out, UnifiedTreeLayout.block(blocks, Section.ULTIMATE), Evolution.ULTIMATE, NodeKind.ULTIMATE,
 				NodeKind.WEAPON_ULTIMATE);
 		return out;
+	}
+
+	/** v67: nodos nuevos del rol en una sección puente (Veterano o Ascenso), en orden N5–N10. */
+	private List<RoleNode> extras(RoleExtras.Section section) {
+		List<RoleNode> out = new ArrayList<>();
+		for (RoleNode node : RoleTree.nodes(selected)) {
+			if (RoleTree.extraSection(node.id()) == section) out.add(node);
+		}
+		return out;
+	}
+
+	/** Veterano o Ascenso: una fila de nodos centrada en su sección. */
+	private void addBridge(List<NodeView> out, Section section, List<RoleNode> nodes) {
+		Block block = UnifiedTreeLayout.block(blocks, section);
+		if (block == null) return;
+		for (int i = 0; i < nodes.size(); i++) {
+			Rect r = UnifiedTreeLayout.bridgeNode(block, i, nodes.size());
+			out.add(new NodeView(NodeKind.NODE, nodes.get(i), r.x(), r.y()));
+		}
 	}
 
 	/** Maestro o Definitivo: firma (o definitiva) y arma arriba; las mejoras, centradas a distancia fija debajo. */
@@ -1148,6 +1172,10 @@ public class RolesScreen extends Screen {
 			else ctx.fill(8, b.y(), 8 + w, b.y() + UnifiedTreeLayout.HEADER_H, 0xC0141820);
 			ctx.drawText(textRenderer, title, 16, b.y() + 6, open ? UiStyle.GOLD : UiStyle.MUTED, true);
 			Text note = null;
+			if (b.section() == Section.VETERAN || b.section() == Section.ASCENT) {
+				note = Text.translatable(b.section() == Section.VETERAN ? "screen.aptitudes.tree.section_veteran_note"
+						: "screen.aptitudes.tree.section_ascent_note");
+			}
 			if (b.section() == Section.PATHS) {
 				int chosen = PathRules.chosenPath(data::rank, selected.key());
 				note = chosen == 0 ? Text.translatable("screen.aptitudes.paths.free")

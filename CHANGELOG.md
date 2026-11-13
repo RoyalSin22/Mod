@@ -25,6 +25,19 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   ignoran y los puntos gastados en esas ramas vuelven a estar disponibles.
 
 ### Añadido
+- **v67 (F2) — 10 habilidades nuevas del Bersérker.**
+  - **Talentos:** Cicatrices (los golpes fuertes reducen el daño siguiente), Sangre hirviente (bajo la mitad de vida,
+    tus golpes queman), Hacha arrojadiza (atraviesa, desangra y vuelve) y Cadena de sangre (arrastra al enemigo y
+    carga el siguiente golpe).
+  - **Veterano (nueva sección, niveles 34–38):** Rugido intimidante, Tajos desgarradores (sangrado acumulable) y
+    Juramento de sangre (Furia más larga y con robo de vida a cambio de vida).
+  - **Ascenso (nueva sección, exige Maestro, niveles 42–48):** Avatar de la guerra (más grande y fuerte, sin empuje
+    ni Lentitud), Eco de batalla (onda tras Torbellino o Tajo sísmico) y Ragnarök (salto y fisura ardiente).
+  - Opción `extraSkillDamageScale` para el daño de las habilidades nuevas. Textos en los 5 idiomas. Iconos
+    provisionales con objetos vanilla; encargo de arte en `docs/PROMPT_ARTE_ICONOS_BERSERKER.md`.
+  - Equipamiento de activas con 4 bits por ranura (hasta 16 activas por rol); los formatos guardados anteriores se
+    siguen leyendo.
+  - Pruebas: `BerserkerRulesTest`, `RoleExtrasTest`, `LoadoutCodecV4Test` y dos casos nuevos en `UnifiedTreeLayoutTest`.
 - **v67 (F1) — Árbol de habilidades unificado.**
   - **Un solo lienzo** en la pantalla de roles (J), con el kit «Berserker»: Talentos, Sendas (tres columnas S1–S7 con
     los conectores del kit, bifurcación y unión), Maestro, Definitivo y Maestría, cada sección con su cabecera.

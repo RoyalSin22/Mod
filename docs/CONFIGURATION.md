@@ -234,6 +234,12 @@ su forma normal de juego.
 | `secondaryRoleXpMultiplier` | 0.5 | XP del rol secundario respecto al principal. |
 | `damageNumbers`, `levelUpTitles` | true | Efectos visuales enviados desde el servidor. |
 
+### Habilidades nuevas por rol (v67)
+
+| Campo | Defecto | Límites | Descripción |
+|---|---|---|---|
+| `extraSkillDamageScale` | 1.0 | [0, 3] | v67 (F2+): multiplica el daño de las habilidades nuevas N1–N10 (hacha, tajos, sangrado, onda, Ragnarök). 1 = las cifras de los textos. |
+
 ### Piedras angulares (v46.1)
 
 | Campo | Defecto | Límites | Descripción |

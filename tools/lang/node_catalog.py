@@ -261,6 +261,20 @@ Alpha Roar¦Rugido alfa¦Rugissement alpha¦Alphabrüllen
 """)
 
 
+# v67 (F2): nombres de las habilidades nuevas del Bersérker.
+add("""
+Scars¦Cicatrizes¦Cicatrices¦Narben
+Boiling Blood¦Sangue fervente¦Sang bouillonnant¦Kochendes Blut
+Throwing Axe¦Machado de arremesso¦Hache de lancer¦Wurfaxt
+Blood Chain¦Corrente de sangue¦Chaîne de sang¦Blutkette
+Intimidating Roar¦Rugido intimidador¦Rugissement intimidant¦Einschüchterndes Brüllen
+Rending Slashes¦Cortes dilacerantes¦Taillades déchirantes¦Reißende Hiebe
+Blood Oath¦Juramento de sangue¦Serment de sang¦Blutschwur
+Avatar of War¦Avatar da guerra¦Avatar de la guerre¦Avatar des Krieges
+Battle Echo¦Eco de batalha¦Écho de bataille¦Schlachtecho
+Ragnarök¦Ragnarök¦Ragnarök¦Ragnarök
+""")
+
 # v67: las descripciones base se escriben en base_desc.py (estilo llano), con sus traducciones.
 from base_desc import catalog as _descriptions  # noqa: E402
 

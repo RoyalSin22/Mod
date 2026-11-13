@@ -87,6 +87,23 @@ class UnifiedTreeLayoutTest {
 		assertEquals(0, UnifiedTreeLayout.rowXs(0, 44).length);
 	}
 
+	@Test void bridgeNodesAreCenteredInsideTheirBlock() {
+		List<Block> blocks = UnifiedTreeLayout.blocks(3, 3);
+		for (Section section : new Section[]{Section.VETERAN, Section.ASCENT}) {
+			Block bridge = UnifiedTreeLayout.block(blocks, section);
+			Rect previous = null;
+			for (int i = 0; i < 3; i++) {
+				Rect r = UnifiedTreeLayout.bridgeNode(bridge, i, 3);
+				assertTrue(r.inside(CANVAS), r.toString());
+				assertTrue(r.y() >= bridge.bodyY() && r.bottom() <= bridge.bottom(), section + " " + i);
+				if (previous != null) assertFalse(previous.overlaps(r));
+				previous = r;
+			}
+			Rect middle = UnifiedTreeLayout.bridgeNode(bridge, 1, 3);
+			assertEquals(UnifiedTreeLayout.WIDTH / 2, middle.x() + UnifiedTreeLayout.NODE / 2);
+		}
+	}
+
 	@Test void theMasteryBarFitsItsBlock() {
 		Block mastery = UnifiedTreeLayout.block(UnifiedTreeLayout.blocks(0, 0), Section.MASTERY);
 		Rect bar = UnifiedTreeLayout.masteryBar(mastery);

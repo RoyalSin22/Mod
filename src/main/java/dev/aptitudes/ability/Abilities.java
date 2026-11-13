@@ -354,6 +354,8 @@ public final class Abilities {
 		NewRoles.registerActives();
 		// v23: activas de las filas de Maestro y Definitivo (plantillas parametrizadas).
 		EvolvedAbilities.registerAll();
+		// v67 (F2): habilidades nuevas del Bersérker.
+		BerserkerKit.registerAll();
 	}
 
 	private Abilities() {

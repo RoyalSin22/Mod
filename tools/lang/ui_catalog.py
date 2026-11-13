@@ -181,6 +181,8 @@ tree.hint¦Arrastar ou roda: mover · Ctrl+roda: zoom · C: centralizar¦Glisser
 tree.hint_scroll¦Roda: mover · Ctrl+roda: zoom · PgUp/PgDn: janela¦Molette : déplacer · Ctrl+molette : zoom · Page préc./suiv. : fenêtre¦Mausrad: verschieben · Strg+Mausrad: Zoom · Bild auf/ab: Fenster
 tree.section_veteran¦Veterano¦Vétéran¦Veteran
 tree.section_ascent¦Ascensão¦Ascension¦Aufstieg
+tree.section_veteran_note¦Níveis 34–38¦Niveaux 34–38¦Stufen 34–38
+tree.section_ascent_note¦Exige Mestre · níveis 42–48¦Exige Maître · niveaux 42–48¦Erfordert Meister · Stufen 42–48
 tree.section_mastery¦Maestria¦Maîtrise¦Meisterschaft
 hud_config¦Ajustes do HUD¦Réglages de l'ATH¦HUD-Einstellungen
 hud.scale¦Escala: %s%%¦Échelle : %s%%¦Skalierung: %s%%

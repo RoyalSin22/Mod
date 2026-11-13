@@ -78,7 +78,13 @@ public final class NodeIcons {
 		// Mecánicas, reactivas y activas C/D
 		put("frenzy", Items.REDSTONE_TORCH); put("unbreakable", Items.OBSIDIAN);
 		put("carnage", Items.BEEF); put("leap_slam", Items.ANVIL);
-		put("whirlwind", Items.IRON_AXE); put("arcane_charges", Items.AMETHYST_CLUSTER);
+		put("whirlwind", Items.IRON_AXE);
+		// v67 (F2): iconos provisionales de las habilidades nuevas del Bersérker (hasta tener los PNG).
+		put("berserker_n1", Items.CHAINMAIL_CHESTPLATE); put("berserker_n2", Items.FIRE_CHARGE);
+		put("berserker_n3", Items.GOLDEN_AXE); put("berserker_n4", Items.CHAIN);
+		put("berserker_n5", Items.BELL); put("berserker_n6", Items.SHEARS);
+		put("berserker_n7", Items.REDSTONE_BLOCK); put("berserker_n8", Items.NETHERITE_CHESTPLATE);
+		put("berserker_n9", Items.ECHO_SHARD); put("berserker_n10", Items.MACE); put("arcane_charges", Items.AMETHYST_CLUSTER);
 		put("mana_shield", Items.LAPIS_BLOCK); put("spell_echo", Items.ECHO_SHARD);
 		put("time_warp", Items.CLOCK); put("arcane_missiles", Items.END_ROD);
 		put("lethal_tempo", Items.IRON_SWORD); put("smoke_escape", Items.GRAY_DYE);

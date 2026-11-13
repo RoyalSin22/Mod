@@ -134,6 +134,12 @@ public final class UnifiedTreeLayout {
 		return xs;
 	}
 
+	/** Nodo {@code index} de una sección puente (Veterano o Ascenso): fila centrada, cada {@link #EVO_PITCH} px. */
+	public static Rect bridgeNode(Block bridge, int index, int count) {
+		int[] xs = rowXs(count, EVO_PITCH);
+		return new Rect(xs[index], bridge.bodyY() + (BRIDGE_H - NODE) / 2, NODE, NODE);
+	}
+
 	/** Barra de maestría centrada en su bloque. */
 	public static Rect masteryBar(Block mastery) {
 		return new Rect((WIDTH - MASTERY_W) / 2, mastery.bodyY() + 4, MASTERY_W, 18);
