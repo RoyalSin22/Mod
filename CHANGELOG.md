@@ -23,6 +23,15 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   ignoran y los puntos gastados en esas ramas vuelven a estar disponibles.
 
 ### Añadido
+- **v66 — Pantalla K con la dirección de arte.** Atributos y Habilidades usan el kit de 34 piezas
+  (`docs/PROMPT_ARTE_PANTALLA_K.md`): panel principal (o de Hoguera, con su emblema en la cabecera), pestañas en tres
+  estados ajustadas al texto, columnas hundidas, ficha de detalle, filas de atributo y flechas de reparto, cabeceras de
+  sección, botones de confirmar/deshacer/cerrar, y tarjetas de habilidad en cuatro estados (normal, hover, máxima y
+  recién subida, que parpadea) con hitos y barra de XP recortada por el progreso. Se conservan la ventana de 430×262,
+  las 10 tarjetas en 5 × 2, las pestañas, los controles y todas las validaciones del servidor. Los paneles son 9-slice
+  con esquinas de 12 px y las pestañas y botones repiten su tramo central (nunca se estiran). Geometría pura con
+  pruebas (`logic/KScreenLayout`); arte fuente en `tools/textures/source/ui/k/`; generador `tools/textures/gen_k_ui.py`
+  (admite `--check`). Si el paquete de recursos no trae las piezas, se usa el dibujo anterior. Sin validar en partida.
 - **v66 — Pantalla del árbol de habilidades con la nueva dirección de arte.** `TreeScreen` muestra las tres sendas del rol en
   columnas con sus siete escalones (S5 con las dos opciones de la bifurcación), cabecera con icono, nivel, puntos y experiencia,
   barra de maestría de 20 gemas, habilidad definitiva y ficha del escalón elegido, con paneles 9-slice, cabeceras de senda,

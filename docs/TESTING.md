@@ -12,6 +12,13 @@ Pruebas automáticas nuevas:
   `gen_mob_models.py`, `gen_node_icons.py` y `tools/lang/*`. `gen_tree_atlas.py --check` falla en `main` desde antes de v66
   (compara bytes de PNG y varía con la versión de Pillow); no lo causa ninguno de estos cambios.
 
+- `logic/KScreenLayoutTest`: la geometría de la pantalla K (10 tarjetas en 5 × 2 sin solaparse ni tapar la ayuda,
+  barra e icono dentro de la tarjeta, columnas de Atributos sin solaparse, pestañas alineadas a la derecha) y el reparto
+  de las piezas de 3 partes (cubre el ancho exacto, conserva los extremos y repite el centro). En partida, con K: las
+  pestañas cambian de estado al pasar el ratón; las tarjetas muestran el icono en su casilla, los hitos y la barra; una
+  habilidad al máximo usa el marco dorado y la que acaba de subir parpadea 2,5 s; en Atributos, las flechas ‹ › ajustan
+  y la fila seleccionada no tapa el nombre; en la Hoguera aparecen el panel con brasas y el emblema. Sin el paquete de
+  recursos (o renombrando `textures/gui/k_ui/`), la pantalla vuelve al dibujo anterior.
 - `logic/TreeScreenLayoutTest`: la geometría de la pantalla del árbol cabe en la ventana con anchos de 426 a 1000 px, ningún
   elemento se solapa, las dos opciones de la bifurcación son simétricas, y el desplazamiento y el centrado son correctos.
 - `role/RespecRulesTest`: el coste del reinicio del árbol (por defecto 20 niveles fijos; base + por punto, redondeo hacia arriba,

@@ -4,6 +4,8 @@ import dev.aptitudes.client.ClientExtraState;
 import dev.aptitudes.data.PlayerAttribute;
 import dev.aptitudes.data.ProgressRules;
 import dev.aptitudes.data.Skill;
+import dev.aptitudes.logic.KScreenLayout;
+import dev.aptitudes.logic.TreeScreenLayout.Rect;
 import dev.aptitudes.network.AllocatePointsPayload;
 import dev.aptitudes.network.ForgeActionPayload;
 import dev.aptitudes.network.RequestStatsPayload;
@@ -67,6 +69,10 @@ public class AptitudesScreen extends Screen {
 	private ButtonWidget resetButton;
 	private ButtonWidget temperButton;
 	private ButtonWidget flaskButton;
+	/** Las piezas de la dirección de arte están en el paquete de recursos (si no, se usa el dibujo anterior). */
+	private boolean kit;
+	private static final String[] TAB_KEYS = {"screen.aptitudes.tab.config", "screen.aptitudes.tab.roles",
+			"screen.aptitudes.tab.skills", "screen.aptitudes.tab.attributes"};
 
 	/** {@code true} si se abrió descansando en una Hoguera: permite comprar niveles de alma. */
 	private final boolean bonfire;
@@ -105,27 +111,46 @@ public class AptitudesScreen extends Screen {
 		left = (width - W) / 2;
 		pageScroll = MathHelper.clamp(pageScroll, 0, maxPageScroll());
 		top = maxPageScroll() > 0 ? 8 - pageScroll : (height - H) / 2;
-		confirmButton = addDrawableChild(ButtonWidget.builder(Text.translatable(bonfire
-						? "screen.aptitudes.level_up" : "screen.aptitudes.confirm"), b -> confirm())
-				.dimensions(left + 10, top + H - 44, 140, 20).build());
-		resetButton = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.reset"), b -> reset())
-				.dimensions(left + 156, top + H - 44, 70, 20).build());
+		kit = KUi.available();
+		confirmButton = addDrawableChild(button(Text.translatable(bonfire
+				? "screen.aptitudes.level_up" : "screen.aptitudes.confirm"), "confirmar", 10, 140, b -> confirm()));
+		resetButton = addDrawableChild(button(Text.translatable("screen.aptitudes.reset"), "deshacer", 156, 70, b -> reset()));
 		if (bonfire) {
-			temperButton = addDrawableChild(ButtonWidget.builder(Text.translatable("forge.aptitudes.temper"), button -> {
+			temperButton = addDrawableChild(button(Text.translatable("forge.aptitudes.temper"), "cerrar", 232, 112, b -> {
 				if (client.player != null && ClientPlayNetworking.canSend(ForgeActionPayload.ID)) {
 					ClientPlayNetworking.send(new ForgeActionPayload(client.player.playerScreenHandler.syncId,
 							ForgeActionPayload.OPEN_TEMPER, 0));
 				}
-			}).dimensions(left + 232, top + H - 44, 112, 20).build());
-			flaskButton = addDrawableChild(ButtonWidget.builder(Text.translatable("flask.aptitudes.open"), button -> {
+			}));
+			flaskButton = addDrawableChild(button(Text.translatable("flask.aptitudes.open"), "cerrar", 350, 70, b -> {
 				if (client.player != null && ClientPlayNetworking.canSend(ForgeActionPayload.ID)) {
 					ClientPlayNetworking.send(new ForgeActionPayload(client.player.playerScreenHandler.syncId,
 							ForgeActionPayload.OPEN_FLASKS, 0));
 				}
-			}).dimensions(left + 350, top + H - 44, 70, 20).build());
+			}));
 		}
 		requestStats();
 		updateButtons();
+	}
+
+	/** Botón del kit (18 px de alto, centrado en la franja de 20 px de antes) o el botón vanilla de respaldo. */
+	private ButtonWidget button(Text label, String sprite, int dx, int w, ButtonWidget.PressAction action) {
+		if (kit) return new KButton(left + dx, top + H - 43, w, label, sprite, action);
+		return ButtonWidget.builder(label, action).dimensions(left + dx, top + H - 44, w, 20).build();
+	}
+
+	/** Zonas de las pestañas, en el orden de {@link #TAB_KEYS} (de derecha a izquierda). */
+	private List<Rect> tabRects() {
+		int[] widths = new int[TAB_KEYS.length];
+		for (int i = 0; i < widths.length; i++) widths[i] = textRenderer.getWidth(Text.translatable(TAB_KEYS[i]));
+		if (kit) return KScreenLayout.tabs(left, top, widths);
+		List<Rect> rects = new java.util.ArrayList<>();
+		int tabX = left + W - 10;
+		for (int textW : widths) {
+			tabX -= textW + 10;
+			rects.add(new Rect(tabX, top + 6, textW + 10, 14));
+		}
+		return rects;
 	}
 
 	/** Cuánto se puede desplazar la ventana (0 si cabe con 8 px de margen arriba y abajo). */
@@ -256,13 +281,10 @@ public class AptitudesScreen extends Screen {
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		// Pestañas
-		int tabX = left + W - 10;
-		String[] tabs = {"screen.aptitudes.tab.config", "screen.aptitudes.tab.roles", "screen.aptitudes.tab.skills",
-				"screen.aptitudes.tab.attributes"};
-		for (String key : tabs) {
-			int w = textRenderer.getWidth(Text.translatable(key)) + 10;
-			tabX -= w;
-			if (mouseX >= tabX && mouseX < tabX + w && mouseY >= top + 6 && mouseY < top + 20) {
+		List<Rect> tabs = tabRects();
+		for (int t = 0; t < TAB_KEYS.length; t++) {
+			String key = TAB_KEYS[t];
+			if (tabs.get(t).contains(mouseX, mouseY)) {
 				switch (key) {
 					case "screen.aptitudes.tab.config" -> client.setScreen(new ConfigScreen(this)); // v40
 					case "screen.aptitudes.tab.roles" -> client.setScreen(new RolesScreen());
@@ -276,13 +298,11 @@ public class AptitudesScreen extends Screen {
 		// Filas de atributos: clic = seleccionar; zonas ‹ › = ajustar
 		if (tab == Tab.ATTRIBUTES) {
 			int x = left + 10;
-			int y0 = top + 66;
 			for (int i = 0; i < staged.length; i++) {
-				int y = y0 + i * ATTR_ROW_H;
-				if (mouseX >= x && mouseX < x + 140 && mouseY >= y && mouseY < y + ATTR_ROW_H - 2) {
+				if (KScreenLayout.attributeRow(left, top, i).contains(mouseX, mouseY)) {
 					selected = i;
 					if (mouseX >= x + 128) adjust(i, hasShiftDown() ? 5 : 1);
-					else if (mouseX >= x + 70 && mouseX < x + 80) adjust(i, hasShiftDown() ? -5 : -1);
+					else if (mouseX >= x + minusX() && mouseX < x + minusX() + 10) adjust(i, hasShiftDown() ? -5 : -1);
 					return true;
 				}
 			}
@@ -295,8 +315,15 @@ public class AptitudesScreen extends Screen {
 	@Override
 	public void renderBackground(DrawContext ctx, int mouseX, int mouseY, float delta) {
 		super.renderBackground(ctx, mouseX, mouseY, delta);
+		boolean atHearth = bonfire && tab == Tab.ATTRIBUTES;
+		if (kit) {
+			KUi.mainPanel(ctx, atHearth, new Rect(left, top, W, H));
+			// Emblema de 48×48 dibujado a la mitad: la rejilla de 2×2 se conserva exacta.
+			if (atHearth) KUi.spriteHalf(ctx, "hoguera/emblema_hoguera.png", left + 8, top + 2, 48, 48);
+			return;
+		}
 		UiStyle.window(ctx, left, top, W, H);
-		if (bonfire && tab == Tab.ATTRIBUTES) drawBonfireFrame(ctx);
+		if (atHearth) drawBonfireFrame(ctx);
 	}
 
 	@Override
@@ -315,7 +342,7 @@ public class AptitudesScreen extends Screen {
 		Text heading = Text.translatable(atHearth ? "block.aptitudes.bonfire" : tab == Tab.ATTRIBUTES
 				? "screen.aptitudes.tab.attributes" : "screen.aptitudes.tab.skills");
 		ctx.drawTextWithShadow(textRenderer, heading.copy().formatted(net.minecraft.util.Formatting.BOLD),
-				left + (atHearth ? 30 : 12), top + 9, UiStyle.GOLD);
+				left + (atHearth ? (kit ? 36 : 30) : 12), top + 9, UiStyle.GOLD);
 		renderTabs(ctx, mouseX, mouseY);
 
 		SyncProgressPayload data = ClientCache.get();
@@ -339,19 +366,39 @@ public class AptitudesScreen extends Screen {
 	}
 
 	private void renderTabs(DrawContext ctx, int mouseX, int mouseY) {
-		int tabX = left + W - 10;
-		String[] tabs = {"screen.aptitudes.tab.config", "screen.aptitudes.tab.roles", "screen.aptitudes.tab.skills",
-				"screen.aptitudes.tab.attributes"};
-		for (String key : tabs) {
+		List<Rect> rects = tabRects();
+		if (kit) ctx.fill(left + 8, top + KScreenLayout.TAB_H + 2, left + W - 8, top + KScreenLayout.TAB_H + 3, UiStyle.GOLD_DARK);
+		for (int t = 0; t < TAB_KEYS.length; t++) {
+			String key = TAB_KEYS[t];
 			Text label = Text.translatable(key);
-			int w = textRenderer.getWidth(label) + 10;
-			tabX -= w;
+			Rect r = rects.get(t);
 			boolean active = (key.endsWith("attributes") && tab == Tab.ATTRIBUTES) || (key.endsWith("skills") && tab == Tab.SKILLS);
-			boolean hover = mouseX >= tabX && mouseX < tabX + w && mouseY >= top + 6 && mouseY < top + 20;
-			ctx.drawText(textRenderer, label, tabX + 5, top + 9, active ? UiStyle.GOLD : hover ? UiStyle.TEXT : UiStyle.MUTED, false);
-			if (active) ctx.fill(tabX + 5, top + 19, tabX + w - 5, top + 20, UiStyle.GOLD);
+			boolean hover = r.contains(mouseX, mouseY);
+			int color = active ? UiStyle.GOLD : hover ? UiStyle.TEXT : UiStyle.MUTED;
+			if (kit) {
+				KUi.tab(ctx, active ? "activa" : hover ? "hover" : "inactiva", r);
+				ctx.drawText(textRenderer, label, r.x() + KScreenLayout.TAB_PAD, r.y() + (active ? 7 : 8), color, false);
+			} else {
+				ctx.drawText(textRenderer, label, r.x() + 5, top + 9, color, false);
+				if (active) ctx.fill(r.x() + 5, top + 19, r.right() - 5, top + 20, UiStyle.GOLD);
+			}
 		}
-		ctx.fill(left + 8, top + 23, left + W - 8, top + 24, UiStyle.BORDER);
+		if (!kit) ctx.fill(left + 8, top + 23, left + W - 8, top + 24, UiStyle.BORDER);
+	}
+
+	/** Posición de la flecha «menos» dentro de la fila del atributo (y de su zona de clic de 10 px). */
+	private int minusX() {
+		return kit ? 80 : 70;
+	}
+
+	/** Cabecera de sección: la pieza del kit (rombo y filete) o el estilo anterior. */
+	private void header(DrawContext ctx, Text text, int x, int y, int width) {
+		if (!kit) {
+			UiStyle.header(ctx, textRenderer, text, x, y, width);
+			return;
+		}
+		KUi.sectionHeader(ctx, x, y, width);
+		ctx.drawTextWithShadow(textRenderer, UiStyle.fit(textRenderer, text, width - 12), x + 10, y, UiStyle.GOLD);
 	}
 
 	private void renderAttributes(DrawContext ctx, SyncProgressPayload data, int mouseX, int mouseY) {
@@ -380,31 +427,51 @@ public class AptitudesScreen extends Screen {
 		} else {
 			UiStyle.label(ctx, textRenderer, Text.translatable("screen.aptitudes.need_bonfire"), x, top + 39, 140, UiStyle.MUTED);
 		}
-		UiStyle.header(ctx, textRenderer, Text.translatable("screen.aptitudes.attributes"), x, top + 50, 140);
+		header(ctx, Text.translatable("screen.aptitudes.attributes"), x, top + 50, 140);
+		if (kit) KUi.columnPanel(ctx, KScreenLayout.attributeColumn(left, top, attrs.length));
 		for (int i = 0; i < attrs.length; i++) {
 			int y = top + 66 + i * ATTR_ROW_H;
-			UiStyle.row(ctx, x, y, 140, ATTR_ROW_H - 2, i, i == selected);
+			if (kit) {
+				KUi.sprite(ctx, "filas/fila_" + (i == selected ? "seleccionada" : i % 2 == 1 ? "alterna" : "normal") + ".png",
+						x, y, KScreenLayout.ATTR_ROW_W, KScreenLayout.ATTR_ROW_H);
+			} else {
+				UiStyle.row(ctx, x, y, 140, ATTR_ROW_H - 2, i, i == selected);
+			}
 			int affinity = data.affinity(attrs[i]);
-			UiStyle.label(ctx, textRenderer, Text.translatable(attrs[i].translationKey()), x + 4, y + 4,
-					affinity > 0 ? 56 : 66, affinity > 0 ? UiStyle.GOLD : UiStyle.TEXT);
-			if (affinity > 0) ctx.drawText(textRenderer, "★", x + 62, y + 4, UiStyle.GOLD, false);
+			// Con el kit, el nombre deja libre la punta de flecha de la fila seleccionada (8 px a la izquierda).
+			int nameX = kit ? 12 : 4;
+			int starX = minusX() - 8;
+			UiStyle.label(ctx, textRenderer, Text.translatable(attrs[i].translationKey()), x + nameX, y + 4,
+					starX - nameX - (affinity > 0 ? 2 : -6), affinity > 0 ? UiStyle.GOLD : UiStyle.TEXT);
+			if (affinity > 0) ctx.drawText(textRenderer, "★", x + starX, y + 4, UiStyle.GOLD, false);
 			int cur = data.allocated(attrs[i]);
 			boolean changed = staged[i] > 0;
-			ctx.drawText(textRenderer, "‹", x + 72, y + 4, staged[i] > 0 ? UiStyle.GOLD : UiStyle.MUTED, false);
-			UiStyle.valueArrow(ctx, textRenderer, String.valueOf(cur), String.valueOf(cur + staged[i]), x + 124, y + 4, changed);
 			boolean canAdd = cur + staged[i] < max && (bonfire || after > 0);
-			ctx.drawText(textRenderer, "›", x + 131, y + 4, canAdd ? UiStyle.GOLD : UiStyle.MUTED, false);
+			if (kit) {
+				KUi.sprite(ctx, "flechas/menos_" + (staged[i] > 0 ? "activa" : "desactivada") + ".png", x + minusX(), y + 3, 8, 10);
+				KUi.sprite(ctx, "flechas/mas_" + (canAdd ? "activa" : "desactivada") + ".png", x + 129, y + 3, 8, 10);
+			} else {
+				ctx.drawText(textRenderer, "‹", x + 72, y + 4, staged[i] > 0 ? UiStyle.GOLD : UiStyle.MUTED, false);
+				ctx.drawText(textRenderer, "›", x + 131, y + 4, canAdd ? UiStyle.GOLD : UiStyle.MUTED, false);
+			}
+			UiStyle.valueArrow(ctx, textRenderer, String.valueOf(cur), String.valueOf(cur + staged[i]), x + 124, y + 4, changed);
 		}
 
 		// ---- Columna 2: estadísticas base
 		int sx = left + 158;
 		int sw = 128;
-		UiStyle.header(ctx, textRenderer, Text.translatable("screen.aptitudes.base_stats"), sx, top + 30, sw);
+		header(ctx, Text.translatable("screen.aptitudes.base_stats"), sx, top + 30, sw);
+		if (kit) KUi.columnPanel(ctx, KScreenLayout.statsColumn(left, top, STAT_KEYS.length, STAT_ROW_H));
 		int affected = STAT_OF_ATTRIBUTE[selected];
 		for (int s = 0; s < STAT_KEYS.length; s++) {
 			int y = top + 46 + s * STAT_ROW_H;
-			UiStyle.row(ctx, sx, y, sw, STAT_ROW_H - 2, s, s == affected);
-			if (s == affected) ctx.drawText(textRenderer, "+", sx - 7, y + 3, UiStyle.GOLD, false);
+			if (!kit) {
+				UiStyle.row(ctx, sx, y, sw, STAT_ROW_H - 2, s, s == affected);
+				if (s == affected) ctx.drawText(textRenderer, "+", sx - 7, y + 3, UiStyle.GOLD, false);
+			} else if (s == affected) {
+				// Estadística afectada: marco azul alma como la fila seleccionada del kit.
+				ctx.drawBorder(sx, y, sw, STAT_ROW_H - 2, 0xFF4A6BB5);
+			}
 			Text statName = Text.translatable("stat.aptitudes." + STAT_KEYS[s]);
 			if (stats == null || s >= stats.stats().length) {
 				UiStyle.label(ctx, textRenderer, statName, sx + 4, y + 3, sw - 8, UiStyle.TEXT);
@@ -425,8 +492,9 @@ public class AptitudesScreen extends Screen {
 		// ---- Columna 3: detalle del atributo seleccionado
 		int dx = left + 294;
 		PlayerAttribute attr = attrs[selected];
-		UiStyle.header(ctx, textRenderer, Text.translatable("screen.aptitudes.details"), dx, top + 30, 130);
-		UiStyle.panel(ctx, dx, top + 46, 130, 120);
+		header(ctx, Text.translatable("screen.aptitudes.details"), dx, top + 30, 130);
+		if (kit) KUi.detailPanel(ctx, KScreenLayout.detailPanel(left, top));
+		else UiStyle.panel(ctx, dx, top + 46, 130, 120);
 		ctx.drawTextWithShadow(textRenderer, Text.translatable(attr.translationKey()), dx + 6, top + 52, UiStyle.GOLD);
 		ctx.drawText(textRenderer, Text.translatable("screen.aptitudes.points_invested", data.allocated(attr)),
 				dx + 6, top + 63, UiStyle.MUTED, false);
@@ -465,7 +533,7 @@ public class AptitudesScreen extends Screen {
 
 	private void renderSkills(DrawContext ctx, SyncProgressPayload data, int mouseX, int mouseY) {
 		ProgressRules rules = data.rules();
-		UiStyle.header(ctx, textRenderer, Text.translatable("screen.aptitudes.skills_passives"), left + 10, top + 30, W - 20);
+		header(ctx, Text.translatable("screen.aptitudes.skills_passives"), left + 10, top + 30, W - 20);
 		var mastery = dev.aptitudes.sync.ClientMastery.get();
 		var roles = dev.aptitudes.client.ClientRoleState.data();
 		if (mastery != null && roles != null && roles.primaryRole() != null) {
@@ -487,7 +555,7 @@ public class AptitudesScreen extends Screen {
 
 		List<Text> tooltip = null;
 		final int cardW = 200;
-		final int cardH = 37;
+		final int cardH = kit ? KScreenLayout.CARD_H : 37;
 		for (int i = 0; i < skills.length; i++) {
 			Skill skill = skills[i];
 			int col = i % 2;
@@ -501,51 +569,14 @@ public class AptitudesScreen extends Screen {
 			int level = data.level(skill);
 			boolean maxed = level >= rules.maxLevel();
 
-			UiStyle.panel(ctx, x, y, cardW, cardH);
 			long glow = GLOW_UNTIL[i] - now;
-			if (glow > 0) {
-				int a = (int) (110 + 110 * Math.sin(now / 120.0));
-				ctx.drawBorder(x, y, cardW, cardH, (MathHelper.clamp(a, 0, 255) << 24) | 0xE6C36A);
-			} else if (hover) {
-				ctx.drawBorder(x, y, cardW, cardH, UiStyle.GOLD_DARK);
-			}
-			// Icono enmarcado
-			ctx.fill(x + 3, y + 3, x + 23, y + 23, 0xFF1B1F2B);
-			ctx.drawBorder(x + 3, y + 3, 20, 20, maxed ? UiStyle.GOLD : UiStyle.BORDER);
-			ctx.drawItem(skill.iconStack(), x + 5, y + 5);
-
 			Text lv = maxed && mastery != null ? Text.translatable("mastery.aptitudes.card", mastery.points(skill))
 					: maxed ? Text.translatable("screen.aptitudes.max") : Text.translatable("screen.aptitudes.level", level);
-			Text name = UiStyle.fit(textRenderer, Text.translatable(skill.translationKey()),
-					cardW - 80 - textRenderer.getWidth(lv));
-			ctx.drawTextWithShadow(textRenderer, name, x + 28, y + 4, UiStyle.TEXT);
-			// Hitos (10/20/30/40/50): rombos dorados si se alcanzaron.
-			int px = x + 28 + textRenderer.getWidth(name) + 5;
-			for (int m : dev.aptitudes.logic.SkillMilestones.THRESHOLDS) {
-				boolean got = level >= m;
-				ctx.fill(px + 1, y + 5, px + 4, y + 10, got ? UiStyle.GOLD : 0xFF3A3427);
-				ctx.fill(px, y + 6, px + 5, y + 9, got ? UiStyle.GOLD : 0xFF3A3427);
-				if (got) ctx.fill(px + 2, y + 6, px + 3, y + 7, 0xFFFFF3B0);
-				px += 7;
-			}
-			ctx.drawTextWithShadow(textRenderer, lv, x + cardW - 6 - textRenderer.getWidth(lv), y + 4, maxed ? UiStyle.GOLD : UiStyle.TEXT);
-
 			// Barra de XP animada
 			int need = rules.xpToNext(level);
 			float target = maxed ? 1f : (float) Math.min(1.0, data.xp(skill) / (double) Math.max(1, need));
 			shownFill[i] += (target - shownFill[i]) * Math.min(1f, dt * 6f);
 			if (Math.abs(target - shownFill[i]) < 0.002f) shownFill[i] = target;
-			int barX = x + 28;
-			int barW = cardW - 34;
-			ctx.fill(barX, y + 15, barX + barW, y + 19, 0xFF202433);
-			int filled = Math.round(barW * shownFill[i]);
-			ctx.fill(barX, y + 15, barX + filled, y + 19, maxed ? UiStyle.GOLD : 0xFF4CAF50);
-			ctx.fill(barX, y + 15, barX + filled, y + 16, maxed ? 0xFFFFF3B0 : 0xFF8BE08F); // reflejo superior
-			if (maxed) { // destello que recorre la barra
-				int sx = barX + (int) ((now / 6) % (barW + 20)) - 20;
-				ctx.fill(Math.max(barX, sx), y + 15, Math.min(barX + barW, sx + 8), y + 19, 0x90FFFFFF);
-			}
-
 			// Pasivas: una línea resumida (el detalle completo, en la ficha)
 			MutableText summary = Text.empty();
 			List<Skill.SkillBonus> bonuses = skill.bonuses();
@@ -557,7 +588,11 @@ public class AptitudesScreen extends Screen {
 				summary.append(Text.translatable(bonus.translationKey(), UiStyle.fmt(value)));
 				anyActive |= value > 0;
 			}
-			UiStyle.label(ctx, textRenderer, summary, x + 6, y + 26, cardW - 12, anyActive ? UiStyle.UP : UiStyle.MUTED);
+			if (kit) {
+				drawKitCard(ctx, skill, x, y, level, maxed, hover, glow > 0, now, lv, shownFill[i], summary, anyActive);
+			} else {
+				drawCard(ctx, skill, x, y, cardW, cardH, level, maxed, hover, glow, now, lv, shownFill[i], summary, anyActive);
+			}
 
 			if (hover) {
 				List<Text> lines = new java.util.ArrayList<>();
@@ -608,6 +643,84 @@ public class AptitudesScreen extends Screen {
 			}
 		}
 		if (tooltip != null) ctx.drawTooltip(textRenderer, tooltip, mouseX, mouseY);
+	}
+
+
+	/** Tarjeta de habilidad con el dibujo anterior (respaldo sin las piezas del kit). */
+	private void drawCard(DrawContext ctx, Skill skill, int x, int y, int cardW, int cardH, int level, boolean maxed,
+						  boolean hover, long glow, long now, Text lv, float fill, Text summary, boolean anyActive) {
+		UiStyle.panel(ctx, x, y, cardW, cardH);
+		if (glow > 0) {
+			int a = (int) (110 + 110 * Math.sin(now / 120.0));
+			ctx.drawBorder(x, y, cardW, cardH, (MathHelper.clamp(a, 0, 255) << 24) | 0xE6C36A);
+		} else if (hover) {
+			ctx.drawBorder(x, y, cardW, cardH, UiStyle.GOLD_DARK);
+		}
+		// Icono enmarcado
+		ctx.fill(x + 3, y + 3, x + 23, y + 23, 0xFF1B1F2B);
+		ctx.drawBorder(x + 3, y + 3, 20, 20, maxed ? UiStyle.GOLD : UiStyle.BORDER);
+		ctx.drawItem(skill.iconStack(), x + 5, y + 5);
+
+		Text name = UiStyle.fit(textRenderer, Text.translatable(skill.translationKey()),
+				cardW - 80 - textRenderer.getWidth(lv));
+		ctx.drawTextWithShadow(textRenderer, name, x + 28, y + 4, UiStyle.TEXT);
+		// Hitos (10/20/30/40/50): rombos dorados si se alcanzaron.
+		int px = x + 28 + textRenderer.getWidth(name) + 5;
+		for (int m : dev.aptitudes.logic.SkillMilestones.THRESHOLDS) {
+			boolean got = level >= m;
+			ctx.fill(px + 1, y + 5, px + 4, y + 10, got ? UiStyle.GOLD : 0xFF3A3427);
+			ctx.fill(px, y + 6, px + 5, y + 9, got ? UiStyle.GOLD : 0xFF3A3427);
+			if (got) ctx.fill(px + 2, y + 6, px + 3, y + 7, 0xFFFFF3B0);
+			px += 7;
+		}
+		ctx.drawTextWithShadow(textRenderer, lv, x + cardW - 6 - textRenderer.getWidth(lv), y + 4, maxed ? UiStyle.GOLD : UiStyle.TEXT);
+
+		int barX = x + 28;
+		int barW = cardW - 34;
+		ctx.fill(barX, y + 15, barX + barW, y + 19, 0xFF202433);
+		int filled = Math.round(barW * fill);
+		ctx.fill(barX, y + 15, barX + filled, y + 19, maxed ? UiStyle.GOLD : 0xFF4CAF50);
+		ctx.fill(barX, y + 15, barX + filled, y + 16, maxed ? 0xFFFFF3B0 : 0xFF8BE08F); // reflejo superior
+		if (maxed) { // destello que recorre la barra
+			int sx = barX + (int) ((now / 6) % (barW + 20)) - 20;
+			ctx.fill(Math.max(barX, sx), y + 15, Math.min(barX + barW, sx + 8), y + 19, 0x90FFFFFF);
+		}
+		UiStyle.label(ctx, textRenderer, summary, x + 6, y + 26, cardW - 12, anyActive ? UiStyle.UP : UiStyle.MUTED);
+	}
+
+	/**
+	 * Tarjeta de habilidad con las piezas del kit: marco por estado (normal, hover, máxima y recién subida, que
+	 * parpadea con la máxima), objeto en la casilla del icono, hitos, barra de XP recortada por el progreso y pasivas.
+	 */
+	private void drawKitCard(DrawContext ctx, Skill skill, int x, int y, int level, boolean maxed, boolean hover,
+							 boolean glowing, long now, Text lv, float fill, Text summary, boolean anyActive) {
+		String state = glowing && (now / 250) % 2 == 0 ? "subida" : maxed || glowing ? "maxima" : hover ? "hover" : "normal";
+		KUi.sprite(ctx, "tarjetas/tarjeta_" + state + ".png", x, y, KScreenLayout.CARD_W, KScreenLayout.CARD_H);
+		ctx.drawItem(skill.iconStack(), x + KScreenLayout.ICON_X, y + KScreenLayout.ICON_Y);
+
+		int textX = x + KScreenLayout.TEXT_X;
+		int milestonesW = dev.aptitudes.logic.SkillMilestones.THRESHOLDS.length * 9;
+		int lvW = textRenderer.getWidth(lv);
+		Text name = UiStyle.fit(textRenderer, Text.translatable(skill.translationKey()),
+				KScreenLayout.CARD_W - KScreenLayout.TEXT_X - 6 - lvW - milestonesW - 8);
+		ctx.drawTextWithShadow(textRenderer, name, textX, y + KScreenLayout.NAME_Y, UiStyle.TEXT);
+		// Hitos (10/20/30/40/50): rombos del kit, encendidos si se alcanzaron.
+		int px = textX + textRenderer.getWidth(name) + 4;
+		for (int m : dev.aptitudes.logic.SkillMilestones.THRESHOLDS) {
+			KUi.sprite(ctx, "hitos/hito_" + (level >= m ? "encendido" : "apagado") + ".png", px, y + KScreenLayout.NAME_Y, 8, 8);
+			px += 9;
+		}
+		ctx.drawTextWithShadow(textRenderer, lv, x + KScreenLayout.CARD_W - 6 - lvW, y + KScreenLayout.NAME_Y,
+				maxed ? UiStyle.GOLD : UiStyle.TEXT);
+
+		int barX = x + KScreenLayout.BAR_X, barY = y + KScreenLayout.BAR_Y, barW = KScreenLayout.BAR_W;
+		KUi.xpBar(ctx, barX, barY, KScreenLayout.filled(barW, fill), maxed);
+		if (maxed) { // destello que recorre la barra
+			int sx = barX + (int) ((now / 6) % (barW + 20)) - 20;
+			ctx.fill(Math.max(barX, sx), barY + 1, Math.min(barX + barW, sx + 8), barY + KScreenLayout.BAR_H - 1, 0x90FFFFFF);
+		}
+		UiStyle.label(ctx, textRenderer, summary, textX, y + KScreenLayout.PASSIVES_Y,
+				KScreenLayout.CARD_W - KScreenLayout.TEXT_X - 6, anyActive ? UiStyle.UP : UiStyle.MUTED);
 	}
 
 }

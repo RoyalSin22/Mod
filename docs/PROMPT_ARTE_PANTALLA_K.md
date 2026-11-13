@@ -120,6 +120,10 @@ lo copiará a `textures/gui/k_ui/`. No se editan a mano los PNG de salida.
 
 ## Notas para la implementación (Claude)
 
+**Estado:** kit recibido (34 piezas, validadas: tamaños, rejilla 2×2, ≤24 colores, alfa 0/220/255) e integrado en v66.
+La pantalla conserva sus cuatro pestañas (Configuración, Roles, Habilidades y Atributos): la misma pieza de pestaña se
+ajusta al ancho de cada texto. Los botones de Templado y Frascos de la Hoguera usan la pieza «cerrar» (neutra).
+
 - Pantalla: `src/client/java/dev/aptitudes/client/screen/AptitudesScreen.java` (hoy dibujada con `fill` y `UiStyle`).
   Se conservan W = 430 y H = 262, las 10 tarjetas en 5 × 2 (paso de 40 px; la tarjeta pasa de 37 a 38 px de alto,
   que sigue cabiendo) y las pestañas Atributos/Habilidades.
