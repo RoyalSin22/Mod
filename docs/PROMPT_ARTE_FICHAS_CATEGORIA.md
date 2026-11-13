@@ -1,94 +1,116 @@
-# Prompt de arte — Fichas de categoría con emblema (pantalla de roles, J)
+# Prompt de arte — Fichas de categoría con emblema, versión detallada (pantalla de roles, J)
 
-Encargo para el generador de arte (ChatGPT). Sustituye a las 10 fichas `categoria_<categoría>_<estado>.png` del kit
-«fantasía oscura v2» (24×14 px), que solo llevaban una barra de color. Decisión del autor (2026-11-13): cada categoría
-debe tener un **emblema distintivo**, no una barra. Con emblema no hace falta la abreviatura de texto; el nombre
-completo sigue en el tooltip.
+Encargo para el generador de arte (ChatGPT). Sustituye a las 10 fichas `categoria_<categoría>_<estado>.png`.
+
+**Historial:**
+
+- 1.ª versión (barra de color): no identificaba la categoría.
+- 2.ª versión (emblema con rejilla de 2×2): el resultado fue demasiado simple. Con píxel lógico de 2×2 en 24×16 px, el
+  emblema solo tenía 6×6 puntos, sin sitio para contorno, sombreado ni detalle.
+
+Esta versión pide **detalle de 1 px**, la misma densidad que los iconos de rol de 16×16 que aparecen justo debajo, en
+la lista de roles. También pide emblemas descritos con precisión, marco con relieve y un tercer estado (`hover`).
 
 Restricciones de la pantalla (no negociables):
 
-- **Ancho fijo de 24 px**: las cinco fichas van en fila cada 25 px dentro de la columna de 124 px.
-- **Alto de 16 px**: van de y = 30 a 46 y las filas de roles empiezan en y = 48.
+- **24×16 px por ficha**: cinco fichas en fila cada 25 px (columna de 124 px), de y = 30 a 46; la lista de roles empieza
+  en y = 48.
 
-Destino del arte fuente: `tools/textures/source/ui/roles/` (mismos nombres; se sobrescriben las 10 fichas actuales).
+Destino: `tools/textures/source/ui/roles/` (se sobrescriben las 10 fichas y se añaden las 5 de `hover`).
 
 ---
 
 ## Prompt para pegar en ChatGPT
 
-> Necesito **10 piezas de interfaz en pixel art**: las «fichas de categoría» de la pantalla de roles de un mod de
-> Minecraft (fantasía oscura, sobrio). Son botones pequeños; cada uno lleva el **emblema** de una de cinco categorías de
-> personaje. Entrega cada pieza como un PNG separado, fondo transparente, **exactamente de 24×16 px**, con el nombre
-> indicado.
+> Necesito **15 piezas de interfaz en pixel art de alta calidad**: las «fichas de categoría» de la pantalla de roles de
+> un mod de Minecraft de fantasía oscura. Son botones pequeños; cada uno muestra el **emblema** de una de cinco
+> categorías de personaje. Deben verse **ricas en detalle y legibles a tamaño real**, al nivel de los iconos de objetos
+> de Minecraft (16×16 dibujados a mano, con contorno, luces y sombras). No quiero siluetas planas.
 >
-> ### Reglas técnicas (obligatorias)
-> 1. **Píxel lógico de 2×2**: cada bloque de 2×2 px es de un solo color (la pieza es una rejilla lógica de 12×8).
-> 2. Sin antialiasing, degradados, desenfoques ni sombras suaves. Transparencia solo 0 % o 100 %.
-> 3. Máximo **24 colores** por pieza (bastan unos 7).
-> 4. **Sin letras, números ni símbolos tipográficos**: solo el emblema dibujado.
-> 5. Las 10 piezas comparten **la misma silueta exterior**; en cada categoría, el emblema es idéntico en sus dos
->    estados (solo cambian colores).
+> ### Formato (obligatorio)
+> - Cada pieza: PNG RGBA, fondo transparente, **exactamente 24×16 px**.
+> - **Detalle a 1 px** (cada píxel cuenta, como un icono de Minecraft). Sin antialiasing, sin desenfoques ni
+>   degradados suaves. Transparencia solo 0 % o 100 %.
+> - Máximo **32 colores** por pieza.
+> - **Sin letras, números ni símbolos tipográficos.**
+> - Las 15 piezas comparten exactamente la **misma silueta exterior y el mismo marco**. En cada categoría, el emblema es
+>   el mismo dibujo en los tres estados; solo cambian colores, brillo y halo.
 >
-> ### Geometría (píxeles reales, origen arriba a la izquierda)
-> | Zona | Posición | Contenido |
+> ### Marco (igual en todas)
+> - **Esquinas recortadas**: el píxel de cada esquina es transparente.
+> - **Contorno exterior** de 1 px `#101117`.
+> - **Anillo metálico** de 1 px con bisel: lado superior e izquierdo más claros, inferior y derecho más oscuros (luz
+>   desde arriba a la izquierda).
+> - **Remache** de 1 px en cada esquina interior del anillo.
+> - **Filete interior** de 1 px de sombra (`#0C0D12`) que separa el anillo del fondo.
+> - Zona útil del interior: **x 3–20, y 3–12**. El emblema ocupa como máximo **14×10 px**, centrado y con 1 px de
+>   aire.
+>
+> | Estado | Anillo (claro / medio / oscuro) | Fondo | Emblema |
+> |---|---|---|---|
+> | `normal` | `#9C7A35` / `#6E5428` / `#4B391F` | `#1A1C26`, con una banda de 1 px `#20232F` arriba | Colores de la categoría |
+> | `hover` | `#C8A050` / `#9C7A35` / `#6E5428` | `#20232F` | Colores de la categoría, un tono más claro |
+> | `activa` | `#F9D98B` / `#EBBE5A` / `#9C7A35` | Tono oscuro de la categoría, con banda de 1 px más clara arriba | Colores de la categoría más **halo** de 1 px alrededor del emblema (claro de la categoría, a puntos alternos) |
+>
+> ### Emblemas (descríbelos con contorno oscuro y tres tonos: claro, medio y oscuro)
+> 1. **Marcial (`marcial`) — Espada y hacha cruzadas.** Espada en diagonal (abajo-izquierda a arriba-derecha):
+>    - hoja de 2 px de ancho en acero (`#E6E6F0` filo, `#A8B0BC` medio, `#5C6470` sombra);
+>    - guarda dorada (`#EBBE5A` / `#967438`);
+>    - empuñadura de cuero (`#7A4A2A`) y pomo dorado.
+>
+>    Detrás, cruzada, un hacha con la cabeza en el rojo de la categoría (`#FFB3A8` / `#F0675C` / `#A3302A`) y mango de
+>    madera.
+> 2. **Arcano (`arcano`) — Estrella arcana.** Estrella de cuatro puntas largas en violeta (`#E3DDFF` / `#A99CF0` /
+>    `#5B4DA8`) con núcleo blanco brillante (`#FFFFFF`, 2×2). Alrededor:
+>    - un anillo fino incompleto de runas (puntos y trazos de 1 px);
+>    - dos chispas pequeñas en diagonal.
+> 3. **Sombra (`sombra`) — Luna y daga.** Luna creciente abierta hacia la derecha en morado (`#D9C4F0` / `#A07CC8` /
+>    `#5E3F82`), con dos o tres cráteres de 1 px. Atravesándola en vertical, una daga fina de acero (hoja de 1 px con
+>    filo claro y guarda oscura). Dos o tres píxeles de bruma bajo la luna.
+> 4. **Guardián (`guardian`) — Escudo con hoja.** Escudo heráldico de punta:
+>    - borde metálico de 1 px (oro viejo `#9C7A35` con luz `#EBBE5A` arriba);
+>    - campo en verde (`#B8F5DA` / `#4DE2A6` / `#1F8A62`) partido en vertical con una franja central más clara;
+>    - una hoja o brote de 3×4 px en el centro;
+>    - un brillo de 2 px en la esquina superior izquierda.
+> 5. **Oficio (`oficio`) — Engranaje y martillo.** Engranaje de 8 dientes en ámbar (`#FFD99A` / `#F0AE55` / `#A8641F`)
+>    con tuerca central oscura y su agujero. Delante, cruzado en diagonal, un martillo pequeño:
+>    - cabeza de acero (`#E6E6F0` / `#5C6470`);
+>    - mango de madera (`#7A4A2A`).
+>
+> Todos los emblemas llevan **contorno exterior de 1 px `#101117`** (sin cerrar en las zonas de brillo, como los iconos
+> de Minecraft) y deben distinguirse entre sí **por la silueta**, no solo por el color.
+>
+> ### Fondos de `activa` por categoría
+> | Categoría | Fondo | Banda superior |
 > |---|---|---|
-> | Esquinas | los cuatro bloques de 2×2 de las esquinas | **Transparentes** (esquinas redondeadas) |
-> | Anillo del marco | borde exterior de 2 px | Color del marco según el estado |
-> | Interior | x 2–21, y 2–13 (20×12) | Fondo liso según el estado |
-> | **Emblema** | centrado: x 6–17, y 2–13 (12×12 = 6×6 lógicos) | Silueta del emblema, legible a tamaño real |
+> | Marcial | `#6E1A16` | `#842420` |
+> | Arcano | `#3E3470` | `#4A3F86` |
+> | Sombra | `#34234A` | `#402C5A` |
+> | Guardián | `#1C5E46` | `#237255` |
+> | Oficio | `#6B4214` | `#80501A` |
 >
-> ### Emblemas (uno por categoría; silueta clara, reconocible a 12×12)
-> | Categoría (archivo) | Emblema | Notas |
-> |---|---|---|
-> | Marcial (`marcial`) | **Espada en diagonal** con guarda | De abajo-izquierda a arriba-derecha |
-> | Arcano (`arcano`) | **Estrella de cuatro puntas** | Con un píxel de brillo en el centro |
-> | Sombra (`sombra`) | **Luna creciente** | Abierta hacia la derecha |
-> | Guardián (`guardian`) | **Escudo** de punta | Con una franja vertical central |
-> | Oficio (`oficio`) | **Engranaje** | Cuatro dientes y hueco central |
->
-> ### Colores
-> | Categoría | Emblema | Fondo `activa` |
-> |---|---|---|
-> | Marcial | `#F0675C` | `#6E1A16` |
-> | Arcano | `#A99CF0` | `#3E3470` |
-> | Sombra | `#A07CC8` | `#34234A` |
-> | Guardián | `#4DE2A6` | `#1C5E46` |
-> | Oficio | `#F0AE55` | `#6B4214` |
->
-> - **`normal`**: anillo bronce `#6E5428`, fondo `#1A1C26`, emblema en el color de la categoría.
-> - **`activa`**: anillo oro `#EBBE5A`, fondo en el tono oscuro de la categoría, emblema en el color de la categoría con
->   uno o dos píxeles lógicos de brillo `#F9D98B` en su parte superior.
->
-> ### Archivos (10)
-> `categoria_marcial_normal.png`, `categoria_marcial_activa.png`, `categoria_arcano_normal.png`,
-> `categoria_arcano_activa.png`, `categoria_sombra_normal.png`, `categoria_sombra_activa.png`,
-> `categoria_guardian_normal.png`, `categoria_guardian_activa.png`, `categoria_oficio_normal.png`,
-> `categoria_oficio_activa.png`.
+> ### Archivos (15)
+> `categoria_<categoría>_<estado>.png` con categoría `marcial`, `arcano`, `sombra`, `guardian`, `oficio` y estado
+> `normal`, `hover`, `activa`.
 >
 > ### Entrega
-> - Los 10 PNG, más una **hoja de vista previa** (no se usa en el juego) con las fichas a tamaño real y ampliadas ×4
->   sobre fondo `#14161F`, en fila como en el juego (cada 25 px), para comprobar que los cinco emblemas se distinguen.
-> - Repaso final: 24×16 exactos, rejilla 2×2, esquinas transparentes, sin letras, emblemas distintos entre sí.
+> - Los 15 PNG.
+> - Una **hoja de vista previa** (no se usa en el juego) con:
+>   1. las cinco fichas en fila a tamaño real (cada 25 px) en sus tres estados;
+>   2. las mismas ampliadas ×6, sin interpolación, sobre fondo `#14161F`.
+> - Repaso final: 24×16 exactos, esquinas transparentes, mismo marco en las 15, emblemas distinguibles por la silueta,
+>   sin letras, ≤ 32 colores.
 
 ---
 
 ## Notas para la implementación (Claude)
 
-- **Contraste del emblema** (WCAG 1.4.11, elementos gráficos ≥ 3:1), calculado con la luminancia relativa:
-
-  | Categoría | Sobre fondo normal | Sobre fondo activo |
-  |---|---|---|
-  | Marcial | 5,5 | 3,7 |
-  | Arcano | 7,0 | 4,5 |
-  | Sombra | 5,0 | 4,2 |
-  | Guardián | 10,3 | 4,7 |
-  | Oficio | 8,8 | 4,5 |
-
-  Los acentos del kit actual no llegaban: Sombra `#66457F` daba 2,2:1 y Marcial `#C8281F` 2,1:1 sobre su fondo activo.
-- **Elección de emblemas:** que no se confundan entre sí ni con las armas de rol. Por eso Sombra lleva luna y no daga
-  (chocaría con la espada de Marcial) y Oficio engranaje y no martillo (el Paladín, de Guardián, usa martillo).
-- **Al recibir el arte:**
-  - en `tools/textures/gen_roles_ui.py`, tamaño de las fichas a `(24, 16)`;
-  - en `RolesUi.category`, alto 16;
-  - en `RolesScreen.renderLeft`, la zona de clic y del tooltip de 14 a 16 px de alto;
-  - comprobar con `--check` y en partida.
+- **Excepción a la rejilla de 2×2:** estas fichas se validan sin esa regla (detalle de 1 px, como los iconos de rol de
+  16×16 de la misma lista). En `tools/textures/gen_roles_ui.py`:
+  - las fichas pasan a `(24, 16)`, sin comprobación de rejilla y con un máximo de 32 colores;
+  - se añade el estado `hover`.
+- **Código:**
+  - `RolesUi.category(ctx, category, state, x, y)` con estado `normal` / `hover` / `activa` y alto 16;
+  - en `RolesScreen.renderLeft`, la ficha bajo el ratón usa `hover` y la zona de clic y del tooltip mide 16 px de alto.
+- **Contraste:** el tono medio de cada emblema sobre su fondo cumple ≥ 3:1 (calculado en la versión anterior: entre
+  3,7:1 y 10,3:1). El contorno `#101117` y las luces refuerzan la lectura.
