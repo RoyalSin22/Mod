@@ -8,7 +8,7 @@ documentación, no implementa nada. «Hoy» describe lo que hay en el código (v
 | # | Paso (diseño del autor) | Hoy en el código | Estado |
 |---|---|---|---|
 | 1 | **Un jugador habla con el aldeano del gremio** y este avisa de que los muertos se levantan. Eso inicia la Niebla de almas para **todo el mundo**. Se repite cada **10 días**, pero solo si se vuelve a hablar con él | La Niebla sale por calendario rotativo junto al Eclipse y la Lluvia (`WorldEventManager`). El aldeano del gremio existe (`world/GuildVillagers`) pero no inicia eventos | PENDIENTE DE IMPLEMENTAR |
-| 2 | **La Niebla dura desde que se inicia hasta el amanecer.** Aparecen zombis, esqueletos y sus variantes, el Errante Velado (aparición alta, solo durante la Niebla) y el Osario Quebrado (aparición más baja) | Dura 12 000 ticks desde las 18:00 (`DURATION`, `FOG_START`). Existen las reglas de criaturas de la Niebla (`event/FogMobRules`, `FogErranteRules`, `SoulFogRules`) | Parcial: duración y proporciones por ajustar |
+| 2 | **La Niebla puede iniciarse en cualquier momento y dura un día de Minecraft** (24 000 ticks desde que se inicia). Aparecen zombis, esqueletos y sus variantes, el Errante Velado (aparición alta, solo durante la Niebla) y el Osario Quebrado (aparición más baja) | Dura 12 000 ticks desde las 18:00 (`DURATION`, `FOG_START`). Existen las reglas de criaturas de la Niebla (`event/FogMobRules`, `FogErranteRules`, `SoulFogRules`) | Parcial: duración, hora de inicio y proporciones por ajustar |
 | 3 | **Cada criatura suelta un objeto distinto**, con probabilidad «normal» | Errante Velado: Jirón de Velo Espectral al 85 % (loot table). Osario Quebrado: sin objeto propio | Errante: VERIFICADO. Osario: PENDIENTE (D-05) |
 | 4 | **Se crafteán los dos objetos con otros materiales** y se obtiene un objeto especial de acceso, que se **consume** al usarse en la puerta del Custodio. El autor cita como ejemplo fragmentos de alma y diamantes | `soul_shard` existe; no hay receta ni objeto especial | PENDIENTE. Receta y nombre sin definir |
 | 5 | **Estructura de templo nueva.** El **Autómata Antiguo aparece dentro**, como subjefe | El templo actual (v64, `world/TempleFeature`, `temple/`) tiene sello con puzle y guardián; el Autómata se invoca con un sello de jefe | PENDIENTE (rediseño) |
@@ -19,7 +19,7 @@ documentación, no implementa nada. «Hoy» describe lo que hay en el código (v
 | 10 | **Se sacrifica en la Hoguera** (se consume) y empieza el **Eclipse** | El Eclipse es de calendario (`eclipseIntervalDays = 10`) | PENDIENTE |
 | 11 | **Lluvia de brasas:** se activa cuando un jugador **enciende un portal al Nether en el Overworld**, con una **espera de 5 días** entre activaciones | Evento de calendario rotativo | PENDIENTE DE IMPLEMENTAR |
 
-Esperas resultantes: **Niebla, 10 días** (y solo con el aldeano), que empieza al hablar con él (no al comenzar un día de Minecraft) y dura hasta el amanecer; **Eclipse, 3 días
+Esperas resultantes: **Niebla, 10 días** (y solo con el aldeano), que puede empezar en cualquier momento al hablar con él y dura un día de Minecraft (24 000 ticks); **Eclipse, 3 días
 por mundo desde que termina el anterior**; **Lluvia de brasas, 5 días** entre activaciones. Mientras la
 Niebla está en espera, el aldeano dice algo como «los muertos se han ido, pero volverán» (texto exacto por definir).
 
@@ -95,11 +95,11 @@ autorización del autor.
 | A-2 | Espera del Behelit | 3 días, por mundo, desde el fin del Eclipse | Resuelta |
 | A-3 | Sellos | Los 3 sellos de invocación, retirados con migración y sin eliminarlos ahora. El bloque «Sello del templo» queda fuera de esta decisión | Resuelta (la retirada es la tarea E8) |
 | A-4 | Lluvia de brasas | Espera de 5 días | Resuelta |
-| A-5 | «1 día entero» de Niebla | Desde que se inicia hasta el amanecer; no comienza al empezar un día de Minecraft, sino cuando se habla con el aldeano | Resuelta. Queda por confirmar si puede iniciarse de día y si hay duración mínima |
+| A-5 | Duración y momento de inicio de la Niebla | Puede comenzar en cualquier momento y dura lo que un día de Minecraft | Resuelta |
 | A-6 | ¿Desaparece el calendario rotativo? | Sí, por completo | Resuelta (tarea E10) |
 | A-7 | Texto del aldeano con la Niebla en espera | «Los muertos se han ido, pero volverán» | Resuelta (texto exacto por definir) |
 
-Riesgo de A-5 (PROPUESTA): si se inicia poco antes del amanecer, la Niebla casi no dura y se gastaría la
-activación de 10 días en un evento breve. Falta decidir si el aldeano solo la inicia a ciertas horas (por
-ejemplo, al atardecer) o si hay una duración mínima. La frase del autor («no comienza cuando empiece un día de
-Minecraft») se interpretó como que **no** hay hora fija de inicio: empieza al hablar con el aldeano.
+Con duración fija (un día de Minecraft) desaparece el riesgo de una Niebla casi inexistente por iniciarla cerca
+del amanecer. Queda una pregunta menor (A-8): los 10 días de espera, ¿se cuentan desde que **se inicia** la Niebla o
+desde que **termina**? Al durar un día, la diferencia es de un día.
+| A-8 | Los 10 días de la Niebla, ¿desde que se inicia o desde que termina? | Sin respuesta | Abierta |
