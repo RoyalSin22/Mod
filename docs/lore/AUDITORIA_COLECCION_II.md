@@ -2,6 +2,8 @@
 
 Texto fuente: [COLECCION_II_CORPUS.md](COLECCION_II_CORPUS.md) (sin cambios). Solo documentación: no integra nada.
 
+> **Resolución (Fase 2a):** A-07 a A-10 aplicadas en `tools/lang/lore_catalog.py` (D-17). Las notas de trabajo de BESTIARY-001/002/005 quedan solo en `tools/lore/lore_entries.json`. Esta auditoría conserva el análisis original.
+
 ## Resultado
 
 | Criterio | Estado |

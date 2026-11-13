@@ -3,6 +3,8 @@
 Texto fuente: [COLECCION_I_CORPUS.md](COLECCION_I_CORPUS.md) (conservado sin cambios). Esta auditoría **no
 edita** los textos del autor ni integra nada: solo compara con el canon (`docs/lore/`) y con el código.
 
+> **Resolución (Fase 2a):** A-01 a A-06 aplicadas en `tools/lang/lore_catalog.py` (ver D-14 en `DECISIONES_PENDIENTES.md`). A-01 se ajustó: «primer Eclipse» es el histórico, así que el desbloqueo de LORE-013 es «inicio del Eclipse (primera vez que el jugador lo invoca)»; A-02 se mantuvo como «finalización del Eclipse». Esta auditoría conserva el análisis original.
+
 ## Resultado
 
 | Criterio | Estado |

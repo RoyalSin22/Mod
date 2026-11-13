@@ -29,24 +29,32 @@ del Eclipse, activación de la Lluvia por portal. Se registran como **NO VERIFIC
 
 ## Eclipse (decisión del autor integrada)
 
-**ESTABLECIDO (autor):** el Eclipse **puede repetirse cada 10 días, pero solo si se sacrifica un objeto en la
-Hoguera.** Esto sustituye la idea del borrador de un Eclipse «único por mundo».
+**Dos acontecimientos distintos que no deben confundirse:**
 
-Efectos sobre la narrativa (PROPUESTA, pendiente de aprobar en D-01):
+| | Primer Eclipse (histórico) | Eclipse invocado (actual) |
+|---|---|---|
+| Cuándo | Período 8, Primera Era | Aventura del jugador, período 12 en adelante |
+| Quién | La gente, **por ignorancia** de lo que desataba | El jugador, con conocimiento y objetivos cumplidos |
+| Resultado | Catástrofe: casi toda la humanidad perece; sobreviven unos pocos | Evento temporal que el jugador debe sobrevivir |
+| Estado | Solo narrativo | Evento VERIFICADO (`EclipseManager`); la invocación por sacrificio es PENDIENTE |
 
-1. **El Primer Eclipse del jugador** (período 12) es el desencadenado con el artefacto de la cámara de diamante.
-   Queda como **hecho fundacional**: abre la Fractura Silenciosa (período 13) y el segundo arco.
-2. Los **Eclipses posteriores** serían re-activaciones: el sacrificio de un objeto vuelve a **pulsar la
-   Fractura** ya abierta, no a ensancharla. Así se conserva el principio de que **ningún Eclipse libera a la
-   Conciencia** y de que la Fractura **no es una puerta transitable**.
-3. El «cada 10 días» se entiende como **espera mínima** entre Eclipses (en código existe `eclipseIntervalDays = 10`
-   como intervalo de calendario; que pase a ser *espera tras un sacrificio* es un cambio de mecánica **fuera de
-   esta tarea**).
-4. **Qué objeto se sacrifica** tras el primero: **sin definir** (D-02). El artefacto original es del primer
-   sacrificio; no se asume que sea reutilizable.
+**ESTABLECIDO (autor):** cuando el jugador cumple ciertos objetivos, **puede invocar el Eclipse cada vez que
+tenga el material para sacrificar en la Hoguera**, con 10 días de espera mínima. Esto sustituye la idea del
+borrador de un Eclipse «único por mundo».
 
-Mientras el Eclipse siga como calendario, el lore del Grimorio **no** debe afirmar «cada Eclipse exige un
-sacrificio»: debe esperar a que la mecánica exista (**PENDIENTE DE IMPLEMENTAR**).
+Consecuencias para el lore (PROPUESTA salvo lo indicado):
+
+1. El Eclipse invocado **repite** la conexión que causó el Primer Eclipse, pero de forma temporal y acotada.
+   Por eso las entradas dicen que el sacrificio «permite que aquella conexión vuelva a establecerse».
+2. La **Fractura Silenciosa** (LORE-014) se desbloquea una sola vez por jugador, al **finalizar un Eclipse**.
+   Si los Eclipses posteriores la ensanchan o solo la «pulsan» sigue abierto (D-09). Recomendación: la pulsan sin
+   ensanchar, para no contradecir el cierre del segundo arco.
+3. **Qué objetivos exige** invocarlo y **qué material** se sacrifica: sin definir (D-18, D-02). Los textos usan
+   «ofrenda» de forma genérica, salvo LORE-013 («la reliquia»), que se mantiene como texto del autor.
+4. El «cada 10 días» del código es hoy un intervalo de **calendario** (`eclipseIntervalDays = 10`). Pasarlo a
+   «espera tras un sacrificio» es un cambio de mecánica **fuera de esta tarea**.
+
+Mientras la mecánica no exista, el Grimorio **no** debe afirmar «cada Eclipse exige un sacrificio».
 
 ### Durante el Eclipse (PROPUESTA narrativa + estado)
 
@@ -60,7 +68,7 @@ sacrificio»: debe esperar a que la mecánica exista (**PENDIENTE DE IMPLEMENTAR
 
 ## Segundo arco: El Camino hacia la Liberación (PROPUESTA)
 
-Comienza tras el **primer** Eclipse. La Fractura no provoca invasiones inmediatas; el mundo recupera una
+Comienza cuando el jugador **completa un Eclipse**. La Fractura no provoca invasiones inmediatas; el mundo recupera una
 normalidad aparente. El jugador investiga consecuencias mediante documentos y ruinas.
 
 Estructuras conceptuales (**no existen, no se crean**): Archivo de los Sellos, Observatorio del Umbral, Cripta del
@@ -75,8 +83,8 @@ Verdades que el jugador acaba comprendiendo:
 5. La Fractura **no** equivale a una puerta transitable.
 6. **Ninguna facción** conocía toda la verdad.
 
-El arco termina sin repetir el Eclipse como clímax y **sin liberar** a la entidad. Con la decisión del autor,
-Eclipses posteriores pueden seguir existiendo como mecánica sin contradecir este cierre.
+El arco termina sin repetir el Eclipse como clímax y **sin liberar** a la entidad. Como el Eclipse se puede
+invocar de nuevo, los siguientes siguen existiendo como mecánica sin contradecir este cierre.
 
 ## Reglas multijugador
 

@@ -4,7 +4,7 @@ El código manda. Cada fila indica qué hay, qué dice el lore y cómo se trata.
 
 | Id | Diferencia | Código | Lore | Tratamiento |
 |---|---|---|---|---|
-| C-01 | Eclipse repetible | `eclipseIntervalDays = 10`, `eclipseFirstDay = 10`; rota con los otros eventos por calendario | «Único por mundo» → **decisión del autor:** se repite cada 10 días **solo con sacrificio en la Hoguera** | Lore adaptado (06). El sacrificio es **PENDIENTE DE IMPLEMENTAR**; no se afirma en el Grimorio hasta que exista |
+| C-01 | Eclipse repetible | `eclipseIntervalDays = 10`, `eclipseFirstDay = 10`; rota con los otros eventos por calendario | «Único por mundo» → **decisión del autor:** el jugador, al cumplir ciertos objetivos, lo invoca **cada vez que tenga material para sacrificar en la Hoguera** (espera de 10 días). El «Primer Eclipse» es el histórico de la Primera Era | Lore adaptado (06). El sacrificio es **PENDIENTE DE IMPLEMENTAR**; no se afirma en el Grimorio hasta que exista |
 | C-02 | Niebla de almas | Evento de calendario rotativo (18:00) | Primer evento, por aldeano, cada 3 días | NO VERIFICADO el gatillo; no se modifica el controlador |
 | C-03 | Sacrificio en la Hoguera / artefacto | No se encontró; no hay objeto «artefacto» | Se sacrifica el artefacto de la cámara de diamante | PENDIENTE DE IMPLEMENTAR |
 | C-04 | Lluvia de brasas | Calendario rotativo (6:00) | Vinculada a un portal | Pendiente de verificar el punto exacto; sin cambios |

@@ -16,19 +16,22 @@ Orden **relativo**. No se inventan años, siglos ni duraciones. Estado: **ESTABL
 | 9 | Gran Sellado | Se corta la conexión; el artefacto se oculta en un templo; Autómata Antiguo y Custodio protegen mecanismos y cámaras | 8 | Templos y jefes (VERIFICADO en parte) |
 | 10 | Era del Olvido | La civilización antigua desaparece o se fragmenta; quedan ruinas, máquinas y leyendas | 9 | Mundo del jugador |
 | 11 | Redescubrimiento | La aventura actual: Grimorio, Aptitudes y hallazgo de la Primera Era | 10 | Grimorio, bestiario |
-| 12 | Eclipse actual | El jugador obtiene el artefacto y lo sacrifica en la Hoguera | 11 | Sacrificio: PENDIENTE DE IMPLEMENTAR |
+| 12 | Eclipse invocado (actual) | Cuando cumple ciertos objetivos, el jugador puede invocar el Eclipse sacrificando material en la Hoguera, cada vez que lo tenga | 11 | Sacrificio y objetivos: PENDIENTE DE IMPLEMENTAR |
 | 13 | Fractura Silenciosa | Termina el evento; la Conciencia sigue presa pero una parte del confinamiento queda debilitada | 12 | Solo narrativo / futuros registros |
 | 14 | Camino hacia la Liberación | Segundo arco: documentos de facciones, registros y límites del conocimiento; **no** se libera a la Conciencia | 13 | Estructuras conceptuales (no creadas) |
 
 ## Reglas de coherencia
 
-1. Los períodos 8 y 12 son **dos acontecimientos distintos**: el Eclipse histórico de la Primera Era y el que
-   desencadena el jugador. El lore no los llama «el mismo».
+1. **Primer Eclipse** es siempre el acontecimiento **histórico** de la Primera Era (período 8). Casi toda la
+   humanidad pereció; sobrevivieron unos pocos. La gente lo invocó **por ignorancia** de lo que desataba y fue
+   un error terrible. El que invoca el jugador (período 12) se llama **Eclipse invocado** o simplemente
+   **Eclipse**; nunca «primer Eclipse».
 2. El período 9 (Sellado) ocurre **después** del 8 y **antes** del 10.
 3. Los descubrimientos individuales de un jugador no alteran el estado global del mundo (ver 06 y 08).
 
-## Efecto de la decisión del autor sobre el Eclipse
+## Decisión del autor sobre el Eclipse invocado (ESTABLECIDO)
 
-El autor decidió que el Eclipse **puede repetirse cada 10 días, pero solo si se sacrifica un objeto en la
-Hoguera** (ver DECISIONES_PENDIENTES D-01). Esto obliga a leer el período 12 como el **primer** sacrificio del
-jugador y a tratar los siguientes sin cambiar el orden de la tabla: ver 06 §Eclipse.
+Cuando el jugador cumple ciertos objetivos, **puede invocar el Eclipse cada vez que tenga el material para
+sacrificar en la Hoguera**, con una espera mínima de 10 días entre Eclipses. Qué objetivos exige y qué material
+se sacrifica: **sin definir** (D-18 y D-02). Es una mecánica **PENDIENTE DE IMPLEMENTAR**; el Grimorio no debe
+afirmarla hasta que exista.

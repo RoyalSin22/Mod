@@ -58,7 +58,7 @@ No se reemplazan templos, llaves, jefes ni estructuras.
 | Función narrativa | Artefacto de comunicación del Período 7; la conexión externa que la Conciencia necesitaba |
 | Apariencia | Disco de metal pálido con un anillo de luz hueco en el centro; no un ojo, no una cara ni un huevo |
 | Simbolismo | El anillo vacío evoca al eclipse; **no** reproduce el diseño ni el simbolismo de ninguna obra protegida |
-| Uso | Se sacrifica en la Hoguera para el primer Eclipse (**PENDIENTE DE IMPLEMENTAR**) |
+| Uso | Se sacrifica en la Hoguera para invocar el Eclipse (**PENDIENTE DE IMPLEMENTAR**). Si es el primer sacrificio, un objetivo previo o un material recurrente: sin definir (D-02, D-18) |
 | Restricciones | Sin id de registro, sin modelo, sin receta; el nombre es provisional |
 
 Esta propuesta busca **no copiar** objetos, nombres ni diseños protegidos: el único vínculo con el original es la

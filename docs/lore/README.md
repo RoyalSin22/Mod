@@ -1,8 +1,12 @@
 # Biblia narrativa de Aptitudes (documentación de lore)
 
-> **Fase 1 del encargo narrativo: solo documentación.** Nada de lo que hay en esta carpeta es código, dato de
-> juego ni texto del Grimorio. No se ha modificado ninguna mecánica, recurso, idioma ni modelo.
-> La integración en el Grimorio es un encargo posterior y separado.
+> **Esta carpeta es documentación.** No cambia mecánicas, entidades, eventos, habilidades, recetas ni interfaz.
+> **Fase 2a (datos narrativos):** los 23 textos de las Colecciones I y II, con las correcciones A-01…A-10, están en
+> `tools/lang/lore_catalog.py` (es/en), sus metadatos en `tools/lore/lore_entries.json` y las claves
+> `lore.aptitudes.*` en los archivos de idioma (`python3 tools/lang/gen_lore_lang.py [--check]`).
+> pt_br, fr_fr y de_de llevan el texto en inglés como respaldo hasta traducirse. **Nada de esto está conectado al
+> Grimorio**: los textos existen como claves de idioma, pero ninguna pantalla los muestra todavía. La integración
+> es un encargo posterior.
 
 ## Para qué sirve
 

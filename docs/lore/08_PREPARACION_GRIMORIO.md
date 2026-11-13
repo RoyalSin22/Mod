@@ -33,8 +33,8 @@ encargo posterior. No se afirma que nada esté integrado.
 | Facciones | Seis facciones y tres autores | Hallazgos en ruinas y templos |
 | Relatos de eventos | Niebla, Lluvia, Eclipse | Primera vez que el jugador vive el evento |
 | Registros de templos | Templo, Custodio, Autómata | Derrotar al jefe / abrir el sello |
-| Conciencia Ancestral | Prisión, influencia | Tras el primer Eclipse (arco 2) |
-| Segundo arco | Fractura Silenciosa | Tras el primer Eclipse |
+| Conciencia Ancestral | Prisión, influencia | Tras completar un Eclipse (arco 2) |
+| Segundo arco | Fractura Silenciosa | Tras completar un Eclipse |
 
 Reglas:
 
