@@ -20,7 +20,7 @@ del Eclipse, activación de la Lluvia por portal. Se registran como **NO VERIFIC
 |---|---|---|
 | Inicio | El jugador aparece con el Grimorio; bestiario vacío | Bestiario por jugador: VERIFICADO (`guide/BestiaryRules`); «aparece con Grimorio»: NO VERIFICADO |
 | Primeros objetivos | Obtener Hoguera y Mesa del Gremio | Objetos VERIFICADOS (`BONFIRE_ITEM`, `GUILD_DESK_ITEM`); guiado por el tutorial (v44) |
-| Niebla de almas | Primer evento: el aldeano del gremio avisa de que los muertos se levantan; la inicia un jugador para todo el mundo; dura un día y se repite cada 10 días solo si se habla con él (diseño del autor, ver 09) | Evento VERIFICADO; gatillo por aldeano y frecuencia de 3 días: PENDIENTE (hoy es calendario rotativo) |
+| Niebla de almas | Primer evento: el aldeano del gremio avisa de que los muertos se levantan; la inicia un jugador para todo el mundo; dura hasta el amanecer y se repite cada 10 días solo si se habla con él (diseño del autor, ver 09) | Evento VERIFICADO; gatillo por aldeano y frecuencia de 3 días: PENDIENTE (hoy es calendario rotativo) |
 | Materiales de la Niebla | Errante Velado suelta `jiron_velo_espectral` (85 % si lo mata un jugador); existe `soul_shard`; el material del Osario Quebrado está sin definir | VERIFICADO / pendiente de rediseño (decisión del autor D-05) |
 | Objeto especial | Se fabrica con materiales de la Niebla para interactuar con mecanismos del templo | **PENDIENTE: receta no definida**; no se inventa id ni receta |
 | Templo | Exploración, subjefe (Autómata Antiguo), puzle, uso del objeto, cámara principal, Custodio de las Cuatro Llaves, cuatro llaves, cuatro cámaras de recompensa | Estructura base VERIFICADA (`temple/`); correspondencia exacta NO VERIFICADA |

@@ -8,19 +8,20 @@ documentación, no implementa nada. «Hoy» describe lo que hay en el código (v
 | # | Paso (diseño del autor) | Hoy en el código | Estado |
 |---|---|---|---|
 | 1 | **Un jugador habla con el aldeano del gremio** y este avisa de que los muertos se levantan. Eso inicia la Niebla de almas para **todo el mundo**. Se repite cada **10 días**, pero solo si se vuelve a hablar con él | La Niebla sale por calendario rotativo junto al Eclipse y la Lluvia (`WorldEventManager`). El aldeano del gremio existe (`world/GuildVillagers`) pero no inicia eventos | PENDIENTE DE IMPLEMENTAR |
-| 2 | **La Niebla dura 1 día entero.** Aparecen zombis, esqueletos y sus variantes, el Errante Velado (aparición alta, solo durante la Niebla) y el Osario Quebrado (aparición más baja) | Dura 12 000 ticks desde las 18:00 (`DURATION`, `FOG_START`). Existen las reglas de criaturas de la Niebla (`event/FogMobRules`, `FogErranteRules`, `SoulFogRules`) | Parcial: duración y proporciones por ajustar |
+| 2 | **La Niebla dura desde que se inicia hasta el amanecer.** Aparecen zombis, esqueletos y sus variantes, el Errante Velado (aparición alta, solo durante la Niebla) y el Osario Quebrado (aparición más baja) | Dura 12 000 ticks desde las 18:00 (`DURATION`, `FOG_START`). Existen las reglas de criaturas de la Niebla (`event/FogMobRules`, `FogErranteRules`, `SoulFogRules`) | Parcial: duración y proporciones por ajustar |
 | 3 | **Cada criatura suelta un objeto distinto**, con probabilidad «normal» | Errante Velado: Jirón de Velo Espectral al 85 % (loot table). Osario Quebrado: sin objeto propio | Errante: VERIFICADO. Osario: PENDIENTE (D-05) |
-| 4 | **Se crafteán los dos objetos con otros materiales** y se obtiene un objeto especial de acceso. El autor cita como ejemplo fragmentos de alma y diamantes | `soul_shard` existe; no hay receta ni objeto especial | PENDIENTE. Receta y nombre sin definir |
+| 4 | **Se crafteán los dos objetos con otros materiales** y se obtiene un objeto especial de acceso, que se **consume** al usarse en la puerta del Custodio. El autor cita como ejemplo fragmentos de alma y diamantes | `soul_shard` existe; no hay receta ni objeto especial | PENDIENTE. Receta y nombre sin definir |
 | 5 | **Estructura de templo nueva.** El **Autómata Antiguo aparece dentro**, como subjefe | El templo actual (v64, `world/TempleFeature`, `temple/`) tiene sello con puzle y guardián; el Autómata se invoca con un sello de jefe | PENDIENTE (rediseño) |
-| 6 | Se resuelve el **puzle**, se avanza hasta la sala previa y el objeto especial abre la **puerta de la sala del Custodio** | Puzle de palancas y placas por anillo de Amenaza (`TempleRules`) | PENDIENTE. Punto exacto de uso por confirmar (A-1) |
+| 6 | Se resuelve el **puzle**, se avanza hasta la sala previa y el objeto especial abre la **puerta de la sala del Custodio** (solo ahí; no se usa para entrar al templo) | Puzle de palancas y placas por anillo de Amenaza (`TempleRules`) | PENDIENTE |
 | 7 | **El Custodio suelta 4 llaves** (cobre, hierro, oro y diamante) en **una sola tirada**. Cada llave abre una cámara de recompensas | Suelta una única `temple_key` que abre el Relicario de ese templo (`TempleKeyItem`, `ReliquaryBlockEntity`) | PENDIENTE |
 | 8 | **Recompensas:** objetos vanilla (manzanas doradas encantadas, bloques de minerales…), objetos del mod y similares | Relicario existente; contenido de las 4 cámaras sin definir | PENDIENTE |
-| 9 | **La cámara de diamante guarda el Behelit** (nombre de trabajo: *Resonador del Umbral*). Se puede tener **más de uno**, pero solo se usa **uno cada 3 días**. Se consigue en los templos del Custodio | No existe | PENDIENTE |
+| 9 | **La cámara de diamante guarda el Behelit** (nombre de trabajo: *Resonador del Umbral*). Se puede tener **más de uno**, pero solo se usa **uno cada 3 días por mundo, contados desde el fin del Eclipse**. Se consigue en los templos del Custodio | No existe | PENDIENTE |
 | 10 | **Se sacrifica en la Hoguera** (se consume) y empieza el **Eclipse** | El Eclipse es de calendario (`eclipseIntervalDays = 10`) | PENDIENTE |
-| 11 | **Lluvia de brasas:** se activa cuando un jugador **enciende un portal al Nether en el Overworld**, cada vez que se abre uno | Evento de calendario rotativo | PENDIENTE |
+| 11 | **Lluvia de brasas:** se activa cuando un jugador **enciende un portal al Nether en el Overworld**, con una **espera** entre activaciones (duración sin definir) | Evento de calendario rotativo | PENDIENTE |
 
-Esperas resultantes: **Niebla, 10 días** (y solo con el aldeano); **Eclipse, 3 días** (un Behelit cada 3 días);
-**Lluvia de brasas, sin espera propia** (cada portal nuevo).
+Esperas resultantes: **Niebla, 10 días** (y solo con el aldeano), con duración hasta el amanecer; **Eclipse, 3 días
+por mundo desde que termina el anterior**; **Lluvia de brasas, con espera** (duración sin definir). Mientras la
+Niebla está en espera, el aldeano dice algo como «los muertos se han ido, pero volverán» (texto exacto por definir).
 
 ## Cómo cambia lo ya documentado
 
@@ -48,7 +49,8 @@ Aldeano, eventos, calendario, entidades, loot, recetas, templo, llaves, Hoguera,
 
 ### Los «sellos»
 
-El autor pidió eliminar los sellos si es posible. Hay **dos cosas distintas** con ese nombre:
+El autor indicó que los sellos serán **innecesarios** y que se **retirarán con migración**, pero que **no se
+eliminen ahora**. Hay **dos cosas distintas** con ese nombre:
 
 | Qué | Ids | Uso actual |
 |---|---|---|
@@ -57,8 +59,8 @@ El autor pidió eliminar los sellos si es posible. Hay **dos cosas distintas** c
 
 **No se eliminó nada.** Retirar un objeto registrado afecta a mundos y jugadores existentes (ítems perdidos,
 recetas, bestiario, logros, textos en 11 idiomas, modelos y pruebas), y `AGENTS.md` pide no cambiar ids de
-registro existentes. Queda como tarea de código aparte, a decidir entre ocultarlos o retirarlos con migración
-(A-3).
+registro existentes; por eso la retirada será una tarea de código con **migración** (E8). **Alcance por
+confirmar:** cuáles de los cuatro se retiran (A-3).
 
 ## Tareas de implementación que se derivan (ninguna autorizada)
 
@@ -84,14 +86,17 @@ autorización del autor.
 - **Lluvia por portal:** abrir y cerrar portales podría encadenar eventos; conviene un tope.
 - **Eclipse cada 3 días:** el valor actual del código es 10 (`AptitudesConfig.eclipseIntervalDays`).
 
-## Pendientes de aclarar
+## Aclaraciones
 
-| Id | Pregunta |
-|---|---|
-| A-1 | ¿El objeto especial se usa en la puerta de la sala del Custodio, o también para entrar al templo? ¿Se consume? |
-| A-2 | Los 3 días del Behelit: ¿por mundo o por jugador? ¿Se cuentan desde el inicio o desde el fin del Eclipse? |
-| A-3 | Sellos: ¿se retiran los tres de invocación, solo el del Autómata, o el bloque del templo? ¿Ocultar o retirar con migración? |
-| A-4 | Lluvia de brasas: ¿hay espera o tope por portal o por jugador? |
-| A-5 | «1 día entero» de Niebla: ¿24 000 ticks desde que se inicia, o hasta el amanecer? |
-| A-6 | ¿El calendario rotativo actual desaparece por completo? |
-| A-7 | ¿Qué dice el aldeano mientras la Niebla está en espera? |
+| Id | Pregunta | Respuesta del autor | Estado |
+|---|---|---|---|
+| A-1 | Uso del objeto especial | Solo en la puerta del Custodio, y se consume | Resuelta |
+| A-2 | Espera del Behelit | 3 días, por mundo, desde el fin del Eclipse | Resuelta |
+| A-3 | Sellos | No eliminar ahora; serán innecesarios; retirarlos con migración | Parcial: falta el alcance (¿los tres de invocación, solo el del Autómata, el bloque del templo?) |
+| A-4 | Lluvia de brasas | Sí tiene espera | Parcial: falta la duración |
+| A-5 | «1 día entero» de Niebla | Desde que se inicia hasta el amanecer | Resuelta (ver riesgo abajo) |
+| A-6 | ¿Desaparece el calendario rotativo? | Sin respuesta | Abierta |
+| A-7 | Texto del aldeano con la Niebla en espera | «Los muertos se han ido, pero volverán» | Resuelta (texto exacto por definir) |
+
+Riesgo de A-5: si se inicia poco antes del amanecer, la Niebla casi no dura. Sin una duración mínima, el jugador
+podría gastar la activación de 10 días en un evento breve (decisión pendiente).
