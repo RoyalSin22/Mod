@@ -267,8 +267,8 @@ y recetas (`data/aptitudes/recipe/*.json`).
 
 | Opción | Defecto | Validación | Descripción |
 |---|---|---|---|
-| `masterBonusPoints` | 10 | [0, 100] | Puntos de árbol extra al evolucionar un rol a Maestro. |
-| `ultimateBonusPoints` | 5 | [0, 100] | Puntos de árbol extra al evolucionar un rol a Definitivo. |
+| `masterBonusPoints` | 15 | [0, 100] | Puntos de árbol extra al evolucionar un rol a Maestro. v67: el valor por defecto pasa de 10 a 15; un archivo anterior con 10 se migra solo (un valor elegido a mano se respeta). |
+| `ultimateBonusPoints` | 10 | [0, 100] | Puntos de árbol extra al evolucionar un rol a Definitivo. v67: pasa de 5 a 10, con la misma migración. |
 
 ## Valor de los atributos (v27)
 

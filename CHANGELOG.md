@@ -35,7 +35,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   - **Geometría pura con pruebas:** `logic/UnifiedTreeLayout`. Las secciones Veterano y Ascenso están preparadas y
     aparecerán cuando tengan habilidades (F2 en adelante).
   - **Textos nuevos** en los 5 idiomas.
-  - **Puntos de árbol:** el cambio queda pendiente de confirmar con las cifras reales (ver `docs/V67_ARBOL_UNIFICADO.md`).
+  - **Puntos de árbol:** al evolucionar, Maestro da 15 (antes 10) y Definitivo 10 (antes 5): 76 puntos a nivel 50 con
+    las dos evoluciones (antes 66). Los archivos de configuración con los valores antiguos por defecto se migran solos
+    (`ConfigMigration`, revisión 67); un valor elegido a mano se respeta. Detalle en `docs/BALANCE.md`.
 
   Sin validar en partida.
 - **v66 — Fichas de categoría con emblema (pantalla de roles).** Las cinco fichas pasan a ser emblemas detallados

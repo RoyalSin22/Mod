@@ -3,7 +3,9 @@
 Estado:
 
 - **Diseño aprobado por el autor (2026-11-13).**
-- **F1 implementada:** árbol unificado. El cambio de puntos queda pendiente de confirmar con las cifras reales de la §3.
+- **F1 implementada:** árbol unificado.
+- **Puntos decididos:** opción b (Maestro 15 y Definitivo 10): **76** puntos a nivel 50 con las dos evoluciones (antes
+  66).
 
 ## 1. Decisiones del autor (2026-11-13)
 

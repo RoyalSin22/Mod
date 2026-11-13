@@ -264,10 +264,10 @@ public class AptitudesConfig {
 	/** Esmeraldas para quitar la última runa de un arma (la runa se pierde). */
 	public int runeRemovalEmeraldCost = 4;
 
-	/** v23: puntos de árbol extra al evolucionar a Maestro (para la fila nueva de 5 nodos × 2 rangos). */
-	public int masterBonusPoints = 10;
-	/** v23: puntos de árbol extra al evolucionar a Definitivo (fila nueva de 5 nodos × 1 rango). */
-	public int ultimateBonusPoints = 5;
+	/** Puntos de árbol extra al evolucionar a Maestro (v23: 10; v67: 15, por las habilidades nuevas del árbol). */
+	public int masterBonusPoints = 15;
+	/** Puntos de árbol extra al evolucionar a Definitivo (v23: 5; v67: 10). */
+	public int ultimateBonusPoints = 10;
 	/** Obsoleto: ya no se usa (el cambio de rol se hace con el ritual de la Hoguera). */
 	public int roleChangeCooldownMinutes = 0;
 	/**
@@ -373,6 +373,8 @@ public class AptitudesConfig {
 					// v46: los archivos sin revisión son anteriores a la v46.
 					int from = revisionOf(json);
 					cfg.maxRoleLevel = ConfigMigration.maxRoleLevel(from, cfg.maxRoleLevel);
+					cfg.masterBonusPoints = ConfigMigration.masterBonusPoints(from, cfg.masterBonusPoints);
+					cfg.ultimateBonusPoints = ConfigMigration.ultimateBonusPoints(from, cfg.ultimateBonusPoints);
 					cfg.configRevision = ConfigMigration.CURRENT;
 				}
 			} catch (IOException | JsonParseException e) {

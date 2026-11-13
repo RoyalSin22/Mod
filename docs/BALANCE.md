@@ -3,6 +3,21 @@
 Documento de referencia de las fórmulas de progresión. Cada cambio indica fórmula anterior, nueva,
 justificación, valores de ejemplo e impacto, como pide la política del proyecto.
 
+## Puntos de árbol (v67)
+
+Fórmula (`RoleRules.earnedPoints`): **1 + nivel × 3 / `rolePointsEveryLevels`** (con 3, un punto por nivel), más los
+puntos de evolución. Decisión del autor (opción b): suben solo las bonificaciones de evolución, para hacer sitio a las 10
+habilidades nuevas por rol sin dar puntos para comprarlo todo.
+
+| A nivel 50 | Antes | v67 |
+|---|---|---|
+| Por nivel | 51 | 51 |
+| Maestro (`masterBonusPoints`) | +10 | +15 |
+| Definitivo (`ultimateBonusPoints`) | +5 | +10 |
+| **Total** | **66** | **76** |
+
+Las habilidades nuevas suman 22 rangos por rol: con 10 puntos más hay que elegir.
+
 ## Vasos de vida (v64)
 
 - Antes: la vida máxima solo crecía con Vigor, Tala y bonificaciones de rol. Ahora: +2 de vida (1 corazón)
