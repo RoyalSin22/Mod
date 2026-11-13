@@ -21,8 +21,11 @@
 | D-10 | ¿Se añade una entrada de bestiario al Custodio? | Cambio de código: encargo aparte |
 | D-11 | Nombre definitivo del artefacto | «Resonador del Umbral» es de trabajo; confirmar o cambiar |
 | D-12 | ¿Se mantiene la Niebla de almas como primer evento con aldeano? | Cambio de mecánica: encargo aparte |
-| D-13 | ¿Quién recibe los desbloqueos nacidos de un evento de mundo (LORE-013/014)? | Solo jugadores presentes en el Eclipse; los desconectados lo reciben al volver a entrar si completó. A decidir |
+| D-13 | ¿Quién recibe los desbloqueos nacidos de un evento de mundo (LORE-013/014, EVENT-003)? | Solo jugadores presentes en el Eclipse; los desconectados lo reciben al volver a entrar si lo completó. A decidir |
 | D-14 | Diferencias A-01…A-06 de la Colección I (ver `AUDITORIA_COLECCION_I.md`) | Aplicar mis propuestas o editar tú los textos |
+| D-15 | ¿Dónde viven las crónicas de eventos de la Colección II? | Sin estructura hoy; no decidido |
+| D-16 | Definir «primer encuentro documentado» y «primera participación» en un evento | Sin definición en el código |
+| D-17 | Diferencias A-07…A-10 de la Colección II (ver `AUDITORIA_COLECCION_II.md`) | Aplicar mis propuestas o editar tú los textos |
 
 ## No decididas y no inventadas
 

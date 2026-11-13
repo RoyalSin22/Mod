@@ -24,6 +24,8 @@ para que los textos futuros (Grimorio, bestiario, inscripciones, tooltips) salga
 | [08_PREPARACION_GRIMORIO.md](08_PREPARACION_GRIMORIO.md) | Cómo encajaría el lore en el Grimorio real (sin implementar) |
 | [COLECCION_I_CORPUS.md](COLECCION_I_CORPUS.md) | Textos del autor de la Colección I (15 entradas, sin cambios) |
 | [AUDITORIA_COLECCION_I.md](AUDITORIA_COLECCION_I.md) | Revisión de esa colección frente al canon y al código |
+| [COLECCION_II_CORPUS.md](COLECCION_II_CORPUS.md) | Textos del autor de la Colección II (5 criaturas, 3 eventos, sin cambios) |
+| [AUDITORIA_COLECCION_II.md](AUDITORIA_COLECCION_II.md) | Revisión de esa colección frente al bestiario y los eventos reales |
 | [CONTRADICCIONES.md](CONTRADICCIONES.md) | Diferencias entre el lore y el código |
 | [DECISIONES_PENDIENTES.md](DECISIONES_PENDIENTES.md) | Decisiones tomadas y abiertas |
 
