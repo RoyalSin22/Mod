@@ -17,10 +17,10 @@ documentación, no implementa nada. «Hoy» describe lo que hay en el código (v
 | 8 | **Recompensas:** objetos vanilla (manzanas doradas encantadas, bloques de minerales…), objetos del mod y similares | Relicario existente; contenido de las 4 cámaras sin definir | PENDIENTE |
 | 9 | **La cámara de diamante guarda el Behelit** (nombre de trabajo: *Resonador del Umbral*). Se puede tener **más de uno**, pero solo se usa **uno cada 3 días por mundo, contados desde el fin del Eclipse**. Se consigue en los templos del Custodio | No existe | PENDIENTE |
 | 10 | **Se sacrifica en la Hoguera** (se consume) y empieza el **Eclipse** | El Eclipse es de calendario (`eclipseIntervalDays = 10`) | PENDIENTE |
-| 11 | **Lluvia de brasas:** se activa cuando un jugador **enciende un portal al Nether en el Overworld**, con una **espera** entre activaciones (duración sin definir) | Evento de calendario rotativo | PENDIENTE |
+| 11 | **Lluvia de brasas:** se activa cuando un jugador **enciende un portal al Nether en el Overworld**, con una **espera de 5 días** entre activaciones | Evento de calendario rotativo | PENDIENTE DE IMPLEMENTAR |
 
-Esperas resultantes: **Niebla, 10 días** (y solo con el aldeano), con duración hasta el amanecer; **Eclipse, 3 días
-por mundo desde que termina el anterior**; **Lluvia de brasas, con espera** (duración sin definir). Mientras la
+Esperas resultantes: **Niebla, 10 días** (y solo con el aldeano), que empieza al hablar con él (no al comenzar un día de Minecraft) y dura hasta el amanecer; **Eclipse, 3 días
+por mundo desde que termina el anterior**; **Lluvia de brasas, 5 días** entre activaciones. Mientras la
 Niebla está en espera, el aldeano dice algo como «los muertos se han ido, pero volverán» (texto exacto por definir).
 
 ## Cómo cambia lo ya documentado
@@ -75,6 +75,7 @@ confirmar:** cuáles de los cuatro se retiran (A-3).
 | E7 Lluvia de brasas al encender un portal | `event/WorldEventManager` |
 | E8 Retirada de los sellos | `item/`, `boss/`, recursos, idiomas |
 | E9 Grimorio: estado de lectura, entradas e interfaz | `guide/`, `client/screen/GuideScreen` |
+| E10 Retirar el calendario rotativo (campos `worldEventWeight*`, `eclipseFirstDay`, `eclipseIntervalDays`) con migración de configuración | `config/AptitudesConfig`, `ConfigMigration`, `docs/CONFIGURATION.md`, `event/` |
 
 Cada una necesita su diseño, valores por defecto en configuración, filas en `docs/CONFIGURATION.md`, pruebas y
 autorización del autor.
@@ -92,11 +93,13 @@ autorización del autor.
 |---|---|---|---|
 | A-1 | Uso del objeto especial | Solo en la puerta del Custodio, y se consume | Resuelta |
 | A-2 | Espera del Behelit | 3 días, por mundo, desde el fin del Eclipse | Resuelta |
-| A-3 | Sellos | No eliminar ahora; serán innecesarios; retirarlos con migración | Parcial: falta el alcance (¿los tres de invocación, solo el del Autómata, el bloque del templo?) |
-| A-4 | Lluvia de brasas | Sí tiene espera | Parcial: falta la duración |
-| A-5 | «1 día entero» de Niebla | Desde que se inicia hasta el amanecer | Resuelta (ver riesgo abajo) |
-| A-6 | ¿Desaparece el calendario rotativo? | Sin respuesta | Abierta |
+| A-3 | Sellos | Los 3 sellos de invocación, retirados con migración y sin eliminarlos ahora. El bloque «Sello del templo» queda fuera de esta decisión | Resuelta (la retirada es la tarea E8) |
+| A-4 | Lluvia de brasas | Espera de 5 días | Resuelta |
+| A-5 | «1 día entero» de Niebla | Desde que se inicia hasta el amanecer; no comienza al empezar un día de Minecraft, sino cuando se habla con el aldeano | Resuelta. Queda por confirmar si puede iniciarse de día y si hay duración mínima |
+| A-6 | ¿Desaparece el calendario rotativo? | Sí, por completo | Resuelta (tarea E10) |
 | A-7 | Texto del aldeano con la Niebla en espera | «Los muertos se han ido, pero volverán» | Resuelta (texto exacto por definir) |
 
-Riesgo de A-5: si se inicia poco antes del amanecer, la Niebla casi no dura. Sin una duración mínima, el jugador
-podría gastar la activación de 10 días en un evento breve (decisión pendiente).
+Riesgo de A-5 (PROPUESTA): si se inicia poco antes del amanecer, la Niebla casi no dura y se gastaría la
+activación de 10 días en un evento breve. Falta decidir si el aldeano solo la inicia a ciertas horas (por
+ejemplo, al atardecer) o si hay una duración mínima. La frase del autor («no comienza cuando empiece un día de
+Minecraft») se interpretó como que **no** hay hora fija de inicio: empieza al hablar con el aldeano.
