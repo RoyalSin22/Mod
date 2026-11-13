@@ -23,6 +23,15 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   ignoran y los puntos gastados en esas ramas vuelven a estar disponibles.
 
 ### Añadido
+- **v66 — Kit «Berserker» en la pantalla del árbol.** Sustituye al kit anterior (salvo los marcos de nodo, que se
+  conservan): panel de piedra con grietas y remaches, ficha de detalle, cabeceras de Sangre, Acero y Trueno, etiquetas
+  S1–S7, habilidad definitiva, barra de maestría de 20 casillas (320×18) y botones Equipar (antes «genérico»),
+  Reiniciar y Cerrar, los tres con icono a la izquierda. Los paneles se estiran desde el centro: cada mitad queda anclada
+  a su borde y el hueco se rellena con la franja anterior al centro, más allá de los adornos (40 px), para que las
+  grietas no se repitan (`TreeScreenLayout.anchoredTiles`, con pruebas). La ventana pasa de 300 a 318 px de alto (240 del
+  panel + tres hiladas de ladrillo de 26 px, sin juntas descuadradas) y la maestría baja a su propia fila bajo los
+  botones, sin solaparse en ningún ancho. Los conectores del kit se guardan en `tools/textures/source/ui/conectores/` pero
+  aún no se usan: con nodos de 24 px cada 26 px solo quedan 2 px entre escalones. Sin validar en partida.
 - **v66 — Pantalla K con la dirección de arte.** Atributos y Habilidades usan el kit de 34 piezas
   (`docs/PROMPT_ARTE_PANTALLA_K.md`): panel principal (o de Hoguera, con su emblema en la cabecera), pestañas en tres
   estados ajustadas al texto, columnas hundidas, ficha de detalle, filas de atributo y flechas de reparto, cabeceras de

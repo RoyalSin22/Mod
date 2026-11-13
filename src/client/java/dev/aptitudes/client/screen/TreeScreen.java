@@ -115,7 +115,7 @@ public class TreeScreen extends Screen {
 		scroll = MathHelper.clamp(scroll, 0, TreeScreenLayout.maxScroll(height));
 		layout = TreeScreenLayout.place(width, height, scroll);
 		learnButton = addDrawableChild(new SpriteButton(layout.primaryButton(),
-				Text.translatable("screen.aptitudes.paths.learn"), "generico", b -> learn()));
+				Text.translatable("screen.aptitudes.paths.learn"), "equipar", b -> learn()));
 		respecButton = addDrawableChild(new SpriteButton(layout.respecButton(),
 				Text.translatable("screen.aptitudes.respec.button"), "reiniciar", b -> respec()));
 		addDrawableChild(new SpriteButton(layout.closeButton(), ScreenTexts.BACK, "cerrar", b -> close()));
@@ -241,8 +241,10 @@ public class TreeScreen extends Screen {
 	@Override
 	public void renderBackground(DrawContext ctx, int mouseX, int mouseY, float delta) {
 		super.renderBackground(ctx, mouseX, mouseY, delta);
-		TreeUi.panel9(ctx, "paneles/panel_principal_9slice.png", TreeUi.PANEL_MAIN_W, TreeUi.PANEL_MAIN_H, layout.window());
-		TreeUi.panel9(ctx, "paneles/panel_detalle_9slice.png", TreeUi.PANEL_DETAIL_W, TreeUi.PANEL_DETAIL_H, layout.detail());
+		TreeUi.panel9(ctx, "paneles/panel_principal_9slice.png", TreeUi.PANEL_MAIN_W, TreeUi.PANEL_MAIN_H,
+				TreeUi.PANEL_MAIN_ORNAMENT, layout.window());
+		TreeUi.panel9(ctx, "paneles/panel_detalle_9slice.png", TreeUi.PANEL_DETAIL_W, TreeUi.PANEL_DETAIL_H,
+				TreeUi.PANEL_DETAIL_ORNAMENT, layout.detail());
 	}
 
 	@Override
@@ -346,9 +348,9 @@ public class TreeScreen extends Screen {
 		Rect h = layout.columnHeader(path);
 		TreeUi.sprite(ctx, "cabeceras/" + HEADERS[path] + ".png", h.x(), h.y(), 96, 24);
 		RoleNode first = nodeOf(path, Step.S1);
-		if (first != null) NodeIconRenderer.draw(ctx, first, h.x() + 8, h.y() + 4);
+		if (first != null) NodeIconRenderer.draw(ctx, first, h.x() + 7, h.y() + 4); // hueco del emblema de la cabecera
 		boolean locked = chosen > 0 && chosen - 1 != path;
-		UiStyle.label(ctx, textRenderer, Text.translatable(RoleTree.pathKey(role, path + 1)), h.x() + 30, h.y() + 8, 62,
+		UiStyle.label(ctx, textRenderer, Text.translatable(RoleTree.pathKey(role, path + 1)), h.x() + 30, h.y() + 7, 58,
 				locked ? UiStyle.MUTED : chosen - 1 == path ? UiStyle.GOLD : UiStyle.TEXT);
 	}
 
@@ -426,7 +428,7 @@ public class TreeScreen extends Screen {
 		Rect m = layout.mastery();
 		int points = masteryPoints();
 		TreeUi.masteryBar(ctx, m.x(), m.y(), points);
-		ctx.drawText(textRenderer, Integer.toString(points), m.right() + 6, m.y() + 8, UiStyle.GOLD, true);
+		ctx.drawText(textRenderer, Integer.toString(points), m.right() + 6, m.y() + 5, UiStyle.GOLD, true);
 	}
 
 	private void drawDefinitive(DrawContext ctx, RoleSyncPayload data, int mouseX, int mouseY) {

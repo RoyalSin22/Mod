@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Piezas de la pantalla del árbol de la dirección de arte (v66): del arte fuente al recurso del juego.
+"""Piezas de la pantalla del árbol de la dirección de arte (v66, kit «Berserker»): del arte fuente al recurso del juego.
+
+Los conectores de `source/ui/conectores/` forman parte del kit pero aún no se usan (la distribución actual deja 2 px
+entre escalones); este script no los copia.
 
 Lee `tools/textures/source/ui/` y escribe `textures/gui/tree_ui/<grupo>/<pieza>.png`:
   paneles, cabeceras, etiquetas, maestria, definitiva y botones: copia exacta (ya están al tamaño final,
@@ -29,12 +32,12 @@ STATES = ('bloqueado', 'disponible', 'comprado', 'elegido', 'descartado')
 
 # grupo -> (nombre de archivo -> tamaño esperado)
 COPIED = {
-    'paneles': {'panel_principal_9slice.png': (192, 128), 'panel_detalle_9slice.png': (112, 160)},
+    'paneles': {'panel_principal_9slice.png': (426, 240), 'panel_detalle_9slice.png': (128, 176)},
     'cabeceras': {f'senda_{n}.png': (96, 24) for n in ('sangre', 'acero', 'trueno')},
     'etiquetas': {f'etiqueta_s{i}.png': (24, 14) for i in range(1, 8)},
-    'maestria': {'maestria_20_vacias.png': (248, 24), 'maestria_20_llenas.png': (248, 24)},
+    'maestria': {'maestria_20_vacias.png': (320, 18), 'maestria_20_llenas.png': (320, 18)},
     'definitiva': {'definitiva_bloqueada.png': (48, 48), 'definitiva_desbloqueada.png': (48, 48)},
-    'botones': {f'{b}_{s}.png': (80, 18) for b in ('cerrar', 'generico', 'reiniciar')
+    'botones': {f'{b}_{s}.png': (80, 18) for b in ('cerrar', 'equipar', 'reiniciar')
                 for s in ('normal', 'pulsado', 'desactivado')},
 }
 

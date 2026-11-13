@@ -1,5 +1,7 @@
 package dev.aptitudes.logic;
 
+import dev.aptitudes.logic.KScreenLayout.Tile;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +17,13 @@ import java.util.List;
 public final class TreeScreenLayout {
 	public static final int MAX_WIDTH = 520;
 	public static final int MIN_WIDTH = 418;
-	public static final int HEIGHT = 300;
+	/**
+	 * Alto de la ventana: el del panel principal del kit (240) más tres hiladas de ladrillo de 26 px, para que el panel
+	 * se estire sin descuadrar las juntas (ver {@link #anchoredTiles}).
+	 */
+	public static final int HEIGHT = 318;
+	/** Barra de maestría del kit: 20 casillas de 16×18 px. */
+	public static final int MASTERY_W = 320, MASTERY_H = 18;
 	public static final int PATHS = 3;
 	/** S1, S2, S3, S4, S5 (dos opciones), S6 y S7. */
 	public static final int ROWS = 7;
@@ -114,7 +122,8 @@ public final class TreeScreenLayout {
 
 	// ------------------------------------------------------------ Parte baja
 
-	public Rect mastery() { return at(FIRST_COLUMN_X, ROWS_Y + ROWS * PITCH + 4, 248, 24); }
+	/** Barra de maestría, en su propia fila bajo los botones de la columna derecha (cabe desde el ancho mínimo). */
+	public Rect mastery() { return at(FIRST_COLUMN_X, 286, MASTERY_W, MASTERY_H); }
 
 	// ------------------------------------------------------------ Columna derecha
 
@@ -156,6 +165,39 @@ public final class TreeScreenLayout {
 				for (int slot = 0; slot < slots(row); slot++) out.add(node(path, row, slot));
 			}
 		}
+		return out;
+	}
+
+	/**
+	 * Reparto de un panel con adornos cerca de los bordes (grietas, remaches) sobre {@code length} px, en un eje, a
+	 * partir de una pieza de {@code texLen} px. Cada mitad de la pieza queda anclada a su borde; si falta sitio, el hueco
+	 * se rellena repitiendo la franja que precede al centro (entre {@code cap} y la mitad), alineada para que la última
+	 * fila del relleno sea la anterior al centro: la unión con la mitad final es continua y, si el sobrante es múltiplo
+	 * del periodo del dibujo (hiladas de ladrillo), también la de la mitad inicial. Si sobra pieza, se recorta por el
+	 * centro. Los tramos cubren exactamente {@code [0, length)} sin solaparse.
+	 */
+	public static List<Tile> anchoredTiles(int length, int texLen, int cap) {
+		List<Tile> out = new ArrayList<>();
+		if (length <= 0 || texLen <= 0) return out;
+		if (length <= texLen) {
+			int first = (length + 1) / 2;
+			int second = length - first;
+			out.add(new Tile(0, 0, first));
+			if (second > 0) out.add(new Tile(first, texLen - second, second));
+			return out;
+		}
+		int half = texLen / 2;
+		int extra = length - texLen;
+		int band = Math.max(1, half - Math.max(0, Math.min(cap, half - 1)));
+		out.add(new Tile(0, 0, half));
+		int j = 0;
+		while (j < extra) {
+			int offset = Math.floorMod(j - extra, band);
+			int len = Math.min(band - offset, extra - j);
+			out.add(new Tile(half + j, half - band + offset, len));
+			j += len;
+		}
+		out.add(new Tile(half + extra, half, texLen - half));
 		return out;
 	}
 }

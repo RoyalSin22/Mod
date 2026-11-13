@@ -19,6 +19,11 @@ Pruebas automáticas nuevas:
   habilidad al máximo usa el marco dorado y la que acaba de subir parpadea 2,5 s; en Atributos, las flechas ‹ › ajustan
   y la fila seleccionada no tapa el nombre; en la Hoguera aparecen el panel con brasas y el emblema. Sin el paquete de
   recursos (o renombrando `textures/gui/k_ui/`), la pantalla vuelve al dibujo anterior.
+- `logic/TreeScreenLayoutTest` (kit «Berserker»): además, el estiramiento anclado de los paneles (cubre el tamaño
+  exacto, conserva las dos mitades, rellena desde antes del centro sin copiar grietas ni marco, y en 318 px de alto las
+  juntas de los ladrillos siguen en fase) y la barra de maestría bajo los botones en todos los anchos. En partida: con
+  ventana ancha (520) y estrecha (418), el panel de piedra no muestra grietas repetidas ni costuras; la maestría marca
+  las casillas llenas; los botones Equipar, Reiniciar y Cerrar dejan ver su icono a la izquierda del texto.
 - `logic/TreeScreenLayoutTest`: la geometría de la pantalla del árbol cabe en la ventana con anchos de 426 a 1000 px, ningún
   elemento se solapa, las dos opciones de la bifurcación son simétricas, y el desplazamiento y el centrado son correctos.
 - `role/RespecRulesTest`: el coste del reinicio del árbol (por defecto 20 niveles fijos; base + por punto, redondeo hacia arriba,
