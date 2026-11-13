@@ -134,7 +134,8 @@ final class AbilitiesExtra {
 			AbilityState.repeat(server(p), 5, 20, i -> {
 				for (PlayerEntity ally : Targeting.playersInSupportArea(p,
 						new Box(center, center).expand(5 + r))) {
-					ally.heal(1.0f + 0.5f * r);
+					ally.heal(HerbalistKit.heal(p, 1.0f + 0.5f * r));
+					HerbalistKit.onHealed(p, ally);
 				}
 				world(p).spawnParticles(ParticleTypes.FALLING_WATER, center.x, center.y + 3, center.z, 40, 3, 0.2, 3, 0);
 				ParticleFx.ring(world(p), center.add(0, 0.1, 0), 5 + r, ParticleTypes.HAPPY_VILLAGER, 24);
@@ -180,6 +181,7 @@ final class AbilitiesExtra {
 			AbilityState.schedule(server(p), 20, () -> {
 				for (LivingEntity e : world(p).getEntitiesByClass(LivingEntity.class, new Box(point, point).expand(3.5),
 						e -> Targeting.isHostileTo(p, e))) {
+					EngineerKit.markGadgetHit(e);
 					e.damage(p.getDamageSources().explosion(p, p), 6 + 2 * r);
 					Vec3d away = e.getPos().subtract(point).normalize();
 					e.addVelocity(away.x * 0.8, 0.5, away.z * 0.8);

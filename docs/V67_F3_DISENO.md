@@ -1,6 +1,6 @@
 # v67 · F3 — Habilidades nuevas de Mago, Asesino, Herbolista e Ingeniero (diseño para aprobar)
 
-Estado: **propuesta, sin código.** Sigue el patrón de F2 (`docs/V67_ARBOL_UNIFICADO.md` §8): 10 nodos por rol, 5 pasivas y
+Estado: **implementada (2026-11-13), aprobada por el autor.** Las diferencias entre el diseño y el código están en §7. Sigue el patrón de F2 (`docs/V67_ARBOL_UNIFICADO.md` §8): 10 nodos por rol, 5 pasivas y
 5 activas, en el mismo reparto.
 
 | Nodos | Sección | Posición | Niveles |
@@ -134,3 +134,26 @@ que le falta: **minas**, **reciclar energía**, **cúpula protectora**, un **exo
 1. **Los 4 roles** (Mago, Asesino, Herbolista, Ingeniero) como tanda F3, en el orden en que aparecen en el juego.
 2. Las **40 habilidades** (nombres, mecánicas y cifras); dime cuáles cambiar.
 3. Si prefieres **implementarlas en dos mitades** (Mago + Asesino, luego Herbolista + Ingeniero) para probar antes, o las 4 de una vez.
+
+---
+
+## 7. Diferencias entre el diseño aprobado y la implementación
+
+| Habilidad | Diseño | Implementado | Motivo |
+|---|---|---|---|
+| `herbalist_n1` Primavera | Bálsamo, Lluvia y Floración | Bálsamo, Lluvia sanadora y las curas nuevas | Floración cura con un efecto de Regeneración, no con una cantidad que se pueda multiplicar |
+| `engineer_n2` Reciclaje | Torreta, mina o granada | Minas, dron, Torre Tesla y Granada de pulso | Las muertes de la torreta (un gólem) no se atribuyen al jugador, así que no se pueden detectar |
+| `engineer_n5` Calor residual | «Sobremarcha» | Sobrecarga (el nombre real del nodo) | Solo el nombre |
+| `engineer_n7` Modo ahorro | Torreta, minas, dron y domo | Los mismos más la Torre Tesla; la torreta solo cambia de duración y coste | La Torre Tesla es un artilugio más |
+| `assassin_n4` Corte relámpago | «crítico seguro» | Golpe de 8 / 10 / 12 con partículas de crítico | La cifra del texto ya es el daño final, no se vuelve a multiplicar |
+| `assassin_n8` Velo de muerte | «No se rompe al atacar» | Invisibilidad, +30 % de daño y las criaturas te pierden | En el juego base la invisibilidad no se rompe al atacar, así que no hace falta código |
+| `assassin_n10` Noche eterna | «No te ven» | Ceguera y pacificación cada segundo (el mismo mecanismo que Soborno) | Es la herramienta que ya existe |
+| `herbalist_n3` Semilla explosiva | «Deja un matorral» | El matorral es un efecto con partículas, sin bloques | Los bloques temporales de habilidades se evitan |
+| Todas las activas | «Dron virtual» | Sin entidad: el dron, la torre y las minas son efectos con partículas | Menos riesgo de entidades huérfanas |
+
+**Equipamiento:** cada rol pasa a tener 13 activas (8 + 5 nuevas); caben en el códec de 4 bits de F2.
+
+**Estado en memoria** (se pierde al reiniciar el servidor): Concatenación, Maná cristalizado, Escudo especular, Forma de
+arcano puro, Velo, Noche eterna, Sombra persistente, Eslabón, Corteza viva, Raíz profunda, Antídoto universal, minas,
+domos, exotraje y marcas de Reciclaje. Los atributos de Exotraje son temporales y no se guardan.
+

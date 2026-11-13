@@ -85,7 +85,8 @@ public final class AbilityManager {
 		}
 		int rank = learned + rawRank(data, role, "_mastery"); // Maestría
 		int cost = (int) Math.ceil(node.energyCost() * (1.0 - 0.10 * rawRank(data, role, "_efficiency")) // Eficiencia
-				* RoleArmorSets.costMultiplier(player)); // Set del Mago
+				* RoleArmorSets.costMultiplier(player) // Set del Mago
+				* ExtraKits.costMultiplier(player, node.id())); // v67: Forma de arcano puro y Modo ahorro
 		Ability ability = Abilities.get(node.id());
 		execute(player, role, node.id(), Text.translatable(node.translationKey()), cost,
 				cooldownTicks(player, node.cooldownSecs(), role), slot, ability == null ? null : (p, bonus) -> ability.use(p, capRank(rank + bonus)));
@@ -153,7 +154,8 @@ public final class AbilityManager {
 			payableEnergy = dev.aptitudes.forge.ForgeWeapons.energyCost(player, role, payableEnergy);
 		}
 		boolean overload = Keystones.overloadReady(player);
-		boolean free = player.isCreative() || overload;
+		boolean concat = !overload && ExtraKits.concatReady(player); // v67: Concatenación
+		boolean free = player.isCreative() || overload || concat;
 		double missingEnergy = free ? 0 : Math.max(0, payableEnergy - data.energy());
 		float bloodCost = 0;
 		if (!free && missingEnergy > 0) {
@@ -188,6 +190,7 @@ public final class AbilityManager {
 				: slot == SIGNATURE_SLOT ? Kind.SIGNATURE : Kind.ACTIVE);
 		if (empowered) RoleResources.consumeEmpower(player, role);
 		if (overload) cooldown = cooldown / 2;
+		if (concat && ExtraKits.concatHalvesCooldown(player)) cooldown = cooldown / 2;
 		Keystones.afterCast(player, overload);
 		Trance.onSkill(player); // F2: usar una habilidad llena la sintonía
 		cooldowns(player).start(cooldownKey, now, cooldown);
@@ -196,13 +199,32 @@ public final class AbilityManager {
 		}
 		RoleMechanics.onCast(player, role, energyCost);
 		NewRoles.onCast(player, role, cooldownKey, slot);
-		BerserkerKit.onCast(player, cooldownKey); // v67: Juramento de sangre y Eco de batalla
+		ExtraKits.onCast(player, cooldownKey, free ? 0 : payableEnergy - missingEnergy, concat); // v67
 		sendEnergy(player, false);
 		RoleManager.addRoleXp(player, role, Aptitudes.config().roleXpPerAbilityUse);
 		RoleManager.recordTrial(player, role, Evolution.TrialType.ABILITY_USES, 1);
 		dev.aptitudes.unique.UniqueEffects.recordAbility(player, cooldownKey);
 		if (slot >= 0 && slot < ULTIMATE_SLOT) {
 			dev.aptitudes.tutorial.TutorialManager.onStep(player, dev.aptitudes.tutorial.TutorialRules.Step.ACTIVE);
+		}
+	}
+
+	/**
+	 * Reduce {@code ticks} de la espera de la activa {@code key} y avisa al HUD de la espera que queda (v67).
+	 * No hace nada si la habilidad ya estaba lista.
+	 */
+	public static void reduceCooldown(ServerPlayerEntity player, String key, long ticks) {
+		long now = gameTime(player);
+		CooldownBook book = cooldowns(player);
+		if (ticks <= 0 || book.remaining(key, now) <= 0) return;
+		book.reduce(key, now, ticks);
+		int left = (int) Math.min(Integer.MAX_VALUE, book.remaining(key, now));
+		if (!ServerPlayNetworking.canSend(player, CooldownPayload.ID)) return;
+		RoleData data = RoleManager.get(player);
+		for (int slot = 0; slot < ULTIMATE_SLOT; slot++) {
+			Role role = RoleManager.roleInSlot(data, slot);
+			RoleNode node = role == null ? null : RoleTree.active(role, data.equipped(role, slot % 2));
+			if (node != null && node.id().equals(key)) ServerPlayNetworking.send(player, new CooldownPayload(slot, left));
 		}
 	}
 

@@ -570,3 +570,20 @@ rango) y de la definitiva.
 Riesgos que vigilar en partida: el sangrado acumulado de Tajos (6/s con 3 cargas en rango 2) y Avatar junto a Furia y
 el Juramento (multiplicadores que se suman, limitados por `maxDamageMultiplier`).
 
+## v67 (F3) — Habilidades nuevas de Mago, Asesino, Herbolista e Ingeniero
+
+Valores con `extraSkillDamageScale` = 1 (las cifras y los costes de cada habilidad están en `docs/V67_F3_DISENO.md`).
+La escala solo multiplica el **daño directo** de las activas y de los efectos que hacen daño (rayo, granizo, mina,
+dron, Tesla, langostas, Calor residual, semilla); no cambia curaciones, esperas ni porcentajes.
+
+**Riesgos que vigilar en partida:**
+
+| Rol | Riesgo | Freno actual |
+|---|---|---|
+| Mago | Concatenación + Forma de arcano puro encadenan habilidades casi gratis | Mitad de coste (no gratis); el maná cae al 20 % al acabar; Concatenación necesita 3 activas distintas |
+| Mago | Plenitud arcana + Forma de arcano puro: +32 % de daño mágico a rango 3 | `maxDamageMultiplier` |
+| Asesino | Velo de muerte + Noche eterna + Sombra persistente apilan multiplicadores | `maxDamageMultiplier` |
+| Herbolista | Curación de grupo muy fuerte (Primavera +30 %, Floración colosal 60 % de vida) | Esperas de 45–90 s; depende de jugar en grupo |
+| Ingeniero | Minas, dron y Tesla dañan sin que el jugador apunte | Daño bajo (2–10); límite de 3 minas |
+| Todos | Eslabón y Cadena de montaje recortan esperas | Solo un porcentaje de lo que queda / 1–2 s por activa |
+

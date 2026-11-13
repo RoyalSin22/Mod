@@ -274,7 +274,7 @@ public final class RoleMechanics {
 		// Cambiaformas – Instinto
 		if (rank(p, "instinct") > 0) bonus += 0.05f * s.instinct;
 		bonus += NewRoles.outgoing(p, target, source, direct, amount); // roles nuevos (v11)
-		bonus += BerserkerKit.outgoing(p, target, direct); // v67: habilidades nuevas del Bersérker
+		bonus += ExtraKits.outgoing(p, target, source, direct); // v67: habilidades nuevas por rol
 		sync(p);
 
 		return 1.0f + bonus;
@@ -402,6 +402,7 @@ public final class RoleMechanics {
 	// ------------------------------------------------------------ Muertes
 
 	public static void onKill(ServerPlayerEntity p, LivingEntity victim, DamageSource source) {
+		ExtraKits.onKill(p, victim); // v67
 		State s = state(p);
 		int carnage = rank(p, "carnage");
 		if (carnage > 0) p.heal(1 + carnage);
@@ -530,6 +531,7 @@ public final class RoleMechanics {
 				for (StatusEffectInstance effect : new ArrayList<>(p.getStatusEffects())) {
 					if (effect.getEffectType().value().getCategory() == StatusEffectCategory.HARMFUL) {
 						p.removeStatusEffect(effect.getEffectType());
+						HerbalistKit.onCleanse(p, p, effect.getEffectType()); // v67: Antídoto universal
 						particles(p, p, ParticleTypes.HAPPY_VILLAGER, 6);
 						break;
 					}
@@ -540,6 +542,7 @@ public final class RoleMechanics {
 				effect(p, StatusEffects.HASTE, 30, 1);
 			} else if (s.overheated) {
 				s.overheated = false;
+				ExtraKits.onOverdriveEnd(p); // v67: Calor residual
 				effect(p, StatusEffects.SLOWNESS, 60, 0);
 				p.getServerWorld().spawnParticles(ParticleTypes.SMOKE, p.getX(), p.getBodyY(0.7), p.getZ(), 15, 0.3, 0.3, 0.3, 0.02);
 			}

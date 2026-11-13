@@ -4,6 +4,7 @@ Estado:
 
 - **Diseño aprobado por el autor (2026-11-13).**
 - **F1 implementada:** árbol unificado.
+- **F3 implementada (2026-11-13):** Mago, Asesino, Herbolista e Ingeniero; ver `docs/V67_F3_DISENO.md`.
 - **F2 implementada (2026-11-13):** las 10 habilidades del Bersérker; ver §8. Iconos encargados en
   `docs/PROMPT_ARTE_ICONOS_BERSERKER.md` (hasta entonces, objetos vanilla de respaldo).
 - **Puntos decididos:** opción b (Maestro 15 y Definitivo 10): **76** puntos a nivel 50 con las dos evoluciones (antes

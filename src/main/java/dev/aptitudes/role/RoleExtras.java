@@ -60,6 +60,11 @@ public final class RoleExtras {
 	public static List<Extra> of(String roleKey) {
 		return switch (roleKey) {
 			case "berserker" -> berserker();
+			case "mage" -> standard("mage", "clear_mind", new int[]{22, 25, 45, 60, 80}, new int[]{12, 25, 30, 45, 90});
+			case "assassin" -> standard("assassin", "backstab", new int[]{20, 30, 45, 60, 80}, new int[]{14, 18, 30, 45, 90});
+			case "herbalist" -> standard("herbalist", "herbal_immunity", new int[]{20, 40, 45, 60, 80},
+					new int[]{12, 40, 30, 45, 90});
+			case "engineer" -> standard("engineer", "battery", new int[]{20, 40, 45, 60, 80}, new int[]{10, 35, 30, 45, 90});
 			default -> List.of();
 		};
 	}
@@ -81,6 +86,28 @@ public final class RoleExtras {
 				bridge(k + "n8", RoleNode.Kind.ACTIVE, Section.ASCENT, 42, 2, 60, 45),
 				bridge(k + "n9", RoleNode.Kind.PASSIVE, Section.ASCENT, 45, 2, 0, 0),
 				bridge(k + "n10", RoleNode.Kind.ACTIVE, Section.ASCENT, 48, 1, 80, 90));
+	}
+
+	/**
+	 * Estructura común de F3 (mismo reparto que el Bersérker): N1 y N2 pasivas de Talentos (tras la pasiva B del rol),
+	 * N3 y N4 activas de Talentos (tras Presteza), Veterano P/A/P y Ascenso A/P/A.
+	 *
+	 * @param cost coste de maná de las activas N3, N4, N6, N8 y N10 (en ese orden)
+	 * @param cooldown espera en segundos de esas mismas activas
+	 */
+	private static List<Extra> standard(String role, String passiveB, int[] cost, int[] cooldown) {
+		String k = role + "_";
+		return List.of(
+				talent(k + "n1", RoleNode.Kind.PASSIVE, 8, 3, passiveB, 0, 0, 2, 3),
+				talent(k + "n2", RoleNode.Kind.PASSIVE, 16, 3, k + "n1", 0, 0, 2, 4),
+				talent(k + "n3", RoleNode.Kind.ACTIVE, 9, 3, k + "haste", cost[0], cooldown[0], 6, 3),
+				talent(k + "n4", RoleNode.Kind.ACTIVE, 20, 3, k + "n3", cost[1], cooldown[1], 6, 5),
+				bridge(k + "n5", RoleNode.Kind.PASSIVE, Section.VETERAN, 34, 2, 0, 0),
+				bridge(k + "n6", RoleNode.Kind.ACTIVE, Section.VETERAN, 36, 2, cost[2], cooldown[2]),
+				bridge(k + "n7", RoleNode.Kind.PASSIVE, Section.VETERAN, 38, 1, 0, 0),
+				bridge(k + "n8", RoleNode.Kind.ACTIVE, Section.ASCENT, 42, 2, cost[3], cooldown[3]),
+				bridge(k + "n9", RoleNode.Kind.PASSIVE, Section.ASCENT, 45, 2, 0, 0),
+				bridge(k + "n10", RoleNode.Kind.ACTIVE, Section.ASCENT, 48, 1, cost[4], cooldown[4]));
 	}
 
 	private static Extra talent(String id, RoleNode.Kind kind, int level, int ranks, String prerequisite, int energy,

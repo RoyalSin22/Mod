@@ -25,6 +25,27 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   ignoran y los puntos gastados en esas ramas vuelven a estar disponibles.
 
 ### Añadido
+- **v67 (F3) — 40 habilidades nuevas: Mago, Asesino, Herbolista e Ingeniero.** Cada rol tiene 10 (5 pasivas y 5 activas)
+  repartidas en Talentos, Veterano y Ascenso, como el Bersérker; diseño aprobado en `docs/V67_F3_DISENO.md`.
+  - **Mago:** Plenitud arcana, Escarcha latente, Rayo encadenado, Escudo especular, Concatenación, Tormenta de granizo,
+    Reserva de emergencia, Forma de arcano puro, Maná cristalizado y Nova estelar.
+  - **Asesino:** Punto débil, Eslabón, Humo cegador, Corte relámpago, Sombra persistente, Cadena de sombras, Veneno
+    concentrado, Velo de muerte, Cosecha silenciosa y Noche eterna.
+  - **Herbolista:** Primavera, Polinización, Semilla explosiva, Raíz curativa, Corteza viva, Plaga de langostas,
+    Antídoto universal, Floración colosal, Raíz profunda y Lluvia de semillas vivas.
+  - **Ingeniero:** Aislante, Reciclaje, Mina de proximidad, Dron de apoyo, Calor residual, Domo protector, Modo ahorro,
+    Exotraje, Cadena de montaje y Torre Tesla.
+  - **Código:** un kit por rol (`MageKit`, `AssassinKit`, `HerbalistKit`, `EngineerKit`) con sus reglas puras
+    (`*Rules`) y un único punto de enganche, `ability/ExtraKits`, que sustituye al cableado directo del Bersérker.
+    Nuevas utilidades: `CooldownBook.reduce` y `AbilityManager.reduceCooldown` (recortar una espera y avisar al HUD).
+    Concatenación y Forma de arcano puro tocan el coste de maná (`AbilityManager`); Calor residual engancha el fin de
+    Sobrecarga.
+  - **Textos:** 80 claves nuevas en los 5 idiomas; iconos provisionales con objetos vanilla y encargo de arte en
+    `docs/PROMPT_ARTE_ICONOS_F3.md`. Sin opciones de configuración nuevas (usa `extraSkillDamageScale`).
+  - **Pruebas:** `MageRulesTest`, `AssassinRulesTest`, `HerbalistRulesTest`, `EngineerRulesTest`,
+    `CooldownBookReduceTest` y `RoleExtrasTest` ampliada a los cinco roles con datos.
+  - **Diferencias con el diseño aprobado:** ver §7 de `docs/V67_F3_DISENO.md` (por ejemplo, Reciclaje no cuenta las
+    muertes de la torreta).
 - **v67 (F2) — 10 habilidades nuevas del Bersérker.**
   - **Talentos:** Cicatrices (los golpes fuertes reducen el daño siguiente), Sangre hirviente (bajo la mitad de vida,
     tus golpes queman), Hacha arrojadiza (atraviesa, desangra y vuelve) y Cadena de sangre (arrastra al enemigo y

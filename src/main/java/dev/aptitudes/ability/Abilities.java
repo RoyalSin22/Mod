@@ -121,7 +121,8 @@ public final class Abilities {
 		// ---------------- Herbolista ----------------
 		register("balm", (p, r) -> {
 			for (PlayerEntity ally : Targeting.playersAround(p, 6)) {
-				ally.heal(2 + 2 * r);
+				ally.heal(HerbalistKit.heal(p, 2 + 2 * r));
+				HerbalistKit.onHealed(p, ally);
 				effect(ally, StatusEffects.REGENERATION, 100, 0);
 				Targeting.burst(world(p), ParticleTypes.HAPPY_VILLAGER, ally, 12, 0.5);
 			}
@@ -149,7 +150,7 @@ public final class Abilities {
 			golem.setPlayerCreated(true); // nunca ataca a jugadores salvo que le peguen
 			golem.setCustomName(Text.translatable("entity.aptitudes.turret"));
 			// Registrar ANTES de aparecer: ENTITY_LOAD retira invocaciones no registradas.
-			AbilityState.trackSummon(golem, p, (15 + 5 * r) * 20);
+			AbilityState.trackSummon(golem, p, (int) ((15 + 5 * r) * 20 * EngineerKit.durationFactor(p)));
 			p.getWorld().spawnEntity(golem);
 			sound(p, SoundEvents.ENTITY_IRON_GOLEM_REPAIR, 1.0f);
 			return true;
@@ -354,8 +355,8 @@ public final class Abilities {
 		NewRoles.registerActives();
 		// v23: activas de las filas de Maestro y Definitivo (plantillas parametrizadas).
 		EvolvedAbilities.registerAll();
-		// v67 (F2): habilidades nuevas del Bersérker.
-		BerserkerKit.registerAll();
+		// v67: habilidades nuevas por rol (F2: Bersérker; F3: Mago, Asesino, Herbolista e Ingeniero).
+		ExtraKits.registerAll();
 	}
 
 	private Abilities() {

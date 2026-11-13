@@ -1,5 +1,36 @@
 # Pruebas de Aptitudes
 
+## v67 (F3) — Habilidades nuevas de Mago, Asesino, Herbolista e Ingeniero
+
+Automáticas: `MageRulesTest`, `AssassinRulesTest`, `HerbalistRulesTest`, `EngineerRulesTest` (cifras de cada rol),
+`CooldownBookReduceTest` y `RoleExtrasTest` (datos de los cinco roles con habilidades nuevas).
+
+Validación en partida (pendiente), con `/roles admin` para subir de nivel y evolucionar:
+
+1. **Árbol (J):** en cada rol, N1 y N2 cuelgan de la pasiva B; N3 y N4, de Presteza; Veterano y Ascenso muestran sus 3
+   nodos. Aprende cada uno y equipa las activas nuevas (13 por rol): salir y entrar conserva el equipamiento.
+2. **Mago:** Plenitud (con el maná al 80 % tus hechizos pegan más); Escarcha latente (los hechizos ralentizan); Rayo
+   encadenado (salta hasta 3–5 enemigos); Escudo especular (el siguiente golpe de una criatura se anula y vuelve);
+   Concatenación (tras 3 activas distintas en 8 s, la siguiente no gasta maná; en rango 2 tarda la mitad en recargarse);
+   Tormenta de granizo; Reserva de emergencia (maná por debajo del 10 % → +40 %, una vez por minuto); Forma de arcano
+   puro (mitad de coste y, al acabar, el maná cae al 20 %); Maná cristalizado (cada 100 de maná gastado, el siguiente
+   hechizo explota); Nova estelar (carga 1,5 s y devuelve maná).
+3. **Asesino:** Punto débil (más daño contra enemigos con veneno o lentitud); Eslabón (matar recorta la espera de la
+   última activa y el HUD se actualiza); Humo cegador; Corte relámpago; Sombra persistente (al acabar la invisibilidad,
+   el siguiente golpe pega más); Cadena de sombras; Veneno concentrado (Veneno II y más duración); Velo de muerte;
+   Cosecha silenciosa; Noche eterna (ceguera y los monstruos no atacan).
+4. **Herbolista:** Primavera (Bálsamo y Lluvia curan más); Polinización (aliados curados con Velocidad I y absorción);
+   Semilla explosiva; Raíz curativa; Corteza viva (Regeneración al bajar del 35 % de vida); Plaga de langostas;
+   Antídoto universal (tras limpiar un efecto, 5 s de inmunidad); Floración colosal; Raíz profunda (quieto 2 s:
+   menos daño y espinas); Lluvia de semillas vivas. Necesita **un segundo jugador** para probar la curación a aliados.
+5. **Ingeniero:** Aislante (explosiones, fuego y rayos duelen menos); Reciclaje (matar con mina, dron, Tesla o granada
+   devuelve maná); Mina de proximidad (máximo 3, no rompe bloques); Dron de apoyo; Calor residual (explosión al acabar
+   Sobrecarga); Domo protector (detiene flechas de esqueletos y reduce el daño dentro); Modo ahorro (−20 % de coste y
+   +30 % de duración, también en la torreta); Exotraje (armadura, absorción y salto, sin empuje; al desconectarse
+   durante el exotraje, el atributo desaparece); Cadena de montaje (recorta esperas); Torre Tesla.
+6. **Rendimiento:** con varios jugadores usando minas, domos y Tesla, el tick del servidor no sube de forma apreciable.
+7. `extraSkillDamageScale = 0.5`: el daño de las habilidades nuevas baja a la mitad.
+
 ## v67 (F2) — Habilidades nuevas del Bersérker
 
 Automáticas: `BerserkerRulesTest` (cifras), `RoleExtrasTest` (datos, casillas libres, niveles por rango),

@@ -69,6 +69,15 @@ public final class CooldownBook {
 		}
 	}
 
+	/** Reduce en {@code ticks} lo que falta de la espera de {@code key} (v67: Eslabón, Cadena de montaje). */
+	public void reduce(String key, long now, long ticks) {
+		Long ready = readyAt.get(key);
+		if (ready == null || ticks <= 0) return;
+		long next = ready - ticks;
+		if (next <= now) readyAt.remove(key);
+		else readyAt.put(key, next);
+	}
+
 	/** Si {@code key} está lista, inicia su espera y devuelve true; si no, false. */
 	public boolean tryStart(String key, long now, long ticks) {
 		if (!ready(key, now)) return false;

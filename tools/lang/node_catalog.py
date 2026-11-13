@@ -275,6 +275,50 @@ Battle Echo¦Eco de batalha¦Écho de bataille¦Schlachtecho
 Ragnarök¦Ragnarök¦Ragnarök¦Ragnarök
 """)
 
+# v67 (F3): nombres de las habilidades nuevas de Mago, Asesino, Herbolista e Ingeniero.
+add("""
+Arcane Plenitude¦Plenitude arcana¦Plénitude arcanique¦Arkane Fülle
+Latent Frost¦Gelo latente¦Givre latent¦Latenter Frost
+Chain Lightning¦Raio em cadeia¦Foudre en chaîne¦Kettenblitz
+Mirror Shield¦Escudo espelhado¦Bouclier miroir¦Spiegelschild
+Concatenation¦Concatenação¦Concaténation¦Verkettung
+Hailstorm¦Tempestade de granizo¦Tempête de grêle¦Hagelsturm
+Emergency Reserve¦Reserva de emergência¦Réserve d’urgence¦Notreserve
+Pure Arcane Form¦Forma arcana pura¦Forme arcanique pure¦Reine arkane Gestalt
+Crystallized Mana¦Mana cristalizada¦Mana cristallisé¦Kristallisiertes Mana
+Stellar Nova¦Nova estelar¦Nova stellaire¦Sternennova
+Weak Point¦Ponto fraco¦Point faible¦Schwachstelle
+Link¦Elo¦Maillon¦Kettenglied
+Blinding Smoke¦Fumaça cegante¦Fumée aveuglante¦Blendender Rauch
+Lightning Cut¦Corte relâmpago¦Coupe éclair¦Blitzschnitt
+Lingering Shadow¦Sombra persistente¦Ombre persistante¦Beharrlicher Schatten
+Shadow Chain¦Corrente de sombras¦Chaîne d’ombres¦Schattenkette
+Concentrated Venom¦Veneno concentrado¦Venin concentré¦Konzentriertes Gift
+Veil of Death¦Véu da morte¦Voile de mort¦Todesschleier
+Silent Harvest¦Colheita silenciosa¦Moisson silencieuse¦Stille Ernte
+Eternal Night¦Noite eterna¦Nuit éternelle¦Ewige Nacht
+Spring¦Primavera¦Printemps¦Frühling
+Pollination¦Polinização¦Pollinisation¦Bestäubung
+Explosive Seed¦Semente explosiva¦Graine explosive¦Explosiver Same
+Healing Root¦Raiz curativa¦Racine curative¦Heilwurzel
+Living Bark¦Casca viva¦Écorce vivante¦Lebende Rinde
+Locust Plague¦Praga de gafanhotos¦Plaie de sauterelles¦Heuschreckenplage
+Universal Antidote¦Antídoto universal¦Antidote universel¦Universalgegengift
+Colossal Bloom¦Floração colossal¦Floraison colossale¦Kolossale Blüte
+Deep Root¦Raiz profunda¦Racine profonde¦Tiefe Wurzel
+Rain of Living Seeds¦Chuva de sementes vivas¦Pluie de graines vivantes¦Regen lebender Samen
+Insulation¦Isolamento¦Isolant¦Isolierung
+Recycling¦Reciclagem¦Recyclage¦Recycling
+Proximity Mine¦Mina de proximidade¦Mine de proximité¦Näherungsmine
+Support Drone¦Drone de apoio¦Drone de soutien¦Unterstützungsdrohne
+Residual Heat¦Calor residual¦Chaleur résiduelle¦Restwärme
+Protective Dome¦Cúpula protetora¦Dôme protecteur¦Schutzkuppel
+Thrift Mode¦Modo econômico¦Mode économie¦Sparmodus
+Exosuit¦Exoesqueleto¦Exosquelette¦Exoanzug
+Assembly Line¦Linha de montagem¦Chaîne de montage¦Fließband
+Tesla Tower¦Torre Tesla¦Tour Tesla¦Tesla-Turm
+""")
+
 # v67: las descripciones base se escriben en base_desc.py (estilo llano), con sus traducciones.
 from base_desc import catalog as _descriptions  # noqa: E402
 
