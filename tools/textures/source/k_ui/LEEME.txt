@@ -1,0 +1,15 @@
+APTITUDES — KIT DE PANTALLA DE PERSONAJE
+
+34 piezas PNG, agrupadas en las carpetas requeridas.
+PNG RGBA, dimensiones exactas. Cada color ocupa bloques físicos uniformes de 2×2 px.
+Transparencia exclusivamente 0, 220 o 255 de alfa. Máximo 24 colores por pieza.
+
+La maqueta 430×262 es una composición orientativa, y la versión _x2 se presenta a 860×524 px sin interpolación.
+
+9-SLICE: esquinas fijas de 12×12 px, bordes horizontales y verticales repetibles, centro repetible. Evitar escalar las esquinas.
+
+Diferencia entre estados: conservar geometría, actualizar únicamente atributos de presentación. Los botones pulsados simulan presión mediante el bisel interior; no se desplaza el contorno exterior.
+
+NOTA: Las barras de XP son recursos 160×6; la tarjeta deja una franja lisa a partir de 14 px del borde superior. Ajustar la superposición de las barras al ancho de la pantalla que implemente el mod.
+
+La vista previa contiene etiquetas solo para identificación y la maqueta tiene textos de ejemplo; las 34 piezas individuales no contienen texto.

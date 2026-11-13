@@ -37,6 +37,15 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   (`RoleActionPayload.RESPEC_TREE`, con límite de frecuencia), y el cliente solo muestra el coste y pide confirmación. El
   nivel y la evolución del rol no cambian. Valores por defecto provisionales (2 + 0,5 por punto, máximo 20): pendientes de
   que el autor los apruebe. Sin validar en partida.
+- **v67 — Pantalla K con la dirección de arte (atributos de la Hoguera y habilidades).** La pantalla K usa las 34 piezas del
+  kit de personaje: panel principal (variante con esquinas rojas en la Hoguera), cuatro pestañas de 96×22 (Atributos,
+  Habilidades, Roles, Configuración), tres columnas con panel (atributos con filas y flechas, estadísticas base y detalle),
+  diez tarjetas 5×2 con barra de XP de 160×6, hitos y cuatro estados (normal, cursor encima, nivel máximo y subida de nivel
+  reciente), y botones Confirmar, Deshacer y Cerrar (en la Hoguera, además Templar y Frascos; allí no hay Cerrar, se sale
+  con Esc). La ventana pasa de 430×262 a 430×276 y sigue desplazándose si no cabe. Sin cambios de datos, balance ni
+  configuración; el atajo Tab y las flechas funcionan igual. La geometría es una clase pura con pruebas
+  (`logic/KScreenLayout`). Arte fuente en `tools/textures/source/k_ui/`; generador `tools/textures/gen_k_ui.py` (admite
+  `--check`). Se retira la línea de ayuda de la pestaña de habilidades por falta de espacio. Sin validar en partida.
 - **v66 — HUD: marcos de las casillas de habilidad.** Cada casilla de la barra de habilidades usa un marco de la nueva
   dirección de arte según la categoría del rol (marcial, arcano, sombra, guardián u oficio) y su estado: lista, en espera,
   sin energía, seleccionada al lanzar y definitiva. 20×20 px, el tamaño actual de la casilla, así que la disposición no

@@ -14,6 +14,11 @@ Pruebas automáticas nuevas:
 
 - `logic/TreeScreenLayoutTest`: la geometría de la pantalla del árbol cabe en la ventana con anchos de 426 a 1000 px, ningún
   elemento se solapa, las dos opciones de la bifurcación son simétricas, y el desplazamiento y el centrado son correctos.
+- `logic/KScreenLayoutTest`: la geometría de la pantalla K cabe en la ventana con alturas de 240 a 540 px, nada se solapa
+  (atributos con 3 o 4 botones y habilidades), las diez tarjetas van en cinco filas de dos, las filas quedan dentro de sus
+  paneles, el contenido no invade el borde inferior de 12 px y el desplazamiento y el centrado son correctos.
+- `tools/textures/gen_k_ui.py --check`: las 34 piezas de la pantalla K coinciden con el arte fuente (tamaño, rejilla de
+  2×2 px y 24 colores como máximo).
 - `role/RespecRulesTest`: el coste del reinicio del árbol (base + por punto, redondeo hacia arriba, tope, valores no finitos o
   desbordados) y la comprobación (desactivado, no disponible, nada que reiniciar, niveles insuficientes, creativo gratis).
   En partida: con puntos gastados, «Reiniciar» muestra el coste, pide confirmación, cobra los niveles y devuelve los puntos; sin
@@ -721,7 +726,7 @@ Guion de regresión en servidor dedicado y dos clientes (copia de un mundo anter
 8. Editar las cuatro opciones por archivo/pantalla: límites, NaN y valores enormes seguros. Desactivar
    deja pasivas/costes en su valor previo y conserva el saldo; reactivar no añade XP. Elevar el máximo
    pausa el bonus hasta alcanzarlo. Un cliente sin permisos no puede modificar estas reglas.
-9. K: 430×262, diez tarjetas 5×2, M y número en dorado sin solapar nombre/hitos; tooltips de puntos,
+9. K (v67, 430×276): diez tarjetas 5×2, M y número en dorado sin solapar nombre/hitos; tooltips de puntos,
    bonus y XP. Resumen principal/secundario en la cabecera. Comprobar español/inglés y seis variantes,
    escala de interfaz 4 y desplazamiento de la ventana en 426×240. No debe aparecer ninguna clave cruda.
    Comprobación estática con glifos vanilla: M1000 ocupa 30 px y la cabecera de roles 95 px en ambos

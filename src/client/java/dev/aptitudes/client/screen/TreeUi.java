@@ -53,10 +53,20 @@ final class TreeUi {
 
 	/** Dibuja una pieza completa en (x, y) con su tamaño real. */
 	static void sprite(DrawContext ctx, String path, int x, int y, int w, int h) {
+		sprite(ctx, id(path), x, y, w, h);
+	}
+
+	/** Dibuja una pieza de cualquier kit (árbol, pantalla K…) a su tamaño real. */
+	static void sprite(DrawContext ctx, Identifier texture, int x, int y, int w, int h) {
+		spritePart(ctx, texture, x, y, w, h, w, h);
+	}
+
+	/** Dibuja la parte izquierda {@code w}×{@code h} de una pieza de {@code texW}×{@code texH} (barras que se llenan). */
+	static void spritePart(DrawContext ctx, Identifier texture, int x, int y, int w, int h, int texW, int texH) {
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		try {
-			blit(ctx, id(path), x, y, 0, 0, w, h, w, h);
+			blit(ctx, texture, x, y, 0, 0, w, h, texW, texH);
 		} finally {
 			RenderSystem.disableBlend();
 		}
@@ -72,10 +82,13 @@ final class TreeUi {
 	 * repitiendo el tramo central de la pieza.
 	 */
 	static void panel9(DrawContext ctx, String path, int texW, int texH, Rect r) {
+		panel9(ctx, id(path), texW, texH, r);
+	}
+
+	static void panel9(DrawContext ctx, Identifier t, int texW, int texH, Rect r) {
 		int c = CORNER;
 		int w = r.w(), h = r.h(), x = r.x(), y = r.y();
 		if (w < 2 * c || h < 2 * c) return;
-		Identifier t = id(path);
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		try {

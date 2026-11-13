@@ -9,11 +9,21 @@ import net.minecraft.text.Text;
 /** Botón de 80×18 con las piezas del kit en tres estados (normal, pulsado y desactivado); el texto se dibuja en el juego. */
 final class SpriteButton extends ButtonWidget {
 	private final String base;
+	/** true: piezas del kit de la pantalla K ({@code k_ui}); false: las del árbol. */
+	private final boolean kit;
+	private final int textShift;
 	private boolean pressed;
 
 	SpriteButton(Rect rect, Text label, String base, PressAction action) {
+		this(rect, label, base, false, 0, action);
+	}
+
+	/** Botón del kit de la pantalla K; {@code textShift} desplaza el texto si la pieza lleva una marca a la izquierda. */
+	SpriteButton(Rect rect, Text label, String base, boolean kit, int textShift, PressAction action) {
 		super(rect.x(), rect.y(), rect.w(), rect.h(), label, action, DEFAULT_NARRATION_SUPPLIER);
 		this.base = base;
+		this.kit = kit;
+		this.textShift = textShift;
 	}
 
 	@Override
@@ -31,12 +41,13 @@ final class SpriteButton extends ButtonWidget {
 	@Override
 	protected void renderWidget(DrawContext ctx, int mouseX, int mouseY, float delta) {
 		String state = !active ? "desactivado" : pressed && isHovered() ? "pulsado" : "normal";
-		TreeUi.sprite(ctx, "botones/" + base + "_" + state + ".png", getX(), getY(), 80, 18);
+		String piece = "botones/" + base + "_" + state + ".png";
+		TreeUi.sprite(ctx, kit ? KUi.id(piece) : TreeUi.id(piece), getX(), getY(), 80, 18);
 		int color = !active ? UiStyle.MUTED : isHovered() || isFocused() ? 0xFFFFE8A0 : UiStyle.TEXT;
 		var tr = MinecraftClient.getInstance().textRenderer;
 		int textY = getY() + (pressed && active ? 6 : 5);
 		// Los botones «cerrar» y «reiniciar» llevan una X pintada a la izquierda: el texto se desplaza para no taparla.
-		int textX = getX() + getWidth() / 2 + ("cerrar".equals(base) || "reiniciar".equals(base) ? 6 : 0);
-		ctx.drawCenteredTextWithShadow(tr, getMessage(), textX, textY, color);
+		int textX = getX() + getWidth() / 2 + (kit ? textShift : "cerrar".equals(base) || "reiniciar".equals(base) ? 6 : 0);
+		ctx.drawCenteredTextWithShadow(tr, UiStyle.fit(tr, getMessage(), getWidth() - 26), textX, textY, color);
 	}
 }
