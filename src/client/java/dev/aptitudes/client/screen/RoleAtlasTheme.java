@@ -51,11 +51,6 @@ record RoleAtlasTheme(int accent, int slate) {
 		/** Dibuja la pestaña con las piezas del kit de la pantalla de roles (si el paquete de recursos las trae). */
 		private final boolean kit;
 
-		/** Pestaña con el dibujo anterior (la usa la vista de sendas de respaldo, {@code PathsScreen}). */
-		Tab(int x, int y, int width, Text text, PressAction action, BooleanSupplier current, IntSupplier accent) {
-			this(x, y, width, text, action, current, accent, false);
-		}
-
 		Tab(int x, int y, int width, Text text, PressAction action, BooleanSupplier current, IntSupplier accent, boolean kit) {
 			super(x, y, width, 16, text, action, DEFAULT_NARRATION_SUPPLIER);
 			this.current = current;

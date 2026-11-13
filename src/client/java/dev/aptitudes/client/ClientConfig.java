@@ -29,10 +29,8 @@ public final class ClientConfig {
 	/** Desplazamiento de la barra de habilidades respecto a su posición por defecto (píxeles de GUI). */
 	public int hudOffsetX = 0;
 	public int hudOffsetY = 0;
-	/** Barras de vida/maná/aguante largas arriba a la izquierda (estilo Souls) en lugar de junto a la hotbar. */
+	/** «Barras de estado» (v66): aguante y recursos de rol en un bloque sobre la barra de hambre. */
 	public boolean soulsBars = true;
-	/** v66: pantalla del árbol con las piezas de la dirección de arte (tres sendas en columnas). false: la vista anterior. */
-	public boolean newTreeScreen = true;
 	/** Indicador de la mecánica del rol (acumulaciones, estados) sobre la barra de habilidades. */
 	public boolean showMechanic = true;
 	/** Eclipse (v34): cielo, niebla y nubes teñidos de rojo y sol eclipsado. Desactívalo si los destellos molestan. */

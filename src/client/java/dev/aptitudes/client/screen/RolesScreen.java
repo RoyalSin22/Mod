@@ -78,7 +78,7 @@ public class RolesScreen extends Screen {
 		}
 	}
 
-	// Tres carriles del atlas base. Las sendas tienen su propio grafo en PathsScreen.
+	// Tres carriles de Talentos (cuadrícula clásica). Las sendas usan la geometría de UnifiedTreeLayout.
 	private static final int[] COL_X = {20, 64, 108, 132, 156, 180, 204, 248, 292};
 	private static final int FIRST_TALENT_Y = 48;
 	private static final int CONTENT_W = 336;
