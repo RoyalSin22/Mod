@@ -33,6 +33,12 @@ public class AptitudesConfig {
 	public int startingPoints = 0;
 	public int maxPointsPerAttribute = 99;
 	public boolean allowSelfRespec = false;
+	/** v66: reiniciar el árbol de un rol desde la pantalla del árbol, pagando niveles de experiencia (por jugador). */
+	public boolean treeRespecEnabled = true;
+	/** Coste en niveles de experiencia: base + porPunto × puntos gastados, hasta el máximo. */
+	public int treeRespecLevelsBase = 2;
+	public double treeRespecLevelsPerPoint = 0.5;
+	public int treeRespecLevelsMax = 20;
 
 	// ---------- Comportamiento ----------
 	public boolean awardXpInCreative = false;
@@ -508,6 +514,9 @@ public class AptitudesConfig {
 		c.luckPerPoint = Math.min(100.0, c.luckPerPoint);
 		c.maxDamageMultiplier = Math.min(1000.0, c.maxDamageMultiplier);
 		c.levelCostBase = clamp(c.levelCostBase, 0, 10_000);
+		c.treeRespecLevelsBase = clamp(c.treeRespecLevelsBase, 0, 1000);
+		c.treeRespecLevelsPerPoint = Math.min(100.0, c.treeRespecLevelsPerPoint);
+		c.treeRespecLevelsMax = clamp(c.treeRespecLevelsMax, 0, 1000);
 		c.uniqueReleaseAfterDays = clamp(c.uniqueReleaseAfterDays, 0, 3650);
 		c.masterBonusPoints = clamp(c.masterBonusPoints, 0, 100);
 		c.comboWindowSeconds = Math.max(0.25, Math.min(30.0, c.comboWindowSeconds));

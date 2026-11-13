@@ -3766,5 +3766,16 @@
   "guardian.aptitudes.core_exposed": "The core is exposed!",
   "automaton.aptitudes.stunned": "Stunned! Double damage.",
   "bestiary.aptitudes.dismantled_guardian.tip": "Empty armor whose pieces must be broken in order: helm, shield, gauntlets. Only the active piece takes damage; when the three fall, the core is exposed and takes 50 % more damage. Its volley, ring and dive are telegraphed.",
-  "bestiary.aptitudes.ancient_automaton.tip": "Stone and bronze construct. Its energy orbs can be struck back: the orb that reaches it stuns it for 5 s, and while stunned it takes double damage. In phase two it fires a beam that stops at solid blocks. It cannot be pushed."
+  "bestiary.aptitudes.ancient_automaton.tip": "Stone and bronze construct. Its energy orbs can be struck back: the orb that reaches it stuns it for 5 s, and while stunned it takes double damage. In phase two it fires a beam that stops at solid blocks. It cannot be pushed.",
+  "aptitudes.respec.done": "%s tree reset: %s points returned for %s experience levels.",
+  "aptitudes.respec.disabled": "Tree reset is disabled on this server.",
+  "aptitudes.respec.unavailable": "You cannot reset the tree right now.",
+  "aptitudes.respec.nothing_to_reset": "The %s tree has no points spent.",
+  "aptitudes.respec.not_enough_levels": "You need %2$s experience levels to reset the %1$s tree.",
+  "screen.aptitudes.respec.button": "Reset",
+  "screen.aptitudes.respec.confirm_title": "Reset the tree?",
+  "screen.aptitudes.respec.confirm": "Resetting the %1$s tree returns %2$s points and costs %3$s experience levels. Role level and evolution do not change, but the chosen paths become free.",
+  "screen.aptitudes.respec.cost": "Costs %s experience levels",
+  "screen.aptitudes.respec.missing": "You need %s experience levels",
+  "screen.aptitudes.respec.nothing": "No points spent in this role"
 }

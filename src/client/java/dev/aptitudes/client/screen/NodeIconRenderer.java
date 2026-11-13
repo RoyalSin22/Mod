@@ -162,6 +162,28 @@ public final class NodeIconRenderer {
 		return true;
 	}
 
+	/** v66: icono de rol de 32×32 (generado por gen_role_icons.py); si falta, el de 16×16 ampliado al doble. */
+	public static void drawRoleLarge(DrawContext ctx, Role role, int x, int y) {
+		Identifier texture = Aptitudes.id("textures/gui/role/" + role.key() + ".png");
+		boolean present = HAS_TEXTURE.computeIfAbsent("role-large/" + role.key(), id ->
+				MinecraftClient.getInstance().getResourceManager().getResource(texture).isPresent());
+		if (present) {
+			RenderSystem.enableBlend();
+			RenderSystem.defaultBlendFunc();
+			try {
+				ctx.drawTexture(texture, x, y, 0.0F, 0.0F, 32, 32, 32, 32);
+			} finally {
+				RenderSystem.disableBlend();
+			}
+			return;
+		}
+		ctx.getMatrices().push();
+		ctx.getMatrices().translate(x, y, 0);
+		ctx.getMatrices().scale(2f, 2f, 1f);
+		drawRole(ctx, role, Badge.CORE, 0, 0);
+		ctx.getMatrices().pop();
+	}
+
 	/** v66: la esfera de maná existe en el paquete de recursos (generada por gen_hud_sprites.py). */
 	public static boolean hasManaOrb() {
 		return HAS_TEXTURE.computeIfAbsent("hud-orb/energia", id -> {

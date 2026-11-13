@@ -3766,5 +3766,16 @@
   "guardian.aptitudes.core_exposed": "Der Kern liegt frei!",
   "automaton.aptitudes.stunned": "Betäubt! Doppelter Schaden.",
   "bestiary.aptitudes.dismantled_guardian.tip": "Leere Rüstung, deren Teile in der Reihenfolge Helm, Schild, Handschuhe zerbrochen werden müssen. Nur das aktive Teil nimmt Schaden; sind alle drei gefallen, liegt der Kern frei und erleidet 50 % mehr Schaden. Angriffe werden vorher angekündigt.",
-  "bestiary.aptitudes.ancient_automaton.tip": "Konstrukt aus Stein und Bronze. Seine Energiekugeln können zurückgeschlagen werden: Die Kugel, die ihn trifft, betäubt ihn für 5 s, und während dieser Zeit erleidet er doppelten Schaden. In Phase zwei feuert er einen Strahl, der an festen Blöcken endet. Er lässt sich nicht wegstoßen."
+  "bestiary.aptitudes.ancient_automaton.tip": "Konstrukt aus Stein und Bronze. Seine Energiekugeln können zurückgeschlagen werden: Die Kugel, die ihn trifft, betäubt ihn für 5 s, und während dieser Zeit erleidet er doppelten Schaden. In Phase zwei feuert er einen Strahl, der an festen Blöcken endet. Er lässt sich nicht wegstoßen.",
+  "aptitudes.respec.done": "Baum von %s zurückgesetzt: %s Punkte zurück für %s Erfahrungsstufen.",
+  "aptitudes.respec.disabled": "Das Zurücksetzen des Baums ist auf diesem Server deaktiviert.",
+  "aptitudes.respec.unavailable": "Du kannst den Baum gerade nicht zurücksetzen.",
+  "aptitudes.respec.nothing_to_reset": "Der Baum von %s hat keine ausgegebenen Punkte.",
+  "aptitudes.respec.not_enough_levels": "Du brauchst %2$s Erfahrungsstufen, um den Baum von %1$s zurückzusetzen.",
+  "screen.aptitudes.respec.button": "Zurücksetzen",
+  "screen.aptitudes.respec.confirm_title": "Baum zurücksetzen?",
+  "screen.aptitudes.respec.confirm": "Das Zurücksetzen des Baums von %1$s gibt %2$s Punkte zurück und kostet %3$s Erfahrungsstufen. Stufe und Entwicklung der Rolle bleiben, aber die gewählten Pfade werden frei.",
+  "screen.aptitudes.respec.cost": "Kostet %s Erfahrungsstufen",
+  "screen.aptitudes.respec.missing": "Du brauchst %s Erfahrungsstufen",
+  "screen.aptitudes.respec.nothing": "Keine Punkte in dieser Rolle ausgegeben"
 }

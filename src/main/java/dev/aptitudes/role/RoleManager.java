@@ -413,6 +413,25 @@ public final class RoleManager {
 		refresh(player); // los atributos pasivos dependen del elemento activo
 	}
 
+	/** Coste en niveles de experiencia de reiniciar el árbol de {@code role} (0 si no hay puntos gastados). */
+	public static int respecCost(RoleData data, Role role) {
+		var c = Aptitudes.config();
+		return RespecRules.cost(data.spentPoints(role), c.treeRespecLevelsBase, c.treeRespecLevelsPerPoint, c.treeRespecLevelsMax);
+	}
+
+	/** Reinicio de pago pedido por el jugador (v66): valida, cobra los niveles y devuelve todos los puntos. */
+	public static RespecRules.Result respecPaid(ServerPlayerEntity player, Role role) {
+		RoleData data = get(player);
+		int spent = data.spentPoints(role);
+		int cost = respecCost(data, role);
+		RespecRules.Result result = RespecRules.check(Aptitudes.config().treeRespecEnabled,
+				player.isAlive() && !player.isSpectator(), spent, player.experienceLevel, cost, player.isCreative());
+		if (result != RespecRules.Result.OK) return result;
+		if (!player.isCreative() && cost > 0) player.addExperienceLevels(-cost);
+		respecTree(player, role);
+		return result;
+	}
+
 	public static void respecTree(ServerPlayerEntity player, Role role) {
 		get(player).clearRanks(role);
 		refresh(player);

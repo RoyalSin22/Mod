@@ -3766,5 +3766,16 @@
   "guardian.aptitudes.core_exposed": "O núcleo está exposto!",
   "automaton.aptitudes.stunned": "Atordoado! Recebe o dobro de dano.",
   "bestiary.aptitudes.dismantled_guardian.tip": "Armadura vazia cujas peças devem ser quebradas em ordem: elmo, escudo e manoplas. Só a peça ativa recebe dano; quando as três caem, o núcleo fica exposto e recebe 50 % a mais. Seus ataques são anunciados antes de atingir.",
-  "bestiary.aptitudes.ancient_automaton.tip": "Construto de pedra e bronze. Suas esferas de energia podem ser rebatidas: a que o atinge o atordoa por 5 s, e enquanto estiver atordoado recebe o dobro de dano. Na fase 2 dispara um raio que para nos blocos sólidos. Não pode ser empurrado."
+  "bestiary.aptitudes.ancient_automaton.tip": "Construto de pedra e bronze. Suas esferas de energia podem ser rebatidas: a que o atinge o atordoa por 5 s, e enquanto estiver atordoado recebe o dobro de dano. Na fase 2 dispara um raio que para nos blocos sólidos. Não pode ser empurrado.",
+  "aptitudes.respec.done": "Árvore de %s reiniciada: %s pontos devolvidos por %s níveis de experiência.",
+  "aptitudes.respec.disabled": "O reinício da árvore está desativado neste servidor.",
+  "aptitudes.respec.unavailable": "Você não pode reiniciar a árvore agora.",
+  "aptitudes.respec.nothing_to_reset": "A árvore de %s não tem pontos gastos.",
+  "aptitudes.respec.not_enough_levels": "Você precisa de %2$s níveis de experiência para reiniciar a árvore de %1$s.",
+  "screen.aptitudes.respec.button": "Reiniciar",
+  "screen.aptitudes.respec.confirm_title": "Reiniciar a árvore?",
+  "screen.aptitudes.respec.confirm": "Reiniciar a árvore de %1$s devolve %2$s pontos e custa %3$s níveis de experiência. O nível e a evolução da classe não mudam, mas as sendas escolhidas ficam livres.",
+  "screen.aptitudes.respec.cost": "Custa %s níveis de experiência",
+  "screen.aptitudes.respec.missing": "Você precisa de %s níveis de experiência",
+  "screen.aptitudes.respec.nothing": "Não há pontos gastos nesta classe"
 }

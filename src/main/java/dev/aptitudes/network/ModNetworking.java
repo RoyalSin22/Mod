@@ -172,6 +172,21 @@ public final class ModNetworking {
 					}
 				}
 				case RoleActionPayload.CYCLE_ELEMENT -> RoleManager.cycleElement(player);
+				case RoleActionPayload.RESPEC_TREE -> {
+					Role role = Role.byIndex(payload.roleIndex());
+					if (role == null || !allowed(player, "respec", 20)) return;
+					int spent = RoleManager.get(player).spentPoints(role);
+					int cost = RoleManager.respecCost(RoleManager.get(player), role);
+					var result = RoleManager.respecPaid(player, role);
+					Text roleName = Text.translatable(role.translationKey());
+					if (result == dev.aptitudes.role.RespecRules.Result.OK) {
+						player.sendMessage(Text.translatable("aptitudes.respec.done", roleName, spent, cost)
+								.formatted(Formatting.GREEN), true);
+					} else {
+						player.sendMessage(Text.translatable("aptitudes.respec." + result.name().toLowerCase(java.util.Locale.ROOT),
+								roleName, cost).formatted(Formatting.RED), true);
+					}
+				}
 				case RoleActionPayload.CLAIM_WEAPON -> {
 					Role role = Role.byIndex(payload.roleIndex());
 					int tier = "2".equals(payload.nodeId()) ? 2 : 1;

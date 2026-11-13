@@ -55,6 +55,7 @@ Las probabilidades, tamaños y presupuestos se vuelven a acotar en las reglas pu
 | `hudMinimal` | false | true / false | Oculta avisos de XP y tutorial, contador de combos, mecánicas de rol y números de daño. Conserva las barras, habilidades, piedras angulares, avisos de amenaza, eventos, jefes y grupo. `null` recupera false. |
 | `hudAnimations` | true | true / false | Transiciones de vida, maná, jefes y XP, entrada de avisos y pulso de nivel en la tarjeta de XP. Al desactivarlas, el HUD muestra los cambios de inmediato y sus indicadores de estado dejan de latir. `null` recupera true. Los efectos del mundo y del cielo tienen sus propios interruptores. |
 | `guideBookmarks` | `[]` | hasta 24 ids `chapter:` / `item:` / `beast:` / `role:` | Marcadores del grimorio (v61). Se guardan al pulsar ☆; los ids no válidos o repetidos se descartan al cargar. |
+| `newTreeScreen` | true | true / false | Pantalla del árbol de habilidades de la nueva dirección de arte (v66): tres sendas en columnas, maestría y definitiva. false, o si el paquete de recursos no trae las piezas, abre la vista de sendas anterior (una senda por pestaña). |
 | `castAnimations` | true | true / false | Remates 3D de las habilidades, desde Mayús + O → Animaciones 3D. Un `null` explícito recupera true en `ClientConfig.validated(...)`. |
 
 ## Tutorial (v44)
@@ -139,6 +140,10 @@ de configuración con validación del servidor.
 | `xpExponent` | 1.35 | [0, 4] | Exponente de la fórmula anterior. |
 | `pointsPerSkillLevel` | 0 | [0, 100] | Puntos de atributo por nivel de habilidad. 0: los atributos solo se suben en la Hoguera. |
 | `startingPoints` | 0 | [0, 10 000] | Puntos de atributo iniciales. |
+| `treeRespecEnabled` | true | true / false | Permite reiniciar el árbol de un rol desde el botón «Reiniciar» de la pantalla del árbol, a cambio de niveles de experiencia. |
+| `treeRespecLevelsBase` | 2 | 0–1000 | Niveles de experiencia fijos del reinicio del árbol (si hay puntos gastados). Valor provisional. |
+| `treeRespecLevelsPerPoint` | 0.5 | 0–100 | Niveles de experiencia adicionales por cada punto gastado en el rol; el coste se redondea hacia arriba. Valor provisional. |
+| `treeRespecLevelsMax` | 20 | 0–1000 | Tope del coste del reinicio del árbol, en niveles. Con 0 el reinicio es gratuito. |
 | `allowSelfRespec` | false | booleano | false: solo un operador (nivel 2) puede reiniciar atributos o árboles con los comandos de reinicio. |
 | `awardXpInCreative` | false | booleano | Concede XP de habilidad a jugadores en Creativo. |
 | `awardXpForPlayerKills` | true | booleano | La XP de combate también cuenta contra jugadores. |
