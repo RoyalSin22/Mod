@@ -141,8 +141,8 @@ de configuración con validación del servidor.
 | `pointsPerSkillLevel` | 0 | [0, 100] | Puntos de atributo por nivel de habilidad. 0: los atributos solo se suben en la Hoguera. |
 | `startingPoints` | 0 | [0, 10 000] | Puntos de atributo iniciales. |
 | `treeRespecEnabled` | true | true / false | Permite reiniciar el árbol de un rol desde el botón «Reiniciar» de la pantalla del árbol, a cambio de niveles de experiencia. |
-| `treeRespecLevelsBase` | 2 | 0–1000 | Niveles de experiencia fijos del reinicio del árbol (si hay puntos gastados). Valor provisional. |
-| `treeRespecLevelsPerPoint` | 0.5 | 0–100 | Niveles de experiencia adicionales por cada punto gastado en el rol; el coste se redondea hacia arriba. Valor provisional. |
+| `treeRespecLevelsBase` | 20 | 0–1000 | Niveles de experiencia fijos del reinicio del árbol (si hay puntos gastados). Por defecto el coste es de 20 niveles fijos (decisión del autor). |
+| `treeRespecLevelsPerPoint` | 0.0 | 0–100 | Niveles de experiencia adicionales por cada punto gastado en el rol; el coste se redondea hacia arriba. Con 0 el coste no depende de los puntos. |
 | `treeRespecLevelsMax` | 20 | 0–1000 | Tope del coste del reinicio del árbol, en niveles. Con 0 el reinicio es gratuito. |
 | `allowSelfRespec` | false | booleano | false: solo un operador (nivel 2) puede reiniciar atributos o árboles con los comandos de reinicio. |
 | `awardXpInCreative` | false | booleano | Concede XP de habilidad a jugadores en Creativo. |

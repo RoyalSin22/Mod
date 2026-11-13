@@ -1,5 +1,6 @@
 package dev.aptitudes.role;
 
+import dev.aptitudes.config.AptitudesConfig;
 import dev.aptitudes.role.RespecRules.Result;
 import org.junit.jupiter.api.Test;
 
@@ -12,6 +13,16 @@ class RespecRulesTest {
 		assertEquals(3, RespecRules.cost(1, 2, 0.5, 20)); // 2 + 0,5 = 2,5 → 3
 		assertEquals(12, RespecRules.cost(20, 2, 0.5, 20)); // 2 + 10
 		assertEquals(13, RespecRules.cost(21, 2, 0.5, 20)); // 2 + 10,5 → 13
+	}
+
+	@Test void theDefaultCostIsTwentyLevelsWhateverThePointsSpent() {
+		AptitudesConfig c = new AptitudesConfig();
+		int base = c.treeRespecLevelsBase, max = c.treeRespecLevelsMax;
+		double perPoint = c.treeRespecLevelsPerPoint;
+		assertEquals(0, RespecRules.cost(0, base, perPoint, max), "sin puntos gastados no cuesta nada");
+		assertEquals(20, RespecRules.cost(1, base, perPoint, max));
+		assertEquals(20, RespecRules.cost(37, base, perPoint, max));
+		assertEquals(20, RespecRules.cost(500, base, perPoint, max));
 	}
 
 	@Test void costIsCappedAtTheMaximum() {

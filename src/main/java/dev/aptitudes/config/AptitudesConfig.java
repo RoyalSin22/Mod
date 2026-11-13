@@ -35,9 +35,9 @@ public class AptitudesConfig {
 	public boolean allowSelfRespec = false;
 	/** v66: reiniciar el árbol de un rol desde la pantalla del árbol, pagando niveles de experiencia (por jugador). */
 	public boolean treeRespecEnabled = true;
-	/** Coste en niveles de experiencia: base + porPunto × puntos gastados, hasta el máximo. */
-	public int treeRespecLevelsBase = 2;
-	public double treeRespecLevelsPerPoint = 0.5;
+	/** Coste en niveles de experiencia: base + porPunto × puntos gastados, hasta el máximo (por defecto, 20 fijos). */
+	public int treeRespecLevelsBase = 20;
+	public double treeRespecLevelsPerPoint = 0.0;
 	public int treeRespecLevelsMax = 20;
 
 	// ---------- Comportamiento ----------

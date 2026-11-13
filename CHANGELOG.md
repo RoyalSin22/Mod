@@ -35,8 +35,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   (`treeRespecEnabled`, `treeRespecLevelsBase`, `treeRespecLevelsPerPoint`, `treeRespecLevelsMax`; el modo creativo no paga).
   El coste se calcula con `role/RespecRules` (pura, con pruebas); el servidor lo valida y lo cobra
   (`RoleActionPayload.RESPEC_TREE`, con límite de frecuencia), y el cliente solo muestra el coste y pide confirmación. El
-  nivel y la evolución del rol no cambian. Valores por defecto provisionales (2 + 0,5 por punto, máximo 20): pendientes de
-  que el autor los apruebe. Sin validar en partida.
+  nivel y la evolución del rol no cambian. Coste por defecto aprobado por el autor: 20 niveles fijos (base 20, 0 por punto,
+  máximo 20), sea cual sea el número de puntos gastados. Sin validar en partida.
 - **v66 — HUD: marcos de las casillas de habilidad.** Cada casilla de la barra de habilidades usa un marco de la nueva
   dirección de arte según la categoría del rol (marcial, arcano, sombra, guardián u oficio) y su estado: lista, en espera,
   sin energía, seleccionada al lanzar y definitiva. 20×20 px, el tamaño actual de la casilla, así que la disposición no
