@@ -8,7 +8,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 /**
  * v67 (F2+): punto único de enganche de las habilidades nuevas de cada rol ({@link BerserkerKit}, {@link MageKit},
  * {@link AssassinKit}, {@link HerbalistKit}, {@link EngineerKit}, {@link LancerKit}, {@link SwordsmanKit},
- * {@link PaladinKit} y {@link NecromancerKit}). El resto del código llama solo aquí, así que un rol nuevo (F5–F7)
+ * {@link PaladinKit}, {@link NecromancerKit}, {@link DruidKit}, {@link MerchantKit}, {@link MonkKit} y
+ * {@link ElementalistKit}). El resto del código llama solo aquí, así que un rol nuevo (F6–F7)
  * añade su kit en esta clase y no toca más ganchos.
  */
 public final class ExtraKits {
@@ -25,6 +26,10 @@ public final class ExtraKits {
 		SwordsmanKit.registerAll();
 		PaladinKit.registerAll();
 		NecromancerKit.registerAll();
+		DruidKit.registerAll();
+		MerchantKit.registerAll();
+		MonkKit.registerAll();
+		ElementalistKit.registerAll();
 	}
 
 	/** Bonificación de daño (se suma a las de {@code RoleMechanics.outgoing}). */
@@ -32,7 +37,9 @@ public final class ExtraKits {
 		return BerserkerKit.outgoing(p, target, direct) + MageKit.outgoing(p, target, source, direct)
 				+ AssassinKit.outgoing(p, target, source, direct) + LancerKit.outgoing(p, target, source, direct)
 				+ SwordsmanKit.outgoing(p, target, source, direct) + PaladinKit.outgoing(p, target, source, direct)
-				+ NecromancerKit.outgoing(p, target, source, direct);
+				+ NecromancerKit.outgoing(p, target, source, direct) + DruidKit.outgoing(p, target, source, direct)
+				+ MerchantKit.outgoing(p, target, source, direct) + MonkKit.outgoing(p, target, source, direct)
+				+ ElementalistKit.outgoing(p, target, source, direct);
 	}
 
 	/**
@@ -46,6 +53,8 @@ public final class ExtraKits {
 		amount = EngineerKit.incoming(p, source, amount);
 		amount = PaladinKit.incoming(p, source, amount);
 		amount = NecromancerKit.incoming(p, source, amount);
+		amount = DruidKit.incoming(p, source, amount);
+		MonkKit.onHurt(p, amount);
 		amount = SwordsmanKit.incoming(p, source, amount);
 		return SwordsmanKit.lethal(p, amount);
 	}
@@ -60,6 +69,10 @@ public final class ExtraKits {
 									 float damage) {
 		BerserkerKit.afterOutgoing(p, damage);
 		LancerKit.afterOutgoing(p, target, direct, damage);
+		DruidKit.afterOutgoing(p, target, direct, damage);
+		MerchantKit.afterOutgoing(p, direct, damage);
+		MonkKit.afterOutgoing(p, target, direct, damage);
+		ElementalistKit.afterOutgoing(p, target, direct, damage);
 	}
 
 	/** Multiplicador del coste de maná de la activa {@code nodeId}. */
@@ -90,6 +103,8 @@ public final class ExtraKits {
 		AssassinKit.onCast(p, key);
 		EngineerKit.onCast(p, key);
 		LancerKit.onCast(p, key);
+		MerchantKit.onCast(p, key, spent);
+		ElementalistKit.onCast(p, key, spent);
 	}
 
 	public static void onKill(ServerPlayerEntity p, LivingEntity victim) {
@@ -97,6 +112,7 @@ public final class ExtraKits {
 		EngineerKit.onKill(p, victim);
 		SwordsmanKit.onKill(p, victim);
 		PaladinKit.onKill(p, victim);
+		MerchantKit.onKill(p, victim);
 	}
 
 	/** Un esbirro de {@code owner} ha matado a {@code victim} (Banquete). */
@@ -120,6 +136,10 @@ public final class ExtraKits {
 		SwordsmanKit.tick(server);
 		PaladinKit.tick(server);
 		NecromancerKit.tick(server);
+		DruidKit.tick(server);
+		MerchantKit.tick(server);
+		MonkKit.tick(server);
+		ElementalistKit.tick(server);
 	}
 
 	/** Al desconectarse un jugador. */
@@ -133,5 +153,9 @@ public final class ExtraKits {
 		SwordsmanKit.forget(p);
 		PaladinKit.forget(p);
 		NecromancerKit.forget(p);
+		DruidKit.forget(p);
+		MerchantKit.forget(p);
+		MonkKit.forget(p);
+		ElementalistKit.forget(p);
 	}
 }

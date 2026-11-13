@@ -71,6 +71,11 @@ public final class RoleExtras {
 					new int[]{14, 25, 30, 45, 90});
 			case "necromancer" -> standard("necromancer", "life_drain", new int[]{22, 40, 45, 60, 80},
 					new int[]{12, 30, 30, 45, 90});
+			case "druid" -> standard("druid", "growth", new int[]{20, 30, 45, 60, 80}, new int[]{12, 25, 30, 45, 90});
+			case "merchant" -> standard("merchant", "deep_pockets", new int[]{15, 30, 45, 60, 80}, new int[]{8, 20, 30, 45, 90});
+			case "monk" -> standard("monk", "evasion", new int[]{25, 30, 45, 60, 80}, new int[]{10, 14, 30, 45, 90});
+			case "elementalist" -> standard("elementalist", "elemental_dominion", new int[]{20, 30, 45, 60, 80},
+					new int[]{8, 18, 30, 45, 90});
 			default -> List.of();
 		};
 	}

@@ -389,6 +389,7 @@ public final class Abilities {
 
 	/** Quita 1 unidad de {@code item} del inventario. @return false si no había. */
 	private static boolean consumeOne(ServerPlayerEntity p, Item item) {
+		if (item == Items.EMERALD) return AbilitiesExtra.consume(p, item, 1); // v67 (F5): Monedero y Crédito
 		var inventory = p.getInventory();
 		for (int i = 0; i < inventory.size(); i++) {
 			ItemStack stack = inventory.getStack(i);

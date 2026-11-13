@@ -25,6 +25,26 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   ignoran y los puntos gastados en esas ramas vuelven a estar disponibles.
 
 ### Añadido
+- **v67 (F5) — 40 habilidades nuevas: Druida, Mercader táctico, Monje y Chamán.** Cada rol tiene 10 (5 pasivas y 5
+  activas) en Talentos, Veterano y Ascenso, igual que en F2–F4; diseño aprobado en `docs/V67_F5_DISENO.md`.
+  - **Druida:** Hierba alta, Zarpas desgarradoras, Látigo de lianas, Rebrote, Letargo, Rugido del oso, Roble firme,
+    Forma de huargo, Flujo estacional y Despertar del bosque.
+  - **Mercader táctico:** Monedero, Dividendos, Moneda rebotona, Subasta, Crédito, Caravana, Libro mayor, Inversión,
+    Cacería de recompensas y Gran liquidación.
+  - **Monje:** Manos vacías, Combinación, Patada giratoria, Onda de chi, Cuerpo sereno, Palma explosiva, Punto de
+    presión, Postura del tigre, Eco de puño y Palma del vacío.
+  - **Chamán:** Cambio de marea, Eco del elemento, Lanza elemental, Muro elemental, Reacción en cadena, Tótem elemental,
+    Fusión estable, Forma elemental, Armonía elemental y Elementos desatados.
+  - **Código:** `DruidKit`, `MerchantKit`, `MonkKit` y `ElementalistKit` con sus reglas puras (`*Rules`), enganchados solo
+    en `ability/ExtraKits`. Sin ganchos nuevos en el resto del juego, salvo uno: Monedero y Crédito del Mercader se
+    enganchan en `AbilitiesExtra.consume` (y `Abilities.consumeOne` lo usa), el único sitio donde las activas gastan
+    esmeraldas. El Chamán aplica los efectos de sus 14 elementos con un conmutador propio (`applyElement`).
+  - **Textos:** 80 claves nuevas en los 5 idiomas; iconos provisionales con objetos vanilla y encargo de arte en
+    `docs/PROMPT_ARTE_ICONOS_F5.md`. Sin opciones de configuración nuevas (usa `extraSkillDamageScale`).
+  - **Pruebas:** `DruidRulesTest`, `MerchantRulesTest`, `MonkRulesTest`, `ElementalistRulesTest` y `RoleExtrasTest`
+    ampliada a los trece roles con datos.
+  - **Diferencias con el diseño aprobado:** ver §7 de `docs/V67_F5_DISENO.md` (por ejemplo, Reacción en cadena y Fusión
+    estable se ajustan porque las fusiones del Chamán son instantáneas y no cuestan maná).
 - **v67 (F4) — 40 habilidades nuevas: Lancero, Espadachín, Paladín y Nigromante.** Cada rol tiene 10 (5 pasivas y 5
   activas) en Talentos, Veterano y Ascenso, igual que en F2 y F3; diseño aprobado en `docs/V67_F4_DISENO.md`.
   - **Lancero:** Mantener la distancia, Punta clavada, Jabalina, Muro de picas, Ensartar, Abanico de picas, Primer

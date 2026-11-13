@@ -123,6 +123,24 @@ public final class NodeIcons {
 		put("necromancer_n4", Items.TNT); put("necromancer_n5", Items.SPIDER_EYE); put("necromancer_n6", Items.SOUL_SOIL);
 		put("necromancer_n7", Items.TOTEM_OF_UNDYING); put("necromancer_n8", Items.WITHER_ROSE); put("necromancer_n9", Items.BONE_BLOCK);
 		put("necromancer_n10", Items.SOUL_LANTERN);
+		// v67 F5: iconos provisionales (objetos del juego) hasta que llegue el arte de docs/PROMPT_ARTE_ICONOS_F5.md.
+		put("druid_n1", Items.GRASS_BLOCK); put("druid_n2", Items.BONE); put("druid_n3", Items.VINE);
+		put("druid_n4", Items.OAK_SAPLING); put("druid_n5", Items.HONEY_BOTTLE); put("druid_n6", Items.BROWN_DYE);
+		put("druid_n7", Items.OAK_LOG); put("druid_n8", Items.WOLF_SPAWN_EGG); put("druid_n9", Items.CLOCK);
+		put("druid_n10", Items.MOSS_BLOCK);
+		put("merchant_n1", Items.GOLD_NUGGET); put("merchant_n2", Items.EMERALD); put("merchant_n3", Items.GOLD_INGOT);
+		put("merchant_n4", Items.NAME_TAG); put("merchant_n5", Items.PAPER); put("merchant_n6", Items.SADDLE);
+		put("merchant_n7", Items.WRITABLE_BOOK); put("merchant_n8", Items.EMERALD_BLOCK); put("merchant_n9", Items.SKELETON_SKULL);
+		put("merchant_n10", Items.TNT_MINECART);
+		put("monk_n1", Items.LEATHER); put("monk_n2", Items.CHAIN); put("monk_n3", Items.LEATHER_BOOTS);
+		put("monk_n4", Items.HEART_OF_THE_SEA); put("monk_n5", Items.LILY_OF_THE_VALLEY); put("monk_n6", Items.FIRE_CHARGE);
+		put("monk_n7", Items.ACACIA_BUTTON); put("monk_n8", Items.ORANGE_DYE); put("monk_n9", Items.ECHO_SHARD);
+		put("monk_n10", Items.ENDER_EYE);
+		put("elementalist_n1", Items.PRISMARINE_SHARD); put("elementalist_n2", Items.AMETHYST_SHARD);
+		put("elementalist_n3", Items.BLAZE_ROD); put("elementalist_n4", Items.PACKED_ICE); put("elementalist_n5", Items.REDSTONE);
+		put("elementalist_n6", Items.TOTEM_OF_UNDYING); put("elementalist_n7", Items.NETHER_STAR);
+		put("elementalist_n8", Items.DRAGON_BREATH); put("elementalist_n9", Items.MUSIC_DISC_CAT);
+		put("elementalist_n10", Items.END_CRYSTAL);
 		put("arcane_charges", Items.AMETHYST_CLUSTER);
 		put("mana_shield", Items.LAPIS_BLOCK); put("spell_echo", Items.ECHO_SHARD);
 		put("time_warp", Items.CLOCK); put("arcane_missiles", Items.END_ROD);

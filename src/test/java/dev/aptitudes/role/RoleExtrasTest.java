@@ -20,16 +20,18 @@ class RoleExtrasTest {
 	private static final Set<String> OCCUPIED = Set.of("1,1", "4,1", "7,1", "0,2", "2,2", "6,2", "8,2", "1,3", "7,3",
 			"0,4", "8,4", "1,5", "7,5", "4,6", "8,6");
 
-	/** F2: Bersérker. F3: Mago, Asesino, Herbolista e Ingeniero. F4: Lancero, Espadachín, Paladín y Nigromante. */
+	/** F2: Bersérker. F3: Mago, Asesino, Herbolista e Ingeniero. F4: Lancero, Espadachín, Paladín y Nigromante. F5: Druida, Mercader, Monje y Chamán. */
 	private static final List<String> ROLES = List.of("berserker", "mage", "assassin", "herbalist", "engineer", "lancer",
-			"swordsman", "paladin", "necromancer");
+			"swordsman", "paladin", "necromancer", "druid", "merchant", "monk", "elementalist");
 	/** Pasiva B de cada rol (de la que cuelga N1), según {@code RoleTree}. */
 	private static final java.util.Map<String, String> PASSIVE_B = java.util.Map.ofEntries(
 			java.util.Map.entry("berserker", "bloodlust"), java.util.Map.entry("mage", "clear_mind"),
 			java.util.Map.entry("assassin", "backstab"), java.util.Map.entry("herbalist", "herbal_immunity"),
 			java.util.Map.entry("engineer", "battery"), java.util.Map.entry("lancer", "charge"),
 			java.util.Map.entry("swordsman", "parry"), java.util.Map.entry("paladin", "protective_aura"),
-			java.util.Map.entry("necromancer", "life_drain"));
+			java.util.Map.entry("necromancer", "life_drain"), java.util.Map.entry("druid", "growth"),
+				java.util.Map.entry("merchant", "deep_pockets"), java.util.Map.entry("monk", "evasion"),
+				java.util.Map.entry("elementalist", "elemental_dominion"));
 
 	@Test
 	void everyRoleHasTenNodesInOrder() {
@@ -41,7 +43,7 @@ class RoleExtrasTest {
 				assertEquals(i + 1, extras.get(i).number());
 			}
 		}
-		assertTrue(RoleExtras.of("hunter").isEmpty(), "los demás roles llegan en F5–F7");
+		assertTrue(RoleExtras.of("hunter").isEmpty(), "los demás roles llegan en F6–F7");
 	}
 
 	@Test

@@ -1,5 +1,33 @@
 # Pruebas de Aptitudes
 
+## v67 (F5) — Habilidades nuevas de Druida, Mercader táctico, Monje y Chamán
+
+Automáticas: `DruidRulesTest`, `MerchantRulesTest`, `MonkRulesTest`, `ElementalistRulesTest` (cifras de cada rol) y
+`RoleExtrasTest` (datos de los trece roles con habilidades nuevas).
+
+Validación en partida (pendiente), con `/roles admin` para subir de nivel y evolucionar:
+
+1. **Árbol (J):** en los cuatro roles, N1 y N2 cuelgan de la pasiva B; N3 y N4, de Presteza; Veterano y Ascenso muestran
+   sus 3 nodos. Aprende cada uno y equipa las activas nuevas (13 por rol): salir y entrar conserva el equipamiento.
+2. **Druida:** Hierba alta (menos daño sobre hierba o tierra, no sobre piedra); Zarpas desgarradoras (daño cada
+   segundo 3 s); Látigo de lianas (arrastra al enemigo); Rebrote; Letargo (cura al bajar del 30 %, no con golpes
+   mortales); Rugido del oso; Roble firme (sin empuje); Forma de huargo; Flujo estacional (20 s sin daño); Despertar
+   del bosque (necesita **un segundo jugador** para la curación a aliados).
+3. **Mercader:** Monedero (a veces no gasta la esmeralda); Dividendos (cada 60 s con el mínimo); Moneda rebotona (salta
+   hasta 3 enemigos); Subasta (más daño y esmeraldas al matar); Crédito (sin esmeraldas, las activas gastan maná);
+   Caravana; Libro mayor (cada esmeralda gastada carga el siguiente golpe); Inversión; Cacería de recompensas (élites y
+   campeones); Gran liquidación (gasta hasta 10 esmeraldas).
+4. **Monje:** Manos vacías; Combinación (3.er golpe); Patada giratoria; Onda de chi; Cuerpo sereno (5 s sin golpes);
+   Palma explosiva (explota a los 3 s); Punto de presión (golpes críticos al caer); Postura del tigre (resta armadura,
+   se restablece al acabar); Eco de puño (cada 4.º golpe); Palma del vacío (carga 1 s inmóvil).
+5. **Chamán (con 2–3 elementos dominados):** Cambio de marea (cambiar de elemento con la tecla correspondiente);
+   Eco del elemento; Lanza, Muro y Tótem elementales con distintos elementos activos; Reacción en cadena y Fusión
+   estable (solo si el Estallido activa una fusión); Forma elemental; Armonía (3 elementos distintos en 10 s);
+   Elementos desatados.
+6. **Rendimiento y seguridad:** al desconectarse durante la Postura del tigre, los enemigos recuperan su armadura; el
+   Roble firme y el Cuerpo sereno se quitan al respecer; con varios jugadores no sube el tick del servidor.
+7. `extraSkillDamageScale = 0.5`: el daño de las habilidades nuevas baja a la mitad.
+
 ## v67 (F4) — Habilidades nuevas de Lancero, Espadachín, Paladín y Nigromante
 
 Automáticas: `LancerRulesTest`, `SwordsmanRulesTest`, `PaladinRulesTest`, `NecromancerRulesTest` (cifras de cada rol) y

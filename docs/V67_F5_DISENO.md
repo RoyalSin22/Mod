@@ -1,6 +1,6 @@
 # v67 · F5 — Habilidades nuevas de Druida, Mercader táctico, Monje y Chamán (diseño para aprobar)
 
-Estado: **propuesta, sin código.** Mismo patrón que F2–F4 (`docs/V67_F4_DISENO.md`): 10 nodos por rol, 5 pasivas y 5
+Estado: **implementada (2026-11-13); diseño aprobado por el autor.** Mismo patrón que F2–F4 (`docs/V67_F4_DISENO.md`): 10 nodos por rol, 5 pasivas y 5
 activas. En el juego, el rol `elementalist` se llama **Chamán**.
 
 | Nodos | Sección | Posición | Niveles |
@@ -120,3 +120,18 @@ Ya tiene: Afinidad, Dominio, Reacción, Resguardo, Muerte resonante, Descarga, R
 1. Los **4 roles** (Druida, Mercader táctico, Monje, Chamán) como tanda F5, o prefieres cambiar alguno.
 2. Las **40 habilidades**; dime cuáles cambiar. El Chamán es el más delicado por depender del elemento activo.
 3. ¿Implementarlas **todas de una vez**, como en F4?
+
+## 7. Diferencias entre el diseño aprobado y la implementación
+
+| Habilidad | Diseño | Implementado | Motivo |
+|---|---|---|---|
+| `elementalist_n5` Reacción en cadena | Restituir el coste de la fusión | Devuelve parte del maná del Estallido cuando activa una fusión | Las fusiones no cuestan maná propio |
+| `elementalist_n7` Fusión estable | Las fusiones duran un 30 % más | Absorción II y Resistencia I durante 6 s cuando el Estallido activa una fusión | Las fusiones son efectos instantáneos, sin duración |
+| `elementalist_n3`, n4, n6, n8, n10 | Efecto del elemento activo | Conmutador propio de 14 elementos (`applyElement`), sin reutilizar `ElementEffects.bolt` | `bolt` solo sirve para un objetivo apuntado y repetiría la Descarga elemental |
+| `druid_n5` Letargo | Al bajar del 30 % de vida | Solo si el golpe no te mata | Voluntad de acero ya cubre los golpes mortales en otro rol |
+| `merchant_n1` Monedero | No gastar esmeralda | Solo si llevas las esmeraldas necesarias | Evita lanzar gratis sin esmeraldas |
+| `merchant_n4` Subasta | Daño de todos | Solo el daño de tus golpes y habilidades; las esmeraldas caen si lo matas tú | La bonificación se aplica en el gancho de salida del Mercader |
+| `merchant_n5` Crédito | 10 / 5 de maná | 10 / 5 de maná por cada esmeralda que falte | Escala con el coste de la activa |
+| `monk_n7` Punto de presión | Golpes críticos | Críticos de caída (el criterio del Trance) | El juego base no tiene otro tipo de crítico |
+| `monk_n10` Palma del vacío | Cargas 1 s | La carga te inmoviliza (Lentitud máxima) y puede fallar si el enemigo se aparta | Sin entidades nuevas |
+| Todas las activas | Entidades de efecto | Efectos con partículas y sonidos, sin entidades | Menos riesgo de entidades huérfanas |

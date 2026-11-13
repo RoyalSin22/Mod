@@ -505,7 +505,11 @@ final class AbilitiesExtra {
 	/** Gasta {@code count} unidades de {@code item}; todo o nada. */
 	static boolean consume(ServerPlayerEntity p, net.minecraft.item.Item item, int count) {
 		var inv = p.getInventory();
-		if (inv.count(item) < count) return false;
+		boolean emerald = item == net.minecraft.item.Items.EMERALD;
+		// v67 (F5): Monedero (gratis a veces) y Crédito (maná en vez de las esmeraldas que faltan).
+		if (emerald && inv.count(item) >= count && MerchantKit.waive(p, count)) return true;
+		if (inv.count(item) < count) return emerald && MerchantKit.credit(p, count - inv.count(item)) && consume(p, item, inv.count(item));
+		if (emerald) MerchantKit.onSpend(p, count);
 		int left = count;
 		for (int i = 0; i < inv.size() && left > 0; i++) {
 			ItemStack stack = inv.getStack(i);

@@ -570,6 +570,25 @@ rango) y de la definitiva.
 Riesgos que vigilar en partida: el sangrado acumulado de Tajos (6/s con 3 cargas en rango 2) y Avatar junto a Furia y
 el Juramento (multiplicadores que se suman, limitados por `maxDamageMultiplier`).
 
+## v67 (F5) — Habilidades nuevas de Druida, Mercader táctico, Monje y Chamán
+
+Valores con `extraSkillDamageScale` = 1 (cifras y costes en `docs/V67_F5_DISENO.md`). La escala solo multiplica el daño
+directo de las activas y de los efectos que hacen daño; no cambia curaciones, esperas ni porcentajes.
+
+**Riesgos que vigilar en partida:**
+
+| Rol | Riesgo | Freno actual |
+|---|---|---|
+| Druida | Rebrote + Letargo + Roble firme + Forma de huargo lo hacen muy duro | Esperas de 25–90 s; Letargo solo una vez cada 90 s y no salva golpes mortales |
+| Druida | Despertar del bosque cura al grupo e inmoviliza | 6 s, espera de 90 s |
+| Mercader | Monedero + Dividendos generan esmeraldas casi sin gasto | Dividendos topa en 64 y exige un mínimo; Monedero solo actúa si hay esmeraldas |
+| Mercader | Crédito permite lanzar sin esmeraldas | Cuesta 5–10 de maná por esmeralda que falta |
+| Mercader | Inversión devuelve el 30 % del maná gastado | 10–14 s y espera de 45 s |
+| Monje | Manos vacías + Combinación + Postura del tigre apilan daño | `maxDamageMultiplier`; Postura dura 8–10 s |
+| Monje | Cuerpo sereno acelera el ataque sin recibir daño | Se pierde al recibir un golpe |
+| Chamán | Cambio de marea + Armonía + Forma elemental acumulan daño | `maxDamageMultiplier`; Armonía exige 3 elementos en 10 s |
+| Chamán | Fusión estable + Reacción en cadena mejoran el Estallido | Solo cuando el Estallido activa una fusión |
+
 ## v67 (F4) — Habilidades nuevas de Lancero, Espadachín, Paladín y Nigromante
 
 Valores con `extraSkillDamageScale` = 1 (cifras y costes en `docs/V67_F4_DISENO.md`). La escala solo multiplica el daño

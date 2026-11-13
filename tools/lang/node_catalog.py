@@ -357,6 +357,46 @@ Resurge¦Ressurgir¦Renaissance¦Wiederkehr
 Necrotic Frenzy¦Frenesi necrótico¦Frénésie nécrotique¦Nekrotische Raserei
 Bone Bond¦Vínculo de ossos¦Lien d’os¦Knochenband
 Soul Storm¦Tempestade de almas¦Tempête d’âmes¦Seelensturm
+Tall Grass¦Grama alta¦Hautes herbes¦Hohes Gras
+Rending Claws¦Garras dilacerantes¦Griffes déchirantes¦Reißende Klauen
+Vine Whip¦Chicote de trepadeiras¦Fouet de lianes¦Rankenpeitsche
+Regrowth¦Rebrota¦Repousse¦Nachwuchs
+Torpor¦Letargia¦Léthargie¦Erstarrung
+Bear Roar¦Rugido do urso¦Rugissement de l’ours¦Bärengebrüll
+Sturdy Oak¦Carvalho firme¦Chêne robuste¦Standfeste Eiche
+Dire Wolf Form¦Forma de lobo atroz¦Forme de loup sinistre¦Schattenwolf-Gestalt
+Seasonal Flow¦Fluxo sazonal¦Flux saisonnier¦Jahreszeitenfluss
+Forest Awakening¦Despertar da floresta¦Éveil de la forêt¦Erwachen des Waldes
+Coin Purse¦Bolsa de moedas¦Porte-monnaie¦Geldbeutel
+Dividends¦Dividendos¦Dividendes¦Dividenden
+Bouncing Coin¦Moeda quicante¦Pièce rebondissante¦Springende Münze
+Auction¦Leilão¦Vente aux enchères¦Versteigerung
+Credit¦Crédito¦Crédit¦Kredit
+Caravan¦Caravana¦Caravane¦Karawane
+General Ledger¦Livro-razão¦Grand livre¦Hauptbuch
+Investment¦Investimento¦Investissement¦Investition
+Bounty Hunting¦Caça de recompensas¦Chasse aux primes¦Kopfgeldjagd
+Grand Liquidation¦Grande liquidação¦Grande liquidation¦Großer Ausverkauf
+Bare Hands¦Mãos vazias¦Mains nues¦Leere Hände
+Combination¦Combinação¦Enchaînement¦Kombination
+Whirling Kick¦Chute giratório¦Coup de pied tournoyant¦Wirbeltritt
+Chi Wave¦Onda de chi¦Onde de chi¦Chi-Welle
+Serene Body¦Corpo sereno¦Corps serein¦Gelassener Körper
+Explosive Palm¦Palma explosiva¦Paume explosive¦Explosive Handfläche
+Pressure Point¦Ponto de pressão¦Point de pression¦Druckpunkt
+Tiger Stance¦Postura do tigre¦Posture du tigre¦Tigerhaltung
+Fist Echo¦Eco do punho¦Écho du poing¦Faustecho
+Void Palm¦Palma do vazio¦Paume du vide¦Handfläche der Leere
+Turning Tide¦Virada de maré¦Marée changeante¦Gezeitenwechsel
+Element Echo¦Eco do elemento¦Écho de l’élément¦Elementecho
+Elemental Lance¦Lança elemental¦Lance élémentaire¦Elementarlanze
+Elemental Wall¦Muro elemental¦Mur élémentaire¦Elementarwand
+Chain Reaction¦Reação em cadeia¦Réaction en chaîne¦Kettenreaktion
+Elemental Totem¦Totem elemental¦Totem élémentaire¦Elementartotem
+Stable Fusion¦Fusão estável¦Fusion stable¦Stabile Fusion
+Elemental Form¦Forma elemental¦Forme élémentaire¦Elementargestalt
+Elemental Harmony¦Harmonia elemental¦Harmonie élémentaire¦Elementare Harmonie
+Elements Unleashed¦Elementos desencadeados¦Éléments déchaînés¦Entfesselte Elemente
 """)
 
 # v67: las descripciones base se escriben en base_desc.py (estilo llano), con sus traducciones.
