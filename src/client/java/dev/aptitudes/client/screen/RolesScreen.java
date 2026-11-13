@@ -2,6 +2,8 @@ package dev.aptitudes.client.screen;
 
 import dev.aptitudes.client.ClientExtraState;
 import dev.aptitudes.client.ClientRoleState;
+import dev.aptitudes.logic.TreeScreenLayout;
+import dev.aptitudes.logic.TreeScreenLayout.Rect;
 import dev.aptitudes.morph.MorphForm;
 import dev.aptitudes.network.FormSyncPayload;
 import dev.aptitudes.network.RoleActionPayload;
@@ -109,6 +111,10 @@ public class RolesScreen extends Screen {
 	private ButtonWidget equip2Button;
 	/** Las piezas del kit de la pantalla de roles están en el paquete de recursos (si no, se usa el dibujo anterior). */
 	private boolean kit;
+	/** Además, las piezas del kit «Berserker» del árbol (panel de piedra, marcos de nodo) para el lienzo y la ficha. */
+	private boolean treeKit;
+	/** Margen interior de la ficha y del lienzo: con el panel de piedra, el texto entra dentro de su marco (12 px). */
+	private int inset() { return treeKit ? 16 : 6; }
 
 	public RolesScreen() {
 		super(Text.translatable("screen.aptitudes.roles.title"));
@@ -139,10 +145,12 @@ public class RolesScreen extends Screen {
 	private float zoom = 1.0f;
 	private boolean dragging;
 
-	private int viewX1() { return canvasX() + 1; }
-	private int viewY1() { return top + CANVAS_TOP + 1; }
-	private int viewX2() { return canvasX() + treeW() - 1; }
-	private int viewY2() { return (sideInspector() ? infoBottom() : infoY() - 4) - 13; }
+	/** Con el panel de piedra, la vista del árbol y su pista quedan dentro del marco (12 px). */
+	private int frame() { return treeKit ? 11 : 0; }
+	private int viewX1() { return canvasX() + 1 + frame(); }
+	private int viewY1() { return top + CANVAS_TOP + 1 + frame(); }
+	private int viewX2() { return canvasX() + treeW() - 1 - frame(); }
+	private int viewY2() { return (sideInspector() ? infoBottom() : infoY() - 4) - 13 - frame(); }
 
 	private boolean inView(double mx, double my) {
 		return mx >= viewX1() && mx < viewX2() && my >= viewY1() && my < viewY2();
@@ -174,11 +182,12 @@ public class RolesScreen extends Screen {
 		H = MathHelper.clamp(height - 16, sideInspector() ? 306 : 350, 460);
 		left = (width - W) / 2;
 		kit = RolesUi.available();
+		treeKit = kit && TreeUi.available();
 		pageScroll = MathHelper.clamp(pageScroll, 0, maxPageScroll());
 		top = maxPageScroll() > 0 ? 8 - pageScroll : (height - H) / 2;
 		int lx = left + 8;
-		int actionX = infoX() + infoW() - 78;
-		int actionY = infoBottom() - 22;
+		int actionX = infoX() + infoW() - 78 - (treeKit ? 8 : 0);
+		int actionY = infoBottom() - 22 - (treeKit ? 8 : 0);
 		TalentTab[] options = TalentTab.values();
 		for (int i = 0; i < options.length; i++) {
 			TalentTab option = options[i];
@@ -568,9 +577,9 @@ public class RolesScreen extends Screen {
 	}
 
 	private boolean clickExtra(double mouseX, double mouseY) {
-		int x0 = canvasX() + 8;
-		int y0 = top + 78;
-		int stride = (canvasW() - 12) / 3;
+		int x0 = canvasX() + 8 + frame();
+		int y0 = top + 78 + frame();
+		int stride = (canvasW() - 12 - 2 * frame()) / 3;
 		if (selected == Role.ELEMENTALIST) {
 			Element[] elements = Element.values();
 			for (int i = 0; i < elements.length; i++) {
@@ -606,13 +615,34 @@ public class RolesScreen extends Screen {
 		UiStyle.window(ctx, left, top, W, H);
 		theme.panel(ctx, canvasX(), top + 4, canvasW(), 22);
 		if (extraView) {
-			theme.panel(ctx, canvasX(), top + CANVAS_TOP, canvasW(), infoBottom() - top - CANVAS_TOP);
+			canvasPanel(ctx, canvasX(), top + CANVAS_TOP, canvasW(), infoBottom() - top - CANVAS_TOP);
 		} else {
-			int treeBottom = viewY2() + 13;
-			theme.panel(ctx, canvasX(), top + CANVAS_TOP, treeW(), treeBottom - top - CANVAS_TOP);
-			theme.panel(ctx, infoX(), infoY(), infoW(), infoBottom() - infoY());
-
+			int treeBottom = viewY2() + 13 + frame();
+			canvasPanel(ctx, canvasX(), top + CANVAS_TOP, treeW(), treeBottom - top - CANVAS_TOP);
+			if (treeKit) {
+				TreeUi.panel9(ctx, "paneles/panel_detalle_9slice.png", TreeUi.PANEL_DETAIL_W, TreeUi.PANEL_DETAIL_H,
+						TreeUi.PANEL_DETAIL_ORNAMENT, 1, new Rect(infoX(), infoY(), infoW(), infoBottom() - infoY()));
+				readingZone(ctx, infoX(), infoY(), infoW(), infoBottom() - infoY());
+			} else {
+				theme.panel(ctx, infoX(), infoY(), infoW(), infoBottom() - infoY());
+			}
 		}
+	}
+
+	/** Lienzo del árbol: panel de piedra del kit «Berserker» (estirado desde el centro) o el panel del tema. */
+	private void canvasPanel(DrawContext ctx, int x, int y, int w, int h) {
+		if (!treeKit) {
+			theme.panel(ctx, x, y, w, h);
+			return;
+		}
+		TreeUi.panel9(ctx, "paneles/panel_principal_9slice.png", TreeUi.PANEL_MAIN_W, TreeUi.PANEL_MAIN_H,
+				TreeUi.PANEL_MAIN_ORNAMENT, TreeScreenLayout.BRICK_PERIOD, new Rect(x, y, w, h));
+	}
+
+	/** Zona de lectura dentro del marco de un panel de piedra: fondo oscuro con filete, para que el texto no pise grietas. */
+	private static void readingZone(DrawContext ctx, int x, int y, int w, int h) {
+		ctx.fill(x + 12, y + 12, x + w - 12, y + h - 12, 0xE015141A);
+		ctx.drawBorder(x + 12, y + 12, w - 24, h - 24, 0xFF2B2A33);
 	}
 
 	@Override
@@ -760,7 +790,7 @@ public class RolesScreen extends Screen {
 		ctx.disableScissor();
 		// Si la ventana se puede desplazar, una pista corta que lo indica (la normal no cabría).
 		Text hint = Text.translatable(maxPageScroll() > 0 ? "screen.aptitudes.tree.hint_scroll" : "screen.aptitudes.tree.hint");
-		UiStyle.label(ctx, textRenderer, hint, viewX1() + 4, viewY2() + 2, treeW() - 10, UiStyle.MUTED);
+		UiStyle.label(ctx, textRenderer, hint, viewX1() + 4, viewY2() + 2, treeW() - 10 - 2 * frame(), UiStyle.MUTED);
 		return tooltip;
 	}
 
@@ -773,7 +803,9 @@ public class RolesScreen extends Screen {
 			NodeView parent = pre != null ? nodeView(pre)
 					: tab == TalentTab.TALENTS && v.y() == FIRST_TALENT_Y ? root : null;
 			if (parent == null) continue;
-			elbow(ctx, parent, v, lit(data, v) ? theme.accent() : available(data, v) ? 0xFF7A8098 : 0xFF566077);
+			int color = treeKit ? (lit(data, v) ? 0xFFEBBE5A : available(data, v) ? 0xFF967438 : 0xFF3A3644)
+					: lit(data, v) ? theme.accent() : available(data, v) ? 0xFF7A8098 : 0xFF566077;
+			elbow(ctx, parent, v, color, treeKit ? 2 : 1);
 		}
 
 		renderLaneTitles(ctx, tier);
@@ -822,7 +854,14 @@ public class RolesScreen extends Screen {
 				int pulse = (int) (16 + 14 * (0.5 + 0.5 * Math.sin(pulseNow / 450.0)));
 				ctx.drawBorder(v.x() - 1, v.y() - 1, 26, 26, (pulse << 24) | 0xF0C060);
 			}
-			UiStyle.frame(ctx, v.x(), v.y(), frame, lit, hover);
+			if (treeKit) {
+				// Marco del kit por categoría y estado; un bloqueado usa el de «disponible» atenuado y un candado
+				// pequeño (el candado grande del marco taparía el icono). Las legendarias conservan su filete morado.
+				TreeUi.node(ctx, selected.category(), lit ? "comprado" : "disponible", v.x(), v.y());
+				if (frame == UiStyle.Frame.UNIQUE) ctx.drawBorder(v.x() + 1, v.y() + 1, 22, 22, 0xFFB070FF);
+			} else {
+				UiStyle.frame(ctx, v.x(), v.y(), frame, lit, hover);
+			}
 			if (v.key().equals(selectedNode)) {
 				ctx.drawBorder(v.x() - 3, v.y() - 3, 30, 30, theme.accent());
 			}
@@ -870,30 +909,38 @@ public class RolesScreen extends Screen {
 			String key = master
 					? (unlocked ? "screen.aptitudes.tree.row_master" : "screen.aptitudes.tree.requires_master")
 					: (unlocked ? "screen.aptitudes.tree.row_ultimate" : "screen.aptitudes.tree.requires_ultimate");
-			ctx.fill(8, EVO_LANE_Y + 5, contentW - 8, EVO_LANE_Y + 6, UiStyle.BORDER);
+			if (treeKit) RolesUi.divider(ctx, 8, EVO_LANE_Y + 2, contentW - 16);
+			else ctx.fill(8, EVO_LANE_Y + 5, contentW - 8, EVO_LANE_Y + 6, UiStyle.BORDER);
 			laneTitle(ctx, key, 12, contentW - 12, EVO_LANE_Y, unlocked ? theme.accent() : UiStyle.MUTED);
 		}
 	}
 
 	private void laneTitle(DrawContext ctx, String key, int x1, int x2, int y, int color) {
-		Text title = UiStyle.fit(textRenderer, Text.translatable(key), x2 - x1 - 6);
+		Text title = UiStyle.fit(textRenderer, Text.translatable(key), x2 - x1 - (treeKit ? 16 : 6));
 		int tw = textRenderer.getWidth(title);
 		int x = (x1 + x2 - tw) / 2;
+		if (treeKit) {
+			// Placa de la fila del kit detrás del título (se lee sobre la piedra).
+			RolesUi.row(ctx, false, x - 8, y - 4, tw + 16, 16);
+			ctx.drawText(textRenderer, title, x, y, color, true);
+			return;
+		}
 		ctx.fill(x - 3, y - 1, x + tw + 3, y + 9, theme.slate());
 		ctx.drawText(textRenderer, title, x, y, color, false);
 	}
 
 	/** Conector en ángulo recto: baja desde el padre, cruza en horizontal a media altura y baja al hijo. */
-	private void elbow(DrawContext ctx, NodeView parent, NodeView child, int color) {
+	private void elbow(DrawContext ctx, NodeView parent, NodeView child, int color, int t) {
+		// Con grosor 2, la línea ocupa los dos píxeles centrales del nodo (11 y 12), como los conectores del kit.
 		int px = parent.x() + 11;
 		int cx = child.x() + 11;
 		int py = parent.y() + 24;
 		int cy = child.y();
 		// El tramo horizontal queda entre filas para no atravesar otros nodos.
 		int mid = Math.min(py + 5, cy - 4);
-		ctx.fill(px, py, px + 1, mid + 1, color);
-		ctx.fill(Math.min(px, cx), mid, Math.max(px, cx) + 1, mid + 1, color);
-		ctx.fill(cx, mid, cx + 1, cy, color);
+		ctx.fill(px, py, px + t, mid + t, color);
+		ctx.fill(Math.min(px, cx), mid, Math.max(px, cx) + t, mid + t, color);
+		ctx.fill(cx, mid, cx + t, cy, color);
 	}
 
 	private boolean available(RoleSyncPayload data, NodeView v) {
@@ -1028,17 +1075,18 @@ public class RolesScreen extends Screen {
 	private List<Text> renderNodeInfo(DrawContext ctx, RoleSyncPayload data, int mouseX, int mouseY) {
 		NodeView v = nodeView(selectedNode);
 		if (v == null) return null;
-		int x = infoX() + 6;
-		int y = infoY() + 6;
-		int w = infoW() - 12;
-		UiStyle.frame(ctx, x, y, UiStyle.Frame.PASSIVE, lit(data, v), false);
+		int x = infoX() + inset();
+		int y = infoY() + inset();
+		int w = infoW() - 2 * inset();
+		if (treeKit) TreeUi.node(ctx, selected.category(), lit(data, v) ? "comprado" : "disponible", x, y);
+		else UiStyle.frame(ctx, x, y, UiStyle.Frame.PASSIVE, lit(data, v), false);
 		drawNodeIcon(ctx, new NodeView(v.kind(), v.node(), x, y));
 		List<Text> lines = nodeDetails(data, v);
 		UiStyle.label(ctx, textRenderer, lines.get(0), x + 30, y + 2, w - 30, theme.accent());
 		UiStyle.label(ctx, textRenderer, lines.get(1), x + 30, y + 13, w - 30, UiStyle.MUTED);
 		ctx.fill(x, y + 29, x + w, y + 30, UiStyle.BORDER);
 		int bodyW = sideInspector() ? w : w - 76;
-		int bodyBottom = infoBottom() - (sideInspector() ? 42 : 4);
+		int bodyBottom = infoBottom() - (sideInspector() ? 42 : 4) - (treeKit ? 12 : 0);
 		int lineY = y + 35;
 		for (int i = 2; i < lines.size() - 1 && lineY <= bodyBottom - 30; i++) {
 			UiStyle.label(ctx, textRenderer, lines.get(i), x, lineY, bodyW, UiStyle.TEXT);
@@ -1054,15 +1102,15 @@ public class RolesScreen extends Screen {
 	}
 
 	private List<Text> renderElements(DrawContext ctx, RoleSyncPayload data, int mouseX, int mouseY) {
-		int x0 = canvasX() + 8;
-		int y0 = top + 78;
-		int stride = (canvasW() - 12) / 3;
+		int x0 = canvasX() + 8 + frame();
+		int y0 = top + 78 + frame();
+		int stride = (canvasW() - 12 - 2 * frame()) / 3;
 		int cardW = stride - 4;
 		List<Element> mastered = data.elementList();
 		Element active = data.activeElementValue();
 		int allowed = Element.allowedCount(data.level(Role.ELEMENTALIST));
 		header(ctx, Text.translatable("screen.aptitudes.elements.header", mastered.size(), allowed,
-				Element.MAX_MASTERED), x0, top + 59, 200);
+				Element.MAX_MASTERED), x0, top + 59 + frame(), 200);
 		List<Text> tooltip = null;
 		Element[] elements = Element.values();
 		for (int i = 0; i < elements.length; i++) {
@@ -1104,11 +1152,11 @@ public class RolesScreen extends Screen {
 
 	private List<Text> renderForms(DrawContext ctx, RoleSyncPayload data, int mouseX, int mouseY) {
 		FormSyncPayload forms = ClientExtraState.forms();
-		int x0 = canvasX() + 8;
-		int y0 = top + 78;
-		int stride = (canvasW() - 12) / 3;
+		int x0 = canvasX() + 8 + frame();
+		int y0 = top + 78 + frame();
+		int stride = (canvasW() - 12 - 2 * frame()) / 3;
 		int cardW = stride - 4;
-		header(ctx, Text.translatable("screen.aptitudes.forms.header"), x0, top + 59, 200);
+		header(ctx, Text.translatable("screen.aptitudes.forms.header"), x0, top + 59 + frame(), 200);
 		List<Text> tooltip = null;
 		int shown = 0;
 		for (MorphForm form : MorphForm.values()) {
