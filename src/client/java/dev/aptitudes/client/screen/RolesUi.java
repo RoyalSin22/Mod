@@ -34,6 +34,7 @@ final class RolesUi {
 				&& manager.getResource(id("pestana_activa.png")).isPresent()
 				&& manager.getResource(id("fila_seleccionada.png")).isPresent()
 				&& manager.getResource(id("categoria_marcial_activa.png")).isPresent()
+				&& manager.getResource(id("categoria_marcial_hover.png")).isPresent()
 				&& manager.getResource(id("divisor_base.png")).isPresent();
 	}
 
@@ -84,8 +85,23 @@ final class RolesUi {
 		slice9(ctx, selected ? "fila_seleccionada.png" : "fila_normal.png", 48, 18, x, y, w, h);
 	}
 
-	static void category(DrawContext ctx, RoleCategory category, boolean active, int x, int y) {
-		sprite(ctx, "categoria_" + categoryKey(category) + "_" + (active ? "activa" : "normal") + ".png", x, y, 24, 14);
+	/** Ficha de categoría en pantalla: 24×16 px de interfaz. */
+	static final int CHIP_W = 24, CHIP_H = 16;
+
+	/**
+	 * Ficha de categoría con su emblema. La pieza es de 48×32 (doble densidad) y se dibuja a 24×16: a escala de interfaz
+	 * 2 cada texel es un píxel de pantalla y a escala 4 son 2×2. {@code state}: {@code normal}, {@code hover} o
+	 * {@code activa}.
+	 */
+	static void category(DrawContext ctx, RoleCategory category, String state, int x, int y) {
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		try {
+			ctx.drawTexture(id("categoria_" + categoryKey(category) + "_" + state + ".png"), x, y, CHIP_W, CHIP_H, 0f, 0f,
+					CHIP_W * 2, CHIP_H * 2, CHIP_W * 2, CHIP_H * 2);
+		} finally {
+			RenderSystem.disableBlend();
+		}
 	}
 
 	/** Filete con rombo central: la banda se ajusta al ancho y el rombo de 8×6 se dibuja encima, sin deformarse. */

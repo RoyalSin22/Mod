@@ -6,6 +6,10 @@ están a su tamaño final, con píxel lógico de 2×2 px). Comprueba el tamaño,
 que la transparencia sea solo 0 o 255. Botones, pestañas y filas son 9-slice con bordes de 6 px. No edites los PNG de
 salida.
 
+Excepción: las fichas de categoría (`categoria_*`) son de **48×32 a doble densidad** (el juego las dibuja a 24×16) y con
+detalle de 1 texel, así que no siguen la rejilla de 2×2 y admiten hasta 48 colores. Encargo:
+`docs/PROMPT_ARTE_FICHAS_CATEGORIA.md`.
+
 Uso:
   python3 tools/textures/gen_roles_ui.py src/main/resources/assets/aptitudes/textures/gui
   python3 tools/textures/gen_roles_ui.py src/main/resources/assets/aptitudes/textures/gui --check
@@ -25,7 +29,7 @@ PIECES = {
     **{f'boton_largo_{s}.png': (48, 18) for s in ('normal', 'pulsado', 'desactivado')},
     **{f'pestana_{s}.png': (48, 16) for s in ('normal', 'hover', 'activa')},
     **{f'fila_{s}.png': (48, 18) for s in ('normal', 'seleccionada')},
-    **{f'categoria_{c}_{s}.png': (24, 14) for c in CATEGORIES for s in ('normal', 'activa')},
+    **{f'categoria_{c}_{s}.png': (48, 32) for c in CATEGORIES for s in ('normal', 'hover', 'activa')},
     'divisor_horizontal.png': (48, 6),
     'divisor_base.png': (48, 6),
     'divisor_rombo.png': (8, 6),
@@ -35,13 +39,15 @@ PIECES = {
 
 def check(image: Image.Image, name: str) -> None:
     px = image.load()
-    for y in range(0, image.height - 1, 2):
+    detailed = name.startswith('categoria_')  # doble densidad, detalle de 1 texel
+    for y in range(0, 0 if detailed else image.height - 1, 2):
         for x in range(0, image.width - 1, 2):
             if len({px[x + i, y + j] for i in (0, 1) for j in (0, 1)}) != 1:
                 raise SystemExit(f'{name}: la rejilla de 2×2 px no es uniforme en ({x}, {y})')
     colors = {px[x, y] for y in range(image.height) for x in range(image.width)}
-    if len(colors) > MAX_COLORS:
-        raise SystemExit(f'{name}: {len(colors)} colores (máximo {MAX_COLORS})')
+    limit = 48 if detailed else MAX_COLORS
+    if len(colors) > limit:
+        raise SystemExit(f'{name}: {len(colors)} colores (máximo {limit})')
     if {c[3] for c in colors} - {0, 255}:
         raise SystemExit(f'{name}: solo se admite transparencia 0 o 255')
 

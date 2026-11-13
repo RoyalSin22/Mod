@@ -478,7 +478,7 @@ public class RolesScreen extends Screen {
 		RoleCategory[] cats = RoleCategory.values();
 		for (int i = 0; i < cats.length; i++) {
 			int x = left + 8 + i * 25;
-			if (mouseX >= x && mouseX < x + 23 && mouseY >= top + 30 && mouseY < top + 44) {
+			if (mouseX >= x && mouseX < x + 23 && mouseY >= top + 30 && mouseY < top + (kit ? 46 : 44)) {
 				category = cats[i];
 				List<Role> roles = category.roles();
 				if (!roles.isEmpty()) selectRole(roles.get(0));
@@ -715,14 +715,16 @@ public class RolesScreen extends Screen {
 			boolean active = cats[i] == category;
 			if (kit) {
 				// La ficha del kit identifica la categoría por su color; el nombre sigue en el tooltip.
-				RolesUi.category(ctx, cats[i], active, x, top + 30);
+				boolean over = mouseX >= x && mouseX < x + RolesUi.CHIP_W && mouseY >= top + 30
+						&& mouseY < top + 30 + RolesUi.CHIP_H;
+				RolesUi.category(ctx, cats[i], active ? "activa" : over ? "hover" : "normal", x, top + 30);
 			} else {
 				ctx.fill(x, top + 30, x + 23, top + 44, active ? 0xFF000000 | cats[i].color() : 0x60303850);
 				ctx.drawBorder(x, top + 30, 23, 14, active ? UiStyle.GOLD : UiStyle.BORDER);
 				Text label = Text.translatable(cats[i].translationKey() + ".short");
 				ctx.drawText(textRenderer, label, x + 12 - textRenderer.getWidth(label) / 2, top + 33, UiStyle.TEXT, false);
 			}
-			if (mouseX >= x && mouseX < x + 23 && mouseY >= top + 30 && mouseY < top + 44) {
+			if (mouseX >= x && mouseX < x + 23 && mouseY >= top + 30 && mouseY < top + (kit ? 46 : 44)) {
 				tooltip = List.of(Text.translatable(cats[i].translationKey()).withColor(cats[i].color()),
 						Text.translatable(cats[i].translationKey() + ".desc").formatted(Formatting.GRAY));
 			}

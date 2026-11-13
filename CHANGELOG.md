@@ -23,6 +23,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   ignoran y los puntos gastados en esas ramas vuelven a estar disponibles.
 
 ### Añadido
+- **v66 — Fichas de categoría con emblema (pantalla de roles).** Las cinco fichas pasan a ser emblemas detallados
+  (espada y hacha, estrella arcana, luna y daga, escudo con brote, engranaje y martillo) con marco de remaches y tres
+  estados: normal, hover (nuevo) y activa. Se dibujan a doble densidad: piezas de 48×32 en el hueco de 24×16, nítidas a
+  escala de interfaz 2 y 4. De las tres versiones recibidas se eligió la más legible a tamaño real.
+  `gen_roles_ui.py` las valida sin la rejilla de 2×2 y con un máximo de 48 colores. Encargo en
+  `docs/PROMPT_ARTE_FICHAS_CATEGORIA.md`. Sin validar en partida.
 - **v66 — Correcciones tras la prueba en partida (interfaz y HUD).**
   - **HUD:** se quita la barra de vida de arriba a la izquierda (duplicaba los corazones). El aguante, los recursos de
     rol y el elemento activo pasan a un bloque de píldoras finas sobre la barra de hambre, de su mismo ancho y por

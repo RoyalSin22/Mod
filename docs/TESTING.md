@@ -12,6 +12,9 @@ Pruebas automáticas nuevas:
   `gen_mob_models.py`, `gen_node_icons.py` y `tools/lang/*`. `gen_tree_atlas.py --check` falla en `main` desde antes de v66
   (compara bytes de PNG y varía con la versión de Pillow); no lo causa ninguno de estos cambios.
 
+- Fichas de categoría (J): las cinco se distinguen por el emblema; al pasar el ratón cambian a `hover`; la activa
+  lleva marco de oro y fondo de su color; el tooltip sigue dando el nombre. Probar a escala de interfaz 2, 3 y 4 (a 3
+  puede verse alguna irregularidad leve por la doble densidad).
 - Correcciones v66 tras la prueba en partida (sin pruebas nuevas; la barra de jefes conserva `BossHudLayoutTest`). En
   partida:
   - **HUD:** no hay barra de vida arriba a la izquierda. Sobre la barra de hambre aparecen el aguante y los recursos de
