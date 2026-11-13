@@ -1448,7 +1448,7 @@
   "screen.aptitudes.tree.hint_scroll": "Rueda: zoom · RePág/AvPág: ventana",
   "screen.aptitudes.hud_config": "Configuración del HUD",
   "screen.aptitudes.hud.scale": "Escala: %s%%",
-  "screen.aptitudes.hud.souls_bars": "Barras estilo Souls",
+  "screen.aptitudes.hud.souls_bars": "Barras de estado",
   "screen.aptitudes.hud.mechanic": "Mecánica del rol",
   "screen.aptitudes.hud.damage_numbers": "Números de daño",
   "screen.aptitudes.hud.screen_effects": "Efectos de pantalla",

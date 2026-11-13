@@ -1448,7 +1448,7 @@
   "screen.aptitudes.tree.hint_scroll": "Wheel: zoom · PgUp/PgDn: window",
   "screen.aptitudes.hud_config": "HUD settings",
   "screen.aptitudes.hud.scale": "Scale: %s%%",
-  "screen.aptitudes.hud.souls_bars": "Souls-style bars",
+  "screen.aptitudes.hud.souls_bars": "Status bars",
   "screen.aptitudes.hud.mechanic": "Role mechanic",
   "screen.aptitudes.hud.damage_numbers": "Damage numbers",
   "screen.aptitudes.hud.screen_effects": "Screen effects",

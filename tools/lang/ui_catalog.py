@@ -181,7 +181,7 @@ tree.hint¦Arrastar: mover · Roda: zoom · C: centralizar¦Glisser : déplacer 
 tree.hint_scroll¦Roda: zoom · PgUp/PgDn: janela¦Molette : zoom · Page préc./suiv. : fenêtre¦Mausrad: Zoom · Bild auf/ab: Fenster
 hud_config¦Ajustes do HUD¦Réglages de l'ATH¦HUD-Einstellungen
 hud.scale¦Escala: %s%%¦Échelle : %s%%¦Skalierung: %s%%
-hud.souls_bars¦Barras estilo Souls¦Barres de style Souls¦Leisten im Souls-Stil
+hud.souls_bars¦Barras de estado¦Barres d'état¦Statusleisten
 hud.mechanic¦Mecânica da classe¦Mécanique du rôle¦Rollenmechanik
 hud.damage_numbers¦Números de dano¦Nombres de dégâts¦Schadenszahlen
 hud.screen_effects¦Efeitos de tela¦Effets d'écran¦Bildschirmeffekte

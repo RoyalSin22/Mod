@@ -11,11 +11,16 @@ import net.minecraft.text.Text;
  */
 final class KButton extends ButtonWidget {
 	static final int HEIGHT = 18;
-	private final String base;
+	private String base;
 	private boolean pressed;
 
 	KButton(int x, int y, int width, Text label, String base, PressAction action) {
 		super(x, y, width, HEIGHT, label, action, DEFAULT_NARRATION_SUPPLIER);
+		this.base = base;
+	}
+
+	/** Cambia la pieza del botón (p. ej., un interruptor encendido usa «confirmar» y apagado «cerrar»). */
+	void setBase(String base) {
 		this.base = base;
 	}
 

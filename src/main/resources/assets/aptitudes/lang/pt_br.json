@@ -1448,7 +1448,7 @@
   "screen.aptitudes.tree.hint_scroll": "Roda: zoom · PgUp/PgDn: janela",
   "screen.aptitudes.hud_config": "Ajustes do HUD",
   "screen.aptitudes.hud.scale": "Escala: %s%%",
-  "screen.aptitudes.hud.souls_bars": "Barras estilo Souls",
+  "screen.aptitudes.hud.souls_bars": "Barras de estado",
   "screen.aptitudes.hud.mechanic": "Mecânica da classe",
   "screen.aptitudes.hud.damage_numbers": "Números de dano",
   "screen.aptitudes.hud.screen_effects": "Efeitos de tela",

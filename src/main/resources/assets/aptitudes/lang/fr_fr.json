@@ -1448,7 +1448,7 @@
   "screen.aptitudes.tree.hint_scroll": "Molette : zoom · Page préc./suiv. : fenêtre",
   "screen.aptitudes.hud_config": "Réglages de l'ATH",
   "screen.aptitudes.hud.scale": "Échelle : %s%%",
-  "screen.aptitudes.hud.souls_bars": "Barres de style Souls",
+  "screen.aptitudes.hud.souls_bars": "Barres d'état",
   "screen.aptitudes.hud.mechanic": "Mécanique du rôle",
   "screen.aptitudes.hud.damage_numbers": "Nombres de dégâts",
   "screen.aptitudes.hud.screen_effects": "Effets d'écran",

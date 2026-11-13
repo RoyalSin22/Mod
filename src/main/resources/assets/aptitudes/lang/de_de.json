@@ -1448,7 +1448,7 @@
   "screen.aptitudes.tree.hint_scroll": "Mausrad: Zoom · Bild auf/ab: Fenster",
   "screen.aptitudes.hud_config": "HUD-Einstellungen",
   "screen.aptitudes.hud.scale": "Skalierung: %s%%",
-  "screen.aptitudes.hud.souls_bars": "Leisten im Souls-Stil",
+  "screen.aptitudes.hud.souls_bars": "Statusleisten",
   "screen.aptitudes.hud.mechanic": "Rollenmechanik",
   "screen.aptitudes.hud.damage_numbers": "Schadenszahlen",
   "screen.aptitudes.hud.screen_effects": "Bildschirmeffekte",
