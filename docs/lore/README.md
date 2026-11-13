@@ -25,6 +25,7 @@ para que los textos futuros (Grimorio, bestiario, inscripciones, tooltips) salga
 | [05_FACCIONES_Y_PERSONAJES.md](05_FACCIONES_Y_PERSONAJES.md) | Facciones históricas y autores atribuidos |
 | [06_EVENTOS_Y_ARCOS.md](06_EVENTOS_Y_ARCOS.md) | Niebla, templo, Eclipse, Lluvia de brasas y los dos arcos |
 | [07_BESTIARIO_TEMPLOS_ARTEFACTOS.md](07_BESTIARIO_TEMPLOS_ARTEFACTOS.md) | Criaturas, jefes, templos y artefactos |
+| [09_CADENA_DE_PROGRESION.md](09_CADENA_DE_PROGRESION.md) | Cadena aprobada Niebla → templo → Behelit → Eclipse y su estado en el código |
 | [08_PREPARACION_GRIMORIO.md](08_PREPARACION_GRIMORIO.md) | Cómo encajaría el lore en el Grimorio real (sin implementar) |
 | [COLECCION_I_CORPUS.md](COLECCION_I_CORPUS.md) | Textos del autor de la Colección I (15 entradas, sin cambios) |
 | [AUDITORIA_COLECCION_I.md](AUDITORIA_COLECCION_I.md) | Revisión de esa colección frente al canon y al código |

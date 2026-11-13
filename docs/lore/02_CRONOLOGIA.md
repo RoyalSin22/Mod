@@ -32,6 +32,6 @@ Orden **relativo**. No se inventan años, siglos ni duraciones. Estado: **ESTABL
 ## Decisión del autor sobre el Eclipse invocado (ESTABLECIDO)
 
 Cuando el jugador cumple ciertos objetivos, **puede invocar el Eclipse cada vez que tenga el material para
-sacrificar en la Hoguera**, con una espera mínima de 10 días entre Eclipses. Qué objetivos exige y qué material
-se sacrifica: **sin definir** (D-18 y D-02). Es una mecánica **PENDIENTE DE IMPLEMENTAR**; el Grimorio no debe
+sacrificar en la Hoguera**, con una espera mínima de 3 días entre Eclipses. Los objetivos son la cadena de `09_CADENA_DE_PROGRESION.md`
+y el material es el Behelit, que se consume. Es una mecánica **PENDIENTE DE IMPLEMENTAR**; el Grimorio no debe
 afirmarla hasta que exista.

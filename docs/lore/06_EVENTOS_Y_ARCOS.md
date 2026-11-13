@@ -20,7 +20,7 @@ del Eclipse, activación de la Lluvia por portal. Se registran como **NO VERIFIC
 |---|---|---|
 | Inicio | El jugador aparece con el Grimorio; bestiario vacío | Bestiario por jugador: VERIFICADO (`guide/BestiaryRules`); «aparece con Grimorio»: NO VERIFICADO |
 | Primeros objetivos | Obtener Hoguera y Mesa del Gremio | Objetos VERIFICADOS (`BONFIRE_ITEM`, `GUILD_DESK_ITEM`); guiado por el tutorial (v44) |
-| Niebla de almas | Primer evento; un aldeano advierte del levantamiento de los muertos; cada tres días (diseño propuesto) | Evento VERIFICADO; gatillo por aldeano y frecuencia de 3 días: PENDIENTE (hoy es calendario rotativo) |
+| Niebla de almas | Primer evento: el aldeano del gremio avisa de que los muertos se levantan; la inicia un jugador para todo el mundo; dura un día y se repite cada 10 días solo si se habla con él (diseño del autor, ver 09) | Evento VERIFICADO; gatillo por aldeano y frecuencia de 3 días: PENDIENTE (hoy es calendario rotativo) |
 | Materiales de la Niebla | Errante Velado suelta `jiron_velo_espectral` (85 % si lo mata un jugador); existe `soul_shard`; el material del Osario Quebrado está sin definir | VERIFICADO / pendiente de rediseño (decisión del autor D-05) |
 | Objeto especial | Se fabrica con materiales de la Niebla para interactuar con mecanismos del templo | **PENDIENTE: receta no definida**; no se inventa id ni receta |
 | Templo | Exploración, subjefe (Autómata Antiguo), puzle, uso del objeto, cámara principal, Custodio de las Cuatro Llaves, cuatro llaves, cuatro cámaras de recompensa | Estructura base VERIFICADA (`temple/`); correspondencia exacta NO VERIFICADA |
@@ -39,7 +39,7 @@ del Eclipse, activación de la Lluvia por portal. Se registran como **NO VERIFIC
 | Estado | Solo narrativo | Evento VERIFICADO (`EclipseManager`); la invocación por sacrificio es PENDIENTE |
 
 **ESTABLECIDO (autor):** cuando el jugador cumple ciertos objetivos, **puede invocar el Eclipse cada vez que
-tenga el material para sacrificar en la Hoguera**, con 10 días de espera mínima. Esto sustituye la idea del
+tenga el material para sacrificar en la Hoguera**, con 3 días de espera mínima (un Behelit cada 3 días). Esto sustituye la idea del
 borrador de un Eclipse «único por mundo».
 
 Consecuencias para el lore (PROPUESTA salvo lo indicado):
@@ -49,10 +49,10 @@ Consecuencias para el lore (PROPUESTA salvo lo indicado):
 2. La **Fractura Silenciosa** (LORE-014) se desbloquea una sola vez por jugador, al **finalizar un Eclipse**.
    Si los Eclipses posteriores la ensanchan o solo la «pulsan» sigue abierto (D-09). Recomendación: la pulsan sin
    ensanchar, para no contradecir el cierre del segundo arco.
-3. **Qué objetivos exige** invocarlo y **qué material** se sacrifica: sin definir (D-18, D-02). Los textos usan
-   «ofrenda» de forma genérica, salvo LORE-013 («la reliquia»), que se mantiene como texto del autor.
-4. El «cada 10 días» del código es hoy un intervalo de **calendario** (`eclipseIntervalDays = 10`). Pasarlo a
-   «espera tras un sacrificio» es un cambio de mecánica **fuera de esta tarea**.
+3. **Los objetivos** son la cadena Niebla → templo → Behelit y **el material** es el Behelit (ver
+   `09_CADENA_DE_PROGRESION.md`). Los textos usan «ofrenda» de forma genérica; LORE-013 dice «la reliquia».
+4. El código tiene hoy un intervalo de **calendario** de 10 días (`eclipseIntervalDays = 10`). Pasarlo a «3 días
+   de espera tras un sacrificio» es un cambio de mecánica **fuera de esta tarea** (ver `09_CADENA_DE_PROGRESION.md`).
 
 Mientras la mecánica no exista, el Grimorio **no** debe afirmar «cada Eclipse exige un sacrificio».
 
