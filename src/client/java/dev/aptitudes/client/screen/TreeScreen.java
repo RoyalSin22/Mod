@@ -348,8 +348,17 @@ public class TreeScreen extends Screen {
 		RoleNode first = nodeOf(path, Step.S1);
 		if (first != null) NodeIconRenderer.draw(ctx, first, h.x() + 8, h.y() + 4);
 		boolean locked = chosen > 0 && chosen - 1 != path;
-		UiStyle.label(ctx, textRenderer, Text.translatable(RoleTree.pathKey(role, path + 1)), h.x() + 30, h.y() + 8, 62,
-				locked ? UiStyle.MUTED : chosen - 1 == path ? UiStyle.GOLD : UiStyle.TEXT);
+		// Los nombres largos se parten en dos líneas a 0,8× en vez de cortarse con puntos suspensivos.
+		float scale = 0.8f;
+		List<OrderedText> lines = textRenderer.wrapLines(Text.translatable(RoleTree.pathKey(role, path + 1)), (int) (62 / scale));
+		int shown = Math.min(2, lines.size());
+		int color = locked ? UiStyle.MUTED : chosen - 1 == path ? UiStyle.GOLD : UiStyle.TEXT;
+		int y0 = h.y() + Math.round((h.h() - (shown * 9 - 1) * scale) / 2f);
+		ctx.getMatrices().push();
+		ctx.getMatrices().translate(h.x() + 30, y0, 0);
+		ctx.getMatrices().scale(scale, scale, 1f);
+		for (int i = 0; i < shown; i++) ctx.drawText(textRenderer, lines.get(i), 0, i * 9, color, true);
+		ctx.getMatrices().pop();
 	}
 
 	/** Conectores de 2 px entre los centros de los nodos, del color de la senda si el siguiente escalón está aprendido. */
@@ -393,8 +402,20 @@ public class TreeScreen extends Screen {
 
 	private void drawNode(DrawContext ctx, RoleSyncPayload data, RoleNode node, Step step, int path, Rect r) {
 		String state = nodeState(data, node, step);
-		TreeUi.node(ctx, role.category(), state, r.x(), r.y());
-		if (!"bloqueado".equals(state)) {
+		boolean locked = "bloqueado".equals(state);
+		// Un nodo bloqueado enseña su icono atenuado bajo un candado pequeño: el candado grande del marco lo tapaba todo.
+		TreeUi.node(ctx, role.category(), locked ? "disponible" : state, r.x(), r.y());
+		if (locked) {
+			ctx.fill(r.x() + 2, r.y() + 2, r.right() - 2, r.bottom() - 2, 0xB0141820);
+			ctx.setShaderColor(0.65f, 0.65f, 0.7f, 0.55f);
+			NodeIconRenderer.draw(ctx, node, r.x() + 4, r.y() + 4);
+			ctx.setShaderColor(1f, 1f, 1f, 1f);
+			ctx.getMatrices().push();
+			ctx.getMatrices().translate(0, 0, 200);
+			ctx.fill(r.x(), r.y(), r.x() + 9, r.y() + 11, 0xFF141820);
+			UiStyle.lockIcon(ctx, r.x() - 2, r.y() - 1);
+			ctx.getMatrices().pop();
+		} else {
 			boolean dim = "descartado".equals(state);
 			if (dim) ctx.setShaderColor(1f, 1f, 1f, 0.4f);
 			NodeIconRenderer.draw(ctx, node, r.x() + 4, r.y() + 4);
