@@ -5,6 +5,8 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.PersistentState;
 
+import java.util.UUID;
+
 /**
  * v41: estado guardado de la rotación de eventos (Mundo Normal). El Eclipse conserva su propio estado
  * ({@code aptitudes_eclipse}) por compatibilidad con mundos guardados; aquí van la elección de cada fecha y los
@@ -27,6 +29,9 @@ public final class WorldEventState extends PersistentState {
 	boolean forced;
 	long startTick;
 	long activeDay = -1;
+	UUID fogSession;
+	UUID lastClosedFogSession;
+	long lastFogCloseTick;
 
 	public static WorldEventState get(ServerWorld overworld) {
 		return overworld.getPersistentStateManager().getOrCreate(TYPE, NAME);
@@ -44,10 +49,15 @@ public final class WorldEventState extends PersistentState {
 		nbt.putBoolean("forced", forced);
 		nbt.putLong("start", startTick);
 		nbt.putLong("active_day", activeDay);
+		if (fogSession != null) nbt.putUuid("fog_session", fogSession);
+		if (lastClosedFogSession != null) {
+			nbt.putUuid("closed_fog_session", lastClosedFogSession);
+			nbt.putLong("fog_close_tick", lastFogCloseTick);
+		}
 		return nbt;
 	}
 
-	private static WorldEventState fromNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup lookup) {
+	static WorldEventState fromNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup lookup) {
 		WorldEventState s = new WorldEventState();
 		s.lastIndex = nbt.contains("last_index") ? nbt.getLong("last_index") : -1;
 		s.lastKind = nbt.getString("last_kind");
@@ -59,6 +69,11 @@ public final class WorldEventState extends PersistentState {
 		s.forced = nbt.getBoolean("forced");
 		s.startTick = nbt.getLong("start");
 		s.activeDay = nbt.contains("active_day") ? nbt.getLong("active_day") : -1;
+		if (nbt.containsUuid("fog_session")) s.fogSession = nbt.getUuid("fog_session");
+		if (nbt.containsUuid("closed_fog_session")) {
+			s.lastClosedFogSession = nbt.getUuid("closed_fog_session");
+			s.lastFogCloseTick = nbt.getLong("fog_close_tick");
+		}
 		return s;
 	}
 }

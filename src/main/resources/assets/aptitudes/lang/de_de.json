@@ -3780,5 +3780,13 @@
   "screen.aptitudes.respec.confirm": "Das Zurücksetzen des Baums von %1$s gibt %2$s Punkte zurück und kostet %3$s Erfahrungsstufen. Stufe und Entwicklung der Rolle bleiben, aber die gewählten Pfade werden frei.",
   "screen.aptitudes.respec.cost": "Kostet %s Erfahrungsstufen",
   "screen.aptitudes.respec.missing": "Du brauchst %s Erfahrungsstufen",
-  "screen.aptitudes.respec.nothing": "Keine Punkte in dieser Rolle ausgegeben"
+  "screen.aptitudes.respec.nothing": "Keine Punkte in dieser Rolle ausgegeben",
+  "item.aptitudes.jiron_velo_espectral": "Spektraler Schleierfetzen",
+  "subtitles.aptitudes.errante_ambient": "Verhüllter Wanderer flüstert",
+  "subtitles.aptitudes.errante_alert": "Verhüllter Wanderer wird aufmerksam",
+  "subtitles.aptitudes.errante_prepare": "Schleier des Wanderers spannt sich",
+  "subtitles.aptitudes.errante_rend": "Verhüllter Wanderer schlägt",
+  "subtitles.aptitudes.errante_hurt": "Verhüllter Wanderer wird verletzt",
+  "subtitles.aptitudes.errante_death": "Verhüllter Wanderer bricht zusammen",
+  "subtitles.aptitudes.errante_despawn": "Verhüllter Wanderer verblasst"
 }

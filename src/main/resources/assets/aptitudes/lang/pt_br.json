@@ -3780,5 +3780,13 @@
   "screen.aptitudes.respec.confirm": "Reiniciar a árvore de %1$s devolve %2$s pontos e custa %3$s níveis de experiência. O nível e a evolução da classe não mudam, mas as sendas escolhidas ficam livres.",
   "screen.aptitudes.respec.cost": "Custa %s níveis de experiência",
   "screen.aptitudes.respec.missing": "Você precisa de %s níveis de experiência",
-  "screen.aptitudes.respec.nothing": "Não há pontos gastos nesta classe"
+  "screen.aptitudes.respec.nothing": "Não há pontos gastos nesta classe",
+  "item.aptitudes.jiron_velo_espectral": "Farrapo de Véu Espectral",
+  "subtitles.aptitudes.errante_ambient": "O Errante Velado sussurra",
+  "subtitles.aptitudes.errante_alert": "O Errante Velado fica alerta",
+  "subtitles.aptitudes.errante_prepare": "O véu do Errante se estica",
+  "subtitles.aptitudes.errante_rend": "O Errante rasga o ar",
+  "subtitles.aptitudes.errante_hurt": "O Errante Velado sofre dano",
+  "subtitles.aptitudes.errante_death": "O Errante Velado desaba",
+  "subtitles.aptitudes.errante_despawn": "O Errante Velado se dissipa"
 }

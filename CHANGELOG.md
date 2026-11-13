@@ -138,8 +138,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   validar en partida.
 - **v65 — Enemigos nuevos.** El Errante Velado aparece en la Niebla de almas (10 % de las apariciones, junto al
   Osario Quebrado con otro 10 %) y tiene huevo de aparición y entrada en el bestiario. El Custodio de las Cuatro
-  Llaves sustituye al guardián vanilla de los templos sellados. Ambos tienen modelo y animaciones generados por
-  `tools/models/gen_mob_models.py` (`--check`). Sin validar en partida.
+  Llaves sustituye al guardián vanilla de los templos sellados. El generador conserva los recursos del Custodio
+  y deja fuera los del Errante, que se mantienen en su proyecto independiente de Blockbench.
+- **v65 — Errante Velado.** Modelo y atlas de 256 × 256, seis animaciones, siete sonidos originales y Rasgado
+  Espectral con aviso visible, daño en arco y Debilidad I. Los Errantes de la Niebla se retiran por turnos al
+  cerrar el evento. Las muertes válidas dan una tirada por un Jirón de Velo Espectral.
 - **v65 — Rediseño de jefes (hoja de arte).** El Coloso Sin Rostro tiene una caja de colisión de 3,8 bloques de alto y adopta netherita,
   pizarra y energía roja. El Guardián Desmontado tiene escudo carmesí con cruz dorada y cuerpo de piedra lisa. El
   Autómata Antiguo usa piedra tallada, bronce, cobre, ojo ámbar y dos esferas auxiliares. La esfera del Autómata tiene

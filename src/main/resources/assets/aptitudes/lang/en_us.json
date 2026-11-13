@@ -3780,5 +3780,13 @@
   "screen.aptitudes.respec.confirm": "Resetting the %1$s tree returns %2$s points and costs %3$s experience levels. Role level and evolution do not change, but the chosen paths become free.",
   "screen.aptitudes.respec.cost": "Costs %s experience levels",
   "screen.aptitudes.respec.missing": "You need %s experience levels",
-  "screen.aptitudes.respec.nothing": "No points spent in this role"
+  "screen.aptitudes.respec.nothing": "No points spent in this role",
+  "item.aptitudes.jiron_velo_espectral": "Spectral Veil Scrap",
+  "subtitles.aptitudes.errante_ambient": "Veiled Wanderer whispers",
+  "subtitles.aptitudes.errante_alert": "Veiled Wanderer notices",
+  "subtitles.aptitudes.errante_prepare": "Veiled Wanderer winds up",
+  "subtitles.aptitudes.errante_rend": "Veiled Wanderer rends",
+  "subtitles.aptitudes.errante_hurt": "Veiled Wanderer hurts",
+  "subtitles.aptitudes.errante_death": "Veiled Wanderer collapses",
+  "subtitles.aptitudes.errante_despawn": "Veiled Wanderer fades"
 }

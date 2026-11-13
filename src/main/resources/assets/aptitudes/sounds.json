@@ -124,5 +124,47 @@
     "sounds": [
       "aptitudes:ui_metal_denied"
     ]
+  },
+  "errante_ambient": {
+    "subtitle": "subtitles.aptitudes.errante_ambient",
+    "sounds": [
+      "aptitudes:errante_ambient"
+    ]
+  },
+  "errante_alert": {
+    "subtitle": "subtitles.aptitudes.errante_alert",
+    "sounds": [
+      "aptitudes:errante_alert"
+    ]
+  },
+  "errante_prepare": {
+    "subtitle": "subtitles.aptitudes.errante_prepare",
+    "sounds": [
+      "aptitudes:errante_prepare"
+    ]
+  },
+  "errante_rend": {
+    "subtitle": "subtitles.aptitudes.errante_rend",
+    "sounds": [
+      "aptitudes:errante_rend"
+    ]
+  },
+  "errante_hurt": {
+    "subtitle": "subtitles.aptitudes.errante_hurt",
+    "sounds": [
+      "aptitudes:errante_hurt"
+    ]
+  },
+  "errante_death": {
+    "subtitle": "subtitles.aptitudes.errante_death",
+    "sounds": [
+      "aptitudes:errante_death"
+    ]
+  },
+  "errante_despawn": {
+    "subtitle": "subtitles.aptitudes.errante_despawn",
+    "sounds": [
+      "aptitudes:errante_despawn"
+    ]
   }
 }

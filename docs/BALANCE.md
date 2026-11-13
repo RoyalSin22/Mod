@@ -411,6 +411,14 @@ recibido sin contar las piezas) alarga los combates. Para volver a la v41: `ecli
 Mismo calendario que antes (cada 10 días): la frecuencia total de eventos no cambia, pero el Eclipse pasa a ser
 uno de cada tres eventos de media.
 
+**Errante Velado (v65).** Recibe el 10 % de las tiradas de aparición de Niebla de almas. Conserva 26 de vida,
+6 de daño base y el afijo Gigante (+35 % de escala cuando corresponda). El Rasgado cubre un sector horizontal de
+120° y 1,75 bloques de radio a escala base, independiente de la caja corporal. El barrido solo se resuelve al
+tick 10 y aplica Debilidad I durante 40 ticks si inflige daño a un objetivo que sobrevive. Una muerte válida
+atribuida a un jugador durante la sesión activa permite una tirada del 85 % para un Jirón. La retirada por cierre
+del evento se reparte entre 1 y 6 segundos y no genera experiencia ni botín. Queda por calibrar el tiempo de
+obtención cuando exista la receta de progresión.
+
 # Grupos (v29)
 
 - Máximo de cinco integrantes, contando al líder. La invitación caduca tras 1200 ticks (60 s).

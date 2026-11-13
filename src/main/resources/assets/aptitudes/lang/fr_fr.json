@@ -3780,5 +3780,13 @@
   "screen.aptitudes.respec.confirm": "Réinitialiser l’arbre de %1$s rend %2$s points et coûte %3$s niveaux d’expérience. Le niveau et l’évolution du rôle ne changent pas, mais les sentiers choisis redeviennent libres.",
   "screen.aptitudes.respec.cost": "Coûte %s niveaux d’expérience",
   "screen.aptitudes.respec.missing": "Il vous faut %s niveaux d’expérience",
-  "screen.aptitudes.respec.nothing": "Aucun point dépensé dans ce rôle"
+  "screen.aptitudes.respec.nothing": "Aucun point dépensé dans ce rôle",
+  "item.aptitudes.jiron_velo_espectral": "Lambeau de voile spectral",
+  "subtitles.aptitudes.errante_ambient": "Le Vagabond voilé murmure",
+  "subtitles.aptitudes.errante_alert": "Le Vagabond voilé se met en alerte",
+  "subtitles.aptitudes.errante_prepare": "Le voile du Vagabond se tend",
+  "subtitles.aptitudes.errante_rend": "Le Vagabond lacère",
+  "subtitles.aptitudes.errante_hurt": "Le Vagabond voilé est blessé",
+  "subtitles.aptitudes.errante_death": "Le Vagabond voilé s’effondre",
+  "subtitles.aptitudes.errante_despawn": "Le Vagabond voilé se dissipe"
 }

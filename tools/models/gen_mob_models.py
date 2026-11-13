@@ -176,7 +176,7 @@ CUSTODIO = {
 
 SPECS = [OSARIO, ERRANTE, CUSTODIO, ESCORIFICADOR]
 # El editable de Blockbench es la fuente de estos recursos.
-HAND_MADE = {'escorificador_hierro'}
+HAND_MADE = {'escorificador_hierro', 'errante_velado'}
 
 
 def geometry(spec):

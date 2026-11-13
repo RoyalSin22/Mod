@@ -4,6 +4,7 @@ import dev.aptitudes.Aptitudes;
 import dev.aptitudes.config.AptitudesConfig;
 import dev.aptitudes.elite.Elites;
 import dev.aptitudes.item.ModItems;
+import dev.aptitudes.mob.ErranteEntity;
 import dev.aptitudes.network.EclipsePayload;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
@@ -31,7 +32,11 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -57,6 +62,9 @@ public final class WorldEventManager {
 	private record Meteor(ServerWorld world, Vec3d from, Vec3d to, long impactTick, StrongEventRules.MeteorSize size) {}
 
 	private static final Set<UUID> ALIVE = new HashSet<>();
+	private static final Map<UUID, ErranteEntity> FOG_ERRANTES = new HashMap<>();
+	private static final PriorityQueue<ErranteEntity> FOG_RETIREMENTS =
+			new PriorityQueue<>(Comparator.comparingLong(ErranteEntity::retireAt).thenComparing(ErranteEntity::getUuid));
 	private static final Set<UUID> LEFTOVERS = new HashSet<>();
 	private static final List<Meteor> METEORS = new ArrayList<>();
 	private static long nextWaveTick;
@@ -65,19 +73,46 @@ public final class WorldEventManager {
 	}
 
 	public static void register() {
+		ServerLifecycleEvents.SERVER_STARTING.register(server -> resetFogErrantes());
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> reset());
-		ServerLifecycleEvents.SERVER_STOPPED.register(server -> reset());
+		ServerLifecycleEvents.SERVER_STOPPED.register(server -> {
+			reset();
+			resetFogErrantes();
+		});
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			tickMeteors(server);
 			if (server.getTicks() % 20 == 15) tick(server);
+			tickFogRetirements(server.getOverworld().getTime());
 		});
 		ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
+			if (entity instanceof ErranteEntity errante) {
+				if (errante.isAlive() && FogErranteRules.eventOwned(errante.fogSession(), errante.getCommandTags().contains(TAG))) {
+					FOG_ERRANTES.put(errante.getUuid(), errante);
+					WorldEventState state = WorldEventState.get(world.getServer().getOverworld());
+					if (!FogErranteRules.belongsToSession(errante.fogSession(), activeFogSession(state), world.getRegistryKey() == World.OVERWORLD)
+							|| errante.isRetiring()) {
+						long now = world.getServer().getOverworld().getTime();
+						long closedAt = errante.fogSession() == null ? now
+								: errante.fogSession().equals(state.lastClosedFogSession) ? state.lastFogCloseTick
+								: Math.max(0, now - FogErranteRules.MAX_DELAY);
+						queueFogRetirement(errante, closedAt);
+					}
+				}
+				return;
+			}
 			if (!entity.getCommandTags().contains(TAG)) return;
 			if (world.getRegistryKey() == World.OVERWORLD && !WorldEventState.get(world).active.isEmpty()) ALIVE.add(entity.getUuid());
 			else LEFTOVERS.add(entity.getUuid());
 		});
-		ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> ALIVE.remove(entity.getUuid()));
+		ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
+			ALIVE.remove(entity.getUuid());
+			if (entity instanceof ErranteEntity errante) untrackFogErrante(errante);
+		});
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
+			if (entity instanceof ErranteEntity errante) {
+				untrackFogErrante(errante);
+				if (errante.isRetiring()) return;
+			}
 			if (entity instanceof MobEntity mob && mob.getCommandTags().contains(TAG) && mob.getWorld() instanceof ServerWorld w) {
 				ALIVE.remove(mob.getUuid());
 				// Niebla de almas: las almas que se liberan dejan Fragmentos de alma.
@@ -87,11 +122,48 @@ public final class WorldEventManager {
 		});
 	}
 
+	private static void resetFogErrantes() {
+		FOG_ERRANTES.clear();
+		FOG_RETIREMENTS.clear();
+	}
+
 	private static void reset() {
 		ALIVE.clear();
 		LEFTOVERS.clear();
 		METEORS.clear();
 		nextWaveTick = 0;
+	}
+
+	private static UUID activeFogSession(WorldEventState state) {
+		return WorldEventKind.SOUL_FOG.id().equals(state.active) ? state.fogSession : null;
+	}
+
+	public static boolean canDropVeil(ErranteEntity errante, ServerWorld world) {
+		WorldEventState state = WorldEventState.get(world.getServer().getOverworld());
+		return FogErranteRules.eligibleLoot(errante.fogSession(), activeFogSession(state),
+				world.getRegistryKey() == World.OVERWORLD, errante.isRetiring());
+	}
+
+	private static void queueFogRetirement(ErranteEntity errante, long closedAt) {
+		errante.beginFogRetirement(FogErranteRules.removalAt(errante.getUuid(), closedAt));
+		FOG_RETIREMENTS.add(errante);
+	}
+
+	private static void untrackFogErrante(ErranteEntity errante) {
+		FOG_ERRANTES.remove(errante.getUuid(), errante);
+		if (errante.isRetiring()) FOG_RETIREMENTS.remove(errante);
+	}
+
+	private static void tickFogRetirements(long now) {
+		for (int count = 0; count < FogErranteRules.MAX_REMOVALS_PER_TICK; count++) {
+			ErranteEntity next = FOG_RETIREMENTS.peek();
+			if (next == null || next.retireAt() > now) break;
+			FOG_RETIREMENTS.remove();
+			if (FOG_ERRANTES.get(next.getUuid()) == next && next.getWorld() instanceof ServerWorld world) {
+				FOG_ERRANTES.remove(next.getUuid());
+				next.finishFogRetirement(world);
+			}
+		}
 	}
 
 	// ------------------------------------------------------------------ Calendario
@@ -191,6 +263,7 @@ public final class WorldEventManager {
 		if (kind == WorldEventKind.ECLIPSE) return;
 		WorldEventState state = WorldEventState.get(world);
 		state.active = kind.id();
+		if (kind == WorldEventKind.SOUL_FOG) state.fogSession = UUID.randomUUID();
 		state.forced = forced;
 		state.startTick = world.getTime();
 		state.activeDay = day;
@@ -206,6 +279,14 @@ public final class WorldEventManager {
 	/** Termina el evento nuevo en curso (si lo hay). */
 	public static void end(MinecraftServer server, ServerWorld world, WorldEventState state, boolean completed) {
 		WorldEventKind kind = WorldEventKind.byId(state.active);
+		if (kind == WorldEventKind.SOUL_FOG) {
+			state.lastClosedFogSession = state.fogSession;
+			state.lastFogCloseTick = world.getTime();
+			state.fogSession = null;
+			for (ErranteEntity errante : FOG_ERRANTES.values()) {
+				if (errante.isAlive() && !errante.isRetiring()) queueFogRetirement(errante, state.lastFogCloseTick);
+			}
+		}
 		state.active = "";
 		state.forced = false;
 		state.markDirty();
@@ -249,6 +330,12 @@ public final class WorldEventManager {
 	// ------------------------------------------------------------------ Niebla de almas
 
 	private static void fogWave(ServerWorld world, AptitudesConfig cfg) {
+		WorldEventState state = WorldEventState.get(world);
+		// Una partida guardada antes de introducir sesiones puede tener una Niebla activa.
+		if (state.fogSession == null) {
+			state.fogSession = UUID.randomUUID();
+			state.markDirty();
+		}
 		int baseCap = Math.max(0, cfg.eclipseMaxMobsPerPlayer / 2);
 		java.util.Set<UUID> processed = new java.util.HashSet<>();
 		for (ServerPlayerEntity player : world.getPlayers()) {
@@ -263,7 +350,8 @@ public final class WorldEventManager {
 			java.util.Set<UUID> alive = new java.util.HashSet<>();
 			for (ServerPlayerEntity member : group) {
 				world.getEntitiesByClass(MobEntity.class, member.getBoundingBox().expand(48),
-						mob -> mob.isAlive() && mob.getCommandTags().contains(TAG)).forEach(mob -> alive.add(mob.getUuid()));
+						mob -> mob.isAlive() && mob.getCommandTags().contains(TAG)
+								&& (!(mob instanceof ErranteEntity errante) || !errante.isRetiring())).forEach(mob -> alive.add(mob.getUuid()));
 			}
 			int groupSize = group.size();
 			int cap = Math.min(Integer.MAX_VALUE, baseCap * groupSize);
@@ -284,10 +372,15 @@ public final class WorldEventManager {
 				mob.addCommandTag(TAG);
 				mob.addCommandTag(Elites.CHECKED);
 				if (world.random.nextFloat() < 0.15f) Elites.makeElite(mob, false, world.random);
+				if (mob instanceof ErranteEntity errante) {
+					errante.calculateDimensions();
+					if (!world.isSpaceEmpty(errante, errante.getBoundingBox())) continue;
+					errante.markFogOrigin(state.fogSession);
+				}
 				mob.setPersistent();
 				world.spawnEntityAndPassengers(mob);
 				world.spawnParticles(ParticleTypes.SOUL, mob.getX(), mob.getBodyY(0.5), mob.getZ(), 12, 0.3, 0.6, 0.3, 0.02);
-				ALIVE.add(mob.getUuid());
+				if (!(mob instanceof ErranteEntity)) ALIVE.add(mob.getUuid());
 			}
 		}
 	}

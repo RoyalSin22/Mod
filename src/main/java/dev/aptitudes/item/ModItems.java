@@ -111,6 +111,8 @@ public final class ModItems {
 	// ------------------------------------------------------- Objetos de alma
 
 	/** Fragmento de alma: 5 % de los monstruos, 4 de los jefes. Material de sets, frascos y herramientas. */
+	public static final Item JIRON_VELO_ESPECTRAL = register("jiron_velo_espectral",
+			new Item(new Item.Settings().maxCount(64).rarity(Rarity.UNCOMMON)));
 	public static final Item SOUL_SHARD = register("soul_shard", new Item(new Item.Settings().rarity(Rarity.UNCOMMON)));
 
 	public static final Item ESTUS_FLASK = register("estus_flask",
@@ -228,6 +230,7 @@ public final class ModItems {
 						entries.add(ULTIMATE_CORE);
 						entries.add(GUIDE_BOOK);
 						entries.add(SOUL_SHARD);
+						entries.add(JIRON_VELO_ESPECTRAL);
 						entries.add(dev.aptitudes.event.Expeditions.TOKEN); // F5: ficha de expedición
 						entries.add(REBIRTH_OFFERING);
 						entries.add(ARMORY_VOUCHER);

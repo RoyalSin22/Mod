@@ -26,6 +26,14 @@ public final class ModSounds {
 	public static final SoundEvent[] KEYSTONE = keystones();
 	public static final SoundEvent ARENA_THEME = register("arena_theme");
 
+	public static final SoundEvent ERRANTE_AMBIENT = register("errante_ambient");
+	public static final SoundEvent ERRANTE_ALERT = register("errante_alert");
+	public static final SoundEvent ERRANTE_PREPARE = register("errante_prepare");
+	public static final SoundEvent ERRANTE_REND = register("errante_rend");
+	public static final SoundEvent ERRANTE_HURT = register("errante_hurt");
+	public static final SoundEvent ERRANTE_DEATH = register("errante_death");
+	public static final SoundEvent ERRANTE_DESPAWN = register("errante_despawn");
+
 	private ModSounds() {
 	}
 
