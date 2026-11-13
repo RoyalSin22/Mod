@@ -1766,6 +1766,14 @@ item.aptitudes.automaton_orb_deflected¦Esfera devolvida do Autômato¦Orbe de l
 entity.aptitudes.errante_velado¦Andarilho Velado¦Errant voilé¦Verschleierter Wanderer
 item.aptitudes.errante_velado_spawn_egg¦Ovo de aparição do Andarilho Velado¦Œuf d'apparition de l'Errant voilé¦Erscheinungsei des Verschleierten Wanderers
 bestiary.aptitudes.errante_velado.tip¦Um véu de névoa de almas que flutua até os vivos. Fica suspenso e depois rasga com seu braço longo e com garra.¦Un voile de brume d'âmes qui dérive vers les vivants. Il reste suspendu puis déchire avec son long bras griffu.¦Ein Schleier aus Seelennebel, der auf die Lebenden zutreibt. Er schwebt und reißt dann mit seinem langen, krallenbewehrten Arm zu.
+item.aptitudes.jiron_velo_espectral¦Farrapo de Véu Espectral¦Lambeau de voile spectral¦Spektraler Schleierfetzen
+subtitles.aptitudes.errante_ambient¦O Errante Velado sussurra¦Le Vagabond voilé murmure¦Verhüllter Wanderer flüstert
+subtitles.aptitudes.errante_alert¦O Errante Velado fica alerta¦Le Vagabond voilé se met en alerte¦Verhüllter Wanderer wird aufmerksam
+subtitles.aptitudes.errante_prepare¦O véu do Errante se estica¦Le voile du Vagabond se tend¦Schleier des Wanderers spannt sich
+subtitles.aptitudes.errante_rend¦O Errante rasga o ar¦Le Vagabond lacère¦Verhüllter Wanderer schlägt
+subtitles.aptitudes.errante_hurt¦O Errante Velado sofre dano¦Le Vagabond voilé est blessé¦Verhüllter Wanderer wird verletzt
+subtitles.aptitudes.errante_death¦O Errante Velado desaba¦Le Vagabond voilé s’effondre¦Verhüllter Wanderer bricht zusammen
+subtitles.aptitudes.errante_despawn¦O Errante Velado se dissipa¦Le Vagabond voilé se dissipe¦Verhüllter Wanderer verblasst
 entity.aptitudes.custodio_cuatro_llaves¦O Custódio das Quatro Chaves¦Le Gardien des Quatre Clés¦Der Wächter der vier Schlüssel
 item.aptitudes.faceless_colossus_spawn_egg¦Ovo gerador do Colosso Sem Rosto¦Œuf d'apparition du Colosse sans visage¦Spawn-Ei des gesichtslosen Kolosses
 bestiary.aptitudes.faceless_colossus.tip¦Guerreiro gigante com espadão. Anuncia um golpe amplo e um golpe descendente com onda: saia do círculo marcado. Com metade da vida sua armadura racha: fica mais rápido, investe de longe e recebe mais dano.¦Guerrier géant armé d'une grande épée. Il annonce un large balayage et un coup plongeant avec onde de choc : sortez du cercle marqué. À mi-vie son armure se fissure : il va plus vite, charge de loin et subit plus de dégâts.¦Riesiger Krieger mit Zweihänder. Er kündigt einen weiten Hieb und einen Abwärtsschlag mit Schockwelle an: Verlasse den markierten Kreis. Bei halber Lebenskraft bricht seine Rüstung: Er wird schneller, stürmt aus der Ferne an und erleidet mehr Schaden.

@@ -1200,6 +1200,25 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
    siguiente empieza ese (la Niebla a las 18:00).
 8. Mundo con Eclipses anteriores (v34–v40): carga sin errores y el calendario continúa.
 
+# v65 — Errante Velado (verificación)
+
+- `SpectralRendRulesTest`: comprueba alcance, altura, sector, reloj y deduplicación de impactos.
+- `FogErranteRulesTest`: comprueba pertenencia a la sesión, retirada y persistencia del estado del evento.
+- La validación en Minecraft 1.21.1 cubrió el ataque hasta tres blancos, las cancelaciones por muerte y por
+  cierre de Niebla, los límites de oleadas y retirada, y la recuperación de la sesión tras reiniciar un
+  servidor integrado. También se comprobó la limpieza al recargar un chunk descargado.
+- El cliente registró los siete sonidos y recibió el de preparación a 2 y 12 bloques. A 24 bloques quedó
+  fuera del radio. La comparación auditiva entre dos clientes queda pendiente.
+- En un mundo de desarrollo, invoca `aptitudes:errante_velado` y pasa a supervivencia. Comprueba desde varios
+  ángulos los cinco jirones, la elevación antes del barrido, las cinco motas, los sonidos y el colapso.
+- Con dos jugadores en el sector, comprueba un impacto por objetivo y Debilidad I. Repite detrás de un bloque,
+  fuera del sector y con un jugador creativo. Contrasta el alcance del afijo Gigante.
+- Arranca `/aptitudes event start soul_fog`. Distingue los Errantes de la oleada de uno invocado con
+  `/summon`. Detén el evento y comprueba retirada escalonada sin XP ni botín; el invocado debe permanecer.
+  Repite descargando un chunk o reiniciando el servidor; una sesión nueva no debe recuperar criaturas antiguas.
+- Con la Niebla activa y `doMobLoot` habilitado, mata varios Errantes de la oleada. Comprueba que una muerte
+  válida puede dejar un Jirón, con un máximo de uno. Repite con `doMobLoot=false`, `/kill` y un invocado.
+
 # v29 — grupos (verificación manual)
 
 1. Con dos clientes, pulsa `P`, invita desde la lista y comprueba que el segundo recibe botones clicables Aceptar y

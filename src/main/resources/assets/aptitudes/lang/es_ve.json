@@ -3777,5 +3777,13 @@
   "screen.aptitudes.respec.confirm": "Reiniciar el árbol de %1$s devuelve %2$s puntos y cuesta %3$s niveles de experiencia. No cambia el nivel ni la evolución del rol, pero las sendas elegidas quedan libres.",
   "screen.aptitudes.respec.cost": "Cuesta %s niveles de experiencia",
   "screen.aptitudes.respec.missing": "Necesitas %s niveles de experiencia",
-  "screen.aptitudes.respec.nothing": "No hay puntos gastados en este rol"
+  "screen.aptitudes.respec.nothing": "No hay puntos gastados en este rol",
+  "item.aptitudes.jiron_velo_espectral": "Jirón de Velo Espectral",
+  "subtitles.aptitudes.errante_ambient": "El Errante Velado susurra",
+  "subtitles.aptitudes.errante_alert": "El Errante Velado se alerta",
+  "subtitles.aptitudes.errante_prepare": "El velo del Errante se tensa",
+  "subtitles.aptitudes.errante_rend": "El Errante rasga el aire",
+  "subtitles.aptitudes.errante_hurt": "El Errante Velado recibe daño",
+  "subtitles.aptitudes.errante_death": "El Errante Velado se derrumba",
+  "subtitles.aptitudes.errante_despawn": "El Errante Velado se disipa"
 }

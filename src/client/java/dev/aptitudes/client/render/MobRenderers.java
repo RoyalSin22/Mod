@@ -23,7 +23,12 @@ public final class MobRenderers {
 		});
 		EntityRendererRegistry.register(NewMobs.ERRANTE, ctx -> {
 			GeoEntityRenderer<ErranteEntity> renderer = new GeoEntityRenderer<>(ctx,
-					new DefaultedEntityGeoModel<>(Aptitudes.id("errante_velado")));
+					new DefaultedEntityGeoModel<>(Aptitudes.id("errante_velado"))) {
+				@Override
+				protected float getDeathMaxRotation(ErranteEntity entity) {
+					return 0;
+				}
+			};
 			renderer.withScale(1.0f);
 			return renderer;
 		});

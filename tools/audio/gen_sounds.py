@@ -269,6 +269,54 @@ def ui_metal_denied(rng):
     return fade_out(normalize(x + 0.3 * rattle, 0.6))
 
 
+
+def _errante_voice(rng, seconds, frequencies, sweep, texture, cutoff, decay):
+    """Resonancias huecas y fricción de tela sin muestras externas."""
+    t = t_axis(seconds)
+    breath = rng.standard_normal(len(t))
+    cloth = lowpass(breath, cutoff) - lowpass(breath, max(75, cutoff * 0.20))
+    phases = [2 * np.pi * f * (t + sweep * t * t / (2 * seconds)) for f in frequencies]
+    hollow = sum(np.sin(phase + 0.22 * np.sin(2 * np.pi * (7 + i) * t)) / (i + 1)
+                 for i, phase in enumerate(phases))
+    flutter = 0.78 + 0.22 * np.sin(2 * np.pi * (11 * t + 8 * t * t))
+    x = (hollow * 0.22 + cloth * texture * flutter) * env(t, 0.025, decay)
+    return fade_out(normalize(x, 0.69), 0.055)
+
+
+def errante_ambient(rng):
+    return _errante_voice(rng, 0.90, (93, 141, 273), -0.18, 0.68, 1300, 0.48)
+
+
+def errante_alert(rng):
+    return _errante_voice(rng, 0.31, (172, 291, 463), -0.36, 0.45, 2400, 0.13)
+
+
+def errante_prepare(rng):
+    return _errante_voice(rng, 0.38, (120, 181, 307), 0.88, 0.54, 1450, 0.25)
+
+
+def errante_rend(rng):
+    dry = _errante_voice(rng, 0.43, (140, 223, 420), -0.45, 1.40, 3800, 0.13)
+    t = t_axis(0.43)
+    snap = (rng.standard_normal(len(t)) * env(t, 0.004, 0.025)) * 0.23
+    return fade_out(normalize(dry + snap, 0.80), 0.043)
+
+
+def errante_hurt(rng):
+    return _errante_voice(rng, 0.26, (108, 183, 284), -0.34, 0.73, 1850, 0.087)
+
+
+def errante_death(rng):
+    hollow = _errante_voice(rng, 0.86, (111, 173, 328), -0.58, 0.91, 1020, 0.31)
+    t = t_axis(0.86)
+    drop = np.sin(2 * np.pi * 58 * t) * env(t - 0.12, 0.009, 0.099)
+    return fade_out(normalize(hollow + 0.38 * drop, 0.75), 0.09)
+
+
+def errante_despawn(rng):
+    return _errante_voice(rng, 0.69, (156, 263, 398), 0.28, 0.88, 2700, 0.19)
+
+
 SOUNDS = {
     'eclipse_announce': eclipse_announce,
     'eclipse_start': eclipse_start,
@@ -291,6 +339,13 @@ SOUNDS = {
     'keystone_tempest': keystone_tempest,
     'keystone_sanctuary': keystone_sanctuary,
     'arena_theme': arena_theme,
+    'errante_ambient': errante_ambient,
+    'errante_alert': errante_alert,
+    'errante_prepare': errante_prepare,
+    'errante_rend': errante_rend,
+    'errante_hurt': errante_hurt,
+    'errante_death': errante_death,
+    'errante_despawn': errante_despawn,
 }
 
 

@@ -5,6 +5,19 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+### v65 — Errante Velado: combate, Niebla y botín
+- Modelo editable independiente en `tools/models/blockbench/errante_velado.bbmodel`, atlas de 256 × 256 y seis
+  clips GeckoLib. El renderer conserva la escala de la entidad y el afijo Gigante.
+- Rasgado Espectral resuelto por el servidor: aviso al tick 6, barrido al 10, recuperación hasta el 20.
+  Puede herir a varios objetivos válidos, respeta obstáculos y aplica Debilidad I durante 40 ticks.
+- Los Errantes de la Niebla conservan la sesión de origen. Al cerrar el evento, se retiran en 20–120 ticks,
+  sin botín ni XP. Una muerte de combate con crédito de jugador durante la sesión puede dar un
+  `aptitudes:jiron_velo_espectral` (85 %, una tirada). Las invocaciones administrativas quedan fuera de esa cadena.
+- **Progresión pendiente:** definir y registrar el jefe y el trofeo del Osario Quebrado, y diseñar la etapa interna
+  de la mazmorra del Custodio de las Cuatro Llaves que usará el resultado de una receta con el Jirón,
+  `aptitudes:soul_shard` y el trofeo. El Custodio actual de los templos sellados no equivale a esa mazmorra;
+  la receta no debe sustituir las cuatro llaves ni alterar los templos existentes.
+
 ### v65 — Pedidos, expediciones, trance, mancha, afijos, jefes y ruinas (Claude, sin validar en partida)
 - Trance de combate (F2), mancha de XP con 25 % (F3), pedidos del gremio entre jugadores (F4), retirados después de la
   prueba en partida por no encajar con un servidor de amigos, y expediciones de Amenaza (F5: ficha, módulos, grupo, modificadores).
