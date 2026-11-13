@@ -34,12 +34,13 @@ Sistema RPG con tres capas que se combinan:
 | GeckoLib | 4.7.7 (obligatoria desde v63, para los jefes animados) |
 | Gradle | 8.14.3 (incluido mediante el wrapper) |
 
-> Las versiones están en `gradle.properties`. Si alguna no se resuelve, consulta las vigentes en <https://fabricmc.net/develop>.
+> La versión del mod sale del número de commits (240 → 2.4.0); sin historial de git, de `mod_version` en
+> `gradle.properties`. Las versiones de las dependencias están en `gradle.properties`. Si alguna no se resuelve, consulta las vigentes en <https://fabricmc.net/develop>.
 
 ## Compilar y probar
 
 ```bash
-./gradlew build          # JAR en build/libs/aptitudes-1.4.0.jar
+./gradlew build          # JAR en build/libs/aptitudes-<versión>.jar (p. ej. 2.4.0 con 240 commits)
 ./gradlew runClient      # lanza el cliente de desarrollo
 ./gradlew runServer      # lanza un servidor dedicado de desarrollo
 ```
@@ -327,13 +328,13 @@ son traducciones iniciales pendientes de revisión visual y con hablantes nativo
 
 La pestaña *Habilidades* muestra las 10 como tarjetas animadas (5 filas × 2): barra de XP que se llena, brillo dorado si subieron de nivel desde la última vez, resumen de pasivas en una línea y ficha completa (pasivas e hitos) al pasar el ratón.
 
-**Sendas excluyentes.** Cada rol tiene **3 sendas** y desde la v46 solo puedes seguir **una**: al aprender un nodo de una senda, las otras quedan bloqueadas; para cambiar hay que reiniciar el árbol. Cada senda tiene 7 escalones (niveles 10, 14, 20, 26, una bifurcación de dos ramas en el 32 y 40, más la piedra angular del nivel 50) y se ve en la vista «Sendas» de la pantalla de roles. Cada nodo aplica un efecto: robo de vida, crítico, ejecución, espinas, reducción de daño, esquiva, regeneración de vida o de maná, carga de recurso, efectos al golpear (veneno, lentitud, fuego, descomposición), poder de esbirros, antiempuje, velocidad, vida, velocidad de ataque o suerte.
+**Sendas excluyentes.** Cada rol tiene **3 sendas** y desde la v46 solo puedes seguir **una**: al aprender un nodo de una senda, las otras quedan bloqueadas; para cambiar hay que reiniciar el árbol. Cada senda tiene 7 escalones (niveles 10, 14, 20, 26, una bifurcación de dos ramas en el 32 y 40, más la piedra angular del nivel 50) y se ve en la sección «Sendas» del árbol unificado de la pantalla de roles (J). Cada nodo aplica un efecto: robo de vida, crítico, ejecución, espinas, reducción de daño, esquiva, regeneración de vida o de maná, carga de recurso, efectos al golpear (veneno, lentitud, fuego, descomposición), poder de esbirros, antiempuje, velocidad, vida, velocidad de ataque o suerte.
 
 Los 480 iconos propios de S1/S2/S3/S4/S5x/S5y/S6/S7 están generados en `assets/aptitudes/textures/gui/node/` con
 `tools/textures/gen_node_icons.py` (Pillow; `--preview` y `--check`). S1–S3 usan los efectos de `paths(...)`
 y un marco de esquinas, más sencillo que S4. Los 60 S7 tienen emblema morado con
 borde dorado, franja de senda y un glifo de las 10 plantillas. La clase de cliente `NodeIconRenderer` dibuja
-el PNG o el objeto actual si falta (también S7); la caché se vacía al recargar recursos. `PathsScreen` ya
+el PNG o el objeto actual si falta (también S7); la caché se vacía al recargar recursos. El árbol unificado
 usa este dibujado; la cuadrícula de `RolesScreen` también lo usa para S1–S3, manteniendo su distribución (T1).
 
 | Rol | Senda A | Senda B |

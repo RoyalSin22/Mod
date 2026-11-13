@@ -72,7 +72,7 @@ Validación en partida (pendiente):
    Comprueba con escala de interfaz 2, 3 y 4 (en la 4 la pantalla se desplaza con la rueda). Haz clic en un nodo: se selecciona
    y la ficha cambia; con el cursor encima sale el detalle completo. Aprende un nodo disponible: pide confirmar la senda la
    primera vez y la rama en S5; las otras dos sendas quedan oscurecidas. Un nodo activo ya aprendido muestra «Ran. 1» y «Ran. 2».
-   Pon `newTreeScreen` a false en `aptitudes-client.json`: vuelve la vista anterior.
+   (v67: esta vista se integró en el árbol unificado de J; la opción `newTreeScreen` ya no existe.)
 
 1. **Iconos de rol.** Abre J, Sendas y el grimorio: cada uno de los 20 roles muestra su icono nuevo (16×16, legible). Las
    insignias de firma y definitiva, y los tooltips de objetos, siguen con el sello anterior.
@@ -971,7 +971,7 @@ Revisar los colores A/B/C, el marco de solo esquinas de S1–S3, las muescas opu
 (mismo glifo que S4, con destello adicional). Para S7, exige un diccionario completo de 60 pares rol/senda
 y glifos/colores para las 10 plantillas. Cotejar sus asignaciones con la columna «Piedra angular» de
 `docs/V46_DISENO_SENDAS.md` §10 (antes de los dos puntos). Revisar el emblema morado, borde dorado y
-franja A/B/C; Espectro usa una capa translúcida. `PathsScreen` dibuja todos los escalones con el renderizador;
+franja A/B/C; Espectro usa una capa translúcida. El árbol unificado (v67) dibuja todos los escalones con el renderizador;
 la cuadrícula de `RolesScreen` lo usa para S1–S3 desde T1 fase 2.
 
 Para revisar T1 fase 1 antes del commit, comparar con Pillow los 300 PNG de `HEAD` (extraídos con

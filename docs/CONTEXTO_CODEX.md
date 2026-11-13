@@ -111,7 +111,7 @@ retematizaron (p. ej., «Talismán maldito»).
 | Runas para armas de rol (v32) | `rune/RuneSocketing`, `rune/RuneRules`, NBT persistente en `ItemStack.CUSTOM_DATA` |
 | Jefes propios en estructuras (v33) | `boss/BossManager`, `BossKind`, `BossRules`; etiquetas persistentes, barra de campeón existente y mejora de armas con núcleos |
 | Eclipse, evento del mundo (v34) | `event/EclipseManager`, `EclipseRules` (puro, con pruebas), `EclipseState`; cliente `ClientEclipse`, `hud/EclipseHud`, mixins `Eclipse*Mixin` con `require = 0` y sin `@Shadow`; diseño en `docs/V34_ECLIPSE.md` |
-| Nivel 50 y Sendas exclusivas (v46) | `role/PathRules` (puro, con prueba), `RoleTree.deeper/nodeLocked/prerequisiteMet` (nodos nuevos al final de la lista), `screen/PathsScreen`; textos con `tools/lang/gen_path_lang.py`; `config/ConfigMigration` |
+| Nivel 50 y Sendas exclusivas (v46) | `role/PathRules` (puro, con prueba), `RoleTree.deeper/nodeLocked/prerequisiteMet` (nodos nuevos al final de la lista), árbol unificado de `screen/RolesScreen` (v67); textos con `tools/lang/gen_path_lang.py`; `config/ConfigMigration` |
 | Logros (v31) | `achievement/Achievement` (catálogo puro, con prueba), `achievement/Achievements` (`grant`, `checkState` al entrar); avances en `data/aptitudes/advancement/aptitudes/`, generados por `tools/advancements/gen_advancements.py` |
 | Contratos del gremio (v30) | `contract/ContractRules` (puro), `ContractData`, `ContractManager`, `ContractTargets`; tablón `aptitudes:contract_board`; pantalla `ContractBoardScreen` |
 | Runas+ (v35) | `rune/RuneSocketing`: 8 runas, extracción con Mayús + clic en la Mesa del gremio (`UseBlockCallback`), esperas en memoria; valores en la configuración (`rune*`) |

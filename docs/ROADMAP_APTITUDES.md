@@ -5,6 +5,17 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+### v67 — Árbol unificado, descripciones llanas y versión por commits
+- **F1 hecha:** Talentos, Sendas, Maestro, Definitivo y Maestría en un solo lienzo de J (`RolesScreen` +
+  `logic/UnifiedTreeLayout`). Puntos de evolución 15/10 (76 a nivel 50) con migración. Se borraron `TreeScreen`,
+  `PathsScreen` y `SpriteButton`, y la opción `newTreeScreen`.
+- **Descripciones:** las 980 descripciones de nodos (300 base, 480 de senda, 200 de evolución) y las 10 piedras
+  angulares, reescritas en estilo llano en los 5 idiomas. Pendiente: las 40 de firma y definitiva y los tooltips de la
+  configuración (es/en primero).
+- **Versión:** número de commits → `a.b.c`. Revisión de mixins en `docs/REVISION_MIXINS.md`.
+- **Siguiente:** F2 (10 habilidades del Berserker y prompt de sus iconos), F3–F7 (resto de roles), grimorio y bestiario
+  rediseñados (cartas de pergamino con marco dorado, solo criaturas del mod). Validar F1 en partida.
+
 ### v65 — Errante Velado: combate, Niebla y botín
 - Modelo editable independiente en `tools/models/blockbench/errante_velado.bbmodel`, atlas de 256 × 256 y seis
   clips GeckoLib. El renderer conserva la escala de la entidad y el afijo Gigante.
@@ -514,7 +525,7 @@ Pendiente: comprobarlo en el juego (ver `docs/TESTING.md`, v39).
 - T1 implementada: fase 1, 180 PNG S1–S3 desde `paths(...)`, marco de esquinas y catálogo/`--check`/hoja de 480 iconos; los 300 anteriores conservan sus píxeles. Fase 2, `RolesScreen` dibuja S1–S3 con `NodeIconRenderer.draw` sin cambiar la distribución; comprobación visual en partida pendiente.
 - 300 iconos generados (`tools/textures/gen_node_icons.py`, revisados: regenerados aquí, idénticos píxel a píxel;
   tabla de plantillas igual a `KeystoneRules`) y `client/screen/NodeIconRenderer` (respaldo al icono de objeto).
-- `PathsScreen` dibuja los escalones con `NodeIconRenderer.draw` (S1–S3 disponen de PNG desde T1 fase 1).
+- (Hasta v66) `PathsScreen` dibujaba los escalones con `NodeIconRenderer.draw` (S1–S3 disponen de PNG desde T1 fase 1).
 
 ### v46.1 — Piedras angulares
 
@@ -543,7 +554,7 @@ Pendiente: comprobarlo en el juego (ver `docs/TESTING.md`, v39).
   `BRANCH_LOCKED` (otra rama). `ensureConsistent`: reembolso automático de las sendas sobrantes con aviso.
 - Configuración: `maxRoleLevel` 50 y `configRevision` (`config/ConfigMigration` + `ConfigMigrationTest`): los
   archivos anteriores con 30 pasan a 50.
-- Cliente: `screen/PathsScreen` (vista de sendas, 426×232, desplazable) y botón «Sendas» en `RolesScreen`.
+- Cliente (hasta v66): `screen/PathsScreen` (vista de sendas, 426×232, desplazable; en v67 pasa al árbol unificado) y botón «Sendas» en `RolesScreen`.
 - Textos: `tools/lang/gen_path_lang.py` (240 nodos, 60 frases de senda, interfaz; lee los efectos de
   `RoleTree.java`).
 

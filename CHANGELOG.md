@@ -15,6 +15,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   `docs/CONFIGURATION.md` documenta los 42 campos que faltaban y `AGENTS.md` lista las 86 clases de prueba reales.
 
 ### Retirado
+- **v67 — Vistas antiguas del árbol.** Se borran `TreeScreen`, `PathsScreen` y `SpriteButton` (sin acceso desde J desde
+  el árbol unificado) y la opción de cliente `newTreeScreen`; un `aptitudes-client.json` que la tenga la ignora.
 - **v66 — Coloso de Hierro.** Se retira el mob de prueba de modelos: entidad, huevo de aparición, renderizador, geometría,
   animaciones, texturas, partículas y textos. Los mundos que lo tuvieran lo descartan al cargar. El Coloso Sin Rostro no cambia.
 - **v65 — Talentos por datapack.** Se retira el piloto de la v55: `role/datapack/*`, los payloads
@@ -218,6 +220,17 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   El generador de evolución reconoce el párrafo vigente del grimorio y evita duplicar el antiguo al regenerar.
 
 ### Cambiado
+- **v67 — Descripciones de habilidades en estilo llano (5 idiomas).** Primero qué hace, hablándole al jugador; las
+  condiciones, con palabras; al final las cifras de cada rango («Rango 1 / 2 / 3: +2 % / +4 % / +6 %»). Se quitan las
+  coletillas («Las sendas son exclusivas…», «Bifurcación…», «Potencia S4», «Se suma a las Sendas», «Los valores son los
+  de la configuración por defecto», el prefijo «MECÁNICA:»). Abarca 300 nodos base (`tools/lang/base_desc.py`, nueva
+  fuente única con `--apply` y `--check` en CI), 480 de senda, 200 de evolución y las 10 piedras angulares.
+- **v67 — Versión según el número de commits.** `build.gradle` calcula la versión con `git rev-list --count HEAD`
+  (123 → 1.2.3; 240 → 2.4.0). Sin historial (ZIP o clon superficial) usa `mod_version` de `gradle.properties`, que pasa
+  a 2.4.0. El CI clona el historial completo (`fetch-depth: 0`).
+- **v67 — Revisión de mixins.** Los 10 mixins coinciden con Yarn 1.21.1 (`docs/REVISION_MIXINS.md`). El dibujo de una
+  forma (Cambiaformas) ya no cierra el juego si el renderizador de esa criatura falla: se registra una vez y se dibuja
+  el jugador normal.
 - **v65 — Ajustes tras la prueba en partida.** Se retira el sistema de pedidos del gremio (no encaja con un servidor de
   amigos). Los pasos del tutorial ya no dan esmeraldas. El trance va más lento: +5 crítico, +8 habilidad, 6 s y +10 % de
   daño por defecto. Las texturas de los jefes ya están en `main`.
