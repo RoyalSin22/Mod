@@ -24,8 +24,13 @@ Pruebas automáticas nuevas:
   habilidad al máximo usa el marco dorado y la que acaba de subir parpadea 2,5 s; en Atributos, las flechas ‹ › ajustan
   y la fila seleccionada no tapa el nombre; en la Hoguera aparecen el panel con brasas y el emblema. Sin el paquete de
   recursos (o renombrando `textures/gui/k_ui/`), la pantalla vuelve al dibujo anterior.
+- `logic/TreeScreenLayoutTest` (conectores): las líneas de los conectores caen sobre los dos píxeles centrales de cada
+  nodo, el tallo de la bifurcación sobre S4 y sus patas sobre S5x y S5y, los engarces quedan tras los nodos y la
+  bifurcación no invade la columna vecina. En partida: al aprender cada escalón se enciende su tramo; al elegir S5x o
+  S5y se enciende solo esa mitad de la bifurcación (y de la unión al aprender S6); a escala 3 en 1080p la ventana cabe
+  sin barra de desplazamiento.
 - `logic/TreeScreenLayoutTest` (kit «Berserker»): además, el estiramiento anclado de los paneles (cubre el tamaño
-  exacto, conserva las dos mitades, rellena desde antes del centro sin copiar grietas ni marco, y en 318 px de alto las
+  exacto, conserva las dos mitades, rellena desde antes del centro sin copiar grietas ni marco, y en 344 px de alto las
   juntas de los ladrillos siguen en fase) y la barra de maestría bajo los botones en todos los anchos. En partida: con
   ventana ancha (520) y estrecha (418), el panel de piedra no muestra grietas repetidas ni costuras; la maestría marca
   las casillas llenas; los botones Equipar, Reiniciar y Cerrar dejan ver su icono a la izquierda del texto.

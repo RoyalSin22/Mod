@@ -37,9 +37,7 @@ import java.util.List;
  * (con pruebas). Solo muestra datos sincronizados: el servidor valida al aprender y al equipar.
  */
 public class TreeScreen extends Screen {
-	private static final int[] PATH_COLORS = {0xFFE05A47, 0xFFB8C2CC, 0xFF4DD6D0};
 	private static final String[] HEADERS = {"senda_sangre", "senda_acero", "senda_trueno"};
-	private static final int LINK_DIM = 0xFF3A3F55;
 	/** Escalón de cada fila; la fila de S5 tiene las dos opciones de la bifurcación. */
 	private static final Step[][] ROW_STEPS = {{Step.S1}, {Step.S2}, {Step.S3}, {Step.S4}, {Step.S5X, Step.S5Y}, {Step.S6},
 			{Step.S7}};
@@ -242,9 +240,9 @@ public class TreeScreen extends Screen {
 	public void renderBackground(DrawContext ctx, int mouseX, int mouseY, float delta) {
 		super.renderBackground(ctx, mouseX, mouseY, delta);
 		TreeUi.panel9(ctx, "paneles/panel_principal_9slice.png", TreeUi.PANEL_MAIN_W, TreeUi.PANEL_MAIN_H,
-				TreeUi.PANEL_MAIN_ORNAMENT, layout.window());
+				TreeUi.PANEL_MAIN_ORNAMENT, TreeScreenLayout.BRICK_PERIOD, layout.window());
 		TreeUi.panel9(ctx, "paneles/panel_detalle_9slice.png", TreeUi.PANEL_DETAIL_W, TreeUi.PANEL_DETAIL_H,
-				TreeUi.PANEL_DETAIL_ORNAMENT, layout.detail());
+				TreeUi.PANEL_DETAIL_ORNAMENT, 1, layout.detail());
 	}
 
 	@Override
@@ -363,38 +361,22 @@ public class TreeScreen extends Screen {
 		ctx.getMatrices().pop();
 	}
 
-	/** Conectores de 2 px entre los centros de los nodos, del color de la senda si el siguiente escalón está aprendido. */
+	/**
+	 * Conectores del kit entre los escalones de una senda, detrás de los nodos: verticales entre S1–S4 y S6–S7,
+	 * bifurcación de S4 a S5x/S5y y unión de S5 en S6. Cada tramo se enciende si el escalón al que lleva está aprendido;
+	 * en la bifurcación y la unión, solo la mitad de la rama elegida.
+	 */
 	private void drawLinks(DrawContext ctx, RoleSyncPayload data, int path) {
-		int cx = layout.columnCenterX(path);
-		int lit = PATH_COLORS[path];
-		int[] cy = new int[TreeScreenLayout.ROWS];
-		for (int row = 0; row < TreeScreenLayout.ROWS; row++) cy[row] = layout.node(path, row, 0).y() + TreeScreenLayout.NODE / 2;
 		int bifurcation = TreeScreenLayout.BIFURCATION_ROW;
-		for (int row = 0; row < bifurcation - 1; row++) {
-			link(ctx, cx, cy[row], cy[row + 1], learned(data, path, ROW_STEPS[row + 1][0]) ? lit : LINK_DIM);
+		for (int row = 0; row < TreeScreenLayout.ROWS - 1; row++) {
+			if (row == bifurcation - 1 || row == bifurcation) continue; // S4→S5 y S5→S6: bifurcación y unión
+			TreeUi.connector(ctx, "vertical", layout.link(path, row), learned(data, path, ROW_STEPS[row + 1][0]), 0);
 		}
-		int leftX = layout.node(path, bifurcation, 0).x() + TreeScreenLayout.NODE / 2;
-		int rightX = layout.node(path, bifurcation, 1).x() + TreeScreenLayout.NODE / 2;
-		int mid = cy[bifurcation - 1] + (cy[bifurcation] - cy[bifurcation - 1]) / 2;
 		boolean leftOn = learned(data, path, Step.S5X);
 		boolean rightOn = learned(data, path, Step.S5Y);
-		// S4 → S5: tallo, travesaño y una bajada por opción
-		link(ctx, cx, cy[bifurcation - 1], mid, leftOn || rightOn ? lit : LINK_DIM);
-		ctx.fill(leftX - 1, mid - 1, rightX + 1, mid + 1, leftOn || rightOn ? lit : LINK_DIM);
-		link(ctx, leftX, mid, cy[bifurcation], leftOn ? lit : LINK_DIM);
-		link(ctx, rightX, mid, cy[bifurcation], rightOn ? lit : LINK_DIM);
-		// S5 → S6: una subida por opción que converge en el tallo
-		boolean s6 = learned(data, path, Step.S6);
-		int mid2 = cy[bifurcation] + (cy[bifurcation + 1] - cy[bifurcation]) / 2;
-		link(ctx, leftX, cy[bifurcation], mid2, leftOn && s6 ? lit : LINK_DIM);
-		link(ctx, rightX, cy[bifurcation], mid2, rightOn && s6 ? lit : LINK_DIM);
-		ctx.fill(leftX - 1, mid2 - 1, rightX + 1, mid2 + 1, s6 ? lit : LINK_DIM);
-		link(ctx, cx, mid2, cy[bifurcation + 1], s6 ? lit : LINK_DIM);
-		link(ctx, cx, cy[bifurcation + 1], cy[bifurcation + 2], learned(data, path, Step.S7) ? lit : LINK_DIM);
-	}
-
-	private static void link(DrawContext ctx, int x, int y1, int y2, int color) {
-		ctx.fill(x - 1, Math.min(y1, y2), x + 1, Math.max(y1, y2), color);
+		int side = leftOn ? -1 : rightOn ? 1 : 0;
+		TreeUi.connector(ctx, "bifurcacion", layout.fork(path), side != 0, side);
+		TreeUi.connector(ctx, "union", layout.join(path), side != 0 && learned(data, path, Step.S6), side);
 	}
 
 	private boolean learned(RoleSyncPayload data, int path, Step step) {

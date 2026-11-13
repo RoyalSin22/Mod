@@ -78,11 +78,11 @@ final class TreeUi {
 	 * de la pieza quedan ancladas a sus bordes y el hueco se rellena con la franja anterior al centro, nunca estirada
 	 * (ver {@link TreeScreenLayout#anchoredTiles}). Así las grietas de las esquinas no se repiten en medio del panel.
 	 */
-	static void panel9(DrawContext ctx, String path, int texW, int texH, int ornament, Rect r) {
+	static void panel9(DrawContext ctx, String path, int texW, int texH, int ornament, int rowPeriod, Rect r) {
 		if (r.w() <= 0 || r.h() <= 0) return;
 		Identifier t = id(path);
 		var cols = TreeScreenLayout.anchoredTiles(r.w(), texW, ornament);
-		var rows = TreeScreenLayout.anchoredTiles(r.h(), texH, ornament);
+		var rows = TreeScreenLayout.anchoredTiles(r.h(), texH, ornament, rowPeriod);
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		try {
@@ -106,6 +106,29 @@ final class TreeUi {
 		RenderSystem.defaultBlendFunc();
 		try {
 			blit(ctx, id("maestria/maestria_20_llenas.png"), x, y, 0, 0, n * (w / 20), h, w, h); // casillas de 16 px
+		} finally {
+			RenderSystem.disableBlend();
+		}
+	}
+
+	/**
+	 * Conector del kit ({@code vertical}, {@code bifurcacion} o {@code union}). En la bifurcación y la unión solo se
+	 * enciende la mitad de la rama elegida: {@code litSide} es -1 (izquierda, S5x), 1 (derecha, S5y) o 0 (ninguna).
+	 */
+	static void connector(DrawContext ctx, String kind, Rect r, boolean lit, int litSide) {
+		if ("vertical".equals(kind)) {
+			sprite(ctx, "conectores/vertical_" + (lit ? "encendido" : "apagado") + ".png", r.x(), r.y(), r.w(), r.h());
+			return;
+		}
+		sprite(ctx, "conectores/" + kind + "_apagado.png", r.x(), r.y(), r.w(), r.h());
+		if (!lit || litSide == 0) return;
+		// La mitad encendida incluye el tallo (px 28–37) para que la unión con S4 o S6 se vea continua.
+		int from = litSide < 0 ? 0 : 28;
+		int to = litSide < 0 ? 38 : r.w();
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		try {
+			blit(ctx, id("conectores/" + kind + "_encendido.png"), r.x() + from, r.y(), from, 0, to - from, r.h(), r.w(), r.h());
 		} finally {
 			RenderSystem.disableBlend();
 		}

@@ -18,10 +18,14 @@ public final class TreeScreenLayout {
 	public static final int MAX_WIDTH = 520;
 	public static final int MIN_WIDTH = 418;
 	/**
-	 * Alto de la ventana: el del panel principal del kit (240) más tres hiladas de ladrillo de 26 px, para que el panel
-	 * se estire sin descuadrar las juntas (ver {@link #anchoredTiles}).
+	 * Alto de la ventana: el del panel principal del kit (240) más cuatro hiladas de ladrillo de 26 px, para que el panel
+	 * se estire sin descuadrar las juntas (ver {@link #anchoredTiles}). Cabe sin desplazar a escala 3 en 1080p (360 px).
 	 */
-	public static final int HEIGHT = 318;
+	public static final int HEIGHT = 344;
+	/** Hilada de ladrillo del panel principal (periodo vertical del dibujo). */
+	public static final int BRICK_PERIOD = 26;
+	/** Conectores del kit: vertical de 12×32 y bifurcación de 64×32 (engarces de 10 px ocultos tras los nodos). */
+	public static final int LINK_W = 12, LINK_H = 32, FORK_W = 64;
 	/** Barra de maestría del kit: 20 casillas de 16×18 px. */
 	public static final int MASTERY_W = 320, MASTERY_H = 18;
 	public static final int PATHS = 3;
@@ -29,7 +33,8 @@ public final class TreeScreenLayout {
 	public static final int ROWS = 7;
 	public static final int BIFURCATION_ROW = 4;
 	public static final int NODE = 24;
-	public static final int PITCH = 26;
+	/** Nodo (24) más 8 px de hueco, donde se ve el tramo del conector. */
+	public static final int PITCH = 32;
 	public static final int COLUMN_WIDTH = 96;
 
 	private static final int MARGIN = 6;
@@ -39,7 +44,8 @@ public final class TreeScreenLayout {
 	private static final int COLUMNS_END = FIRST_COLUMN_X + PATHS * COLUMN_WIDTH + (PATHS - 1) * COLUMN_GAP;
 	private static final int ROWS_Y = 84;
 	/** Distancia del centro de la columna al centro de cada opción de la bifurcación de S5. */
-	private static final int BRANCH_OFFSET = 15;
+	/** Patas de la bifurcación del kit: a 22 px del tallo (x = 10 y 54 en la pieza de 64, tallo en 32). */
+	public static final int BRANCH_OFFSET = 22;
 
 	public record Rect(int x, int y, int w, int h) {
 		public int right() { return x + w; }
@@ -123,7 +129,30 @@ public final class TreeScreenLayout {
 	// ------------------------------------------------------------ Parte baja
 
 	/** Barra de maestría, en su propia fila bajo los botones de la columna derecha (cabe desde el ancho mínimo). */
-	public Rect mastery() { return at(FIRST_COLUMN_X, 286, MASTERY_W, MASTERY_H); }
+	public Rect mastery() { return at(FIRST_COLUMN_X, HEIGHT - 12 - MASTERY_H - 2, MASTERY_W, MASTERY_H); }
+
+	// ------------------------------------------------------------ Conectores
+
+	/**
+	 * Conector vertical entre el escalón {@code row} y el siguiente (filas sin bifurcación). Su línea central (px 6–7 de
+	 * la pieza) cae sobre los dos píxeles centrales del nodo y los engarces quedan detrás de los nodos.
+	 */
+	public Rect link(int path, int row) {
+		Rect upper = node(path, row, 0);
+		return new Rect(upper.x() + 5, upper.y() + 12, LINK_W, LINK_H);
+	}
+
+	/** Bifurcación de S4 a las dos opciones de S5: el tallo (px 32) sobre S4 y las patas (px 10 y 54) sobre S5x y S5y. */
+	public Rect fork(int path) {
+		Rect s4 = node(path, BIFURCATION_ROW - 1, 0);
+		return new Rect(s4.x() - 21, s4.y() + 12, FORK_W, LINK_H);
+	}
+
+	/** Unión de las dos opciones de S5 en S6: la bifurcación volteada en vertical. */
+	public Rect join(int path) {
+		Rect s6 = node(path, BIFURCATION_ROW + 1, 0);
+		return new Rect(s6.x() - 21, node(path, BIFURCATION_ROW, 0).y() + 12, FORK_W, LINK_H);
+	}
 
 	// ------------------------------------------------------------ Columna derecha
 
@@ -168,15 +197,20 @@ public final class TreeScreenLayout {
 		return out;
 	}
 
+	/** Como {@link #anchoredTiles(int, int, int, int)} sin periodo (dibujos sin repetición regular en ese eje). */
+	public static List<Tile> anchoredTiles(int length, int texLen, int cap) {
+		return anchoredTiles(length, texLen, cap, 1);
+	}
+
 	/**
 	 * Reparto de un panel con adornos cerca de los bordes (grietas, remaches) sobre {@code length} px, en un eje, a
 	 * partir de una pieza de {@code texLen} px. Cada mitad de la pieza queda anclada a su borde; si falta sitio, el hueco
-	 * se rellena repitiendo la franja que precede al centro (entre {@code cap} y la mitad), alineada para que la última
-	 * fila del relleno sea la anterior al centro: la unión con la mitad final es continua y, si el sobrante es múltiplo
-	 * del periodo del dibujo (hiladas de ladrillo), también la de la mitad inicial. Si sobra pieza, se recorta por el
-	 * centro. Los tramos cubren exactamente {@code [0, length)} sin solaparse.
+	 * se rellena repitiendo la franja que precede al centro (entre {@code cap} y la mitad), recortada a un múltiplo de
+	 * {@code period} (las hiladas de ladrillo) y alineada para que la última fila del relleno sea la anterior al centro:
+	 * todas las uniones conservan la fase del dibujo si el sobrante es múltiplo del periodo. Si sobra pieza, se recorta
+	 * por el centro. Los tramos cubren exactamente {@code [0, length)} sin solaparse.
 	 */
-	public static List<Tile> anchoredTiles(int length, int texLen, int cap) {
+	public static List<Tile> anchoredTiles(int length, int texLen, int cap, int period) {
 		List<Tile> out = new ArrayList<>();
 		if (length <= 0 || texLen <= 0) return out;
 		if (length <= texLen) {
@@ -188,7 +222,9 @@ public final class TreeScreenLayout {
 		}
 		int half = texLen / 2;
 		int extra = length - texLen;
-		int band = Math.max(1, half - Math.max(0, Math.min(cap, half - 1)));
+		int room = Math.max(1, half - Math.max(0, Math.min(cap, half - 1)));
+		int p = Math.max(1, period);
+		int band = room >= p ? room / p * p : room;
 		out.add(new Tile(0, 0, half));
 		int j = 0;
 		while (j < extra) {

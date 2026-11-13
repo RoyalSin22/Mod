@@ -23,6 +23,15 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   ignoran y los puntos gastados en esas ramas vuelven a estar disponibles.
 
 ### Añadido
+- **v66 — Árbol redistribuido con los conectores del kit «Berserker».** Los escalones pasan a estar cada 32 px (nodo de
+  24 + 8 px de hueco) y los conectores del kit sustituyen a las líneas de 2 px: verticales entre S1–S4 y S6–S7,
+  bifurcación de S4 a S5x/S5y (las opciones se separan a ±22 px para caer bajo las patas de la pieza) y unión de S5 en
+  S6 (la bifurcación volteada, generada por `gen_tree_ui.py`). Cada tramo se enciende si el escalón al que lleva está
+  aprendido; en la bifurcación y la unión, solo la mitad de la rama elegida. Los engarces de la pieza quedan ocultos
+  tras los nodos. La ventana mide 344 px de alto (240 del panel + cuatro hiladas de 26 px: cabe sin desplazar a escala
+  3 en 1080p) y el relleno vertical del panel usa una franja múltiplo de la hilada para no descuadrar las juntas. Nuevas
+  pruebas en `TreeScreenLayoutTest` (alineación de conectores con los centros de los nodos, engarces ocultos,
+  bifurcación dentro de su columna, fase del ladrillo). Sin validar en partida.
 - **v66 — Pantalla de roles (J) con el kit «fantasía oscura v2».** Botones largos (normal, pulsado y desactivado) en
   todas las acciones, pestañas Talentos/Sendas/Maestro/Definitivo en tres estados, filas de la lista de roles (la
   seleccionada con realce dorado; el icono y el nombre se apartan 4 px), fichas de las cinco categorías por color (el
@@ -37,10 +46,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   S1–S7, habilidad definitiva, barra de maestría de 20 casillas (320×18) y botones Equipar (antes «genérico»),
   Reiniciar y Cerrar, los tres con icono a la izquierda. Los paneles se estiran desde el centro: cada mitad queda anclada
   a su borde y el hueco se rellena con la franja anterior al centro, más allá de los adornos (40 px), para que las
-  grietas no se repitan (`TreeScreenLayout.anchoredTiles`, con pruebas). La ventana pasa de 300 a 318 px de alto (240 del
-  panel + tres hiladas de ladrillo de 26 px, sin juntas descuadradas) y la maestría baja a su propia fila bajo los
-  botones, sin solaparse en ningún ancho. Los conectores del kit se guardan en `tools/textures/source/ui/conectores/` pero
-  aún no se usan: con nodos de 24 px cada 26 px solo quedan 2 px entre escalones. Sin validar en partida.
+  grietas no se repitan (`TreeScreenLayout.anchoredTiles`, con pruebas). La maestría baja a su propia fila bajo los
+  botones, sin solaparse en ningún ancho. Sin validar en partida.
 - **v66 — Pantalla K con la dirección de arte.** Atributos y Habilidades usan el kit de 34 piezas
   (`docs/PROMPT_ARTE_PANTALLA_K.md`): panel principal (o de Hoguera, con su emblema en la cabecera), pestañas en tres
   estados ajustadas al texto, columnas hundidas, ficha de detalle, filas de atributo y flechas de reparto, cabeceras de

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Piezas de la pantalla del árbol de la dirección de arte (v66, kit «Berserker»): del arte fuente al recurso del juego.
 
-Los conectores de `source/ui/conectores/` forman parte del kit pero aún no se usan (la distribución actual deja 2 px
-entre escalones); este script no los copia.
+  conectores: vertical (12×32) y bifurcación (64×32), apagados y encendidos, copiados tal cual; la unión de S5 en S6
+      (`union_*`) es la bifurcación volteada en vertical, píxel a píxel (el kit no la trae).
 
 Lee `tools/textures/source/ui/` y escribe `textures/gui/tree_ui/<grupo>/<pieza>.png`:
   paneles, cabeceras, etiquetas, maestria, definitiva y botones: copia exacta (ya están al tamaño final,
@@ -67,6 +67,12 @@ def outputs():
     for group, files in COPIED.items():
         for name, size in files.items():
             result[OUT / group / name] = load(SOURCE / group / name, size, f'{group}/{name}')
+    for state in ('apagado', 'encendido'):
+        vertical = load(SOURCE / 'conectores' / f'vertical_{state}_12x32.png', (12, 32), f'conectores/vertical_{state}')
+        fork = load(SOURCE / 'conectores' / f'bifurcacion_{state}_64x32.png', (64, 32), f'conectores/bifurcacion_{state}')
+        result[OUT / 'conectores' / f'vertical_{state}.png'] = vertical
+        result[OUT / 'conectores' / f'bifurcacion_{state}.png'] = fork
+        result[OUT / 'conectores' / f'union_{state}.png'] = fork.transpose(Image.FLIP_TOP_BOTTOM)
     for category in CATEGORIES:
         for state in STATES:
             name = f'{category}_{state}.png'

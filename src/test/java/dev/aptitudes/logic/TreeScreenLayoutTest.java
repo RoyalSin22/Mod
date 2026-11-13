@@ -47,12 +47,13 @@ class TreeScreenLayoutTest {
 	@Test void aTallScreenCentersVerticallyAndAShortOneScrolls() {
 		assertEquals(0, TreeScreenLayout.maxScroll(540));
 		assertEquals(0, TreeScreenLayout.maxScroll(TreeScreenLayout.HEIGHT + 8));
-		assertEquals(18, TreeScreenLayout.maxScroll(308));
-		assertEquals(56, TreeScreenLayout.maxScroll(270));
+		assertEquals(44, TreeScreenLayout.maxScroll(308));
+		assertEquals(82, TreeScreenLayout.maxScroll(270));
+		assertEquals(0, TreeScreenLayout.maxScroll(360), "cabe sin desplazar a escala 3 en 1080p");
 		assertEquals((540 - TreeScreenLayout.HEIGHT) / 2, TreeScreenLayout.place(640, 540, 0).window().y());
 		assertEquals(4, TreeScreenLayout.place(640, 270, 0).window().y());
 		assertEquals(4 - 38, TreeScreenLayout.place(640, 270, 38).window().y());
-		assertEquals(4 - 56, TreeScreenLayout.place(640, 270, 999).window().y(), "el desplazamiento se limita");
+		assertEquals(4 - 82, TreeScreenLayout.place(640, 270, 999).window().y(), "el desplazamiento se limita");
 		assertEquals(4, TreeScreenLayout.place(640, 270, -5).window().y(), "el desplazamiento no es negativo");
 	}
 
@@ -113,13 +114,12 @@ class TreeScreenLayoutTest {
 	}
 
 	@Test void anchoredTilesKeepBothHalvesAndFillFromBeforeTheCenter() {
-		List<KScreenLayout.Tile> tiles = TreeScreenLayout.anchoredTiles(TreeScreenLayout.HEIGHT, 240, 12);
+		List<KScreenLayout.Tile> tiles = TreeScreenLayout.anchoredTiles(TreeScreenLayout.HEIGHT, 240, 40, TreeScreenLayout.BRICK_PERIOD);
 		assertEquals(new KScreenLayout.Tile(0, 0, 120), tiles.get(0), "mitad superior intacta");
 		assertEquals(new KScreenLayout.Tile(TreeScreenLayout.HEIGHT - 120, 120, 120), tiles.get(tiles.size() - 1), "mitad inferior anclada");
-		// 318 = 240 + 3 hiladas de 26 px: el relleno copia las filas 42..119 y las juntas siguen en fase.
-		assertEquals(List.of(new KScreenLayout.Tile(120, 42, 78)), tiles.subList(1, tiles.size() - 1));
-		assertEquals(0, (120 - 42) % 26);
-		assertEquals(tiles, TreeScreenLayout.anchoredTiles(TreeScreenLayout.HEIGHT, 240, 40), "la fase no depende del margen");
+		// 344 = 240 + 4 hiladas: el relleno (franja de 78 = 3 hiladas, antes del centro) conserva la fase en cada unión.
+		assertEquals(List.of(new KScreenLayout.Tile(120, 94, 26), new KScreenLayout.Tile(146, 42, 78)), tiles.subList(1, tiles.size() - 1));
+		for (KScreenLayout.Tile t : tiles) assertEquals(0, Math.floorMod(t.dest() - t.src(), 26), "en fase: " + t);
 		// Panel de detalle (128 px, grietas hasta 38 px del borde) estirado a 186: el relleno sale de [40, 64).
 		for (KScreenLayout.Tile t : TreeScreenLayout.anchoredTiles(186, 128, 40)) {
 			if (t.dest() >= 64 && t.dest() < 186 - 64) assertTrue(t.src() >= 40 && t.src() + t.len() <= 64, t.toString());
@@ -141,5 +141,36 @@ class TreeScreenLayoutTest {
 			assertTrue(m.y() >= layout.closeButton().bottom(), "bajo los botones con ancho " + w);
 			assertTrue(m.bottom() <= layout.window().bottom() - 12, "fuera del marco inferior");
 		}
+	}
+
+	@Test void connectorsLineUpWithTheNodeCentersAndHideTheirSockets() {
+		for (int w : WIDTHS) {
+			TreeScreenLayout layout = TreeScreenLayout.place(w, 540, 0);
+			for (int p = 0; p < TreeScreenLayout.PATHS; p++) {
+				for (int row : new int[]{0, 1, 2, 5}) { // S1→S2→S3→S4 y S6→S7
+					Rect link = layout.link(p, row), upper = layout.node(p, row, 0), lower = layout.node(p, row + 1, 0);
+					assertEquals(upper.x() + 11, link.x() + 6, "línea central del conector sobre el nodo");
+					assertTrue(link.y() + 10 <= upper.bottom() && link.bottom() - 10 >= lower.y(), "engarces tras los nodos");
+					assertTrue(link.y() >= upper.y() && link.bottom() <= lower.bottom());
+				}
+				Rect fork = layout.fork(p), s4 = layout.node(p, 3, 0);
+				Rect x = layout.node(p, TreeScreenLayout.BIFURCATION_ROW, 0), y = layout.node(p, TreeScreenLayout.BIFURCATION_ROW, 1);
+				assertEquals(s4.x() + 11, fork.x() + 32, "tallo sobre S4");
+				assertEquals(x.x() + 11, fork.x() + 10, "pata izquierda sobre S5x");
+				assertEquals(y.x() + 11, fork.x() + 54, "pata derecha sobre S5y");
+				assertTrue(fork.y() + 10 <= s4.bottom() && fork.bottom() - 10 >= x.y());
+				Rect join = layout.join(p), s6 = layout.node(p, TreeScreenLayout.BIFURCATION_ROW + 1, 0);
+				assertEquals(fork.x(), join.x());
+				assertTrue(join.y() + 10 <= x.bottom() && join.bottom() - 10 >= s6.y());
+				// dentro de la columna, sin invadir la vecina
+				int column = layout.columnCenterX(p) - TreeScreenLayout.COLUMN_WIDTH / 2;
+				assertTrue(fork.x() >= column && fork.right() <= column + TreeScreenLayout.COLUMN_WIDTH, "bifurcación en su columna");
+			}
+		}
+	}
+
+	@Test void theLastRowEndsAboveTheMasteryBar() {
+		TreeScreenLayout layout = TreeScreenLayout.place(520, 540, 0);
+		assertTrue(layout.node(0, TreeScreenLayout.ROWS - 1, 0).bottom() <= layout.mastery().y() - 4);
 	}
 }
