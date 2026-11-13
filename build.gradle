@@ -3,7 +3,31 @@ plugins {
 	id 'maven-publish'
 }
 
-version = project.mod_version
+// Versión según el número de commits (decisión del autor): centenas, decenas y unidades, p. ej. 123 commits -> 1.2.3
+// (1234 -> 12.3.4). Sin historia de git completa (ZIP de GitHub o clon superficial) se usa mod_version de
+// gradle.properties como respaldo.
+static String versionFromCommits(int count) {
+	return "${count.intdiv(100)}.${count.intdiv(10) % 10}.${count % 10}"
+}
+
+def gitCommitCount = {
+	try {
+		def shallow = providers.exec {
+			commandLine 'git', 'rev-parse', '--is-shallow-repository'
+			ignoreExitValue = true
+		}.standardOutput.asText.get().trim()
+		if (shallow != 'false') return null
+		def count = providers.exec {
+			commandLine 'git', 'rev-list', '--count', 'HEAD'
+			ignoreExitValue = true
+		}.standardOutput.asText.get().trim()
+		return count ==~ /\d+/ ? count.toInteger() : null
+	} catch (Exception ignored) {
+		return null
+	}
+}()
+
+version = gitCommitCount != null ? versionFromCommits(gitCommitCount) : project.mod_version
 group = project.maven_group
 
 base {

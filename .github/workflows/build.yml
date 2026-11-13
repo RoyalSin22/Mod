@@ -21,6 +21,9 @@ jobs:
     steps:
       - name: Descargar el código
         uses: actions/checkout@v4
+        with:
+          # Historia completa: la versión del mod sale del número de commits (build.gradle).
+          fetch-depth: 0
 
       - name: Instalar Java 21
         uses: actions/setup-java@v4
