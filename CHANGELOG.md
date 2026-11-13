@@ -23,6 +23,24 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   ignoran y los puntos gastados en esas ramas vuelven a estar disponibles.
 
 ### Añadido
+- **v66 — Correcciones tras la prueba en partida (interfaz y HUD).**
+  - **HUD:** se quita la barra de vida de arriba a la izquierda (duplicaba los corazones). El aguante, los recursos de
+    rol y el elemento activo pasan a un bloque de píldoras finas sobre la barra de hambre, de su mismo ancho y por
+    encima de las burbujas de aire. La opción `soulsBars` se llama ahora «Barras de estado».
+  - **Esfera de maná:** pasa a 14×14 (la de 28 a la mitad, exacta en píxel), con el maná actual dentro y sin texto al
+    lado.
+  - **Barra de jefes:** usa el panel y el canal del kit de K y una barra de brasa derivada de la de XP
+    (`gen_k_ui.py`, pieza `barras/vida_jefe.png`).
+  - **Ficha de detalle del árbol:** zona de lectura dentro del marco de piedra; los botones Equipar usan el kit.
+  - **Pantalla K:** coste sin cortar, punteado de las cabeceras tras el título, textos de la ficha y de las
+    estadísticas dentro de sus paneles, hitos en columna fija y pasivas que se reducen hasta el 75 % antes de cortarse.
+  - **Talentos, Maestro y Definitivo:** panel de piedra, marcos de nodo del kit por categoría, conectores de 2 px en la
+    paleta del kit, títulos de carril sobre placa y filete con rombo; la vista y la ficha quedan dentro del marco.
+  - **Configuración del HUD:** panel, pestañas y botones del kit de K; interruptores encendidos y apagados con piezas
+    distintas.
+  - **Arte por encargar:** emblemas de categoría (`docs/PROMPT_ARTE_FICHAS_CATEGORIA.md`).
+
+  Sin validar en partida.
 - **v66 — Árbol redistribuido con los conectores del kit «Berserker».** Los escalones pasan a estar cada 32 px (nodo de
   24 + 8 px de hueco) y los conectores del kit sustituyen a las líneas de 2 px: verticales entre S1–S4 y S6–S7,
   bifurcación de S4 a S5x/S5y (las opciones se separan a ±22 px para caer bajo las patas de la pieza) y unión de S5 en

@@ -12,6 +12,17 @@ Pruebas automáticas nuevas:
   `gen_mob_models.py`, `gen_node_icons.py` y `tools/lang/*`. `gen_tree_atlas.py --check` falla en `main` desde antes de v66
   (compara bytes de PNG y varía con la versión de Pillow); no lo causa ninguno de estos cambios.
 
+- Correcciones v66 tras la prueba en partida (sin pruebas nuevas; la barra de jefes conserva `BossHudLayoutTest`). En
+  partida:
+  - **HUD:** no hay barra de vida arriba a la izquierda. Sobre la barra de hambre aparecen el aguante y los recursos de
+    rol, sin tapar las burbujas de aire al bucear.
+  - **Esfera de maná:** de 14×14, con el maná actual dentro.
+  - **Barra de jefes:** con el marco del kit y la barra roja de brasa.
+  - **Fichas de detalle:** en el árbol y en J, el texto no pisa el marco de piedra.
+  - **Pantalla K:** sin textos cortados ni encima de los marcos; los hitos alineados en las diez tarjetas.
+  - **Talentos, Maestro y Definitivo:** fondo de piedra y marcos del kit. Arrastrar y hacer zoom no dibujan nada
+    fuera del marco.
+  - **Configuración del HUD (Mayús + O):** los interruptores cambian de pieza al pulsarlos.
 - Pantalla de roles (J), kit «fantasía oscura v2» (sin pruebas nuevas: reutiliza `KScreenLayout.tiles`). En partida:
   los botones cambian a pulsado y desactivado; las pestañas muestran activa, hover y normal; la fila del rol
   seleccionado lleva el realce dorado sin tapar el icono; las cinco fichas de categoría se distinguen por color y su
