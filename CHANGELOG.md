@@ -23,6 +23,15 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   ignoran y los puntos gastados en esas ramas vuelven a estar disponibles.
 
 ### Añadido
+- **v66 — Pantalla de roles (J) con el kit «fantasía oscura v2».** Botones largos (normal, pulsado y desactivado) en
+  todas las acciones, pestañas Talentos/Sendas/Maestro/Definitivo en tres estados, filas de la lista de roles (la
+  seleccionada con realce dorado; el icono y el nombre se apartan 4 px), fichas de las cinco categorías por color (el
+  nombre sigue en el tooltip: la abreviatura no cabía en el hueco de 6 px), filete con rombo central en las cabeceras
+  y franja bajo el título. Todas las piezas son 9-slice con bordes de 6 px y tramos repetidos (reutiliza
+  `KScreenLayout.tiles`, con pruebas); el rombo del filete se dibuja aparte para no deformarse. Arte fuente en
+  `tools/textures/source/ui/roles/`; generador `tools/textures/gen_roles_ui.py` (admite `--check`). Distribución,
+  controles y validaciones del servidor sin cambios; sin las piezas se usa el dibujo anterior. La vista de sendas de
+  respaldo (`PathsScreen`) conserva sus pestañas. Sin validar en partida.
 - **v66 — Kit «Berserker» en la pantalla del árbol.** Sustituye al kit anterior (salvo los marcos de nodo, que se
   conservan): panel de piedra con grietas y remaches, ficha de detalle, cabeceras de Sangre, Acero y Trueno, etiquetas
   S1–S7, habilidad definitiva, barra de maestría de 20 casillas (320×18) y botones Equipar (antes «genérico»),

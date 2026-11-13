@@ -48,11 +48,19 @@ record RoleAtlasTheme(int accent, int slate) {
 	static final class Tab extends ButtonWidget {
 		private final BooleanSupplier current;
 		private final IntSupplier accent;
+		/** Dibuja la pestaña con las piezas del kit de la pantalla de roles (si el paquete de recursos las trae). */
+		private final boolean kit;
 
+		/** Pestaña con el dibujo anterior (la usa la vista de sendas de respaldo, {@code PathsScreen}). */
 		Tab(int x, int y, int width, Text text, PressAction action, BooleanSupplier current, IntSupplier accent) {
+			this(x, y, width, text, action, current, accent, false);
+		}
+
+		Tab(int x, int y, int width, Text text, PressAction action, BooleanSupplier current, IntSupplier accent, boolean kit) {
 			super(x, y, width, 16, text, action, DEFAULT_NARRATION_SUPPLIER);
 			this.current = current;
 			this.accent = accent;
+			this.kit = kit;
 		}
 
 		@Override
@@ -60,6 +68,12 @@ record RoleAtlasTheme(int accent, int slate) {
 			int x = getX(), y = getY(), w = getWidth();
 			int color = accent.getAsInt();
 			boolean selected = current.getAsBoolean();
+			if (kit) {
+				RolesUi.tab(ctx, selected ? "activa" : isHovered() || isFocused() ? "hover" : "normal", x, y, w, getHeight());
+				ctx.drawCenteredTextWithShadow(MinecraftClient.getInstance().textRenderer, getMessage(),
+						x + w / 2, y + (selected ? 5 : 4), selected ? color : UiStyle.TEXT);
+				return;
+			}
 			ctx.fill(x, y, x + w, y + getHeight(), selected ? 0xFF2D2D39 : 0xFF191C26);
 			ctx.drawBorder(x, y, w, getHeight(), isFocused() ? UiStyle.TEXT : isHovered() ? color : UiStyle.BORDER);
 			if (selected) ctx.fill(x + 2, y + 1, x + w - 2, y + 3, color);

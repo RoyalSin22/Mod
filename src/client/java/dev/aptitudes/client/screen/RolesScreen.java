@@ -107,6 +107,8 @@ public class RolesScreen extends Screen {
 	private ButtonWidget equip1Button;
 	private ButtonWidget claimButton;
 	private ButtonWidget equip2Button;
+	/** Las piezas del kit de la pantalla de roles están en el paquete de recursos (si no, se usa el dibujo anterior). */
+	private boolean kit;
 
 	public RolesScreen() {
 		super(Text.translatable("screen.aptitudes.roles.title"));
@@ -171,6 +173,7 @@ public class RolesScreen extends Screen {
 		W = MathHelper.clamp(width - 16, 344, 760);
 		H = MathHelper.clamp(height - 16, sideInspector() ? 306 : 350, 460);
 		left = (width - W) / 2;
+		kit = RolesUi.available();
 		pageScroll = MathHelper.clamp(pageScroll, 0, maxPageScroll());
 		top = maxPageScroll() > 0 ? 8 - pageScroll : (height - H) / 2;
 		int lx = left + 8;
@@ -184,50 +187,65 @@ public class RolesScreen extends Screen {
 			Text label = Text.translatable(option.key);
 			var button = new RoleAtlasTheme.Tab(canvasX() + start, top + 29, end - start - 4,
 					UiStyle.fit(textRenderer, label, end - start - 8), b -> openTab(option),
-					() -> !extraView && option == tab, () -> theme.accent());
+					() -> !extraView && option == tab, () -> theme.accent(), kit);
 			button.setTooltip(Tooltip.of(label));
 			addDrawableChild(button);
 		}
-		primaryButton = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.roles.set_primary"),
-				b -> send(RoleActionPayload.SET_PRIMARY, "")).dimensions(lx, top + 182, LIST_W, 16).build());
-		secondaryButton = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.roles.set_secondary"),
-				b -> send(RoleActionPayload.SET_SECONDARY, "")).dimensions(lx, top + 200, LIST_W, 16).build());
-		evolveButton = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.evolve"),
-				b -> send(RoleActionPayload.EVOLVE, "")).dimensions(lx, top + 218, LIST_W, 16).build());
+		primaryButton = addDrawableChild(button(Text.translatable("screen.aptitudes.roles.set_primary"),
+				b -> send(RoleActionPayload.SET_PRIMARY, ""), lx, top + 182, LIST_W, 16));
+		secondaryButton = addDrawableChild(button(Text.translatable("screen.aptitudes.roles.set_secondary"),
+				b -> send(RoleActionPayload.SET_SECONDARY, ""), lx, top + 200, LIST_W, 16));
+		evolveButton = addDrawableChild(button(Text.translatable("screen.aptitudes.evolve"),
+				b -> send(RoleActionPayload.EVOLVE, ""), lx, top + 218, LIST_W, 16));
 		if (!keepView || W != previousW || H != previousH) {
 			visibleNodes = buildNodes();
 			resetView();
 		}
 		keepView = false;
-		upgradeButton = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.roles.upgrade"), b -> {
+		upgradeButton = addDrawableChild(button(Text.translatable("screen.aptitudes.roles.upgrade"), b -> {
 			NodeView v = nodeView(selectedNode);
 			if (v != null && v.node() != null) send(RoleActionPayload.UPGRADE_NODE, v.node().id());
-		}).dimensions(actionX, actionY, 70, 16).build());
-		claimButton = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.weapon.claim"), b -> {
+		}, actionX, actionY, 70, 16));
+		claimButton = addDrawableChild(button(Text.translatable("screen.aptitudes.weapon.claim"), b -> {
 			NodeView v = nodeView(selectedNode);
 			if (v == null) return;
 			String tier = v.kind() == NodeKind.WEAPON_MASTER ? "1" : "2";
 			ClientPlayNetworking.send(new RoleActionPayload(RoleActionPayload.CLAIM_WEAPON, selected.ordinal(), tier));
-		}).dimensions(actionX, actionY, 70, 16).build());
-		equip1Button = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.equip", 1), b -> {
+		}, actionX, actionY, 70, 16));
+		equip1Button = addDrawableChild(button(Text.translatable("screen.aptitudes.equip", 1), b -> {
 			NodeView v = nodeView(selectedNode);
 			if (v != null && v.node() != null) send(RoleActionPayload.EQUIP_1, v.node().id());
-		}).dimensions(actionX, actionY - 18, 34, 16).build());
-		equip2Button = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.equip", 2), b -> {
+		}, actionX, actionY - 18, 34, 16));
+		equip2Button = addDrawableChild(button(Text.translatable("screen.aptitudes.equip", 2), b -> {
 			NodeView v = nodeView(selectedNode);
 			if (v != null && v.node() != null) send(RoleActionPayload.EQUIP_2, v.node().id());
-		}).dimensions(actionX + 36, actionY - 18, 34, 16).build());
-		extraButton = addDrawableChild(ButtonWidget.builder(Text.empty(), b -> {
+		}, actionX + 36, actionY - 18, 34, 16));
+		extraButton = addDrawableChild(button(Text.empty(), b -> {
 			extraView = !extraView;
 			updateButtons();
-		}).dimensions(lx, top + 236, LIST_W, 16).build());
+		}, lx, top + 236, LIST_W, 16));
 
 		int footer = top + H - 26;
-		attributesButton = addDrawableChild(ButtonWidget.builder(Text.translatable("screen.aptitudes.tab.attributes"),
-				b -> client.setScreen(new AptitudesScreen())).dimensions(0, footer, 100, 18).build());
-		doneButton = addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, b -> close())
-				.dimensions(0, footer, 100, 18).build());
+		attributesButton = addDrawableChild(button(Text.translatable("screen.aptitudes.tab.attributes"),
+				b -> client.setScreen(new AptitudesScreen()), 0, footer, 100, 18));
+		doneButton = addDrawableChild(button(ScreenTexts.DONE, b -> close(), 0, footer, 100, 18));
 		updateButtons();
+	}
+
+	/** Botón largo del kit o el botón vanilla de respaldo. */
+	private ButtonWidget button(Text label, ButtonWidget.PressAction action, int x, int y, int w, int h) {
+		if (kit) return new RolesButton(x, y, w, h, label, action);
+		return ButtonWidget.builder(label, action).dimensions(x, y, w, h).build();
+	}
+
+	/** Cabecera de sección: el filete con rombo del kit o el estilo anterior. */
+	private void header(DrawContext ctx, Text text, int x, int y, int width) {
+		if (!kit) {
+			UiStyle.header(ctx, textRenderer, text, x, y, width);
+			return;
+		}
+		ctx.drawTextWithShadow(textRenderer, UiStyle.fit(textRenderer, text, width), x, y, UiStyle.GOLD);
+		RolesUi.divider(ctx, x, y + 9, width);
 	}
 
 	private void openTab(TalentTab option) {
@@ -610,6 +628,7 @@ public class RolesScreen extends Screen {
 			ctx.fill(width - 5, thumbY, width - 2, thumbY + thumbH, UiStyle.GOLD);
 		}
 		ctx.drawTextWithShadow(textRenderer, title.copy().formatted(Formatting.BOLD), left + 12, top + 9, UiStyle.GOLD);
+		if (kit) RolesUi.titleStrip(ctx, left + 8, top + 19, LIST_W);
 		RoleSyncPayload data = ClientRoleState.data();
 		if (data == null) {
 			ctx.drawCenteredTextWithShadow(textRenderer, Text.translatable("screen.aptitudes.waiting"),
@@ -664,10 +683,15 @@ public class RolesScreen extends Screen {
 		for (int i = 0; i < cats.length; i++) {
 			int x = left + 8 + i * 25;
 			boolean active = cats[i] == category;
-			ctx.fill(x, top + 30, x + 23, top + 44, active ? 0xFF000000 | cats[i].color() : 0x60303850);
-			ctx.drawBorder(x, top + 30, 23, 14, active ? UiStyle.GOLD : UiStyle.BORDER);
-			Text label = Text.translatable(cats[i].translationKey() + ".short");
-			ctx.drawText(textRenderer, label, x + 12 - textRenderer.getWidth(label) / 2, top + 33, UiStyle.TEXT, false);
+			if (kit) {
+				// La ficha del kit identifica la categoría por su color; el nombre sigue en el tooltip.
+				RolesUi.category(ctx, cats[i], active, x, top + 30);
+			} else {
+				ctx.fill(x, top + 30, x + 23, top + 44, active ? 0xFF000000 | cats[i].color() : 0x60303850);
+				ctx.drawBorder(x, top + 30, 23, 14, active ? UiStyle.GOLD : UiStyle.BORDER);
+				Text label = Text.translatable(cats[i].translationKey() + ".short");
+				ctx.drawText(textRenderer, label, x + 12 - textRenderer.getWidth(label) / 2, top + 33, UiStyle.TEXT, false);
+			}
 			if (mouseX >= x && mouseX < x + 23 && mouseY >= top + 30 && mouseY < top + 44) {
 				tooltip = List.of(Text.translatable(cats[i].translationKey()).withColor(cats[i].color()),
 						Text.translatable(cats[i].translationKey() + ".desc").formatted(Formatting.GRAY));
@@ -677,18 +701,22 @@ public class RolesScreen extends Screen {
 		for (int i = 0; i < roles.size(); i++) {
 			Role role = roles.get(i);
 			int y = top + 48 + i * ROLE_ROW_H;
-			if (role == selected) {
+			// Con el kit, la fila seleccionada lleva un realce de 4 px a la izquierda: el icono y el nombre se apartan.
+			int shift = kit ? 4 : 0;
+			if (kit) {
+				RolesUi.row(ctx, role == selected, left + 8, y, LIST_W, ROLE_ROW_H - 2);
+			} else if (role == selected) {
 				theme.panel(ctx, left + 8, y, LIST_W, ROLE_ROW_H - 2);
 				ctx.fill(left + 8, y, left + 10, y + ROLE_ROW_H - 2, theme.accent());
 			} else {
 				UiStyle.row(ctx, left + 8, y, LIST_W, ROLE_ROW_H - 2, i, false);
 			}
-			NodeIconRenderer.drawRole(ctx, role, NodeIconRenderer.Badge.CORE, left + 9, y);
+			NodeIconRenderer.drawRole(ctx, role, NodeIconRenderer.Badge.CORE, left + 9 + shift, y);
 			String marker = role == data.primaryRole() ? "P" : role == data.secondaryRole() ? "S" : "";
 			String stars = "★".repeat(data.tier(role));
 			String right = (marker.isEmpty() ? "" : marker + " ") + stars + data.level(role);
-			UiStyle.label(ctx, textRenderer, Text.translatable(role.translationKey()), left + 28, y + 4,
-					LIST_W - 26 - textRenderer.getWidth(right), UiStyle.TEXT);
+			UiStyle.label(ctx, textRenderer, Text.translatable(role.translationKey()), left + 28 + shift, y + 4,
+					LIST_W - 26 - shift - textRenderer.getWidth(right), UiStyle.TEXT);
 			ctx.drawText(textRenderer, right, left + 4 + LIST_W - textRenderer.getWidth(right), y + 4,
 					marker.isEmpty() ? UiStyle.MUTED : UiStyle.GOLD, false);
 			if (mouseX >= left + 8 && mouseX < left + 8 + LIST_W && mouseY >= y && mouseY < y + ROLE_ROW_H - 2) {
@@ -701,7 +729,7 @@ public class RolesScreen extends Screen {
 		int y = top + 124;
 		RoleRules rules = data.rules();
 		int level = data.level(selected);
-		UiStyle.header(ctx, textRenderer, Text.translatable(Evolution.titleKey(selected, data.tier(selected))),
+		header(ctx, Text.translatable(Evolution.titleKey(selected, data.tier(selected))),
 				left + 8, y, LIST_W);
 		// Nivel y puntos en dos líneas: en una sola se pisaban (sobre todo traducidos).
 		Text lv = level >= rules.maxLevel() ? Text.translatable("screen.aptitudes.max") : Text.translatable("screen.aptitudes.level", level);
@@ -1033,7 +1061,7 @@ public class RolesScreen extends Screen {
 		List<Element> mastered = data.elementList();
 		Element active = data.activeElementValue();
 		int allowed = Element.allowedCount(data.level(Role.ELEMENTALIST));
-		UiStyle.header(ctx, textRenderer, Text.translatable("screen.aptitudes.elements.header", mastered.size(), allowed,
+		header(ctx, Text.translatable("screen.aptitudes.elements.header", mastered.size(), allowed,
 				Element.MAX_MASTERED), x0, top + 59, 200);
 		List<Text> tooltip = null;
 		Element[] elements = Element.values();
@@ -1080,7 +1108,7 @@ public class RolesScreen extends Screen {
 		int y0 = top + 78;
 		int stride = (canvasW() - 12) / 3;
 		int cardW = stride - 4;
-		UiStyle.header(ctx, textRenderer, Text.translatable("screen.aptitudes.forms.header"), x0, top + 59, 200);
+		header(ctx, Text.translatable("screen.aptitudes.forms.header"), x0, top + 59, 200);
 		List<Text> tooltip = null;
 		int shown = 0;
 		for (MorphForm form : MorphForm.values()) {

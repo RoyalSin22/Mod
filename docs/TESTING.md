@@ -12,6 +12,11 @@ Pruebas automáticas nuevas:
   `gen_mob_models.py`, `gen_node_icons.py` y `tools/lang/*`. `gen_tree_atlas.py --check` falla en `main` desde antes de v66
   (compara bytes de PNG y varía con la versión de Pillow); no lo causa ninguno de estos cambios.
 
+- Pantalla de roles (J), kit «fantasía oscura v2» (sin pruebas nuevas: reutiliza `KScreenLayout.tiles`). En partida:
+  los botones cambian a pulsado y desactivado; las pestañas muestran activa, hover y normal; la fila del rol
+  seleccionado lleva el realce dorado sin tapar el icono; las cinco fichas de categoría se distinguen por color y su
+  tooltip da el nombre; el filete de la ficha del rol tiene el rombo centrado; con anchos de 344 a 760 px nada se
+  deforma ni se sale.
 - `logic/KScreenLayoutTest`: la geometría de la pantalla K (10 tarjetas en 5 × 2 sin solaparse ni tapar la ayuda,
   barra e icono dentro de la tarjeta, columnas de Atributos sin solaparse, pestañas alineadas a la derecha) y el reparto
   de las piezas de 3 partes (cubre el ancho exacto, conserva los extremos y repite el centro). En partida, con K: las
