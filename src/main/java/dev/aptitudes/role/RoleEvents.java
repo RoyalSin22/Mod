@@ -121,6 +121,11 @@ public final class RoleEvents {
 					RoleManager.recordTrial(killer, Role.PALADIN, Evolution.TrialType.UNDEAD_KILLS, 1);
 				}
 			}
+			// v67 (F4): las muertes de un esbirro cuentan para su dueño (Banquete del Nigromante).
+			if (source.getAttacker() != null && AbilityState.isMinion(source.getAttacker()) && !AbilityState.isSummon(entity)) {
+				ServerPlayerEntity owner = AbilityState.ownerOf(source.getAttacker());
+				if (owner != null && owner != entity) dev.aptitudes.ability.ExtraKits.onMinionKill(owner, entity);
+			}
 			// Jefes: cuentan para todos los jugadores que participaron (a menos de 96 bloques).
 			if (entity.getType() == EntityType.WITHER || entity.getType() == EntityType.ENDER_DRAGON
 					|| entity.getType() == EntityType.WARDEN) {

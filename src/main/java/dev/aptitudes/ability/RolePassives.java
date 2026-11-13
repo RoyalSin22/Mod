@@ -188,6 +188,11 @@ public final class RolePassives {
 	 */
 	public static float modifyOutgoingDamage(LivingEntity target, DamageSource source, float amount) {
 		if (amount <= 0 || target.getWorld().isClient()) return amount;
+		// v67 (F4): el daño que recibe un esbirro pasa por Resurgir antes que nada.
+		if (!(target instanceof ServerPlayerEntity) && AbilityState.isMinion(target)) {
+			amount = ExtraKits.minionIncoming(target, source, amount);
+			if (amount <= 0) return amount;
+		}
 		// F2: el trance aumenta el daño que hace el jugador.
 		if (source.getAttacker() instanceof ServerPlayerEntity attacker) {
 			amount *= Trance.damageMultiplier(attacker);
@@ -268,7 +273,7 @@ public final class RolePassives {
 		drain(player, result);
 		RoleArmorSets.afterOutgoing(player, result);
 		NewRoles.afterOutgoing(player, result, direct);
-		ExtraKits.afterOutgoing(player, result); // v67: Juramento de sangre
+		ExtraKits.afterOutgoing(player, target, source, direct, result); // v67: Juramento, Ensartar, Doble estocada
 		return result;
 	}
 

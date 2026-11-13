@@ -1,5 +1,33 @@
 # Pruebas de Aptitudes
 
+## v67 (F4) — Habilidades nuevas de Lancero, Espadachín, Paladín y Nigromante
+
+Automáticas: `LancerRulesTest`, `SwordsmanRulesTest`, `PaladinRulesTest`, `NecromancerRulesTest` (cifras de cada rol) y
+`RoleExtrasTest` (datos de los nueve roles con habilidades nuevas).
+
+Validación en partida (pendiente), con `/roles admin` para subir de nivel y evolucionar:
+
+1. **Árbol (J):** en los cuatro roles, N1 y N2 cuelgan de la pasiva B; N3 y N4, de Presteza; Veterano y Ascenso muestran
+   sus 3 nodos. Aprende cada uno y equipa las activas nuevas (13 por rol): salir y entrar conserva el equipamiento.
+2. **Lancero:** Mantener la distancia (pega más a 3 bloques o más); Punta clavada (enemigos alcanzados por una activa
+   quedan marcados 5 s); Jabalina (atraviesa y ralentiza); Muro de picas; Ensartar y Lanza ancestral (el golpe atraviesa
+   al de detrás); Abanico de picas; Primer contacto (+30 % al primer golpe a cada enemigo); Doble estocada;
+   Ráfaga de jabalinas (hasta 8 enemigos).
+3. **Espadachín:** Duelo (exactamente un enemigo a 6 bloques); Filo penetrante (más daño a enemigos con armadura);
+   Tajo ascendente; Molinete (desvía flechas); Racha de victorias; Salto de espadachín; Voluntad de acero (un golpe
+   mortal te deja con 1 de vida, una vez cada 120 s); Estado de flujo (velocidad de ataque y esperas más cortas);
+   Desenvainado (3 s sin atacar); Corte final (carga 1,2 s).
+4. **Paladín:** Fe contra la oscuridad (menos daño de zombis y esqueletos); Triunfo compartido y Oración (necesitan un
+   **segundo jugador**); Rayo de luz (cura al aliado o daña al enemigo, el doble a no-muertos); Golpe de escudo
+   (aturde); Muro de luz (detiene flechas); Vínculo de escudo; Estandarte sagrado; Ira justa; Columna de luz.
+5. **Nigromante:** Orden de ataque (los esbirros acuden al objetivo); Banquete (cura y maná cuando un esbirro mata);
+   Mano de huesos; Sacrificio (falla sin esbirros); Aura putrefacta; Tierra maldita; Resurgir (un esbirro sobrevive una
+   vez por minuto); Frenesí necrótico; Vínculo de huesos (el esbirro más cercano recibe parte del daño); Tormenta de
+   almas.
+6. **Rendimiento y seguridad:** con varios esbirros y jugadores no sube el tick del servidor; al desconectarse con Lanza
+   ancestral activa, el alcance extra desaparece; los esbirros no se quedan sin objetivo tras Orden de ataque.
+7. `extraSkillDamageScale = 0.5`: el daño de las habilidades nuevas baja a la mitad.
+
 ## v67 (F3) — Habilidades nuevas de Mago, Asesino, Herbolista e Ingeniero
 
 Automáticas: `MageRulesTest`, `AssassinRulesTest`, `HerbalistRulesTest`, `EngineerRulesTest` (cifras de cada rol),

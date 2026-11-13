@@ -7,8 +7,9 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 /**
  * v67 (F2+): punto único de enganche de las habilidades nuevas de cada rol ({@link BerserkerKit}, {@link MageKit},
- * {@link AssassinKit}, {@link HerbalistKit} y {@link EngineerKit}). El resto del código llama solo aquí, así que un
- * rol nuevo (F4–F7) añade su kit en esta clase y no toca más ganchos.
+ * {@link AssassinKit}, {@link HerbalistKit}, {@link EngineerKit}, {@link LancerKit}, {@link SwordsmanKit},
+ * {@link PaladinKit} y {@link NecromancerKit}). El resto del código llama solo aquí, así que un rol nuevo (F5–F7)
+ * añade su kit en esta clase y no toca más ganchos.
  */
 public final class ExtraKits {
 	private ExtraKits() {
@@ -20,25 +21,45 @@ public final class ExtraKits {
 		AssassinKit.registerAll();
 		HerbalistKit.registerAll();
 		EngineerKit.registerAll();
+		LancerKit.registerAll();
+		SwordsmanKit.registerAll();
+		PaladinKit.registerAll();
+		NecromancerKit.registerAll();
 	}
 
 	/** Bonificación de daño (se suma a las de {@code RoleMechanics.outgoing}). */
 	public static float outgoing(ServerPlayerEntity p, LivingEntity target, DamageSource source, boolean direct) {
 		return BerserkerKit.outgoing(p, target, direct) + MageKit.outgoing(p, target, source, direct)
-				+ AssassinKit.outgoing(p, target, source, direct);
+				+ AssassinKit.outgoing(p, target, source, direct) + LancerKit.outgoing(p, target, source, direct)
+				+ SwordsmanKit.outgoing(p, target, source, direct) + PaladinKit.outgoing(p, target, source, direct)
+				+ NecromancerKit.outgoing(p, target, source, direct);
 	}
 
-	/** Daño recibido por el jugador, después del resto de reducciones. */
+	/**
+	 * Daño recibido por el jugador, después del resto de reducciones. Voluntad de acero (Espadachín) va la última:
+	 * mira el daño ya reducido para decidir si el golpe sería mortal.
+	 */
 	public static float incoming(ServerPlayerEntity p, DamageSource source, float amount) {
 		amount = BerserkerKit.incoming(p, source, amount);
 		amount = MageKit.incoming(p, source, amount);
 		amount = HerbalistKit.incoming(p, source, amount);
 		amount = EngineerKit.incoming(p, source, amount);
-		return amount;
+		amount = PaladinKit.incoming(p, source, amount);
+		amount = NecromancerKit.incoming(p, source, amount);
+		amount = SwordsmanKit.incoming(p, source, amount);
+		return SwordsmanKit.lethal(p, amount);
 	}
 
-	public static void afterOutgoing(ServerPlayerEntity p, float damage) {
+	/** Daño que recibe un esbirro (Resurgir). Devuelve el daño final. */
+	public static float minionIncoming(LivingEntity minion, DamageSource source, float amount) {
+		return NecromancerKit.minionIncoming(minion, amount);
+	}
+
+	/** Tras calcular el daño final de un golpe del jugador. */
+	public static void afterOutgoing(ServerPlayerEntity p, LivingEntity target, DamageSource source, boolean direct,
+									 float damage) {
 		BerserkerKit.afterOutgoing(p, damage);
+		LancerKit.afterOutgoing(p, target, direct, damage);
 	}
 
 	/** Multiplicador del coste de maná de la activa {@code nodeId}. */
@@ -68,11 +89,19 @@ public final class ExtraKits {
 		MageKit.onCast(p, key, spent, concat);
 		AssassinKit.onCast(p, key);
 		EngineerKit.onCast(p, key);
+		LancerKit.onCast(p, key);
 	}
 
 	public static void onKill(ServerPlayerEntity p, LivingEntity victim) {
 		AssassinKit.onKill(p, victim);
 		EngineerKit.onKill(p, victim);
+		SwordsmanKit.onKill(p, victim);
+		PaladinKit.onKill(p, victim);
+	}
+
+	/** Un esbirro de {@code owner} ha matado a {@code victim} (Banquete). */
+	public static void onMinionKill(ServerPlayerEntity owner, LivingEntity victim) {
+		NecromancerKit.onMinionKill(owner, victim);
 	}
 
 	/** Fin de Sobremarcha del Ingeniero (Calor residual). */
@@ -87,6 +116,10 @@ public final class ExtraKits {
 		AssassinKit.tick(server);
 		HerbalistKit.tick(server);
 		EngineerKit.tick(server);
+		LancerKit.tick(server);
+		SwordsmanKit.tick(server);
+		PaladinKit.tick(server);
+		NecromancerKit.tick(server);
 	}
 
 	/** Al desconectarse un jugador. */
@@ -96,5 +129,9 @@ public final class ExtraKits {
 		AssassinKit.forget(p);
 		HerbalistKit.forget(p);
 		EngineerKit.forget(p);
+		LancerKit.forget(p);
+		SwordsmanKit.forget(p);
+		PaladinKit.forget(p);
+		NecromancerKit.forget(p);
 	}
 }

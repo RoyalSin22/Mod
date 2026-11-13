@@ -1,6 +1,6 @@
 # v67 · F4 — Habilidades nuevas de Lancero, Espadachín, Paladín y Nigromante (diseño para aprobar)
 
-Estado: **propuesta, sin código.** Mismo patrón que F2 y F3 (`docs/V67_F3_DISENO.md`): 10 nodos por rol, 5 pasivas y 5
+Estado: **implementada (2026-11-13); diseño aprobado por el autor.** Mismo patrón que F2 y F3 (`docs/V67_F3_DISENO.md`): 10 nodos por rol, 5 pasivas y 5
 activas.
 
 | Nodos | Sección | Posición | Niveles |
@@ -137,3 +137,15 @@ el límite lo pone el número de esbirros (máx. 4) y la espera de Resurgir.
 3. ¿Los **tres ganchos nuevos** (muertes de esbirros, daño a esbirros, daño a aliados)? Tocan código que ya existe, así
    que son lo más delicado de la tanda.
 4. ¿Implementarlas **todas de una vez** o en dos mitades?
+
+## 7. Diferencias entre el diseño aprobado y la implementación
+
+| Habilidad | Diseño | Implementado | Motivo |
+|---|---|---|---|
+| `paladin_n4` Golpe de escudo | Aturdimiento | Lentitud máxima y Debilidad durante el aturdimiento | El juego base no tiene un efecto de aturdimiento |
+| `necromancer_n3` Mano de huesos | Inmóvil | Lentitud máxima (el efecto visual es de partículas) | Mismo motivo; sin entidades nuevas |
+| `paladin_n9` Ira justa | +50 % de lo recibido | Por cada 10 % de vida máxima perdida, +20 % (tope +30 / 50 %) | Escala con la vida del jugador y no con el daño absoluto |
+| `swordsman_n8` Estado de flujo | Velocidad de ataque | +30 % mediante un modificador temporal de atributo con id estable | Regla del proyecto para modificadores |
+| `lancer_n8` Lanza ancestral | +2 de alcance | Modificador temporal de `PLAYER_ENTITY_INTERACTION_RANGE`; se retira al acabar o desconectarse | Regla del proyecto para modificadores |
+| `necromancer_n9` Vínculo de huesos | Repartir el daño | El esbirro recibe el porcentaje como daño genérico; no se encadena | Evita bucles entre vínculos |
+| Todas las activas | Entidades de efecto | Efectos con partículas y sonidos, sin entidades | Menos riesgo de entidades huérfanas |

@@ -317,6 +317,46 @@ Thrift Mode¦Modo econômico¦Mode économie¦Sparmodus
 Exosuit¦Exoesqueleto¦Exosquelette¦Exoanzug
 Assembly Line¦Linha de montagem¦Chaîne de montage¦Fließband
 Tesla Tower¦Torre Tesla¦Tour Tesla¦Tesla-Turm
+Keep Your Distance¦Manter a distância¦Garder ses distances¦Abstand halten
+Pinned Point¦Ponta cravada¦Pointe plantée¦Haftende Spitze
+Javelin¦Dardo¦Javelot¦Wurfspeer
+Pike Wall¦Muro de piques¦Mur de piques¦Pikenwall
+Skewer¦Espetar¦Embrocher¦Aufspießen
+Pike Fan¦Leque de piques¦Éventail de piques¦Pikenfächer
+First Contact¦Primeiro contato¦Premier contact¦Erstkontakt
+Ancestral Spear¦Lança ancestral¦Lance ancestrale¦Uralter Speer
+Double Thrust¦Estocada dupla¦Double estocade¦Doppelstoß
+Javelin Barrage¦Rajada de dardos¦Salve de javelots¦Wurfspeersalve
+Duel¦Duelo¦Duel¦Duell
+Piercing Edge¦Fio perfurante¦Lame perforante¦Durchdringende Klinge
+Rising Slash¦Corte ascendente¦Taillade ascendante¦Aufwärtshieb
+Whirl¦Moinho¦Moulinet¦Wirbel
+Winning Streak¦Sequência de vitórias¦Série de victoires¦Siegesserie
+Swordsman’s Leap¦Salto do espadachim¦Bond de l’épéiste¦Schwertkämpfersprung
+Will of Steel¦Vontade de aço¦Volonté d’acier¦Stählerner Wille
+Flow State¦Estado de fluxo¦État de flux¦Flow-Zustand
+Unsheathing¦Desembainhada¦Dégainé¦Ziehen der Klinge
+Final Cut¦Corte final¦Taillade finale¦Letzter Schnitt
+Faith Against Darkness¦Fé contra a escuridão¦Foi contre les ténèbres¦Glaube gegen die Finsternis
+Shared Triumph¦Triunfo compartilhado¦Triomphe partagé¦Geteilter Triumph
+Ray of Light¦Raio de luz¦Rayon de lumière¦Lichtstrahl
+Shield Bash¦Golpe de escudo¦Coup de bouclier¦Schildschlag
+Prayer¦Oração¦Prière¦Gebet
+Wall of Light¦Muro de luz¦Mur de lumière¦Lichtwand
+Shield Bond¦Vínculo de escudo¦Lien de bouclier¦Schildbund
+Holy Banner¦Estandarte sagrado¦Étendard sacré¦Heiliges Banner
+Righteous Wrath¦Ira justa¦Juste colère¦Gerechter Zorn
+Pillar of Light¦Coluna de luz¦Colonne de lumière¦Lichtsäule
+Attack Order¦Ordem de ataque¦Ordre d’attaque¦Angriffsbefehl
+Feast¦Banquete¦Festin¦Festmahl
+Bone Hand¦Mão de ossos¦Main d’os¦Knochenhand
+Sacrifice¦Sacrifício¦Sacrifice¦Opferung
+Rotting Aura¦Aura pútrida¦Aura putride¦Faulige Aura
+Cursed Ground¦Terra amaldiçoada¦Terre maudite¦Verfluchter Boden
+Resurge¦Ressurgir¦Renaissance¦Wiederkehr
+Necrotic Frenzy¦Frenesi necrótico¦Frénésie nécrotique¦Nekrotische Raserei
+Bone Bond¦Vínculo de ossos¦Lien d’os¦Knochenband
+Soul Storm¦Tempestade de almas¦Tempête d’âmes¦Seelensturm
 """)
 
 # v67: las descripciones base se escriben en base_desc.py (estilo llano), con sus traducciones.

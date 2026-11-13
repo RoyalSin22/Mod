@@ -25,6 +25,27 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   ignoran y los puntos gastados en esas ramas vuelven a estar disponibles.
 
 ### Añadido
+- **v67 (F4) — 40 habilidades nuevas: Lancero, Espadachín, Paladín y Nigromante.** Cada rol tiene 10 (5 pasivas y 5
+  activas) en Talentos, Veterano y Ascenso, igual que en F2 y F3; diseño aprobado en `docs/V67_F4_DISENO.md`.
+  - **Lancero:** Mantener la distancia, Punta clavada, Jabalina, Muro de picas, Ensartar, Abanico de picas, Primer
+    contacto, Lanza ancestral, Doble estocada y Ráfaga de jabalinas.
+  - **Espadachín:** Duelo, Filo penetrante, Tajo ascendente, Molinete, Racha de victorias, Salto de espadachín, Voluntad
+    de acero, Estado de flujo, Desenvainado y Corte final.
+  - **Paladín:** Fe contra la oscuridad, Triunfo compartido, Rayo de luz, Golpe de escudo, Oración, Muro de luz, Vínculo
+    de escudo, Estandarte sagrado, Ira justa y Columna de luz.
+  - **Nigromante:** Orden de ataque, Banquete, Mano de huesos, Sacrificio, Aura putrefacta, Tierra maldita, Resurgir,
+    Frenesí necrótico, Vínculo de huesos y Tormenta de almas.
+  - **Código:** un kit por rol (`LancerKit`, `SwordsmanKit`, `PaladinKit`, `NecromancerKit`) con sus reglas puras
+    (`*Rules`), enganchados solo en `ability/ExtraKits`. Tres ganchos nuevos: muertes causadas por esbirros
+    (`RoleEvents`, `ExtraKits.onMinionKill`), daño recibido por esbirros (`RolePassives`, `ExtraKits.minionIncoming`) y
+    daño posterior al golpe con el objetivo (`ExtraKits.afterOutgoing`); Voluntad de acero y Resurgir pueden anular un
+    golpe mortal.
+  - **Textos:** 80 claves nuevas en los 5 idiomas; iconos provisionales con objetos vanilla y encargo de arte en
+    `docs/PROMPT_ARTE_ICONOS_F4.md`. Sin opciones de configuración nuevas (usa `extraSkillDamageScale`).
+  - **Pruebas:** `LancerRulesTest`, `SwordsmanRulesTest`, `PaladinRulesTest`, `NecromancerRulesTest` y `RoleExtrasTest`
+    ampliada a los nueve roles con datos.
+  - **Diferencias con el diseño aprobado:** ver §7 de `docs/V67_F4_DISENO.md` (por ejemplo, el aturdimiento y la mano
+    de huesos se implementan con lentitud máxima, y Ira justa se carga por porcentaje de vida perdida).
 - **v67 (F3) — 40 habilidades nuevas: Mago, Asesino, Herbolista e Ingeniero.** Cada rol tiene 10 (5 pasivas y 5 activas)
   repartidas en Talentos, Veterano y Ascenso, como el Bersérker; diseño aprobado en `docs/V67_F3_DISENO.md`.
   - **Mago:** Plenitud arcana, Escarcha latente, Rayo encadenado, Escudo especular, Concatenación, Tormenta de granizo,

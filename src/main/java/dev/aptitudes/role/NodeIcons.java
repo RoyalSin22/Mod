@@ -105,7 +105,25 @@ public final class NodeIcons {
 		put("engineer_n3", Items.STONE_PRESSURE_PLATE); put("engineer_n4", Items.FIREWORK_ROCKET);
 		put("engineer_n5", Items.MAGMA_BLOCK); put("engineer_n6", Items.GLASS);
 		put("engineer_n7", Items.CLOCK); put("engineer_n8", Items.IRON_CHESTPLATE);
-		put("engineer_n9", Items.STICKY_PISTON); put("engineer_n10", Items.BEACON); put("arcane_charges", Items.AMETHYST_CLUSTER);
+		put("engineer_n9", Items.STICKY_PISTON); put("engineer_n10", Items.BEACON);
+		// v67 F4: iconos provisionales (objetos del juego) hasta que llegue el arte de docs/PROMPT_ARTE_ICONOS_F4.md.
+		put("lancer_n1", Items.SPYGLASS); put("lancer_n2", Items.TARGET); put("lancer_n3", Items.TRIDENT);
+		put("lancer_n4", Items.BAMBOO); put("lancer_n5", Items.ARROW); put("lancer_n6", Items.SPECTRAL_ARROW);
+		put("lancer_n7", Items.IRON_NUGGET); put("lancer_n8", Items.NETHERITE_SCRAP); put("lancer_n9", Items.STICK);
+		put("lancer_n10", Items.TIPPED_ARROW);
+		put("swordsman_n1", Items.IRON_SWORD); put("swordsman_n2", Items.IRON_NUGGET); put("swordsman_n3", Items.FEATHER);
+		put("swordsman_n4", Items.COMPASS); put("swordsman_n5", Items.GOLDEN_SWORD); put("swordsman_n6", Items.RABBIT_FOOT);
+		put("swordsman_n7", Items.SHIELD); put("swordsman_n8", Items.CLOCK); put("swordsman_n9", Items.DIAMOND_SWORD);
+		put("swordsman_n10", Items.NETHERITE_SWORD);
+		put("paladin_n1", Items.GLOWSTONE_DUST); put("paladin_n2", Items.GOLDEN_APPLE); put("paladin_n3", Items.END_ROD);
+		put("paladin_n4", Items.IRON_CHESTPLATE); put("paladin_n5", Items.BOOK); put("paladin_n6", Items.GLASS);
+		put("paladin_n7", Items.SHIELD); put("paladin_n8", Items.WHITE_BANNER); put("paladin_n9", Items.BLAZE_POWDER);
+		put("paladin_n10", Items.SEA_LANTERN);
+		put("necromancer_n1", Items.BONE); put("necromancer_n2", Items.ROTTEN_FLESH); put("necromancer_n3", Items.SKELETON_SKULL);
+		put("necromancer_n4", Items.TNT); put("necromancer_n5", Items.SPIDER_EYE); put("necromancer_n6", Items.SOUL_SOIL);
+		put("necromancer_n7", Items.TOTEM_OF_UNDYING); put("necromancer_n8", Items.WITHER_ROSE); put("necromancer_n9", Items.BONE_BLOCK);
+		put("necromancer_n10", Items.SOUL_LANTERN);
+		put("arcane_charges", Items.AMETHYST_CLUSTER);
 		put("mana_shield", Items.LAPIS_BLOCK); put("spell_echo", Items.ECHO_SHARD);
 		put("time_warp", Items.CLOCK); put("arcane_missiles", Items.END_ROD);
 		put("lethal_tempo", Items.IRON_SWORD); put("smoke_escape", Items.GRAY_DYE);

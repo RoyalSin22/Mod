@@ -570,6 +570,24 @@ rango) y de la definitiva.
 Riesgos que vigilar en partida: el sangrado acumulado de Tajos (6/s con 3 cargas en rango 2) y Avatar junto a Furia y
 el Juramento (multiplicadores que se suman, limitados por `maxDamageMultiplier`).
 
+## v67 (F4) — Habilidades nuevas de Lancero, Espadachín, Paladín y Nigromante
+
+Valores con `extraSkillDamageScale` = 1 (cifras y costes en `docs/V67_F4_DISENO.md`). La escala solo multiplica el daño
+directo de las activas y de los efectos que hacen daño; no cambia curaciones, esperas ni porcentajes.
+
+**Riesgos que vigilar en partida:**
+
+| Rol | Riesgo | Freno actual |
+|---|---|---|
+| Espadachín | Voluntad de acero evita una muerte | Una vez cada 120 s por jugador; solo 1 de vida y Resistencia IV 3 s |
+| Espadachín | Estado de flujo recorta esperas con cada golpe | Solo las activas del Espadachín, 0,5 s por golpe y 8–10 s de duración |
+| Espadachín | Filo penetrante + Racha + Duelo + Desenvainado apilan daño | `maxDamageMultiplier`; Filo penetrante topa en +30 % |
+| Lancero | Primer contacto + Lanza ancestral + Mantener la distancia + Punta clavada | `maxDamageMultiplier`; Lanza ancestral solo dura 8–10 s |
+| Paladín | Vínculo de escudo + Fe contra la oscuridad reducen mucho el daño del grupo | −10 % (no se acumula entre paladines); Fe solo vs. no-muertos |
+| Paladín | Ira justa convierte el daño recibido en daño | Se consume al golpear; tope +30 / 50 % |
+| Nigromante | Vínculo de huesos + Escudo de hueso + Resurgir | Resurgir una vez cada 60 s; el vínculo pasa solo el 15–25 % |
+| Nigromante | Frenesí necrótico: esbirros con Fuerza II y Velocidad II | 10–14 s y espera de 45 s |
+
 ## v67 (F3) — Habilidades nuevas de Mago, Asesino, Herbolista e Ingeniero
 
 Valores con `extraSkillDamageScale` = 1 (las cifras y los costes de cada habilidad están en `docs/V67_F3_DISENO.md`).

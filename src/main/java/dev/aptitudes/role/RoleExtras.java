@@ -65,6 +65,12 @@ public final class RoleExtras {
 			case "herbalist" -> standard("herbalist", "herbal_immunity", new int[]{20, 40, 45, 60, 80},
 					new int[]{12, 40, 30, 45, 90});
 			case "engineer" -> standard("engineer", "battery", new int[]{20, 40, 45, 60, 80}, new int[]{10, 35, 30, 45, 90});
+			case "lancer" -> standard("lancer", "charge", new int[]{20, 30, 45, 60, 80}, new int[]{10, 18, 30, 45, 90});
+			case "swordsman" -> standard("swordsman", "parry", new int[]{20, 30, 45, 60, 80}, new int[]{8, 16, 30, 45, 90});
+			case "paladin" -> standard("paladin", "protective_aura", new int[]{25, 30, 45, 60, 80},
+					new int[]{14, 25, 30, 45, 90});
+			case "necromancer" -> standard("necromancer", "life_drain", new int[]{22, 40, 45, 60, 80},
+					new int[]{12, 30, 30, 45, 90});
 			default -> List.of();
 		};
 	}
