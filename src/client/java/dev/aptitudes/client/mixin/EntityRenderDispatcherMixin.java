@@ -27,8 +27,20 @@ public abstract class EntityRenderDispatcherMixin {
 														   CallbackInfo ci) {
 		if (!(entity instanceof AbstractClientPlayerEntity player)) return;
 		LivingEntity fake = ClientMorphs.fakeFor(player);
-		if (fake == null) return;
-		((EntityRenderDispatcher) (Object) this).render(fake, x, y, z, yaw, tickDelta, matrices, vertexConsumers, light);
-		ci.cancel();
+		if (fake == null || aptitudes$broken.contains(fake.getType())) return;
+		try {
+			((EntityRenderDispatcher) (Object) this).render(fake, x, y, z, yaw, tickDelta, matrices, vertexConsumers, light);
+			ci.cancel();
+		} catch (RuntimeException e) {
+			// Un renderizador de la forma que falla (p. ej., de otro mod) no debe cerrar el juego: se avisa una vez y se
+			// dibuja el jugador normal. Ese tipo no se vuelve a intentar en la sesión (ni el error ni el coste se repiten
+			// en cada fotograma).
+			if (aptitudes$broken.add(fake.getType())) {
+				dev.aptitudes.Aptitudes.LOGGER.error("[Aptitudes] No se pudo dibujar la forma {}; se muestra el jugador",
+						fake.getType(), e);
+			}
+		}
 	}
+
+	private static final java.util.Set<net.minecraft.entity.EntityType<?>> aptitudes$broken = new java.util.HashSet<>();
 }
