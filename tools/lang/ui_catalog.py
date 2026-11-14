@@ -1707,9 +1707,19 @@ block.aptitudes.sealed_stone¦Pedra selada¦Pierre scellée¦Versiegelter Stein
 block.aptitudes.temple_seal¦Selo do templo¦Sceau du temple¦Tempelsiegel
 block.aptitudes.reliquary¦Relicário¦Reliquaire¦Reliquiar
 block.aptitudes.custodian_door¦Porta do Custódio¦Porte du Gardien¦Tür des Wächters
+block.aptitudes.chamber_door_copper¦Porta de câmara de cobre¦Porte de chambre en cuivre¦Kammertür aus Kupfer
+block.aptitudes.chamber_door_iron¦Porta de câmara de ferro¦Porte de chambre en fer¦Kammertür aus Eisen
+block.aptitudes.chamber_door_gold¦Porta de câmara de ouro¦Porte de chambre en or¦Kammertür aus Gold
+block.aptitudes.chamber_door_diamond¦Porta de câmara de diamante¦Porte de chambre en diamant¦Kammertür aus Diamant
 item.aptitudes.temple_key¦Chave do templo¦Clé du temple¦Tempelschlüssel
 item.aptitudes.temple_key.tooltip¦Abre o Relicário do templo cujo guardião a deixou cair.¦Ouvre le Reliquaire du temple dont le gardien l'a lâchée.¦Öffnet das Reliquiar des Tempels, dessen Wächter ihn fallen ließ.
 item.aptitudes.temple_key.blank¦Uma chave vazia: não pertence a nenhum templo.¦Une clé vide : elle n'appartient à aucun temple.¦Ein leerer Schlüssel: Er gehört zu keinem Tempel.
+item.aptitudes.custodian_key_copper¦Chave de cobre do Custódio¦Clé de cuivre du Gardien¦Kupferschlüssel des Wächters
+item.aptitudes.custodian_key_iron¦Chave de ferro do Custódio¦Clé de fer du Gardien¦Eisenschlüssel des Wächters
+item.aptitudes.custodian_key_gold¦Chave de ouro do Custódio¦Clé d'or du Gardien¦Goldschlüssel des Wächters
+item.aptitudes.custodian_key_diamond¦Chave de diamante do Custódio¦Clé de diamant du Gardien¦Diamantschlüssel des Wächters
+item.aptitudes.custodian_key.tooltip¦Abre uma câmara do templo de onde veio.¦Ouvre une chambre du temple dont elle provient.¦Öffnet eine Kammer des Tempels, aus dem sie stammt.
+item.aptitudes.custodian_key.blank¦Não abre nada: não pertence a nenhum templo.¦Elle n'ouvre rien : elle n'appartient à aucun temple.¦Sie öffnet nichts: Sie gehört zu keinem Tempel.
 item.aptitudes.life_vessel¦Vaso de vida¦Vase de vie¦Lebensgefäß
 item.aptitudes.life_vessel.tooltip¦Use: +1 coração permanente (cada vaso funciona uma vez).¦Utiliser : +1 cœur permanent (chaque vase ne sert qu'une fois).¦Benutzen: +1 dauerhaftes Herz (jedes Gefäß wirkt nur einmal).
 entity.aptitudes.temple_guardian¦Guardião do templo¦Gardien du temple¦Tempelwächter
@@ -1728,6 +1738,12 @@ temple.aptitudes.door.opened¦A Âncora do Véu se desfaz e a porta do Custódio
 temple.aptitudes.door.needs_anchor¦A porta não cede. Só uma Âncora do Véu poderia abri-la.¦La porte ne cède pas. Seule une Ancre du voile pourrait l'ouvrir.¦Die Tür gibt nicht nach. Nur ein Schleieranker könnte sie öffnen.
 temple.aptitudes.door.not_ready¦A porta ainda dorme. Os mecanismos do templo ainda não responderam.¦La porte dort encore. Les mécanismes du temple n'ont pas encore répondu.¦Die Tür schläft noch. Die Mechanismen des Tempels haben noch nicht geantwortet.
 temple.aptitudes.door.already_open¦A porta já está aberta.¦La porte est déjà ouverte.¦Die Tür ist bereits offen.
+temple.aptitudes.chamber.not_ready¦O Custódio ainda guarda as chaves desta câmara.¦Le Gardien garde encore les clés de cette chambre.¦Der Wächter hütet noch die Schlüssel dieser Kammer.
+temple.aptitudes.chamber.no_key¦Esta porta precisa de uma chave do Custódio.¦Cette porte exige une clé du Gardien.¦Diese Tür braucht einen Schlüssel des Wächters.
+temple.aptitudes.chamber.wrong_temple¦Esta chave é de outro templo.¦Cette clé appartient à un autre temple.¦Dieser Schlüssel gehört zu einem anderen Tempel.
+temple.aptitudes.chamber.wrong_metal¦A fechadura não encaixa: esta chave é de outro metal.¦La serrure ne correspond pas : cette clé est d'un autre métal.¦Das Schloss passt nicht: Dieser Schlüssel ist aus einem anderen Metall.
+temple.aptitudes.chamber.opened¦A fechadura cede e a câmara se abre.¦La serrure cède et la chambre s'ouvre.¦Das Schloss gibt nach und die Kammer öffnet sich.
+temple.aptitudes.guardian_defeated_keys¦O Custódio cai e deixa quatro chaves.¦Le Gardien tombe et laisse quatre clés.¦Der Wächter fällt und hinterlässt vier Schlüssel.
 temple.aptitudes.seal.flow_dormant¦Selo: algo antigo dorme no átrio.¦Sceau : quelque chose d'ancien dort dans l'atrium.¦Siegel: Im Atrium schläft etwas Uraltes.
 temple.aptitudes.seal.flow_automaton¦Selo: o Autômato vigia o átrio. Derrote-o antes de tocar nos mecanismos.¦Sceau : l'Automate veille sur l'atrium. Vainquez-le avant de toucher aux mécanismes.¦Siegel: Der Automat bewacht das Atrium. Besiege ihn, bevor du die Mechanismen berührst.
 temple.aptitudes.seal.flow_door_locked¦Selo: a porta do Custódio aguarda uma Âncora do Véu.¦Sceau : la porte du Gardien attend une Ancre du voile.¦Siegel: Die Tür des Wächters erwartet einen Schleieranker.

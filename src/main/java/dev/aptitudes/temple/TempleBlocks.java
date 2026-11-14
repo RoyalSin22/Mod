@@ -100,6 +100,40 @@ public final class TempleBlocks {
 		}
 	}
 
+	/**
+	 * T4: puerta de una cámara de recompensa. Solo la abre la llave del Custodio de su metal y de su templo, y solo con el
+	 * Custodio vencido. Cada puerta es un bloque distinto por metal.
+	 */
+	public static class ChamberDoor extends Block {
+		private final TempleKeyRules.Metal metal;
+
+		public ChamberDoor(Settings settings, TempleKeyRules.Metal metal) {
+			super(settings);
+			this.metal = metal;
+		}
+
+		public TempleKeyRules.Metal metal() {
+			return metal;
+		}
+
+		@Override
+		protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player,
+												 Hand hand, BlockHitResult hit) {
+			if (!(stack.getItem() instanceof CustodianKeyItem)) return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+			if (world.isClient) return ItemActionResult.SUCCESS;
+			if (world instanceof ServerWorld server && player instanceof ServerPlayerEntity sp) Temples.useChamberDoor(server, pos, sp, stack, metal);
+			return ItemActionResult.CONSUME;
+		}
+
+		@Override
+		protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+			if (!world.isClient && world instanceof ServerWorld server && player instanceof ServerPlayerEntity sp) {
+				Temples.useChamberDoor(server, pos, sp, ItemStack.EMPTY, metal);
+			}
+			return ActionResult.success(world.isClient);
+		}
+	}
+
 	public static class Reliquary extends BlockWithEntity {
 		public static final MapCodec<Reliquary> CODEC = createCodec(Reliquary::new);
 

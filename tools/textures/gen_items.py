@@ -1041,6 +1041,11 @@ ITEMS = {
     'hunters_trophy': ('trophy', {'L': '#6d4c2a', 'B': '#efe6d2'}),
     # v64: Templos sellados
     'temple_key': ('temple_key', {'G': '#5fb3b3', 'J': '#ffd166'}),
+    # T4: llaves del Custodio (mismo dibujo que la llave del templo, un metal cada una)
+    'custodian_key_copper': ('temple_key', {'G': '#a8582f', 'J': '#e39a62'}),
+    'custodian_key_iron': ('temple_key', {'G': '#80888f', 'J': '#c5ccd4'}),
+    'custodian_key_gold': ('temple_key', {'G': '#e0b43a', 'J': '#fff0a0'}),
+    'custodian_key_diamond': ('temple_key', {'G': '#2fb6ee', 'J': '#c4f1ff'}),
     'life_vessel': ('vessel', {'F': '#e9eef2', 'A': '#c2185b', 'J': '#ff8fab', 'G': '#e0b43a'}),
 }
 

@@ -61,6 +61,10 @@ public class TempleSealBlockEntity extends BlockEntity {
 	BlockPos triggerCenter = BlockPos.ORIGIN;
 	@Nullable UUID automaton;
 	private int missingAutomatonChecks;
+	/** T4: celdas de las puertas de las cámaras (relativas al sello), con el metal de cada una, y las cámaras ya abiertas. */
+	final List<BlockPos> chamberDoors = new ArrayList<>();
+	final List<TempleKeyRules.Metal> chamberMetals = new ArrayList<>();
+	int chambersOpen;
 
 	public TempleSealBlockEntity(BlockPos pos, BlockState state) {
 		super(Temples.SEAL_ENTITY, pos, state);
@@ -255,6 +259,42 @@ public class TempleSealBlockEntity extends BlockEntity {
 		markDirty();
 	}
 
+	/** ¿Esta posición absoluta es un bloque de alguna puerta (la del Custodio o la de una cámara) de este templo? */
+	public boolean ownsDoor(BlockPos absolute) {
+		return ownsInnerDoor(absolute) || chamberMetalAt(absolute) != null;
+	}
+
+	/** Metal de la puerta de cámara en esa posición absoluta, o {@code null} si no es de este templo. */
+	@Nullable
+	public TempleKeyRules.Metal chamberMetalAt(BlockPos absolute) {
+		if (layout != TempleFlowRules.LAYOUT_CUSTODIAN) return null;
+		int i = chamberDoors.indexOf(absolute.subtract(pos));
+		return i < 0 || i >= chamberMetals.size() ? null : chamberMetals.get(i);
+	}
+
+	/** Abre la cámara de ese metal: quita sus bloques de puerta. Lo llama {@link Temples#useChamberDoor} tras gastar la llave. */
+	void openChamber(ServerWorld world, TempleKeyRules.Metal metal) {
+		for (int i = 0; i < chamberDoors.size() && i < chamberMetals.size(); i++) {
+			if (chamberMetals.get(i) != metal) continue;
+			BlockPos p = pos.add(chamberDoors.get(i));
+			if (world.getBlockState(p).getBlock() == Temples.chamberDoorBlock(metal)) world.breakBlock(p, false);
+		}
+		chambersOpen = TempleKeyRules.withOpened(chambersOpen, metal);
+		world.playSound(null, pos, SoundEvents.BLOCK_VAULT_OPEN_SHUTTER, SoundCategory.BLOCKS, 1.2f, 0.9f);
+		tell(nearby(world, 40), "temple.aptitudes.chamber.opened");
+		markDirty();
+	}
+
+	/** La llama la generación: puertas de cámara, relativas al sello, con su metal. */
+	public void setupChambers(List<BlockPos> doors, List<TempleKeyRules.Metal> metals) {
+		this.chamberDoors.clear();
+		this.chamberDoors.addAll(doors);
+		this.chamberMetals.clear();
+		this.chamberMetals.addAll(metals);
+		this.chambersOpen = 0;
+		markDirty();
+	}
+
 	public int layout() {
 		return layout;
 	}
@@ -357,6 +397,12 @@ public class TempleSealBlockEntity extends BlockEntity {
 		nbt.putLong("automaton_spawn", automatonSpawn.asLong());
 		nbt.putLong("trigger_center", triggerCenter.asLong());
 		if (automaton != null) nbt.putUuid("automaton", automaton);
+		// T4
+		nbt.putLongArray("chamber_doors", encode(chamberDoors));
+		byte[] metals = new byte[chamberMetals.size()];
+		for (int i = 0; i < metals.length; i++) metals[i] = (byte) chamberMetals.get(i).ordinal();
+		nbt.putByteArray("chamber_metals", metals);
+		nbt.putInt("chambers_open", chambersOpen);
 	}
 
 	@Override
@@ -382,5 +428,16 @@ public class TempleSealBlockEntity extends BlockEntity {
 		automatonSpawn = BlockPos.fromLong(nbt.getLong("automaton_spawn"));
 		triggerCenter = BlockPos.fromLong(nbt.getLong("trigger_center"));
 		automaton = nbt.containsUuid("automaton") ? nbt.getUuid("automaton") : null;
+		// T4: un templo sin estas claves se lee sin cámaras.
+		decode(nbt.getLongArray("chamber_doors"), chamberDoors, 32);
+		chamberMetals.clear();
+		byte[] metals = nbt.getByteArray("chamber_metals");
+		for (int i = 0; i < metals.length && chamberMetals.size() < chamberDoors.size(); i++) {
+			TempleKeyRules.Metal metal = TempleKeyRules.metalFromOrdinal(metals[i]);
+			if (metal == null) break;
+			chamberMetals.add(metal);
+		}
+		while (chamberDoors.size() > chamberMetals.size()) chamberDoors.remove(chamberDoors.size() - 1);
+		chambersOpen = TempleKeyRules.sanitizeMask(nbt.getInt("chambers_open"));
 	}
 }
