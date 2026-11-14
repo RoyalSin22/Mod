@@ -1,0 +1,47 @@
+# Decisiones: tomadas y abiertas
+
+## Tomadas por el autor
+
+| Id | Decisión | Dónde se aplica |
+|---|---|---|
+| D-01 | El Eclipse puede repetirse cada 10 días, pero solo si se sacrifica un objeto en la Hoguera. Precisión: el «Primer Eclipse» es el **histórico**; el jugador, al cumplir ciertos objetivos, lo invoca cada vez que tenga el material | 02, 06, C-01 |
+| D-03 | El artefacto original (inspirado en la función del Behelit) se documenta ahora, con nombre propio, sin implementar | 07 |
+| D-04 | Idiomas: español e inglés primero; el resto más adelante | Fase 2 |
+| D-05 | El material del Osario Quebrado se verá después; varios objetos del mod se rediseñarán | 07 |
+| D-06 | Los nombres con exclusión quedan a criterio del redactor: se aplicaron renombres (C-05) | 03, 05 |
+| D-14 | Colección I: A-01 a A-06 aceptadas. A-01 con matiz: el desbloqueo de LORE-013 es «inicio del Eclipse (primera vez que el jugador lo invoca)». A-02: LORE-014 se desbloquea al finalizar el Eclipse. A-03: «Vigilantes de los Sellos». A-04, A-05 y A-06 como se propusieron | tools/lang/lore_catalog.py |
+| D-17 | Colección II: A-07 a A-10 aplicadas como se propusieron | tools/lang/lore_catalog.py |
+| D-20 | Cadena de progresión aprobada (ver `09_CADENA_DE_PROGRESION.md`): aldeano del gremio inicia la Niebla (global, 1 día, cada 10 días); drops distintos por criatura; objeto de acceso crafteado; templo nuevo con Autómata interno; Custodio con 4 llaves (cobre, hierro, oro, diamante) en una tirada; Behelit en la cámara de diamante, se consume y se usa uno cada 3 días; Lluvia de brasas al encender un portal | 09 |
+| D-21 | Nombre «Resonador del Umbral» aceptado como provisional (D-11 sigue abierta para cambiarlo) | 07 |
+| D-22 | LORE-010, 012 y 013 se dejan como están (punto 16) | `lore_catalog.py` |
+| D-25 | Aclaraciones de la cadena: el objeto de acceso se usa solo en la puerta del Custodio y se consume; el Behelit se espera 3 días por mundo desde el fin del Eclipse; la Niebla puede iniciarse en cualquier momento y dura un día de Minecraft; la Lluvia de brasas tiene espera; los sellos se retirarán con migración, sin eliminarlos ahora; el aldeano dice «los muertos se han ido, pero volverán» | 09 |
+| D-26 | Los 3 sellos de invocación se retirarán con migración; la Lluvia de brasas tiene espera de 5 días; el calendario rotativo desaparece por completo; la Niebla empieza al hablar con el aldeano | 09 |
+| D-31 | T2: el autor delegó los nombres y la receta. Elegidos por el redactor: **Núcleo del Osario** (`nucleo_osario`), **Ancla del Velo** (`ancla_del_velo`), receta sin forma 3 Jirón + 2 Núcleo + 3 Fragmentos de alma + 1 diamante y probabilidad del 85 % para ambos drops. Los ids son permanentes una vez publicados. **El autor aprobó los nombres y delegó en el redactor las cifras del botín** (2026-11-14) | 09, BALANCE |
+| D-19 | Fase 2a autorizada; camino 1 del CI (respaldo en inglés en pt/fr/de, generado por script) | tools/lang/gen_lore_lang.py |
+
+## Abiertas (propuestas del redactor, a confirmar)
+
+| Id | Pregunta | Recomendación |
+|---|---|---|
+| D-07 | ¿Qué papel narrativo tiene el Coloso Sin Rostro? | Dejarlo sin papel fijado; no figura en el borrador |
+| D-08 | ¿Los «Cuatro Sellos» y las cuatro llaves tienen relación simbólica? | Atractivo, pero no afirmar hasta confirmarlo |
+| D-09 | ¿Los Eclipses posteriores «pulsan» la Fractura sin ensancharla, o son acumulativos? | Pulsan sin ensanchar: evita contradecir el cierre del segundo arco |
+| D-10 | ¿Se añade una entrada de bestiario al Custodio? | Cambio de código: encargo aparte |
+| D-11 | Nombre definitivo del artefacto | Aceptado como provisional; decidir si cambia |
+| D-23 | Pendiente menor: ¿los 10 días de la Niebla se cuentan desde que se inicia o desde que termina? (A-8) | Responder |
+| D-27 | Plan por tandas de `10_PLAN_DE_IMPLEMENTACION.md`: autorizar T0 y la tanda inicial (T1 y T2), y la política de ramas (una por tanda o commits en la rama actual) | Autorizar |
+| D-29 | T0/T1 autorizadas; commits por tanda en la rama actual. El caballero coronado de la imagen de referencia no es un mob real (lo añadió la IA que generó la imagen) | 10 |
+| D-30 | T1: Mayús + clic derecho como forma de «hablar» con el aldeano (provisional, para no quitar el comercio) y espera contada desde el inicio del evento (A-8, provisional) | 09, 10 |
+| D-32 | T3: el autor delegó las decisiones del templo; el redactor propone el diseño de `11_DISENO_T3_TEMPLO.md` (Feature de 31×31 en dos niveles, Autómata dormido en el atrio, Puerta del Custodio con el Ancla, templos antiguos intactos). Falta autorizar T3 | 11 |
+| D-33 (resuelta) | **Suministro de Behelit:** la regeneración de templos (`TempleRecurrenceRules`) no está conectada al juego, así que cada mundo tiene un número finito de templos. El autor quiere poder tener varios Behelit y usar uno cada 3 días. Opciones: (a) conectar la regeneración (cambio de mecánica), (b) subir la frecuencia de templos, (c) recompensa repetible por jugador. Recomendación: (a) | 11, 10 |
+| D-34 | **T4:** el contenido de las cuatro cámaras lo eligió el redactor por delegación (ver `docs/BALANCE.md`). El Relicario con el Vaso de vida se **mantiene** en la cámara del Custodio con su llave de siempre; los dos cofres antiguos se sustituyen por las cámaras. Los cofres son normales (en grupo se reparte el botín). El Behelit entra en la tabla de diamante en T5 | 09, BALANCE |
+| D-35 | **D-33 resuelta por el autor:** se **sube la frecuencia** del templo (opción 2), de 1 de cada 400 a 1 de cada 120 chunks. La regeneración de templos (`TempleRecurrenceRules`) sigue sin conectarse; si tras el playtest los Behelits no bastan, se reabre | 11, BALANCE |
+| D-24 | Referencia gráfica del bestiario y rediseño del Grimorio | El autor la tiene; pendiente de recibirla |
+| D-13 | ¿Quién recibe los desbloqueos nacidos de un evento de mundo (LORE-013/014, EVENT-003)? | Solo jugadores presentes en el Eclipse; los desconectados lo reciben al volver a entrar si lo completó. A decidir |
+| D-15 | ¿Dónde viven las crónicas de eventos de la Colección II? | Sin estructura hoy; no decidido |
+| D-16 | Definir «primer encuentro documentado» y «primera participación» en un evento | Sin definición en el código |
+
+## No decididas y no inventadas
+
+Años, duraciones, causa de la Gran Separación, origen de la Conciencia, receta del objeto especial, material del
+Osario, id del artefacto.

@@ -1410,8 +1410,11 @@ eclipse.name¦O Eclipse¦L'Éclipse¦Die Finsternis
 soul_fog.name¦Névoa das Almas¦Brume des âmes¦Seelennebel
 soul_fog.announce¦Esta noite a névoa trará aqueles que não descansam…¦Cette nuit, la brume amènera ceux qui ne reposent pas…¦Heute Nacht bringt der Nebel jene, die nicht ruhen…
 soul_fog.start¦A Névoa das Almas cobre o mundo. Algo se move na neblina.¦La Brume des âmes couvre le monde. Quelque chose bouge dans la brume.¦Seelennebel bedeckt die Welt. Etwas bewegt sich im Dunst.
-soul_fog.end¦A névoa se dissipa ao amanhecer.¦La brume se lève avec l'aube.¦Mit dem Morgengrauen lichtet sich der Nebel.
+soul_fog.end¦A névoa se dissipa.¦La brume se dissipe.¦Der Nebel lichtet sich.
 soul_fog.stopped¦A Névoa das Almas foi interrompida.¦La Brume des âmes a été arrêtée.¦Der Seelennebel wurde beendet.
+soul_fog.villager_start¦«Os mortos estão se levantando… Cuidado, a névoa já cobre estas terras.»¦« Les morts se relèvent… Prenez garde, la brume recouvre déjà ces terres. »¦„Die Toten erheben sich… Gebt Acht, der Nebel bedeckt schon diese Lande.“
+soul_fog.villager_wait¦«Os mortos se foram, mas voltarão.»¦« Les morts sont partis, mais ils reviendront. »¦„Die Toten sind fort, aber sie werden wiederkehren.“
+soul_fog.villager_busy¦«Agora não posso falar disso… algo mais se agita lá fora.»¦« Je ne peux pas en parler maintenant… autre chose s'agite là-dehors. »¦„Darüber kann ich jetzt nicht sprechen… draußen regt sich etwas anderes.“
 ember_rain.name¦Chuva de Brasas¦Pluie de braises¦Glutregen
 ember_rain.announce¦Amanhã o céu vai arder. Busque abrigo… ou minério.¦Demain, le ciel brûlera. Cherchez un abri… ou du minerai.¦Morgen brennt der Himmel. Suche Schutz… oder Erz.
 ember_rain.start¦Chuva de Brasas! Meteoros estão caindo: afaste-se dos rastros de fogo.¦Pluie de braises ! Des météores tombent : éloignez-vous des traînées de feu.¦Glutregen! Meteore fallen: Halte dich von den Feuerschweifen fern.
@@ -1688,9 +1691,20 @@ add('', """
 block.aptitudes.sealed_stone¦Pedra selada¦Pierre scellée¦Versiegelter Stein
 block.aptitudes.temple_seal¦Selo do templo¦Sceau du temple¦Tempelsiegel
 block.aptitudes.reliquary¦Relicário¦Reliquaire¦Reliquiar
+block.aptitudes.custodian_door¦Porta do Custódio¦Porte du Gardien¦Tür des Wächters
+block.aptitudes.chamber_door_copper¦Porta de câmara de cobre¦Porte de chambre en cuivre¦Kammertür aus Kupfer
+block.aptitudes.chamber_door_iron¦Porta de câmara de ferro¦Porte de chambre en fer¦Kammertür aus Eisen
+block.aptitudes.chamber_door_gold¦Porta de câmara de ouro¦Porte de chambre en or¦Kammertür aus Gold
+block.aptitudes.chamber_door_diamond¦Porta de câmara de diamante¦Porte de chambre en diamant¦Kammertür aus Diamant
 item.aptitudes.temple_key¦Chave do templo¦Clé du temple¦Tempelschlüssel
 item.aptitudes.temple_key.tooltip¦Abre o Relicário do templo cujo guardião a deixou cair.¦Ouvre le Reliquaire du temple dont le gardien l'a lâchée.¦Öffnet das Reliquiar des Tempels, dessen Wächter ihn fallen ließ.
 item.aptitudes.temple_key.blank¦Uma chave vazia: não pertence a nenhum templo.¦Une clé vide : elle n'appartient à aucun temple.¦Ein leerer Schlüssel: Er gehört zu keinem Tempel.
+item.aptitudes.custodian_key_copper¦Chave de cobre do Custódio¦Clé de cuivre du Gardien¦Kupferschlüssel des Wächters
+item.aptitudes.custodian_key_iron¦Chave de ferro do Custódio¦Clé de fer du Gardien¦Eisenschlüssel des Wächters
+item.aptitudes.custodian_key_gold¦Chave de ouro do Custódio¦Clé d'or du Gardien¦Goldschlüssel des Wächters
+item.aptitudes.custodian_key_diamond¦Chave de diamante do Custódio¦Clé de diamant du Gardien¦Diamantschlüssel des Wächters
+item.aptitudes.custodian_key.tooltip¦Abre uma câmara do templo de onde veio.¦Ouvre une chambre du temple dont elle provient.¦Öffnet eine Kammer des Tempels, aus dem sie stammt.
+item.aptitudes.custodian_key.blank¦Não abre nada: não pertence a nenhum templo.¦Elle n'ouvre rien : elle n'appartient à aucun temple.¦Sie öffnet nichts: Sie gehört zu keinem Tempel.
 item.aptitudes.life_vessel¦Vaso de vida¦Vase de vie¦Lebensgefäß
 item.aptitudes.life_vessel.tooltip¦Use: +1 coração permanente (cada vaso funciona uma vez).¦Utiliser : +1 cœur permanent (chaque vase ne sert qu'une fois).¦Benutzen: +1 dauerhaftes Herz (jedes Gefäß wirkt nur einmal).
 entity.aptitudes.temple_guardian¦Guardião do templo¦Gardien du temple¦Tempelwächter
@@ -1702,6 +1716,24 @@ temple.aptitudes.seal.levers¦Selo: reproduza com as alavancas as luzes sobre a 
 temple.aptitudes.seal.plates¦Selo: pise nas placas na ordem das velas.¦Sceau : marchez sur les plaques dans l'ordre de leurs bougies.¦Siegel: Betritt die Platten in der Reihenfolge ihrer Kerzen.
 temple.aptitudes.seal.awakened¦Selo: o guardião vigia o santuário.¦Sceau : le gardien veille sur le sanctuaire.¦Siegel: Der Wächter bewacht das Heiligtum.
 temple.aptitudes.seal.cleared¦Selo: este templo está aberto.¦Sceau : ce temple est ouvert.¦Siegel: Dieser Tempel ist offen.
+temple.aptitudes.stairs_open¦A escada se abre: algo espera lá embaixo.¦L'escalier s'ouvre : quelque chose attend en bas.¦Die Treppe öffnet sich: Unten wartet etwas.
+temple.aptitudes.automaton.woke¦Algo antigo desperta no átrio…¦Quelque chose d'ancien s'éveille dans l'atrium…¦Im Atrium regt sich etwas Uraltes…
+temple.aptitudes.automaton.down¦O Autômato se cala. Os mecanismos do templo respondem.¦L'Automate se tait. Les mécanismes du temple répondent.¦Der Automat verstummt. Die Mechanismen des Tempels antworten.
+temple.aptitudes.door.opened¦A Âncora do Véu se desfaz e a porta do Custódio cede.¦L'Ancre du voile se désagrège et la porte du Gardien cède.¦Der Schleieranker zerfällt und die Tür des Wächters gibt nach.
+temple.aptitudes.door.needs_anchor¦A porta não cede. Só uma Âncora do Véu poderia abri-la.¦La porte ne cède pas. Seule une Ancre du voile pourrait l'ouvrir.¦Die Tür gibt nicht nach. Nur ein Schleieranker könnte sie öffnen.
+temple.aptitudes.door.not_ready¦A porta ainda dorme. Os mecanismos do templo ainda não responderam.¦La porte dort encore. Les mécanismes du temple n'ont pas encore répondu.¦Die Tür schläft noch. Die Mechanismen des Tempels haben noch nicht geantwortet.
+temple.aptitudes.door.already_open¦A porta já está aberta.¦La porte est déjà ouverte.¦Die Tür ist bereits offen.
+temple.aptitudes.chamber.not_ready¦O Custódio ainda guarda as chaves desta câmara.¦Le Gardien garde encore les clés de cette chambre.¦Der Wächter hütet noch die Schlüssel dieser Kammer.
+temple.aptitudes.chamber.no_key¦Esta porta precisa de uma chave do Custódio.¦Cette porte exige une clé du Gardien.¦Diese Tür braucht einen Schlüssel des Wächters.
+temple.aptitudes.chamber.wrong_temple¦Esta chave é de outro templo.¦Cette clé appartient à un autre temple.¦Dieser Schlüssel gehört zu einem anderen Tempel.
+temple.aptitudes.chamber.wrong_metal¦A fechadura não encaixa: esta chave é de outro metal.¦La serrure ne correspond pas : cette clé est d'un autre métal.¦Das Schloss passt nicht: Dieser Schlüssel ist aus einem anderen Metall.
+temple.aptitudes.chamber.opened¦A fechadura cede e a câmara se abre.¦La serrure cède et la chambre s'ouvre.¦Das Schloss gibt nach und die Kammer öffnet sich.
+temple.aptitudes.guardian_defeated_keys¦O Custódio cai e deixa quatro chaves.¦Le Gardien tombe et laisse quatre clés.¦Der Wächter fällt und hinterlässt vier Schlüssel.
+temple.aptitudes.seal.flow_dormant¦Selo: algo antigo dorme no átrio.¦Sceau : quelque chose d'ancien dort dans l'atrium.¦Siegel: Im Atrium schläft etwas Uraltes.
+temple.aptitudes.seal.flow_automaton¦Selo: o Autômato vigia o átrio. Derrote-o antes de tocar nos mecanismos.¦Sceau : l'Automate veille sur l'atrium. Vainquez-le avant de toucher aux mécanismes.¦Siegel: Der Automat bewacht das Atrium. Besiege ihn, bevor du die Mechanismen berührst.
+temple.aptitudes.seal.flow_door_locked¦Selo: a porta do Custódio aguarda uma Âncora do Véu.¦Sceau : la porte du Gardien attend une Ancre du voile.¦Siegel: Die Tür des Wächters erwartet einen Schleieranker.
+temple.aptitudes.seal.flow_custodian¦Selo: o Custódio guarda a câmara.¦Sceau : le Gardien garde la chambre.¦Siegel: Der Wächter bewacht die Kammer.
+temple.aptitudes.seal.flow_cleared¦Selo: este templo está aberto.¦Sceau : ce temple est ouvert.¦Siegel: Dieser Tempel ist offen.
 temple.aptitudes.reliquary.sealed¦O Relicário está trancado. O guardião do templo guarda a chave.¦Le Reliquaire est verrouillé. Le gardien du temple en garde la clé.¦Das Reliquiar ist verschlossen. Der Tempelwächter trägt den Schlüssel.
 temple.aptitudes.reliquary.wrong_key¦Esta chave é de outro templo.¦Cette clé appartient à un autre temple.¦Dieser Schlüssel gehört zu einem anderen Tempel.
 temple.aptitudes.reliquary.opened¦O Relicário se abre.¦Le Reliquaire s'ouvre.¦Das Reliquiar öffnet sich.
@@ -1757,6 +1789,9 @@ entity.aptitudes.errante_velado¦Andarilho Velado¦Errant voilé¦Verschleierter
 item.aptitudes.errante_velado_spawn_egg¦Ovo de aparição do Andarilho Velado¦Œuf d'apparition de l'Errant voilé¦Erscheinungsei des Verschleierten Wanderers
 bestiary.aptitudes.errante_velado.tip¦Um véu de névoa de almas que flutua até os vivos. Fica suspenso e depois rasga com seu braço longo e com garra.¦Un voile de brume d'âmes qui dérive vers les vivants. Il reste suspendu puis déchire avec son long bras griffu.¦Ein Schleier aus Seelennebel, der auf die Lebenden zutreibt. Er schwebt und reißt dann mit seinem langen, krallenbewehrten Arm zu.
 item.aptitudes.jiron_velo_espectral¦Farrapo de Véu Espectral¦Lambeau de voile spectral¦Spektraler Schleierfetzen
+item.aptitudes.nucleo_osario¦Núcleo do Ossuário¦Noyau de l'ossuaire¦Ossuariumskern
+item.aptitudes.ancla_del_velo¦Âncora do Véu¦Ancre du voile¦Schleieranker
+item.aptitudes.ancla_del_velo.tooltip¦Forjada com restos do Véu. Alguma porta selada a espera.¦Forgée avec des restes du voile. Une porte scellée l'attend.¦Aus Resten des Schleiers geschmiedet. Eine versiegelte Tür wartet darauf.
 subtitles.aptitudes.errante_ambient¦O Errante Velado sussurra¦Le Vagabond voilé murmure¦Verhüllter Wanderer flüstert
 subtitles.aptitudes.errante_alert¦O Errante Velado fica alerta¦Le Vagabond voilé se met en alerte¦Verhüllter Wanderer wird aufmerksam
 subtitles.aptitudes.errante_prepare¦O véu do Errante se estica¦Le voile du Vagabond se tend¦Schleier des Wanderers spannt sich

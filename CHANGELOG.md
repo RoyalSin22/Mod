@@ -148,6 +148,47 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
     `CooldownBookReduceTest` y `RoleExtrasTest` ampliada a los cinco roles con datos.
   - **Diferencias con el diseño aprobado:** ver §7 de `docs/V67_F3_DISENO.md` (por ejemplo, Reciclaje no cuenta las
     muertes de la torreta).
+- **T4 de la cadena narrativa — llaves y cámaras (T4a y T4b).** El Custodio del templo nuevo suelta ahora **cuatro
+  llaves a la vez** (`custodian_key_copper`, `_iron`, `_gold` y `_diamond`), además de la llave del Relicario. Cada llave lleva
+  el templo del que procede y abre solo la **puerta de cámara** de su metal (`chamber_door_<metal>`), y solo con el Custodio
+  vencido; la llave se consume. Reglas puras en `temple/TempleKeyRules` (`TempleKeyRulesTest`); el sello guarda las puertas y
+  las cámaras abiertas con campos al final del NBT. Texturas generadas, textos en cinco idiomas y `ChamberKeyResourcesTest`.
+  **T4b:** el Templo del Custodio incluye ya **cuatro cámaras de recompensa** (cobre y diamante a los lados de la cámara
+  del Custodio, hierro y oro tras su muro norte), cada una tras su puerta de 1×2 y con un cofre con la tabla de botín de
+  su metal (`loot_table/chests/custodian_<metal>.json`: objetos vanilla, bloques de minerales, manzanas doradas, y objetos
+  del mod; la de diamante es la más rica y albergará el Behelit en T5). El Relicario con el Vaso de vida se mantiene y
+  los dos cofres antiguos se sustituyen por las cámaras. `CustodianTempleLayout` (puro) y sus pruebas cubren que cada
+  cámara es inaccesible hasta abrir su puerta. Valores del botín provisionales en `docs/BALANCE.md`.
+- **T3 de la cadena narrativa — Templo del Custodio (T3a a T3d).** Base del flujo nuevo: la **Puerta del
+  Custodio** (`aptitudes:custodian_door`, irrompible) solo cede al **Ancla del Velo**, que se consume al abrirla, y
+  únicamente cuando el puzle está resuelto. El controlador del sello (`TempleSealBlockEntity`) gana una distribución
+  nueva (`layout = 1`) con las fases Autómata → puzle → escalera → puerta → Custodio (`temple/TempleFlowRules`, puro,
+  con `TempleFlowRulesTest`); los templos antiguos leen `layout = 0` y conservan su comportamiento exacto. Textura
+  nueva con `tools/textures/gen_temple_blocks.py`, textos en cinco idiomas y `CustodianDoorResourcesTest`. La
+  **T3b:** `world/CustodianTempleFeature` y `temple/CustodianTempleLayout` (pura, con
+  `CustodianTempleLayoutTest`): templo de 31×31 en dos niveles con casco macizo bajo tierra, atrio, sala del puzle con
+  trampilla, escalera, antesala, Puerta del Custodio y cámara con el Relicario. Registrado como `aptitudes:custodian_temple`
+  pero **todavía no se genera solo**. **T3c:** el **Autómata Antiguo** duerme en el atrio y despierta al cruzar el umbral (con +25 % de vida por anillo
+  de Amenaza); hasta que cae, el puzle no responde. Se protege contra duplicados al recargar el chunk. El cambio de
+  generación (T3d): **los chunks nuevos generan ya el Templo del Custodio** en lugar del templo sellado antiguo (**1 de cada 120
+  chunks**; el templo antiguo era 1 de cada 400, y la subida compensa que ahora cada templo solo se completa una vez). Los templos antiguos de mundos existentes siguen funcionando igual y su feature
+  sigue registrado. La regeneración de templos (`TempleRecurrenceRules`) sigue **sin estar conectada al juego**. Diseño: `docs/lore/11_DISENO_T3_TEMPLO.md`.
+- **T2 de la cadena narrativa — materiales de la Niebla.** El **Osario Quebrado** suelta ahora el **Núcleo del Osario**
+  (85 % al matarlo un jugador, solo si nació en la Niebla de almas). Con tres Jirones de Velo Espectral, dos Núcleos, tres
+  Fragmentos de alma y un diamante se fabrica en la Mesa del gremio el **Ancla del Velo**, el objeto que abrirá la puerta de
+  la sala del Custodio (T3; hasta entonces no hace nada). Objetos nuevos `aptitudes:nucleo_osario` y
+  `aptitudes:ancla_del_velo` (nombres elegidos por el redactor, cambiables antes de publicar), con texturas generadas
+  (`tools/textures/gen_items.py`, plantilla `anchor`), textos en cinco idiomas y el botín informativo del bestiario al día.
+  Prueba `world/VeilAnchorResourcesTest`. Valores provisionales en `docs/BALANCE.md`.
+- **T1 de la cadena narrativa — eventos por activación.** La **Niebla de almas** ya no sale por calendario: la inicia
+  un jugador con Mayús + clic derecho sobre el aldeano del gremio, afecta a todo el mundo, dura un día de Minecraft
+  (24 000 ticks) y tiene 10 días de espera; en espera, el aldeano dice «los muertos se han ido, pero volverán». La
+  **Lluvia de brasas** empieza al encender un portal al Nether en el Overworld, con 5 días de espera. El calendario
+  rotativo solo programa ya el Eclipse. Campos nuevos: `fogCooldownDays`, `fogDurationTicks` y
+  `emberRainCooldownDays` (los pesos `worldEventWeightSoulFog` y `worldEventWeightEmberRain` solo las desactivan con
+  0). Lógica pura en `event/EventTriggerRules` con `EventTriggerRulesTest` y `EventTriggerConfigValidationTest`;
+  estado en `WorldEventState` (`last_fog_start`, `last_ember_start`). Sin mixins: el portal se detecta con
+  `UseBlockCallback`. El texto de fin de la Niebla ya no dice «con el alba». Diseño: `docs/lore/09_CADENA_DE_PROGRESION.md`.
 - **v67 (F2) — 10 habilidades nuevas del Bersérker.**
   - **Talentos:** Cicatrices (los golpes fuertes reducen el daño siguiente), Sangre hirviente (bajo la mitad de vida,
     tus golpes queman), Hacha arrojadiza (atraviesa, desangra y vuelve) y Cadena de sangre (arrastra al enemigo y

@@ -212,3 +212,9 @@ threatDamagePerRing¦Dano extra por anel (golpes, projéteis e explosões; com t
 threatLootPerRing¦Chance por anel de uma rolagem de saque extra; teto de 100.¦Probabilité par anneau d’un tirage de butin supplémentaire ; plafond de 100.¦Chance pro Ring auf einen zusätzlichen Beutewurf; Obergrenze von 100.
 threatEliteChancePerRing¦Aumento relativo por anel de eliteChance: base × (1 + anel × valor).¦Augmentation relative par anneau de eliteChance : base × (1 + anneau × valeur).¦Relativer Anstieg von eliteChance pro Ring: Basis × (1 + Ring × Wert).
 """)
+
+rows("""
+fogCooldownDays¦Dias de espera entre duas Névoas das Almas.¦Jours d’attente entre deux Brumes des âmes.¦Tage Wartezeit zwischen zwei Seelennebeln.
+fogDurationTicks¦Duração da Névoa das Almas em ticks (24000 é um dia de Minecraft).¦Durée de la Brume des âmes en ticks (24000 correspond à un jour Minecraft).¦Dauer des Seelennebels in Ticks (24000 ist ein Minecraft-Tag).
+emberRainCooldownDays¦Dias de espera entre duas Chuvas de Brasas provocadas por um portal.¦Jours d’attente entre deux Pluies de braises provoquées par un portail.¦Tage Wartezeit zwischen zwei durch ein Portal ausgelösten Glutregen.
+""")

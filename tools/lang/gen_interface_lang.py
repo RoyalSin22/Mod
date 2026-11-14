@@ -17,8 +17,8 @@ CONFIG_PREFIX = 'config.aptitudes.field.'
 
 
 def phase_one(key):
-    return not key.startswith(('guide.aptitudes.', 'node.aptitudes.', 'path.aptitudes.',
-                                'config.aptitudes.field.'))  # v67: tooltips de configuración, es/en primero
+    return not key.startswith(('guide.aptitudes.', 'node.aptitudes.', 'path.aptitudes.', 'lore.aptitudes.',
+                                'config.aptitudes.field.'))  # v67: config = tooltips de configuración (config_catalog.py)
 
 
 def build(reference, locale, previous):

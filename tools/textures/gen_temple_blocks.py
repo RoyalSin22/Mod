@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Texturas de los bloques del Templo sellado (v64, K6): piedra sellada, Sello y Relicario (16×16, arte original).
+"""Texturas de los bloques del Templo sellado (v64, K6): piedra sellada, Sello y Relicario; T3: Puerta del Custodio; T4: puertas de las cámaras (16×16, arte original).
 
 Uso: python3 tools/textures/gen_temple_blocks.py src/main/resources/assets/aptitudes/textures/block [--check]
 """
@@ -97,9 +97,73 @@ def reliquary(face):
     return img
 
 
+def custodian_door():
+    """T3: Puerta del Custodio. Piedra oscura con marco dorado y una cerradura luminosa en el centro."""
+    img = stone('custodian_door', (44, 46, 54))
+    px = img.load()
+    for i in range(16):
+        for (x, y) in ((i, 0), (i, 15), (0, i), (15, i)):
+            px[x, y] = GOLD_DARK + (255,)
+    for i in range(1, 15):
+        for (x, y) in ((i, 1), (i, 14), (1, i), (14, i)):
+            if (x + y) % 2 == 0:
+                px[x, y] = GOLD + (255,)
+    # Cerradura: círculo con ranura inferior.
+    for y in range(16):
+        for x in range(16):
+            d = math.hypot(x - 7.5, y - 6.0)
+            if d < 2.6:
+                px[x, y] = GLOW + (255,)
+            elif d < 3.4:
+                px[x, y] = TEAL + (255,)
+    for y in range(8, 13):
+        px[7, y] = GLOW + (255,)
+        px[8, y] = GLOW + (255,)
+        px[6, y] = TEAL + (255,)
+        px[9, y] = TEAL + (255,)
+    return img
+
+
+METALS = {
+    'copper': (199, 123, 75),
+    'iron': (201, 206, 214),
+    'gold': GOLD,
+    'diamond': (77, 226, 208),
+}
+
+
+def chamber_door(metal):
+    """T4: puerta de una cámara de recompensa. Piedra oscura, marco del metal de su llave y cerradura circular."""
+    color = METALS[metal]
+    dark = tuple(int(v * 0.55) for v in color)
+    img = stone('chamber_door_' + metal, (42, 44, 52))
+    px = img.load()
+    for i in range(16):
+        for (x, y) in ((i, 0), (i, 15), (0, i), (15, i)):
+            px[x, y] = dark + (255,)
+        for (x, y) in ((i, 1), (i, 14), (1, i), (14, i)):
+            px[x, y] = color + (255,)
+    for y in range(16):
+        for x in range(16):
+            d = math.hypot(x - 7.5, y - 6.5)
+            if d < 2.4:
+                px[x, y] = color + (255,)
+            elif d < 3.2:
+                px[x, y] = dark + (255,)
+    for y in range(8, 13):
+        px[7, y] = color + (255,)
+        px[8, y] = color + (255,)
+    return img
+
+
 def files():
     out = {
         'sealed_stone.png': sealed_stone(),
+        'custodian_door.png': custodian_door(),
+        'chamber_door_copper.png': chamber_door('copper'),
+        'chamber_door_iron.png': chamber_door('iron'),
+        'chamber_door_gold.png': chamber_door('gold'),
+        'chamber_door_diamond.png': chamber_door('diamond'),
         'temple_seal_top.png': seal_top(),
         'temple_seal_side.png': seal_side(),
         'reliquary_top.png': reliquary('top'),

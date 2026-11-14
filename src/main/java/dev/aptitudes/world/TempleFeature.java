@@ -40,7 +40,8 @@ public class TempleFeature extends Feature<DefaultFeatureConfig> {
 		super(codec);
 	}
 
-	private static int ring(FeatureContext<DefaultFeatureConfig> context, BlockPos origin) {
+	/** Anillo de Amenaza del lugar (también lo usa {@link CustodianTempleFeature}). */
+	static int ring(FeatureContext<DefaultFeatureConfig> context, BlockPos origin) {
 		AptitudesConfig c = Aptitudes.config();
 		BlockPos spawn = context.getWorld().toServerWorld().getSpawnPos();
 		return ThreatRules.ring(origin.getX(), origin.getZ(), spawn.getX(), spawn.getZ(), c.threatRingSize, c.threatMaxRing);
@@ -126,7 +127,7 @@ public class TempleFeature extends Feature<DefaultFeatureConfig> {
 	}
 
 	/** Materiales por anillo: piedra (0–I), pizarra profunda (II–III) y piedra negra (IV–V). */
-	private record Palette(BlockState main, BlockState cracked, BlockState accent) {
+	record Palette(BlockState main, BlockState cracked, BlockState accent) {
 		static Palette of(int ring) {
 			if (ring >= 4) return new Palette(Blocks.POLISHED_BLACKSTONE_BRICKS.getDefaultState(),
 					Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS.getDefaultState(), Blocks.GILDED_BLACKSTONE.getDefaultState());

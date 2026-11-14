@@ -32,6 +32,9 @@ public final class WorldEventState extends PersistentState {
 	UUID fogSession;
 	UUID lastClosedFogSession;
 	long lastFogCloseTick;
+	/** T1: reloj del mundo en que empezó la última Niebla / Lluvia provocada por un jugador (-1 = nunca). */
+	long lastFogStart = -1;
+	long lastEmberStart = -1;
 
 	public static WorldEventState get(ServerWorld overworld) {
 		return overworld.getPersistentStateManager().getOrCreate(TYPE, NAME);
@@ -54,6 +57,8 @@ public final class WorldEventState extends PersistentState {
 			nbt.putUuid("closed_fog_session", lastClosedFogSession);
 			nbt.putLong("fog_close_tick", lastFogCloseTick);
 		}
+		nbt.putLong("last_fog_start", lastFogStart);
+		nbt.putLong("last_ember_start", lastEmberStart);
 		return nbt;
 	}
 
@@ -74,6 +79,8 @@ public final class WorldEventState extends PersistentState {
 			s.lastClosedFogSession = nbt.getUuid("closed_fog_session");
 			s.lastFogCloseTick = nbt.getLong("fog_close_tick");
 		}
+		s.lastFogStart = nbt.contains("last_fog_start") ? nbt.getLong("last_fog_start") : -1;
+		s.lastEmberStart = nbt.contains("last_ember_start") ? nbt.getLong("last_ember_start") : -1;
 		return s;
 	}
 }

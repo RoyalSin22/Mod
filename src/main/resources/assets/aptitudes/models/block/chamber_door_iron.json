@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "aptitudes:block/chamber_door_iron"
+  }
+}
