@@ -158,7 +158,17 @@ public class TempleSealBlockEntity extends BlockEntity {
 		List<ServerPlayerEntity> players = nearby(world, CUSTODIAN_RANGE);
 		if (players.isEmpty()) return;
 		switch (flow) {
-			case DORMANT, AUTOMATON -> { /* El Autómata del atrio llega en T3c. */ }
+			case DORMANT -> wakeAutomaton(world, players);
+			case AUTOMATON -> {
+				// Igual que los guardianes: si el Autómata no se encuentra, vuelve a aparecer (sin duplicarlo).
+				if (Temples.automatonPresent(world, this)) {
+					missingAutomatonChecks = 0;
+				} else if (TempleFlowRules.shouldRespawn(++missingAutomatonChecks)) {
+					missingAutomatonChecks = 0;
+					automaton = Temples.spawnAutomaton(world, this);
+					markDirty();
+				}
+			}
 			case PUZZLE -> {
 				if (!TempleFlowRules.puzzleActive(flow)) return;
 				switch (stage) {
@@ -179,6 +189,33 @@ public class TempleSealBlockEntity extends BlockEntity {
 			}
 			default -> { }
 		}
+	}
+
+	/** Un jugador cruza el umbral del atrio: despierta el Autómata y el puzle queda bloqueado hasta que caiga. */
+	private void wakeAutomaton(ServerWorld world, List<ServerPlayerEntity> players) {
+		double cx = pos.getX() + triggerCenter.getX() + 0.5;
+		double cy = pos.getY() + triggerCenter.getY();
+		double cz = pos.getZ() + triggerCenter.getZ() + 0.5;
+		boolean inside = false;
+		for (ServerPlayerEntity p : players) {
+			if (TempleFlowRules.insideTrigger(p.getX() - cx, p.getY() - cy, p.getZ() - cz)) {
+				inside = true;
+				break;
+			}
+		}
+		if (!TempleFlowRules.shouldWake(flow, inside)) return;
+		if (Temples.automatonPresent(world, this)) {
+			// Ya existía (por ejemplo, tras una recarga): solo se retoma la fase.
+			flow = Flow.AUTOMATON;
+		} else {
+			UUID spawned = Temples.spawnAutomaton(world, this);
+			if (spawned == null) return;
+			automaton = spawned;
+			flow = Flow.AUTOMATON;
+			tell(nearby(world, 40), "temple.aptitudes.automaton.woke");
+		}
+		missingAutomatonChecks = 0;
+		markDirty();
 	}
 
 	/** Puzle resuelto: se abre la escalera (la puerta sellada) y queda la Puerta del Custodio. */

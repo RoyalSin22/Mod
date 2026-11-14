@@ -3714,6 +3714,8 @@
   "temple.aptitudes.seal.awakened": "Sello: el guardián vigila el santuario.",
   "temple.aptitudes.seal.cleared": "Sello: este templo está abierto.",
   "temple.aptitudes.stairs_open": "La escalera se abre: algo espera abajo.",
+  "temple.aptitudes.automaton.woke": "Algo antiguo despierta en el atrio…",
+  "temple.aptitudes.automaton.down": "El Autómata calla. Los mecanismos del templo responden.",
   "temple.aptitudes.door.opened": "El Ancla del Velo se deshace y la puerta del Custodio cede.",
   "temple.aptitudes.door.needs_anchor": "La puerta no cede. Solo un Ancla del Velo podría abrirla.",
   "temple.aptitudes.door.not_ready": "La puerta sigue dormida. Los mecanismos del templo aún no han respondido.",

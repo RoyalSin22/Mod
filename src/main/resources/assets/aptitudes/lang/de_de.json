@@ -3714,6 +3714,8 @@
   "temple.aptitudes.seal.awakened": "Siegel: Der Wächter bewacht das Heiligtum.",
   "temple.aptitudes.seal.cleared": "Siegel: Dieser Tempel ist offen.",
   "temple.aptitudes.stairs_open": "Die Treppe öffnet sich: Unten wartet etwas.",
+  "temple.aptitudes.automaton.woke": "Im Atrium regt sich etwas Uraltes…",
+  "temple.aptitudes.automaton.down": "Der Automat verstummt. Die Mechanismen des Tempels antworten.",
   "temple.aptitudes.door.opened": "Der Schleieranker zerfällt und die Tür des Wächters gibt nach.",
   "temple.aptitudes.door.needs_anchor": "Die Tür gibt nicht nach. Nur ein Schleieranker könnte sie öffnen.",
   "temple.aptitudes.door.not_ready": "Die Tür schläft noch. Die Mechanismen des Tempels haben noch nicht geantwortet.",

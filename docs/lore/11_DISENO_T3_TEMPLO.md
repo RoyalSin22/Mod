@@ -11,7 +11,7 @@
 | Controlador | `temple/TempleSealBlockEntity` (`Stage`: LEVERS, PLATES, AWAKENED, CLEARED) | Guarda el estado, abre la puerta y llama al guardián |
 | Guardián | `temple/Temples.spawnGuardian` | Hace aparecer al **Custodio** como campeón; +25 % de vida por anillo |
 | Recompensa | `TempleKeyItem` + `ReliquaryBlockEntity` | Una llave que abre el Relicario de ese templo |
-| Regeneración | `temple/TempleRecurrenceRules` | Tras resolverse: 3 días mínimo, probabilidad creciente hasta el 25 % |
+| Regeneración (solo reglas) | `temple/TempleRecurrenceRules` | **No está conectada al juego** (ninguna otra clase la usa; verificado en T3c): hoy cada templo se completa una sola vez. *Corrige una afirmación anterior de este documento* |
 | Colocación | `placed_feature/temple.json`: 1 de cada 400 chunks; todos los biomas del Overworld | `world/ModWorldGen` |
 | Autómata Antiguo | `boss/AutomatonEntity`, invocado con un sello de jefe | No está ligado a ningún templo |
 
@@ -30,7 +30,7 @@ entidades no se crean durante la generación (arreglo de la v56): aparecen despu
 | 5 | **Nuevo bloque «Puerta del Custodio»** que se abre con el Ancla del Velo (se consume) | El Ancla ya existe desde T2 |
 | 6 | **Los templos antiguos no se tocan**: siguen con su flujo y su llave única | Sin migración ni riesgo para mundos guardados |
 | 7 | **Los templos nuevos sustituyen al antiguo en los chunks sin generar**: `ModWorldGen` añade el feature nuevo en lugar del viejo | Un solo tipo de templo en generación nueva. El feature viejo sigue registrado |
-| 8 | Frecuencia **1 de cada 400 chunks** (la actual) | No cambio balance sin playtest. La regeneración existente aporta más templos |
+| 8 | Frecuencia **1 de cada 400 chunks** (la actual) | No cambio balance sin playtest. **Ojo:** como la regeneración no está implementada, el suministro de Behelit depende de decidirla (D-33) |
 | 9 | El anillo de Amenaza sigue escalando: tamaño del puzle, paleta y vida del Autómata y del Custodio | Reutiliza `TempleRules` y `Palette` |
 | 10 | Sin campos de configuración nuevos, salvo que el autor los pida | Las cifras viven en reglas puras con pruebas |
 
@@ -85,7 +85,7 @@ DORMIDO ──pisa el umbral──▶ AUTÓMATA ──cae──▶ PUZLE ──r
 |---|---|
 | **T3a** (hecha) | `TempleFlowRules` y sus pruebas, `CustodianDoorBlock`, campos nuevos del controlador y recursos del bloque (textura, modelo, textos) |
 | **T3b** (hecha, sin probar en partida) | `CustodianTempleFeature`: plano de dos niveles, casco, escalera y comprobaciones de terreno |
-| **T3c** | Autómata en el atrio (aparición, activación, puzle bloqueado hasta su muerte) y Custodio al abrir la puerta |
+| **T3c** (hecha, sin probar en partida) | Autómata en el atrio (aparición, activación, puzle bloqueado hasta su muerte) y Custodio al abrir la puerta |
 | **T3d** | Cambio en `ModWorldGen`, compatibilidad con templos antiguos, documentación, `CHANGELOG`, guion de prueba |
 
 ## 7. Riesgos

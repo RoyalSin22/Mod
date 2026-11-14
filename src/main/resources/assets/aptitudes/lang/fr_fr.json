@@ -3714,6 +3714,8 @@
   "temple.aptitudes.seal.awakened": "Sceau : le gardien veille sur le sanctuaire.",
   "temple.aptitudes.seal.cleared": "Sceau : ce temple est ouvert.",
   "temple.aptitudes.stairs_open": "L'escalier s'ouvre : quelque chose attend en bas.",
+  "temple.aptitudes.automaton.woke": "Quelque chose d'ancien s'éveille dans l'atrium…",
+  "temple.aptitudes.automaton.down": "L'Automate se tait. Les mécanismes du temple répondent.",
   "temple.aptitudes.door.opened": "L'Ancre du voile se désagrège et la porte du Gardien cède.",
   "temple.aptitudes.door.needs_anchor": "La porte ne cède pas. Seule une Ancre du voile pourrait l'ouvrir.",
   "temple.aptitudes.door.not_ready": "La porte dort encore. Les mécanismes du temple n'ont pas encore répondu.",

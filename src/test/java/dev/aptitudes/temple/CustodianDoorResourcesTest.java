@@ -16,7 +16,7 @@ class CustodianDoorResourcesTest {
 	private static final Path ASSETS = Path.of("src/main/resources/assets/aptitudes");
 	private static final String[] KEYS = {
 			"block.aptitudes.custodian_door",
-			"temple.aptitudes.stairs_open",
+			"temple.aptitudes.stairs_open", "temple.aptitudes.automaton.woke", "temple.aptitudes.automaton.down",
 			"temple.aptitudes.door.opened", "temple.aptitudes.door.needs_anchor",
 			"temple.aptitudes.door.not_ready", "temple.aptitudes.door.already_open",
 			"temple.aptitudes.seal.flow_dormant", "temple.aptitudes.seal.flow_automaton",

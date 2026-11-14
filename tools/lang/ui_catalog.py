@@ -1722,6 +1722,8 @@ temple.aptitudes.seal.plates¦Selo: pise nas placas na ordem das velas.¦Sceau :
 temple.aptitudes.seal.awakened¦Selo: o guardião vigia o santuário.¦Sceau : le gardien veille sur le sanctuaire.¦Siegel: Der Wächter bewacht das Heiligtum.
 temple.aptitudes.seal.cleared¦Selo: este templo está aberto.¦Sceau : ce temple est ouvert.¦Siegel: Dieser Tempel ist offen.
 temple.aptitudes.stairs_open¦A escada se abre: algo espera lá embaixo.¦L'escalier s'ouvre : quelque chose attend en bas.¦Die Treppe öffnet sich: Unten wartet etwas.
+temple.aptitudes.automaton.woke¦Algo antigo desperta no átrio…¦Quelque chose d'ancien s'éveille dans l'atrium…¦Im Atrium regt sich etwas Uraltes…
+temple.aptitudes.automaton.down¦O Autômato se cala. Os mecanismos do templo respondem.¦L'Automate se tait. Les mécanismes du temple répondent.¦Der Automat verstummt. Die Mechanismen des Tempels antworten.
 temple.aptitudes.door.opened¦A Âncora do Véu se desfaz e a porta do Custódio cede.¦L'Ancre du voile se désagrège et la porte du Gardien cède.¦Der Schleieranker zerfällt und die Tür des Wächters gibt nach.
 temple.aptitudes.door.needs_anchor¦A porta não cede. Só uma Âncora do Véu poderia abri-la.¦La porte ne cède pas. Seule une Ancre du voile pourrait l'ouvrir.¦Die Tür gibt nicht nach. Nur ein Schleieranker könnte sie öffnen.
 temple.aptitudes.door.not_ready¦A porta ainda dorme. Os mecanismos do templo ainda não responderam.¦La porte dort encore. Les mécanismes du temple n'ont pas encore répondu.¦Die Tür schläft noch. Die Mechanismen des Tempels haben noch nicht geantwortet.

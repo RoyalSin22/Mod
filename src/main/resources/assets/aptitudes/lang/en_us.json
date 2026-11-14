@@ -3714,6 +3714,8 @@
   "temple.aptitudes.seal.awakened": "Seal: the guardian watches over the sanctum.",
   "temple.aptitudes.seal.cleared": "Seal: this temple is open.",
   "temple.aptitudes.stairs_open": "The stairs open: something waits below.",
+  "temple.aptitudes.automaton.woke": "Something ancient stirs in the atrium…",
+  "temple.aptitudes.automaton.down": "The Automaton falls silent. The temple's mechanisms answer.",
   "temple.aptitudes.door.opened": "The Veil Anchor crumbles and the Custodian's door gives way.",
   "temple.aptitudes.door.needs_anchor": "The door will not budge. Only a Veil Anchor could open it.",
   "temple.aptitudes.door.not_ready": "The door still sleeps. The temple's mechanisms have not answered yet.",

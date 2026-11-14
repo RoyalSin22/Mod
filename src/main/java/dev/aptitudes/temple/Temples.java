@@ -35,6 +35,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.WorldChunk;
 import org.jetbrains.annotations.Nullable;
@@ -50,8 +51,10 @@ public final class Temples {
 	private static final String GUARDIAN_TAG = Aptitudes.MOD_ID + ".temple_guardian";
 	private static final String SEAL_TAG = Aptitudes.MOD_ID + ".temple_seal:";
 	private static final String TEMPLE_TAG = Aptitudes.MOD_ID + ".temple:";
+	private static final String AUTOMATON_TAG = Aptitudes.MOD_ID + ".temple_automaton";
 	private static final Identifier VESSEL_MODIFIER = Aptitudes.id("life_vessels");
 	private static final Identifier GUARDIAN_HEALTH = Aptitudes.id("temple_guardian_health");
+	private static final Identifier AUTOMATON_HEALTH = Aptitudes.id("temple_automaton_health");
 
 	private static AbstractBlock.Settings unbreakable(MapColor color) {
 		return AbstractBlock.Settings.create().mapColor(color).strength(-1f, 3_600_000f).dropsNothing()
@@ -100,6 +103,12 @@ public final class Temples {
 			if (entity instanceof MobEntity mob && mob.getCommandTags().contains(GUARDIAN_TAG)
 					&& mob.getWorld() instanceof ServerWorld world) {
 				onGuardianDeath(world, mob);
+			}
+		});
+		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
+			if (entity instanceof MobEntity mob && mob.getCommandTags().contains(AUTOMATON_TAG)
+					&& mob.getWorld() instanceof ServerWorld world) {
+				onAutomatonDeath(world, mob);
 			}
 		});
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> apply(handler.getPlayer()));
@@ -164,6 +173,68 @@ public final class Temples {
 			}
 		}
 		return null;
+	}
+
+	// -------------------------------------------- Autómata del atrio (T3c)
+
+	/**
+	 * Hace aparecer al Autómata Antiguo en el atrio del Templo del Custodio (con +25 % de vida por anillo) y devuelve su id.
+	 * Nunca durante la generación: lo llama el sello en el hilo del servidor.
+	 */
+	@Nullable
+	static UUID spawnAutomaton(ServerWorld world, TempleSealBlockEntity seal) {
+		EntityType<? extends MobEntity> type = dev.aptitudes.boss.BossEntities.ANCIENT_AUTOMATON;
+		MobEntity mob = type.create(world);
+		if (mob == null) return null;
+		BlockPos at = seal.getPos().add(seal.automatonSpawn);
+		mob.refreshPositionAndAngles(at.getX() + 0.5, at.getY(), at.getZ() + 0.5, world.random.nextFloat() * 360f, 0);
+		mob.initialize(world, world.getLocalDifficulty(at), SpawnReason.EVENT, null);
+		var health = mob.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+		if (health != null) {
+			AttributeApplier.set(health, AUTOMATON_HEALTH, TempleFlowRules.automatonHealthBonus(seal.ring),
+					EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+			mob.setHealth(mob.getMaxHealth());
+		}
+		mob.addCommandTag(AUTOMATON_TAG);
+		mob.addCommandTag(SEAL_TAG + seal.getPos().asLong());
+		mob.addCommandTag(TEMPLE_TAG + seal.templeId);
+		mob.setPersistent();
+		world.spawnEntityAndPassengers(mob);
+		return mob.getUuid();
+	}
+
+	/**
+	 * ¿Ya hay un Autómata vivo de este templo? Busca por etiqueta alrededor del sello, para no hacer aparecer un duplicado
+	 * mientras el original aún no ha terminado de cargarse con su chunk.
+	 */
+	static boolean automatonPresent(ServerWorld world, TempleSealBlockEntity seal) {
+		Box area = new Box(seal.getPos()).expand(24);
+		String temple = TEMPLE_TAG + seal.templeId;
+		return !world.getEntitiesByClass(MobEntity.class, area,
+				m -> m.isAlive() && m.getCommandTags().contains(AUTOMATON_TAG) && m.getCommandTags().contains(temple)).isEmpty();
+	}
+
+	private static void onAutomatonDeath(ServerWorld world, MobEntity mob) {
+		UUID temple = null;
+		BlockPos sealPos = null;
+		for (String tag : mob.getCommandTags()) {
+			try {
+				if (tag.startsWith(TEMPLE_TAG)) temple = UUID.fromString(tag.substring(TEMPLE_TAG.length()));
+				else if (tag.startsWith(SEAL_TAG)) sealPos = BlockPos.fromLong(Long.parseLong(tag.substring(SEAL_TAG.length())));
+			} catch (IllegalArgumentException ignored) {
+				// Etiqueta manipulada: se ignora.
+			}
+		}
+		if (temple == null || sealPos == null) return;
+		if (world.isChunkLoaded(sealPos) && world.getBlockEntity(sealPos) instanceof TempleSealBlockEntity seal
+				&& seal.templeId.equals(temple)) {
+			seal.automatonDefeated();
+			for (ServerPlayerEntity p : world.getPlayers()) {
+				if (p.squaredDistanceTo(mob) < 48 * 48) {
+					p.sendMessage(Text.translatable("temple.aptitudes.automaton.down").formatted(Formatting.GOLD), true);
+				}
+			}
+		}
 	}
 
 	// ----------------------------------------------------------- Guardián

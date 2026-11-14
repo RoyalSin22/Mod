@@ -84,7 +84,7 @@ T1 y T2 se pueden hacer a la vez (tocan archivos distintos). T3 en adelante es u
 
 ### T3 · Templo nuevo
 
-- Reutilizar `temple/TempleRules` (puzle) y `TempleRecurrenceRules` (regeneración, recompensa por jugador).
+- Reutilizar `temple/TempleRules` (puzle). `TempleRecurrenceRules` (regeneración) es solo una clase de reglas y **no está conectada al juego** (D-33).
 - Nueva estructura en `world/TempleFeature` con `StructureBuilder`; Autómata Antiguo como subjefe fijo dentro.
 - Puerta de la sala del Custodio: se abre al resolver el puzle y **consumir** el objeto de T2.
 - Valores por defecto de dificultad ligados al anillo de Amenaza (ya existe).
@@ -96,7 +96,7 @@ T1 y T2 se pueden hacer a la vez (tocan archivos distintos). T3 en adelante es u
   Behelit (T5).
 - Recompensas (objetos vanilla, manzanas doradas encantadas, bloques de minerales y objetos del mod): tabla de
   botín por cámara, por definir en T0.
-- En multijugador, reutilizar el reclamo por jugador de `TempleRecurrenceRules.canClaim`.
+- En multijugador, el Relicario ya guarda qué jugadores reclamaron (`claimed`); T4 debe repetir ese patrón en cada cámara.
 - Migración de templos con la `temple_key` y el Relicario actuales: decisión pendiente (§4).
 
 ### T5 · Behelit y Eclipse

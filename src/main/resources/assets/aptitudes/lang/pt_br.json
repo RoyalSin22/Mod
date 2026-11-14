@@ -3714,6 +3714,8 @@
   "temple.aptitudes.seal.awakened": "Selo: o guardião vigia o santuário.",
   "temple.aptitudes.seal.cleared": "Selo: este templo está aberto.",
   "temple.aptitudes.stairs_open": "A escada se abre: algo espera lá embaixo.",
+  "temple.aptitudes.automaton.woke": "Algo antigo desperta no átrio…",
+  "temple.aptitudes.automaton.down": "O Autômato se cala. Os mecanismos do templo respondem.",
   "temple.aptitudes.door.opened": "A Âncora do Véu se desfaz e a porta do Custódio cede.",
   "temple.aptitudes.door.needs_anchor": "A porta não cede. Só uma Âncora do Véu poderia abri-la.",
   "temple.aptitudes.door.not_ready": "A porta ainda dorme. Os mecanismos do templo ainda não responderam.",

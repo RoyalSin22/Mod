@@ -33,6 +33,7 @@
 | D-29 | T0/T1 autorizadas; commits por tanda en la rama actual. El caballero coronado de la imagen de referencia no es un mob real (lo añadió la IA que generó la imagen) | 10 |
 | D-30 | T1: Mayús + clic derecho como forma de «hablar» con el aldeano (provisional, para no quitar el comercio) y espera contada desde el inicio del evento (A-8, provisional) | 09, 10 |
 | D-32 | T3: el autor delegó las decisiones del templo; el redactor propone el diseño de `11_DISENO_T3_TEMPLO.md` (Feature de 31×31 en dos niveles, Autómata dormido en el atrio, Puerta del Custodio con el Ancla, templos antiguos intactos). Falta autorizar T3 | 11 |
+| D-33 | **Suministro de Behelit:** la regeneración de templos (`TempleRecurrenceRules`) no está conectada al juego, así que cada mundo tiene un número finito de templos. El autor quiere poder tener varios Behelit y usar uno cada 3 días. Opciones: (a) conectar la regeneración (cambio de mecánica), (b) subir la frecuencia de templos, (c) recompensa repetible por jugador. Recomendación: (a) | 11, 10 |
 | D-24 | Referencia gráfica del bestiario y rediseño del Grimorio | El autor la tiene; pendiente de recibirla |
 | D-13 | ¿Quién recibe los desbloqueos nacidos de un evento de mundo (LORE-013/014, EVENT-003)? | Solo jugadores presentes en el Eclipse; los desconectados lo reciben al volver a entrar si lo completó. A decidir |
 | D-15 | ¿Dónde viven las crónicas de eventos de la Colección II? | Sin estructura hoy; no decidido |

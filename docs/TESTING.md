@@ -1432,7 +1432,8 @@ La estructura aún no se genera sola (llega en T3d). Para verla, en un mundo de 
 3. **Sala del puzle:** palancas y luces en el muro norte, el Sello y una **trampilla de piedra sellada** en el suelo; con
    anillo II o más, placas con velas. Resuelve el puzle: la trampilla desaparece y se ve la **escalera** hacia abajo.
 4. **Subsuelo:** la escalera baja a una **antesala** cerrada por la **Puerta del Custodio**. Sin Ancla del Velo: aviso.
-   (Con T3c, antes hay que vencer al Autómata del atrio.) `/give @s aptitudes:ancla_del_velo` y úsala sobre la puerta:
+   Antes de resolver el puzle hay que vencer al **Autómata Antiguo** del atrio: despierta al entrar (aviso en pantalla),
+   mientras vive las palancas no responden y el Sello dice que vigila el atrio. `/give @s aptitudes:ancla_del_velo` y úsala sobre la puerta:
    se consume, la puerta cede y aparece el Custodio.
 5. **Cámara del Custodio:** Relicario y dos cofres. Al vencerlo suelta la llave del Relicario (como el templo antiguo).
 6. Comprueba que no hay cuevas, agua ni lava abiertas en el subsuelo y que ningún bloque queda fuera de los 31×31.
