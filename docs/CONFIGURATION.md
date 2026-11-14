@@ -36,7 +36,7 @@ Las probabilidades, tamaños y presupuestos se vuelven a acotar en las reglas pu
 ## Templos (v64)
 
 Desde T3 los chunks nuevos generan el **Templo del Custodio** (`aptitudes:custodian_temple`, 31×31 en dos niveles) en lugar
-del templo sellado antiguo, con la misma frecuencia (1 de cada 400 chunks) y sin campos de configuración propios. Los
+del templo sellado antiguo, con **1 de cada 120 chunks** (el templo antiguo era 1 de cada 400) y sin campos de configuración propios. Los
 templos antiguos ya generados siguen funcionando. La frecuencia está en `data/aptitudes/worldgen/placed_feature/`.
 
 | Campo | Defecto | Dominio | Descripción |

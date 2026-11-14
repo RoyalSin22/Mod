@@ -30,7 +30,7 @@ entidades no se crean durante la generación (arreglo de la v56): aparecen despu
 | 5 | **Nuevo bloque «Puerta del Custodio»** que se abre con el Ancla del Velo (se consume) | El Ancla ya existe desde T2 |
 | 6 | **Los templos antiguos no se tocan**: siguen con su flujo y su llave única | Sin migración ni riesgo para mundos guardados |
 | 7 | **Los templos nuevos sustituyen al antiguo en los chunks sin generar**: `ModWorldGen` añade el feature nuevo en lugar del viejo | Un solo tipo de templo en generación nueva. El feature viejo sigue registrado |
-| 8 | Frecuencia **1 de cada 400 chunks** (la actual) | No cambio balance sin playtest. **Ojo:** como la regeneración no está implementada, el suministro de Behelit depende de decidirla (D-33) |
+| 8 | Frecuencia **1 de cada 120 chunks** (antes 1 de cada 400; subida por decisión del autor, D-33) | No cambio balance sin playtest. **Ojo:** como la regeneración no está implementada, el suministro de Behelit depende de decidirla (D-33) |
 | 9 | El anillo de Amenaza sigue escalando: tamaño del puzle, paleta y vida del Autómata y del Custodio | Reutiliza `TempleRules` y `Palette` |
 | 10 | Sin campos de configuración nuevos, salvo que el autor los pida | Las cifras viven en reglas puras con pruebas |
 

@@ -599,3 +599,13 @@ vez por templo (cofre normal): en grupo se reparte lo que haya. La cámara de di
 Riesgo: las manzanas encantadas y la netherita solo salen en la cámara de diamante, pero con varios templos por mundo y sin
 regeneración conectada (D-33) el total es finito. Las tablas son datapack: se ajustan sin tocar código.
 
+# Frecuencia del Templo del Custodio (T3; valor provisional)
+
+| Elemento | Valor | Notas |
+|---|---|---|
+| `rarity_filter` del templo nuevo | 1 de cada 120 chunks | Antes 1 de cada 400 (templo antiguo). Decisión del autor (D-33, opción «subir la frecuencia») para tener más Behelits por mundo mientras la regeneración no esté conectada. Se ajusta en `data/aptitudes/worldgen/placed_feature/custodian_temple.json` |
+| Terreno apto | desnivel ≤ 4 en 31×31 | Descarta parte de los intentos: en la práctica aparecen menos de los que da la cifra |
+
+Pendiente de playtest: si aparecen demasiados o muy pocos, basta con cambiar `chance`. Un mundo de pruebas con `/locate` no
+sirve (es un feature, no una estructura): hay que explorar o usar `/place feature aptitudes:custodian_temple`.
+

@@ -19,8 +19,14 @@ class CustodianTempleResourcesTest {
 		assertEquals("aptitudes:custodian_temple", configured.get("type").getAsString());
 		JsonObject placed = json("placed_feature/custodian_temple.json");
 		assertEquals("aptitudes:custodian_temple", placed.get("feature").getAsString());
-		// Misma colocación que el templo antiguo (frecuencia sin cambios hasta el playtest).
-		assertEquals(json("placed_feature/temple.json").get("placement"), placed.get("placement"));
+		// Misma colocación que el templo antiguo salvo la frecuencia: 1 de cada 120 chunks (antes 1 de cada 400).
+		var oldPlacement = json("placed_feature/temple.json").getAsJsonArray("placement");
+		var newPlacement = placed.getAsJsonArray("placement");
+		assertEquals(oldPlacement.size(), newPlacement.size());
+		assertEquals("minecraft:rarity_filter", newPlacement.get(0).getAsJsonObject().get("type").getAsString());
+		assertEquals(120, newPlacement.get(0).getAsJsonObject().get("chance").getAsInt());
+		assertEquals(400, oldPlacement.get(0).getAsJsonObject().get("chance").getAsInt(), "el templo antiguo no se toca");
+		for (int i = 1; i < oldPlacement.size(); i++) assertEquals(oldPlacement.get(i), newPlacement.get(i));
 	}
 
 	@Test void oldTempleKeepsItsDataSoExistingWorldsStillLoad() throws IOException {

@@ -47,8 +47,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   trampilla, escalera, antesala, Puerta del Custodio y cámara con el Relicario. Registrado como `aptitudes:custodian_temple`
   pero **todavía no se genera solo**. **T3c:** el **Autómata Antiguo** duerme en el atrio y despierta al cruzar el umbral (con +25 % de vida por anillo
   de Amenaza); hasta que cae, el puzle no responde. Se protege contra duplicados al recargar el chunk. El cambio de
-  generación (T3d): **los chunks nuevos generan ya el Templo del Custodio** en lugar del templo sellado antiguo (misma
-  frecuencia, 1 de cada 400 chunks). Los templos antiguos de mundos existentes siguen funcionando igual y su feature
+  generación (T3d): **los chunks nuevos generan ya el Templo del Custodio** en lugar del templo sellado antiguo (**1 de cada 120
+  chunks**; el templo antiguo era 1 de cada 400, y la subida compensa que ahora cada templo solo se completa una vez). Los templos antiguos de mundos existentes siguen funcionando igual y su feature
   sigue registrado. La regeneración de templos (`TempleRecurrenceRules`) sigue **sin estar conectada al juego**. Diseño: `docs/lore/11_DISENO_T3_TEMPLO.md`.
 - **T2 de la cadena narrativa — materiales de la Niebla.** El **Osario Quebrado** suelta ahora el **Núcleo del Osario**
   (85 % al matarlo un jugador, solo si nació en la Niebla de almas). Con tres Jirones de Velo Espectral, dos Núcleos, tres
