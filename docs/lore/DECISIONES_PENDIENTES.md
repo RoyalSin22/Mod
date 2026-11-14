@@ -28,6 +28,8 @@
 | D-10 | ¿Se añade una entrada de bestiario al Custodio? | Cambio de código: encargo aparte |
 | D-11 | Nombre definitivo del artefacto | Aceptado como provisional; decidir si cambia |
 | D-23 | Pendiente menor: ¿los 10 días de la Niebla se cuentan desde que se inicia o desde que termina? (A-8) | Responder |
+| D-27 | Plan por tandas de `10_PLAN_DE_IMPLEMENTACION.md`: autorizar T0 y la tanda inicial (T1 y T2), y la política de ramas (una por tanda o commits en la rama actual) | Autorizar |
+| D-28 | Imagen de referencia del bestiario: ¿quién es el caballero coronado de la tarjeta inferior izquierda? ¿Se usa solo como referencia o se incorpora al repositorio? | Responder |
 | D-24 | Referencia gráfica del bestiario y rediseño del Grimorio | El autor la tiene; pendiente de recibirla |
 | D-13 | ¿Quién recibe los desbloqueos nacidos de un evento de mundo (LORE-013/014, EVENT-003)? | Solo jugadores presentes en el Eclipse; los desconectados lo reciben al volver a entrar si lo completó. A decidir |
 | D-15 | ¿Dónde viven las crónicas de eventos de la Colección II? | Sin estructura hoy; no decidido |
