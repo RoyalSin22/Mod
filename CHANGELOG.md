@@ -25,6 +25,23 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   ignoran y los puntos gastados en esas ramas vuelven a estar disponibles.
 
 ### Añadido
+- **v67 (F7) — 30 habilidades nuevas: Bardo, Brujo abisal y Domador.** Con esta tanda los 20 roles tienen sus 10
+  habilidades nuevas (5 pasivas y 5 activas) en Talentos, Veterano y Ascenso; diseño aprobado en
+  `docs/V67_F7_DISENO.md`.
+  - **Bardo:** Armonía de grupo, Estribillo pegadizo, Nota cortante, Arrullo, Coro, Estruendo, Pulso del compás, Marcha
+    de victoria, Contrapunto y Gran final.
+  - **Brujo abisal:** Sed de maldiciones, Sacrificio de sangre, Mal de ojo, Cadenas de sombra, Ansia de alma, Nube de
+    pestilencia, Desesperación, Forma demoníaca, Cosecha oscura y Fosa abisal.
+  - **Domador:** Pelaje denso, Frenesí de caza, Convocar a la manada, Zarpazos coordinados, Cuidado veterano, Manto
+    protector, Olfato de la manada, Furia animal, Vínculo de sangre y Llamada del rey.
+  - **Código:** `BardKit`, `WarlockKit` y `TamerKit` con sus reglas puras (`*Rules`), enganchados solo en
+    `ability/ExtraKits`; sin ganchos nuevos en el resto del juego. El Domador usa las mascotas que ya consulta el rol
+    (`NewRoles.pets`).
+  - **Textos:** 60 claves nuevas en los 5 idiomas; iconos provisionales con objetos vanilla y encargo de arte en
+    `docs/PROMPT_ARTE_ICONOS_F7.md`. Sin opciones de configuración nuevas (usa `extraSkillDamageScale`).
+  - **Pruebas:** `BardRulesTest`, `WarlockRulesTest`, `TamerRulesTest` y `RoleExtrasTest` ampliada a los veinte roles.
+  - **Diferencias con el diseño aprobado:** ver §6 de `docs/V67_F7_DISENO.md` (por ejemplo, Sacrificio de sangre exige
+    tener Corrupción).
 - **v67 (F6) — 40 habilidades nuevas: Cambiaformas, Mago pistolero, Invocador de armas y Cazador.** Cada rol tiene 10
   (5 pasivas y 5 activas) en Talentos, Veterano y Ascenso, igual que en F2–F5; diseño aprobado en
   `docs/V67_F6_DISENO.md`.

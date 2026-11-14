@@ -9,8 +9,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
  * v67 (F2+): punto único de enganche de las habilidades nuevas de cada rol ({@link BerserkerKit}, {@link MageKit},
  * {@link AssassinKit}, {@link HerbalistKit}, {@link EngineerKit}, {@link LancerKit}, {@link SwordsmanKit},
  * {@link PaladinKit}, {@link NecromancerKit}, {@link DruidKit}, {@link MerchantKit}, {@link MonkKit},
- * {@link ElementalistKit}, {@link ShapeshifterKit}, {@link GunslingerKit}, {@link WeaponSummonerKit} y
- * {@link HunterKit}). El resto del código llama solo aquí, así que un rol nuevo (F7)
+ * {@link ElementalistKit}, {@link ShapeshifterKit}, {@link GunslingerKit}, {@link WeaponSummonerKit},
+ * {@link HunterKit}, {@link BardKit}, {@link WarlockKit} y {@link TamerKit}). El resto del código llama solo aquí, así que un rol futuro
  * añade su kit en esta clase y no toca más ganchos.
  */
 public final class ExtraKits {
@@ -35,6 +35,9 @@ public final class ExtraKits {
 		GunslingerKit.registerAll();
 		WeaponSummonerKit.registerAll();
 		HunterKit.registerAll();
+		BardKit.registerAll();
+		WarlockKit.registerAll();
+		TamerKit.registerAll();
 	}
 
 	/** Bonificación de daño (se suma a las de {@code RoleMechanics.outgoing}). */
@@ -46,7 +49,8 @@ public final class ExtraKits {
 				+ MerchantKit.outgoing(p, target, source, direct) + MonkKit.outgoing(p, target, source, direct)
 				+ ElementalistKit.outgoing(p, target, source, direct) + ShapeshifterKit.outgoing(p, target, source, direct)
 				+ GunslingerKit.outgoing(p, target, source, direct) + WeaponSummonerKit.outgoing(p, target, source, direct)
-				+ HunterKit.outgoing(p, target, source, direct);
+				+ HunterKit.outgoing(p, target, source, direct) + BardKit.outgoing(p, target, source, direct)
+				+ WarlockKit.outgoing(p, target, source, direct);
 	}
 
 	/**
@@ -63,6 +67,7 @@ public final class ExtraKits {
 		amount = DruidKit.incoming(p, source, amount);
 		amount = ShapeshifterKit.incoming(p, source, amount);
 		amount = WeaponSummonerKit.incoming(p, source, amount);
+		amount = BardKit.incoming(p, source, amount);
 		MonkKit.onHurt(p, amount);
 		amount = SwordsmanKit.incoming(p, source, amount);
 		return SwordsmanKit.lethal(p, amount);
@@ -83,12 +88,14 @@ public final class ExtraKits {
 		MonkKit.afterOutgoing(p, target, direct, damage);
 		ElementalistKit.afterOutgoing(p, target, direct, damage);
 		GunslingerKit.afterOutgoing(p, target, direct, damage);
+		TamerKit.afterOutgoing(p, target, direct, damage);
 	}
 
 	/** Multiplicador del coste de maná de la activa {@code nodeId}. */
 	public static double costMultiplier(ServerPlayerEntity p, String nodeId) {
 		return MageKit.costMultiplier(p, nodeId) * EngineerKit.costMultiplier(p, nodeId)
-				* ShapeshifterKit.costMultiplier(p, nodeId);
+				* ShapeshifterKit.costMultiplier(p, nodeId) * BardKit.costMultiplier(p, nodeId)
+				* WarlockKit.costMultiplier(p, nodeId);
 	}
 
 	/** ¿La próxima activa sale gratis? (Concatenación). Solo consulta: se gasta en {@link #onCast}. */
@@ -117,6 +124,8 @@ public final class ExtraKits {
 		MerchantKit.onCast(p, key, spent);
 		ElementalistKit.onCast(p, key, spent);
 		ShapeshifterKit.onCast(p, key);
+		BardKit.onCast(p, key);
+		WarlockKit.onCast(p, key);
 	}
 
 	public static void onKill(ServerPlayerEntity p, LivingEntity victim) {
@@ -126,6 +135,8 @@ public final class ExtraKits {
 		PaladinKit.onKill(p, victim);
 		MerchantKit.onKill(p, victim);
 		HunterKit.onKill(p, victim);
+		BardKit.onKill(p, victim);
+		WarlockKit.onKill(p, victim);
 	}
 
 	/** Un esbirro de {@code owner} ha matado a {@code victim} (Banquete). */
@@ -157,6 +168,9 @@ public final class ExtraKits {
 		GunslingerKit.tick(server);
 		WeaponSummonerKit.tick(server);
 		HunterKit.tick(server);
+		BardKit.tick(server);
+		WarlockKit.tick(server);
+		TamerKit.tick(server);
 	}
 
 	/** Al desconectarse un jugador. */
@@ -178,5 +192,8 @@ public final class ExtraKits {
 		GunslingerKit.forget(p);
 		WeaponSummonerKit.forget(p);
 		HunterKit.forget(p);
+		BardKit.forget(p);
+		WarlockKit.forget(p);
+		TamerKit.forget(p);
 	}
 }

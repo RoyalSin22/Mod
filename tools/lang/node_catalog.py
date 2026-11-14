@@ -437,6 +437,36 @@ Patient Hunter¦Caçador paciente¦Chasseur patient¦Geduldiger Jäger
 Falcon Sight¦Visão de falcão¦Vue de faucon¦Falkensicht
 Hunt Spoils¦Espólio de caça¦Butin de chasse¦Jagdbeute
 Final Hunt¦Caçada final¦Chasse finale¦Letzte Jagd
+Group Harmony¦Harmonia de grupo¦Harmonie de groupe¦Gruppenharmonie
+Catchy Refrain¦Refrão grudento¦Refrain entêtant¦Ohrwurm-Refrain
+Sharp Note¦Nota cortante¦Note tranchante¦Scharfer Ton
+Soft Hush¦Acalanto¦Berceuse apaisante¦Sanftes Einlullen
+Choir¦Coro¦Chœur¦Chor
+Rumble¦Estrondo¦Fracas¦Dröhnen
+Beat Pulse¦Pulso do compasso¦Pulsation du rythme¦Taktimpuls
+Victory March¦Marcha da vitória¦Marche de la victoire¦Siegesmarsch
+Counterpoint¦Contraponto¦Contrepoint¦Kontrapunkt
+Grand Finale¦Grande final¦Grand final¦Großes Finale
+Thirst for Curses¦Sede de maldições¦Soif de malédictions¦Durst nach Flüchen
+Blood Sacrifice¦Sacrifício de sangue¦Sacrifice de sang¦Blutopfer
+Evil Eye¦Mau-olhado¦Mauvais œil¦Böser Blick
+Shadow Chains¦Correntes de sombra¦Chaînes d’ombre¦Schattenketten
+Soul Craving¦Ânsia de alma¦Avidité d’âme¦Seelenhunger
+Pestilence Cloud¦Nuvem de pestilência¦Nuage de pestilence¦Pestwolke
+Desperation¦Desespero¦Désespoir¦Verzweiflung
+Demon Form¦Forma demoníaca¦Forme démoniaque¦Dämonengestalt
+Dark Harvest¦Colheita sombria¦Moisson sombre¦Dunkle Ernte
+Abyssal Pit¦Fossa abissal¦Fosse abyssale¦Abgrundgrube
+Dense Fur¦Pelagem densa¦Fourrure dense¦Dichtes Fell
+Hunting Frenzy¦Frenesi de caça¦Frénésie de chasse¦Jagdrausch
+Rally the Pack¦Convocar a matilha¦Rassembler la meute¦Rudel zusammenrufen
+Coordinated Strikes¦Ataques coordenados¦Coups coordonnés¦Koordinierte Hiebe
+Veteran Care¦Cuidado veterano¦Soins de vétéran¦Erfahrene Pflege
+Protective Mantle¦Manto protetor¦Manteau protecteur¦Schutzmantel
+Pack Scent¦Faro da matilha¦Flair de la meute¦Rudelwitterung
+Animal Fury¦Fúria animal¦Fureur animale¦Tierische Wut
+Blood Bond¦Vínculo de sangue¦Lien de sang¦Blutsband
+King’s Call¦Chamado do rei¦Appel du roi¦Ruf des Königs
 """)
 
 # v67: las descripciones base se escriben en base_desc.py (estilo llano), con sus traducciones.

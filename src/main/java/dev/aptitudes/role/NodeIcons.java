@@ -158,6 +158,19 @@ public final class NodeIcons {
 		put("hunter_n4", Items.TNT); put("hunter_n5", Items.IRON_TRAPDOOR); put("hunter_n6", Items.ARROW);
 		put("hunter_n7", Items.FERN); put("hunter_n8", Items.FEATHER); put("hunter_n9", Items.EXPERIENCE_BOTTLE);
 		put("hunter_n10", Items.TARGET);
+		// v67 F7: iconos provisionales (objetos del juego) hasta que llegue el arte de docs/PROMPT_ARTE_ICONOS_F7.md.
+		put("bard_n1", Items.NOTE_BLOCK); put("bard_n2", Items.MUSIC_DISC_13); put("bard_n3", Items.GOAT_HORN);
+		put("bard_n4", Items.WHITE_WOOL); put("bard_n5", Items.JUKEBOX); put("bard_n6", Items.BELL);
+		put("bard_n7", Items.CLOCK); put("bard_n8", Items.WHITE_BANNER); put("bard_n9", Items.MUSIC_DISC_CAT);
+		put("bard_n10", Items.FIREWORK_STAR);
+		put("warlock_n1", Items.FERMENTED_SPIDER_EYE); put("warlock_n2", Items.REDSTONE); put("warlock_n3", Items.ENDER_EYE);
+		put("warlock_n4", Items.CHAIN); put("warlock_n5", Items.SOUL_SAND); put("warlock_n6", Items.SLIME_BALL);
+		put("warlock_n7", Items.WITHER_ROSE); put("warlock_n8", Items.NETHERITE_HELMET); put("warlock_n9", Items.WHEAT);
+		put("warlock_n10", Items.CRYING_OBSIDIAN);
+		put("tamer_n1", Items.RABBIT_HIDE); put("tamer_n2", Items.BONE); put("tamer_n3", Items.LEAD);
+		put("tamer_n4", Items.COOKED_BEEF); put("tamer_n5", Items.GOLDEN_CARROT); put("tamer_n6", Items.LEATHER_HORSE_ARMOR);
+		put("tamer_n7", Items.SPIDER_EYE); put("tamer_n8", Items.WOLF_ARMOR); put("tamer_n9", Items.FEATHER);
+		put("tamer_n10", Items.GOLDEN_HORSE_ARMOR);
 		put("arcane_charges", Items.AMETHYST_CLUSTER);
 		put("mana_shield", Items.LAPIS_BLOCK); put("spell_echo", Items.ECHO_SHARD);
 		put("time_warp", Items.CLOCK); put("arcane_missiles", Items.END_ROD);

@@ -1,6 +1,6 @@
 # v67 · F7 — Habilidades nuevas de Bardo, Brujo abisal y Domador (diseño para aprobar)
 
-Estado: **propuesta, sin código.** Mismo patrón que F2–F6 (`docs/V67_F6_DISENO.md`): 10 nodos por rol, 5 pasivas y 5
+Estado: **implementada (2026-11-14); diseño aprobado por el autor.** Mismo patrón que F2–F6 (`docs/V67_F6_DISENO.md`): 10 nodos por rol, 5 pasivas y 5
 activas. Es la última tanda: con ella los 20 roles tienen sus 10 habilidades nuevas (30 habilidades esta vez).
 
 | Nodos | Sección | Posición | Niveles |
@@ -101,3 +101,12 @@ Ya tiene: Vínculo animal, ¡A por él!, Líder de la manada, Vínculo vital, Co
 2. Las **30 habilidades**; dime cuáles cambiar. Las del Domador dependen de las mascotas y las del Brujo, de cómo cobra la
    Corrupción; las revisaré primero para no duplicar nada.
 3. ¿Implementarlas **todas de una vez**, como en F4–F6?
+
+## 6. Diferencias entre el diseño aprobado y la implementación
+
+| Habilidad | Diseño | Implementado | Motivo |
+|---|---|---|---|
+| `warlock_n2` Sacrificio de sangre | Cuando un hechizo te cuesta vida | Solo si tienes Corrupción (el nodo que cobra la vida) | Es esa pasiva la que descuenta la vida, no los hechizos por sí mismos |
+| `bard_n2` Estribillo pegadizo | El descuento se aplica una vez | El descuento se gasta con la siguiente habilidad y esa no lo rearma | Evita una cadena de habilidades baratas |
+| `warlock_n7` Desesperación | Hechizos sin coste de maná | Solo los hechizos del Brujo | Es una pasiva del rol |
+| Todas las activas | Entidades de efecto | Efectos con partículas y sonidos, sin entidades | Menos riesgo de entidades huérfanas |

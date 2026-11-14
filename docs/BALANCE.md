@@ -570,6 +570,24 @@ rango) y de la definitiva.
 Riesgos que vigilar en partida: el sangrado acumulado de Tajos (6/s con 3 cargas en rango 2) y Avatar junto a Furia y
 el Juramento (multiplicadores que se suman, limitados por `maxDamageMultiplier`).
 
+## v67 (F7) — Habilidades nuevas de Bardo, Brujo abisal y Domador
+
+Valores con `extraSkillDamageScale` = 1 (cifras y costes en `docs/V67_F7_DISENO.md`). La escala solo multiplica el daño
+directo de las activas y de los efectos que hacen daño; no cambia curaciones, esperas ni porcentajes.
+
+**Riesgos que vigilar en partida:**
+
+| Rol | Riesgo | Freno actual |
+|---|---|---|
+| Bardo | Armonía de grupo reduce el daño de todo el grupo (−3 / 6 / 9 %) | Solo dentro de 8 bloques y con el bardo presente; no se suma entre bardos |
+| Bardo | Estribillo pegadizo encadena habilidades baratas | Solo una vez tras cada canción; el descuento no se rearma con la propia habilidad descontada |
+| Bardo | Marcha de victoria + Contrapunto + Gran final apilan Fuerza y daño | Esperas de 45–90 s; `maxDamageMultiplier` |
+| Brujo | Desesperación hace gratis los hechizos a poca vida | 5 s, una vez cada 90 s |
+| Brujo | Forma demoníaca + Ansia de alma + Sed de maldiciones apilan daño mágico | `maxDamageMultiplier`; Forma dura 8–10 s |
+| Brujo | Cosecha oscura encadena explosiones | Una explosión por muerte; no se encadena con sus propias muertes |
+| Domador | Furia animal y Llamada del rey vuelven muy fuertes a las mascotas | Esperas de 45–90 s; dependen de tener mascotas cerca |
+| Domador | Convocar a la manada teletransporta mascotas a tu lado | Solo las tuyas, vivas y a 32 bloques |
+
 ## v67 (F6) — Habilidades nuevas de Cambiaformas, Mago pistolero, Invocador de armas y Cazador
 
 Valores con `extraSkillDamageScale` = 1 (cifras y costes en `docs/V67_F6_DISENO.md`). La escala solo multiplica el daño

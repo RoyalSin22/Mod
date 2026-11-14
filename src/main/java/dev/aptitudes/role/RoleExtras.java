@@ -82,6 +82,9 @@ public final class RoleExtras {
 			case "weapon_summoner" -> standard("weapon_summoner", "blade_guard", new int[]{20, 30, 45, 60, 80},
 					new int[]{8, 18, 30, 45, 90});
 			case "hunter" -> standard("hunter", "tracker", new int[]{20, 30, 45, 60, 80}, new int[]{12, 18, 30, 45, 90});
+			case "bard" -> standard("bard", "soothing_melody", new int[]{20, 30, 45, 60, 80}, new int[]{8, 20, 30, 45, 90});
+			case "warlock" -> standard("warlock", "soul_link", new int[]{20, 30, 45, 60, 80}, new int[]{8, 18, 30, 45, 90});
+			case "tamer" -> standard("tamer", "pack_leader", new int[]{20, 30, 45, 60, 80}, new int[]{12, 18, 30, 45, 90});
 			default -> List.of();
 		};
 	}

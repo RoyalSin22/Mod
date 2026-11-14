@@ -4,6 +4,7 @@ Estado:
 
 - **Diseño aprobado por el autor (2026-11-13).**
 - **F1 implementada:** árbol unificado.
+- **F7 implementada (2026-11-14):** Bardo, Brujo abisal y Domador; ver `docs/V67_F7_DISENO.md`.
 - **F6 implementada (2026-11-13):** Cambiaformas, Mago pistolero, Invocador de armas y Cazador; ver `docs/V67_F6_DISENO.md`.
 - **F5 implementada (2026-11-13):** Druida, Mercader táctico, Monje y Chamán; ver `docs/V67_F5_DISENO.md`.
 - **F4 implementada (2026-11-13):** Lancero, Espadachín, Paladín y Nigromante; ver `docs/V67_F4_DISENO.md`.
@@ -129,7 +130,7 @@ Cada habilidad necesita:
 | F1 | Árbol unificado con los nodos actuales y las secciones Veterano y Ascenso preparadas; puntos 1 + nivel / 2 con migración | Pantalla nueva y pruebas de geometría |
 | F2 | Las 10 habilidades del Berserker (piloto) y el prompt de iconos | Berserker jugable con su árbol completo |
 | F3–F6 | Hechas (Mago, Asesino, Herbolista, Ingeniero; Lancero, Espadachín, Paladín, Nigromante; Druida, Mercader, Monje, Chamán; Cambiaformas, Pistolero, Invocador de armas, Cazador) | — |
-| F7 | Bardo, Brujo abisal y Domador (30 habilidades); diseño para aprobar y luego implementación | 3 roles restantes |
+| F7 | Hecha (Bardo, Brujo abisal y Domador) | — |
 | F8 | Balance tras prueba en partida y revisión de textos en los 5 idiomas | Ajustes |
 
 ## 7. Qué necesito que apruebes

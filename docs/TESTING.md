@@ -1,5 +1,28 @@
 # Pruebas de Aptitudes
 
+## v67 (F7) — Habilidades nuevas de Bardo, Brujo abisal y Domador
+
+Automáticas: `BardRulesTest`, `WarlockRulesTest`, `TamerRulesTest` (cifras de cada rol) y `RoleExtrasTest` (datos de los
+veinte roles con habilidades nuevas).
+
+Validación en partida (pendiente), con `/roles admin` para subir de nivel y evolucionar:
+
+1. **Árbol (J):** en los tres roles, N1 y N2 cuelgan de la pasiva B; N3 y N4, de Presteza; Veterano y Ascenso muestran
+   sus 3 nodos. Aprende cada uno y equipa las activas nuevas (13 por rol): salir y entrar conserva el equipamiento.
+2. **Bardo (con un segundo jugador):** Armonía de grupo (menos daño para ti y el aliado cerca); Estribillo pegadizo (la
+   habilidad tras una canción cuesta menos, solo una vez); Nota cortante; Arrullo; Coro (maná por aliado cercano);
+   Estruendo; Pulso del compás (cura al matar); Marcha de victoria; Contrapunto (3 canciones distintas en 10 s); Gran
+   final.
+3. **Brujo abisal:** Sed de maldiciones (más daño a enemigos con veneno o lentitud); Sacrificio de sangre (necesita
+   Corrupción); Mal de ojo (daño a los 3 s); Cadenas de sombra; Ansia de alma; Nube de pestilencia; Desesperación (por
+   debajo del 30 % de vida, hechizos gratis 5 s); Forma demoníaca; Cosecha oscura; Fosa abisal.
+4. **Domador (con 2–3 mascotas domadas):** Pelaje denso (absorción en las mascotas); Frenesí de caza; Convocar a la
+   manada (teletransporta); Zarpazos coordinados; Cuidado veterano; Manto protector; Olfato de la manada; Furia animal;
+   Vínculo de sangre; Llamada del rey. Comprueba que las mascotas de otro jugador no se ven afectadas.
+5. **Rendimiento y seguridad:** con varios jugadores no sube el tick del servidor; al desconectarse, el estado de los
+   roles se libera; al respecer, las pasivas dejan de actuar.
+6. `extraSkillDamageScale = 0.5`: el daño de las habilidades nuevas baja a la mitad.
+
 ## v67 (F6) — Habilidades nuevas de Cambiaformas, Mago pistolero, Invocador de armas y Cazador
 
 Automáticas: `ShapeshifterRulesTest`, `GunslingerRulesTest`, `WeaponSummonerRulesTest`, `HunterRulesTest` (cifras de cada
