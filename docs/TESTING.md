@@ -1422,6 +1422,19 @@ del borde y contenido desplazable. Esta medición no sustituye la inspección en
    desplazable y recetas del registro (iconos/tooltip con entradas y salidas reales). Pulsa los pétalos:
    abre su extracción desde la receta sincronizada. Repite en inglés y siete variantes de español.
 
+# T4 — llaves y cámaras (verificación manual)
+
+1. Con un templo del Custodio (ver T3), vence al Custodio: suelta **cuatro llaves** (cobre, hierro, oro, diamante) además de la
+   llave del Relicario, con el aviso «El Custodio cae y deja cuatro llaves».
+2. Las **cuatro puertas de cámara** están en la cámara del Custodio: cobre al oeste, diamante al este y hierro y oro en el muro
+   norte (a izquierda y derecha). Cada una solo cede a la llave de su metal: con otra, aviso de metal; con una llave de otro
+   templo, aviso de templo; con la mano vacía, aviso de que necesita una llave.
+3. Antes de vencer al Custodio las puertas avisan de que él guarda las llaves.
+4. Al abrir una puerta la llave se consume y la cámara se abre con su cofre. El botín crece de cobre a diamante.
+5. El Relicario con el Vaso de vida sigue funcionando con la llave del templo.
+6. Los templos antiguos no tienen cámaras: el Custodio solo suelta la llave del Relicario.
+7. Guarda y recarga el mundo con una cámara abierta: sigue abierta y las demás cerradas.
+
 # T3 — Templo del Custodio (verificación manual)
 
 Desde T3d los chunks **nuevos** generan este templo solos (los ya generados conservan el antiguo). Para verlo sin explorar, en un mundo de pruebas y sobre terreno llano:

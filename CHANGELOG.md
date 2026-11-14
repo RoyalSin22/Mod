@@ -25,12 +25,17 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   ignoran y los puntos gastados en esas ramas vuelven a estar disponibles.
 
 ### Añadido
-- **T4 de la cadena narrativa — llaves y cámaras (en curso, fase T4a).** El Custodio del templo nuevo suelta ahora **cuatro
+- **T4 de la cadena narrativa — llaves y cámaras (T4a y T4b).** El Custodio del templo nuevo suelta ahora **cuatro
   llaves a la vez** (`custodian_key_copper`, `_iron`, `_gold` y `_diamond`), además de la llave del Relicario. Cada llave lleva
   el templo del que procede y abre solo la **puerta de cámara** de su metal (`chamber_door_<metal>`), y solo con el Custodio
   vencido; la llave se consume. Reglas puras en `temple/TempleKeyRules` (`TempleKeyRulesTest`); el sello guarda las puertas y
   las cámaras abiertas con campos al final del NBT. Texturas generadas, textos en cinco idiomas y `ChamberKeyResourcesTest`.
-  Las cámaras en la estructura y su botín llegan en T4b.
+  **T4b:** el Templo del Custodio incluye ya **cuatro cámaras de recompensa** (cobre y diamante a los lados de la cámara
+  del Custodio, hierro y oro tras su muro norte), cada una tras su puerta de 1×2 y con un cofre con la tabla de botín de
+  su metal (`loot_table/chests/custodian_<metal>.json`: objetos vanilla, bloques de minerales, manzanas doradas, y objetos
+  del mod; la de diamante es la más rica y albergará el Behelit en T5). El Relicario con el Vaso de vida se mantiene y
+  los dos cofres antiguos se sustituyen por las cámaras. `CustodianTempleLayout` (puro) y sus pruebas cubren que cada
+  cámara es inaccesible hasta abrir su puerta. Valores del botín provisionales en `docs/BALANCE.md`.
 - **T3 de la cadena narrativa — Templo del Custodio (T3a a T3d).** Base del flujo nuevo: la **Puerta del
   Custodio** (`aptitudes:custodian_door`, irrompible) solo cede al **Ancla del Velo**, que se consume al abrirla, y
   únicamente cuando el puzle está resuelto. El controlador del sello (`TempleSealBlockEntity`) gana una distribución

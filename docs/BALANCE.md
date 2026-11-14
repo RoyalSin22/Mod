@@ -583,3 +583,19 @@ validarse en partida. El Osario aparece menos que el Errante, así que su núcle
 
 Ajustes posibles si el ritmo no es el deseado: la probabilidad se edita en la loot table (datapack) y las
 cantidades en `data/aptitudes/recipe/ancla_del_velo.json`; no hay campos de configuración para esto.
+
+# Cámaras del Templo del Custodio (T4 de la cadena narrativa; valores provisionales)
+
+Sin playtest. El contenido lo eligió el redactor por delegación del autor y crece con el metal. Cada cofre se puede abrir una
+vez por templo (cofre normal): en grupo se reparte lo que haya. La cámara de diamante albergará además el Behelit (T5).
+
+| Cámara | Tiradas | Contenido (peso) |
+|---|---|---|
+| Cobre | 3–5 | bloque de cobre 1–2 (8), bloque de carbón 1–2 (6), lingote de hierro 4–8 (10), zanahoria dorada 4–8 (8), fragmento de alma 2–4 (8), frasco de experiencia 3–6 (6) |
+| Hierro | 3–5 | bloque de hierro 1–2 (8), de lapislázuli 1–2 (6), de redstone 1–2 (6), manzana dorada 1–2 (5), fragmento de alma 3–5 (8), esencia de élite 1–2 (6), diamante 1–2 (4) |
+| Oro | 3–5 | bloque de oro 1–2 (8), de esmeralda 1–2 (6), manzana dorada 2–3 (8), diamante 2–4 (6), fragmento de alma 4–6 (8), corazón de campeón 1 (3), esencia de élite 2–3 (6) |
+| Diamante | 4–6 | bloque de diamante 1–2 (8), **manzana dorada encantada 1 (4)**, **fragmento de netherita 1–2 (4)**, bloque de esmeralda 1–3 (6), fragmento de alma 5–8 (8), corazón de campeón 1–2 (5), vale de armería 1 (3), emblema de maestría 1 (2), frasco de experiencia 8–16 (6) |
+
+Riesgo: las manzanas encantadas y la netherita solo salen en la cámara de diamante, pero con varios templos por mundo y sin
+regeneración conectada (D-33) el total es finito. Las tablas son datapack: se ajustan sin tocar código.
+

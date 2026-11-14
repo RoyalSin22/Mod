@@ -118,23 +118,23 @@ class CustodianTempleLayoutTest {
 		int[] antechamber = {0, -7, 2};
 		int[] chamber = r.custodianSpawn;
 
-		Set<String> closed = reach(r, entrance, false, false);
+		Set<String> closed = reach(r, entrance, false, false, false);
 		assertTrue(closed.contains(key(0, 1, 9)), "el atrio es accesible");
 		assertTrue(closed.contains(key(0, 1, -2)), "la sala del puzle es accesible");
 		assertFalse(closed.contains(key(antechamber)), "sin resolver el puzle no se baja");
 
-		Set<String> stairs = reach(r, entrance, true, false);
+		Set<String> stairs = reach(r, entrance, true, false, false);
 		assertTrue(stairs.contains(key(antechamber)), "con la trampilla abierta se llega a la antesala");
 		assertFalse(stairs.contains(key(chamber)), "la cámara sigue cerrada");
 
-		Set<String> open = reach(r, entrance, true, true);
+		Set<String> open = reach(r, entrance, true, true, false);
 		assertTrue(open.contains(key(chamber)), "con la puerta abierta se llega al Custodio");
 		assertTrue(open.contains(key(0, -7, 12)), "se llega junto al Relicario");
 	}
 
 	@Test void doorAloneIsNotEnoughWithoutTheHatch() {
 		Result r = full();
-		Set<String> doorOnly = reach(r, new int[] {0, 1, R}, false, true);
+		Set<String> doorOnly = reach(r, new int[] {0, 1, R}, false, true, false);
 		assertFalse(doorOnly.contains(key(r.custodianSpawn)));
 	}
 
@@ -144,8 +144,59 @@ class CustodianTempleLayoutTest {
 			int z = -7 + i;
 			for (int x = -1; x <= 1; x++) {
 				assertEquals(Cell.STAIR_NORTH, r.get(x, -1 - i, z), "escalón " + i);
-				assertTrue(open(r.get(x, -i, z), true, false), "pies del escalón " + i);
-				assertTrue(open(r.get(x, -i + 1, z), true, false), "cabeza del escalón " + i);
+				assertTrue(open(r.get(x, -i, z), true, false, false), "pies del escalón " + i);
+				assertTrue(open(r.get(x, -i + 1, z), true, false, false), "cabeza del escalón " + i);
+			}
+		}
+	}
+
+	@Test void fourChambersHaveOneDoorAndOneChestEach() {
+		Result r = plain();
+		assertEquals(8, r.chamberDoors.size(), "cada puerta mide 1×2");
+		assertEquals(4, r.chests.size());
+		for (int metal = 0; metal < 4; metal++) {
+			final int m = metal;
+			assertEquals(2, r.chamberDoors.stream().filter(d -> d[3] == m).count(), "puerta del metal " + m);
+			assertEquals(1, r.chests.stream().filter(c -> c[3] == m).count(), "cofre del metal " + m);
+		}
+		for (int[] d : r.chamberDoors) assertEquals(CHAMBER_DOORS[d[3]], r.get(d[0], d[1], d[2]));
+		for (int[] c : r.chests) assertEquals(CHESTS[c[3]], r.get(c[0], c[1], c[2]));
+	}
+
+	@Test void everyChamberDoorJoinsTheCustodianRoomWithItsChamber() {
+		Result r = plain();
+		for (int[] d : r.chamberDoors) {
+			boolean eastWest = Math.abs(d[0]) == 11;
+			int[] a = eastWest ? new int[] {d[0] - 1, d[1], d[2]} : new int[] {d[0], d[1], d[2] + 1};
+			int[] b = eastWest ? new int[] {d[0] + 1, d[1], d[2]} : new int[] {d[0], d[1], d[2] - 1};
+			Cell first = r.get(a[0], a[1], a[2]);
+			Cell second = r.get(b[0], b[1], b[2]);
+			assertEquals(Cell.AIR, first, "un lado de la puerta del metal " + d[3]);
+			assertEquals(Cell.AIR, second, "el otro lado de la puerta del metal " + d[3]);
+		}
+	}
+
+	@Test void chambersStayClosedUntilTheirDoorsOpen() {
+		Result r = full();
+		int[] entrance = {0, 1, R};
+		Set<String> doorsClosed = reach(r, entrance, true, true, false);
+		Set<String> allOpen = reach(r, entrance, true, true, true);
+		for (int[] c : r.chests) {
+			// La celda delante del cofre, hacia la puerta, está dentro de la cámara.
+			int inside = Math.abs(c[0]) > 11 ? (c[0] < 0 ? c[0] + 1 : c[0] - 1) : c[0];
+			int z = Math.abs(c[0]) > 11 ? c[2] : c[2] + 1;
+			assertFalse(doorsClosed.contains(key(inside, c[1], z)), "cámara " + c[3] + " accesible sin abrir su puerta");
+			assertTrue(allOpen.contains(key(inside, c[1], z)), "cámara " + c[3] + " inaccesible con su puerta abierta");
+		}
+	}
+
+	@Test void chambersStayInsideTheHullAndLeaveTheOutsideSealed() {
+		Result r = plain();
+		for (int y = HULL_BOTTOM_Y; y <= -1; y++) {
+			for (int i = -R; i <= R; i++) {
+				for (int[] edge : new int[][] {{i, -R}, {i, R}, {-R, i}, {R, i}}) {
+					assertEquals(Cell.HULL, r.get(edge[0], y, edge[1]), "borde del casco con las cámaras");
+				}
 			}
 		}
 	}
@@ -190,17 +241,18 @@ class CustodianTempleLayoutTest {
 	}
 
 	/** ¿Se puede estar en esa celda? Las trampillas y puertas cuentan solo si están abiertas. */
-	private static boolean open(Cell cell, boolean hatchOpen, boolean doorOpen) {
+	private static boolean open(Cell cell, boolean hatchOpen, boolean doorOpen, boolean chambersOpen) {
 		if (cell == null) return false;
 		return switch (cell) {
 			case AIR, PLATE, CANDLE_1, CANDLE_2, CANDLE_3, CANDLE_4, LEVER, STAIR_NORTH -> true;
 			case SEALED -> hatchOpen;
 			case DOOR -> doorOpen;
+			case CHAMBER_DOOR_COPPER, CHAMBER_DOOR_IRON, CHAMBER_DOOR_GOLD, CHAMBER_DOOR_DIAMOND -> chambersOpen;
 			default -> false;
 		};
 	}
 
-	private static Set<String> reach(Result r, int[] start, boolean hatchOpen, boolean doorOpen) {
+	private static Set<String> reach(Result r, int[] start, boolean hatchOpen, boolean doorOpen, boolean chambersOpen) {
 		Set<String> seen = new HashSet<>();
 		ArrayDeque<int[]> queue = new ArrayDeque<>();
 		queue.add(start);
@@ -210,7 +262,7 @@ class CustodianTempleLayoutTest {
 			int[] p = queue.poll();
 			for (int[] s : steps) {
 				int x = p[0] + s[0], y = p[1] + s[1], z = p[2] + s[2];
-				if (!Result.inside(x, y, z) || !open(r.get(x, y, z), hatchOpen, doorOpen) || !seen.add(key(x, y, z))) continue;
+				if (!Result.inside(x, y, z) || !open(r.get(x, y, z), hatchOpen, doorOpen, chambersOpen) || !seen.add(key(x, y, z))) continue;
 				queue.add(new int[] {x, y, z});
 			}
 		}

@@ -30,7 +30,7 @@ Tamaños relativos (S < M < L < XL); no son horas.
 | **T1** (implementada, pendiente de prueba en partida) | Eventos por activación: aldeano del gremio inicia la Niebla (24 000 ticks, 10 días, global); Lluvia de brasas al encender un portal (5 días); el calendario deja de elegir Niebla y Lluvia | E1, E2, E7 | L | T0 |
 | **T2** (implementada, pendiente de prueba en partida) | Botín del Osario, objeto de acceso y su receta, objetos nuevos y sus texturas | E3 | M | T0 |
 | **T3** (implementada, pendiente de prueba en partida) | Templo nuevo: estructura, Autómata interno, puzle, puerta del Custodio que consume el objeto | E4 | XL | T2 |
-| **T4** | Custodio con 4 llaves (cobre, hierro, oro, diamante) en una tirada y 4 cámaras de recompensa | E5 | L | T3 |
+| **T4** (implementada, pendiente de prueba en partida) | Custodio con 4 llaves (cobre, hierro, oro, diamante) en una tirada y 4 cámaras de recompensa | E5 | L | T3 |
 | **T5** | Behelit, sacrificio en la Hoguera, Eclipse con espera de 3 días por mundo, fin del calendario rotativo | E6, E10 | L | T4 (T1 para la parte de calendario) |
 | **T6** | Retirada de los 3 sellos de invocación, con migración | E8 | M | T3 |
 | **T7a** | Grimorio, infraestructura: estado de lectura por jugador, desbloqueos, entrada de bestiario del Custodio | E9 | L | T1, T4, T5 |

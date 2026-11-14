@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import dev.aptitudes.temple.CustodianTempleLayout;
 import dev.aptitudes.temple.CustodianTempleLayout.Cell;
 import dev.aptitudes.temple.ReliquaryBlockEntity;
+import dev.aptitudes.temple.TempleKeyRules;
 import dev.aptitudes.temple.TempleRules;
 import dev.aptitudes.temple.TempleSealBlockEntity;
 import dev.aptitudes.temple.Temples;
@@ -63,8 +64,8 @@ public class CustodianTempleFeature extends Feature<DefaultFeatureConfig> {
 				for (int z = -CustodianTempleLayout.R; z <= CustodianTempleLayout.R; z++) {
 					Cell cell = layout.get(x, y, z);
 					if (cell == null) continue;
-					if (cell == Cell.CHEST_LEFT) b.chest(x, y, z, "tower_floor");
-					else if (cell == Cell.CHEST_RIGHT) b.chest(x, y, z, ring >= 3 ? "tower_top" : "tower_upper");
+					String loot = chestLoot(cell);
+					if (loot != null) b.chest(x, y, z, loot);
 					else b.set(x, y, z, state(cell, palette, ring, b));
 				}
 			}
@@ -82,10 +83,33 @@ public class CustodianTempleFeature extends Feature<DefaultFeatureConfig> {
 					relative(b, seal, layout.hatch), rel(b, seal, layout.custodianSpawn), relative(b, seal, layout.custodianDoor),
 					rel(b, seal, layout.automatonSpawn), rel(b, seal, layout.triggerCenter));
 		}
+		if (world.getBlockEntity(seal) instanceof TempleSealBlockEntity entity) {
+			// T4: puertas de las cuatro cámaras, con el metal de cada una.
+			List<BlockPos> doors = new ArrayList<>();
+			List<TempleKeyRules.Metal> metals = new ArrayList<>();
+			for (int[] d : layout.chamberDoors) {
+				TempleKeyRules.Metal metal = TempleKeyRules.metalFromOrdinal(d[3]);
+				if (metal == null) continue;
+				doors.add(rel(b, seal, d));
+				metals.add(metal);
+			}
+			entity.setupChambers(doors, metals);
+		}
 		if (world.getBlockEntity(b.at(layout.reliquary[0], layout.reliquary[1], layout.reliquary[2])) instanceof ReliquaryBlockEntity reliquary) {
 			reliquary.setTemple(temple);
 		}
 		return true;
+	}
+
+	/** Tabla de botín del cofre de cada cámara (T4), o {@code null} si la celda no es un cofre. */
+	private static String chestLoot(Cell cell) {
+		return switch (cell) {
+			case CHEST_COPPER -> "custodian_copper";
+			case CHEST_IRON -> "custodian_iron";
+			case CHEST_GOLD -> "custodian_gold";
+			case CHEST_DIAMOND -> "custodian_diamond";
+			default -> null;
+		};
 	}
 
 	private static BlockPos rel(StructureBuilder b, BlockPos seal, int[] p) {
@@ -119,7 +143,12 @@ public class CustodianTempleFeature extends Feature<DefaultFeatureConfig> {
 			case SEAL -> Temples.TEMPLE_SEAL.getDefaultState();
 			case RELIQUARY -> Temples.RELIQUARY.getDefaultState();
 			case LANTERN -> Blocks.SOUL_LANTERN.getDefaultState();
-			case CHEST_LEFT, CHEST_RIGHT -> Blocks.CHEST.getDefaultState(); // los cofres se colocan con su botín en generate
+			case CHAMBER_DOOR_COPPER -> Temples.CHAMBER_DOOR_COPPER.getDefaultState();
+			case CHAMBER_DOOR_IRON -> Temples.CHAMBER_DOOR_IRON.getDefaultState();
+			case CHAMBER_DOOR_GOLD -> Temples.CHAMBER_DOOR_GOLD.getDefaultState();
+			case CHAMBER_DOOR_DIAMOND -> Temples.CHAMBER_DOOR_DIAMOND.getDefaultState();
+			// Los cofres se colocan con su botín en generate (chestLoot); aquí solo se completa el switch.
+			case CHEST_COPPER, CHEST_IRON, CHEST_GOLD, CHEST_DIAMOND -> Blocks.CHEST.getDefaultState();
 		};
 	}
 

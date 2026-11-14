@@ -17,6 +17,8 @@ import java.util.List;
  *   z -7..-5  trampilla de piedra sellada      z 0..4    antesala
  *   z 5..14 (y 1..7) atrio con el Autómata     z 5       Puerta del Custodio (3×3)
  *   z 4  tabique con arco                      z 6..14   cámara del Custodio, Relicario y cofres
+ * Cámaras de recompensa (T4): cobre y diamante a los lados de la cámara del Custodio (x ∓12..14) y hierro y oro tras su
+ * muro norte (z 1..4), cada una tras una puerta que solo abre la llave de su metal.
  * </pre>
  */
 public final class CustodianTempleLayout {
@@ -48,8 +50,16 @@ public final class CustodianTempleLayout {
 		/** Puerta del Custodio: solo cede al Ancla del Velo. */
 		DOOR,
 		LEVER, LIGHT_ON, LIGHT_OFF, PLATE, CANDLE_1, CANDLE_2, CANDLE_3, CANDLE_4,
-		SEAL, RELIQUARY, CHEST_LEFT, CHEST_RIGHT, LANTERN
+		SEAL, RELIQUARY, LANTERN,
+		/** T4: puertas de las cuatro cámaras de recompensa (1 de ancho × 2 de alto), una por metal. */
+		CHAMBER_DOOR_COPPER, CHAMBER_DOOR_IRON, CHAMBER_DOOR_GOLD, CHAMBER_DOOR_DIAMOND,
+		/** T4: cofre de cada cámara, con la tabla de botín de su metal. */
+		CHEST_COPPER, CHEST_IRON, CHEST_GOLD, CHEST_DIAMOND
 	}
+
+	/** Celdas de puerta y de cofre por metal, en el orden de {@link TempleKeyRules.Metal}. */
+	public static final Cell[] CHAMBER_DOORS = {Cell.CHAMBER_DOOR_COPPER, Cell.CHAMBER_DOOR_IRON, Cell.CHAMBER_DOOR_GOLD, Cell.CHAMBER_DOOR_DIAMOND};
+	public static final Cell[] CHESTS = {Cell.CHEST_COPPER, Cell.CHEST_IRON, Cell.CHEST_GOLD, Cell.CHEST_DIAMOND};
 
 	/** Resultado: las celdas y las posiciones que necesita el controlador (todas relativas al origen). */
 	public static final class Result {
@@ -63,6 +73,10 @@ public final class CustodianTempleLayout {
 		public final int[] triggerCenter = {0, 1, 10};
 		public final int[] custodianSpawn = {0, -7, 9};
 		public final int[] reliquary = {0, -7, 13};
+		/** T4: celdas de las puertas de cámara como {x, y, z, metal} (el metal es el índice de {@link TempleKeyRules.Metal}). */
+		public final List<int[]> chamberDoors = new ArrayList<>();
+		/** T4: cofres de las cámaras como {x, y, z, metal}. */
+		public final List<int[]> chests = new ArrayList<>();
 
 		private static int index(int x, int y, int z) {
 			return ((y - HULL_BOTTOM_Y) * SIZE + (z + R)) * SIZE + (x + R);
@@ -183,11 +197,30 @@ public final class CustodianTempleLayout {
 		// Muro de la antesala con la cámara cerrado salvo la puerta; el suelo de la cámara sigue bajo ella.
 		r.fill(Cell.FLOOR, -1, 1, UNDER_FLOOR_Y, UNDER_FLOOR_Y, 5, 5);
 
-		// 7) Recompensa actual (hasta T4): Relicario, dos cofres y linternas.
+		// 7) Relicario (Vaso de vida) y linternas de la cámara del Custodio.
 		r.set(r.reliquary[0], r.reliquary[1], r.reliquary[2], Cell.RELIQUARY);
-		r.set(-9, -7, 13, Cell.CHEST_LEFT);
-		r.set(9, -7, 13, Cell.CHEST_RIGHT);
 		for (int[] c : new int[][] {{-10, 6}, {10, 6}, {-10, 14}, {10, 14}}) r.set(c[0], -7, c[1], Cell.LANTERN);
+
+		// 8) T4: cuatro cámaras de recompensa. Cobre y diamante a los lados de la cámara del Custodio (3×7) y hierro y oro
+		//    tras su muro norte (5×4). Cada puerta mide 1×2 y vive en un muro macizo; el cofre queda al fondo.
+		//    {x0, x1, z0, z1, puerta x, puerta z, cofre x, cofre z, linterna x, linterna z}
+		int[][] rooms = {
+				{-14, -12, 7, 13, -11, 10, -13, 10, -14, 13},   // cobre
+				{-10, -6, 1, 4, -8, 5, -8, 2, -10, 4},         // hierro
+				{6, 10, 1, 4, 8, 5, 8, 2, 10, 4},              // oro
+				{12, 14, 7, 13, 11, 10, 13, 10, 14, 13}};      // diamante
+		for (int metal = 0; metal < rooms.length; metal++) {
+			int[] k = rooms[metal];
+			r.fill(Cell.AIR, k[0], k[1], -7, -2, k[2], k[3]);
+			r.fill(metal == 3 ? Cell.ACCENT : Cell.FLOOR, k[0], k[1], UNDER_FLOOR_Y, UNDER_FLOOR_Y, k[2], k[3]);
+			for (int y = -7; y <= -6; y++) {
+				r.set(k[4], y, k[5], CHAMBER_DOORS[metal]);
+				r.chamberDoors.add(new int[] {k[4], y, k[5], metal});
+			}
+			r.set(k[6], -7, k[7], CHESTS[metal]);
+			r.chests.add(new int[] {k[6], -7, k[7], metal});
+			r.set(k[8], -7, k[9], Cell.LANTERN);
+		}
 		return r;
 	}
 
