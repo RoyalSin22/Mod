@@ -101,9 +101,9 @@ public final class BestiaryRules {
 				"aptitudes:ancient_automaton_spawn_egg", List.of("aptitudes:soul_shard", "aptitudes:elite_essence")));
 		// v65: criaturas nuevas, al final.
 		out.add(new Entry("osario_quebrado", Kind.CREATURE, Region.OVERWORLD, "aptitudes:osario_quebrado", null,
-				"aptitudes:osario_quebrado_spawn_egg", List.of("aptitudes:soul_shard")));
+				"aptitudes:osario_quebrado_spawn_egg", List.of("aptitudes:nucleo_osario", "aptitudes:soul_shard")));
 		out.add(new Entry("errante_velado", Kind.CREATURE, Region.OVERWORLD, "aptitudes:errante_velado", null,
-				"aptitudes:errante_velado_spawn_egg", List.of("aptitudes:soul_shard")));
+				"aptitudes:errante_velado_spawn_egg", List.of("aptitudes:jiron_velo_espectral", "aptitudes:soul_shard")));
 		// v65: escorificador de hierro (Nether y Lluvia de brasas).
 		out.add(new Entry("escorificador_hierro", Kind.CREATURE, Region.NETHER, "aptitudes:escorificador_hierro", null,
 				"aptitudes:escorificador_hierro_spawn_egg", List.of("aptitudes:soul_shard")));

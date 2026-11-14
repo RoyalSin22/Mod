@@ -570,3 +570,16 @@ rango) y de la definitiva.
 Riesgos que vigilar en partida: el sangrado acumulado de Tajos (6/s con 3 cargas en rango 2) y Avatar junto a Furia y
 el Juramento (multiplicadores que se suman, limitados por `maxDamageMultiplier`).
 
+# Materiales de la Niebla de almas (T2 de la cadena narrativa; valores provisionales)
+
+Sin playtest: los números salen del diseño del autor («probabilidad normal», Errante frecuente y Osario raro) y deben
+validarse en partida. El Osario aparece menos que el Errante, así que su núcleo cuesta menos unidades.
+
+| Elemento | Valor | Notas |
+|---|---|---|
+| Jirón de Velo Espectral | 85 % al matar un Errante Velado (jugador) | Sin cambios (`loot_table/entities/errante_velado.json`) |
+| Núcleo del Osario | 85 % al matar un Osario Quebrado (jugador) | Mismo valor «normal». Solo si nació en la Niebla (`OsarioEntity.dropLoot`); un huevo de aparición no lo suelta |
+| Ancla del Velo (Mesa del gremio, sin forma) | 3 Jirón + 2 Núcleo + 3 Fragmentos de alma + 1 diamante | 9 ingredientes, caben justos en la cuadrícula 3×3. Se consume al abrir la puerta del Custodio (T3) |
+
+Ajustes posibles si el ritmo no es el deseado: la probabilidad se edita en la loot table (datapack) y las
+cantidades en `data/aptitudes/recipe/ancla_del_velo.json`; no hay campos de configuración para esto.

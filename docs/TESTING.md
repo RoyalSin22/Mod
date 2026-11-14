@@ -1422,6 +1422,17 @@ del borde y contenido desplazable. Esta medición no sustituye la inspección en
    desplazable y recetas del registro (iconos/tooltip con entradas y salidas reales). Pulsa los pétalos:
    abre su extracción desde la receta sincronizada. Repite en inglés y siete variantes de español.
 
+# T2 — materiales de la Niebla (verificación manual)
+
+1. Inicia la Niebla (T1) y mata un Errante Velado: suelta Jirón de Velo Espectral con frecuencia alta.
+2. Mata un Osario Quebrado de la Niebla: suelta Núcleo del Osario (≈ 85 %). Un Osario de huevo de aparición **no** lo suelta.
+3. Fuera de la Niebla no aparecen Errantes ni Osarios, así que no hay forma de conseguir ninguno de los dos materiales.
+4. En la Mesa del gremio coloca 3 Jirones + 2 Núcleos + 3 Fragmentos de alma + 1 diamante en cualquier orden: sale el
+   Ancla del Velo. Con una cantidad menos, no. En una mesa de crafteo normal no se puede fabricar.
+5. El grimorio, capítulo de recetas: la receta del Ancla aparece con sus iconos y el tooltip del Ancla se lee bien.
+6. Bestiario: el Errante y el Osario muestran sus materiales en el botín.
+7. Textos en inglés y en las variantes de español; las texturas se ven nítidas en el inventario y en la mano.
+
 # T1 — eventos por activación (verificación manual)
 
 1. Habla con el aldeano del gremio **sin** Mayús: se abre el comercio de siempre y no pasa nada más.

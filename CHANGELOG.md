@@ -25,6 +25,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   ignoran y los puntos gastados en esas ramas vuelven a estar disponibles.
 
 ### Añadido
+- **T2 de la cadena narrativa — materiales de la Niebla.** El **Osario Quebrado** suelta ahora el **Núcleo del Osario**
+  (85 % al matarlo un jugador, solo si nació en la Niebla de almas). Con tres Jirones de Velo Espectral, dos Núcleos, tres
+  Fragmentos de alma y un diamante se fabrica en la Mesa del gremio el **Ancla del Velo**, el objeto que abrirá la puerta de
+  la sala del Custodio (T3; hasta entonces no hace nada). Objetos nuevos `aptitudes:nucleo_osario` y
+  `aptitudes:ancla_del_velo` (nombres elegidos por el redactor, cambiables antes de publicar), con texturas generadas
+  (`tools/textures/gen_items.py`, plantilla `anchor`), textos en cinco idiomas y el botín informativo del bestiario al día.
+  Prueba `world/VeilAnchorResourcesTest`. Valores provisionales en `docs/BALANCE.md`.
 - **T1 de la cadena narrativa — eventos por activación.** La **Niebla de almas** ya no sale por calendario: la inicia
   un jugador con Mayús + clic derecho sobre el aldeano del gremio, afecta a todo el mundo, dura un día de Minecraft
   (24 000 ticks) y tiene 10 días de espera; en espera, el aldeano dice «los muertos se han ido, pero volverán». La

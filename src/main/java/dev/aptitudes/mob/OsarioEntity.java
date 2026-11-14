@@ -11,6 +11,7 @@ import net.minecraft.entity.ai.goal.LookAtEntityGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -84,5 +85,14 @@ public class OsarioEntity extends HostileEntity implements GeoEntity {
 	@Override
 	public AnimatableInstanceCache getAnimatableInstanceCache() {
 		return cache;
+	}
+
+	/**
+	 * T2: el botín (Núcleo del Osario) solo cae si la criatura nació en un evento del mundo, es decir, durante la Niebla de
+	 * almas. Un Osario de huevo de aparición no lo suelta: así no se puede cultivar fuera del evento.
+	 */
+	@Override
+	protected void dropLoot(DamageSource source, boolean causedByPlayer) {
+		if (getCommandTags().contains(dev.aptitudes.event.WorldEventManager.TAG)) super.dropLoot(source, causedByPlayer);
 	}
 }

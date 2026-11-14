@@ -16,6 +16,7 @@
 | D-22 | LORE-010, 012 y 013 se dejan como están (punto 16) | `lore_catalog.py` |
 | D-25 | Aclaraciones de la cadena: el objeto de acceso se usa solo en la puerta del Custodio y se consume; el Behelit se espera 3 días por mundo desde el fin del Eclipse; la Niebla puede iniciarse en cualquier momento y dura un día de Minecraft; la Lluvia de brasas tiene espera; los sellos se retirarán con migración, sin eliminarlos ahora; el aldeano dice «los muertos se han ido, pero volverán» | 09 |
 | D-26 | Los 3 sellos de invocación se retirarán con migración; la Lluvia de brasas tiene espera de 5 días; el calendario rotativo desaparece por completo; la Niebla empieza al hablar con el aldeano | 09 |
+| D-31 | T2: el autor delegó los nombres y la receta. Elegidos por el redactor: **Núcleo del Osario** (`nucleo_osario`), **Ancla del Velo** (`ancla_del_velo`), receta sin forma 3 Jirón + 2 Núcleo + 3 Fragmentos de alma + 1 diamante y probabilidad del 85 % para ambos drops. Los ids son permanentes una vez publicados | 09, BALANCE |
 | D-19 | Fase 2a autorizada; camino 1 del CI (respaldo en inglés en pt/fr/de, generado por script) | tools/lang/gen_lore_lang.py |
 
 ## Abiertas (propuestas del redactor, a confirmar)

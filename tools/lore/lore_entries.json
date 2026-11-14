@@ -432,12 +432,15 @@
         "entity": "aptitudes:osario_quebrado",
         "class": "dev.aptitudes.mob.OsarioEntity",
         "name_es": "Osario Quebrado",
-        "name_en": "Broken Ossuary"
+        "name_en": "Broken Ossuary",
+        "items": [
+          "aptitudes:nucleo_osario"
+        ]
       },
       "applied_corrections": [
         "A-08"
       ],
-      "notes": "Ampliar tras verificar modelo, comportamiento y materiales (D-05)."
+      "notes": "Ampliar tras verificar modelo, comportamiento y materiales. El botín (Núcleo del Osario) se definió en T2."
     },
     {
       "id": "lore.bestiary.ancient_automaton",

@@ -1775,6 +1775,9 @@ entity.aptitudes.errante_velado¦Andarilho Velado¦Errant voilé¦Verschleierter
 item.aptitudes.errante_velado_spawn_egg¦Ovo de aparição do Andarilho Velado¦Œuf d'apparition de l'Errant voilé¦Erscheinungsei des Verschleierten Wanderers
 bestiary.aptitudes.errante_velado.tip¦Um véu de névoa de almas que flutua até os vivos. Fica suspenso e depois rasga com seu braço longo e com garra.¦Un voile de brume d'âmes qui dérive vers les vivants. Il reste suspendu puis déchire avec son long bras griffu.¦Ein Schleier aus Seelennebel, der auf die Lebenden zutreibt. Er schwebt und reißt dann mit seinem langen, krallenbewehrten Arm zu.
 item.aptitudes.jiron_velo_espectral¦Farrapo de Véu Espectral¦Lambeau de voile spectral¦Spektraler Schleierfetzen
+item.aptitudes.nucleo_osario¦Núcleo do Ossuário¦Noyau de l'ossuaire¦Ossuariumskern
+item.aptitudes.ancla_del_velo¦Âncora do Véu¦Ancre du voile¦Schleieranker
+item.aptitudes.ancla_del_velo.tooltip¦Forjada com restos do Véu. Alguma porta selada a espera.¦Forgée avec des restes du voile. Une porte scellée l'attend.¦Aus Resten des Schleiers geschmiedet. Eine versiegelte Tür wartet darauf.
 subtitles.aptitudes.errante_ambient¦O Errante Velado sussurra¦Le Vagabond voilé murmure¦Verhüllter Wanderer flüstert
 subtitles.aptitudes.errante_alert¦O Errante Velado fica alerta¦Le Vagabond voilé se met en alerte¦Verhüllter Wanderer wird aufmerksam
 subtitles.aptitudes.errante_prepare¦O véu do Errante se estica¦Le voile du Vagabond se tend¦Schleier des Wanderers spannt sich

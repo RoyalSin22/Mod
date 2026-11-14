@@ -943,6 +943,25 @@ T['veil_scrap'] = [
     "................"
 ]
 
+T['anchor'] = [
+    "................",
+    "......SSSS......",
+    ".....SAaAAS.....",
+    ".....SAAAAS.....",
+    "......SSSS......",
+    ".....SSSSSS.....",
+    ".......SS.......",
+    ".......SS.......",
+    "..S....SS....S..",
+    "..SS...SS...SS..",
+    "..SSS..SS..SSS..",
+    "...SSS.SS.SSS...",
+    "....SSSSSSSS....",
+    ".....SSSSSS.....",
+    "................",
+    "................"
+]
+
 ITEMS = {
     'herb_petals': ('petals', {'A': '#d78bb9', 'V': '#4caf50'}),
     # Armas de rol
@@ -973,6 +992,9 @@ ITEMS = {
     'ether_flask': ('flask', {'F': '#d8e4ea', 'A': '#3f6fe0', 'J': '#b3e5fc', 'W': '#6d4c2a'}),
     'soul_shard': ('shard', {'A': '#8e7cf0'}),
     'jiron_velo_espectral': ('veil_scrap', {'D': '#163e48', 'C': '#286f73', 'A': '#65d6d0', 'J': '#a2e9e1'}),
+    # T2: materiales de la cadena de la Niebla
+    'nucleo_osario': ('core', {'D': '#2c3a30', 'J': '#4de2a6'}),
+    'ancla_del_velo': ('anchor', {'S': '#5a6b75', 'A': '#65d6d0', 'J': '#a2e9e1'}),
     'mastery_emblem': ('emblem', {'G': '#e0b43a', 'J': '#4fc3f7', 'A': '#2980b9'}),
     'ultimate_core': ('core', {'D': '#3a2f4a', 'J': '#ff3d7f'}),
     'rebirth_offering': ('offering', {'J': '#ff9f1a', 'K': '#2b2d38', 'C': '#efe6d2', 'G': '#e0b43a', 'A': '#8e44ad'}),
