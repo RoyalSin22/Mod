@@ -30,8 +30,8 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 - **Grimorio hecho (G1–G4):** bestiario solo del mod (13 entradas), cartas con revelado progresivo y estilo de pergamino
   provisional (`docs/V67_GRIMORIO_DISENO.md`). Pendiente: el arte definitivo (G5, `docs/PROMPT_ARTE_GRIMORIO.md`), que está en
   manos de otro chat, y el lore, que define la sesión narrativa.
-- **Tooltips de configuración hechos:** descripción y valor por defecto de las 192 opciones en es/en; pendiente traducir
-  pt/fr/de (hoy en inglés).
+- **Tooltips de configuración hechos:** descripción y valor por defecto de las 192 opciones en los 5 idiomas (pt/fr/de en
+  `tools/lang/config_catalog.py`; revisión nativa pendiente).
 - **Siguiente:** el arte de los iconos y del grimorio. Validar F1–F7, el grimorio y los tooltips en partida.
 
 ### v65 — Errante Velado: combate, Niebla y botín

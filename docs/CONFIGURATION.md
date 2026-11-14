@@ -15,7 +15,7 @@ siempre muestra lo que valida el servidor aunque su archivo local sea distinto.
 En la pantalla de configuración, pasar el ratón por el nombre de una opción muestra su descripción y su valor por
 defecto, y la búsqueda también encuentra opciones por su descripción. El texto de cada opción está en los archivos de
 idioma como `config.aptitudes.field.<campo>`: **toda opción editable nueva necesita su descripción en `en_us.json` y
-`es_es.json`** (la prueba `ConfigTooltipRulesTest` falla si falta) y sin signos de porcentaje; las tablas de este documento
+`es_es.json` y su fila en `tools/lang/config_catalog.py` (pt/fr/de)** (la prueba `ConfigTooltipRulesTest` falla si falta) y sin signos de porcentaje; las tablas de este documento
 siguen siendo la referencia con límites y notas.
 
 ## Asalto del Eclipse (v47)

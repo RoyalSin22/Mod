@@ -10,7 +10,10 @@ import json
 from check_lang import LANG_DIR, load, validate
 from gen_evolved_lang import UI as EVOLVED_UI
 from gen_path_lang import UI as PATH_UI
+from config_catalog import TEXT as CONFIG_TEXT
 from ui_catalog import LOCALES, TRANSLATIONS
+
+CONFIG_PREFIX = 'config.aptitudes.field.'
 
 
 def phase_one(key):
@@ -31,6 +34,14 @@ def build(reference, locale, previous):
         raise ValueError(f'Cobertura de fase 1: faltan {sorted(expected - translated.keys())}; '
                          f'sobran {sorted(translated.keys() - expected)}')
     out = {k: translated[k] if phase_one(k) else previous.get(k, value) for k, value in reference.items()}
+    # v67: las descripciones de configuración se traducen en config_catalog.py (una fila por campo).
+    config_keys = {k for k in reference if k.startswith(CONFIG_PREFIX)}
+    if {k[len(CONFIG_PREFIX):] for k in config_keys} != set(CONFIG_TEXT):
+        raise ValueError('Cobertura de configuración: faltan '
+                         f'{sorted({k[len(CONFIG_PREFIX):] for k in config_keys} - CONFIG_TEXT.keys())}; sobran '
+                         f'{sorted(CONFIG_TEXT.keys() - {k[len(CONFIG_PREFIX):] for k in config_keys})}')
+    for k in config_keys:
+        out[k] = CONFIG_TEXT[k[len(CONFIG_PREFIX):]][index]
     errors = validate(reference, out)
     if errors:
         raise ValueError('\n'.join(errors))

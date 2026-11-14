@@ -12,7 +12,7 @@ Validación en partida (pendiente):
    ajusta a su ancho.
 2. Pasar el ratón por el campo de valor o por los botones **no** muestra el cuadro.
 3. Busca por una palabra de la descripción (p. ej., «eclipse» o «mana») y comprueba que salen las opciones relacionadas.
-4. Cambia el idioma a es, en, pt, fr y de: en pt/fr/de las descripciones salen en inglés hasta que se traduzcan.
+4. Cambia el idioma a es, en, pt, fr y de y comprueba que las descripciones salen traducidas y caben en el cuadro.
 5. Desplaza la lista con la rueda y comprueba que el cuadro corresponde a la fila bajo el ratón.
 
 ## v67 (G1–G4) — Grimorio y bestiario de pergamino

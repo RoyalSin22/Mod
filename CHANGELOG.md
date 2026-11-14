@@ -28,8 +28,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 - **v67 — Tooltips de la pantalla de configuración.** Al pasar el ratón por el nombre de una opción se muestra su
   descripción y su valor por defecto (leído de `new AptitudesConfig()`, sin copiar cifras). La búsqueda de la pantalla
   también mira las descripciones. Las 192 opciones editables tienen texto (`config.aptitudes.field.<campo>`) en español
-  e inglés; pt/fr/de quedan con el texto en inglés hasta su traducción (nueva fase posterior en
-  `tools/lang/gen_interface_lang.py`). Reglas puras en `config/ConfigTooltipRules`; prueba `ConfigTooltipRulesTest`, que
+  e inglés; pt/fr/de se traducen en `tools/lang/config_catalog.py` (una fila por campo, que
+  `gen_interface_lang.py` exige completa). Reglas puras en `config/ConfigTooltipRules`; prueba `ConfigTooltipRulesTest`, que
   exige una descripción en es/en para cada opción editable nueva. Sin opciones de configuración nuevas.
 - **v67 (G1–G4) — Grimorio y bestiario de pergamino.** Diseño aprobado en `docs/V67_GRIMORIO_DISENO.md`.
   - **Bestiario solo del mod (G1):** el catálogo pasa de 57 a 13 entradas: Osario quebrado, Errante velado, Escorificador
