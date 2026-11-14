@@ -1706,6 +1706,7 @@ add('', """
 block.aptitudes.sealed_stone¦Pedra selada¦Pierre scellée¦Versiegelter Stein
 block.aptitudes.temple_seal¦Selo do templo¦Sceau du temple¦Tempelsiegel
 block.aptitudes.reliquary¦Relicário¦Reliquaire¦Reliquiar
+block.aptitudes.custodian_door¦Porta do Custódio¦Porte du Gardien¦Tür des Wächters
 item.aptitudes.temple_key¦Chave do templo¦Clé du temple¦Tempelschlüssel
 item.aptitudes.temple_key.tooltip¦Abre o Relicário do templo cujo guardião a deixou cair.¦Ouvre le Reliquaire du temple dont le gardien l'a lâchée.¦Öffnet das Reliquiar des Tempels, dessen Wächter ihn fallen ließ.
 item.aptitudes.temple_key.blank¦Uma chave vazia: não pertence a nenhum templo.¦Une clé vide : elle n'appartient à aucun temple.¦Ein leerer Schlüssel: Er gehört zu keinem Tempel.
@@ -1720,6 +1721,16 @@ temple.aptitudes.seal.levers¦Selo: reproduza com as alavancas as luzes sobre a 
 temple.aptitudes.seal.plates¦Selo: pise nas placas na ordem das velas.¦Sceau : marchez sur les plaques dans l'ordre de leurs bougies.¦Siegel: Betritt die Platten in der Reihenfolge ihrer Kerzen.
 temple.aptitudes.seal.awakened¦Selo: o guardião vigia o santuário.¦Sceau : le gardien veille sur le sanctuaire.¦Siegel: Der Wächter bewacht das Heiligtum.
 temple.aptitudes.seal.cleared¦Selo: este templo está aberto.¦Sceau : ce temple est ouvert.¦Siegel: Dieser Tempel ist offen.
+temple.aptitudes.stairs_open¦A escada se abre: algo espera lá embaixo.¦L'escalier s'ouvre : quelque chose attend en bas.¦Die Treppe öffnet sich: Unten wartet etwas.
+temple.aptitudes.door.opened¦A Âncora do Véu se desfaz e a porta do Custódio cede.¦L'Ancre du voile se désagrège et la porte du Gardien cède.¦Der Schleieranker zerfällt und die Tür des Wächters gibt nach.
+temple.aptitudes.door.needs_anchor¦A porta não cede. Só uma Âncora do Véu poderia abri-la.¦La porte ne cède pas. Seule une Ancre du voile pourrait l'ouvrir.¦Die Tür gibt nicht nach. Nur ein Schleieranker könnte sie öffnen.
+temple.aptitudes.door.not_ready¦A porta ainda dorme. Os mecanismos do templo ainda não responderam.¦La porte dort encore. Les mécanismes du temple n'ont pas encore répondu.¦Die Tür schläft noch. Die Mechanismen des Tempels haben noch nicht geantwortet.
+temple.aptitudes.door.already_open¦A porta já está aberta.¦La porte est déjà ouverte.¦Die Tür ist bereits offen.
+temple.aptitudes.seal.flow_dormant¦Selo: algo antigo dorme no átrio.¦Sceau : quelque chose d'ancien dort dans l'atrium.¦Siegel: Im Atrium schläft etwas Uraltes.
+temple.aptitudes.seal.flow_automaton¦Selo: o Autômato vigia o átrio. Derrote-o antes de tocar nos mecanismos.¦Sceau : l'Automate veille sur l'atrium. Vainquez-le avant de toucher aux mécanismes.¦Siegel: Der Automat bewacht das Atrium. Besiege ihn, bevor du die Mechanismen berührst.
+temple.aptitudes.seal.flow_door_locked¦Selo: a porta do Custódio aguarda uma Âncora do Véu.¦Sceau : la porte du Gardien attend une Ancre du voile.¦Siegel: Die Tür des Wächters erwartet einen Schleieranker.
+temple.aptitudes.seal.flow_custodian¦Selo: o Custódio guarda a câmara.¦Sceau : le Gardien garde la chambre.¦Siegel: Der Wächter bewacht die Kammer.
+temple.aptitudes.seal.flow_cleared¦Selo: este templo está aberto.¦Sceau : ce temple est ouvert.¦Siegel: Dieser Tempel ist offen.
 temple.aptitudes.reliquary.sealed¦O Relicário está trancado. O guardião do templo guarda a chave.¦Le Reliquaire est verrouillé. Le gardien du temple en garde la clé.¦Das Reliquiar ist verschlossen. Der Tempelwächter trägt den Schlüssel.
 temple.aptitudes.reliquary.wrong_key¦Esta chave é de outro templo.¦Cette clé appartient à un autre temple.¦Dieser Schlüssel gehört zu einem anderen Tempel.
 temple.aptitudes.reliquary.opened¦O Relicário se abre.¦Le Reliquaire s'ouvre.¦Das Reliquiar öffnet sich.

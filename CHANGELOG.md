@@ -25,6 +25,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   ignoran y los puntos gastados en esas ramas vuelven a estar disponibles.
 
 ### Añadido
+- **T3 de la cadena narrativa — Templo del Custodio (en curso, fase T3a).** Base del flujo nuevo: la **Puerta del
+  Custodio** (`aptitudes:custodian_door`, irrompible) solo cede al **Ancla del Velo**, que se consume al abrirla, y
+  únicamente cuando el puzle está resuelto. El controlador del sello (`TempleSealBlockEntity`) gana una distribución
+  nueva (`layout = 1`) con las fases Autómata → puzle → escalera → puerta → Custodio (`temple/TempleFlowRules`, puro,
+  con `TempleFlowRulesTest`); los templos antiguos leen `layout = 0` y conservan su comportamiento exacto. Textura
+  nueva con `tools/textures/gen_temple_blocks.py`, textos en cinco idiomas y `CustodianDoorResourcesTest`. La
+  estructura (T3b), el Autómata en el atrio (T3c) y el cambio de generación (T3d) llegan en las fases siguientes: hasta
+  entonces la generación sigue creando el templo antiguo. Diseño: `docs/lore/11_DISENO_T3_TEMPLO.md`.
 - **T2 de la cadena narrativa — materiales de la Niebla.** El **Osario Quebrado** suelta ahora el **Núcleo del Osario**
   (85 % al matarlo un jugador, solo si nació en la Niebla de almas). Con tres Jirones de Velo Espectral, dos Núcleos, tres
   Fragmentos de alma y un diamante se fabrica en la Mesa del gremio el **Ancla del Velo**, el objeto que abrirá la puerta de

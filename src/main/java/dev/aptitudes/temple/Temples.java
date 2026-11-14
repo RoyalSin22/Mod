@@ -22,6 +22,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -34,8 +35,11 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.chunk.WorldChunk;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -62,6 +66,10 @@ public final class Temples {
 	public static final Block RELIQUARY = Registry.register(Registries.BLOCK, Aptitudes.id("reliquary"),
 			new TempleBlocks.Reliquary(unbreakable(MapColor.GOLD).luminance(state -> 5)));
 
+	/** T3: Puerta del Custodio. Irrompible; solo cede al Ancla del Velo cuando el puzle está resuelto. */
+	public static final Block CUSTODIAN_DOOR = Registry.register(Registries.BLOCK, Aptitudes.id("custodian_door"),
+			new TempleBlocks.CustodianDoor(unbreakable(MapColor.GOLD).luminance(state -> 4)));
+
 	public static final BlockEntityType<TempleSealBlockEntity> SEAL_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE,
 			Aptitudes.id("temple_seal"), BlockEntityType.Builder.create(TempleSealBlockEntity::new, TEMPLE_SEAL).build(null));
 	public static final BlockEntityType<ReliquaryBlockEntity> RELIQUARY_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE,
@@ -69,6 +77,8 @@ public final class Temples {
 
 	public static final Item SEALED_STONE_ITEM = Registry.register(Registries.ITEM, Aptitudes.id("sealed_stone"),
 			new BlockItem(SEALED_STONE, new Item.Settings()));
+	public static final Item CUSTODIAN_DOOR_ITEM = Registry.register(Registries.ITEM, Aptitudes.id("custodian_door"),
+			new BlockItem(CUSTODIAN_DOOR, new Item.Settings().rarity(Rarity.RARE)));
 	public static final Item TEMPLE_SEAL_ITEM = Registry.register(Registries.ITEM, Aptitudes.id("temple_seal"),
 			new BlockItem(TEMPLE_SEAL, new Item.Settings().rarity(Rarity.RARE)));
 	public static final Item RELIQUARY_ITEM = Registry.register(Registries.ITEM, Aptitudes.id("reliquary"),
@@ -112,6 +122,48 @@ public final class Temples {
 	public static void apply(ServerPlayerEntity player) {
 		AttributeApplier.set(player, EntityAttributes.GENERIC_MAX_HEALTH, VESSEL_MODIFIER,
 				VesselRules.bonus(vessels(player), Aptitudes.config().lifeVesselMax), EntityAttributeModifier.Operation.ADD_VALUE);
+	}
+
+	// ------------------------------------------------- Puerta del Custodio (T3)
+
+	/**
+	 * Un jugador usa la Puerta del Custodio ({@code stack} es lo que lleva en la mano, o vacío). Todo se decide en el
+	 * servidor con {@link TempleFlowRules#useDoor}: solo el Ancla del Velo la abre y se consume al hacerlo.
+	 */
+	static void useCustodianDoor(ServerWorld world, BlockPos clicked, ServerPlayerEntity player, ItemStack stack) {
+		TempleSealBlockEntity seal = findSeal(world, clicked);
+		String key;
+		if (seal == null) {
+			key = "temple.aptitudes.door.not_ready";
+		} else {
+			switch (TempleFlowRules.useDoor(seal.flow(), stack.isOf(dev.aptitudes.item.ModItems.ANCLA_DEL_VELO))) {
+				case OPEN -> {
+					stack.decrement(1);
+					seal.openCustodianDoor(world);
+					return;
+				}
+				case NEEDS_ANCHOR -> key = "temple.aptitudes.door.needs_anchor";
+				case ALREADY_OPEN -> key = "temple.aptitudes.door.already_open";
+				default -> key = "temple.aptitudes.door.not_ready";
+			}
+		}
+		player.sendMessage(Text.translatable(key).formatted(Formatting.GRAY), true);
+	}
+
+	/** El sello del Templo del Custodio al que pertenece esa posición de la puerta (solo en chunks ya cargados). */
+	@Nullable
+	static TempleSealBlockEntity findSeal(ServerWorld world, BlockPos door) {
+		ChunkPos center = new ChunkPos(door);
+		for (int dx = -2; dx <= 2; dx++) {
+			for (int dz = -2; dz <= 2; dz++) {
+				WorldChunk chunk = world.getChunkManager().getWorldChunk(center.x + dx, center.z + dz);
+				if (chunk == null) continue;
+				for (BlockPos p : new ArrayList<>(chunk.getBlockEntityPositions())) {
+					if (world.getBlockEntity(p) instanceof TempleSealBlockEntity seal && seal.ownsInnerDoor(door)) return seal;
+				}
+			}
+		}
+		return null;
 	}
 
 	// ----------------------------------------------------------- Guardián
