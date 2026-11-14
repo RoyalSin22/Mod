@@ -1,6 +1,6 @@
 # 11 · Diseño de T3: el Templo del Custodio
 
-**Estado: decisiones aprobadas y T3 autorizada (2026-11-14). T3a implementada; T3b a T3d, pendientes.** Se apoya en lo que el código tiene hoy (leído el 2026-11-14).
+**Estado: decisiones aprobadas y T3 autorizada (2026-11-14). T3a a T3d implementadas; pendiente la prueba en partida del autor.** Se apoya en lo que el código tiene hoy (leído el 2026-11-14).
 
 ## 1. Punto de partida (VERIFICADO)
 
@@ -86,7 +86,7 @@ DORMIDO ──pisa el umbral──▶ AUTÓMATA ──cae──▶ PUZLE ──r
 | **T3a** (hecha) | `TempleFlowRules` y sus pruebas, `CustodianDoorBlock`, campos nuevos del controlador y recursos del bloque (textura, modelo, textos) |
 | **T3b** (hecha, sin probar en partida) | `CustodianTempleFeature`: plano de dos niveles, casco, escalera y comprobaciones de terreno |
 | **T3c** (hecha, sin probar en partida) | Autómata en el atrio (aparición, activación, puzle bloqueado hasta su muerte) y Custodio al abrir la puerta |
-| **T3d** | Cambio en `ModWorldGen`, compatibilidad con templos antiguos, documentación, `CHANGELOG`, guion de prueba |
+| **T3d** (hecha, sin probar en partida) | Cambio en `ModWorldGen`, compatibilidad con templos antiguos, documentación, `CHANGELOG`, guion de prueba |
 
 ## 7. Riesgos
 

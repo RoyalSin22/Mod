@@ -1424,7 +1424,7 @@ del borde y contenido desplazable. Esta medición no sustituye la inspección en
 
 # T3 — Templo del Custodio (verificación manual)
 
-La estructura aún no se genera sola (llega en T3d). Para verla, en un mundo de pruebas y sobre terreno llano:
+Desde T3d los chunks **nuevos** generan este templo solos (los ya generados conservan el antiguo). Para verlo sin explorar, en un mundo de pruebas y sobre terreno llano:
 
 1. `/place feature aptitudes:custodian_temple` (en cualquier punto; si el terreno no es apto no coloca nada: prueba en
    una llanura). Debe aparecer un templo de 31×31 con la entrada al sur.

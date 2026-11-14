@@ -25,7 +25,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   ignoran y los puntos gastados en esas ramas vuelven a estar disponibles.
 
 ### Añadido
-- **T3 de la cadena narrativa — Templo del Custodio (en curso, fases T3a a T3c).** Base del flujo nuevo: la **Puerta del
+- **T3 de la cadena narrativa — Templo del Custodio (T3a a T3d).** Base del flujo nuevo: la **Puerta del
   Custodio** (`aptitudes:custodian_door`, irrompible) solo cede al **Ancla del Velo**, que se consume al abrirla, y
   únicamente cuando el puzle está resuelto. El controlador del sello (`TempleSealBlockEntity`) gana una distribución
   nueva (`layout = 1`) con las fases Autómata → puzle → escalera → puerta → Custodio (`temple/TempleFlowRules`, puro,
@@ -36,7 +36,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   trampilla, escalera, antesala, Puerta del Custodio y cámara con el Relicario. Registrado como `aptitudes:custodian_temple`
   pero **todavía no se genera solo**. **T3c:** el **Autómata Antiguo** duerme en el atrio y despierta al cruzar el umbral (con +25 % de vida por anillo
   de Amenaza); hasta que cae, el puzle no responde. Se protege contra duplicados al recargar el chunk. El cambio de
-  generación (T3d) llega en la fase siguiente; hasta entonces la generación sigue creando el templo antiguo. Diseño: `docs/lore/11_DISENO_T3_TEMPLO.md`.
+  generación (T3d): **los chunks nuevos generan ya el Templo del Custodio** en lugar del templo sellado antiguo (misma
+  frecuencia, 1 de cada 400 chunks). Los templos antiguos de mundos existentes siguen funcionando igual y su feature
+  sigue registrado. La regeneración de templos (`TempleRecurrenceRules`) sigue **sin estar conectada al juego**. Diseño: `docs/lore/11_DISENO_T3_TEMPLO.md`.
 - **T2 de la cadena narrativa — materiales de la Niebla.** El **Osario Quebrado** suelta ahora el **Núcleo del Osario**
   (85 % al matarlo un jugador, solo si nació en la Niebla de almas). Con tres Jirones de Velo Espectral, dos Núcleos, tres
   Fragmentos de alma y un diamante se fabrica en la Mesa del gremio el **Ancla del Velo**, el objeto que abrirá la puerta de
