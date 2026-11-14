@@ -1578,6 +1578,63 @@ del borde y contenido desplazable. Esta medición no sustituye la inspección en
    desplazable y recetas del registro (iconos/tooltip con entradas y salidas reales). Pulsa los pétalos:
    abre su extracción desde la receta sincronizada. Repite en inglés y siete variantes de español.
 
+# T4 — llaves y cámaras (verificación manual)
+
+1. Con un templo del Custodio (ver T3), vence al Custodio: suelta **cuatro llaves** (cobre, hierro, oro, diamante) además de la
+   llave del Relicario, con el aviso «El Custodio cae y deja cuatro llaves».
+2. Las **cuatro puertas de cámara** están en la cámara del Custodio: cobre al oeste, diamante al este y hierro y oro en el muro
+   norte (a izquierda y derecha). Cada una solo cede a la llave de su metal: con otra, aviso de metal; con una llave de otro
+   templo, aviso de templo; con la mano vacía, aviso de que necesita una llave.
+3. Antes de vencer al Custodio las puertas avisan de que él guarda las llaves.
+4. Al abrir una puerta la llave se consume y la cámara se abre con su cofre. El botín crece de cobre a diamante.
+5. El Relicario con el Vaso de vida sigue funcionando con la llave del templo.
+6. Los templos antiguos no tienen cámaras: el Custodio solo suelta la llave del Relicario.
+7. Guarda y recarga el mundo con una cámara abierta: sigue abierta y las demás cerradas.
+
+# T3 — Templo del Custodio (verificación manual)
+
+Desde T3d los chunks **nuevos** generan este templo solos (los ya generados conservan el antiguo). Para verlo sin explorar, en un mundo de pruebas y sobre terreno llano:
+
+1. `/place feature aptitudes:custodian_temple` (en cualquier punto; si el terreno no es apto no coloca nada: prueba en
+   una llanura). Debe aparecer un templo de 31×31 con la entrada al sur.
+2. **Atrio** (sur): columnas y la entrada de 3×3; un arco en el tabique lleva a la **sala del puzle** (norte).
+3. **Sala del puzle:** palancas y luces en el muro norte, el Sello y una **trampilla de piedra sellada** en el suelo; con
+   anillo II o más, placas con velas. Resuelve el puzle: la trampilla desaparece y se ve la **escalera** hacia abajo.
+4. **Subsuelo:** la escalera baja a una **antesala** cerrada por la **Puerta del Custodio**. Sin Ancla del Velo: aviso.
+   Antes de resolver el puzle hay que vencer al **Autómata Antiguo** del atrio: despierta al entrar (aviso en pantalla),
+   mientras vive las palancas no responden y el Sello dice que vigila el atrio. `/give @s aptitudes:ancla_del_velo` y úsala sobre la puerta:
+   se consume, la puerta cede y aparece el Custodio.
+5. **Cámara del Custodio:** Relicario y dos cofres. Al vencerlo suelta la llave del Relicario (como el templo antiguo).
+6. Comprueba que no hay cuevas, agua ni lava abiertas en el subsuelo y que ningún bloque queda fuera de los 31×31.
+7. Un templo antiguo ya generado sigue funcionando igual que antes.
+
+# T2 — materiales de la Niebla (verificación manual)
+
+1. Inicia la Niebla (T1) y mata un Errante Velado: suelta Jirón de Velo Espectral con frecuencia alta.
+2. Mata un Osario Quebrado de la Niebla: suelta Núcleo del Osario (≈ 85 %). Un Osario de huevo de aparición **no** lo suelta.
+3. Fuera de la Niebla no aparecen Errantes ni Osarios, así que no hay forma de conseguir ninguno de los dos materiales.
+4. En la Mesa del gremio coloca 3 Jirones + 2 Núcleos + 3 Fragmentos de alma + 1 diamante en cualquier orden: sale el
+   Ancla del Velo. Con una cantidad menos, no. En una mesa de crafteo normal no se puede fabricar.
+5. El grimorio, capítulo de recetas: la receta del Ancla aparece con sus iconos y el tooltip del Ancla se lee bien.
+6. Bestiario: el Errante y el Osario muestran sus materiales en el botín.
+7. Textos en inglés y en las variantes de español; las texturas se ven nítidas en el inventario y en la mano.
+
+# T1 — eventos por activación (verificación manual)
+
+1. Habla con el aldeano del gremio **sin** Mayús: se abre el comercio de siempre y no pasa nada más.
+2. Con Mayús + clic derecho: mensaje del aldeano y arranca la Niebla de almas para todos los jugadores del mundo.
+   Con `/time` a mediodía también debe empezar (no depende de la hora). Dura 24 000 ticks y termina con «La niebla se disipa».
+3. Vuelve a hablar con Mayús durante la Niebla: «Ahora no puedo hablar de eso…» y no se reinicia.
+4. Tras terminar, habla de nuevo: «Los muertos se han ido, pero volverán». Tras 10 días (`/time add 240000`): empieza otra.
+5. Apaga y enciende el servidor con la Niebla en espera: la espera se conserva (`last_fog_start` en `aptitudes_world_events`).
+6. Con `worldEventWeightSoulFog = 0`: el aldeano solo comercia.
+7. Construye un marco de obsidiana en el Overworld y enciéndelo con yesca: empieza la Lluvia de brasas. Enciéndelo
+   otra vez o abre otro portal antes de 5 días: no empieza. Un portal ya abierto que vuelves a encender no cuenta.
+8. Enciende un marco en el Nether o en el End, o con lava o una flecha incendiaria: no cuenta. Spamear el encendido no genera
+   más de 16 comprobaciones (sin efecto visible).
+9. `/aptitudes event start soul_fog` y `ember_rain` siguen funcionando y **no** consumen la espera.
+10. El calendario ya no elige Niebla ni Lluvia: solo avisa y programa el Eclipse.
+
 # v30 — contratos del gremio (verificación manual)
 
 1. Fabrica un Tablón (3 papel arriba, 3 tablones en medio y 1 tablón abajo en el centro) y úsalo: 3 ofertas con

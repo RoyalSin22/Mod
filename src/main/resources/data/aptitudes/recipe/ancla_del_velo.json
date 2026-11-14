@@ -1,0 +1,37 @@
+{
+  "type": "aptitudes:guild_crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "aptitudes:jiron_velo_espectral"
+    },
+    {
+      "item": "aptitudes:jiron_velo_espectral"
+    },
+    {
+      "item": "aptitudes:jiron_velo_espectral"
+    },
+    {
+      "item": "aptitudes:nucleo_osario"
+    },
+    {
+      "item": "aptitudes:nucleo_osario"
+    },
+    {
+      "item": "aptitudes:soul_shard"
+    },
+    {
+      "item": "aptitudes:soul_shard"
+    },
+    {
+      "item": "aptitudes:soul_shard"
+    },
+    {
+      "item": "minecraft:diamond"
+    }
+  ],
+  "result": {
+    "id": "aptitudes:ancla_del_velo",
+    "count": 1
+  }
+}

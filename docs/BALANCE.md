@@ -570,6 +570,7 @@ rango) y de la definitiva.
 Riesgos que vigilar en partida: el sangrado acumulado de Tajos (6/s con 3 cargas en rango 2) y Avatar junto a Furia y
 el Juramento (multiplicadores que se suman, limitados por `maxDamageMultiplier`).
 
+<<<<<<< HEAD
 ## v67 (F7) — Habilidades nuevas de Bardo, Brujo abisal y Domador
 
 Valores con `extraSkillDamageScale` = 1 (cifras y costes en `docs/V67_F7_DISENO.md`). La escala solo multiplica el daño
@@ -659,4 +660,44 @@ dron, Tesla, langostas, Calor residual, semilla); no cambia curaciones, esperas 
 | Herbolista | Curación de grupo muy fuerte (Primavera +30 %, Floración colosal 60 % de vida) | Esperas de 45–90 s; depende de jugar en grupo |
 | Ingeniero | Minas, dron y Tesla dañan sin que el jugador apunte | Daño bajo (2–10); límite de 3 minas |
 | Todos | Eslabón y Cadena de montaje recortan esperas | Solo un porcentaje de lo que queda / 1–2 s por activa |
+=======
+# Materiales de la Niebla de almas (T2 de la cadena narrativa; valores provisionales)
+
+Sin playtest: los números salen del diseño del autor («probabilidad normal», Errante frecuente y Osario raro) y deben
+validarse en partida. El Osario aparece menos que el Errante, así que su núcleo cuesta menos unidades.
+
+| Elemento | Valor | Notas |
+|---|---|---|
+| Jirón de Velo Espectral | 85 % al matar un Errante Velado (jugador) | Sin cambios (`loot_table/entities/errante_velado.json`) |
+| Núcleo del Osario | 85 % al matar un Osario Quebrado (jugador) | Mismo valor «normal». Solo si nació en la Niebla (`OsarioEntity.dropLoot`); un huevo de aparición no lo suelta |
+| Ancla del Velo (Mesa del gremio, sin forma) | 3 Jirón + 2 Núcleo + 3 Fragmentos de alma + 1 diamante | 9 ingredientes, caben justos en la cuadrícula 3×3. Se consume al abrir la puerta del Custodio (T3) |
+
+Ajustes posibles si el ritmo no es el deseado: la probabilidad se edita en la loot table (datapack) y las
+cantidades en `data/aptitudes/recipe/ancla_del_velo.json`; no hay campos de configuración para esto.
+
+# Cámaras del Templo del Custodio (T4 de la cadena narrativa; valores provisionales)
+
+Sin playtest. El contenido lo eligió el redactor por delegación del autor y crece con el metal. Cada cofre se puede abrir una
+vez por templo (cofre normal): en grupo se reparte lo que haya. La cámara de diamante albergará además el Behelit (T5).
+
+| Cámara | Tiradas | Contenido (peso) |
+|---|---|---|
+| Cobre | 3–5 | bloque de cobre 1–2 (8), bloque de carbón 1–2 (6), lingote de hierro 4–8 (10), zanahoria dorada 4–8 (8), fragmento de alma 2–4 (8), frasco de experiencia 3–6 (6) |
+| Hierro | 3–5 | bloque de hierro 1–2 (8), de lapislázuli 1–2 (6), de redstone 1–2 (6), manzana dorada 1–2 (5), fragmento de alma 3–5 (8), esencia de élite 1–2 (6), diamante 1–2 (4) |
+| Oro | 3–5 | bloque de oro 1–2 (8), de esmeralda 1–2 (6), manzana dorada 2–3 (8), diamante 2–4 (6), fragmento de alma 4–6 (8), corazón de campeón 1 (3), esencia de élite 2–3 (6) |
+| Diamante | 4–6 | bloque de diamante 1–2 (8), **manzana dorada encantada 1 (4)**, **fragmento de netherita 1–2 (4)**, bloque de esmeralda 1–3 (6), fragmento de alma 5–8 (8), corazón de campeón 1–2 (5), vale de armería 1 (3), emblema de maestría 1 (2), frasco de experiencia 8–16 (6) |
+
+Riesgo: las manzanas encantadas y la netherita solo salen en la cámara de diamante, pero con varios templos por mundo y sin
+regeneración conectada (D-33) el total es finito. Las tablas son datapack: se ajustan sin tocar código.
+
+# Frecuencia del Templo del Custodio (T3; valor provisional)
+
+| Elemento | Valor | Notas |
+|---|---|---|
+| `rarity_filter` del templo nuevo | 1 de cada 120 chunks | Antes 1 de cada 400 (templo antiguo). Decisión del autor (D-33, opción «subir la frecuencia») para tener más Behelits por mundo mientras la regeneración no esté conectada. Se ajusta en `data/aptitudes/worldgen/placed_feature/custodian_temple.json` |
+| Terreno apto | desnivel ≤ 4 en 31×31 | Descarta parte de los intentos: en la práctica aparecen menos de los que da la cifra |
+
+Pendiente de playtest: si aparecen demasiados o muy pocos, basta con cambiar `chance`. Un mundo de pruebas con `/locate` no
+sirve (es un feature, no una estructura): hay que explorar o usar `/place feature aptitudes:custodian_temple`.
+>>>>>>> 5c0f3a5302458c2a132229ef531657f870c8d04b
 

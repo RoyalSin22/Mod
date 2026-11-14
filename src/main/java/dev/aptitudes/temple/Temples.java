@@ -22,6 +22,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -34,8 +35,12 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.chunk.WorldChunk;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -46,8 +51,10 @@ public final class Temples {
 	private static final String GUARDIAN_TAG = Aptitudes.MOD_ID + ".temple_guardian";
 	private static final String SEAL_TAG = Aptitudes.MOD_ID + ".temple_seal:";
 	private static final String TEMPLE_TAG = Aptitudes.MOD_ID + ".temple:";
+	private static final String AUTOMATON_TAG = Aptitudes.MOD_ID + ".temple_automaton";
 	private static final Identifier VESSEL_MODIFIER = Aptitudes.id("life_vessels");
 	private static final Identifier GUARDIAN_HEALTH = Aptitudes.id("temple_guardian_health");
+	private static final Identifier AUTOMATON_HEALTH = Aptitudes.id("temple_automaton_health");
 
 	private static AbstractBlock.Settings unbreakable(MapColor color) {
 		return AbstractBlock.Settings.create().mapColor(color).strength(-1f, 3_600_000f).dropsNothing()
@@ -62,6 +69,52 @@ public final class Temples {
 	public static final Block RELIQUARY = Registry.register(Registries.BLOCK, Aptitudes.id("reliquary"),
 			new TempleBlocks.Reliquary(unbreakable(MapColor.GOLD).luminance(state -> 5)));
 
+	/** T3: Puerta del Custodio. Irrompible; solo cede al Ancla del Velo cuando el puzle está resuelto. */
+	public static final Block CUSTODIAN_DOOR = Registry.register(Registries.BLOCK, Aptitudes.id("custodian_door"),
+			new TempleBlocks.CustodianDoor(unbreakable(MapColor.GOLD).luminance(state -> 4)));
+
+	/** T4: puertas de las cuatro cámaras de recompensa (una por metal). */
+	public static final Block CHAMBER_DOOR_COPPER = chamberDoor("copper", TempleKeyRules.Metal.COPPER, MapColor.ORANGE);
+	public static final Block CHAMBER_DOOR_IRON = chamberDoor("iron", TempleKeyRules.Metal.IRON, MapColor.IRON_GRAY);
+	public static final Block CHAMBER_DOOR_GOLD = chamberDoor("gold", TempleKeyRules.Metal.GOLD, MapColor.GOLD);
+	public static final Block CHAMBER_DOOR_DIAMOND = chamberDoor("diamond", TempleKeyRules.Metal.DIAMOND, MapColor.DIAMOND_BLUE);
+
+	private static Block chamberDoor(String name, TempleKeyRules.Metal metal, MapColor color) {
+		Block block = Registry.register(Registries.BLOCK, Aptitudes.id("chamber_door_" + name),
+				new TempleBlocks.ChamberDoor(unbreakable(color).luminance(state -> 3), metal));
+		Registry.register(Registries.ITEM, Aptitudes.id("chamber_door_" + name), new BlockItem(block, new Item.Settings().rarity(Rarity.RARE)));
+		return block;
+	}
+
+	public static Block chamberDoorBlock(TempleKeyRules.Metal metal) {
+		return switch (metal) {
+			case COPPER -> CHAMBER_DOOR_COPPER;
+			case IRON -> CHAMBER_DOOR_IRON;
+			case GOLD -> CHAMBER_DOOR_GOLD;
+			case DIAMOND -> CHAMBER_DOOR_DIAMOND;
+		};
+	}
+
+	/** T4: llaves del Custodio, una por metal. */
+	public static final Item CUSTODIAN_KEY_COPPER = key("copper", TempleKeyRules.Metal.COPPER, Rarity.UNCOMMON);
+	public static final Item CUSTODIAN_KEY_IRON = key("iron", TempleKeyRules.Metal.IRON, Rarity.UNCOMMON);
+	public static final Item CUSTODIAN_KEY_GOLD = key("gold", TempleKeyRules.Metal.GOLD, Rarity.RARE);
+	public static final Item CUSTODIAN_KEY_DIAMOND = key("diamond", TempleKeyRules.Metal.DIAMOND, Rarity.EPIC);
+
+	private static Item key(String name, TempleKeyRules.Metal metal, Rarity rarity) {
+		return Registry.register(Registries.ITEM, Aptitudes.id("custodian_key_" + name),
+				new CustodianKeyItem(metal, new Item.Settings().maxCount(1).fireproof().rarity(rarity)));
+	}
+
+	public static Item keyItem(TempleKeyRules.Metal metal) {
+		return switch (metal) {
+			case COPPER -> CUSTODIAN_KEY_COPPER;
+			case IRON -> CUSTODIAN_KEY_IRON;
+			case GOLD -> CUSTODIAN_KEY_GOLD;
+			case DIAMOND -> CUSTODIAN_KEY_DIAMOND;
+		};
+	}
+
 	public static final BlockEntityType<TempleSealBlockEntity> SEAL_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE,
 			Aptitudes.id("temple_seal"), BlockEntityType.Builder.create(TempleSealBlockEntity::new, TEMPLE_SEAL).build(null));
 	public static final BlockEntityType<ReliquaryBlockEntity> RELIQUARY_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE,
@@ -69,6 +122,8 @@ public final class Temples {
 
 	public static final Item SEALED_STONE_ITEM = Registry.register(Registries.ITEM, Aptitudes.id("sealed_stone"),
 			new BlockItem(SEALED_STONE, new Item.Settings()));
+	public static final Item CUSTODIAN_DOOR_ITEM = Registry.register(Registries.ITEM, Aptitudes.id("custodian_door"),
+			new BlockItem(CUSTODIAN_DOOR, new Item.Settings().rarity(Rarity.RARE)));
 	public static final Item TEMPLE_SEAL_ITEM = Registry.register(Registries.ITEM, Aptitudes.id("temple_seal"),
 			new BlockItem(TEMPLE_SEAL, new Item.Settings().rarity(Rarity.RARE)));
 	public static final Item RELIQUARY_ITEM = Registry.register(Registries.ITEM, Aptitudes.id("reliquary"),
@@ -84,12 +139,19 @@ public final class Temples {
 	public static void register() {
 		ItemGroupEvents.modifyEntriesEvent(RegistryKey.of(RegistryKeys.ITEM_GROUP, Aptitudes.id("items"))).register(entries -> {
 			entries.add(TEMPLE_KEY);
+			for (TempleKeyRules.Metal metal : TempleKeyRules.Metal.values()) entries.add(keyItem(metal));
 			entries.add(LIFE_VESSEL);
 		});
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
 			if (entity instanceof MobEntity mob && mob.getCommandTags().contains(GUARDIAN_TAG)
 					&& mob.getWorld() instanceof ServerWorld world) {
 				onGuardianDeath(world, mob);
+			}
+		});
+		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
+			if (entity instanceof MobEntity mob && mob.getCommandTags().contains(AUTOMATON_TAG)
+					&& mob.getWorld() instanceof ServerWorld world) {
+				onAutomatonDeath(world, mob);
 			}
 		});
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> apply(handler.getPlayer()));
@@ -112,6 +174,137 @@ public final class Temples {
 	public static void apply(ServerPlayerEntity player) {
 		AttributeApplier.set(player, EntityAttributes.GENERIC_MAX_HEALTH, VESSEL_MODIFIER,
 				VesselRules.bonus(vessels(player), Aptitudes.config().lifeVesselMax), EntityAttributeModifier.Operation.ADD_VALUE);
+	}
+
+	// ------------------------------------------------- Puerta del Custodio (T3)
+
+	/**
+	 * Un jugador usa la Puerta del Custodio ({@code stack} es lo que lleva en la mano, o vacío). Todo se decide en el
+	 * servidor con {@link TempleFlowRules#useDoor}: solo el Ancla del Velo la abre y se consume al hacerlo.
+	 */
+	static void useCustodianDoor(ServerWorld world, BlockPos clicked, ServerPlayerEntity player, ItemStack stack) {
+		TempleSealBlockEntity seal = findSeal(world, clicked);
+		String key;
+		if (seal == null) {
+			key = "temple.aptitudes.door.not_ready";
+		} else {
+			switch (TempleFlowRules.useDoor(seal.flow(), stack.isOf(dev.aptitudes.item.ModItems.ANCLA_DEL_VELO))) {
+				case OPEN -> {
+					stack.decrement(1);
+					seal.openCustodianDoor(world);
+					return;
+				}
+				case NEEDS_ANCHOR -> key = "temple.aptitudes.door.needs_anchor";
+				case ALREADY_OPEN -> key = "temple.aptitudes.door.already_open";
+				default -> key = "temple.aptitudes.door.not_ready";
+			}
+		}
+		player.sendMessage(Text.translatable(key).formatted(Formatting.GRAY), true);
+	}
+
+	/**
+	 * Un jugador usa la puerta de una cámara de recompensa ({@code stack} es lo que lleva en la mano, o vacío). Todo se decide en
+	 * el servidor con {@link TempleKeyRules#useChamberDoor}: la llave se consume al abrir.
+	 */
+	static void useChamberDoor(ServerWorld world, BlockPos clicked, ServerPlayerEntity player, ItemStack stack, TempleKeyRules.Metal doorMetal) {
+		TempleSealBlockEntity seal = findSeal(world, clicked);
+		String key;
+		if (seal == null) {
+			key = "temple.aptitudes.chamber.not_ready";
+		} else {
+			TempleKeyRules.Metal keyMetal = stack.getItem() instanceof CustodianKeyItem k ? k.metal() : null;
+			boolean sameTemple = keyMetal != null && seal.templeId.equals(CustodianKeyItem.templeOf(stack));
+			switch (TempleKeyRules.useChamberDoor(seal.flow(), doorMetal, keyMetal, sameTemple)) {
+				case OPEN -> {
+					stack.decrement(1);
+					seal.openChamber(world, doorMetal);
+					return;
+				}
+				case NO_KEY -> key = "temple.aptitudes.chamber.no_key";
+				case WRONG_TEMPLE -> key = "temple.aptitudes.chamber.wrong_temple";
+				case WRONG_METAL -> key = "temple.aptitudes.chamber.wrong_metal";
+				default -> key = "temple.aptitudes.chamber.not_ready";
+			}
+		}
+		player.sendMessage(Text.translatable(key).formatted(Formatting.GRAY), true);
+	}
+
+	/** El sello del Templo del Custodio al que pertenece esa posición de la puerta (solo en chunks ya cargados). */
+	@Nullable
+	static TempleSealBlockEntity findSeal(ServerWorld world, BlockPos door) {
+		ChunkPos center = new ChunkPos(door);
+		for (int dx = -2; dx <= 2; dx++) {
+			for (int dz = -2; dz <= 2; dz++) {
+				WorldChunk chunk = world.getChunkManager().getWorldChunk(center.x + dx, center.z + dz);
+				if (chunk == null) continue;
+				for (BlockPos p : new ArrayList<>(chunk.getBlockEntityPositions())) {
+					if (world.getBlockEntity(p) instanceof TempleSealBlockEntity seal && seal.ownsDoor(door)) return seal;
+				}
+			}
+		}
+		return null;
+	}
+
+	// -------------------------------------------- Autómata del atrio (T3c)
+
+	/**
+	 * Hace aparecer al Autómata Antiguo en el atrio del Templo del Custodio (con +25 % de vida por anillo) y devuelve su id.
+	 * Nunca durante la generación: lo llama el sello en el hilo del servidor.
+	 */
+	@Nullable
+	static UUID spawnAutomaton(ServerWorld world, TempleSealBlockEntity seal) {
+		EntityType<? extends MobEntity> type = dev.aptitudes.boss.BossEntities.ANCIENT_AUTOMATON;
+		MobEntity mob = type.create(world);
+		if (mob == null) return null;
+		BlockPos at = seal.getPos().add(seal.automatonSpawn);
+		mob.refreshPositionAndAngles(at.getX() + 0.5, at.getY(), at.getZ() + 0.5, world.random.nextFloat() * 360f, 0);
+		mob.initialize(world, world.getLocalDifficulty(at), SpawnReason.EVENT, null);
+		var health = mob.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+		if (health != null) {
+			AttributeApplier.set(health, AUTOMATON_HEALTH, TempleFlowRules.automatonHealthBonus(seal.ring),
+					EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+			mob.setHealth(mob.getMaxHealth());
+		}
+		mob.addCommandTag(AUTOMATON_TAG);
+		mob.addCommandTag(SEAL_TAG + seal.getPos().asLong());
+		mob.addCommandTag(TEMPLE_TAG + seal.templeId);
+		mob.setPersistent();
+		world.spawnEntityAndPassengers(mob);
+		return mob.getUuid();
+	}
+
+	/**
+	 * ¿Ya hay un Autómata vivo de este templo? Busca por etiqueta alrededor del sello, para no hacer aparecer un duplicado
+	 * mientras el original aún no ha terminado de cargarse con su chunk.
+	 */
+	static boolean automatonPresent(ServerWorld world, TempleSealBlockEntity seal) {
+		Box area = new Box(seal.getPos()).expand(24);
+		String temple = TEMPLE_TAG + seal.templeId;
+		return !world.getEntitiesByClass(MobEntity.class, area,
+				m -> m.isAlive() && m.getCommandTags().contains(AUTOMATON_TAG) && m.getCommandTags().contains(temple)).isEmpty();
+	}
+
+	private static void onAutomatonDeath(ServerWorld world, MobEntity mob) {
+		UUID temple = null;
+		BlockPos sealPos = null;
+		for (String tag : mob.getCommandTags()) {
+			try {
+				if (tag.startsWith(TEMPLE_TAG)) temple = UUID.fromString(tag.substring(TEMPLE_TAG.length()));
+				else if (tag.startsWith(SEAL_TAG)) sealPos = BlockPos.fromLong(Long.parseLong(tag.substring(SEAL_TAG.length())));
+			} catch (IllegalArgumentException ignored) {
+				// Etiqueta manipulada: se ignora.
+			}
+		}
+		if (temple == null || sealPos == null) return;
+		if (world.isChunkLoaded(sealPos) && world.getBlockEntity(sealPos) instanceof TempleSealBlockEntity seal
+				&& seal.templeId.equals(temple)) {
+			seal.automatonDefeated();
+			for (ServerPlayerEntity p : world.getPlayers()) {
+				if (p.squaredDistanceTo(mob) < 48 * 48) {
+					p.sendMessage(Text.translatable("temple.aptitudes.automaton.down").formatted(Formatting.GOLD), true);
+				}
+			}
+		}
 	}
 
 	// ----------------------------------------------------------- Guardián
@@ -156,15 +349,23 @@ public final class Temples {
 			}
 		}
 		if (temple == null) return;
+		int layout = TempleFlowRules.LAYOUT_OLD;
 		if (sealPos != null && world.isChunkLoaded(sealPos) && world.getBlockEntity(sealPos) instanceof TempleSealBlockEntity seal
 				&& seal.templeId.equals(temple)) {
+			layout = seal.layout();
 			seal.cleared();
 		}
 		ItemEntity key = mob.dropStack(TempleKeyItem.forTemple(temple));
 		if (key != null) key.setNeverDespawn();
+		// T4: el Templo del Custodio suelta además las cuatro llaves de sus cámaras, en una sola tirada.
+		for (TempleKeyRules.Metal metal : TempleKeyRules.keysToDrop(layout)) {
+			ItemEntity drop = mob.dropStack(CustodianKeyItem.forTemple(metal, temple));
+			if (drop != null) drop.setNeverDespawn();
+		}
+		String message = TempleKeyRules.keysToDrop(layout).length > 0 ? "temple.aptitudes.guardian_defeated_keys" : "temple.aptitudes.guardian_defeated";
 		for (ServerPlayerEntity p : world.getPlayers()) {
 			if (p.squaredDistanceTo(mob) < 48 * 48) {
-				p.sendMessage(Text.translatable("temple.aptitudes.guardian_defeated").formatted(Formatting.GOLD), true);
+				p.sendMessage(Text.translatable(message).formatted(Formatting.GOLD), true);
 			}
 		}
 	}

@@ -3,6 +3,7 @@ package dev.aptitudes.temple;
 import com.mojang.serialization.MapCodec;
 import dev.aptitudes.achievement.Achievement;
 import dev.aptitudes.achievement.Achievements;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
@@ -12,6 +13,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -61,8 +63,72 @@ public final class TempleBlocks {
 		@Override
 		protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
 			if (!world.isClient && world.getBlockEntity(pos) instanceof TempleSealBlockEntity seal) {
-				player.sendMessage(Text.translatable("temple.aptitudes.seal." + seal.stage.name().toLowerCase(java.util.Locale.ROOT))
-						.formatted(Formatting.GRAY), true);
+				player.sendMessage(Text.translatable(seal.statusKey()).formatted(Formatting.GRAY), true);
+			}
+			return ActionResult.success(world.isClient);
+		}
+	}
+
+	/** T3: Puerta del Custodio. Con el Ancla del Velo en la mano se abre (y se consume); sin ella, avisa. */
+	public static class CustodianDoor extends Block {
+		public static final MapCodec<CustodianDoor> CODEC = createCodec(CustodianDoor::new);
+
+		public CustodianDoor(Settings settings) {
+			super(settings);
+		}
+
+		@Override
+		protected MapCodec<? extends Block> getCodec() {
+			return CODEC;
+		}
+
+		@Override
+		protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player,
+												 Hand hand, BlockHitResult hit) {
+			if (!stack.isOf(dev.aptitudes.item.ModItems.ANCLA_DEL_VELO)) return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+			if (world.isClient) return ItemActionResult.SUCCESS;
+			if (world instanceof ServerWorld server && player instanceof ServerPlayerEntity sp) Temples.useCustodianDoor(server, pos, sp, stack);
+			return ItemActionResult.CONSUME;
+		}
+
+		@Override
+		protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+			if (!world.isClient && world instanceof ServerWorld server && player instanceof ServerPlayerEntity sp) {
+				Temples.useCustodianDoor(server, pos, sp, ItemStack.EMPTY);
+			}
+			return ActionResult.success(world.isClient);
+		}
+	}
+
+	/**
+	 * T4: puerta de una cámara de recompensa. Solo la abre la llave del Custodio de su metal y de su templo, y solo con el
+	 * Custodio vencido. Cada puerta es un bloque distinto por metal.
+	 */
+	public static class ChamberDoor extends Block {
+		private final TempleKeyRules.Metal metal;
+
+		public ChamberDoor(Settings settings, TempleKeyRules.Metal metal) {
+			super(settings);
+			this.metal = metal;
+		}
+
+		public TempleKeyRules.Metal metal() {
+			return metal;
+		}
+
+		@Override
+		protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player,
+												 Hand hand, BlockHitResult hit) {
+			if (!(stack.getItem() instanceof CustodianKeyItem)) return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+			if (world.isClient) return ItemActionResult.SUCCESS;
+			if (world instanceof ServerWorld server && player instanceof ServerPlayerEntity sp) Temples.useChamberDoor(server, pos, sp, stack, metal);
+			return ItemActionResult.CONSUME;
+		}
+
+		@Override
+		protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+			if (!world.isClient && world instanceof ServerWorld server && player instanceof ServerPlayerEntity sp) {
+				Temples.useChamberDoor(server, pos, sp, ItemStack.EMPTY, metal);
 			}
 			return ActionResult.success(world.isClient);
 		}

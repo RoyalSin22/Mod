@@ -10,12 +10,20 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.passive.VillagerEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
@@ -47,6 +55,9 @@ import java.util.UUID;
  * evento elegido al azar entre el Eclipse, la Niebla de almas y la Lluvia de brasas, sin repetir el anterior
  * ({@link WorldEventRules#choose}, reproducible con la semilla del mundo). Este gestor decide qué evento toca,
  * da el aviso del día anterior y lleva los dos eventos nuevos; el Eclipse sigue en {@link EclipseManager}.
+ *
+ * <p>T1 de la cadena narrativa: el calendario solo programa el Eclipse. La Niebla de almas la inicia un jugador
+ * hablando con el aldeano del gremio y la Lluvia de brasas, al encender un portal al Nether ({@link EventTriggerRules}).</p>
  */
 public final class WorldEventManager {
 	/** Etiqueta de las criaturas de la Niebla de almas y de la Lluvia de brasas. */
@@ -67,6 +78,10 @@ public final class WorldEventManager {
 			new PriorityQueue<>(Comparator.comparingLong(ErranteEntity::retireAt).thenComparing(ErranteEntity::getUuid));
 	private static final Set<UUID> LEFTOVERS = new HashSet<>();
 	private static final List<Meteor> METEORS = new ArrayList<>();
+	/** T1: comprobaciones pendientes de si un jugador acaba de abrir un portal al Nether (solo en memoria). */
+	private record PortalCheck(ServerWorld world, BlockPos pos, long checkTick, int portalBlocksBefore) {}
+
+	private static final List<PortalCheck> PORTAL_CHECKS = new ArrayList<>();
 	private static long nextWaveTick;
 
 	private WorldEventManager() {
@@ -81,6 +96,7 @@ public final class WorldEventManager {
 		});
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			tickMeteors(server);
+			tickPortalChecks(server);
 			if (server.getTicks() % 20 == 15) tick(server);
 			tickFogRetirements(server.getOverworld().getTime());
 		});
@@ -120,6 +136,9 @@ public final class WorldEventManager {
 				mob.dropStack(new ItemStack(ModItems.SOUL_SHARD, shards));
 			}
 		});
+		// T1: la Niebla la inicia el aldeano del gremio y la Lluvia de brasas, un portal encendido por un jugador.
+		UseEntityCallback.EVENT.register((player, world, hand, entity, hit) -> talkToGuildmaster(player, world, hand, entity));
+		UseBlockCallback.EVENT.register((player, world, hand, hit) -> watchPortalLighting(player, world, hand, hit));
 	}
 
 	private static void resetFogErrantes() {
@@ -131,6 +150,7 @@ public final class WorldEventManager {
 		ALIVE.clear();
 		LEFTOVERS.clear();
 		METEORS.clear();
+		PORTAL_CHECKS.clear();
 		nextWaveTick = 0;
 	}
 
@@ -173,6 +193,19 @@ public final class WorldEventManager {
 				cfg.worldEventWeightEmberRain};
 	}
 
+	/**
+	 * T1: el calendario solo programa el Eclipse (hasta que el Behelit lo sustituya). La Niebla y la Lluvia las activa el
+	 * jugador; sus pesos solo siguen valiendo para desactivarlas (0), ver {@link #weights}.
+	 */
+	private static int[] calendarWeights(AptitudesConfig cfg) {
+		return new int[] {cfg.eclipseEnabled ? cfg.worldEventWeightEclipse : 0, 0, 0};
+	}
+
+	/** Duración de un evento nuevo: la de la Niebla es configurable; la de la Lluvia de brasas sigue siendo medio día. */
+	static long duration(WorldEventKind kind) {
+		return kind == WorldEventKind.SOUL_FOG ? EventTriggerRules.fogDuration(Aptitudes.config().fogDurationTicks) : DURATION;
+	}
+
 	/** Evento que toca en el número de evento {@code index} (null si no hay ninguno activado). Fija la elección. */
 	static WorldEventKind kindFor(ServerWorld world, long index) {
 		if (index < 0) return null;
@@ -180,7 +213,7 @@ public final class WorldEventManager {
 		if (index == state.lastIndex) return WorldEventKind.byId(state.lastKind);
 		if (index == state.nextIndex) return WorldEventKind.byId(state.nextKind);
 		WorldEventKind previous = index - 1 == state.lastIndex ? WorldEventKind.byId(state.lastKind) : null;
-		int chosen = WorldEventRules.choose(world.getSeed(), index, weights(Aptitudes.config()),
+		int chosen = WorldEventRules.choose(world.getSeed(), index, calendarWeights(Aptitudes.config()),
 				previous == null ? -1 : previous.ordinal());
 		if (chosen < 0) return null;
 		WorldEventKind kind = WorldEventKind.values()[chosen];
@@ -240,10 +273,11 @@ public final class WorldEventManager {
 			return;
 		}
 
+		long duration = duration(active);
 		long elapsed = world.getTime() - state.startTick;
 		long eventTime = state.forced ? elapsed : inDay - (active == WorldEventKind.SOUL_FOG ? FOG_START : EMBER_START);
 		boolean wrongDay = !state.forced && day != state.activeDay;
-		if (eventTime < 0 || eventTime >= DURATION || wrongDay || elapsed > DURATION + 200 || weights(cfg)[active.ordinal()] <= 0) {
+		if (eventTime < 0 || eventTime >= duration || wrongDay || elapsed > duration + 200 || weights(cfg)[active.ordinal()] <= 0) {
 			end(server, world, state, true);
 			return;
 		}
@@ -561,6 +595,98 @@ public final class WorldEventManager {
 		}
 	}
 
+	// ------------------------------------------------------------------ Eventos por activación (T1)
+
+	/**
+	 * Empieza un evento por la acción de un jugador y anota el reloj de su espera. Los comandos de administración
+	 * ({@link #forceStart}) no consumen la espera. False si ya hay otro evento en curso.
+	 */
+	static boolean startByPlayer(MinecraftServer server, ServerWorld world, WorldEventKind kind) {
+		if (active(server) || EclipseState.get(world).active) return false;
+		start(server, world, kind, true, EclipseRules.dayOf(world.getTimeOfDay()));
+		WorldEventState state = WorldEventState.get(world);
+		if (kind == WorldEventKind.SOUL_FOG) state.lastFogStart = world.getTime();
+		else if (kind == WorldEventKind.EMBER_RAIN) state.lastEmberStart = world.getTime();
+		state.markDirty();
+		return true;
+	}
+
+	/**
+	 * Mayús + clic derecho sobre el aldeano del gremio: la Niebla de almas empieza para todo el mundo, o el aldeano
+	 * dice que está en espera. Sin Mayús se abre el comercio como siempre. Todo se decide en el servidor.
+	 */
+	private static ActionResult talkToGuildmaster(PlayerEntity player, World world, Hand hand, Entity entity) {
+		if (world.isClient() || hand != Hand.MAIN_HAND || !player.isSneaking()) return ActionResult.PASS;
+		if (!(entity instanceof VillagerEntity villager) || !villager.isAlive()
+				|| villager.getVillagerData().getProfession() != dev.aptitudes.world.GuildVillagers.GUILDMASTER) return ActionResult.PASS;
+		if (world.getRegistryKey() != World.OVERWORLD || !(player instanceof ServerPlayerEntity speaker)) return ActionResult.PASS;
+		MinecraftServer server = speaker.getServer();
+		AptitudesConfig cfg = Aptitudes.config();
+		// Evento desactivado (peso 0): el aldeano solo comercia.
+		if (server == null || cfg.worldEventWeightSoulFog <= 0) return ActionResult.PASS;
+		ServerWorld overworld = server.getOverworld();
+		WorldEventState state = WorldEventState.get(overworld);
+		boolean busy = active(server) || EclipseState.get(overworld).active;
+		EventTriggerRules.Reply reply = EventTriggerRules.villagerReply(busy,
+				EventTriggerRules.ready(state.lastFogStart, overworld.getTime(), cfg.fogCooldownDays));
+		speaker.sendMessage(Text.translatable("event.aptitudes.soul_fog.villager_" + reply.name().toLowerCase(java.util.Locale.ROOT))
+				.formatted(Formatting.GRAY, Formatting.ITALIC), false);
+		world.playSound(null, villager.getX(), villager.getY(), villager.getZ(),
+				reply == EventTriggerRules.Reply.START ? SoundEvents.ENTITY_VILLAGER_YES : SoundEvents.ENTITY_VILLAGER_NO,
+				SoundCategory.NEUTRAL, 1.0f, 1.0f);
+		if (reply == EventTriggerRules.Reply.START) startByPlayer(server, overworld, WorldEventKind.SOUL_FOG);
+		return ActionResult.SUCCESS;
+	}
+
+	/**
+	 * Un jugador usa yesca y pedernal o una carga de fuego sobre obsidiana en el Overworld: se anota cuántos bloques de
+	 * portal había y, dos ticks después, se mira si ha aparecido alguno. Sin mixin: el uso sigue su curso normal.
+	 */
+	private static ActionResult watchPortalLighting(PlayerEntity player, World world, Hand hand, BlockHitResult hit) {
+		if (world.isClient() || !(world instanceof ServerWorld serverWorld) || serverWorld.getRegistryKey() != World.OVERWORLD
+				|| !(player instanceof ServerPlayerEntity lighter) || lighter.isSpectator()) return ActionResult.PASS;
+		ItemStack stack = player.getStackInHand(hand);
+		if (!stack.isOf(Items.FLINT_AND_STEEL) && !stack.isOf(Items.FIRE_CHARGE)) return ActionResult.PASS;
+		BlockPos pos = hit.getBlockPos();
+		if (!serverWorld.getBlockState(pos).isOf(Blocks.OBSIDIAN)
+				|| !EventTriggerRules.canQueuePortalCheck(PORTAL_CHECKS.size())) return ActionResult.PASS;
+		PORTAL_CHECKS.add(new PortalCheck(serverWorld, pos, serverWorld.getTime() + 2, portalBlocks(serverWorld, pos)));
+		return ActionResult.PASS;
+	}
+
+	/** Bloques de portal al Nether en un cubo pequeño alrededor de {@code center}. */
+	private static int portalBlocks(ServerWorld world, BlockPos center) {
+		int radius = EventTriggerRules.PORTAL_SCAN_RADIUS;
+		int count = 0;
+		BlockPos.Mutable cursor = new BlockPos.Mutable();
+		for (int dx = -radius; dx <= radius; dx++) {
+			for (int dy = -radius; dy <= radius; dy++) {
+				for (int dz = -radius; dz <= radius; dz++) {
+					cursor.set(center.getX() + dx, center.getY() + dy, center.getZ() + dz);
+					if (world.getBlockState(cursor).isOf(Blocks.NETHER_PORTAL)) count++;
+				}
+			}
+		}
+		return count;
+	}
+
+	/** Resuelve las comprobaciones de portal vencidas: si se abrió uno y la espera lo permite, empieza la Lluvia de brasas. */
+	private static void tickPortalChecks(MinecraftServer server) {
+		if (PORTAL_CHECKS.isEmpty()) return;
+		Iterator<PortalCheck> it = PORTAL_CHECKS.iterator();
+		while (it.hasNext()) {
+			PortalCheck check = it.next();
+			if (check.world().getTime() < check.checkTick()) continue;
+			it.remove();
+			if (!EventTriggerRules.portalOpened(check.portalBlocksBefore(), portalBlocks(check.world(), check.pos()))) continue;
+			AptitudesConfig cfg = Aptitudes.config();
+			ServerWorld overworld = server.getOverworld();
+			if (cfg.worldEventWeightEmberRain <= 0 || !EventTriggerRules.ready(
+					WorldEventState.get(overworld).lastEmberStart, overworld.getTime(), cfg.emberRainCooldownDays)) continue;
+			startByPlayer(server, overworld, WorldEventKind.EMBER_RAIN);
+		}
+	}
+
 	// ------------------------------------------------------------------ Sincronización y comando
 
 	private static void syncAll(MinecraftServer server, WorldEventKind kind, long eventTime) {
@@ -588,12 +714,13 @@ public final class WorldEventManager {
 
 	private static void send(ServerPlayerEntity player, WorldEventKind kind, long eventTime) {
 		if (!ServerPlayNetworking.canSend(player, EclipsePayload.ID)) return;
-		if (kind == null || eventTime < 0 || eventTime >= DURATION) {
+		if (kind == null || eventTime < 0 || eventTime >= duration(kind)) {
 			ServerPlayNetworking.send(player, new EclipsePayload(0, 0f, 0f, 0));
 			return;
 		}
-		float intensity = WorldEventRules.ramp(eventTime, DURATION, RAMP);
-		ServerPlayNetworking.send(player, new EclipsePayload(1, intensity, eventTime / (float) DURATION, kind.ordinal()));
+		long duration = duration(kind);
+		float intensity = WorldEventRules.ramp(eventTime, duration, RAMP);
+		ServerPlayNetworking.send(player, new EclipsePayload(1, intensity, eventTime / (float) duration, kind.ordinal()));
 	}
 
 	/** ¿Hay un evento nuevo en curso? */

@@ -207,6 +207,16 @@ public class AptitudesConfig {
 	public double emberRainHugeChance = 0.05;
 	/** v41.2: probabilidad de que un impacto traiga criaturas del Nether (la mitad en los pequeños). */
 	public double emberRainMobChance = 0.5;
+	// ---------- Eventos por activación (T1 de la cadena narrativa) ----------
+	// La Niebla de almas la inicia un jugador hablando (Mayús + clic derecho) con el aldeano del gremio, y la Lluvia de
+	// brasas al encender un portal al Nether en el Overworld. Los pesos worldEventWeightSoulFog/EmberRain solo siguen
+	// sirviendo para desactivar el evento (0). Las esperas se cuentan desde que el evento empieza.
+	/** Días de espera entre dos Nieblas de almas. */
+	public int fogCooldownDays = 10;
+	/** Duración de la Niebla de almas en ticks (24 000 = un día de Minecraft). */
+	public int fogDurationTicks = 24_000;
+	/** Días de espera entre dos Lluvias de brasas provocadas por un portal. */
+	public int emberRainCooldownDays = 5;
 	/** v67 (F2+): multiplicador del daño de las habilidades nuevas N1–N10 (1 = el de los textos). */
 	public double extraSkillDamageScale = 1.0;
 	// ---------- Piedras angulares de las Sendas (v46.1) ----------
@@ -567,6 +577,10 @@ public class AptitudesConfig {
 		c.emberRainLargeChance = Math.min(1.0, c.emberRainLargeChance);
 		c.emberRainHugeChance = Math.min(1.0, c.emberRainHugeChance);
 		c.emberRainMobChance = Math.min(1.0, c.emberRainMobChance);
+		c.fogCooldownDays = clamp(c.fogCooldownDays, 1, 365);
+		c.fogDurationTicks = clamp(c.fogDurationTicks, dev.aptitudes.event.EventTriggerRules.MIN_FOG_TICKS,
+				dev.aptitudes.event.EventTriggerRules.MAX_FOG_TICKS);
+		c.emberRainCooldownDays = clamp(c.emberRainCooldownDays, 1, 365);
 		c.extraSkillDamageScale = Math.min(3.0, c.extraSkillDamageScale);
 		c.keystoneCarnageHeal = Math.min(1.0, c.keystoneCarnageHeal);
 		c.keystoneCarnageHasteSeconds = Math.min(60.0, c.keystoneCarnageHasteSeconds);

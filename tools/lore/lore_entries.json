@@ -1,0 +1,597 @@
+{
+  "schema_version": 1,
+  "note": "Metadatos de las entradas narrativas. El nivel de revelación de BESTIARY y EVENT lo asignó el redactor (el autor no lo indicó); el de LORE es del autor. Los textos están en tools/lang/lore_catalog.py. Ninguna condición se implementa aquí: verification indica si hay un punto del código donde engancharla.",
+  "legend": {
+    "text_status": {
+      "provisional": "Borrador del autor, no aprobado",
+      "approved": "Aprobado por el autor"
+    },
+    "verification": {
+      "existing_hook": "Hay un punto del código que ya detecta la condición",
+      "plausible_hook": "Hay un sistema relacionado, sin gancho de lore",
+      "unverified": "No se pudo verificar en el código",
+      "blocked": "Depende de contenido que no existe",
+      "undefined": "La condición no está definida"
+    },
+    "reveal": [
+      "baja",
+      "media",
+      "alta",
+      "muy_alta",
+      "maxima"
+    ],
+    "kind": {
+      "lore": "Entrada histórica",
+      "bestiary": "Texto de criatura (se une al .tip existente)",
+      "chronicle": "Crónica de evento"
+    }
+  },
+  "entries": [
+    {
+      "id": "lore.cosmology.essence_within",
+      "alias": "LORE-001",
+      "kind": "lore",
+      "category": "Orígenes de las Aptitudes",
+      "text_status": "provisional",
+      "reveal": "baja",
+      "depends_on": [],
+      "unlock": {
+        "intent": "Conocimiento inicial o primera consulta a las Aptitudes",
+        "verification": "unverified",
+        "hook": "El Grimorio no guarda estado de lectura de capítulos."
+      },
+      "related": {
+        "docs": [
+          "01_COSMOLOGIA"
+        ]
+      },
+      "applied_corrections": [],
+      "notes": ""
+    },
+    {
+      "id": "lore.guild.twenty_paths",
+      "alias": "LORE-002",
+      "kind": "lore",
+      "category": "Historia de los gremios",
+      "text_status": "provisional",
+      "reveal": "baja",
+      "depends_on": [
+        "lore.cosmology.essence_within"
+      ],
+      "unlock": {
+        "intent": "Primera consulta al catálogo de roles",
+        "verification": "unverified",
+        "hook": "Capítulo `roles` de GuideScreen; sin estado de lectura."
+      },
+      "related": {
+        "docs": [
+          "03_GREMIOS"
+        ],
+        "roles": 20
+      },
+      "applied_corrections": [],
+      "notes": ""
+    },
+    {
+      "id": "lore.doctrine.three_doctrines",
+      "alias": "LORE-003",
+      "kind": "lore",
+      "category": "Historia de las sendas",
+      "text_status": "provisional",
+      "reveal": "baja",
+      "depends_on": [
+        "lore.guild.twenty_paths"
+      ],
+      "unlock": {
+        "intent": "Acceso a la especialización de un rol",
+        "verification": "plausible_hook",
+        "hook": "Progreso de senda: RoleManager y PathRules (S1 al nivel 10)."
+      },
+      "related": {
+        "docs": [
+          "04_DOCTRINAS_Y_SENDAS"
+        ],
+        "paths": 60
+      },
+      "applied_corrections": [
+        "A-04",
+        "A-05"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "lore.chronology.council_three_ways",
+      "alias": "LORE-004",
+      "kind": "lore",
+      "category": "Historia de la Primera Era",
+      "text_status": "provisional",
+      "reveal": "baja",
+      "depends_on": [
+        "lore.doctrine.three_doctrines"
+      ],
+      "unlock": {
+        "intent": "Descubrimiento histórico de nivel intermedio",
+        "verification": "undefined",
+        "hook": "Condición sin definir."
+      },
+      "related": {},
+      "applied_corrections": [],
+      "notes": "El nivel intermedio no tiene definición técnica."
+    },
+    {
+      "id": "lore.faction.concordance",
+      "alias": "LORE-005",
+      "kind": "lore",
+      "category": "Instituciones históricas",
+      "text_status": "provisional",
+      "reveal": "media",
+      "depends_on": [
+        "lore.chronology.council_three_ways"
+      ],
+      "unlock": {
+        "intent": "Hallazgo de documentos de la Primera Era",
+        "verification": "blocked",
+        "hook": "No existen documentos coleccionables."
+      },
+      "related": {
+        "docs": [
+          "05_FACCIONES_Y_PERSONAJES"
+        ]
+      },
+      "applied_corrections": [],
+      "notes": ""
+    },
+    {
+      "id": "lore.cosmology.echoes",
+      "alias": "LORE-006",
+      "kind": "lore",
+      "category": "Esencia y muerte",
+      "text_status": "provisional",
+      "reveal": "media",
+      "depends_on": [
+        "lore.cosmology.essence_within"
+      ],
+      "unlock": {
+        "intent": "Investigaciones relacionadas con la Niebla de Almas",
+        "verification": "existing_hook",
+        "hook": "Bestiario por jugador: primera muerte del Errante Velado o del Osario Quebrado (GrimoireManager.onKill)."
+      },
+      "related": {
+        "bestiary_ids": [
+          "errante_velado",
+          "osario_quebrado"
+        ],
+        "events": [
+          "SOUL_FOG"
+        ]
+      },
+      "applied_corrections": [],
+      "notes": "La interpretación exacta de «investigaciones» queda por decidir."
+    },
+    {
+      "id": "lore.cosmology.veil_frontier",
+      "alias": "LORE-007",
+      "kind": "lore",
+      "category": "Primeras investigaciones del Velo",
+      "text_status": "provisional",
+      "reveal": "media",
+      "depends_on": [
+        "lore.cosmology.essence_within"
+      ],
+      "unlock": {
+        "intent": "Documentos antiguos del templo",
+        "verification": "blocked",
+        "hook": "No existen documentos coleccionables."
+      },
+      "related": {
+        "docs": [
+          "01_COSMOLOGIA"
+        ]
+      },
+      "applied_corrections": [],
+      "notes": ""
+    },
+    {
+      "id": "lore.faction.permanence",
+      "alias": "LORE-008",
+      "kind": "lore",
+      "category": "Cónclave de la Permanencia",
+      "text_status": "provisional",
+      "reveal": "media",
+      "depends_on": [
+        "lore.cosmology.echoes",
+        "lore.faction.concordance",
+        "lore.cosmology.veil_frontier"
+      ],
+      "unlock": {
+        "intent": "Archivos relacionados con el Primer Eclipse",
+        "verification": "blocked",
+        "hook": "No existen archivos coleccionables."
+      },
+      "related": {
+        "docs": [
+          "05_FACCIONES_Y_PERSONAJES"
+        ]
+      },
+      "applied_corrections": [
+        "A-06"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "lore.chronology.first_answer",
+      "alias": "LORE-009",
+      "kind": "lore",
+      "category": "Contacto Prohibido",
+      "text_status": "provisional",
+      "reveal": "alta",
+      "depends_on": [
+        "lore.faction.permanence"
+      ],
+      "unlock": {
+        "intent": "Cámara de la reliquia o registro avanzado del templo",
+        "verification": "plausible_hook",
+        "hook": "ReliquaryBlockEntity (temple/)."
+      },
+      "related": {
+        "blocks": [
+          "aptitudes:reliquary"
+        ]
+      },
+      "applied_corrections": [],
+      "notes": ""
+    },
+    {
+      "id": "lore.artifact.sealed_artifact",
+      "alias": "LORE-010",
+      "kind": "lore",
+      "category": "El templo y sus cámaras",
+      "text_status": "provisional",
+      "reveal": "alta",
+      "depends_on": [
+        "lore.chronology.first_answer"
+      ],
+      "unlock": {
+        "intent": "Hallazgo de la cámara de diamante",
+        "verification": "unverified",
+        "hook": "No se verificó que exista una cámara de diamante ni cuatro cámaras."
+      },
+      "related": {
+        "docs": [
+          "07_BESTIARIO_TEMPLOS_ARTEFACTOS"
+        ]
+      },
+      "applied_corrections": [],
+      "notes": "Afirma cuatro cámaras como hecho histórico: NO VERIFICADO en código (C-13)."
+    },
+    {
+      "id": "lore.event.first_eclipse",
+      "alias": "LORE-011",
+      "kind": "lore",
+      "category": "Primer Eclipse",
+      "text_status": "provisional",
+      "reveal": "alta",
+      "depends_on": [
+        "lore.artifact.sealed_artifact"
+      ],
+      "unlock": {
+        "intent": "Revelación vinculada al artefacto",
+        "verification": "blocked",
+        "hook": "El artefacto no existe como objeto."
+      },
+      "related": {
+        "docs": [
+          "06_EVENTOS_Y_ARCOS"
+        ]
+      },
+      "applied_corrections": [],
+      "notes": "Primer Eclipse = el acontecimiento histórico de la Primera Era, no el que invoca el jugador."
+    },
+    {
+      "id": "lore.temple.last_mandate",
+      "alias": "LORE-012",
+      "kind": "lore",
+      "category": "La Orden de los Cuatro Sellos",
+      "text_status": "provisional",
+      "reveal": "alta",
+      "depends_on": [
+        "lore.artifact.sealed_artifact"
+      ],
+      "unlock": {
+        "intent": "Derrota del Custodio o acceso a las cámaras",
+        "verification": "plausible_hook",
+        "hook": "CustodioEntity es el guardián del sello (Temples.spawnGuardian)."
+      },
+      "related": {
+        "entities": [
+          "aptitudes:custodio_cuatro_llaves",
+          "aptitudes:ancient_automaton"
+        ]
+      },
+      "applied_corrections": [],
+      "notes": "Afirma las cuatro llaves como hecho: NO VERIFICADO (C-13)."
+    },
+    {
+      "id": "lore.event.current_eclipse",
+      "alias": "LORE-013",
+      "kind": "lore",
+      "category": "Eclipse actual",
+      "text_status": "provisional",
+      "reveal": "alta",
+      "depends_on": [
+        "lore.event.first_eclipse"
+      ],
+      "unlock": {
+        "intent": "Inicio del Eclipse (primera vez que el jugador lo invoca)",
+        "verification": "plausible_hook",
+        "hook": "EclipseManager.start. El sacrificio en la Hoguera es PENDIENTE DE IMPLEMENTAR."
+      },
+      "related": {
+        "events": [
+          "ECLIPSE"
+        ]
+      },
+      "applied_corrections": [
+        "A-01"
+      ],
+      "notes": "«Reliquia» del texto: con la mecánica final puede ser otro material (D-02)."
+    },
+    {
+      "id": "lore.event.silent_fracture",
+      "alias": "LORE-014",
+      "kind": "lore",
+      "category": "Consecuencias del Eclipse",
+      "text_status": "provisional",
+      "reveal": "muy_alta",
+      "depends_on": [
+        "lore.event.current_eclipse"
+      ],
+      "unlock": {
+        "intent": "Finalización del Eclipse",
+        "verification": "existing_hook",
+        "hook": "EclipseManager.end(..., completed) distingue el fin completado."
+      },
+      "related": {
+        "events": [
+          "ECLIPSE"
+        ]
+      },
+      "applied_corrections": [
+        "A-02"
+      ],
+      "notes": "Se desbloquea una sola vez por jugador. D-09 (cómo afectan los Eclipses posteriores) sigue abierta."
+    },
+    {
+      "id": "lore.arc2.unfinished_oath",
+      "alias": "LORE-015",
+      "kind": "lore",
+      "category": "Segundo arco narrativo",
+      "text_status": "provisional",
+      "reveal": "maxima",
+      "depends_on": [
+        "lore.event.silent_fracture"
+      ],
+      "unlock": {
+        "intent": "Final del Santuario de las Dos Verdades",
+        "verification": "blocked",
+        "hook": "La estructura no existe."
+      },
+      "related": {
+        "docs": [
+          "06_EVENTOS_Y_ARCOS"
+        ]
+      },
+      "applied_corrections": [
+        "A-03"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "lore.bestiary.errante_velado",
+      "alias": "BESTIARY-001",
+      "kind": "bestiary",
+      "category": "Bestiario",
+      "text_status": "provisional",
+      "reveal": "baja",
+      "depends_on": [],
+      "unlock": {
+        "intent": "Primera derrota del Errante Velado",
+        "verification": "existing_hook",
+        "hook": "GrimoireManager.onKill → BestiaryRules (id errante_velado)."
+      },
+      "related": {
+        "bestiary_id": "errante_velado",
+        "entity": "aptitudes:errante_velado",
+        "class": "dev.aptitudes.mob.ErranteEntity",
+        "items": [
+          "aptitudes:jiron_velo_espectral"
+        ],
+        "name_es": "Errante Velado",
+        "name_en": "Veiled Wanderer"
+      },
+      "applied_corrections": [
+        "A-08"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "lore.bestiary.osario_quebrado",
+      "alias": "BESTIARY-002",
+      "kind": "bestiary",
+      "category": "Bestiario",
+      "text_status": "provisional",
+      "reveal": "baja",
+      "depends_on": [],
+      "unlock": {
+        "intent": "Primera derrota del Osario Quebrado",
+        "verification": "existing_hook",
+        "hook": "GrimoireManager.onKill → BestiaryRules (id osario_quebrado)."
+      },
+      "related": {
+        "bestiary_id": "osario_quebrado",
+        "entity": "aptitudes:osario_quebrado",
+        "class": "dev.aptitudes.mob.OsarioEntity",
+        "name_es": "Osario Quebrado",
+        "name_en": "Broken Ossuary",
+        "items": [
+          "aptitudes:nucleo_osario"
+        ]
+      },
+      "applied_corrections": [
+        "A-08"
+      ],
+      "notes": "Ampliar tras verificar modelo, comportamiento y materiales. El botín (Núcleo del Osario) se definió en T2."
+    },
+    {
+      "id": "lore.bestiary.ancient_automaton",
+      "alias": "BESTIARY-003",
+      "kind": "bestiary",
+      "category": "Bestiario",
+      "text_status": "provisional",
+      "reveal": "media",
+      "depends_on": [],
+      "unlock": {
+        "intent": "Primera derrota del Autómata Antiguo",
+        "verification": "existing_hook",
+        "hook": "GrimoireManager.onKill → BestiaryRules (id ancient_automaton)."
+      },
+      "related": {
+        "bestiary_id": "ancient_automaton",
+        "entity": "aptitudes:ancient_automaton",
+        "class": "dev.aptitudes.boss.AutomatonEntity",
+        "name_es": "Autómata Antiguo",
+        "name_en": "Ancient Automaton"
+      },
+      "applied_corrections": [],
+      "notes": ""
+    },
+    {
+      "id": "lore.bestiary.custodio_cuatro_llaves",
+      "alias": "BESTIARY-004",
+      "kind": "bestiary",
+      "category": "Bestiario",
+      "text_status": "provisional",
+      "reveal": "alta",
+      "depends_on": [],
+      "unlock": {
+        "intent": "Primera derrota del Custodio",
+        "verification": "blocked",
+        "hook": "BestiaryRules no tiene entrada del Custodio (D-10): cambio de código pendiente."
+      },
+      "related": {
+        "entity": "aptitudes:custodio_cuatro_llaves",
+        "class": "dev.aptitudes.mob.CustodioEntity",
+        "name_es": "El Custodio de las Cuatro Llaves",
+        "name_en": "The Custodian of the Four Keys"
+      },
+      "applied_corrections": [],
+      "notes": "Afirma las cuatro llaves como hecho: NO VERIFICADO (C-13)."
+    },
+    {
+      "id": "lore.bestiary.escorificador_hierro",
+      "alias": "BESTIARY-005",
+      "kind": "bestiary",
+      "category": "Bestiario",
+      "text_status": "provisional",
+      "reveal": "baja",
+      "depends_on": [],
+      "unlock": {
+        "intent": "Primera derrota del Escorificador",
+        "verification": "existing_hook",
+        "hook": "GrimoireManager.onKill → BestiaryRules (id escorificador_hierro)."
+      },
+      "related": {
+        "bestiary_id": "escorificador_hierro",
+        "entity": "aptitudes:escorificador_hierro",
+        "class": "dev.aptitudes.mob.EscorificadorEntity",
+        "name_es": "Escorificador de Hierro",
+        "name_en": "Iron Slagger"
+      },
+      "applied_corrections": [
+        "A-08",
+        "A-09",
+        "A-10"
+      ],
+      "notes": "Ampliar tras verificar mecanismos de combate y relación con la Lluvia de brasas."
+    },
+    {
+      "id": "lore.event.soul_fog_chronicle",
+      "alias": "EVENT-001",
+      "kind": "chronicle",
+      "category": "Crónicas de eventos",
+      "text_status": "provisional",
+      "reveal": "media",
+      "depends_on": [
+        "lore.cosmology.echoes"
+      ],
+      "unlock": {
+        "intent": "Primer encuentro documentado con el evento",
+        "verification": "undefined",
+        "hook": "«Primer encuentro documentado» sin definir (D-16)."
+      },
+      "related": {
+        "events": [
+          "SOUL_FOG"
+        ],
+        "name_es": "Niebla de almas",
+        "name_en": "Soul Fog"
+      },
+      "applied_corrections": [
+        "A-09"
+      ],
+      "notes": "Las crónicas no se mezclan con el contador de criaturas derrotadas."
+    },
+    {
+      "id": "lore.event.ember_rain_chronicle",
+      "alias": "EVENT-002",
+      "kind": "chronicle",
+      "category": "Crónicas de eventos",
+      "text_status": "provisional",
+      "reveal": "media",
+      "depends_on": [
+        "lore.cosmology.veil_frontier"
+      ],
+      "unlock": {
+        "intent": "Primera participación en el evento",
+        "verification": "undefined",
+        "hook": "«Primera participación» sin definir (D-16)."
+      },
+      "related": {
+        "events": [
+          "EMBER_RAIN"
+        ],
+        "name_es": "Lluvia de brasas",
+        "name_en": "Ember Rain"
+      },
+      "applied_corrections": [],
+      "notes": ""
+    },
+    {
+      "id": "lore.event.eclipse_chronicle",
+      "alias": "EVENT-003",
+      "kind": "chronicle",
+      "category": "Crónicas de eventos",
+      "text_status": "provisional",
+      "reveal": "alta",
+      "depends_on": [
+        "lore.event.first_eclipse"
+      ],
+      "unlock": {
+        "intent": "Inicio del Eclipse (primera vez que el jugador lo invoca)",
+        "verification": "plausible_hook",
+        "hook": "EclipseManager.start."
+      },
+      "related": {
+        "events": [
+          "ECLIPSE"
+        ],
+        "name_es": "Eclipse",
+        "name_en": "Eclipse"
+      },
+      "applied_corrections": [
+        "A-07"
+      ],
+      "notes": ""
+    }
+  ]
+}

@@ -114,6 +114,12 @@ public final class ModItems {
 	public static final Item JIRON_VELO_ESPECTRAL = register("jiron_velo_espectral",
 			new Item(new Item.Settings().maxCount(64).rarity(Rarity.UNCOMMON)));
 	public static final Item SOUL_SHARD = register("soul_shard", new Item(new Item.Settings().rarity(Rarity.UNCOMMON)));
+	/** T2: lo suelta el Osario Quebrado durante la Niebla de almas (restos con un núcleo de ectoplasma). */
+	public static final Item NUCLEO_OSARIO = register("nucleo_osario",
+			new Item(new Item.Settings().maxCount(64).rarity(Rarity.UNCOMMON)));
+	/** T2: se fabrica en la Mesa del gremio con los dos materiales de la Niebla; abrirá la sala del Custodio (T3). */
+	public static final Item ANCLA_DEL_VELO = register("ancla_del_velo",
+			new VeilAnchorItem(new Item.Settings().maxCount(16).rarity(Rarity.RARE)));
 
 	public static final Item ESTUS_FLASK = register("estus_flask",
 			new SoulFlaskItem(SoulFlaskItem.Kind.ESTUS, new Item.Settings().rarity(Rarity.RARE)));
@@ -231,6 +237,8 @@ public final class ModItems {
 						entries.add(GUIDE_BOOK);
 						entries.add(SOUL_SHARD);
 						entries.add(JIRON_VELO_ESPECTRAL);
+						entries.add(NUCLEO_OSARIO);
+						entries.add(ANCLA_DEL_VELO);
 						entries.add(dev.aptitudes.event.Expeditions.TOKEN); // F5: ficha de expedición
 						entries.add(REBIRTH_OFFERING);
 						entries.add(ARMORY_VOUCHER);

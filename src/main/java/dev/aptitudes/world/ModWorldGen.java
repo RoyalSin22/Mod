@@ -27,11 +27,17 @@ public final class ModWorldGen {
 	public static final Feature<DefaultFeatureConfig> TEMPLE = Registry.register(Registries.FEATURE,
 			Aptitudes.id("temple"), new TempleFeature(DefaultFeatureConfig.CODEC));
 
+	/** T3: Templo del Custodio (31×31, dos niveles). Sustituye al templo antiguo en la generación nueva (T3d). */
+	public static final Feature<DefaultFeatureConfig> CUSTODIAN_TEMPLE = Registry.register(Registries.FEATURE,
+			Aptitudes.id("custodian_temple"), new CustodianTempleFeature(DefaultFeatureConfig.CODEC));
+
 	private ModWorldGen() {
 	}
 
 	public static void init() {
-		for (String id : new String[]{"tower", "bonfire_shrine", "camp", "temple"}) {
+		// T3d: en chunks nuevos el Templo del Custodio sustituye al templo sellado antiguo (v64), cuyo feature y datos siguen
+		// registrados para que los templos ya generados en mundos existentes sigan funcionando.
+		for (String id : new String[]{"tower", "bonfire_shrine", "camp", "custodian_temple"}) {
 			BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.SURFACE_STRUCTURES,
 					RegistryKey.of(RegistryKeys.PLACED_FEATURE, Aptitudes.id(id)));
 		}
