@@ -27,6 +27,10 @@ public final class ModWorldGen {
 	public static final Feature<DefaultFeatureConfig> TEMPLE = Registry.register(Registries.FEATURE,
 			Aptitudes.id("temple"), new TempleFeature(DefaultFeatureConfig.CODEC));
 
+	/** T3b: Templo del Custodio (31×31, dos niveles). Se añade a la generación en T3d. */
+	public static final Feature<DefaultFeatureConfig> CUSTODIAN_TEMPLE = Registry.register(Registries.FEATURE,
+			Aptitudes.id("custodian_temple"), new CustodianTempleFeature(DefaultFeatureConfig.CODEC));
+
 	private ModWorldGen() {
 	}
 

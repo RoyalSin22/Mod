@@ -84,7 +84,7 @@ DORMIDO ──pisa el umbral──▶ AUTÓMATA ──cae──▶ PUZLE ──r
 | Fase | Contenido |
 |---|---|
 | **T3a** (hecha) | `TempleFlowRules` y sus pruebas, `CustodianDoorBlock`, campos nuevos del controlador y recursos del bloque (textura, modelo, textos) |
-| **T3b** | `CustodianTempleFeature`: plano de dos niveles, casco, escalera y comprobaciones de terreno |
+| **T3b** (hecha, sin probar en partida) | `CustodianTempleFeature`: plano de dos niveles, casco, escalera y comprobaciones de terreno |
 | **T3c** | Autómata en el atrio (aparición, activación, puzle bloqueado hasta su muerte) y Custodio al abrir la puerta |
 | **T3d** | Cambio en `ModWorldGen`, compatibilidad con templos antiguos, documentación, `CHANGELOG`, guion de prueba |
 

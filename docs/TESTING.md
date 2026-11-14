@@ -1422,6 +1422,22 @@ del borde y contenido desplazable. Esta medición no sustituye la inspección en
    desplazable y recetas del registro (iconos/tooltip con entradas y salidas reales). Pulsa los pétalos:
    abre su extracción desde la receta sincronizada. Repite en inglés y siete variantes de español.
 
+# T3 — Templo del Custodio (verificación manual)
+
+La estructura aún no se genera sola (llega en T3d). Para verla, en un mundo de pruebas y sobre terreno llano:
+
+1. `/place feature aptitudes:custodian_temple` (en cualquier punto; si el terreno no es apto no coloca nada: prueba en
+   una llanura). Debe aparecer un templo de 31×31 con la entrada al sur.
+2. **Atrio** (sur): columnas y la entrada de 3×3; un arco en el tabique lleva a la **sala del puzle** (norte).
+3. **Sala del puzle:** palancas y luces en el muro norte, el Sello y una **trampilla de piedra sellada** en el suelo; con
+   anillo II o más, placas con velas. Resuelve el puzle: la trampilla desaparece y se ve la **escalera** hacia abajo.
+4. **Subsuelo:** la escalera baja a una **antesala** cerrada por la **Puerta del Custodio**. Sin Ancla del Velo: aviso.
+   (Con T3c, antes hay que vencer al Autómata del atrio.) `/give @s aptitudes:ancla_del_velo` y úsala sobre la puerta:
+   se consume, la puerta cede y aparece el Custodio.
+5. **Cámara del Custodio:** Relicario y dos cofres. Al vencerlo suelta la llave del Relicario (como el templo antiguo).
+6. Comprueba que no hay cuevas, agua ni lava abiertas en el subsuelo y que ningún bloque queda fuera de los 31×31.
+7. Un templo antiguo ya generado sigue funcionando igual que antes.
+
 # T2 — materiales de la Niebla (verificación manual)
 
 1. Inicia la Niebla (T1) y mata un Errante Velado: suelta Jirón de Velo Espectral con frecuencia alta.
