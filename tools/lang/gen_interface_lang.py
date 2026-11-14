@@ -14,7 +14,8 @@ from ui_catalog import LOCALES, TRANSLATIONS
 
 
 def phase_one(key):
-    return not key.startswith(('guide.aptitudes.', 'node.aptitudes.', 'path.aptitudes.'))
+    return not key.startswith(('guide.aptitudes.', 'node.aptitudes.', 'path.aptitudes.',
+                                'config.aptitudes.field.'))  # v67: tooltips de configuración, es/en primero
 
 
 def build(reference, locale, previous):

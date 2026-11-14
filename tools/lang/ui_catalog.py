@@ -232,7 +232,8 @@ config.local¦Valores locais¦Valeurs locales¦Lokale Werte
 config.editable¦Servidor · você pode editar¦Serveur · modification autorisée¦Server · bearbeitbar
 config.readonly¦Servidor · somente leitura¦Serveur · lecture seule¦Server · schreibgeschützt
 config.none¦Nenhuma opção encontrada.¦Aucune option correspondante.¦Keine passende Option.
-config.hint¦✔ ou Enter aplica o valor. Cada opção está descrita em docs/CONFIGURATION.md¦✔ ou Entrée applique la valeur. Chaque option est décrite dans docs/CONFIGURATION.md¦✔ oder Eingabe übernimmt den Wert. Alle Optionen stehen in docs/CONFIGURATION.md
+config.hint¦✔ ou Enter aplica o valor. Passe o mouse sobre uma opção para ver o que ela faz.¦✔ ou Entrée applique la valeur. Survolez une option pour voir ce qu’elle fait.¦✔ oder Enter übernimmt den Wert. Fahre über eine Option, um zu sehen, was sie bewirkt.
+config.default¦Padrão: %s¦Par défaut : %s¦Standard: %s
 hud.tutorial¦Tutorial¦Tutoriel¦Tutorial
 """)
 

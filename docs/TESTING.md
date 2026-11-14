@@ -1,5 +1,20 @@
 # Pruebas de Aptitudes
 
+## v67 — Tooltips de la pantalla de configuración
+
+Automática: `ConfigTooltipRulesTest` (cada opción editable tiene descripción en es/en, sin porcentajes ni textos
+huérfanos; búsqueda por nombre o descripción).
+
+Validación en partida (pendiente):
+
+1. Abre la pantalla de configuración (Mod Menu o el botón de ajustes): al pasar el ratón por el nombre de una opción
+   aparece un cuadro con el nombre, la descripción y «Por defecto: …»; el cuadro no se sale de la pantalla y el texto se
+   ajusta a su ancho.
+2. Pasar el ratón por el campo de valor o por los botones **no** muestra el cuadro.
+3. Busca por una palabra de la descripción (p. ej., «eclipse» o «mana») y comprueba que salen las opciones relacionadas.
+4. Cambia el idioma a es, en, pt, fr y de: en pt/fr/de las descripciones salen en inglés hasta que se traduzcan.
+5. Desplaza la lista con la rueda y comprueba que el cuadro corresponde a la fila bajo el ratón.
+
 ## v67 (G1–G4) — Grimorio y bestiario de pergamino
 
 Automáticas: `BestiaryRulesTest`, `BestiaryRevealRulesTest` (revelado por muertes) y `GuideCardLayoutTest` (maqueta de la

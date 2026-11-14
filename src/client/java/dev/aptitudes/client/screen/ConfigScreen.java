@@ -2,6 +2,7 @@ package dev.aptitudes.client.screen;
 
 import dev.aptitudes.client.ClientServerConfig;
 import dev.aptitudes.config.AptitudesConfig;
+import dev.aptitudes.config.ConfigTooltipRules;
 import dev.aptitudes.config.ConfigFieldRules;
 import dev.aptitudes.network.ConfigEditPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -10,6 +11,8 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.screen.ScreenTexts;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
@@ -37,6 +40,8 @@ public class ConfigScreen extends Screen {
 	private TextFieldWidget search;
 	private String query = "";
 	private int scroll;
+	/** Valores por defecto, para mostrarlos en el tooltip. */
+	private static final AptitudesConfig DEFAULTS = new AptitudesConfig();
 	private int seenRevision;
 	private int left, top, w, h;
 
@@ -49,7 +54,10 @@ public class ConfigScreen extends Screen {
 		String q = query.trim().toLowerCase(Locale.ROOT);
 		if (q.isEmpty()) return allFields;
 		List<Field> out = new ArrayList<>();
-		for (Field f : allFields) if (f.getName().toLowerCase(Locale.ROOT).contains(q)) out.add(f);
+		// v67: también se busca en la descripción de cada opción (en el idioma actual).
+		for (Field f : allFields) {
+			if (ConfigTooltipRules.matches(q, f.getName(), I18n.translate(ConfigTooltipRules.descriptionKey(f.getName())))) out.add(f);
+		}
 		return out;
 	}
 
@@ -205,6 +213,13 @@ public class ConfigScreen extends Screen {
 			UiStyle.label(ctx, textRenderer, Text.literal(f.getName()), left + 12, y + 5, w / 2 - 6, UiStyle.TEXT);
 			y += ROW_H;
 		}
+		// v67: descripción y valor por defecto al pasar el ratón por el nombre de una opción.
+		int labelRight = left + w / 2 + 4;
+		if (mouseX >= left + 8 && mouseX < labelRight && mouseY >= top + 48) {
+			int row = (mouseY - (top + 48)) / ROW_H;
+			int index = scroll + row;
+			if (row < visibleRows() && index < fields.size()) renderFieldTooltip(ctx, fields.get(index), mouseX, mouseY);
+		}
 		if (fields.isEmpty()) {
 			ctx.drawCenteredTextWithShadow(textRenderer, Text.translatable("screen.aptitudes.config.none"), width / 2, top + 60, UiStyle.MUTED);
 		}
@@ -217,6 +232,16 @@ public class ConfigScreen extends Screen {
 			ctx.fill(left + w - 6, thumbY, left + w - 4, thumbY + thumbH, UiStyle.GOLD);
 		}
 		ctx.drawText(textRenderer, Text.translatable("screen.aptitudes.config.hint"), left + 10, top + h - 38, UiStyle.MUTED, false);
+	}
+
+	private void renderFieldTooltip(DrawContext ctx, Field f, int mouseX, int mouseY) {
+		List<OrderedText> lines = new ArrayList<>();
+		lines.add(Text.literal(f.getName()).formatted(Formatting.GOLD, Formatting.BOLD).asOrderedText());
+		Text description = Text.translatable(ConfigTooltipRules.descriptionKey(f.getName()));
+		lines.addAll(textRenderer.wrapLines(description, ConfigTooltipRules.MAX_TOOLTIP_WIDTH));
+		lines.add(Text.translatable("screen.aptitudes.config.default", ConfigFieldRules.format(read(f, DEFAULTS)))
+				.formatted(Formatting.GRAY).asOrderedText());
+		ctx.drawOrderedTooltip(textRenderer, lines, mouseX, mouseY);
 	}
 
 	@Override

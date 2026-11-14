@@ -10,6 +10,14 @@ Archivos (se crean en el primer arranque):
 El servidor envía al cliente las reglas que necesita (curvas de XP, costes…), así que el cliente
 siempre muestra lo que valida el servidor aunque su archivo local sea distinto.
 
+## Pantalla de configuración y tooltips (v67)
+
+En la pantalla de configuración, pasar el ratón por el nombre de una opción muestra su descripción y su valor por
+defecto, y la búsqueda también encuentra opciones por su descripción. El texto de cada opción está en los archivos de
+idioma como `config.aptitudes.field.<campo>`: **toda opción editable nueva necesita su descripción en `en_us.json` y
+`es_es.json`** (la prueba `ConfigTooltipRulesTest` falla si falta) y sin signos de porcentaje; las tablas de este documento
+siguen siendo la referencia con límites y notas.
+
 ## Asalto del Eclipse (v47)
 
 | Campo del servidor | Defecto | Límites | Descripción |
