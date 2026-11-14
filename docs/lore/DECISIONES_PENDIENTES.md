@@ -16,7 +16,7 @@
 | D-22 | LORE-010, 012 y 013 se dejan como están (punto 16) | `lore_catalog.py` |
 | D-25 | Aclaraciones de la cadena: el objeto de acceso se usa solo en la puerta del Custodio y se consume; el Behelit se espera 3 días por mundo desde el fin del Eclipse; la Niebla puede iniciarse en cualquier momento y dura un día de Minecraft; la Lluvia de brasas tiene espera; los sellos se retirarán con migración, sin eliminarlos ahora; el aldeano dice «los muertos se han ido, pero volverán» | 09 |
 | D-26 | Los 3 sellos de invocación se retirarán con migración; la Lluvia de brasas tiene espera de 5 días; el calendario rotativo desaparece por completo; la Niebla empieza al hablar con el aldeano | 09 |
-| D-31 | T2: el autor delegó los nombres y la receta. Elegidos por el redactor: **Núcleo del Osario** (`nucleo_osario`), **Ancla del Velo** (`ancla_del_velo`), receta sin forma 3 Jirón + 2 Núcleo + 3 Fragmentos de alma + 1 diamante y probabilidad del 85 % para ambos drops. Los ids son permanentes una vez publicados | 09, BALANCE |
+| D-31 | T2: el autor delegó los nombres y la receta. Elegidos por el redactor: **Núcleo del Osario** (`nucleo_osario`), **Ancla del Velo** (`ancla_del_velo`), receta sin forma 3 Jirón + 2 Núcleo + 3 Fragmentos de alma + 1 diamante y probabilidad del 85 % para ambos drops. Los ids son permanentes una vez publicados. **El autor aprobó los nombres y delegó en el redactor las cifras del botín** (2026-11-14) | 09, BALANCE |
 | D-19 | Fase 2a autorizada; camino 1 del CI (respaldo en inglés en pt/fr/de, generado por script) | tools/lang/gen_lore_lang.py |
 
 ## Abiertas (propuestas del redactor, a confirmar)
@@ -32,6 +32,7 @@
 | D-27 | Plan por tandas de `10_PLAN_DE_IMPLEMENTACION.md`: autorizar T0 y la tanda inicial (T1 y T2), y la política de ramas (una por tanda o commits en la rama actual) | Autorizar |
 | D-29 | T0/T1 autorizadas; commits por tanda en la rama actual. El caballero coronado de la imagen de referencia no es un mob real (lo añadió la IA que generó la imagen) | 10 |
 | D-30 | T1: Mayús + clic derecho como forma de «hablar» con el aldeano (provisional, para no quitar el comercio) y espera contada desde el inicio del evento (A-8, provisional) | 09, 10 |
+| D-32 | T3: el autor delegó las decisiones del templo; el redactor propone el diseño de `11_DISENO_T3_TEMPLO.md` (Feature de 31×31 en dos niveles, Autómata dormido en el atrio, Puerta del Custodio con el Ancla, templos antiguos intactos). Falta autorizar T3 | 11 |
 | D-24 | Referencia gráfica del bestiario y rediseño del Grimorio | El autor la tiene; pendiente de recibirla |
 | D-13 | ¿Quién recibe los desbloqueos nacidos de un evento de mundo (LORE-013/014, EVENT-003)? | Solo jugadores presentes en el Eclipse; los desconectados lo reciben al volver a entrar si lo completó. A decidir |
 | D-15 | ¿Dónde viven las crónicas de eventos de la Colección II? | Sin estructura hoy; no decidido |

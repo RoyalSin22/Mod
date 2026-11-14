@@ -27,6 +27,7 @@ para que los textos futuros (Grimorio, bestiario, inscripciones, tooltips) salga
 | [07_BESTIARIO_TEMPLOS_ARTEFACTOS.md](07_BESTIARIO_TEMPLOS_ARTEFACTOS.md) | Criaturas, jefes, templos y artefactos |
 | [09_CADENA_DE_PROGRESION.md](09_CADENA_DE_PROGRESION.md) | Cadena aprobada Niebla → templo → Behelit → Eclipse y su estado en el código |
 | [10_PLAN_DE_IMPLEMENTACION.md](10_PLAN_DE_IMPLEMENTACION.md) | Plan por tandas (T0–T7 y pista de arte); propuesta, sin autorizar |
+| [11_DISENO_T3_TEMPLO.md](11_DISENO_T3_TEMPLO.md) | Diseño propuesto de T3 (Templo del Custodio); sin autorizar |
 | [08_PREPARACION_GRIMORIO.md](08_PREPARACION_GRIMORIO.md) | Cómo encajaría el lore en el Grimorio real (sin implementar) |
 | [COLECCION_I_CORPUS.md](COLECCION_I_CORPUS.md) | Textos del autor de la Colección I (15 entradas, sin cambios) |
 | [AUDITORIA_COLECCION_I.md](AUDITORIA_COLECCION_I.md) | Revisión de esa colección frente al canon y al código |
