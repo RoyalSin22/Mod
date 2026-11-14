@@ -25,6 +25,15 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   ignoran y los puntos gastados en esas ramas vuelven a estar disponibles.
 
 ### Añadido
+- **T1 de la cadena narrativa — eventos por activación.** La **Niebla de almas** ya no sale por calendario: la inicia
+  un jugador con Mayús + clic derecho sobre el aldeano del gremio, afecta a todo el mundo, dura un día de Minecraft
+  (24 000 ticks) y tiene 10 días de espera; en espera, el aldeano dice «los muertos se han ido, pero volverán». La
+  **Lluvia de brasas** empieza al encender un portal al Nether en el Overworld, con 5 días de espera. El calendario
+  rotativo solo programa ya el Eclipse. Campos nuevos: `fogCooldownDays`, `fogDurationTicks` y
+  `emberRainCooldownDays` (los pesos `worldEventWeightSoulFog` y `worldEventWeightEmberRain` solo las desactivan con
+  0). Lógica pura en `event/EventTriggerRules` con `EventTriggerRulesTest` y `EventTriggerConfigValidationTest`;
+  estado en `WorldEventState` (`last_fog_start`, `last_ember_start`). Sin mixins: el portal se detecta con
+  `UseBlockCallback`. El texto de fin de la Niebla ya no dice «con el alba». Diseño: `docs/lore/09_CADENA_DE_PROGRESION.md`.
 - **v67 (F2) — 10 habilidades nuevas del Bersérker.**
   - **Talentos:** Cicatrices (los golpes fuertes reducen el daño siguiente), Sangre hirviente (bajo la mitad de vida,
     tus golpes queman), Hacha arrojadiza (atraviesa, desangra y vuelve) y Cadena de sangre (arrastra al enemigo y

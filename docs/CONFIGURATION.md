@@ -372,6 +372,10 @@ El calendario es el de `eclipseIntervalDays` y `eclipseFirstDay` (nombres histó
 evento elegido al azar entre los que tienen peso > 0, sin repetir el anterior (reproducible con la semilla del
 mundo). `eclipseEnabled = false` equivale a peso 0 para el Eclipse.
 
+> **T1 de la cadena narrativa:** el calendario solo programa el **Eclipse** (hasta que el Behelit lo sustituya). La
+> Niebla de almas y la Lluvia de brasas ya no salen por calendario: las activa un jugador (ver más abajo). Sus pesos
+> `worldEventWeightSoulFog` y `worldEventWeightEmberRain` solo sirven para **desactivarlas** (0).
+
 | Campo | Defecto | Límites | Descripción |
 |---|---|---|---|
 | `worldEventWeightEclipse` | 1 | [0, 100] | Peso del Eclipse. |
@@ -383,6 +387,20 @@ mundo). `eclipseEnabled = false` equivale a peso 0 para el Eclipse.
 
 La Niebla de almas usa `eclipseWaveIntervalSeconds` para sus oleadas y la mitad de `eclipseMaxMobsPerPlayer`
 como tope por jugador.
+
+### Eventos por activación (T1 de la cadena narrativa)
+
+La **Niebla de almas** la inicia un jugador con **Mayús + clic derecho** sobre el aldeano del gremio (sin Mayús se
+abre el comercio de siempre): empieza para todo el mundo y dura `fogDurationTicks`. Si está en espera, el aldeano
+responde «los muertos se han ido, pero volverán». La **Lluvia de brasas** empieza cuando un jugador enciende un
+portal al Nether en el Overworld (yesca y pedernal o carga de fuego sobre obsidiana). Las esperas se cuentan
+desde que el evento **empieza** (provisional) y no las consumen los comandos `/aptitudes event`.
+
+| Campo | Defecto | Límites | Descripción |
+|---|---|---|---|
+| `fogCooldownDays` | 10 | [1, 365] | Días de espera entre dos Nieblas de almas. |
+| `fogDurationTicks` | 24000 | [1200, 240000] | Duración de la Niebla en ticks (24 000 = un día de Minecraft). Antes duraba 12 000 desde las 18:00. |
+| `emberRainCooldownDays` | 5 | [1, 365] | Días de espera entre dos Lluvias de brasas provocadas por un portal. |
 
 ## Grupos (v29)
 

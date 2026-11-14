@@ -1409,8 +1409,11 @@ eclipse.name¦O Eclipse¦L'Éclipse¦Die Finsternis
 soul_fog.name¦Névoa das Almas¦Brume des âmes¦Seelennebel
 soul_fog.announce¦Esta noite a névoa trará aqueles que não descansam…¦Cette nuit, la brume amènera ceux qui ne reposent pas…¦Heute Nacht bringt der Nebel jene, die nicht ruhen…
 soul_fog.start¦A Névoa das Almas cobre o mundo. Algo se move na neblina.¦La Brume des âmes couvre le monde. Quelque chose bouge dans la brume.¦Seelennebel bedeckt die Welt. Etwas bewegt sich im Dunst.
-soul_fog.end¦A névoa se dissipa ao amanhecer.¦La brume se lève avec l'aube.¦Mit dem Morgengrauen lichtet sich der Nebel.
+soul_fog.end¦A névoa se dissipa.¦La brume se dissipe.¦Der Nebel lichtet sich.
 soul_fog.stopped¦A Névoa das Almas foi interrompida.¦La Brume des âmes a été arrêtée.¦Der Seelennebel wurde beendet.
+soul_fog.villager_start¦«Os mortos estão se levantando… Cuidado, a névoa já cobre estas terras.»¦« Les morts se relèvent… Prenez garde, la brume recouvre déjà ces terres. »¦„Die Toten erheben sich… Gebt Acht, der Nebel bedeckt schon diese Lande.“
+soul_fog.villager_wait¦«Os mortos se foram, mas voltarão.»¦« Les morts sont partis, mais ils reviendront. »¦„Die Toten sind fort, aber sie werden wiederkehren.“
+soul_fog.villager_busy¦«Agora não posso falar disso… algo mais se agita lá fora.»¦« Je ne peux pas en parler maintenant… autre chose s'agite là-dehors. »¦„Darüber kann ich jetzt nicht sprechen… draußen regt sich etwas anderes.“
 ember_rain.name¦Chuva de Brasas¦Pluie de braises¦Glutregen
 ember_rain.announce¦Amanhã o céu vai arder. Busque abrigo… ou minério.¦Demain, le ciel brûlera. Cherchez un abri… ou du minerai.¦Morgen brennt der Himmel. Suche Schutz… oder Erz.
 ember_rain.start¦Chuva de Brasas! Meteoros estão caindo: afaste-se dos rastros de fogo.¦Pluie de braises ! Des météores tombent : éloignez-vous des traînées de feu.¦Glutregen! Meteore fallen: Halte dich von den Feuerschweifen fern.

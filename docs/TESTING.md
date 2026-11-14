@@ -1422,6 +1422,22 @@ del borde y contenido desplazable. Esta medición no sustituye la inspección en
    desplazable y recetas del registro (iconos/tooltip con entradas y salidas reales). Pulsa los pétalos:
    abre su extracción desde la receta sincronizada. Repite en inglés y siete variantes de español.
 
+# T1 — eventos por activación (verificación manual)
+
+1. Habla con el aldeano del gremio **sin** Mayús: se abre el comercio de siempre y no pasa nada más.
+2. Con Mayús + clic derecho: mensaje del aldeano y arranca la Niebla de almas para todos los jugadores del mundo.
+   Con `/time` a mediodía también debe empezar (no depende de la hora). Dura 24 000 ticks y termina con «La niebla se disipa».
+3. Vuelve a hablar con Mayús durante la Niebla: «Ahora no puedo hablar de eso…» y no se reinicia.
+4. Tras terminar, habla de nuevo: «Los muertos se han ido, pero volverán». Tras 10 días (`/time add 240000`): empieza otra.
+5. Apaga y enciende el servidor con la Niebla en espera: la espera se conserva (`last_fog_start` en `aptitudes_world_events`).
+6. Con `worldEventWeightSoulFog = 0`: el aldeano solo comercia.
+7. Construye un marco de obsidiana en el Overworld y enciéndelo con yesca: empieza la Lluvia de brasas. Enciéndelo
+   otra vez o abre otro portal antes de 5 días: no empieza. Un portal ya abierto que vuelves a encender no cuenta.
+8. Enciende un marco en el Nether o en el End, o con lava o una flecha incendiaria: no cuenta. Spamear el encendido no genera
+   más de 16 comprobaciones (sin efecto visible).
+9. `/aptitudes event start soul_fog` y `ember_rain` siguen funcionando y **no** consumen la espera.
+10. El calendario ya no elige Niebla ni Lluvia: solo avisa y programa el Eclipse.
+
 # v30 — contratos del gremio (verificación manual)
 
 1. Fabrica un Tablón (3 papel arriba, 3 tablones en medio y 1 tablón abajo en el centro) y úsalo: 3 ofertas con
