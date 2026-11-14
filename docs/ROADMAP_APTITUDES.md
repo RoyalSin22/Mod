@@ -27,8 +27,10 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 - **F7 hecha:** 30 habilidades de Bardo, Brujo abisal y Domador (`docs/V67_F7_DISENO.md`) y encargo de sus iconos
   (`docs/PROMPT_ARTE_ICONOS_F7.md`). Con ella los 20 roles tienen sus 10 habilidades nuevas. Pendiente: validarlas en
   partida y el arte.
-- **Siguiente:** grimorio y bestiario rediseñados (cartas de pergamino con marco dorado, solo criaturas del mod), tooltips
-  de configuración (es/en primero) y el arte de los iconos. Validar F1–F7 en partida.
+- **Grimorio hecho (G1–G4):** bestiario solo del mod (13 entradas), cartas con revelado progresivo y estilo de pergamino
+  provisional (`docs/V67_GRIMORIO_DISENO.md`). Pendiente: el arte definitivo (G5, `docs/PROMPT_ARTE_GRIMORIO.md`), que está en
+  manos de otro chat, y el lore, que define la sesión narrativa.
+- **Siguiente:** tooltips de configuración (es/en primero) y el arte de los iconos. Validar F1–F7 y el grimorio en partida.
 
 ### v65 — Errante Velado: combate, Niebla y botín
 - Modelo editable independiente en `tools/models/blockbench/errante_velado.bbmodel`, atlas de 256 × 256 y seis

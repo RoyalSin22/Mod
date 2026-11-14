@@ -25,6 +25,23 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   ignoran y los puntos gastados en esas ramas vuelven a estar disponibles.
 
 ### Añadido
+- **v67 (G1–G4) — Grimorio y bestiario de pergamino.** Diseño aprobado en `docs/V67_GRIMORIO_DISENO.md`.
+  - **Bestiario solo del mod (G1):** el catálogo pasa de 57 a 13 entradas: Osario quebrado, Errante velado, Escorificador
+    de hierro y Custodio de las Cuatro Llaves (nuevo en el bestiario), los 3 jefes animados, los 4 jefes propios, élite y
+    campeón. Se retiran las criaturas y jefes de Minecraft y sus 34 consejos; los recuentos guardados de esas criaturas se
+    descartan al cargar. Las entradas nuevas se añaden al final.
+  - **Revelado progresivo (G1):** cada parte de la carta se ve con cierto número de muertes: 1 (nombre y modelo), 3
+    (estadísticas), 5 (consejos y botín) y 10 (lore); los jefes, 1 / 1 / 1 / 2. Lógica pura en `BestiaryRules`
+    (`Section`, `revealAt`, `revealed`, `killsMissing`).
+  - **Carta de criatura (G2):** retrato con el modelo, sello de muertes y región, cinta con el nombre, estadísticas
+    (leídas de los atributos de la criatura), consejos, botín y lore; las partes aún ocultas indican cuántas muertes
+    faltan. Maqueta pura en `logic/GuideCardLayout`.
+  - **Estilo de pergamino (G3):** `client/screen/GuideUi` dibuja la ventana, la hoja, el retrato, la cinta y los filetes
+    con marco dorado en todas las páginas del libro. Son piezas **provisionales** (rellenos, sin texturas) hasta que
+    llegue el arte (`docs/PROMPT_ARTE_GRIMORIO.md`).
+  - **Textos (G4):** consejo del Custodio, lore de las 13 entradas (provisional hasta que lo defina la sesión narrativa),
+    pistas de revelado y títulos de sección, en los 5 idiomas.
+  - **Pruebas:** `BestiaryRulesTest` actualizada, `BestiaryRevealRulesTest` y `GuideCardLayoutTest`.
 - **v67 (F7) — 30 habilidades nuevas: Bardo, Brujo abisal y Domador.** Con esta tanda los 20 roles tienen sus 10
   habilidades nuevas (5 pasivas y 5 activas) en Talentos, Veterano y Ascenso; diseño aprobado en
   `docs/V67_F7_DISENO.md`.

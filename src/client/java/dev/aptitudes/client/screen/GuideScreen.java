@@ -6,6 +6,7 @@ import dev.aptitudes.client.ClientGrimoire;
 import dev.aptitudes.client.ClientRoleState;
 import dev.aptitudes.client.ClientTutorial;
 import dev.aptitudes.guide.BestiaryRules;
+import dev.aptitudes.logic.GuideCardLayout;
 import dev.aptitudes.guide.GuideRules;
 import dev.aptitudes.item.ModItems;
 import dev.aptitudes.network.RoleSyncPayload;
@@ -329,7 +330,7 @@ public class GuideScreen extends Screen {
 	public void render(DrawContext ctx, int mouseX, int mouseY, float delta) {
 		super.render(ctx, mouseX, mouseY, delta);
 		hits.clear();
-		UiStyle.window(ctx, left, top, W, H);
+		GuideUi.window(ctx, left, top, W, H); // v67 (G3): pergamino
 		ctx.drawTextWithShadow(textRenderer, UiStyle.fit(textRenderer, title, LIST_W + 6), left + 10, top + 8, UiStyle.GOLD);
 		Tooltip tip = new Tooltip();
 		renderTabs(ctx, mouseX, mouseY, tip);
@@ -337,7 +338,7 @@ public class GuideScreen extends Screen {
 
 		int px = pageX();
 		int pw = pageW();
-		UiStyle.panel(ctx, px - 4, top + 22, pw + 8, H - 30);
+		GuideUi.panel(ctx, px - 4, top + 22, pw + 8, H - 30);
 		search.visible = recipesMode(); // invisible fuera del Recetario: no recibe clics
 		finder.visible = page == Page.SEARCH;
 		switch (page) {
@@ -757,6 +758,7 @@ public class GuideScreen extends Screen {
 		return new ItemStack(item == Items.AIR ? Items.BOOK : item);
 	}
 
+	/** Carta de criatura (v67, G2): retrato, estadísticas, consejos, botín y lore, revelados según las muertes. */
 	private void renderBeast(DrawContext ctx, int mouseX, int mouseY, Tooltip tip) {
 		BestiaryRules.Entry entry = beast;
 		if (entry == null) return;
@@ -767,54 +769,100 @@ public class GuideScreen extends Screen {
 		hits.add(new Hit(px, top + 25, textRenderer.getWidth(back) + 4, 10, this::goBack));
 		star(ctx, "beast:" + entry.id(), px + pw - 10, top + 26, mouseX, mouseY, tip);
 
-		// Modelo (la criatura base) o, si no hay, el icono grande.
-		int bx = px, by = top + 38, bw = 64, bh = 76;
-		ctx.fill(bx, by, bx + bw, by + bh, 0xFF141824);
-		ctx.drawBorder(bx, by, bw, bh, UiStyle.GOLD_DARK);
-		if (!drawModel(ctx, entry, bx + 1, by + 1, bx + bw - 1, by + bh - 1, mouseX, mouseY)) {
-			bigItem(ctx, icon(entry), bx + bw / 2 - 16, by + bh / 2 - 16);
-		}
+		int line = 10;
+		int cy = top + 38;
+		GuideCardLayout.Card card = GuideCardLayout.layout(pw, bottom - cy, line);
+		int kills = ClientGrimoire.kills(entry.id());
+		BestiaryRules.Kind kind = entry.kind();
 
-		int ix = px + bw + 6, iw = pw - bw - 6, y = by + 1;
+		// Retrato: el modelo de la criatura (o su icono) con un sello de muertes y región debajo.
+		GuideCardLayout.Rect pr = card.portrait();
+		int bx = px + pr.x(), by = cy + pr.y();
+		GuideUi.portrait(ctx, bx, by, pr.w(), pr.h());
+		if (!drawModel(ctx, entry, bx + 3, by + 3, bx + pr.w() - 3, by + pr.h() - 3, mouseX, mouseY)) {
+			bigItem(ctx, icon(entry), bx + pr.w() / 2 - 16, by + pr.h() / 2 - 16);
+		}
+		GuideCardLayout.Rect sr = card.seal();
+		int sx = px + sr.x(), sy = cy + sr.y();
+		ctx.drawText(textRenderer, UiStyle.fit(textRenderer, Text.translatable("bestiary.aptitudes.kills", kills), sr.w()),
+				sx, sy, UiStyle.TEXT, false);
+		ctx.drawText(textRenderer, UiStyle.fit(textRenderer, Text.translatable("bestiary.aptitudes.region."
+				+ entry.region().name().toLowerCase(Locale.ROOT)), sr.w()), sx, sy + line, UiStyle.MUTED, false);
+
+		// Nombre sobre la cinta y tipo.
+		int tx = px + card.textX(), tw = card.textW();
+		GuideUi.ribbon(ctx, tx, cy + card.ribbonY(), tw, GuideCardLayout.RIBBON_HEIGHT);
 		ctx.drawTextWithShadow(textRenderer, UiStyle.fit(textRenderer,
-				Text.translatable(BestiaryRules.nameKey(entry)).formatted(Formatting.BOLD), iw), ix, y, UiStyle.GOLD);
-		y += 12;
-		Text kind = Text.translatable("bestiary.aptitudes.kind." + entry.kind().name().toLowerCase(Locale.ROOT))
-				.append(" · ").append(Text.translatable("bestiary.aptitudes.region." + entry.region().name().toLowerCase(Locale.ROOT)));
-		ctx.drawText(textRenderer, UiStyle.fit(textRenderer, kind, iw), ix, y, UiStyle.MUTED, false);
-		y += 10;
-		ctx.drawText(textRenderer, UiStyle.fit(textRenderer, Text.translatable("bestiary.aptitudes.kills",
-				ClientGrimoire.kills(entry.id())), iw), ix, y, UiStyle.TEXT, false);
-		y += 10;
-		for (Text line : facts(entry)) {
-			if (y > by + bh - 9) break;
-			ctx.drawText(textRenderer, UiStyle.fit(textRenderer, line, iw), ix, y, UiStyle.UP, false);
-			y += 10;
+				Text.translatable(BestiaryRules.nameKey(entry)).formatted(Formatting.BOLD), tw - 8), tx + 4,
+				cy + card.ribbonY() + 3, UiStyle.GOLD);
+		ctx.drawText(textRenderer, UiStyle.fit(textRenderer, Text.translatable("bestiary.aptitudes.kind." + kind.name().toLowerCase(Locale.ROOT)),
+				tw), tx, cy + card.kindY(), UiStyle.MUTED, false);
+
+		// Estadísticas.
+		int y = cy + card.statsY();
+		if (BestiaryRules.revealed(kind, BestiaryRules.Section.STATS, kills)) {
+			int shown = 0;
+			for (Text fact : facts(entry)) {
+				if (shown >= GuideCardLayout.STATS_LINES) break;
+				ctx.drawText(textRenderer, UiStyle.fit(textRenderer, fact, tw), tx, y + shown * line, UiStyle.UP, false);
+				shown++;
+			}
+		} else {
+			locked(ctx, tx, y, tw, kind, BestiaryRules.Section.STATS, kills);
+		}
+		GuideUi.divider(ctx, tx, cy + card.tipsY() - 2, tw);
+
+		// Consejos y botín.
+		boolean tipsOpen = BestiaryRules.revealed(kind, BestiaryRules.Section.TIPS, kills);
+		ctx.drawText(textRenderer, Text.translatable("bestiary.aptitudes.section.tips"), tx, cy + card.tipsY(), UiStyle.GOLD, false);
+		if (tipsOpen) {
+			int ty = cy + card.tipsY() + line, n = 0;
+			for (OrderedText l : textRenderer.wrapLines(Text.translatable(entry.tipKey()), tw)) {
+				if (n++ >= card.tipsLines()) break;
+				ctx.drawText(textRenderer, l, tx, ty, UiStyle.TEXT, false);
+				ty += line;
+			}
+		} else {
+			locked(ctx, tx, cy + card.tipsY() + line, tw, kind, BestiaryRules.Section.TIPS, kills);
+		}
+		ctx.drawText(textRenderer, Text.translatable("bestiary.aptitudes.drops"), tx, cy + card.lootY(), UiStyle.GOLD, false);
+		if (tipsOpen) {
+			int dx = tx, dy = cy + card.lootY() + line;
+			for (String id : entry.drops()) {
+				Item item = Registries.ITEM.get(Identifier.of(id));
+				if (item == Items.AIR || dx + 18 > tx + tw) continue;
+				boolean hover = mouseX >= dx && mouseX < dx + 18 && mouseY >= dy && mouseY < dy + 18;
+				slot(ctx, dx, dy, hover);
+				ItemStack stack = new ItemStack(item);
+				ctx.drawItem(stack, dx + 1, dy + 1);
+				if (hover) tip.item(stack);
+				if (isModItem(item)) hits.add(new Hit(dx, dy, 18, 18, () -> openItem(item, true)));
+				dx += 20;
+			}
+		} else {
+			locked(ctx, tx, cy + card.lootY() + line, tw, kind, BestiaryRules.Section.TIPS, kills);
 		}
 
-		// Consejo (ataques y debilidades) y botín.
-		y = by + bh + 5;
-		for (OrderedText line : textRenderer.wrapLines(Text.translatable(entry.tipKey()), pw - 4)) {
-			if (y > bottom - 34) break;
-			ctx.drawText(textRenderer, line, px, y, UiStyle.TEXT, false);
-			y += 10;
+		// Lore.
+		GuideUi.divider(ctx, tx, cy + card.loreY() - 2, tw);
+		ctx.drawText(textRenderer, Text.translatable("bestiary.aptitudes.section.lore"), tx, cy + card.loreY(), UiStyle.GOLD, false);
+		if (BestiaryRules.revealed(kind, BestiaryRules.Section.LORE, kills)) {
+			int ly = cy + card.loreY() + line, n = 0;
+			for (OrderedText l : textRenderer.wrapLines(Text.translatable(entry.loreKey()).formatted(Formatting.ITALIC), tw)) {
+				if (n++ >= card.loreLines()) break;
+				ctx.drawText(textRenderer, l, tx, ly, UiStyle.MUTED, false);
+				ly += line;
+			}
+		} else {
+			locked(ctx, tx, cy + card.loreY() + line, tw, kind, BestiaryRules.Section.LORE, kills);
 		}
-		if (entry.drops().isEmpty() || y > bottom - 30) return;
-		y += 3;
-		ctx.drawText(textRenderer, Text.translatable("bestiary.aptitudes.drops"), px, y, UiStyle.GOLD, false);
-		y += 11;
-		int dx = px;
-		for (String id : entry.drops()) {
-			Item item = Registries.ITEM.get(Identifier.of(id));
-			if (item == Items.AIR || dx + 18 > px + pw) continue;
-			boolean hover = mouseX >= dx && mouseX < dx + 18 && mouseY >= y && mouseY < y + 18;
-			slot(ctx, dx, y, hover);
-			ItemStack stack = new ItemStack(item);
-			ctx.drawItem(stack, dx + 1, y + 1);
-			if (hover) tip.item(stack);
-			if (isModItem(item)) hits.add(new Hit(dx, y, 18, 18, () -> openItem(item, true)));
-			dx += 20;
-		}
+	}
+
+	/** Pista de una parte aún no revelada: cuántas muertes faltan. */
+	private void locked(DrawContext ctx, int x, int y, int w, BestiaryRules.Kind kind, BestiaryRules.Section section, int kills) {
+		int missing = BestiaryRules.killsMissing(kind, section, kills);
+		Text hint = Text.translatable(missing == 1 ? "bestiary.aptitudes.reveal.one" : "bestiary.aptitudes.reveal", missing);
+		ctx.drawText(textRenderer, UiStyle.fit(textRenderer, hint, w), x, y, UiStyle.MUTED, false);
 	}
 
 	/** Estadísticas base del juego y debilidades por etiqueta (la lista se adapta a los datapacks). */

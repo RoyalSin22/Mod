@@ -1,5 +1,25 @@
 # Pruebas de Aptitudes
 
+## v67 (G1–G4) — Grimorio y bestiario de pergamino
+
+Automáticas: `BestiaryRulesTest`, `BestiaryRevealRulesTest` (revelado por muertes) y `GuideCardLayoutTest` (maqueta de la
+carta).
+
+Validación en partida (pendiente):
+
+1. **Bestiario vacío:** abre el grimorio (K o el libro) → pestaña Bestiario: aparecen solo 13 casillas del mod, todas
+   con «?» al principio; ninguna criatura de Minecraft.
+2. **Revelado:** mata un Osario quebrado (`/summon aptitudes:osario_quebrado`): la página se abre con nombre, modelo y
+   región; estadísticas, consejos, botín y lore dicen «N muertes más para revelarlo». Tras 3, 5 y 10 muertes se
+   desbloquean por orden. Un jefe animado enseña todo menos el lore en la primera muerte.
+3. **Custodio:** derrota al guardián de un templo sellado: aparece su página (botín: llave del templo).
+4. **Carta:** el modelo gira, el nombre cabe en la cinta, el botín abre la ficha de los objetos del mod, y el texto no se
+   sale con escalas de interfaz 1, 2, 3 y automática (ventana pequeña incluida).
+5. **Pergamino:** todas las páginas (capítulos, recetas, sendas, buscador, marcadores, progreso) conservan el texto
+   legible sobre el nuevo fondo y marco.
+6. **Idiomas:** cambia a es, en, pt, fr y de y comprueba nombres, consejos, lore y pistas.
+7. **Migración:** un mundo con muertes de Minecraft guardadas carga sin errores y las ignora.
+
 ## v67 (F7) — Habilidades nuevas de Bardo, Brujo abisal y Domador
 
 Automáticas: `BardRulesTest`, `WarlockRulesTest`, `TamerRulesTest` (cifras de cada rol) y `RoleExtrasTest` (datos de los

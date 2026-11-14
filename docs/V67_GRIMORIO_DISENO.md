@@ -1,6 +1,6 @@
 # v67 · Grimorio y bestiario rediseñados (diseño para aprobar)
 
-Estado: **propuesta, sin código.** Decisiones ya tomadas por el autor (2026-11-14): el bestiario queda **solo con criaturas
+Estado: **G1–G4 implementadas (2026-11-14); G5 (arte) pendiente.** Decisiones ya tomadas por el autor (2026-11-14): el bestiario queda **solo con criaturas
 del mod**; cada carta muestra **modelo y nombre, estadísticas y región, botín y consejos, y lore**; el rediseño cubre
 **todo el libro** con estética de pergamino (la lógica y la estructura de capítulos no cambian).
 
@@ -92,3 +92,13 @@ Sin opciones de configuración nuevas. Documentación: CHANGELOG, TESTING, ROADM
 3. Que el **lore** sea provisional hasta que la sesión narrativa lo defina.
 4. Que el arte quede en **huecos provisionales** y que me pases la **imagen de referencia** cuando la tengas.
 5. ¿Hacemos **G1–G4 de una vez** y G5 cuando llegue el arte?
+
+## 9. Diferencias entre el diseño y la implementación
+
+| Punto | Diseño | Implementado | Motivo |
+|---|---|---|---|
+| Catálogo | 14 entradas | 13 entradas | Se contó mal: 7 jefes + 2 élites + 4 criaturas (con el Custodio) |
+| Región del Custodio | Por confirmar | Superficie | Aparece solo en los templos sellados |
+| Pergamino | Texto sobre pergamino | Pergamino **oscuro** (sepia) con marco dorado | El texto del libro es claro; un pergamino claro obliga a recolorear todas las páginas |
+| Arte | Piezas con textura generadas | Rellenos sin textura (`GuideUi`) y encargo de arte | El arte definitivo lo produce otro chat; no se inventa |
+| `GuideLayout` | Maqueta de todo el libro | `GuideCardLayout` (solo la carta) | El resto de páginas no cambia de estructura |

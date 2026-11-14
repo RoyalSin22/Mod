@@ -38,6 +38,9 @@ public final class BestiaryRules {
 		}
 
 		public String tipKey() { return "bestiary.aptitudes." + id + ".tip"; }
+
+		/** Texto de ambientación de la carta (v67, G1). */
+		public String loreKey() { return "bestiary.aptitudes." + id + ".lore"; }
 	}
 
 	private static final List<Entry> ENTRIES;
@@ -47,42 +50,7 @@ public final class BestiaryRules {
 
 	static {
 		List<Entry> out = new ArrayList<>();
-		creature(out, "zombie", Region.OVERWORLD, "rotten_flesh", "iron_ingot", "carrot");
-		creature(out, "husk", Region.OVERWORLD, "rotten_flesh", "iron_ingot");
-		creature(out, "drowned", Region.OVERWORLD, "rotten_flesh", "copper_ingot", "trident");
-		creature(out, "zombie_villager", Region.OVERWORLD, "rotten_flesh", "iron_ingot");
-		creature(out, "skeleton", Region.OVERWORLD, "bone", "arrow", "bow");
-		creature(out, "stray", Region.OVERWORLD, "bone", "arrow", "tipped_arrow");
-		creature(out, "bogged", Region.OVERWORLD, "bone", "arrow", "tipped_arrow");
-		creature(out, "spider", Region.OVERWORLD, "string", "spider_eye");
-		creature(out, "cave_spider", Region.OVERWORLD, "string", "spider_eye");
-		creature(out, "creeper", Region.OVERWORLD, "gunpowder");
-		creature(out, "enderman", Region.ANY, "ender_pearl");
-		creature(out, "witch", Region.OVERWORLD, "glowstone_dust", "redstone", "glass_bottle", "sugar");
-		creature(out, "slime", Region.OVERWORLD, "slime_ball");
-		creature(out, "phantom", Region.OVERWORLD, "phantom_membrane");
-		creature(out, "silverfish", Region.OVERWORLD);
-		creature(out, "pillager", Region.OVERWORLD, "arrow", "crossbow");
-		creature(out, "vindicator", Region.OVERWORLD, "emerald", "iron_axe");
-		creature(out, "evoker", Region.OVERWORLD, "totem_of_undying", "emerald");
-		creature(out, "ravager", Region.OVERWORLD, "saddle");
-		creature(out, "guardian", Region.OVERWORLD, "prismarine_shard", "prismarine_crystals", "cod");
-		creature(out, "elder_guardian", Region.OVERWORLD, "wet_sponge", "prismarine_shard");
-		creature(out, "breeze", Region.OVERWORLD, "breeze_rod");
-		creature(out, "warden", Region.OVERWORLD, "sculk_catalyst");
-		creature(out, "zombified_piglin", Region.NETHER, "rotten_flesh", "gold_nugget", "gold_ingot");
-		creature(out, "piglin_brute", Region.NETHER, "golden_axe");
-		creature(out, "hoglin", Region.NETHER, "porkchop", "leather");
-		creature(out, "blaze", Region.NETHER, "blaze_rod");
-		creature(out, "ghast", Region.NETHER, "ghast_tear", "gunpowder");
-		creature(out, "magma_cube", Region.NETHER, "magma_cream");
-		creature(out, "wither_skeleton", Region.NETHER, "coal", "bone", "wither_skeleton_skull");
-		creature(out, "endermite", Region.END);
-		creature(out, "shulker", Region.END, "shulker_shell");
-		out.add(new Entry("wither", Kind.BOSS, Region.ANY, "minecraft:wither", null, "minecraft:nether_star",
-				List.of("minecraft:nether_star")));
-		out.add(new Entry("ender_dragon", Kind.BOSS, Region.END, "minecraft:ender_dragon", null, "minecraft:dragon_egg",
-				List.of("minecraft:dragon_egg", "minecraft:experience_bottle")));
+		// v67 (G1): el bestiario solo tiene criaturas, jefes y élites del mod; las de Minecraft se retiraron.
 		out.add(new Entry("elite", Kind.ELITE, Region.ANY, null, null, "aptitudes:elite_essence",
 				List.of("aptitudes:elite_essence", "aptitudes:soul_shard")));
 		out.add(new Entry("champion", Kind.ELITE, Region.ANY, null, null, "aptitudes:champion_heart",
@@ -107,6 +75,9 @@ public final class BestiaryRules {
 		// v65: escorificador de hierro (Nether y Lluvia de brasas).
 		out.add(new Entry("escorificador_hierro", Kind.CREATURE, Region.NETHER, "aptitudes:escorificador_hierro", null,
 				"aptitudes:escorificador_hierro_spawn_egg", List.of("aptitudes:soul_shard")));
+		// v67 (G1): Custodio de las Cuatro Llaves (guardián de los templos sellados); se añade al final.
+		out.add(new Entry("custodio", Kind.CREATURE, Region.OVERWORLD, "aptitudes:custodio_cuatro_llaves", null,
+				"aptitudes:temple_key", List.of("aptitudes:temple_key")));
 		ENTRIES = Collections.unmodifiableList(out);
 		for (Entry e : ENTRIES) {
 			if (BY_ID.put(e.id(), e) != null) throw new IllegalStateException("Entrada duplicada: " + e.id());
@@ -116,12 +87,6 @@ public final class BestiaryRules {
 	}
 
 	private BestiaryRules() {}
-
-	private static void creature(List<Entry> out, String name, Region region, String... drops) {
-		List<String> ids = new ArrayList<>();
-		for (String d : drops) ids.add("minecraft:" + d);
-		out.add(new Entry(name, Kind.CREATURE, region, "minecraft:" + name, null, "minecraft:" + name + "_spawn_egg", ids));
-	}
 
 	private static void boss(List<Entry> out, String kind, Region region, String entity, String core) {
 		out.add(new Entry("boss_" + kind, Kind.BOSS, region, entity, kind, core, List.of(core, "aptitudes:soul_shard")));
@@ -163,6 +128,29 @@ public final class BestiaryRules {
 			if (champion) out.add("champion");
 		}
 		return out;
+	}
+
+	/** Partes de una carta que se revelan con las muertes (v67, G1). */
+	public enum Section { IDENTITY, STATS, TIPS, LORE }
+
+	/** Muertes necesarias para ver cada parte de la carta de una criatura o un élite: nombre, estadísticas, consejos y lore. */
+	private static final int[] REVEAL_COMMON = {1, 3, 5, 10};
+	/** Los jefes se matan pocas veces: casi todo se ve con la primera muerte. */
+	private static final int[] REVEAL_BOSS = {1, 1, 1, 2};
+
+	/** Muertes necesarias para ver {@code section} en una carta de ese tipo. */
+	public static int revealAt(Kind kind, Section section) {
+		return (kind == Kind.BOSS ? REVEAL_BOSS : REVEAL_COMMON)[section.ordinal()];
+	}
+
+	/** ¿Con {@code kills} muertes se ve esa parte de la carta? */
+	public static boolean revealed(Kind kind, Section section, int kills) {
+		return kills >= revealAt(kind, section);
+	}
+
+	/** Muertes que faltan para ver esa parte (0 si ya se ve). */
+	public static int killsMissing(Kind kind, Section section, int kills) {
+		return Math.max(0, revealAt(kind, section) - Math.max(0, kills));
 	}
 
 	/** Suma uno con tope. */
