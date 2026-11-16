@@ -33,6 +33,12 @@ public final class LoreRules {
 	/** Lore desbloqueado al superar la Cripta de la Niebla bajo el Templo del Custodio (V69). */
 	public static final String LORE_CRYPT_CLEARED = "crypt_cleared_lore";
 
+	/** V72: lore del segundo arco, que se revela al sobrevivir a un segundo Eclipse. */
+	public static final String LORE_UNFINISHED_OATH = "unfinished_oath_lore";
+
+	/** V72: marca interna (no revela entradas por sí sola): el jugador ya sobrevivió a un Eclipse. */
+	public static final String MARKER_ECLIPSE_SURVIVED = "eclipse_survived_once";
+
 	/** Todas las ids de lore válidas en T7a. */
 	private static final Set<String> ALL_VALID_IDS = Set.of(
 			LORE_SOUL_FOG_TRIGGER,
@@ -41,7 +47,9 @@ public final class LoreRules {
 			LORE_BEHELIT_FOUND,
 			LORE_ECLIPSE_SACRIFICE,
 			LORE_ECLIPSE_AFTERMATH,
-			LORE_CRYPT_CLEARED
+			LORE_CRYPT_CLEARED,
+			LORE_UNFINISHED_OATH,
+			MARKER_ECLIPSE_SURVIVED
 	);
 
 	/** Valida que un id de lore sea válido. */
@@ -91,5 +99,15 @@ public final class LoreRules {
 	/** Desbloqueos al derrotar al campeón final de la Cripta de la Niebla (V69). */
 	public static Set<String> unlocksOnCryptCleared() {
 		return Set.of(LORE_CRYPT_CLEARED);
+	}
+
+	/**
+	 * V72: desbloqueos al sobrevivir a un Eclipse. La primera vez solo anota la marca; la segunda revela además
+	 * «El juramento sin cumplir» (el Santuario de las Dos Verdades, su fuente original, no existe).
+	 *
+	 * @param has si el jugador ya tiene ese id de lore
+	 */
+	public static Set<String> unlocksOnEclipseSurvived(java.util.function.Predicate<String> has) {
+		return has.test(MARKER_ECLIPSE_SURVIVED) ? Set.of(MARKER_ECLIPSE_SURVIVED, LORE_UNFINISHED_OATH) : Set.of(MARKER_ECLIPSE_SURVIVED);
 	}
 }

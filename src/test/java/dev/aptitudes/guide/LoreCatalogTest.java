@@ -30,13 +30,16 @@ class LoreCatalogTest {
 
 	@Test void everyUnlockOfTheGameRevealsAtLeastOneEntry() {
 		for (String unlock : LoreRules.validLoreIds()) {
+			if (unlock.equals(LoreRules.MARKER_ECLIPSE_SURVIVED)) continue; // marca interna: no revela entradas por sí sola
 			assertTrue(LoreCatalog.ENTRIES.stream().anyMatch(e -> e.source().equals(unlock)), "sin entradas: " + unlock);
 		}
 	}
 
 	@Test void starterEntriesAreAlwaysVisibleAndNeverOnesNeverAre() {
 		assertEquals(3, LoreCatalog.unlockedCount(id -> false));
-		assertFalse(LoreCatalog.unlocked(LoreCatalog.byId("arc2.unfinished_oath"), id -> true));
+		assertFalse(LoreCatalog.unlocked(LoreCatalog.byId("arc2.unfinished_oath"), id -> false));
+		assertTrue(LoreCatalog.unlocked(LoreCatalog.byId("arc2.unfinished_oath"), LoreRules.LORE_UNFINISHED_OATH::equals));
+		assertFalse(LoreCatalog.unlocked(new LoreCatalog.Entry("x", LoreCatalog.Kind.LORE, LoreCatalog.NEVER), id -> true));
 		assertTrue(LoreCatalog.unlocked(LoreCatalog.byId("cosmology.essence_within"), id -> false));
 	}
 

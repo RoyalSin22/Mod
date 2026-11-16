@@ -373,8 +373,8 @@
       ],
       "unlock": {
         "intent": "Final del Santuario de las Dos Verdades",
-        "verification": "blocked",
-        "hook": "La estructura no existe."
+        "verification": "plausible_hook",
+        "hook": "Segunda supervivencia a un Eclipse: LoreManager.unlocksOnEclipseSurvived desde EclipseManager.end (id unfinished_oath_lore). El Santuario de las Dos Verdades no existe."
       },
       "related": {
         "docs": [

@@ -6,6 +6,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Cambiado
+- **v72 — El juramento sin cumplir.** La última entrada de las Crónicas se revela al sobrevivir a un **segundo Eclipse** (la
+  primera vez solo anota una marca interna; quien cae no cuenta). El Santuario de las Dos Verdades, su fuente original,
+  sigue sin existir. Sin estado nuevo: usa dos ids de `LoreRules`. Las 18 entradas ya tienen fuente.
 - **v70.1 — Balance de las oleadas.** Las oleadas de la Cripta de la Niebla pasan de 4/6/8 a **5/7/9** y la sala de pruebas del
   Piso 2 usa sus propias bases (4 y 6), siempre por debajo de las de la Cripta, que es el final opcional. Con pruebas
   (`CryptRulesTest`).

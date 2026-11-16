@@ -48,7 +48,7 @@ public final class LoreCatalog {
 			new Entry("temple.last_mandate", Kind.LORE, LoreRules.LORE_CUSTODIAN_DEFEATED),
 			new Entry("event.current_eclipse", Kind.LORE, LoreRules.LORE_ECLIPSE_SACRIFICE),
 			new Entry("event.silent_fracture", Kind.LORE, LoreRules.LORE_ECLIPSE_AFTERMATH),
-			new Entry("arc2.unfinished_oath", Kind.LORE, NEVER),
+			new Entry("arc2.unfinished_oath", Kind.LORE, LoreRules.LORE_UNFINISHED_OATH),
 			new Entry("event.soul_fog_chronicle", Kind.CHRONICLE, LoreRules.LORE_SOUL_FOG_TRIGGER),
 			new Entry("event.ember_rain_chronicle", Kind.CHRONICLE, LoreRules.LORE_EMBER_RAIN_TRIGGER),
 			new Entry("event.eclipse_chronicle", Kind.CHRONICLE, LoreRules.LORE_ECLIPSE_SACRIFICE));

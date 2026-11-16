@@ -30,7 +30,21 @@ class LoreFlowTest {
 			assertTrue(now > count, "el desbloqueo " + hook + " debe revelar entradas nuevas");
 			count = now;
 		}
-		assertEquals(LoreCatalog.total() - 1, count, "solo queda bloqueada la que aún no tiene fuente");
+		assertEquals(LoreCatalog.total() - 1, count, "solo queda bloqueado el juramento: pide sobrevivir a dos Eclipses");
+		state = apply(state, LoreRules.unlocksOnEclipseSurvived(state::isUnlocked));
+		assertEquals(LoreCatalog.total() - 1, LoreCatalog.unlockedCount(state::isUnlocked), "la primera supervivencia solo anota la marca");
+		state = apply(state, LoreRules.unlocksOnEclipseSurvived(state::isUnlocked));
+		assertEquals(LoreCatalog.total(), LoreCatalog.unlockedCount(state::isUnlocked), "la segunda revela el juramento");
+	}
+
+	@Test void theOathNeedsTwoSurvivalsNotJustOne() {
+		LoreState once = new LoreState().unlockAll(LoreRules.unlocksOnEclipseSurvived(id -> false));
+		assertTrue(once.isUnlocked(LoreRules.MARKER_ECLIPSE_SURVIVED));
+		assertFalse(once.isUnlocked(LoreRules.LORE_UNFINISHED_OATH));
+		LoreState twice = once.unlockAll(LoreRules.unlocksOnEclipseSurvived(once::isUnlocked));
+		assertTrue(twice.isUnlocked(LoreRules.LORE_UNFINISHED_OATH));
+		LoreState thrice = twice.unlockAll(LoreRules.unlocksOnEclipseSurvived(twice::isUnlocked));
+		assertEquals(twice, thrice, "una tercera vez no cambia nada");
 	}
 
 	@Test void aRepeatedHookChangesNothing() {

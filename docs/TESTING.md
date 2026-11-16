@@ -5,7 +5,7 @@
 Automáticas: `LoreFlowTest` (cada hook del juego revela entradas nuevas, un hook repetido no cambia el estado, el payload de
 sincronización va y vuelve completo y rechaza tamaños absurdos), `LoreCatalogTest` (ids únicos, cada desbloqueo del juego revela entradas, tres visibles al inicio, textos en los
 6 idiomas). En partida (pendiente): 1) abrir el Grimorio y ver «Crónicas» con 3/18; 2) iniciar la Niebla con el aldeano y
-comprobar que aparecen «La Huella de los Caídos» y su crónica; 3) lo mismo con la Lluvia de brasas, la caída del Custodio, la
+comprobar que aparecen «La Huella de los Caídos» y su crónica; 3) sobrevivir a dos Eclipses para revelar «El juramento sin cumplir»; lo mismo con la Lluvia de brasas, la caída del Custodio, la
 cámara de diamante, el Eclipse (inicio y final) y la Cripta; 4) comprobar el desplazamiento de textos largos y el botón Volver.
 
 ## V70 — Templo del Custodio hondo

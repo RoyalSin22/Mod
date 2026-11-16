@@ -87,6 +87,11 @@ public final class LoreManager {
 		unlockAll(player, LoreRules.unlocksOnCryptCleared());
 	}
 
+	/** V72: sobrevivir a un Eclipse; el segundo revela el lore del segundo arco. */
+	public static void unlocksOnEclipseSurvived(ServerPlayerEntity player) {
+		unlockAll(player, LoreRules.unlocksOnEclipseSurvived(id -> isUnlocked(player, id)));
+	}
+
 	/** Retorna True si un lore está desbloqueado para el jugador. */
 	public static boolean isUnlocked(ServerPlayerEntity player, String loreId) {
 		LoreState state = player.getAttachedOrCreate(ModAttachments.LORE);
