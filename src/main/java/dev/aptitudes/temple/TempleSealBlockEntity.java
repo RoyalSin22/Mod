@@ -79,6 +79,18 @@ public class TempleSealBlockEntity extends BlockEntity {
 	private boolean cryptWaveLive;
 	private long cryptIdleTicks;
 
+	// V70: Templo hondo (layout 3 y 4). Todo al final del NBT.
+	/** Piedra sellada de la escalera del Piso 1 al 2 y puntos y esquinas de la sala de pruebas (relativos al sello). */
+	final List<BlockPos> gateOne = new ArrayList<>();
+	final List<BlockPos> trialSpawns = new ArrayList<>();
+	BlockPos trialMin = BlockPos.ORIGIN, trialMax = BlockPos.ORIGIN;
+	/** Oleada actual de la sala de pruebas (1..{@link TempleFlowRules#TRIAL_WAVES}); 0 = aún sin empezar. Se guarda. */
+	int trialWave;
+	private final java.util.Set<UUID> trialMobs = new java.util.HashSet<>();
+	private int trialRemaining;
+	private boolean trialLive;
+	private long trialIdleTicks;
+
 	public TempleSealBlockEntity(BlockPos pos, BlockState state) {
 		super(Temples.SEAL_ENTITY, pos, state);
 	}
@@ -189,6 +201,7 @@ public class TempleSealBlockEntity extends BlockEntity {
 					markDirty();
 				}
 			}
+			case TRIAL -> serverTickTrial(world);
 			case PUZZLE -> {
 				if (!TempleFlowRules.puzzleActive(flow)) return;
 				switch (stage) {
@@ -268,10 +281,102 @@ public class TempleSealBlockEntity extends BlockEntity {
 	}
 
 	/** Cae el Autómata del atrio: se desbloquea el puzle. */
-	void automatonDefeated() {
-		flow = TempleFlowRules.afterAutomatonDown(flow);
+	void automatonDefeated(ServerWorld world) {
+		flow = TempleFlowRules.afterAutomatonDown(flow, layout);
+		if (flow == Flow.TRIAL) {
+			breakSealed(world, gateOne);
+			trialWave = 0;
+			world.playSound(null, pos, SoundEvents.BLOCK_END_PORTAL_FRAME_FILL, SoundCategory.BLOCKS, 1.2f, 0.7f);
+			tell(nearby(world, 40), "temple.aptitudes.trial.gate_open");
+		}
 		automaton = null;
 		missingAutomatonChecks = 0;
+		markDirty();
+	}
+
+	/** Rompe la piedra sellada de unas posiciones relativas al sello. */
+	private void breakSealed(ServerWorld world, List<BlockPos> rels) {
+		for (BlockPos rel : rels) {
+			BlockPos p = pos.add(rel);
+			if (world.getBlockState(p).isOf(Temples.SEALED_STONE)) world.breakBlock(p, false);
+		}
+	}
+
+	private Box trialRoom() {
+		return new Box(Vec3d.of(pos.add(trialMin)), Vec3d.of(pos.add(trialMax).add(1, 1, 1)));
+	}
+
+	/**
+	 * V70: sala de pruebas del Piso 2. Con jugadores dentro salen las oleadas (guardianes sin botín); al vencerlas se abre la
+	 * escalera al Piso 3. Sin jugadores vivos en la sala, la oleada en curso se reinicia al cabo de {@code cryptIdleResetSeconds}.
+	 */
+	private void serverTickTrial(ServerWorld world) {
+		if (trialSpawns.isEmpty()) return;
+		Box room = trialRoom();
+		List<ServerPlayerEntity> inside = world.getPlayers(p -> p.isAlive() && !p.isSpectator() && room.contains(p.getPos()));
+		if (!trialLive) {
+			if (inside.isEmpty()) return;
+			if (trialWave < 1) trialWave = 1;
+			startTrialWave(world, inside, room);
+			return;
+		}
+		if (inside.isEmpty()) {
+			trialIdleTicks += CHECK_EVERY;
+			if (CryptRules.shouldResetWave(trialIdleTicks, dev.aptitudes.Aptitudes.config().cryptIdleResetSeconds)) {
+				CryptWaves.discardAll(world, room);
+				trialMobs.clear();
+				trialLive = false;
+				trialIdleTicks = 0;
+			}
+			return;
+		}
+		trialIdleTicks = 0;
+		trialMobs.removeIf(id -> {
+			net.minecraft.entity.Entity e = world.getEntity(id);
+			return e == null || !e.isAlive();
+		});
+		int toSpawn = CryptRules.toSpawn(trialRemaining, trialMobs.size());
+		for (int i = 0; i < toSpawn; i++) {
+			BlockPos spot = pos.add(trialSpawns.get(world.random.nextInt(trialSpawns.size())));
+			net.minecraft.entity.mob.MobEntity mob = CryptWaves.spawn(world, spot, CryptRules.Variant.VANILLA,
+					inside.get(world.random.nextInt(inside.size())));
+			if (mob == null) continue;
+			trialMobs.add(mob.getUuid());
+			trialRemaining--;
+		}
+		if (!CryptRules.waveCleared(trialRemaining, trialMobs.size())) return;
+		trialLive = false;
+		if (trialWave >= TempleFlowRules.TRIAL_WAVES) {
+			breakSealed(world, door);
+			flow = TempleFlowRules.afterTrialCleared(flow);
+			world.playSound(null, pos, SoundEvents.BLOCK_END_PORTAL_FRAME_FILL, SoundCategory.BLOCKS, 1.2f, 0.7f);
+			tell(inside, "temple.aptitudes.trial.cleared");
+		} else {
+			trialWave++;
+			tell(inside, "temple.aptitudes.trial.next_wave");
+		}
+		markDirty();
+	}
+
+	private void startTrialWave(ServerWorld world, List<ServerPlayerEntity> inside, Box room) {
+		CryptWaves.discardAll(world, room);
+		trialMobs.clear();
+		trialLive = true;
+		trialIdleTicks = 0;
+		trialRemaining = CryptRules.waveSize(trialWave, inside.size(), ring, dev.aptitudes.Aptitudes.config().cryptWaveSizePercent);
+		tell(inside, "temple.aptitudes.trial.wave_" + Math.min(trialWave, TempleFlowRules.TRIAL_WAVES));
+	}
+
+	/** La llama la generación del templo hondo (después de {@link #setupCustodian}). Posiciones relativas al sello. */
+	public void setupDeep(boolean withCrypt, List<BlockPos> gateOne, List<BlockPos> trialSpawns, BlockPos trialMin, BlockPos trialMax) {
+		this.layout = withCrypt ? TempleFlowRules.LAYOUT_DEEP_CRYPT : TempleFlowRules.LAYOUT_DEEP;
+		this.gateOne.clear();
+		this.gateOne.addAll(gateOne);
+		this.trialSpawns.clear();
+		this.trialSpawns.addAll(trialSpawns);
+		this.trialMin = trialMin;
+		this.trialMax = trialMax;
+		this.trialWave = 0;
 		markDirty();
 	}
 
@@ -328,7 +433,7 @@ public class TempleSealBlockEntity extends BlockEntity {
 
 	/** La llama la generación de un templo con cripta; todas las posiciones son relativas al sello. */
 	public void setupCrypt(List<BlockPos> hatch, List<BlockPos> spawns, BlockPos min, BlockPos max, BlockPos climax, BlockPos chest) {
-		this.layout = TempleFlowRules.LAYOUT_CRYPT;
+		this.layout = TempleFlowRules.isDeep(layout) ? TempleFlowRules.LAYOUT_DEEP_CRYPT : TempleFlowRules.LAYOUT_CRYPT;
 		this.crypt = CryptRules.Stage.LOCKED;
 		this.cryptHatch.clear();
 		this.cryptHatch.addAll(hatch);
@@ -577,6 +682,12 @@ public class TempleSealBlockEntity extends BlockEntity {
 		nbt.putLong("crypt_max", cryptMax.asLong());
 		nbt.putLong("crypt_climax", cryptClimax.asLong());
 		nbt.putLong("crypt_chest", cryptChest.asLong());
+		// V70
+		nbt.putLongArray("gate_one", encode(gateOne));
+		nbt.putLongArray("trial_spawns", encode(trialSpawns));
+		nbt.putLong("trial_min", trialMin.asLong());
+		nbt.putLong("trial_max", trialMax.asLong());
+		nbt.putInt("trial_wave", trialWave);
 	}
 
 	@Override
@@ -624,5 +735,14 @@ public class TempleSealBlockEntity extends BlockEntity {
 		cryptMobs.clear();
 		cryptWaveLive = false;
 		cryptIdleTicks = 0;
+		// V70: un templo anterior no tiene estas claves y se lee sin sala de pruebas.
+		decode(nbt.getLongArray("gate_one"), gateOne, 32);
+		decode(nbt.getLongArray("trial_spawns"), trialSpawns, 32);
+		trialMin = BlockPos.fromLong(nbt.getLong("trial_min"));
+		trialMax = BlockPos.fromLong(nbt.getLong("trial_max"));
+		trialWave = Math.max(0, Math.min(TempleFlowRules.TRIAL_WAVES, nbt.getInt("trial_wave")));
+		trialMobs.clear();
+		trialLive = false;
+		trialIdleTicks = 0;
 	}
 }

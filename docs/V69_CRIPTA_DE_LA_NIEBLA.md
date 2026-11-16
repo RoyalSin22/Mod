@@ -1,5 +1,7 @@
 # V69 — La llave del Velo y la Cripta de la Niebla: etapa interna del Templo del Custodio
 
+Nota (V70): desde la V70 la cripta es el cuarto nivel del templo hondo (layout 4); ver `docs/V70_TEMPLO_HONDO.md`.
+
 Estado: **aprobado e implementado en la rama `claude/cripta-niebla` (fases C1–C7); pendiente de prueba en partida.** Cierra el pendiente del ROADMAP v65/V68
 («la receta con el Cráneo del Gran Osario y la etapa interna de la mazmorra del Custodio»). Reglas del autor que no se
 rompen: la receta **no sustituye las cuatro llaves** ni altera los templos existentes.

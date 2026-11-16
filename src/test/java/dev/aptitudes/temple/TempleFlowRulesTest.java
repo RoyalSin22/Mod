@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TempleFlowRulesTest {
 	@Test void flowOrderIsStableBecauseItIsSavedAsAnOrdinal() {
-		assertArrayEquals(new Flow[] {Flow.DORMANT, Flow.AUTOMATON, Flow.PUZZLE, Flow.DOOR_LOCKED, Flow.CUSTODIAN, Flow.CLEARED},
+		assertArrayEquals(new Flow[] {Flow.DORMANT, Flow.AUTOMATON, Flow.PUZZLE, Flow.DOOR_LOCKED, Flow.CUSTODIAN, Flow.CLEARED, Flow.TRIAL},
 				Flow.values());
 	}
 

@@ -15,6 +15,12 @@ public final class TempleFlowRules {
 	public static final int LAYOUT_CUSTODIAN = 1;
 	/** V69: Templo del Custodio con la Cripta de la Niebla (mismo flujo hasta {@code CLEARED}; añade la cripta). */
 	public static final int LAYOUT_CRYPT = 2;
+	/** V70: Templo hondo (tres pisos subterráneos, sin puzle, con una prueba de combate en el Piso 2). */
+	public static final int LAYOUT_DEEP = 3;
+	/** V70: Templo hondo con la Cripta de la Niebla como cuarto nivel. */
+	public static final int LAYOUT_DEEP_CRYPT = 4;
+	/** V70: oleadas de la sala de pruebas del Piso 2. */
+	public static final int TRIAL_WAVES = 2;
 	/** Distancia (bloques) al umbral del atrio a la que despierta el Autómata. */
 	public static final double TRIGGER_RADIUS = 9.0;
 	/** Comprobaciones seguidas sin ver a un jefe antes de volver a hacerlo aparecer (cada una dura medio segundo). */
@@ -25,7 +31,11 @@ public final class TempleFlowRules {
 	private TempleFlowRules() {}
 
 	/** Fases del templo nuevo. Se guardan como número: solo se añaden valores al final. */
-	public enum Flow { DORMANT, AUTOMATON, PUZZLE, DOOR_LOCKED, CUSTODIAN, CLEARED }
+	public enum Flow {
+		DORMANT, AUTOMATON, PUZZLE, DOOR_LOCKED, CUSTODIAN, CLEARED,
+		/** V70: sala de pruebas del Piso 2 del templo hondo (se añadió al final: se guarda como número). */
+		TRIAL
+	}
 
 	/** Resultado de usar la Puerta del Custodio. */
 	public enum DoorUse {
@@ -40,17 +50,22 @@ public final class TempleFlowRules {
 	}
 
 	public static int clampLayout(int layout) {
-		return layout == LAYOUT_CUSTODIAN || layout == LAYOUT_CRYPT ? layout : LAYOUT_OLD;
+		return layout >= LAYOUT_CUSTODIAN && layout <= LAYOUT_DEEP_CRYPT ? layout : LAYOUT_OLD;
 	}
 
 	/** ¿Usa el flujo del Templo del Custodio (con o sin cripta)? Los templos antiguos no. */
 	public static boolean isCustodian(int layout) {
-		return layout == LAYOUT_CUSTODIAN || layout == LAYOUT_CRYPT;
+		return layout >= LAYOUT_CUSTODIAN && layout <= LAYOUT_DEEP_CRYPT;
+	}
+
+	/** V70: ¿es el templo hondo (con o sin cripta)? */
+	public static boolean isDeep(int layout) {
+		return layout == LAYOUT_DEEP || layout == LAYOUT_DEEP_CRYPT;
 	}
 
 	/** ¿Tiene Cripta de la Niebla? */
 	public static boolean hasCrypt(int layout) {
-		return layout == LAYOUT_CRYPT;
+		return layout == LAYOUT_CRYPT || layout == LAYOUT_DEEP_CRYPT;
 	}
 
 	/** Fase guardada → fase válida (un valor desconocido vuelve al principio, nunca lanza). */
@@ -72,6 +87,16 @@ public final class TempleFlowRules {
 	/** Cae el Autómata: pasa al puzle. En cualquier otra fase no cambia nada. */
 	public static Flow afterAutomatonDown(Flow flow) {
 		return flow == Flow.AUTOMATON ? Flow.PUZZLE : flow;
+	}
+
+	/** Cae el Autómata según la distribución: el templo hondo pasa a la sala de pruebas; el resto, al puzle. */
+	public static Flow afterAutomatonDown(Flow flow, int layout) {
+		return isDeep(layout) && flow == Flow.AUTOMATON ? Flow.TRIAL : afterAutomatonDown(flow);
+	}
+
+	/** V70: se superan las oleadas de la sala de pruebas: queda la Puerta del Custodio. */
+	public static Flow afterTrialCleared(Flow flow) {
+		return flow == Flow.TRIAL ? Flow.DOOR_LOCKED : flow;
 	}
 
 	/** Se resuelve el puzle: se abre la escalera y queda la puerta del Custodio. */

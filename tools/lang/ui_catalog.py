@@ -1730,6 +1730,12 @@ temple.aptitudes.seal.flow_automaton¦Selo: o Autômato vigia o átrio. Derrote-
 temple.aptitudes.seal.flow_door_locked¦Selo: a porta do Custódio aguarda uma Âncora do Véu.¦Sceau : la porte du Gardien attend une Ancre du voile.¦Siegel: Die Tür des Wächters erwartet einen Schleieranker.
 temple.aptitudes.seal.flow_custodian¦Selo: o Custódio guarda a câmara.¦Sceau : le Gardien garde la chambre.¦Siegel: Der Wächter bewacht die Kammer.
 temple.aptitudes.seal.flow_cleared¦Selo: este templo está aberto.¦Sceau : ce temple est ouvert.¦Siegel: Dieser Tempel ist offen.
+temple.aptitudes.seal.flow_trial¦Selo: é preciso superar a sala de provas abaixo para abrir o caminho.¦Sceau : il faut survivre à la salle d’épreuves en contrebas pour ouvrir le chemin.¦Siegel: Die Prüfungshalle darunter muss überstanden werden, bevor der Weg nach unten sich öffnet.
+temple.aptitudes.trial.gate_open¦A escada para a sala de provas se abre.¦L’escalier vers la salle d’épreuves s’ouvre.¦Die Treppe zur Prüfungshalle öffnet sich.
+temple.aptitudes.trial.wave_1¦Primeira prova: os guardiões despertam.¦Première épreuve : les gardiens s’éveillent.¦Erste Prüfung: Die Wächter erwachen.
+temple.aptitudes.trial.wave_2¦Segunda prova: chegam mais guardiões.¦Deuxième épreuve : d’autres gardiens arrivent.¦Zweite Prüfung: Weitere Wächter erscheinen.
+temple.aptitudes.trial.next_wave¦A primeira onda cai. Prepare-se para a próxima.¦La première vague tombe. Préparez-vous à la suivante.¦Die erste Welle fällt. Macht euch auf die nächste gefasst.
+temple.aptitudes.trial.cleared¦Prova superada. O caminho para baixo se abre.¦Épreuve réussie. Le chemin vers le bas s’ouvre.¦Prüfung bestanden. Der Weg nach unten öffnet sich.
 temple.aptitudes.reliquary.sealed¦O Relicário está trancado. O guardião do templo guarda a chave.¦Le Reliquaire est verrouillé. Le gardien du temple en garde la clé.¦Das Reliquiar ist verschlossen. Der Tempelwächter trägt den Schlüssel.
 temple.aptitudes.reliquary.wrong_key¦Esta chave é de outro templo.¦Cette clé appartient à un autre temple.¦Dieser Schlüssel gehört zu einem anderen Tempel.
 temple.aptitudes.reliquary.opened¦O Relicário se abre.¦Le Reliquaire s'ouvre.¦Das Reliquiar öffnet sich.

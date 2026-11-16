@@ -1,5 +1,18 @@
 # Pruebas de Aptitudes
 
+## V70 — Templo del Custodio hondo
+
+Automáticas: `DeepTempleLayoutTest` (subterráneo, sin puzle, sellos, alcanzabilidad por pisos con cada paso cerrado o abierto,
+cripta como cuarto nivel y layouts antiguos sin cambios), `TempleFlowRulesTest` y `CryptLayoutTest` actualizadas.
+
+Verificado en servidor dedicado (mundo plano, sin jugador): `/place feature aptitudes:custodian_temple` genera layout 4 con el sello
+en el atrio, el patio, la rampa, el arco, el atrio, la sala de pruebas, la cámara del Custodio y la trampilla de la cripta en su
+sitio, y las dos piedras selladas; sin excepciones tras guardar. No se cubren sin jugador el Autómata, las oleadas ni el clímax.
+
+En partida (pendiente): 1) bajar por la rampa y entrar en el atrio; 2) vencer al Autómata y comprobar que se abre la escalera este;
+3) superar las dos oleadas del Piso 2 (morir dentro reinicia la oleada); 4) bajar al Piso 3, abrir la Puerta con el Ancla y vencer
+al Custodio; 5) abrir la cripta con la Llave del Velo; 6) probar con 2+ jugadores y revisar el aspecto (luz, techos, rampa).
+
 ## V69 — Llave del Velo y Cripta de la Niebla
 
 Automáticas: `CryptRulesTest` (estados, trampilla, tamaño de oleada, mezcla y reinicio), `CryptLayoutTest` (plano sin regresión

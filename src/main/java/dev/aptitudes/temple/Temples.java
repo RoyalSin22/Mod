@@ -329,7 +329,7 @@ public final class Temples {
 		if (temple == null || sealPos == null) return;
 		if (world.isChunkLoaded(sealPos) && world.getBlockEntity(sealPos) instanceof TempleSealBlockEntity seal
 				&& seal.templeId.equals(temple)) {
-			seal.automatonDefeated();
+			seal.automatonDefeated(world);
 			for (ServerPlayerEntity p : world.getPlayers()) {
 				if (p.squaredDistanceTo(mob) < 48 * 48) {
 					p.sendMessage(Text.translatable("temple.aptitudes.automaton.down").formatted(Formatting.GOLD), true);

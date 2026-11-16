@@ -28,8 +28,9 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Templo del Custodio (T3b): 31×31 en dos niveles. En la superficie, el atrio (donde dormirá el Autómata) y la sala del
- * puzle; bajo ella, una escalera, la antesala, la Puerta del Custodio y la cámara del Custodio con el Relicario.
+ * Templo del Custodio hondo (V70): 31×31 y tres pisos subterráneos bajo un foso con rampa. Piso 1: atrio del Autómata; Piso 2:
+ * sala de pruebas (dos oleadas); Piso 3: antesala, Puerta del Custodio, cámara del Custodio y Relicario. La Cripta de la Niebla
+ * (V69) es el cuarto nivel, opcional.
  *
  * <p>La distribución la calcula {@link CustodianTempleLayout} (pura y con pruebas); aquí solo se traduce a bloques. Escribe
  * dentro del radio 15 (el máximo seguro de un {@code Feature}) y no crea entidades durante la generación: el Autómata y
@@ -48,23 +49,25 @@ public class CustodianTempleFeature extends Feature<DefaultFeatureConfig> {
 		StructureWorldAccess world = context.getWorld();
 		BlockPos origin = context.getOrigin();
 		if (!StructureBuilder.suitable(world, origin, CustodianTempleLayout.R, MAX_SLOPE)) return false;
-		// Debe caber por encima y por debajo: el casco llega 9 bloques bajo el suelo.
+		// V70: templo hondo. Debe caber por debajo (hasta la cripta, si la hay) y por encima (el foso se abre hasta el techo).
 		if (origin.getY() + CustodianTempleLayout.ROOF_Y >= world.getTopY() - 1
-				|| origin.getY() + CustodianTempleLayout.HULL_BOTTOM_Y <= world.getBottomY() + 4) return false;
+				|| origin.getY() + CustodianTempleLayout.DEEP_BOTTOM_Y <= world.getBottomY() + 4) return false;
+		// La rampa baja desde la superficie: no puede empezar en el agua.
+		for (int x = -2; x <= 2; x++) {
+			for (int z = 12; z <= CustodianTempleLayout.R; z++) {
+				if (!world.getFluidState(origin.add(x, 0, z)).isEmpty() || !world.getFluidState(origin.add(x, -1, z)).isEmpty()) return false;
+			}
+		}
 
 		StructureBuilder b = new StructureBuilder(world, origin, context.getRandom());
 		int ring = TempleRules.clampRing(TempleFeature.ring(context, origin));
 		TempleFeature.Palette palette = TempleFeature.Palette.of(ring);
 
-		boolean[] target = TempleRules.pattern(b.random.nextInt(16), TempleRules.leverCount(ring));
-		int plateCount = TempleRules.plateCount(ring);
-		// V69: la Cripta de la Niebla baja hasta y -19; si el volumen toca agua o lava, el templo se genera sin ella (layout 1).
+		// V69: la Cripta de la Niebla es el cuarto nivel; si su volumen toca agua o lava, el templo se genera sin ella.
 		boolean withCrypt = Aptitudes.config().cryptEnabled && cryptSiteOk(world, origin);
-		CustodianTempleLayout.Result layout = CustodianTempleLayout.build(target, plateCount,
-				CustodianTempleLayout.shuffledPlateOrder(plateCount, b.random.nextLong()), withCrypt);
+		CustodianTempleLayout.Result layout = CustodianTempleLayout.buildDeep(withCrypt);
 
-		int lowest = withCrypt ? CustodianTempleLayout.CRYPT_BOTTOM_Y : CustodianTempleLayout.HULL_BOTTOM_Y;
-		for (int y = lowest; y <= CustodianTempleLayout.ROOF_Y; y++) {
+		for (int y = layout.bottomY(); y <= CustodianTempleLayout.ROOF_Y; y++) {
 			for (int x = -CustodianTempleLayout.R; x <= CustodianTempleLayout.R; x++) {
 				for (int z = -CustodianTempleLayout.R; z <= CustodianTempleLayout.R; z++) {
 					Cell cell = layout.get(x, y, z);
@@ -75,8 +78,8 @@ public class CustodianTempleFeature extends Feature<DefaultFeatureConfig> {
 				}
 			}
 		}
-		// Telarañas en algunas esquinas altas, como en el templo antiguo.
-		for (int[] c : new int[][] {{-14, 7, 14}, {14, 7, 14}, {-14, 7, 5}, {14, 7, 5}, {-14, 7, -14}, {14, 7, -14}}) {
+		// Telarañas en las esquinas altas del atrio y de la sala de pruebas.
+		for (int[] c : new int[][] {{-12, -4, -12}, {12, -4, -12}, {-12, -11, -12}, {12, -11, -5}}) {
 			if (layout.get(c[0], c[1], c[2]) == Cell.AIR && b.random.nextFloat() < 0.5f) b.set(c[0], c[1], c[2], Blocks.COBWEB.getDefaultState());
 		}
 
@@ -84,11 +87,12 @@ public class CustodianTempleFeature extends Feature<DefaultFeatureConfig> {
 		BlockPos seal = b.at(layout.seal[0], layout.seal[1], layout.seal[2]);
 		UUID temple = new UUID(b.random.nextLong(), b.random.nextLong());
 		if (world.getBlockEntity(seal) instanceof TempleSealBlockEntity entity) {
-			entity.setupCustodian(temple, ring, relative(b, seal, layout.levers), target, relative(b, seal, layout.plates),
+			// Sin puzle: ni palancas ni placas. La piedra sellada del Piso 2 (layout.hatch) la abre la prueba de combate.
+			entity.setupCustodian(temple, ring, List.of(), new boolean[0], List.of(),
 					relative(b, seal, layout.hatch), rel(b, seal, layout.custodianSpawn), relative(b, seal, layout.custodianDoor),
 					rel(b, seal, layout.automatonSpawn), rel(b, seal, layout.triggerCenter));
-		}
-		if (world.getBlockEntity(seal) instanceof TempleSealBlockEntity entity) {
+			entity.setupDeep(withCrypt, relative(b, seal, layout.gateOne), relative(b, seal, layout.trialSpawns),
+					rel(b, seal, layout.trialMin), rel(b, seal, layout.trialMax));
 			// T4: puertas de las cuatro cámaras, con el metal de cada una.
 			List<BlockPos> doors = new ArrayList<>();
 			List<TempleKeyRules.Metal> metals = new ArrayList<>();
@@ -112,13 +116,13 @@ public class CustodianTempleFeature extends Feature<DefaultFeatureConfig> {
 	}
 
 	/**
-	 * V69: ¿se puede excavar la cripta aquí? Debe caber por encima del fondo del mundo y su volumen (x ±11, z 5…15,
-	 * y −19…−10) no puede contener agua ni lava, que se colarían al abrirse. Si no, el templo se genera sin cripta.
+	 * V69/V70: ¿se puede excavar la cripta aquí? Debe caber por encima del fondo del mundo y su volumen (x ±11, z 5…15,
+	 * hasta el techo de la sala) no puede contener agua ni lava, que se colarían al abrirse. Si no, se genera sin cripta.
 	 */
 	private static boolean cryptSiteOk(StructureWorldAccess world, BlockPos origin) {
-		if (origin.getY() + CustodianTempleLayout.CRYPT_BOTTOM_Y <= world.getBottomY() + 4) return false;
+		if (origin.getY() + CustodianTempleLayout.DEEP_CRYPT_BOTTOM_Y <= world.getBottomY() + 4) return false;
 		for (int x = -11; x <= 11; x++) {
-			for (int y = CustodianTempleLayout.CRYPT_BOTTOM_Y; y <= CustodianTempleLayout.CRYPT_CEILING_Y; y++) {
+			for (int y = CustodianTempleLayout.DEEP_CRYPT_BOTTOM_Y; y <= CustodianTempleLayout.DEEP_CRYPT_CEILING_Y; y++) {
 				for (int z = 5; z <= CustodianTempleLayout.R; z++) {
 					if (!world.getFluidState(origin.add(x, y, z)).isEmpty()) return false;
 				}
@@ -175,6 +179,10 @@ public class CustodianTempleFeature extends Feature<DefaultFeatureConfig> {
 			case CHAMBER_DOOR_DIAMOND -> Temples.CHAMBER_DOOR_DIAMOND.getDefaultState();
 			case CRYPT_HATCH -> Temples.CRYPT_HATCH.getDefaultState();
 			case LADDER_EAST -> Blocks.LADDER.getDefaultState().with(LadderBlock.FACING, Direction.EAST);
+			case SOIL -> Blocks.DIRT.getDefaultState();
+			case GRASS -> Blocks.GRASS_BLOCK.getDefaultState();
+			case STAIR_SOUTH -> stairs(ring).with(StairsBlock.FACING, Direction.SOUTH);
+			case BRAZIER -> Blocks.SOUL_CAMPFIRE.getDefaultState();
 			// Los cofres se colocan con su botín en generate (chestLoot); aquí solo se completa el switch.
 			case CHEST_COPPER, CHEST_IRON, CHEST_GOLD, CHEST_DIAMOND -> Blocks.CHEST.getDefaultState();
 		};

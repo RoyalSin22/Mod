@@ -29,7 +29,7 @@ class CryptLayoutTest {
 		assertTrue(with().hasCrypt());
 		assertEquals(2, TempleFlowRules.LAYOUT_CRYPT);
 		assertEquals(TempleFlowRules.LAYOUT_CRYPT, TempleFlowRules.clampLayout(2));
-		assertEquals(TempleFlowRules.LAYOUT_OLD, TempleFlowRules.clampLayout(3));
+		assertEquals(TempleFlowRules.LAYOUT_OLD, TempleFlowRules.clampLayout(9));
 		assertTrue(TempleFlowRules.isCustodian(1));
 		assertTrue(TempleFlowRules.isCustodian(2));
 		assertFalse(TempleFlowRules.isCustodian(0));

@@ -6,6 +6,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **v70 — Templo del Custodio hondo.** Los templos nuevos son totalmente subterráneos: un foso con rampa en la superficie y tres
+  pisos (atrio del Autómata, sala de pruebas con dos oleadas y cámara del Custodio con sus cuatro cámaras de recompensa), con la
+  Cripta de la Niebla como cuarto nivel. Se retira el puzle de palancas y placas: cada piso termina en un combate y las escaleras
+  se abren al vencerlo. Distribuciones nuevas 3 y 4; las anteriores (0, 1 y 2) siguen funcionando igual. Nuevo estado de flujo
+  `TRIAL` (al final del enum), seis textos en los 5 idiomas y pruebas del plano (`DeepTempleLayoutTest`). Diseño en
+  `docs/V70_TEMPLO_HONDO.md`.
 - **v69 — Llave del Velo y Cripta de la Niebla.** Nueva receta sin forma en la Mesa del gremio (1 Cráneo del Gran Osario +
   3 Jirón de Velo Espectral + 4 fragmentos de alma) que da la **Llave del Velo** (un solo uso). Los Templos del Custodio
   nuevos pueden incluir bajo su cámara una **Cripta de la Niebla** (`layout = 2`): al vencer al Custodio aparece una
