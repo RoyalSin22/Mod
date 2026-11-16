@@ -1,7 +1,10 @@
 package dev.aptitudes.boss;
 
+import dev.aptitudes.Aptitudes;
+import dev.aptitudes.ability.AbilityState;
 import dev.aptitudes.boss.BossMoveRules.Move;
 import dev.aptitudes.item.ModItems;
+import dev.aptitudes.logic.AttributeApplier;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -20,8 +23,15 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
 
 import java.util.List;
 
@@ -42,6 +52,11 @@ public class FacelessColossusEntity extends AnimatedBossEntity {
 			AttackTags.of(AttackTags.Tag.HEAVY));
 	private static final List<Move> MOVES = List.of(SWEEP, SLAM, CHARGE);
 	private static final double SWEEP_ARC = 140;
+
+	private float attackYaw;
+	@Nullable private LivingEntity chargeTarget;
+	private Vec3d chargePosition = Vec3d.ZERO;
+	private long chargeUntil;
 
 	public FacelessColossusEntity(EntityType<? extends HostileEntity> type, World world) {
 		super(type, world, BossBar.Color.RED);
@@ -70,7 +85,12 @@ public class FacelessColossusEntity extends AnimatedBossEntity {
 	}
 
 	private void syncArmorPhase() {
-		getDataTracker().set(CRACKED_ARMOR, phase() >= 2);
+		if (getWorld().isClient) return;
+		boolean cracked = phase() >= 2;
+		getDataTracker().set(CRACKED_ARMOR, cracked);
+		AttributeApplier.set(getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED),
+				Aptitudes.id("colossus_cracked"), cracked ? 0.3 : 0,
+				EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 	}
 
 	public static DefaultAttributeContainer.Builder createAttributes() {
@@ -96,13 +116,58 @@ public class FacelessColossusEntity extends AnimatedBossEntity {
 
 	@Override
 	protected void onPhase(ServerWorld world, int newPhase) {
+		finishCharge();
 		syncArmorPhase();
-		var speed = getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
-		if (speed != null) {
-			dev.aptitudes.logic.AttributeApplier.set(speed, dev.aptitudes.Aptitudes.id("colossus_cracked"), 0.3,
-					EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE);
-		}
 		world.spawnParticles(ParticleTypes.EXPLOSION, getX(), getBodyY(0.6), getZ(), 3, 0.6, 0.6, 0.6, 0);
+	}
+
+	@Override
+	protected int phaseTransitionTicks() {
+		return FacelessColossusCombat.PHASE_CLIP_TICKS + FacelessColossusCombat.TRANSITION_TICKS;
+	}
+
+	@Override
+	protected int attackRecoveryTicks(Move move) {
+		return FacelessColossusCombat.recoveryTicks(move);
+	}
+
+	@Override
+	protected boolean validAttackTarget(LivingEntity target) {
+		return target != null && target.getWorld() == getWorld() && hittable(target)
+				&& canTarget(target) && !AbilityState.shouldBlockTarget(this, target);
+	}
+
+	@Override
+	protected boolean canStartAttack(LivingEntity target) {
+		return isOnGround() && canSee(target);
+	}
+
+	@Override
+	protected int chaseRepathTicks() {
+		return 8;
+	}
+
+	@Override
+	protected void aimAttack(LivingEntity target, boolean windingUp) {
+		if (windingUp) {
+			faceAttack();
+		} else {
+			super.aimAttack(target, false);
+		}
+	}
+
+	@Override
+	protected void onAttackStarted(Move move, LivingEntity target) {
+		double dx = target.getX() - getX();
+		double dz = target.getZ() - getZ();
+		attackYaw = dx == 0 && dz == 0 ? getYaw() : (float) Math.toDegrees(MathHelper.atan2(-dx, dz));
+		faceAttack();
+	}
+
+	private void faceAttack() {
+		setYaw(attackYaw);
+		setBodyYaw(attackYaw);
+		setHeadYaw(attackYaw);
 	}
 
 	@Override
@@ -111,12 +176,15 @@ public class FacelessColossusEntity extends AnimatedBossEntity {
 		if (move == SLAM) {
 			for (int i = 0; i < 16; i++) {
 				double a = i * Math.PI / 8;
-				world.spawnParticles(ParticleTypes.CRIT, getX() + Math.cos(a) * 4, getY() + 0.1, getZ() + Math.sin(a) * 4, 1, 0, 0, 0, 0);
+				world.spawnParticles(ParticleTypes.CRIT, getX() + Math.cos(a) * move.maxRange(), getY() + 0.1,
+						getZ() + Math.sin(a) * move.maxRange(), 1, 0, 0, 0, 0);
 			}
 		} else if (move == SWEEP) {
 			world.spawnParticles(ParticleTypes.SWEEP_ATTACK, getX(), getBodyY(0.5), getZ(), 1, 0.8, 0.1, 0.8, 0);
 		} else if (move == CHARGE) {
-			world.spawnParticles(ParticleTypes.LARGE_SMOKE, getX(), getY() + 0.2, getZ(), 4, 0.5, 0.1, 0.5, 0.01);
+			Vec3d forward = Vec3d.fromPolar(0, attackYaw);
+			world.spawnParticles(ParticleTypes.LARGE_SMOKE, getX() + forward.x * 1.5, getY() + 0.2,
+					getZ() + forward.z * 1.5, 4, 0.3, 0.1, 0.3, 0.01);
 		}
 	}
 
@@ -125,29 +193,102 @@ public class FacelessColossusEntity extends AnimatedBossEntity {
 		float base = (float) getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
 		if (move == SWEEP) {
 			world.playSound(null, getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.HOSTILE, 1.2f, 0.6f);
-			for (LivingEntity e : world.getEntitiesByClass(LivingEntity.class, getBoundingBox().expand(4.5), this::hittable)) {
-				if (BossMoveRules.inArc(e.getX() - getX(), e.getZ() - getZ(), getYaw(), SWEEP_ARC, 4.5)
+			for (LivingEntity e : meleeTargets(world, move.maxRange(), FacelessColossusCombat.SWEEP_LOW,
+					FacelessColossusCombat.SWEEP_HIGH)) {
+				if (BossMoveRules.inArc(e.getX() - getX(), e.getZ() - getZ(), attackYaw, SWEEP_ARC, move.maxRange())
+						&& unobstructedContact(world, e, FacelessColossusCombat.SWEEP_LOW, FacelessColossusCombat.SWEEP_HIGH)
 						&& !parried(e, move)) {
 					hit(e, base, 0.8);
 				}
+				if (isPostureStunned(world.getTime())) break;
 			}
 		} else if (move == SLAM) {
 			world.playSound(null, getBlockPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.HOSTILE, 0.8f, 0.7f);
 			world.spawnParticles(ParticleTypes.EXPLOSION, getX(), getY() + 0.2, getZ(), 6, 2, 0.1, 2, 0);
-			for (LivingEntity e : world.getEntitiesByClass(LivingEntity.class, getBoundingBox().expand(5.5), this::hittable)) {
-				if (e.squaredDistanceTo(this) <= 5.5 * 5.5) {
-					hit(e, base * 1.2f, 0.4);
+			for (LivingEntity e : meleeTargets(world, move.maxRange(), FacelessColossusCombat.SLAM_LOW,
+					FacelessColossusCombat.SLAM_HIGH)) {
+				if (e.squaredDistanceTo(this) <= move.maxRange() * move.maxRange()
+						&& unobstructedContact(world, e, FacelessColossusCombat.SLAM_LOW, FacelessColossusCombat.SLAM_HIGH)
+						&& hit(e, base * 1.2f, 0.4)) {
 					e.addVelocity(0, 0.55, 0);
 					e.velocityModified = true;
 				}
 			}
 		} else if (move == CHARGE) {
-			Vec3d dir = target.getPos().subtract(getPos()).multiply(1, 0, 1).normalize();
-			setVelocity(dir.multiply(1.6).add(0, 0.15, 0));
+			chargeTarget = target;
+			chargePosition = getPos();
+			chargeUntil = world.getTime() + FacelessColossusCombat.CHARGE_TRAVEL_TICKS;
+			setVelocity(Vec3d.fromPolar(0, attackYaw).multiply(1.6).add(0, 0.15, 0));
 			velocityModified = true;
 			world.playSound(null, getBlockPos(), SoundEvents.ENTITY_RAVAGER_ROAR, SoundCategory.HOSTILE, 1f, 0.8f);
-			if (target.squaredDistanceTo(this) <= 9) hit(target, base * 0.9f, 1.4);
 		}
+	}
+
+	private List<LivingEntity> meleeTargets(ServerWorld world, double radius, double low, double high) {
+		Box area = new Box(getX() - radius, getY() + low, getZ() - radius,
+				getX() + radius, getY() + high, getZ() + radius);
+		return world.getEntitiesByClass(LivingEntity.class, area, this::hittable);
+	}
+
+	private boolean unobstructedContact(ServerWorld world, LivingEntity target, double low, double high) {
+		return unobstructedContact(world, target, getPos(), low, high);
+	}
+
+	private boolean unobstructedContact(ServerWorld world, LivingEntity target, Vec3d origin, double low, double high) {
+		Box box = target.getBoundingBox();
+		double contact = FacelessColossusCombat.contactHeight(box.minY - origin.y, box.maxY - origin.y, low, high);
+		if (Double.isNaN(contact)) return false;
+		double y = origin.y + contact;
+		Vec3d start = new Vec3d(origin.x, y, origin.z);
+		Vec3d end = new Vec3d(target.getX(), y, target.getZ());
+		return world.raycast(new RaycastContext(start, end, RaycastContext.ShapeType.COLLIDER,
+				RaycastContext.FluidHandling.NONE, this)).getType() == HitResult.Type.MISS;
+	}
+
+	@Override
+	public void tickMovement() {
+		if (getWorld() instanceof ServerWorld world && isPostureStunned(world.getTime())) finishCharge();
+		super.tickMovement();
+		if (chargeTarget == null || !(getWorld() instanceof ServerWorld world)) return;
+		LivingEntity target = chargeTarget;
+		if (!isAlive() || isPostureStunned(world.getTime()) || !validAttackTarget(target)) {
+			finishCharge();
+			return;
+		}
+		faceAttack();
+		// La caja ampliada convierte el barrido de dos cajas en un segmento contra una sola caja.
+		Box bounds = getBoundingBox();
+		double halfWidth = bounds.getLengthX() * 0.5;
+		double halfHeight = bounds.getLengthY() * 0.5;
+		Vec3d start = chargePosition.add(0, halfHeight, 0);
+		Vec3d end = getPos().add(0, halfHeight, 0);
+		Box contact = target.getBoundingBox().expand(halfWidth, halfHeight, halfWidth);
+		Vec3d impact = contact.contains(start) ? start
+				: contact.raycast(start, end).orElse(contact.contains(end) ? end : null);
+		if (impact != null && unobstructedContact(world, target, impact.subtract(0, halfHeight, 0), 0, bounds.getLengthY())) {
+			finishCharge();
+			hit(target, (float) getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE) * 0.9f, 1.4);
+		} else if (horizontalCollision || world.getTime() >= chargeUntil) {
+			finishCharge();
+		} else {
+			chargePosition = getPos();
+		}
+	}
+
+	private void finishCharge() {
+		if (chargeTarget == null) return;
+		chargeTarget = null;
+		setVelocity(0, getVelocity().y, 0);
+		velocityModified = true;
+	}
+
+	@Override
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+		// Un solo controlador conserva la última pose para interpolar entre acciones y locomoción.
+		var animation = new AnimationController<>(this, ACTION_CONTROLLER, FacelessColossusCombat.TRANSITION_TICKS,
+				state -> state.setAndContinue(state.isMoving() ? WALK : IDLE));
+		registerActionAnimations(animation);
+		controllers.add(animation);
 	}
 
 	@Override

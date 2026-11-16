@@ -414,6 +414,8 @@ Verificado por Claude en el cliente de desarrollo: invocación, nombres y barras
 ## v63a — Jefes animados con GeckoLib (C4)
 
 Automáticas: `boss/BossMoveRulesTest`. Recursos: `python3 tools/models/gen_boss_models.py src/main/resources/assets/aptitudes --check`.
+Para el Coloso, `boss/FacelessColossusCombatTest` comprueba la altura contra el modelo, las duraciones contra los clips
+y las bandas verticales de los golpes.
 Atlas y emisión del Coloso: `python3 tools/textures/gen_faceless_glowmask.py src/main/resources/assets/aptitudes/textures/entity --check`.
 
 1. Arranca con GeckoLib 4.7.7 (sin ella el juego indica la dependencia que falta).
@@ -425,6 +427,11 @@ Atlas y emisión del Coloso: `python3 tools/textures/gen_faceless_glowmask.py sr
    y al volver a seguir o reinvocar un Coloso que ya cambió de fase.
 5. Verifica el giro de cabeza al caminar, la pose del casco durante acciones, el aturdimiento, el botín
    y la página «El Coloso Sin Rostro» del bestiario.
+6. Activa F3+B y comprueba la caja en reposo y en un paso de 2 × 3,5 bloques. Rodea al Coloso durante el aviso
+   y comprueba que no gira para seguirte hasta el impacto. Prueba un muro y un piso elevado entre ambos.
+7. En fase 2, provoca la embestida desde 5–18 bloques. Comprueba un único golpe si hay contacto, que esquivarla
+   lateralmente evita el golpe y que una pared la detiene. Comprueba que completa el recobro y que el stun
+   puede interrumpir el ataque aunque cambie de fase en el mismo momento.
 
 Verificado por Claude en el cliente de desarrollo: puntos 1–3 (render, barra y golpes recibidos).
 

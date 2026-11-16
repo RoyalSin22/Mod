@@ -515,6 +515,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   animadas y una cabecera propia al descansar. El grimorio indica qué mesa requiere cada receta.
 
 ### Corregido
+- **Coloso Sin Rostro.** La caja mide 1,6 × 3,4 bloques y los ojos quedan a la altura del visor. El Coloso
+  completa el recobro de sus ataques y mantiene la dirección anunciada. La embestida golpea por contacto
+  durante el desplazamiento, y las paredes interrumpen los golpes.
 - **v56 — Generación de jefes.** Torres, santuarios y campamentos guardan sus jefes con el terreno al
   generarse. Esto corrige el bloqueo que podía detener el mundo e impedir abrir o romper bloques.
 - **v58 — Cambiaformas.** El murciélago bate las alas al verse en tercera persona. La gallina

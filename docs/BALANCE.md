@@ -3,6 +3,14 @@
 Documento de referencia de las fórmulas de progresión. Cada cambio indica fórmula anterior, nueva,
 justificación, valores de ejemplo e impacto, como pide la política del proyecto.
 
+## Coloso Sin Rostro
+
+El tajo conserva un alcance de 4,5 bloques y el golpe descendente conserva un radio de 5,5. La caja del objetivo
+debe cruzar la banda vertical del ataque y la trayectoria hasta él debe estar libre de bloques. La embestida
+conserva su impulso inicial y solo aplica el daño al objetivo si hay contacto durante el desplazamiento.
+La recuperación global tras el impacto es de 12 ticks para el tajo y 14 para el golpe descendente y la embestida.
+Vida, daño base y enfriamientos por ataque conservan sus cifras.
+
 ## Puntos de árbol (v67)
 
 Fórmula (`RoleRules.earnedPoints`): **1 + nivel × 3 / `rolePointsEveryLevels`** (con 3, un punto por nivel), más los

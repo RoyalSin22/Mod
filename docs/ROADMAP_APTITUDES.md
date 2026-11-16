@@ -52,9 +52,9 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 - Trance de combate (F2), mancha de XP con 25 % (F3), pedidos del gremio entre jugadores (F4), retirados después de la
   prueba en partida por no encajar con un servidor de amigos, y expediciones de Amenaza (F5: ficha, módulos, grupo, modificadores).
 - Afijos de élite Espinoso y Abrasador (11 en total). Fase 3 del Guardián y del Autómata.
-- Coloso Sin Rostro reconstruido a 3,4 bloques visuales, con caja de 1,6 × 3,8. El autor revisó el aspecto en
-  partida con los recursos provisionales. Queda la comprobación visual de la transición, la emisión y la recarga
-  con el renderer integrado.
+- Coloso Sin Rostro reconstruido a 3,4 bloques visuales, con caja de 1,6 × 3,4. Sus ataques conservan la
+  dirección del aviso y esperan el fin del clip antes de volver a atacar. El autor revisó el aspecto con los
+  recursos provisionales. Queda comprobar en partida la transición, las colisiones de combate y la recarga.
 - Ruinas de batalla del Coloso: sala de 21 bloques que se levanta al invocarlo, con aviso si el terreno no deja cerrarla.
 - Opciones nuevas en `docs/CONFIGURATION.md` con los valores por defecto del código; valores provisionales en `docs/BALANCE.md`.
 - Pendiente: validar todo en partida (equilibrio del trance, pedidos, expediciones, arena y combate de fase 3); las

@@ -30,10 +30,14 @@ Criterio (§0 de `IDEAS_v47_v55.md`): inspiración de tono, nombres, formas y at
 ## 2. El Coloso Sin Rostro (`aptitudes:faceless_colossus`) — jugable
 
 Guerrero gigante de armadura oscura sin rostro, con espadón. El cuerpo mide 3,4 bloques visuales y la caja de
-colisión mide 1,6 × 3,8 bloques. El editable es `tools/models/blockbench/faceless_colossus_rebuild.bbmodel`.
+colisión mide 1,6 × 3,4 bloques, con ojos a 3,14. El editable es `tools/models/blockbench/faceless_colossus_rebuild.bbmodel`.
 Un solo rig y un solo mapa UV se usan para los dos atlas de 512 × 512 con sus máscaras de emisión.
 El cliente elige la armadura agrietada en las fases de combate 2 y 3 según un dato sincronizado del servidor.
 Durante las acciones, el casco respeta los fotogramas clave. El seguimiento de la mirada se aplica durante el movimiento libre.
+Un controlador de GeckoLib mezcla locomoción y acciones. La IA espera a que termine el clip de ataque, con 2 ticks
+de transición y un recobro de 12 ticks para el tajo o 14 para el golpe descendente y la embestida.
+El aturdimiento prevalece sobre la transición de fase. El bono de velocidad de la armadura agrietada se aplica
+también al restaurar un Coloso de fase avanzada.
 
 Los recursos de Blockbench son la fuente de verdad. `tools/models/gen_boss_models.py --check` comprueba
 geometría y animaciones con la ruta de recursos indicada en `docs/TESTING.md`. Las herramientas de pintura
@@ -47,9 +51,9 @@ legada se usan únicamente sobre copias del atlas antiguo.
 
 | Ataque | Fase | Distancia | Aviso | Enfriamiento | Efecto |
 |---|---|---|---|---|---|
-| `sweep` (tajo) | 1+ | 0–4,5 | 18 t | 30 t | Arco de 140° delante, daño ×1, empuje |
-| `slam` (golpe descendente) | 1+ | 0–5,5 | 28 t (círculo de críticos en el suelo) | 70 t | Onda de radio 5,5, daño ×1,2, lanza hacia arriba |
-| `charge` (embestida) | 2+ | 5–18 | 16 t (humo) | 90 t | Se lanza hacia el objetivo; daño ×0,9 y gran empuje si llega |
+| `sweep` (tajo) | 1+ | 0–4,5 | 18 t | 30 t | Arco fijo de 140° delante a la altura del espadón, daño ×1, empuje |
+| `slam` (golpe descendente) | 1+ | 0–5,5 | 28 t (círculo de 5,5 bloques en el suelo) | 70 t | Onda a ras del suelo, daño ×1,2 y lanzamiento al recibir daño |
+| `charge` (embestida) | 2+ | 5–18 | 16 t (humo) | 90 t | Impulso en la dirección anunciada, un golpe de ×0,9 por contacto durante hasta 8 ticks |
 
 - Botín: 8–12 Fragmentos de alma, Corazón de campeón, 3 Esencias de élite (núcleo propio con la estructura).
 - Arena: **Ruinas de batalla** (v65), círculo de 21 bloques con columnas rotas como cobertura. Se levanta al invocar el sello (las columnas duran 20 min) y se cierra con niebla al entrar; muro de niebla
