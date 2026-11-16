@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """V75: importa y valida el arte externo de las armas de evolución Maestro (encargo en docs/PROMPT_ARTE_ARMAS.md).
 
-Importar (imágenes sueltas con el nombre del rol, p. ej. ``berserker.png`` o ``berserker_weapon_master.png``):
+Importar a 32×32 (imágenes sueltas con el nombre del rol, p. ej. ``berserker.png`` o ``berserker_weapon_master.png``):
     python3 tools/textures/import_weapon_art.py entregas/*.png
 Importar una hoja de varias armas en una cuadrícula (se cortan en orden de izquierda a derecha y de arriba abajo):
     python3 tools/textures/import_weapon_art.py hoja.png --sheet 5x1 --roles berserker,mage,assassin,herbalist,engineer
@@ -12,7 +12,7 @@ Vista previa ampliada de lo importado:
 
 Después de importar: ``python3 tools/textures/gen_items.py src/main/resources/assets/aptitudes/textures/item`` (borra luego los tres
 PNG de sellos retirados que regenera) y ``python3 tools/models/gen_weapon_models.py src/main/resources/assets/aptitudes/models/item``.
-Opciones de importación: --colors N (por defecto 16), --tolerance T (fondo, 0–255; por defecto 40), --no-fit, --flip,
+Opciones de importación: --size 32|16 (por defecto 32, doble densidad), --colors N (por defecto 32), --tolerance T (fondo, 0–255; por defecto 40), --no-fit, --flip,
 --rotate 90|180|270, --dry-run (no escribe).
 """
 import argparse
@@ -81,7 +81,7 @@ def do_import(args):
     for role, image in jobs:
         try:
             norm = weapon_art.normalize(image, colors=args.colors, tolerance=args.tolerance, fit=not args.no_fit,
-                                        flip=args.flip, rotate=args.rotate)
+                                        flip=args.flip, rotate=args.rotate, size=args.size)
         except ValueError as e:
             print(f'  {role}{weapon_art.SUFFIX}: ERROR\n    - {e}')
             ok = False
@@ -109,15 +109,15 @@ def do_check():
 
 
 def do_preview(out):
-    scale, cols = 8, 10
+    cell, cols = 128, 10
     names = [r for r in ROLES if weapon_art.path_for(r + weapon_art.SUFFIX).is_file()]
     if not names:
         raise SystemExit('No hay arte importado que mostrar')
     rows = (len(names) + cols - 1) // cols
-    sheet = Image.new('RGBA', (cols * 16 * scale, rows * 16 * scale), (58, 60, 72, 255))
+    sheet = Image.new('RGBA', (cols * cell, rows * cell), (58, 60, 72, 255))
     for i, r in enumerate(names):
-        big = Image.open(weapon_art.path_for(r + weapon_art.SUFFIX)).convert('RGBA').resize((16 * scale, 16 * scale), Image.NEAREST)
-        sheet.paste(big, ((i % cols) * 16 * scale, (i // cols) * 16 * scale), big)
+        big = Image.open(weapon_art.path_for(r + weapon_art.SUFFIX)).convert('RGBA').resize((cell, cell), Image.NEAREST)
+        sheet.paste(big, ((i % cols) * cell, (i // cols) * cell), big)
     sheet.save(out)
     print(f'Vista previa de {len(names)} armas en {out}')
 
@@ -127,7 +127,8 @@ def main():
     p.add_argument('inputs', nargs='*')
     p.add_argument('--sheet', metavar='CxR')
     p.add_argument('--roles')
-    p.add_argument('--colors', type=int, default=16)
+    p.add_argument('--colors', type=int, default=32)
+    p.add_argument('--size', type=int, default=weapon_art.DEFAULT_SIZE, choices=weapon_art.SIZES, help='densidad final: 32 (por defecto) o 16')
     p.add_argument('--tolerance', type=int, default=40)
     p.add_argument('--no-fit', action='store_true')
     p.add_argument('--flip', action='store_true')

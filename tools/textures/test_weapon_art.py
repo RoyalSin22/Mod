@@ -22,19 +22,26 @@ def fake_ai_sword(size=256, bg=(255, 0, 255)):
 
 
 class WeaponArtTest(unittest.TestCase):
-    def test_external_art_is_normalized_to_a_valid_icon(self):
-        out = weapon_art.normalize(fake_ai_sword(), colors=16)
-        self.assertEqual(out.size, (16, 16))
-        errors, warnings = weapon_art.validate(out)
-        self.assertEqual(errors, [], errors)
-        self.assertEqual(warnings, [], warnings)
+    def test_external_art_is_normalized_to_a_valid_icon_at_both_densities(self):
+        for size in (16, 32):
+            out = weapon_art.normalize(fake_ai_sword(), colors=16, size=size)
+            self.assertEqual(out.size, (size, size))
+            errors, warnings = weapon_art.validate(out)
+            self.assertEqual(errors, [], f'{size}: {errors}')
+            self.assertEqual(warnings, [], f'{size}: {warnings}')
+
+    def test_default_density_is_32_and_unknown_sizes_are_rejected(self):
+        self.assertEqual(weapon_art.normalize(fake_ai_sword()).size, (32, 32))
+        with self.assertRaises(ValueError):
+            weapon_art.normalize(fake_ai_sword(), size=24)
 
     def test_background_is_removed_and_edges_are_hard(self):
-        out = weapon_art.normalize(fake_ai_sword())
-        alphas = {out.getpixel((x, y))[3] for x in range(16) for y in range(16)}
+        out = weapon_art.normalize(fake_ai_sword(), colors=16)
+        n = out.size[0]
+        alphas = {out.getpixel((x, y))[3] for x in range(n) for y in range(n)}
         self.assertEqual(alphas, {0, 255})
         self.assertEqual(out.getpixel((0, 0))[3], 0)
-        self.assertLessEqual(len({out.getpixel((x, y))[:3] for x in range(16) for y in range(16) if out.getpixel((x, y))[3]}), 16)
+        self.assertLessEqual(len({out.getpixel((x, y))[:3] for x in range(n) for y in range(n) if out.getpixel((x, y))[3]}), 16)
 
     def test_empty_image_is_rejected(self):
         with self.assertRaises(ValueError):
@@ -50,7 +57,7 @@ class WeaponArtTest(unittest.TestCase):
         tiny.putpixel((8, 8), (255, 0, 0, 255))
         errors, _ = weapon_art.validate(tiny)
         self.assertTrue(any('opacos' in e for e in errors))
-        errors, _ = weapon_art.validate(Image.new('RGBA', (32, 32), (0, 0, 0, 0)))
+        errors, _ = weapon_art.validate(Image.new('RGBA', (24, 24), (0, 0, 0, 0)))
         self.assertTrue(any('tamaño' in e for e in errors))
 
     def test_wrong_orientation_is_only_a_warning(self):
@@ -63,8 +70,8 @@ class WeaponArtTest(unittest.TestCase):
         self.assertTrue(warnings)
 
     def test_flip_mirrors_the_weapon(self):
-        a = weapon_art.normalize(fake_ai_sword())
-        b = weapon_art.normalize(fake_ai_sword(), flip=True)
+        a = weapon_art.normalize(fake_ai_sword(), size=16)
+        b = weapon_art.normalize(fake_ai_sword(), flip=True, size=16)
         self.assertNotEqual(list(a.getdata()), list(b.getdata()))
 
     def test_depth_is_thicker_in_dark_materials(self):
@@ -81,9 +88,11 @@ class WeaponArtTest(unittest.TestCase):
             weapon_art.SOURCE = Path(tmp)
             try:
                 self.assertIsNone(weapon_art.override('mage_weapon_master'))
-                Image.new('RGBA', (32, 32)).save(Path(tmp) / 'mage_weapon_master.png')
+                Image.new('RGBA', (24, 24)).save(Path(tmp) / 'mage_weapon_master.png')
                 self.assertIsNone(weapon_art.override('mage_weapon_master'))
                 Image.new('RGBA', (16, 16)).save(Path(tmp) / 'mage_weapon_master.png')
+                self.assertIsNotNone(weapon_art.override('mage_weapon_master'))
+                Image.new('RGBA', (32, 32)).save(Path(tmp) / 'mage_weapon_master.png')
                 self.assertIsNotNone(weapon_art.override('mage_weapon_master'))
             finally:
                 weapon_art.SOURCE = old

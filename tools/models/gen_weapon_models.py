@@ -111,32 +111,40 @@ def r(v):
     return round(v, 4)
 
 
+def num(v):
+    """Número compacto: entero si lo es (los modelos de 16×16 conservan su formato de siempre)."""
+    v = round(v, 4)
+    return int(v) if v == int(v) else v
+
+
 def model(name):
     depth = depth_map(name)
+    n = len(depth)          # 16 o 32 (V75: arte externo a doble densidad)
+    u = 16 / n              # tamaño de un píxel en unidades de modelo (los UV de Minecraft siempre van de 0 a 16)
     elements = []
-    for y in range(16):
+    for y in range(n):
         x = 0
-        while x < 16:
+        while x < n:
             t = depth[y][x]
             if not t:
                 x += 1
                 continue
             x1 = x
-            while x1 < 16 and depth[y][x1] == t:
+            while x1 < n and depth[y][x1] == t:
                 x1 += 1
             z0, z1 = 8 - t / 2, 8 + t / 2
             faces = {
-                'north': {'uv': [x1, y, x, y + 1], 'texture': '#layer0'},
-                'south': {'uv': [x, y, x1, y + 1], 'texture': '#layer0'},
-                'east': {'uv': [x1 - 1, y, x1, y + 1], 'texture': '#layer0'},
-                'west': {'uv': [x, y, x + 1, y + 1], 'texture': '#layer0'},
+                'north': {'uv': [num(x1 * u), num(y * u), num(x * u), num((y + 1) * u)], 'texture': '#layer0'},
+                'south': {'uv': [num(x * u), num(y * u), num(x1 * u), num((y + 1) * u)], 'texture': '#layer0'},
+                'east': {'uv': [num((x1 - 1) * u), num(y * u), num(x1 * u), num((y + 1) * u)], 'texture': '#layer0'},
+                'west': {'uv': [num(x * u), num(y * u), num((x + 1) * u), num((y + 1) * u)], 'texture': '#layer0'},
             }
             # Arriba/abajo solo si algún vecino de la fila contigua es más fino (si no, la cara queda oculta).
             if any(y == 0 or depth[y - 1][i] < t for i in range(x, x1)):
-                faces['up'] = {'uv': [x, y, x1, y + 1], 'texture': '#layer0'}
-            if any(y == 15 or depth[y + 1][i] < t for i in range(x, x1)):
-                faces['down'] = {'uv': [x, y, x1, y + 1], 'texture': '#layer0'}
-            elements.append({'from': [x, 15 - y, r(z0)], 'to': [x1, 16 - y, r(z1)], 'faces': faces})
+                faces['up'] = {'uv': [num(x * u), num(y * u), num(x1 * u), num((y + 1) * u)], 'texture': '#layer0'}
+            if any(y == n - 1 or depth[y + 1][i] < t for i in range(x, x1)):
+                faces['down'] = {'uv': [num(x * u), num(y * u), num(x1 * u), num((y + 1) * u)], 'texture': '#layer0'}
+            elements.append({'from': [num(x * u), num((n - 1 - y) * u), r(z0)], 'to': [num(x1 * u), num((n - y) * u), r(z1)], 'faces': faces})
             x = x1
     return {
         '__comment': 'Generado por tools/models/gen_weapon_models.py a partir de gen_items.py; no editar a mano.',
@@ -179,6 +187,9 @@ def preview(names, out):
         depth = depth_map(name)
         draw = ImageDraw.Draw(sheet)
         ox, oy = (i % cols) * cell + 20, (i // cols) * cell + 14
+        if tex.size[0] != 16:  # arte de doble densidad: se muestra a la rejilla de 16×16
+            tex = tex.resize((16, 16), Image.NEAREST)
+            depth = [[depth[y * 2][x * 2] for x in range(16)] for y in range(16)] if len(depth) == 32 else depth
         # Proyección oblicua: el fondo (z) se desplaza hacia arriba a la derecha; se pinta de atrás adelante.
         for layer in range(8, -1, -1):
             for y in range(16):
