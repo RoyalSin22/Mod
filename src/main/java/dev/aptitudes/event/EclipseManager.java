@@ -231,6 +231,8 @@ public final class EclipseManager {
 		playToAll(world, dev.aptitudes.sound.ModSounds.ECLIPSE_START, 1.0f);
 		long eventTime = forced ? 0 : EclipseRules.timeInDay(world.getTimeOfDay());
 		syncAll(server, eventTime);
+		// V71: quienes están en el Overworld al empezar el Eclipse lo anotan en sus Crónicas.
+		for (ServerPlayerEntity p : world.getPlayers()) dev.aptitudes.guide.LoreManager.unlocksOnBeheritSacrifice(p);
 	}
 
 	/** Termina el eclipse; si {@code completed}, premia a los supervivientes del Mundo Normal. */
@@ -252,6 +254,8 @@ public final class EclipseManager {
 		broadcast(server, Text.translatable(completed ? "eclipse.aptitudes.end" : "eclipse.aptitudes.stopped")
 				.formatted(Formatting.GOLD));
 		if (completed) {
+			// V71: quien presencia el final del Eclipse (aunque haya caído) lee lo que dejó.
+			for (ServerPlayerEntity p : world.getPlayers()) dev.aptitudes.guide.LoreManager.unlocksOnEclipseEnd(p);
 			AptitudesConfig cfg = Aptitudes.config();
 			for (ServerPlayerEntity player : world.getPlayers()) {
 				if (!eligible(player) || fallen.contains(player.getUuid())) continue;

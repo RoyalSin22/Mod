@@ -44,6 +44,8 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
   sin botín ni XP. Una muerte de combate con crédito de jugador durante la sesión puede dar un
   `aptitudes:jiron_velo_espectral` (85 %, una tirada). Las invocaciones administrativas quedan fuera de esa cadena.
 - **V68 hecha:** el jefe (Gran Osario Quebrado) y su trofeo ya existen (`docs/V68_JEFE_OSARIO.md`); falta probarlos en partida.
+- **V71 hecha:** interfaz de lore (T7b): pestaña «Crónicas» del Grimorio y ganchos de desbloqueo en el juego. Pendiente:
+  validarla en partida, el arte propio de la pestaña y una fuente para «El juramento sin cumplir» (`arc2.unfinished_oath`).
 - **V70 hecha:** Templo del Custodio hondo (tres pisos subterráneos, foso con rampa, sin puzle, prueba de combate en el Piso 2;
   `docs/V70_TEMPLO_HONDO.md`); falta probarlo en partida y ajustar el balance.
 - **V69 hecha:** Llave del Velo (Cráneo + Jirón + fragmentos de alma) y Cripta de la Niebla bajo el Templo del Custodio

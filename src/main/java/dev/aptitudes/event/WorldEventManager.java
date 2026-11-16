@@ -652,6 +652,11 @@ public final class WorldEventManager {
 		if (kind == WorldEventKind.SOUL_FOG) state.lastFogStart = world.getTime();
 		else if (kind == WorldEventKind.EMBER_RAIN) state.lastEmberStart = world.getTime();
 		state.markDirty();
+		// V71: quienes están en el Overworld cuando empieza el evento lo anotan en sus Crónicas.
+		String which = kind == WorldEventKind.SOUL_FOG ? "fog" : kind == WorldEventKind.EMBER_RAIN ? "rain" : null;
+		if (which != null) {
+			for (ServerPlayerEntity p : world.getPlayers()) dev.aptitudes.guide.LoreManager.unlocksOnGuildmasterTalk(p, which);
+		}
 		return true;
 	}
 

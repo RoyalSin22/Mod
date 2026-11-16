@@ -123,7 +123,7 @@ public class GuideScreen extends Screen {
 			TutorialRules.Step.COMBO, "skills", TutorialRules.Step.GUILD_CRAFT, "guild");
 
 	/** Qué se muestra a la derecha del índice. */
-	private enum Page { CHAPTER, ITEM, BESTIARY, BEAST, PROGRESS, SEARCH, BOOKMARKS, ROLE }
+	private enum Page { CHAPTER, ITEM, BESTIARY, BEAST, PROGRESS, SEARCH, BOOKMARKS, ROLE, LORE, LORE_ENTRY }
 
 	/** Posición en el historial (Volver / Retroceso). */
 	private record Loc(Page page, int chapter, @Nullable Item item, @Nullable BestiaryRules.Entry beast, @Nullable Role role) {}
@@ -133,6 +133,7 @@ public class GuideScreen extends Screen {
 
 	private static final List<Tab> TABS = List.of(
 			new Tab(Page.BESTIARY, Items.SKELETON_SKULL, "screen.aptitudes.guide.tab.bestiary"),
+			new Tab(Page.LORE, Items.WRITTEN_BOOK, "screen.aptitudes.guide.tab.lore"),
 			new Tab(Page.PROGRESS, Items.CLOCK, "screen.aptitudes.guide.tab.progress"),
 			new Tab(Page.SEARCH, Items.SPYGLASS, "screen.aptitudes.guide.tab.search"),
 			new Tab(Page.BOOKMARKS, Items.NAME_TAG, "screen.aptitudes.guide.tab.bookmarks"));
@@ -159,6 +160,8 @@ public class GuideScreen extends Screen {
 	@Nullable private Item viewing;
 	@Nullable private BestiaryRules.Entry beast;
 	@Nullable private Role role;
+	/** Entrada de las Crónicas abierta (solo en {@link Page#LORE_ENTRY}). */
+	@Nullable private dev.aptitudes.guide.LoreCatalog.Entry loreEntry;
 	private int recipeIndex;
 	private final Deque<Loc> history = new ArrayDeque<>();
 	/** Pantalla a la que se vuelve al cerrar (el inventario, si se abrió desde él). */
@@ -351,6 +354,8 @@ public class GuideScreen extends Screen {
 			case SEARCH -> renderSearch(ctx, mouseX, mouseY, delta);
 			case BOOKMARKS -> renderBookmarks(ctx, mouseX, mouseY);
 			case ROLE -> renderRole(ctx, mouseX, mouseY, tip);
+			case LORE -> renderLore(ctx, mouseX, mouseY);
+			case LORE_ENTRY -> renderLoreEntry(ctx, mouseX, mouseY, tip);
 			case CHAPTER -> {
 				if (recipesMode()) renderRecipeBook(ctx, mouseX, mouseY, delta, tip);
 				else renderChapter(ctx, mouseX, mouseY, tip);
@@ -1129,6 +1134,60 @@ public class GuideScreen extends Screen {
 		});
 	}
 
+	// ------------------------------------------------- Crónicas (V71, T7b)
+
+	private static boolean loreHas(String id) {
+		return dev.aptitudes.client.ClientLore.isUnlocked(id);
+	}
+
+	/** Lista de las entradas de lore: las desbloqueadas se leen; el resto muestra qué falta, sin spoilers. */
+	private void renderLore(DrawContext ctx, int mouseX, int mouseY) {
+		var entries = dev.aptitudes.guide.LoreCatalog.ENTRIES;
+		int y = header(ctx, "chronicles", Text.translatable("screen.aptitudes.guide.tab.lore"),
+				Text.translatable("screen.aptitudes.guide.lore.count", dev.aptitudes.guide.LoreCatalog.unlockedCount(GuideScreen::loreHas),
+						dev.aptitudes.guide.LoreCatalog.total()),
+				new ItemStack(Items.WRITTEN_BOOK), null, 0, 0, new Tooltip());
+		renderRows(ctx, y, mouseX, mouseY, entries.size(), (i, ry, hover) -> {
+			var entry = entries.get(i);
+			boolean open = dev.aptitudes.guide.LoreCatalog.unlocked(entry, GuideScreen::loreHas);
+			Text kind = Text.translatable("screen.aptitudes.guide.lore.kind." + entry.kind().name().toLowerCase(Locale.ROOT));
+			if (open) {
+				drawRow(ctx, ry, new ItemStack(Items.WRITTEN_BOOK), Text.translatable(entry.titleKey()), kind, hover);
+				return () -> openLore(entry);
+			}
+			drawRow(ctx, ry, new ItemStack(Items.BOOK), Text.translatable("screen.aptitudes.guide.lore.locked").formatted(Formatting.DARK_GRAY), kind, false);
+			return null;
+		});
+	}
+
+	private void renderLoreEntry(DrawContext ctx, int mouseX, int mouseY, Tooltip tip) {
+		var entry = loreEntry;
+		int px = pageX(), pw = pageW();
+		if (entry == null || !dev.aptitudes.guide.LoreCatalog.unlocked(entry, GuideScreen::loreHas)) {
+			ctx.drawText(textRenderer, Text.translatable("screen.aptitudes.guide.lore.locked"), px, top + 70, UiStyle.MUTED, false);
+			return;
+		}
+		int y = header(ctx, "chronicles", Text.translatable(entry.titleKey()),
+				Text.translatable("screen.aptitudes.guide.lore.kind." + entry.kind().name().toLowerCase(Locale.ROOT)),
+				new ItemStack(Items.WRITTEN_BOOK), null, mouseX, mouseY, tip);
+		List<OrderedText> lines = textRenderer.wrapLines(Text.translatable(entry.bodyKey()), pw - 10);
+		int bottom = top + H - 12;
+		int visible = Math.max(1, (bottom - y) / 10);
+		int maxScroll = Math.max(0, lines.size() - visible);
+		scroll = MathHelper.clamp(scroll, 0, maxScroll);
+		ctx.enableScissor(px - 2, y, px + pw + 2, bottom);
+		for (int i = (int) scroll; i < lines.size() && i < (int) scroll + visible + 1; i++) {
+			ctx.drawText(textRenderer, lines.get(i), px, y + (i - (int) scroll) * 10, UiStyle.TEXT, false);
+		}
+		ctx.disableScissor();
+		scrollBar(ctx, px + pw - 2, y, bottom, scroll, maxScroll, visible, lines.size());
+	}
+
+	private void openLore(dev.aptitudes.guide.LoreCatalog.Entry entry) {
+		loreEntry = entry;
+		show(new Loc(Page.LORE_ENTRY, chapter, null, null, null), true);
+	}
+
 	// -------------------------------------------- Sendas de un rol (G5)
 
 	private void renderRole(DrawContext ctx, int mouseX, int mouseY, Tooltip tip) {
@@ -1403,12 +1462,12 @@ public class GuideScreen extends Screen {
 
 	/** Páginas con «Volver». */
 	private boolean hasBack() {
-		return page == Page.ITEM || page == Page.BEAST || page == Page.ROLE;
+		return page == Page.ITEM || page == Page.BEAST || page == Page.ROLE || page == Page.LORE_ENTRY;
 	}
 
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
-		double step = alchemyMode() || page == Page.BESTIARY ? 18 : recipesMode() || page == Page.SEARCH || page == Page.BOOKMARKS ? 1 : 2;
+		double step = alchemyMode() || page == Page.BESTIARY ? 18 : recipesMode() || page == Page.SEARCH || page == Page.BOOKMARKS || page == Page.LORE ? 1 : 2;
 		scroll -= verticalAmount * step;
 		return true;
 	}

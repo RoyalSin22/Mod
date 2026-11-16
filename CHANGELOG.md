@@ -6,6 +6,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **v71 — Crónicas del Grimorio (T7b).** Nueva pestaña «Crónicas» con las 18 entradas de lore y crónicas de eventos (las
+  del bestiario siguen en sus cartas): las desbloqueadas se leen con desplazamiento y las demás aparecen como «Bloqueada»
+  sin revelar su título. El desbloqueo se cablea al juego: Niebla de almas y Lluvia de brasas (a quien está en el
+  Overworld al empezar), caída del Custodio (a quien está a menos de 48 bloques), apertura de la cámara de diamante, inicio
+  y final del Eclipse y Cripta de la Niebla; tres entradas son visibles desde el principio y una (el último arco) aún no
+  tiene fuente. El estado se sincroniza al desbloquear. Catálogo puro `guide/LoreCatalog` con pruebas, cinco textos en los 5
+  idiomas y banner generado `chronicles.png`.
 - **v70 — Templo del Custodio hondo.** Los templos nuevos son totalmente subterráneos: un foso con rampa en la superficie y tres
   pisos (atrio del Autómata, sala de pruebas con dos oleadas y cámara del Custodio con sus cuatro cámaras de recompensa), con la
   Cripta de la Niebla como cuarto nivel. Se retira el puzle de palancas y placas: cada piso termina en un combate y las escaleras

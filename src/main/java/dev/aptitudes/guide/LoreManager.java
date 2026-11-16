@@ -31,8 +31,7 @@ public final class LoreManager {
 	 */
 	public static void unlock(ServerPlayerEntity player, String loreId) {
 		if (!LoreRules.isValidLoreId(loreId)) return;
-		LoreState state = player.getAttachedOrCreate(ModAttachments.LORE);
-		player.setAttached(ModAttachments.LORE, state.unlock(loreId));
+		unlockAll(player, Set.of(loreId));
 	}
 
 	/**
@@ -46,6 +45,7 @@ public final class LoreManager {
 		LoreState updated = state.unlockAll(loreIds);
 		if (updated != state) {
 			player.setAttached(ModAttachments.LORE, updated);
+			sync(player); // V71: el Grimorio del cliente se entera al momento
 		}
 	}
 

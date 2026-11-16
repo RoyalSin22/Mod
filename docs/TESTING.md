@@ -1,5 +1,12 @@
 # Pruebas de Aptitudes
 
+## V71 — Crónicas del Grimorio
+
+Automáticas: `LoreCatalogTest` (ids únicos, cada desbloqueo del juego revela entradas, tres visibles al inicio, textos en los
+6 idiomas). En partida (pendiente): 1) abrir el Grimorio y ver «Crónicas» con 3/18; 2) iniciar la Niebla con el aldeano y
+comprobar que aparecen «La Huella de los Caídos» y su crónica; 3) lo mismo con la Lluvia de brasas, la caída del Custodio, la
+cámara de diamante, el Eclipse (inicio y final) y la Cripta; 4) comprobar el desplazamiento de textos largos y el botón Volver.
+
 ## V70 — Templo del Custodio hondo
 
 Automáticas: `DeepTempleLayoutTest` (subterráneo, sin puzle, sellos, alcanzabilidad por pisos con cada paso cerrado o abierto,

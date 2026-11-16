@@ -1596,6 +1596,11 @@ screen.aptitudes.guide.tab.bestiary¦Bestiário¦Bestiaire¦Bestiarium
 screen.aptitudes.guide.tab.progress¦Progresso¦Progression¦Fortschritt
 screen.aptitudes.guide.tab.search¦Buscar no grimório¦Chercher dans le grimoire¦Im Grimoire suchen
 screen.aptitudes.guide.tab.bookmarks¦Marcadores¦Signets¦Lesezeichen
+screen.aptitudes.guide.tab.lore¦Crônicas¦Chroniques¦Chroniken
+screen.aptitudes.guide.lore.count¦%s/%s lidas¦%s/%s lues¦%s/%s gelesen
+screen.aptitudes.guide.lore.kind.lore¦Lore¦Savoir¦Wissen
+screen.aptitudes.guide.lore.kind.chronicle¦Crônica¦Chronique¦Chronik
+screen.aptitudes.guide.lore.locked¦Bloqueada · continue explorando¦Verrouillée · continuez d’explorer¦Gesperrt · weiter erkunden
 screen.aptitudes.guide.tab.tutorial¦Capítulo recomendado · %s¦Chapitre recommandé · %s¦Empfohlenes Kapitel · %s
 screen.aptitudes.guide.tutorial¦Tutorial %s/%s: %s¦Tutoriel %s/%s : %s¦Tutorial %s/%s: %s
 screen.aptitudes.guide.bookmark.add¦Adicionar marcador¦Ajouter un signet¦Lesezeichen hinzufügen

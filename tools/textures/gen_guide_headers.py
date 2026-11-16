@@ -19,7 +19,7 @@ from PIL import Image, ImageDraw
 W, H = 384, 34
 ROOT = Path(__file__).resolve().parents[2]
 SCREEN = ROOT / 'src/client/java/dev/aptitudes/client/screen/GuideScreen.java'
-EXTRA_PAGES = ('bestiary', 'progress', 'bookmarks')
+EXTRA_PAGES = ('bestiary', 'progress', 'bookmarks', 'chronicles')
 
 GOLD = (230, 195, 106)
 GOLD_DARK = (156, 122, 53)
@@ -39,6 +39,7 @@ THEMES = {
     'achievements': ((255, 215, 0), 'star'), 'alchemy': ((200, 110, 230), 'flask'),
     'bestiary': ((200, 70, 70), 'skull'), 'progress': ((120, 200, 255), 'clock'),
     'bookmarks': ((240, 190, 80), 'ribbon'),
+    'chronicles': ((190, 160, 230), 'scroll'),
 }
 
 

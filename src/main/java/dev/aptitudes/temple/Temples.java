@@ -249,6 +249,7 @@ public final class Temples {
 				case OPEN -> {
 					stack.decrement(1);
 					seal.openChamber(world, doorMetal);
+					if (doorMetal == TempleKeyRules.Metal.DIAMOND) dev.aptitudes.guide.LoreManager.unlocksOnDiamondChamberComplete(player);
 					return;
 				}
 				case NO_KEY -> key = "temple.aptitudes.chamber.no_key";
@@ -385,6 +386,12 @@ public final class Temples {
 				&& seal.templeId.equals(temple)) {
 			layout = seal.layout();
 			seal.cleared();
+			// V71: quienes están cerca cuando cae el Custodio leen su lore.
+			if (TempleFlowRules.isCustodian(layout)) {
+				for (ServerPlayerEntity p : world.getPlayers()) {
+					if (!p.isSpectator() && p.squaredDistanceTo(mob) < 48 * 48) dev.aptitudes.guide.LoreManager.unlocksOnCustodianEncounter(p);
+				}
+			}
 		}
 		ItemEntity key = mob.dropStack(TempleKeyItem.forTemple(temple));
 		if (key != null) key.setNeverDespawn();
