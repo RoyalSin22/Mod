@@ -6,6 +6,11 @@ Automáticas: `CryptRulesTest` (estados, trampilla, tamaño de oleada, mezcla y 
 del layout 1, casco, alcanzabilidad), `CryptResourcesTest` (receta, botín, texturas e idiomas), `CryptConfigValidationTest`
 y `CryptLoreRulesTest`.
 
+Verificado en servidor dedicado (mundo plano de 80 capas, sin jugador): `/place feature aptitudes:custodian_temple` genera el
+templo con cripta (trampilla, sala de aire, escalera y puntos del clímax y del cofre en su sitio); tras `save-all` y reinicio la
+trampilla sigue ahí y no hay excepciones. En terreno normal el feature falla si la pendiente es excesiva (comportamiento previo).
+No se cubren sin jugador las oleadas ni el clímax.
+
 En partida (pendiente): 1) fabricar la llave en la Mesa del gremio; 2) vencer al Custodio en un templo **nuevo** y comprobar la
 trampilla en su cámara (sin llave: aviso; con llave: se abre y se consume); 3) bajar por la escalera, superar las tres oleadas y
 el clímax; 4) morir dentro y comprobar que la oleada se reinicia sin gastar otra llave; 5) abrir el cofre y revisar el lore en
