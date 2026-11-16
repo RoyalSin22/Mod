@@ -80,6 +80,7 @@ public final class AbilityHud {
 		mechanics = List.of();
 		resetBars(null);
 		KeystoneHud.clear();
+		SynergyHud.clear(); // v65 C5
 	}
 
 	private static void resetBars(ClientPlayerEntity player) {
@@ -124,6 +125,7 @@ public final class AbilityHud {
 		renderSlots(ctx, text, data, age);
 		if (cfg.showMechanic && !cfg.hudMinimal) renderMechanics(ctx, text);
 		KeystoneHud.draw(ctx);
+		SynergyHud.draw(ctx); // v65 C5
 		ctx.getMatrices().pop();
 	}
 
@@ -142,7 +144,7 @@ public final class AbilityHud {
 		}
 		var layout = barLayout(w, h);
 		boolean showMechanic = cfg.showMechanic && !cfg.hudMinimal && !mechanics.isEmpty();
-		int above = Math.max(showMechanic ? 1 - MECHANIC_Y : -KEY_Y, KeystoneHud.occupiedAbove());
+		int above = Math.max(showMechanic ? 1 - MECHANIC_Y : -KEY_Y, Math.max(KeystoneHud.occupiedAbove(), SynergyHud.occupiedAbove()));
 		int top = layout.y() - (int) Math.ceil(above * layout.scale());
 		return new AbilityHudLayout(layout.x(), layout.y(), layout.scale(), layout.left(), top, layout.right(), layout.bottom());
 	}
