@@ -94,6 +94,7 @@ public class Aptitudes implements ModInitializer {
 		dev.aptitudes.config.ConfigSync.register();
 		dev.aptitudes.tutorial.TutorialManager.register();
 		dev.aptitudes.guide.GrimoireManager.register();
+		dev.aptitudes.guide.LoreManager.register(); // v67 (T7a)
 		dev.aptitudes.temple.Temples.register(); // v64
 		dev.aptitudes.boss.BossEntities.register(); // v63: jefes animados (GeckoLib)
 		dev.aptitudes.logic.ThreatManager.register();

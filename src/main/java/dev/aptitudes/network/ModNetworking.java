@@ -68,6 +68,7 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playC2S().register(ForgeActionPayload.ID, ForgeActionPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(GrimoirePayload.ID, GrimoirePayload.CODEC); // v61
 		PayloadTypeRegistry.playC2S().register(GrimoireRequestPayload.ID, GrimoireRequestPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(LorePayload.ID, LorePayload.CODEC); // v67 (T7a)
 		ServerPlayNetworking.registerGlobalReceiver(ForgeActionPayload.ID, (payload, context) -> {
 			var player = context.player();
 			if (payload.action() == ForgeActionPayload.OPEN_TEMPER || payload.action() == ForgeActionPayload.OPEN_FLASKS) {
