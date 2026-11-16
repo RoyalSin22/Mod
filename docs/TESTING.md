@@ -1,5 +1,16 @@
 # Pruebas de Aptitudes
 
+## V69 — Llave del Velo y Cripta de la Niebla
+
+Automáticas: `CryptRulesTest` (estados, trampilla, tamaño de oleada, mezcla y reinicio), `CryptLayoutTest` (plano sin regresión
+del layout 1, casco, alcanzabilidad), `CryptResourcesTest` (receta, botín, texturas e idiomas), `CryptConfigValidationTest`
+y `CryptLoreRulesTest`.
+
+En partida (pendiente): 1) fabricar la llave en la Mesa del gremio; 2) vencer al Custodio en un templo **nuevo** y comprobar la
+trampilla en su cámara (sin llave: aviso; con llave: se abre y se consume); 3) bajar por la escalera, superar las tres oleadas y
+el clímax; 4) morir dentro y comprobar que la oleada se reinicia sin gastar otra llave; 5) abrir el cofre y revisar el lore en
+el grimorio; 6) probar con 2+ jugadores y con anillos altos. Los templos anteriores a V69 no tienen cripta.
+
 ## V68 — Gran Osario Quebrado y su trofeo
 
 Automáticas: `OsarioBossRulesTest` (aparición, disolución, reparto, escudo y curas), `GreatOssuaryResourcesTest` (modelo,

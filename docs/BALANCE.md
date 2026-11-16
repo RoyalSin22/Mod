@@ -352,6 +352,22 @@ de su vida en daño recibe 1 Cráneo del Gran Osario (material narrativo, sin ef
 
 Cada jefe deja un núcleo distinto. Aplicar un núcleo en la Mesa del gremio añade +0,5 de daño a un arma de evolución. Cada arma acepta una vez cada uno de los tres núcleos, hasta +1,5 total; no cambia la potencia de armas que no sean evolutivas.
 
+# Cripta de la Niebla (V69)
+
+Etapa opcional bajo la cámara del Custodio (diseño en `docs/V69_CRIPTA_DE_LA_NIEBLA.md`). Se abre con una **Llave del Velo**
+(1 Cráneo del Gran Osario + 3 Jirón de Velo Espectral + 4 fragmentos de alma, Mesa del gremio; se consume al abrir). Cifras estimadas,
+pendientes de ajuste tras la prueba en partida.
+
+| Fase | Tamaño base | Mezcla | Notas |
+|---|---|---|---|
+| Oleada 1 / 2 / 3 | 4 / 6 / 8 | 30 % Errante, 25 % Osario, 45 % zombi o esqueleto | +2 por jugador adicional (hasta 6 contados), ×(1 + 0,25 × anillo), ×`cryptWaveSizePercent`; tope 40 por oleada y 12 vivas a la vez |
+| Clímax | 1 campeón + 2 Errantes | Osario Quebrado campeón | +25 % de vida por anillo de Amenaza |
+
+Sin jugadores vivos en la sala durante `cryptIdleResetSeconds` la oleada se reinicia. Las criaturas de la Cripta no sueltan
+botín propio, ni Jirón ni Núcleo, y los Errantes no dan XP: la recompensa es el cofre final (5–7 tiradas: bloque de diamante,
+manzana dorada encantada, restos de netherita, bloque de esmeralda, fragmentos de alma, Corazón de campeón, Cupón de armería,
+Emblema de maestría y frascos de XP). Sin Resonador, sin Cráneo y sin llaves: es botín y lore, no poder nuevo.
+
 # Reforja y Templado (v48)
 
 | Operación | Trofeo | Fragmentos de alma |

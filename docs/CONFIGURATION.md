@@ -417,6 +417,9 @@ desde que el evento **empieza** (provisional) y no las consumen los comandos `/a
 | `osarioBossFogPercent` | 75 | [10, 100] | V68: porcentaje de la duración de la Niebla a partir del cual aparece el jefe (una vez por sesión). |
 | `osarioBossLingerTicks` | 6000 | [0, 72000] | V68: ticks que sigue vivo tras cerrarse la Niebla antes de disolverse sin botín ni XP. 6000 = 5 minutos. |
 | `osarioBossMinDamagePercent` | 10 | [1, 100] | V68: daño mínimo (porcentaje de su vida) que debe hacer un jugador para recibir el trofeo. |
+| `cryptEnabled` | true | — | V69: los Templos del Custodio nuevos pueden generarse con la Cripta de la Niebla (si el terreno lo permite). No afecta a templos ya generados. |
+| `cryptIdleResetSeconds` | 30 | [5, 300] | V69: segundos sin jugadores vivos en la sala tras los que la oleada en curso se reinicia (la Llave del Velo no se vuelve a gastar). |
+| `cryptWaveSizePercent` | 100 | [25, 300] | V69: porcentaje del tamaño de las oleadas de la Cripta (base 4/6/8, +2 por jugador adicional, ×(1 + 0,25 × anillo)). |
 
 ## Grupos (v29)
 

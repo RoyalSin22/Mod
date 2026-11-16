@@ -44,9 +44,9 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
   sin botín ni XP. Una muerte de combate con crédito de jugador durante la sesión puede dar un
   `aptitudes:jiron_velo_espectral` (85 %, una tirada). Las invocaciones administrativas quedan fuera de esa cadena.
 - **V68 hecha:** el jefe (Gran Osario Quebrado) y su trofeo ya existen (`docs/V68_JEFE_OSARIO.md`); falta probarlos en partida.
-- **Progresión pendiente:** la receta (Jirón, `aptitudes:soul_shard` y Cráneo del Gran Osario) y diseñar la etapa interna
-  de la mazmorra del Custodio de las Cuatro Llaves que usará su resultado. El Custodio actual de los templos sellados no equivale a esa mazmorra;
-  la receta no debe sustituir las cuatro llaves ni alterar los templos existentes.
+- **V69 hecha:** Llave del Velo (Cráneo + Jirón + fragmentos de alma) y Cripta de la Niebla bajo el Templo del Custodio
+  (`docs/V69_CRIPTA_DE_LA_NIEBLA.md`); falta probarlas en partida y ajustar el balance. Solo los templos generados tras
+  este cambio tienen cripta. La mazmorra de las Cuatro Llaves sigue sin existir como tal.
 
 ### v65 — Pedidos, expediciones, trance, mancha, afijos, jefes y ruinas (Claude, sin validar en partida)
 - Trance de combate (F2), mancha de XP con 25 % (F3), pedidos del gremio entre jugadores (F4), retirados después de la

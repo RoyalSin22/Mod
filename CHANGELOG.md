@@ -6,6 +6,15 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **v69 — Llave del Velo y Cripta de la Niebla.** Nueva receta sin forma en la Mesa del gremio (1 Cráneo del Gran Osario +
+  3 Jirón de Velo Espectral + 4 fragmentos de alma) que da la **Llave del Velo** (un solo uso). Los Templos del Custodio
+  nuevos pueden incluir bajo su cámara una **Cripta de la Niebla** (`layout = 2`): al vencer al Custodio aparece una
+  trampilla que solo abre la llave; dentro, tres oleadas (4/6/8, escaladas por jugadores y anillo de Amenaza) y un clímax
+  (Osario Quebrado campeón con dos Errantes). Se reinicia sin gastar otra llave si la sala queda vacía. Recompensa: cofre
+  con botín y lore sin poder nuevo y desbloqueo de lore (`crypt_cleared_lore`). Tres opciones (`cryptEnabled`,
+  `cryptIdleResetSeconds`, `cryptWaveSizePercent`), textos en los 5 idiomas, reglas puras `CryptRules` y plano
+  `CustodianTempleLayout` con pruebas. No sustituye las cuatro llaves ni cambia los templos ya generados (sin cripta);
+  si hay fluidos o no cabe sobre el fondo del mundo, el templo se genera sin ella.
 - **v68 — Gran Osario Quebrado, jefe de la Niebla y su trofeo.** Jefe animado (GeckoLib) que la Niebla de almas levanta al
   75 por ciento de su duración, una vez por sesión, junto a un jugador. Cinco ataques avisados (zarpazo, anillo de niebla,
   latigazo que lo cura, lamento que invoca Errantes y cosecha de almas) y el pacto de almas (35 por ciento menos de daño
@@ -15,7 +24,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   bestiario (el logro «Cronista» pasa a pedir 14; quien ya lo tiene lo conserva). Cuatro opciones de configuración
   (`osarioBossEnabled`, `osarioBossFogPercent`, `osarioBossLingerTicks`, `osarioBossMinDamagePercent`), textos en los 5
   idiomas, modelo y animaciones provisionales (`tools/models/gen_boss_models.py`) y reglas puras `OsarioBossRules` con
-  pruebas. Fuera de alcance: la receta del trofeo y la mazmorra interna del Custodio.
+  pruebas. La receta del trofeo y la mazmorra interna llegan en la v69.
 - **v67 — Lore narrativo en pt/fr/de.** Las 23 entradas del Grimorio (cosmología, gremios, cronología, eventos,
   bestiario y crónicas) se traducen a portugués, francés y alemán en `tools/lang/lore_i18n_pt/fr/de.py`; el generador las
   usa por idioma y recurre al inglés si una entrada nueva aún no está traducida. Revisión nativa pendiente.
