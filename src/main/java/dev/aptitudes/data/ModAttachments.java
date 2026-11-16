@@ -103,6 +103,13 @@ public final class ModAttachments {
 			.initializer(() -> 0)
 			.buildAndRegister(Aptitudes.id("life_vessels"));
 
+	/** v67 (T7a): estado de desbloqueo de lore del Grimorio por jugador; se conserva al morir. */
+	public static final AttachmentType<dev.aptitudes.guide.LoreState> LORE = AttachmentRegistry.<dev.aptitudes.guide.LoreState>builder()
+			.persistent(dev.aptitudes.guide.LoreState.CODEC)
+			.copyOnDeath()
+			.initializer(dev.aptitudes.guide.LoreState::new)
+			.buildAndRegister(Aptitudes.id("lore"));
+
 	private ModAttachments() {
 	}
 
