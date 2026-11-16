@@ -1732,6 +1732,7 @@ temple.aptitudes.chamber.opened¦A fechadura cede e a câmara se abre.¦La serru
 temple.aptitudes.guardian_defeated_keys¦O Custódio cai e deixa quatro chaves.¦Le Gardien tombe et laisse quatre clés.¦Der Wächter fällt und hinterlässt vier Schlüssel.
 temple.aptitudes.seal.flow_dormant¦Selo: algo antigo dorme no átrio.¦Sceau : quelque chose d'ancien dort dans l'atrium.¦Siegel: Im Atrium schläft etwas Uraltes.
 temple.aptitudes.seal.flow_automaton¦Selo: o Autômato vigia o átrio. Derrote-o antes de tocar nos mecanismos.¦Sceau : l'Automate veille sur l'atrium. Vainquez-le avant de toucher aux mécanismes.¦Siegel: Der Automat bewacht das Atrium. Besiege ihn, bevor du die Mechanismen berührst.
+temple.aptitudes.seal.flow_automaton_deep¦Selo: o Autômato vigia o átrio. Derrote-o para abrir a escada para baixo.¦Sceau : l’Automate veille sur l’atrium. Vainquez-le pour ouvrir l’escalier vers le bas.¦Siegel: Der Automat bewacht das Atrium. Besiege ihn, um die Treppe nach unten zu öffnen.
 temple.aptitudes.seal.flow_door_locked¦Selo: a porta do Custódio aguarda uma Âncora do Véu.¦Sceau : la porte du Gardien attend une Ancre du voile.¦Siegel: Die Tür des Wächters erwartet einen Schleieranker.
 temple.aptitudes.seal.flow_custodian¦Selo: o Custódio guarda a câmara.¦Sceau : le Gardien garde la chambre.¦Siegel: Der Wächter bewacht die Kammer.
 temple.aptitudes.seal.flow_cleared¦Selo: este templo está aberto.¦Sceau : ce temple est ouvert.¦Siegel: Dieser Tempel ist offen.

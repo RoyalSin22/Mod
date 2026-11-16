@@ -3719,6 +3719,7 @@
   "temple.aptitudes.guardian_defeated_keys": "Le Gardien tombe et laisse quatre clés.",
   "temple.aptitudes.seal.flow_dormant": "Sceau : quelque chose d'ancien dort dans l'atrium.",
   "temple.aptitudes.seal.flow_automaton": "Sceau : l'Automate veille sur l'atrium. Vainquez-le avant de toucher aux mécanismes.",
+  "temple.aptitudes.seal.flow_automaton_deep": "Sceau : l’Automate veille sur l’atrium. Vainquez-le pour ouvrir l’escalier vers le bas.",
   "temple.aptitudes.seal.flow_door_locked": "Sceau : la porte du Gardien attend une Ancre du voile.",
   "temple.aptitudes.seal.flow_custodian": "Sceau : le Gardien garde la chambre.",
   "temple.aptitudes.seal.flow_cleared": "Sceau : ce temple est ouvert.",

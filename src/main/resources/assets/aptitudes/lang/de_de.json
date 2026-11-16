@@ -3719,6 +3719,7 @@
   "temple.aptitudes.guardian_defeated_keys": "Der Wächter fällt und hinterlässt vier Schlüssel.",
   "temple.aptitudes.seal.flow_dormant": "Siegel: Im Atrium schläft etwas Uraltes.",
   "temple.aptitudes.seal.flow_automaton": "Siegel: Der Automat bewacht das Atrium. Besiege ihn, bevor du die Mechanismen berührst.",
+  "temple.aptitudes.seal.flow_automaton_deep": "Siegel: Der Automat bewacht das Atrium. Besiege ihn, um die Treppe nach unten zu öffnen.",
   "temple.aptitudes.seal.flow_door_locked": "Siegel: Die Tür des Wächters erwartet einen Schleieranker.",
   "temple.aptitudes.seal.flow_custodian": "Siegel: Der Wächter bewacht die Kammer.",
   "temple.aptitudes.seal.flow_cleared": "Siegel: Dieser Tempel ist offen.",

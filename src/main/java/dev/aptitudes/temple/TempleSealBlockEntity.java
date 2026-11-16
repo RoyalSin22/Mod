@@ -580,6 +580,7 @@ public class TempleSealBlockEntity extends BlockEntity {
 
 	/** Clave de texto del estado actual (para el mensaje del Sello). */
 	String statusKey() {
+		if (TempleFlowRules.isDeep(layout) && flow == Flow.AUTOMATON) return "temple.aptitudes.seal.flow_automaton_deep";
 		if (TempleFlowRules.isCustodian(layout) && flow != Flow.PUZZLE) {
 			return "temple.aptitudes.seal.flow_" + flow.name().toLowerCase(java.util.Locale.ROOT);
 		}

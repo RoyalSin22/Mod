@@ -3719,6 +3719,7 @@
   "temple.aptitudes.guardian_defeated_keys": "El Custodio cae y deja cuatro llaves.",
   "temple.aptitudes.seal.flow_dormant": "Sello: algo antiguo duerme en el atrio.",
   "temple.aptitudes.seal.flow_automaton": "Sello: el Autómata vigila el atrio. Derrótalo antes de tocar los mecanismos.",
+  "temple.aptitudes.seal.flow_automaton_deep": "Sello: el Autómata vigila el atrio. Derrótalo para abrir la escalera hacia abajo.",
   "temple.aptitudes.seal.flow_door_locked": "Sello: la puerta del Custodio espera un Ancla del Velo.",
   "temple.aptitudes.seal.flow_custodian": "Sello: el Custodio guarda la cámara.",
   "temple.aptitudes.seal.flow_cleared": "Sello: este templo está abierto.",

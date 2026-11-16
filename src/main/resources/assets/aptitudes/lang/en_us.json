@@ -3719,6 +3719,7 @@
   "temple.aptitudes.guardian_defeated_keys": "The Custodian falls and leaves four keys.",
   "temple.aptitudes.seal.flow_dormant": "Seal: something ancient sleeps in the atrium.",
   "temple.aptitudes.seal.flow_automaton": "Seal: the Automaton watches the atrium. Defeat it before touching the mechanisms.",
+  "temple.aptitudes.seal.flow_automaton_deep": "Seal: the Automaton watches the atrium. Defeat it to open the stairs down.",
   "temple.aptitudes.seal.flow_door_locked": "Seal: the Custodian's door awaits a Veil Anchor.",
   "temple.aptitudes.seal.flow_custodian": "Seal: the Custodian guards the chamber.",
   "temple.aptitudes.seal.flow_cleared": "Seal: this temple is open.",
