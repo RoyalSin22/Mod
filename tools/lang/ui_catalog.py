@@ -1747,6 +1747,9 @@ synergy.aptitudes.name.4¦Armadura ↔ Trilha¦Armure ↔ Voie¦Rüstung ↔ Pfa
 synergy.aptitudes.name.5¦Combos ↔ Pedras angulares¦Combos ↔ Clés de voûte¦Kombos ↔ Schlusssteine
 synergy.aptitudes.seen¦ativa¦active¦aktiv
 synergy.aptitudes.unseen¦ainda não¦pas encore¦noch nicht
+synergy.aptitudes.tip.radius¦Sinergia de trilha: +%s%% de raio¦Synergie de voie : +%s%% de rayon¦Pfadsynergie: +%s%% Radius
+synergy.aptitudes.tip.damage¦Sinergia de trilha: +%s%% de dano¦Synergie de voie : +%s%% de dégâts¦Pfadsynergie: +%s%% Schaden
+synergy.aptitudes.tip.energy¦Sinergia de trilha: -%s%% de custo de mana¦Synergie de voie : -%s%% de coût en mana¦Pfadsynergie: -%s%% Manakosten
 """)
 
 # v63 (C4): jefes animados (GeckoLib).

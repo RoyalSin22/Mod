@@ -263,6 +263,29 @@ public final class AbilityManager {
 		return SYNERGY_CONTEXT.getOrDefault(player.getUuid(), AbilitySynergyContext.NONE);
 	}
 
+	/** Contextos activos ahora mismo (como mucho el de la habilidad que se está lanzando). */
+	static Map<UUID, AbilitySynergyContext> synergySnapshot() {
+		return SYNERGY_CONTEXT.isEmpty() ? Map.of() : Map.copyOf(SYNERGY_CONTEXT);
+	}
+
+	/** Devuelve una tarea que, al ejecutarse más tarde, vuelve a tener el contexto de sinergia con el que se programó. */
+	static Runnable withSynergy(Map<UUID, AbilitySynergyContext> snapshot, Runnable task) {
+		if (snapshot.isEmpty()) return task;
+		return () -> {
+			Map<UUID, AbilitySynergyContext> previous = new HashMap<>();
+			for (UUID id : snapshot.keySet()) previous.put(id, SYNERGY_CONTEXT.get(id));
+			SYNERGY_CONTEXT.putAll(snapshot);
+			try {
+				task.run();
+			} finally {
+				previous.forEach((id, old) -> {
+					if (old == null) SYNERGY_CONTEXT.remove(id);
+					else SYNERGY_CONTEXT.put(id, old);
+				});
+			}
+		};
+	}
+
 	/** Establece el contexto de sinergia para la habilidad actual (privado, llamado desde execute()). */
 	private static void setSynergyContext(ServerPlayerEntity player, AbilitySynergyContext context) {
 		if (context == AbilitySynergyContext.NONE) {
