@@ -41,14 +41,17 @@ public final class SynergyRules {
 	// =====================================================================
 
 	/**
-	 * Contexto de sinergia para una habilidad: combina todos los bonificadores aplicables.
+	 * Contexto de sinergia para una habilidad: combina todos los bonificadores aplicables (v65 C5).
 	 * Se llama ANTES de ejecutar la habilidad.
 	 */
 	public static AbilitySynergyContext contextForAbility(ServerPlayerEntity player, Role role, String abilityId) {
-		// Placeholder: sin mapeos reales de senda ↔ activa aún.
-		// Retorna contexto sin bonificadores (1.0 para todos).
-		float radiusBonus = radiusModifierForPath(player, role);
-		float damageBonus = damageModifierForPath(player, role);
+		if (role == null || abilityId == null) {
+			return AbilitySynergyContext.NONE;
+		}
+
+		// v65 C5 Y1: Calcular bonificadores reales usando PathSynergyRules.
+		float radiusBonus = PathSynergyRules.radiusBonus(player, role, abilityId);
+		float damageBonus = PathSynergyRules.damageBonus(player, role, abilityId);
 		float energyCostBonus = energyCostModifierForPath(player, role);
 
 		// Si todos son 1.0, retornar NONE para no crear contextos innecesarios.
@@ -60,27 +63,31 @@ public final class SynergyRules {
 
 	/**
 	 * Bonificador de radio para activas basado en la senda actual.
-	 * Ejemplo: senda Velocidad → radio +20%.
+	 * Delega a PathSynergyRules (v65 C5 Y1).
 	 */
 	public static float radiusModifierForPath(ServerPlayerEntity player, Role role) {
-		// Placeholder: sin sendas específicas mapeadas aún.
-		// Retorna 1.0 (sin cambio) por defecto.
+		// Nota: se necesita el abilityNodeId para cálculos reales.
+		// Por ahora, retorna valor por defecto; contextForAbility() lo usa.
 		return 1.0f;
 	}
 
 	/**
 	 * Bonificador de daño para activas basado en la senda actual.
+	 * Delega a PathSynergyRules (v65 C5 Y1).
 	 */
 	public static float damageModifierForPath(ServerPlayerEntity player, Role role) {
-		return 1.0f; // Placeholder
+		// Nota: se necesita el abilityNodeId para cálculos reales.
+		return 1.0f;
 	}
 
 	/**
 	 * Bonificador de coste energético para activas.
-	 * Ejemplo: senda Eficiencia → coste −10%.
+	 * Integra PathSynergyRules (v65 C5 Y1).
 	 */
 	public static float energyCostModifierForPath(ServerPlayerEntity player, Role role) {
-		return 1.0f; // Placeholder
+		// Defensivo: evitar NPE en tests.
+		if (player == null || role == null) return 1.0f;
+		return PathSynergyRules.energyCostBonus(player, role);
 	}
 
 	// =====================================================================
