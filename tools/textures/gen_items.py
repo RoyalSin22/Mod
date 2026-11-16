@@ -1076,6 +1076,7 @@ ITEMS = {
 # V73: armas de evolución con silueta propia por rol (diseños en evolved_weapons.py): acero, oro y gema del rol. V74: sin armas Definitivo.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import evolved_weapons  # noqa: E402
+import weapon_art  # noqa: E402  (V75: arte externo que sustituye al diseño por plantilla)
 
 
 def _mix(color, other, t):
@@ -1177,7 +1178,7 @@ def main():
     preview = sys.argv[sys.argv.index('--preview') + 1] if '--preview' in sys.argv else None
     rendered = {}
     for name, (tpl, colors) in ITEMS.items():
-        img = render(T[tpl], colors)
+        img = weapon_art.override(name) or render(T[tpl], colors)
         img.save(f'{folder}/{name}.png')
         rendered[name] = img
     if preview:

@@ -66,8 +66,20 @@ def weapons():
     return names
 
 
+def icon(name):
+    """Icono de la arma: el arte externo si existe (V75) o el dibujo de su plantilla."""
+    art = gen_items.weapon_art.override(name)
+    if art is not None:
+        return art
+    template, colors = gen_items.ITEMS[name]
+    return gen_items.render(gen_items.T[template], colors)
+
+
 def depth_map(name):
-    """Grosor por píxel (0 = vacío) a partir de la plantilla y del icono ya dibujado."""
+    """Grosor por píxel (0 = vacío) a partir de la plantilla y del icono ya dibujado (o del arte externo)."""
+    art = gen_items.weapon_art.override(name)
+    if art is not None:
+        return gen_items.weapon_art.depth_map(art)
     template, colors = gen_items.ITEMS[name]
     grid = [row.ljust(16, '.')[:16] for row in gen_items.T[template]]
     image = gen_items.render(gen_items.T[template], colors)
@@ -163,8 +175,7 @@ def preview(names, out):
     rows = math.ceil(len(names) / cols)
     sheet = Image.new('RGB', (cols * cell, rows * cell), (40, 42, 54))
     for i, name in enumerate(names):
-        template, colors = gen_items.ITEMS[name]
-        tex = gen_items.render(gen_items.T[template], colors)
+        tex = icon(name)
         depth = depth_map(name)
         draw = ImageDraw.Draw(sheet)
         ox, oy = (i % cols) * cell + 20, (i // cols) * cell + 14
