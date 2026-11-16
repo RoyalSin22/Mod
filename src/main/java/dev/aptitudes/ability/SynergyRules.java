@@ -114,13 +114,45 @@ public final class SynergyRules {
 	// =====================================================================
 
 	/**
-	 * Bonificador de XP si dos o más miembros del grupo comparten plantilla de piedra angular.
+	 * Bonificador de XP si dos o más miembros del grupo comparten plantilla de piedra angular (v65 C5 Y2).
 	 * Retorna 1.15 (+15% XP) si hay resonancia, 1.0 si no.
 	 */
 	public static float groupResonanceBonus(ServerPlayerEntity player) {
-		// Placeholder: sin integración con PartyManager aún.
-		// Se implementará tras verificar acceso a miembros del grupo.
-		return 1.0f;
+		if (player == null) return 1.0f;
+		return checkKeystoneResonance(player) ? 1.15f : 1.0f;
+	}
+
+	/**
+	 * Verificar si hay resonancia de piedras angulares en el grupo:
+	 * dos o más miembros comparten la misma plantilla.
+	 */
+	private static boolean checkKeystoneResonance(ServerPlayerEntity player) {
+		try {
+			// Obtener todos los miembros online del grupo del jugador.
+			var partyMembers = dev.aptitudes.party.PartyManager.onlineMembers(player);
+			if (partyMembers.size() < 2) return false; // Sin grupo o grupo de 1.
+
+			// Mapeo: template → cantidad de miembros que la tienen.
+			java.util.Map<String, Integer> templateCount = new java.util.HashMap<>();
+			for (ServerPlayerEntity member : partyMembers) {
+				// Obtener keystones activos del miembro.
+				var keystones = Keystones.active(member);
+				for (var template : keystones) {
+					String templateKey = template.toString();
+					templateCount.put(templateKey, templateCount.getOrDefault(templateKey, 0) + 1);
+				}
+			}
+
+			// Si alguna template es compartida por 2+ miembros → resonancia.
+			for (int count : templateCount.values()) {
+				if (count >= 2) return true;
+			}
+
+			return false;
+		} catch (Exception e) {
+			// Defensivo: en caso de error (no bootstrapped, etc.), retornar false.
+			return false;
+		}
 	}
 
 	// =====================================================================
