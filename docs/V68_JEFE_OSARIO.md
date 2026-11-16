@@ -1,6 +1,6 @@
 # V68 — El Gran Osario Quebrado: jefe de la Niebla y su trofeo
 
-Estado: **diseño propuesto, pendiente de aprobación del autor.** No hay código. Cierra el pendiente del ROADMAP v65
+Estado: **diseño aprobado por el autor; en implementación** (rama `claude/jefe-osario`). Cierra el pendiente del ROADMAP v65
 («definir y registrar el jefe y el trofeo del Osario Quebrado»). La receta del trofeo y la etapa interna de la mazmorra del
 Custodio **quedan fuera** (tarea posterior, con su propio diseño).
 
@@ -13,13 +13,11 @@ Custodio **quedan fuera** (tarea posterior, con su propio diseño).
 | Trofeo | Material narrativo: **no** es un núcleo de arma (el tope de +1,5 de daño por núcleos no cambia). |
 | Combate | Jefe de almas y Niebla, con fases (la base de `AnimatedBossEntity`). |
 | Nombre del jefe | **Gran Osario Quebrado** (`gran_osario_quebrado`). |
-| Nombre del trofeo | **Cráneo del Osario Mayor** (`craneo_osario_mayor`). |
+| Nombre del trofeo | **Cráneo del Gran Osario** (`craneo_gran_osario`), en inglés «Great Ossuary Skull». |
 | Fin de la Niebla con el jefe vivo | Se disuelve a los 5 minutos (6000 ticks), sin botín ni XP. |
 | Reparto | Un trofeo por cada jugador que le hizo al menos el 10 % de su vida en daño. |
 
-**Por confirmar (incoherencia):** el trofeo dice «Osario Mayor» y el jefe se llama «Gran Osario Quebrado». Propongo
-**«Cráneo del Gran Osario»** (`craneo_gran_osario`) para que el objeto nombre al jefe. Mientras no se confirme, el diseño
-usa `craneo_osario_mayor`, y el cambio es solo de ids y textos.
+Se aprobó el cambio de «Cráneo del Osario Mayor» a «Cráneo del Gran Osario» para que el objeto nombre al jefe.
 
 ## 2. Concepto
 
@@ -80,7 +78,7 @@ granja del material de la Niebla. Se retiran con el jefe (mismo código de retir
 
 | Cosa | Detalle |
 |---|---|
-| Objeto | `aptitudes:craneo_osario_mayor`, «Cráneo del Osario Mayor» / «Greater Ossuary Skull». Apila hasta 16, rareza épica |
+| Objeto | `aptitudes:craneo_gran_osario`, «Cráneo del Gran Osario» / «Great Ossuary Skull». Apila hasta 16, rareza épica |
 | Función | Ninguna mecánica: se guarda para la receta futura. No se aplica a armas |
 | Reparto | `OsarioBossRules.eligible(daño, vidaMáx, 10 %)`. El jefe guarda el daño por jugador (UUID → daño, en NBT) y, al morir, cada elegible recibe 1 trofeo directo al inventario (si no cabe, cae a sus pies) |
 | Además | 6–10 `aptitudes:soul_shard` por jugador elegible. No suelta Núcleo del Osario |
@@ -108,7 +106,7 @@ Cada campo con valor por defecto seguro, límite en `validated(...)`, fila en `d
 | Reglas puras (momento, elegibilidad, curas, escudo, tope de acompañantes) | `boss/OsarioBossRules` + `OsarioBossRulesTest` |
 | Entidad | `boss/GreatOssuaryEntity` (extiende `AnimatedBossEntity`), registrada en `boss/BossEntities` con huevo de aparición |
 | Enganche de aparición y cierre | `event/WorldEventManager` (cambio mínimo; lo comparte la sesión de narrativa) y `event/WorldEventState` (`bossSession`) |
-| Trofeo | `item/ModItems` (`CRANEO_OSARIO_MAYOR`), textura con `tools/textures/gen_items.py` |
+| Trofeo | `item/ModItems` (`CRANEO_GRAN_OSARIO`), textura con `tools/textures/gen_items.py` |
 | Bestiario | `guide/BestiaryRules` (entrada nueva) + actualizar `BestiaryRulesTest` y `BestiaryRevealRulesTest` |
 | Modelo y animaciones | `geo/entity`, `animations/entity` y textura; provisionales con `tools/models/gen_boss_models.py`; el arte definitivo se puede sustituir sin tocar código (contrato en `docs/V63_JEFES.md`) |
 | Cliente | `client/render/BossRenderers` |
