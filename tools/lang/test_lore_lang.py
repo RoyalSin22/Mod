@@ -158,6 +158,14 @@ class LoreLangFilesTest(unittest.TestCase):
         for locale in LOCALES:
             self.assertEqual(validate(reference, load(LANG_DIR / f'{locale}.json')), [], locale)
 
+    def test_unlock_messages_are_translated(self):
+        from lore_catalog import MESSAGES
+        for name, texts in MESSAGES.items():
+            self.assertEqual(set(texts), {'es', 'en', 'pt', 'fr', 'de'}, name)
+            for code in ('pt', 'fr', 'de'):
+                self.assertNotEqual(texts[code], texts['en'], f'{name}: {code} sigue en inglés')
+                self.assertTrue(texts[code].strip(), f'{name}: {code} vacío')
+
     def test_key_naming(self):
         self.assertEqual(key_for('lore.cosmology.echoes', 'title'), 'lore.aptitudes.cosmology.echoes.title')
         self.assertTrue(PREFIX.startswith('lore.'))

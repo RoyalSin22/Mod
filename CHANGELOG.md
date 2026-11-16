@@ -6,6 +6,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **v67 — Avisos de desbloqueo del lore en pt/fr/de.** Los seis avisos (Niebla, Lluvia de brasas, Custodio, Behelit,
+  sacrificio y fin del Eclipse) se traducen a portugués, francés y alemán en `lore_catalog.py` (`MESSAGES`); las entradas
+  del lore siguen con el respaldo en inglés. Revisión nativa pendiente.
 - **v67 — Logro «Cronista».** Se concede al descubrir las 13 criaturas del bestiario (al menos una muerte de cada
   una; no exige revelar todas las secciones). Regla pura `BestiaryRules.complete` (con `BestiaryAchievementTest`),
   concedido al registrar una muerte nueva (`GrimoireManager`) y revisado al entrar (`Achievements.checkState`), de modo
