@@ -43,6 +43,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   modelo de la criatura. Falta verlo en partida.
 
 ### Corregido
+- **Coloso Sin Rostro.** La caja mide 1,8 × 3,4 bloques y sigue la altura del casco. El tajo y el golpe descendente
+  respetan la dirección anunciada y sincronizan el clip con el impacto del servidor. La embestida avanza por el
+  recorrido anunciado, se detiene ante obstáculos y comprueba el contacto mientras se mueve.
 - **v67 — Cifras de firma y definitiva.** La firma (rango 3 + etapa) y la definitiva se lanzan con rango 4–6, pero 13
   descripciones mostraban cifras de los rangos 1–3 (p. ej. «15/18/21» o «8/10/12»), imposibles en el juego. Ahora dan los
   valores reales («Maestro / Definitivo: 20 / 22 de daño», 27 de daño del Mediodía, 14,5 por impacto del Bombardeo

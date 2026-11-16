@@ -1,5 +1,6 @@
 package dev.aptitudes.boss;
 
+import dev.aptitudes.ability.AbilityState;
 import dev.aptitudes.boss.BossMoveRules.Move;
 import dev.aptitudes.elite.Elites;
 import net.minecraft.entity.EntityType;
@@ -66,6 +67,8 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 	private int phase = 1;
 	@Nullable private Move current;
 	private int moveTicks;
+	private long actionReadyAt;
+	private boolean pendingPhaseAnimation;
 	private PostureRules.Posture posture = PostureRules.Posture.fresh(POSTURE_MAX);
 
 	protected AnimatedBossEntity(EntityType<? extends HostileEntity> type, World world, BossBar.Color color) {
@@ -88,6 +91,23 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 
 	/** Al entrar en una fase nueva (2 o 3). */
 	protected void onPhase(ServerWorld world, int newPhase) {
+	}
+
+	/** Los jefes que se comprometen con la dirección del aviso conservan su pose hasta acabar la recuperación. */
+	protected boolean commitsToAttack() {
+		return false;
+	}
+
+	protected int recoveryTicks(Move move) {
+		return 0;
+	}
+
+	protected int phaseAnimationTicks() {
+		return 0;
+	}
+
+	/** Primer tick posterior al impacto: elapsed = 1. */
+	protected void followThrough(ServerWorld world, Move move, LivingEntity target, int elapsed) {
 	}
 
 	public int phase() {
@@ -117,14 +137,23 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 		if (!(getWorld() instanceof ServerWorld world)) return;
 		int next = BossRules.phase(getHealth() / getMaxHealth());
 		if (next > phase) {
+			boolean firstArmorBreak = phase == 1;
 			phase = next;
-			triggerAnim(ACTION_CONTROLLER, "phase_two");
+			if (commitsToAttack()) pendingPhaseAnimation |= firstArmorBreak;
+			else triggerAnim(ACTION_CONTROLLER, "phase_two");
 			world.playSound(null, getBlockPos(), SoundEvents.ENTITY_WITHER_SPAWN, SoundCategory.HOSTILE, 1f, 0.6f + 0.1f * phase);
 			for (ServerPlayerEntity p : bossBar.getPlayers()) {
 				p.sendMessage(Text.translatable(next >= 3 ? "boss.aptitudes.phase_three" : "boss.aptitudes.phase_two",
 						getDisplayName()).formatted(Formatting.RED), false);
 			}
 			onPhase(world, phase);
+		}
+		if (pendingPhaseAnimation && current == null && !posture.stunned(world.getTime())
+				&& world.getTime() >= actionReadyAt) {
+			pendingPhaseAnimation = false;
+			actionReadyAt = world.getTime() + phaseAnimationTicks();
+			getNavigation().stop();
+			triggerAnim(ACTION_CONTROLLER, "phase_two");
 		}
 		bossBar.setName(getDisplayName());
 		bossBar.setPercent(getHealth() / getMaxHealth());
@@ -181,9 +210,22 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 
 	/** Postura vaciada: aviso sonoro y de partículas. El aturdimiento lo aplica {@link PostureRules}. */
 	private void onPostureBroken(ServerWorld world) {
+		if (commitsToAttack()) {
+			cancelAttack();
+			getNavigation().stop();
+			actionReadyAt = world.getTime() + PostureRules.STUN_TICKS;
+		}
 		triggerAnim(ACTION_CONTROLLER, "stun");
 		world.playSound(null, getBlockPos(), SoundEvents.ENTITY_IRON_GOLEM_HURT, SoundCategory.HOSTILE, 1.2f, 0.6f);
 		world.spawnParticles(ParticleTypes.CRIT, getX(), getBodyY(0.5), getZ(), 20, 0.5, 0.5, 0.5, 0.1);
+	}
+
+	private void cancelAttack() {
+		Move interrupted = current;
+		current = null;
+		if (interrupted != null && commitsToAttack() && getWorld() instanceof ServerWorld) {
+			stopTriggeredAnim(ACTION_CONTROLLER, interrupted.id());
+		}
 	}
 
 	/** Jugadores y criaturas que pueden recibir un golpe del jefe (no otros jefes ni espectadores). */
@@ -193,11 +235,13 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 	}
 
 	/** Golpe del jefe: daño con su fuente y empuje si el golpe llega. */
-	protected void hit(LivingEntity e, float damage, double knockback) {
-		if (e.damage(getDamageSources().mobAttack(this), damage) && knockback > 0) {
+	protected boolean hit(LivingEntity e, float damage, double knockback) {
+		if (!e.damage(getDamageSources().mobAttack(this), damage)) return false;
+		if (knockback > 0) {
 			Vec3d away = e.getPos().subtract(getPos()).multiply(1, 0, 1).normalize();
 			e.takeKnockback(knockback, -away.x, -away.z);
 		}
+		return true;
 	}
 
 	/** Entidades golpeables dentro de un radio alrededor del jefe. */
@@ -252,6 +296,10 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 
 	/** Objetivo cercano: elige ataque, avisa {@code windup} ticks y golpea; mientras, se mueve hacia él. */
 	private final class BossAttackGoal extends Goal {
+		@Nullable private LivingEntity attackTarget;
+		private float attackYaw;
+		private long nextPathAt;
+
 		BossAttackGoal() {
 			setControls(EnumSet.of(Control.MOVE, Control.LOOK));
 		}
@@ -259,7 +307,7 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 		@Override
 		public boolean canStart() {
 			LivingEntity t = getTarget();
-			return t != null && t.isAlive();
+			return t != null && t.isAlive() && (!commitsToAttack() || validAttackTarget(t));
 		}
 
 		@Override
@@ -269,7 +317,10 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 
 		@Override
 		public void stop() {
-			current = null;
+			cancelAttack();
+			if (commitsToAttack()) getNavigation().stop();
+			attackTarget = null;
+			nextPathAt = 0;
 		}
 
 		@Override
@@ -281,29 +332,46 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 		public void tick() {
 			LivingEntity target = getTarget();
 			if (!(getWorld() instanceof ServerWorld world)) return;
-			if (target == null || !target.isAlive()) {
-				current = null;
-				return;
-			}
+			boolean committed = commitsToAttack();
+			long now = world.getTime();
 			// Aturdido por la postura: no empieza ni continúa ningún ataque.
-			if (posture.stunned(world.getTime())) {
-				current = null;
+			if (posture.stunned(now) || (committed && now < actionReadyAt)) {
+				cancelAttack();
 				getNavigation().stop();
 				return;
 			}
+			if (committed && current != null) {
+				tickCommittedAttack(world);
+				return;
+			}
+			if (committed && pendingPhaseAnimation) return;
+			if (target == null || !target.isAlive() || (committed && !validAttackTarget(target))) {
+				cancelAttack();
+				if (committed) getNavigation().stop();
+				return;
+			}
 			getLookControl().lookAt(target, 30f, 30f);
-			double distance = Math.sqrt(squaredDistanceTo(target));
 			if (current == null) {
-				long now = world.getTime();
-				Move move = BossMoveRules.choose(moves(), phase, distance, readyAt, now, getRandom().nextInt(1024));
+				Move move = !committed || getVisibilityCache().canSee(target)
+						? BossMoveRules.choose(moves(), phase, Math.sqrt(squaredDistanceTo(target)), readyAt, now,
+								getRandom().nextInt(1024))
+						: null;
 				if (move != null) {
 					current = move;
 					moveTicks = move.windup();
 					readyAt.put(move.id(), now + move.windup() + move.cooldown());
 					getNavigation().stop();
+					if (committed) {
+						attackTarget = target;
+						attackYaw = (float) Math.toDegrees(Math.atan2(getX() - target.getX(), target.getZ() - getZ()));
+						faceAttack();
+						nextPathAt = 0;
+					}
 					triggerAnim(ACTION_CONTROLLER, move.id());
-				} else {
+					if (committed) telegraph(world, move, target, moveTicks);
+				} else if (!committed || now >= nextPathAt) {
 					getNavigation().startMovingTo(target, 1.0);
+					nextPathAt = now + 10;
 				}
 				return;
 			}
@@ -311,6 +379,40 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 			if (--moveTicks <= 0) {
 				strike(world, current, target);
 				current = null;
+			}
+		}
+
+		private boolean validAttackTarget(LivingEntity target) {
+			return hittable(target) && target.getWorld() == getWorld() && !isTeammate(target) && canTarget(target)
+					&& !AbilityState.shouldBlockTarget(AnimatedBossEntity.this, target);
+		}
+
+		private void faceAttack() {
+			setYaw(attackYaw);
+			setBodyYaw(attackYaw);
+			setHeadYaw(attackYaw);
+		}
+
+		private void tickCommittedAttack(ServerWorld world) {
+			Move move = current;
+			LivingEntity target = attackTarget;
+			if (move == null || target == null
+					|| (moveTicks > 0 && (target != getTarget() || !validAttackTarget(target)))) {
+				cancelAttack();
+				attackTarget = null;
+				return;
+			}
+			faceAttack();
+			if (--moveTicks > 0) {
+				telegraph(world, move, target, moveTicks);
+				return;
+			}
+			int elapsed = -moveTicks;
+			if (elapsed == 0) strike(world, move, target);
+			else if (validAttackTarget(target)) followThrough(world, move, target, elapsed);
+			if (elapsed >= recoveryTicks(move)) {
+				current = null;
+				attackTarget = null;
 			}
 		}
 	}
@@ -321,7 +423,8 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 		controllers.add(new AnimationController<>(this, MOVE_CONTROLLER, 5,
 				state -> state.setAndContinue(state.isMoving() ? WALK : IDLE)));
-		AnimationController<AnimatedBossEntity> actions = new AnimationController<>(this, ACTION_CONTROLLER, 2, state -> PlayState.STOP);
+		AnimationController<AnimatedBossEntity> actions = new AnimationController<>(this, ACTION_CONTROLLER,
+				commitsToAttack() ? 0 : 2, state -> PlayState.STOP);
 		actions.triggerableAnim("phase_two", RawAnimation.begin().thenPlay("phase_two"));
 		actions.triggerableAnim("stun", RawAnimation.begin().thenPlay("stun"));
 		for (Move move : moves()) actions.triggerableAnim(move.id(), RawAnimation.begin().thenPlay(move.id()));

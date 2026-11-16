@@ -30,7 +30,8 @@ Criterio (§0 de `IDEAS_v47_v55.md`): inspiración de tono, nombres, formas y at
 ## 2. El Coloso Sin Rostro (`aptitudes:faceless_colossus`) — jugable
 
 Guerrero gigante de armadura oscura sin rostro, con espadón. El cuerpo mide 3,4 bloques visuales y la caja de
-colisión mide 1,6 × 3,8 bloques. El editable es `tools/models/blockbench/faceless_colossus_rebuild.bbmodel`.
+colisión mide 1,8 × 3,4 bloques, con los ojos a 3,19. El editable es
+`tools/models/blockbench/faceless_colossus_rebuild.bbmodel`.
 Un solo rig y un solo mapa UV se usan para los dos atlas de 512 × 512 con sus máscaras de emisión.
 El cliente elige la armadura agrietada en las fases de combate 2 y 3 según un dato sincronizado del servidor.
 Durante las acciones, el casco respeta los fotogramas clave. El seguimiento de la mirada se aplica durante el movimiento libre.
@@ -48,8 +49,12 @@ legada se usan únicamente sobre copias del atlas antiguo.
 | Ataque | Fase | Distancia | Aviso | Enfriamiento | Efecto |
 |---|---|---|---|---|---|
 | `sweep` (tajo) | 1+ | 0–4,5 | 18 t | 30 t | Arco de 140° delante, daño ×1, empuje |
-| `slam` (golpe descendente) | 1+ | 0–5,5 | 28 t (círculo de críticos en el suelo) | 70 t | Onda de radio 5,5, daño ×1,2, lanza hacia arriba |
-| `charge` (embestida) | 2+ | 5–18 | 16 t (humo) | 90 t | Se lanza hacia el objetivo; daño ×0,9 y gran empuje si llega |
+| `slam` (golpe descendente) | 1+ | 0–5,5 | 28 t (círculo de críticos de radio 5,5) | 70 t | Onda de radio 5,5, daño ×1,2, lanza hacia arriba si aplica el daño |
+| `charge` (embestida) | 2+ | 5–18 | 16 t (humo en la dirección de avance) | 90 t | Avanza hasta 12 ticks a 1,6 bloques por tick; se para al contactar al objetivo o chocar y aplica ×0,9 y empuje al objetivo alcanzado |
+
+El aviso fija la dirección del Coloso. El tajo y la onda exigen visión de la víctima. La recuperación dura 10 ticks
+para el tajo, 12 para la onda y hasta 20 para la embestida contando su recorrido. El aturdimiento cancela la acción
+en curso y ocupa sus 100 ticks. La transición visual de armadura espera a que acabe la acción o el aturdimiento.
 
 - Botín: 8–12 Fragmentos de alma, Corazón de campeón, 3 Esencias de élite (núcleo propio con la estructura).
 - Arena: **Ruinas de batalla** (v65), círculo de 21 bloques con columnas rotas como cobertura. Se levanta al invocar el sello (las columnas duran 20 min) y se cierra con niebla al entrar; muro de niebla

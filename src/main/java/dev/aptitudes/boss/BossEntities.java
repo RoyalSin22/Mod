@@ -20,7 +20,7 @@ public final class BossEntities {
 	public static final EntityType<FacelessColossusEntity> FACELESS_COLOSSUS = Registry.register(Registries.ENTITY_TYPE,
 			Aptitudes.id("faceless_colossus"),
 			EntityType.Builder.create(FacelessColossusEntity::new, SpawnGroup.MONSTER)
-					.dimensions(1.6f, 3.8f).eyeHeight(3.4f).maxTrackingRange(10).makeFireImmune()
+					.dimensions(1.8f, 3.4f).eyeHeight(3.19f).maxTrackingRange(10).makeFireImmune()
 					.build("faceless_colossus"));
 
 	public static final Item FACELESS_COLOSSUS_EGG = Registry.register(Registries.ITEM, Aptitudes.id("faceless_colossus_spawn_egg"),

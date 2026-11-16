@@ -428,6 +428,12 @@ Atlas y emisión del Coloso: `python3 tools/textures/gen_faceless_glowmask.py sr
 
 Verificado por Claude en el cliente de desarrollo: puntos 1–3 (render, barra y golpes recibidos).
 
+**Revisión del Coloso Sin Rostro.** `boss/FacelessColossusAnimationTest` compara la duración de los clips con los
+tiempos del servidor. Queda pendiente repetir en partida el tajo con esquiva lateral, la onda detrás de una
+columna y la embestida con objetivo quieto, esquiva y pared. Comprobar daño único por embestida, recuperación
+sin ataques superpuestos, cancelación por postura rota y selección del casco. Probar puertas y desniveles con la
+caja de 1,8 × 3,4 y verificar la acción en dos clientes.
+
 ## v64 — Templos sellados y Vasos de vida (K6)
 
 Automáticas: `temple/TempleRulesTest` y `temple/VesselRulesTest`. Texturas:
