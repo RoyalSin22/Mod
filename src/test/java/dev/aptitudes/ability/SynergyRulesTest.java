@@ -54,4 +54,18 @@ class SynergyRulesTest {
 		AbilitySynergyContext ctx = SynergyRules.contextForAbility(null, Role.BERSERKER, "any_ability");
 		assertEquals(AbilitySynergyContext.NONE, ctx, "Should return NONE when no synergies apply");
 	}
+
+	@Test
+	void groupResonanceBonusReturnsValidBonus() {
+		// Y2: +15% XP si dos miembros comparten plantilla de piedra angular.
+		// Placeholder: sin miembros de grupo aún.
+		float bonus = SynergyRules.groupResonanceBonus(null);
+		assertEquals(1.0f, bonus, "Default bonus should be 1.0 (no resonance yet)");
+	}
+
+	@Test
+	void groupResonanceBonusIsNonNegative() {
+		// Bonificador debe ser ≥ 1.0 (nunca penaliza).
+		assertTrue(SynergyRules.groupResonanceBonus(null) >= 1.0f, "Bonus must be >= 1.0");
+	}
 }

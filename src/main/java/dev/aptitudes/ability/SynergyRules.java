@@ -62,6 +62,20 @@ public final class SynergyRules {
 	}
 
 	// =====================================================================
+	// Y2: Resonancia de grupo
+	// =====================================================================
+
+	/**
+	 * Bonificador de XP si dos o más miembros del grupo comparten plantilla de piedra angular.
+	 * Retorna 1.15 (+15% XP) si hay resonancia, 1.0 si no.
+	 */
+	public static float groupResonanceBonus(ServerPlayerEntity player) {
+		// Placeholder: sin integración con PartyManager aún.
+		// Se implementará tras verificar acceso a miembros del grupo.
+		return 1.0f;
+	}
+
+	// =====================================================================
 	// Y4: Armadura ↔ Senda
 	// =====================================================================
 
