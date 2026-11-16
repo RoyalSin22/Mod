@@ -4462,5 +4462,9 @@
   "lore.aptitudes.custodian_defeated": "The guardian of the sealed temple has been overcome. Its secrets may now be read.",
   "lore.aptitudes.behelit_found": "An artifact of immense power has been discovered. Its purpose in the old temples is now known.",
   "lore.aptitudes.eclipse_sacrifice": "The offering has been accepted. The Eclipse descends upon the world.",
-  "lore.aptitudes.eclipse_aftermath": "The darkness has passed. What remains in its wake is yet to be understood."
+  "lore.aptitudes.eclipse_aftermath": "The darkness has passed. What remains in its wake is yet to be understood.",
+  "item.aptitudes.sunset_astrolabe": "Sunset Astrolabe",
+  "item.aptitudes.sunset_astrolabe.tooltip": "Consume in Bonfire to summon the Eclipse (operators or group leader only).",
+  "advancement.aptitudes.summon_eclipse": "Eclipse Summoner",
+  "advancement.aptitudes.summon_eclipse.description": "Summon the Eclipse using the Sunset Astrolabe at a Bonfire"
 }
