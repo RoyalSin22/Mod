@@ -10,7 +10,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   Maestro en 4 tandas de 5, con concepto, color y reglas de pixel art) y herramienta `tools/textures/import_weapon_art.py`: corta
   hojas o toma imágenes sueltas, quita el fondo magenta, reduce a 16×16 con bordes duros y paleta limitada, valida (`--check`) y
   guarda en `tools/textures/source/weapons/`. `gen_items.py` usa ese arte en lugar del diseño provisional y
-  `gen_weapon_models.py` extruye el modelo 3D de la mano del propio PNG. Doble densidad (32×32, o 16×16 con `--size 16`). Encargo de arte con dirección de fantasía oscura (estoico y dinámico), técnica de pixel art por píxel y una ficha por arma con su nombre oficial. 11 pruebas Python (`test_weapon_art.py`).
+  `gen_weapon_models.py` extruye el modelo 3D de la mano del propio PNG. Alta densidad: 64×64 por defecto (32 o 16 con `--size`); el inventario usa una versión reducida a 32×32 y el modelo 3D la de 64×64 (`<arma>_hd.png`). Encargo de arte con dirección de fantasía oscura (estoico y dinámico), técnica de pixel art por píxel y una ficha por arma con su nombre oficial. 11 pruebas Python (`test_weapon_art.py`).
 
 ### Eliminado
 - **v74 — Sin armas de evolución Definitivo.** Se retiran del mod las 20 armas `<rol>_weapon_ultimate`: objetos, texturas, modelos,

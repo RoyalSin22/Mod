@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """V75: importa y valida el arte externo de las armas de evolución Maestro (encargo en docs/PROMPT_ARTE_ARMAS.md).
 
-Importar a 32×32 (imágenes sueltas con el nombre del rol, p. ej. ``berserker.png`` o ``berserker_weapon_master.png``):
+Importar a 64×64 (imágenes sueltas con el nombre del rol, p. ej. ``berserker.png`` o ``berserker_weapon_master.png``):
     python3 tools/textures/import_weapon_art.py entregas/*.png
 Importar una hoja de varias armas en una cuadrícula (se cortan en orden de izquierda a derecha y de arriba abajo):
     python3 tools/textures/import_weapon_art.py hoja.png --sheet 5x1 --roles berserker,mage,assassin,herbalist,engineer
@@ -12,7 +12,7 @@ Vista previa ampliada de lo importado:
 
 Después de importar: ``python3 tools/textures/gen_items.py src/main/resources/assets/aptitudes/textures/item`` (borra luego los tres
 PNG de sellos retirados que regenera) y ``python3 tools/models/gen_weapon_models.py src/main/resources/assets/aptitudes/models/item``.
-Opciones de importación: --size 32|16 (por defecto 32, doble densidad), --colors N (por defecto 32), --tolerance T (fondo, 0–255; por defecto 40), --no-fit, --flip,
+Opciones de importación: --size 64|32|16 (por defecto 64), --colors N (por defecto 48), --tolerance T (fondo, 0–255; por defecto 40), --no-fit, --flip,
 --rotate 90|180|270, --dry-run (no escribe).
 """
 import argparse
@@ -127,8 +127,8 @@ def main():
     p.add_argument('inputs', nargs='*')
     p.add_argument('--sheet', metavar='CxR')
     p.add_argument('--roles')
-    p.add_argument('--colors', type=int, default=32)
-    p.add_argument('--size', type=int, default=weapon_art.DEFAULT_SIZE, choices=weapon_art.SIZES, help='densidad final: 32 (por defecto) o 16')
+    p.add_argument('--colors', type=int, default=48)
+    p.add_argument('--size', type=int, default=weapon_art.DEFAULT_SIZE, choices=weapon_art.SIZES, help='densidad final: 64 (por defecto), 32 o 16')
     p.add_argument('--tolerance', type=int, default=40)
     p.add_argument('--no-fit', action='store_true')
     p.add_argument('--flip', action='store_true')

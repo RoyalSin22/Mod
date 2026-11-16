@@ -111,6 +111,12 @@ def r(v):
     return round(v, 4)
 
 
+def hd(name):
+    """¿Tiene arte de alta densidad? Entonces el modelo 3D usa la textura `<arma>_hd` (el icono 2D usa la reducida)."""
+    art = gen_items.weapon_art.override(name)
+    return art is not None and art.size[0] > gen_items.weapon_art.GUI_SIZE
+
+
 def num(v):
     """Número compacto: entero si lo es (los modelos de 16×16 conservan su formato de siempre)."""
     v = round(v, 4)
@@ -148,7 +154,7 @@ def model(name):
             x = x1
     return {
         '__comment': 'Generado por tools/models/gen_weapon_models.py a partir de gen_items.py; no editar a mano.',
-        'textures': {'layer0': f'aptitudes:item/{name}', 'particle': f'aptitudes:item/{name}'},
+        'textures': {'layer0': f'aptitudes:item/{name}' + ('_hd' if hd(name) else ''), 'particle': f'aptitudes:item/{name}'},
         'gui_light': 'front',
         'elements': elements,
         'display': DISPLAY,

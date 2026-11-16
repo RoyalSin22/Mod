@@ -1,6 +1,6 @@
 """V75: arte externo de las armas de evolución (Maestro), p. ej. generado con ChatGPT.
 
-Las imágenes entregadas se normalizan con ``import_weapon_art.py`` y se guardan como PNG de 32×32 (o 16×16) en
+Las imágenes entregadas se normalizan con ``import_weapon_art.py`` y se guardan como PNG de 64×64 (o 32×32 / 16×16) en
 ``tools/textures/source/weapons/<rol>_weapon_master.png``. Si existe ese archivo, ``gen_items.py`` lo usa en lugar del diseño por
 plantilla (``evolved_weapons.py``, que queda como respaldo) y ``gen_weapon_models.py`` extruye el modelo 3D de la mano a
 partir de él. Este módulo solo usa Pillow: sin Minecraft ni dependencias del resto de generadores.
@@ -12,8 +12,9 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / 'tools/textures/source/weapons'
-SIZES = (16, 32)
-DEFAULT_SIZE = 32  # doble densidad: el icono se muestra a 16×16 y el modelo 3D usa bloques de medio píxel
+SIZES = (16, 32, 64)
+DEFAULT_SIZE = 64  # alta densidad: el modelo 3D de la mano usa bloques de ¼ de píxel; el icono de inventario se reduce a 32×32
+GUI_SIZE = 32
 SIZE = DEFAULT_SIZE
 SUFFIX = '_weapon_master'
 
@@ -21,7 +22,7 @@ SUFFIX = '_weapon_master'
 def limits(size):
     """Límites de validación según la densidad: (máx. colores, mín. y máx. de píxeles opacos, largo mínimo)."""
     k = size // 16
-    return (24 if size == 16 else 40), 24 * k * k, 200 * k * k, 10 * k
+    return {16: 24, 32: 40, 64: 56}[size], 24 * k * k, 200 * k * k, 10 * k
 
 
 def path_for(name):
@@ -41,7 +42,7 @@ def validate(img):
     """Devuelve ``(errores, avisos)`` de una imagen ya normalizada (16×16 o 32×32)."""
     errors, warnings = [], []
     if img.size not in ((n, n) for n in SIZES):
-        return [f'tamaño {img.size[0]}×{img.size[1]}; debe ser 16×16 o 32×32'], warnings
+        return [f'tamaño {img.size[0]}×{img.size[1]}; debe ser 16×16, 32×32 o 64×64'], warnings
     size = img.size[0]
     max_colors, min_opaque, max_opaque, min_span = limits(size)
     img = img.convert('RGBA')
@@ -95,9 +96,9 @@ def remove_background(img, tolerance):
 
 
 def normalize(img, colors=24, tolerance=40, fit=True, flip=False, rotate=0, size=DEFAULT_SIZE):
-    """Imagen cualquiera → ``size``×``size`` (16 o 32) RGBA con bordes duros y paleta reducida."""
+    """Imagen cualquiera → ``size``×``size`` (16, 32 o 64) RGBA con bordes duros y paleta reducida."""
     if size not in SIZES:
-        raise ValueError(f'tamaño {size} no admitido; usa 16 o 32')
+        raise ValueError(f'tamaño {size} no admitido; usa 16, 32 o 64')
     img = remove_background(img, tolerance)
     if flip:
         img = img.transpose(Image.FLIP_LEFT_RIGHT)
@@ -142,3 +143,17 @@ def depth_map(img, dark=85):
     px = img.load()
     n = img.size[0]
     return [[0 if px[x, y][3] < 255 else (2 if luminance(px[x, y]) < dark else 1) for x in range(n)] for y in range(n)]
+
+
+def downscale(img, size=GUI_SIZE):
+    """Versión reducida (caja) con bordes duros, p. ej. el icono de inventario de un arte de 64×64."""
+    img = img.convert('RGBA')
+    if img.size[0] <= size:
+        return img
+    small = img.convert('RGBa').resize((size, size), Image.BOX).convert('RGBA')
+    px = small.load()
+    for y in range(size):
+        for x in range(size):
+            r, g, b, a = px[x, y]
+            px[x, y] = (r, g, b, 255 if a >= 128 else 0)
+    return small

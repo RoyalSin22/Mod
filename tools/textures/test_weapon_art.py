@@ -23,15 +23,15 @@ def fake_ai_sword(size=256, bg=(255, 0, 255)):
 
 class WeaponArtTest(unittest.TestCase):
     def test_external_art_is_normalized_to_a_valid_icon_at_both_densities(self):
-        for size in (16, 32):
+        for size in (16, 32, 64):
             out = weapon_art.normalize(fake_ai_sword(), colors=16, size=size)
             self.assertEqual(out.size, (size, size))
             errors, warnings = weapon_art.validate(out)
             self.assertEqual(errors, [], f'{size}: {errors}')
             self.assertEqual(warnings, [], f'{size}: {warnings}')
 
-    def test_default_density_is_32_and_unknown_sizes_are_rejected(self):
-        self.assertEqual(weapon_art.normalize(fake_ai_sword()).size, (32, 32))
+    def test_default_density_is_64_and_unknown_sizes_are_rejected(self):
+        self.assertEqual(weapon_art.normalize(fake_ai_sword()).size, (64, 64))
         with self.assertRaises(ValueError):
             weapon_art.normalize(fake_ai_sword(), size=24)
 
@@ -92,8 +92,9 @@ class WeaponArtTest(unittest.TestCase):
                 self.assertIsNone(weapon_art.override('mage_weapon_master'))
                 Image.new('RGBA', (16, 16)).save(Path(tmp) / 'mage_weapon_master.png')
                 self.assertIsNotNone(weapon_art.override('mage_weapon_master'))
-                Image.new('RGBA', (32, 32)).save(Path(tmp) / 'mage_weapon_master.png')
-                self.assertIsNotNone(weapon_art.override('mage_weapon_master'))
+                for n in (32, 64):
+                    Image.new('RGBA', (n, n)).save(Path(tmp) / 'mage_weapon_master.png')
+                    self.assertIsNotNone(weapon_art.override('mage_weapon_master'))
             finally:
                 weapon_art.SOURCE = old
 
@@ -107,6 +108,14 @@ class WeaponArtTest(unittest.TestCase):
         self.assertEqual(cells[0].size, (100, 100))
         with self.assertRaises(SystemExit):
             imp.split_sheet(Image.new('RGB', (30, 30)), 5, 5)
+
+    def test_downscale_keeps_hard_edges_and_shrinks_to_the_gui_size(self):
+        big = weapon_art.normalize(fake_ai_sword(), size=64)
+        small = weapon_art.downscale(big)
+        self.assertEqual(small.size, (32, 32))
+        self.assertEqual({small.getpixel((x, y))[3] for x in range(32) for y in range(32)}, {0, 255})
+        self.assertEqual(weapon_art.downscale(small).size, (32, 32), 'ya reducida: no cambia')
+        self.assertEqual(weapon_art.validate(small)[0], [])
 
     def test_roles_match_the_mod_role_order(self):
         import importlib.util

@@ -1178,7 +1178,15 @@ def main():
     preview = sys.argv[sys.argv.index('--preview') + 1] if '--preview' in sys.argv else None
     rendered = {}
     for name, (tpl, colors) in ITEMS.items():
-        img = weapon_art.override(name) or render(T[tpl], colors)
+        art = weapon_art.override(name)
+        img = art or render(T[tpl], colors)
+        if art is not None and art.size[0] > weapon_art.GUI_SIZE:
+            art.save(f'{folder}/{name}_hd.png')  # textura del modelo 3D de la mano (V75: 64×64)
+            img = weapon_art.downscale(art)  # el icono de inventario/HUD usa la versión reducida
+        else:
+            stale = Path(folder) / f'{name}_hd.png'
+            if stale.exists():
+                stale.unlink()  # el arte de alta densidad se retiró: vuelve la textura normal
         img.save(f'{folder}/{name}.png')
         rendered[name] = img
     if preview:

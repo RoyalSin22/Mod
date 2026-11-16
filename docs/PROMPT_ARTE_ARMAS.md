@@ -5,11 +5,11 @@ Encargo para el generador de arte (ChatGPT), en la línea de `docs/PROMPT_ARTE_I
 dibujado por código (`docs/V73_armas_evolucion_preview.png`): es deliberadamente simple. El arte que llegue **lo sustituye arma a
 arma** y el resto sigue con el provisional.
 
-**Resolución final: 32×32 píxeles** (doble densidad, como los iconos de habilidad). En el inventario se muestra a 16 px y en la
-mano el modelo 3D usa bloques de medio píxel, así que el detalle fino se aprecia sobre todo en la mano y en el suelo. El generador
-no dibuja bien a 32×32 directamente: se le pide **como una rejilla de 32×32 ampliada ×8** (celdas de 256×256 px con bloques
-nítidos de 8×8 px) y el script la reduce. Si prefieres el aspecto vanilla (16×16), se importa con `--size 16` y se pide la mitad
-de detalle.
+**Resolución final: 64×64 píxeles** (cuatro veces más detalle por lado que un objeto de vanilla). En el modelo 3D de la mano, en el
+suelo y en los marcos se ve a plena resolución; en el inventario y el HUD el script genera una versión reducida a 32×32
+(`<arma>.png`) para que no «vibre», y la de 64×64 queda como `<arma>_hd.png` para el modelo 3D. El generador de imágenes no dibuja
+bien a 64×64 directamente: se le pide **como una rejilla de 64×64 ampliada ×4** (celdas de 256×256 px con bloques nítidos de 4×4
+px) y el script la reduce. Si hiciera falta menos detalle, se importa con `--size 32` o `--size 16` (aspecto vanilla).
 
 Conviene pedirlo **en 4 tandas de 5 armas** (una hoja de 5 en fila por tanda) para que cada tanda comparta estilo y paleta. Si una
 hoja sale floja, es mejor pedir **cada arma por separado** repitiendo el bloque de estilo.
@@ -53,7 +53,7 @@ vectorial reescalado.
 7. **Gemas, runas y filos encendidos:** 3 tonos del color del rol + **un píxel de núcleo casi blanco**. La luz que emiten tiñe
    con 1–2 píxeles los materiales vecinos (luz de rebote). **No uses transparencia ni halo difuminado**: el brillo se dibuja con
    píxeles opacos.
-8. **Textura y detalle:** al menos 6–8 detalles pequeños por arma (remaches, runas de 2×2, eslabones, muescas, hilos, cabezas de
+8. **Textura y detalle:** al menos 10–14 detalles pequeños por arma (remaches, runas de 2×2, eslabones, muescas, hilos, cabezas de
    clavo…), siempre subordinados a la silueta: **la silueta se tiene que reconocer incluso rellena de un solo color.**
 
 ## 3. Prompt para pegar en ChatGPT (una tanda de 5 armas)
@@ -66,12 +66,12 @@ vectorial reescalado.
 > ### Formato (obligatorio)
 > - **Una sola imagen PNG de 1280×256 px** con las 5 armas **en una fila**, cada una centrada en su propia celda cuadrada de
 >   256×256 px, sin solaparse.
-> - Cada arma es un **pixel art de 32×32 píxeles ampliado ×8**: bloques nítidos de 8×8 px, **sin antialiasing, sin degradados
+> - Cada arma es un **pixel art de 64×64 píxeles ampliado ×4**: bloques nítidos de 4×4 px, **sin antialiasing, sin degradados
 >   suaves, sin desenfoque, sin sombras proyectadas, sin transparencias parciales**.
 > - **Fondo liso magenta puro #FF00FF** en toda la imagen (un script lo elimina). Ningún píxel del arma puede ser magenta.
 > - Cada arma **en diagonal**: **empuñadura abajo a la izquierda** y **punta o cabeza arriba a la derecha**. Ocupa casi toda la
->   celda (al menos 26 de los 32 píxeles de largo). Un margen de 1 píxel.
-> - **Máximo 32 colores por arma.** Sin letras, números, marcos ni texto. Sin manos ni personajes.
+>   celda (al menos 54 de los 64 píxeles de largo). Un margen de 1 píxel.
+> - **Máximo 48 colores por arma.** Sin letras, números, marcos ni texto. Sin manos ni personajes.
 > - Las 5 comparten estilo, grosor de contorno, nivel de detalle y calidad de luz, como una familia coherente.
 >
 > ### Técnica
@@ -85,7 +85,7 @@ vectorial reescalado.
 > 5. **Gemas, runas y filos encendidos**: 3 tonos del color del rol y **un píxel de núcleo casi blanco**; su luz tiñe 1–2 píxeles
 >    de los materiales vecinos. Nada de halos difuminados.
 > 6. **Desgaste y carácter**: filos mellados, pátina en las juntas, tela deshilachada, runas medio borradas, ceniza o sangre seca.
->    Entre 6 y 8 detalles pequeños por arma y **una cosa especial** que cuente su historia.
+>    Entre 10 y 14 detalles pequeños por arma y **una cosa especial** que cuente su historia.
 > 7. **La silueta debe reconocerse incluso rellena de un solo color** y distinguirse con claridad de las otras cuatro.
 > 8. Estoico y dinámico: masas graves y sólidas, pero con la diagonal, una asimetría intencionada y pequeñas chispas o ascuas.
 >
@@ -140,7 +140,7 @@ El **orden de izquierda a derecha** es el de cada tanda. El id es el que usa el 
 ## 5. Qué hacer con lo que entregue ChatGPT
 
 1. Guarda cada hoja fuera del repositorio, p. ej. `entregas/tanda1.png`.
-2. Impórtala (los roles se leen de izquierda a derecha en el orden de la tanda; por defecto sale a **32×32**):
+2. Impórtala (los roles se leen de izquierda a derecha en el orden de la tanda; por defecto sale a **64×64**):
 
 ```bash
 python3 tools/textures/import_weapon_art.py entregas/tanda1.png --sheet 5x1 --roles berserker,paladin,lancer,swordsman,monk
@@ -151,12 +151,13 @@ python3 tools/textures/import_weapon_art.py entregas/tanda4.png --sheet 5x1 --ro
 
    Si el generador devolvió armas sueltas, llámalas `<rol>.png` y pásalas directamente
    (`import_weapon_art.py entregas/*.png`). Si una sale al revés usa `--flip` (o `--rotate 90`); si el fondo no se quita bien,
-   sube `--tolerance`; si quedan demasiados colores, baja `--colors`; para el aspecto vanilla usa `--size 16`. Con
+   sube `--tolerance`; si quedan demasiados colores, baja `--colors`; para menos detalle usa `--size 32` o `--size 16`. Con
    `--dry-run` solo se valida.
 3. Revisa el resultado: `python3 tools/textures/import_weapon_art.py --preview vista.png` y
-   `python3 tools/textures/import_weapon_art.py --check` (tamaño, solo 0 % o 100 % de opacidad, ≤ 40 colores, largo mínimo y
+   `python3 tools/textures/import_weapon_art.py --check` (tamaño, solo 0 % o 100 % de opacidad, ≤ 56 colores, largo mínimo y
    orientación).
-4. Regenera texturas y modelos 3D de la mano (los modelos se extruyen del propio PNG; lo oscuro tiene más grosor):
+4. Regenera texturas y modelos 3D de la mano (los modelos se extruyen del propio PNG, con bloques de ¼ de píxel; lo oscuro tiene
+   más grosor). Se crean `<arma>.png` (32×32, para el inventario) y `<arma>_hd.png` (64×64, para el modelo 3D):
 
 ```bash
 python3 tools/textures/gen_items.py src/main/resources/assets/aptitudes/textures/item
@@ -174,6 +175,6 @@ python3 tools/models/gen_weapon_models.py src/main/resources/assets/aptitudes/mo
 - **Coherente:** misma familia de estilo y luz dentro de la tanda; el acento de color del rol se nota sin ser el único recurso.
 - **Dark fantasy:** se siente usada, vieja y pesada; no hay brillos plásticos ni colores saturados fuera del acento.
 - **Dinámica y estoica:** diagonal clara, una asimetría intencionada y un único punto de luz que llama la atención.
-- **Técnica:** diagonal correcta, sin píxeles semitransparentes ni sueltos, ≤ 32 colores, bordes nítidos.
+- **Técnica:** diagonal correcta, sin píxeles semitransparentes ni sueltos, ≤ 48 colores, bordes nítidos.
 - **En la mano:** el modelo 3D se ve con volumen y sin huecos raros; revisarlo en partida con
   `/give @s aptitudes:<rol>_weapon_master`.
