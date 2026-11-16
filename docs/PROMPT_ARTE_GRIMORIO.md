@@ -30,7 +30,16 @@ derecha, la cinta con el nombre, el tipo, las estadísticas, los consejos, el bo
 cursiva. La maqueta numérica está en `logic/GuideCardLayout` (con pruebas): el arte debe respetar esas proporciones o
 actualizar la maqueta a la vez.
 
-## Integración (cuando llegue el arte)
+## Estado: integrado (G5)
+
+El arte llegó como imágenes grandes (1254 px y más). Se redujo con `tools/textures/prepare_guide_art.py` a piezas del
+tamaño de uso, **más pequeñas que las de la tabla de arriba** porque la maqueta del libro es ajustada (pestañas a 4 px del
+borde, lista a 6 px): ventana 34×34 (esquina 14, marco de unos 6 px), panel 20×20 (esquina 8), retrato 34×34 (esquina 14),
+cinta 48×14 (remates de 19), divisor 56×7, esquina 12×13 y los emblemas del ojo (25×8) y del libro (21×9). No usan la
+rejilla de 2×2: se dibujan 1:1. Los originales no están en el repositorio; el script los lee de una carpeta.
+Para un arte nuevo: vuelve a ejecutar `prepare_guide_art.py <carpeta>` y después `gen_guide_ui.py`.
+
+## Integración (histórico)
 
 1. Copiar los PNG a `tools/textures/source/ui/guide/`.
 2. Crear el generador con `--check` y `GuideUi` leerá las texturas (con el dibujo actual como respaldo si faltan).

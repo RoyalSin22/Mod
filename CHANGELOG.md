@@ -5,6 +5,15 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Añadido
+- **v67 — Arte del grimorio (G5).** El libro y las cartas del bestiario usan el arte de referencia: marco de la
+  ventana con ojo y libro, hoja de página, marco del retrato, cinta del nombre, filete con rombo y remate de esquina.
+  Del arte grande (`tools/textures/prepare_guide_art.py`) salen piezas reducidas en `tools/textures/source/ui/guide/` y
+  `tools/textures/gen_guide_ui.py` (con `--check`) las valida y copia a `textures/gui/guide_ui/`. Los marcos repiten un
+  tramo limpio de borde en lugar de estirar el original (el ojo, el libro y las cintas se deformarían), y el ojo y el libro
+  van como emblemas aparte. `GuideUi` conserva el dibujo con rellenos como respaldo. El retrato deja 7 px de marco al
+  modelo de la criatura. Falta verlo en partida.
+
 ### Corregido
 - **v67 — Cifras de firma y definitiva.** La firma (rango 3 + etapa) y la definitiva se lanzan con rango 4–6, pero 13
   descripciones mostraban cifras de los rangos 1–3 (p. ej. «15/18/21» o «8/10/12»), imposibles en el juego. Ahora dan los

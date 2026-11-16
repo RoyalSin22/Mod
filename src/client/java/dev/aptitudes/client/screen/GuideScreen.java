@@ -779,15 +779,17 @@ public class GuideScreen extends Screen {
 		GuideCardLayout.Rect pr = card.portrait();
 		int bx = px + pr.x(), by = cy + pr.y();
 		GuideUi.portrait(ctx, bx, by, pr.w(), pr.h());
-		if (!drawModel(ctx, entry, bx + 3, by + 3, bx + pr.w() - 3, by + pr.h() - 3, mouseX, mouseY)) {
+		int in = GuideUi.PORTRAIT_INSET; // el marco del retrato ocupa el borde
+		if (!drawModel(ctx, entry, bx + in, by + in, bx + pr.w() - in, by + pr.h() - in, mouseX, mouseY)) {
 			bigItem(ctx, icon(entry), bx + pr.w() / 2 - 16, by + pr.h() / 2 - 16);
 		}
 		GuideCardLayout.Rect sr = card.seal();
 		int sx = px + sr.x(), sy = cy + sr.y();
-		ctx.drawText(textRenderer, UiStyle.fit(textRenderer, Text.translatable("bestiary.aptitudes.kills", kills), sr.w()),
-				sx, sy, UiStyle.TEXT, false);
+		GuideUi.corner(ctx, sx, sy); // remate dorado del sello de muertes y región
+		ctx.drawText(textRenderer, UiStyle.fit(textRenderer, Text.translatable("bestiary.aptitudes.kills", kills), sr.w() - 6),
+				sx + 6, sy + 3, UiStyle.TEXT, false);
 		ctx.drawText(textRenderer, UiStyle.fit(textRenderer, Text.translatable("bestiary.aptitudes.region."
-				+ entry.region().name().toLowerCase(Locale.ROOT)), sr.w()), sx, sy + line, UiStyle.MUTED, false);
+				+ entry.region().name().toLowerCase(Locale.ROOT)), sr.w() - 6), sx + 6, sy + 3 + line, UiStyle.MUTED, false);
 
 		// Nombre sobre la cinta y tipo.
 		int tx = px + card.textX(), tw = card.textW();
