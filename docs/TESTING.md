@@ -9,6 +9,14 @@ Verificado en servidor dedicado sin jugador: el mod arranca con el jefe registra
 lo crea, aguanta 1200 ticks sin excepciones, se disuelve solo cuando su sesión de Niebla es desconocida y han pasado
 `osarioBossLingerTicks`, y su muerte sin daño de jugadores no reparte nada ni falla.
 
+También verificado: los jefes sin sesión sobreviven al guardado y la recarga del mundo, un jefe con una sesión de Niebla
+desconocida se disuelve en cuanto el reloj supera `osarioBossLingerTicks` y `kill` ejecuta la muerte (reparto y retirada de
+acompañantes) sin errores. Para consultar entidades desde la consola hay que cargar antes el chunk
+(`execute in minecraft:overworld run forceload add 0 0 32 32`); sin eso `execute if entity` dice «Test failed» aunque estén.
+
+No verificado sin jugador: el gancho de aparición de `WorldEventManager`, los ataques con objetivo real, el reparto del
+trofeo a jugadores conectados y todo lo que dibuja el cliente.
+
 Pendiente en partida (autor), porque exige un jugador y el cliente:
 
 1. **Aparición:** con `fogDurationTicks` en 1200 (mínimo) y `/aptitudes event start soul_fog`, a los 900 ticks (75 por
