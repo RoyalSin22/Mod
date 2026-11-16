@@ -34,11 +34,11 @@ public class BonfireBlock extends Block {
 		return SHAPE;
 	}
 
-	/** Con una Ofrenda de renacimiento en la mano se hace el ritual (lo gestiona el ítem), no el descanso. */
+	/** Con una Ofrenda de renacimiento o un Resonador del Umbral en la mano se hace el ritual (lo gestiona el ítem), no el descanso. */
 	@Override
 	protected net.minecraft.util.ItemActionResult onUseWithItem(net.minecraft.item.ItemStack stack, BlockState state,
 			World world, BlockPos pos, PlayerEntity player, net.minecraft.util.Hand hand, BlockHitResult hit) {
-		if (stack.isOf(dev.aptitudes.item.ModItems.REBIRTH_OFFERING)) {
+		if (stack.isOf(dev.aptitudes.item.ModItems.REBIRTH_OFFERING) || stack.isOf(dev.aptitudes.item.ModItems.RESONADOR_DEL_UMBRAL)) {
 			return net.minecraft.util.ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
 		}
 		return super.onUseWithItem(stack, state, world, pos, player, hand, hit);

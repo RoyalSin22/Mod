@@ -3802,6 +3802,8 @@
   "item.aptitudes.nucleo_osario": "Núcleo del Osario",
   "item.aptitudes.ancla_del_velo": "Ancla del Velo",
   "item.aptitudes.ancla_del_velo.tooltip": "Forjada con restos del Velo. Alguna puerta sellada la espera.",
+  "item.aptitudes.resonador_del_umbral": "Resonador del Umbral",
+  "item.aptitudes.resonador_del_umbral.tooltip": "Una reliquia de poder antiguo. Su vibración invoca al Eclipse mismo.",
   "subtitles.aptitudes.errante_ambient": "El Errante Velado susurra",
   "subtitles.aptitudes.errante_alert": "El Errante Velado se alerta",
   "subtitles.aptitudes.errante_prepare": "El velo del Errante se tensa",
