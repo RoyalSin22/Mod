@@ -84,4 +84,20 @@ class SynergyRulesTest {
 		assertTrue(SynergyRules.elementRuneSynergyBonus(null, null, null) >= 1.0f,
 				"Bonus must be >= 1.0");
 	}
+
+	@Test
+	void canTriggerKeystoneOnComboReturnsFalseByDefault() {
+		// Y5: Sin lógica de cooldown aún, debe retornar false.
+		boolean canTrigger = SynergyRules.canTriggerKeystoneOnCombo(null, "any_finisher");
+		assertFalse(canTrigger, "Placeholder should return false");
+	}
+
+	@Test
+	void keystoneComboTrigerCooldownReturnsValidTicks() {
+		// Y5: Espera debe ser un número positivo de ticks (≥ 0).
+		int cooldown = SynergyRules.keystoneComboTrigerCooldown();
+		assertTrue(cooldown >= 0, "Cooldown must be >= 0 ticks");
+		// 20 segundos = 400 ticks
+		assertEquals(400, cooldown, "Default cooldown should be 20 seconds (400 ticks)");
+	}
 }
