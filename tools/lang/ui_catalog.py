@@ -844,17 +844,17 @@ add('ultimate.aptitudes.', """
 berserker¦Ira Implacável¦Colère implacable¦Unaufhaltsamer Zorn
 berserker.desc¦8 s sem poder morrer (a vida não cai abaixo de 1), com Força II, Velocidade II e Resistência.¦8 s sans pouvoir mourir (la santé ne descend jamais sous 1), avec Force II, Vitesse II et Résistance.¦8 s lang unsterblich (Leben fällt nie unter 1), mit Stärke II, Schnelligkeit II und Resistenz.
 mage¦Singularidade¦Singularité¦Singularität
-mage.desc¦Um buraco negro no ponto-alvo atrai e fere inimigos por 5 s.¦Un trou noir au point visé attire et blesse les ennemis pendant 5 s.¦Ein schwarzes Loch am Zielpunkt zieht Feinde 5 s lang an und verletzt sie.
+mage.desc¦Um buraco negro no ponto que você mira atrai e fere inimigos por 5 s. Causa 3 de dano por segundo.¦Un trou noir au point visé attire et blesse les ennemis pendant 5 s. Il inflige 3 dégâts par seconde.¦Ein schwarzes Loch am Zielpunkt zieht Feinde 5 s lang an und verletzt sie. Es verursacht 3 Schaden pro Sekunde.
 assassin¦Execução Sombria¦Exécution des ombres¦Schattenhinrichtung
-assassin.desc¦Salta para trás de até 5 inimigos próximos; os que têm menos de 30% de vida morrem instantaneamente.¦Saute derrière jusqu'à 5 ennemis proches ; ceux sous 30% de santé meurent instantanément.¦Springe hinter bis zu 5 nahe Feinde; Ziele mit weniger als 30% Leben sterben sofort.
+assassin.desc¦Salta atrás de até 5 inimigos próximos; os com menos de 30% de vida morrem na hora e os demais recebem 11 de dano.¦Vous bondissez derrière jusqu'à 5 ennemis proches ; ceux sous 30% de santé meurent sur-le-champ, les autres subissent 11 dégâts.¦Du springst hinter bis zu 5 nahe Feinde; Ziele unter 30% Leben sterben sofort, die übrigen erleiden 11 Schaden.
 herbalist¦Jardim do Éden¦Jardin d'Éden¦Garten Eden
 herbalist.desc¦Área de 8 blocos por 10 s: aliados regeneram e são purificados; inimigos são envenenados.¦Zone de 8 blocs pendant 10 s : les alliés régénèrent et sont purifiés ; les ennemis sont empoisonnés.¦Bereich von 8 Blöcken für 10 s: Verbündete regenerieren und werden gereinigt; Feinde werden vergiftet.
 engineer¦Ataque Orbital¦Frappe orbitale¦Orbitalschlag
-engineer.desc¦12 impactos em 3 s ao redor do ponto-alvo. Não quebram blocos e só ferem e empurram inimigos.¦12 impacts en 3 s autour du point visé. Ils ne détruisent pas les blocs et ne blessent et repoussent que les ennemis.¦12 Einschläge in 3 s um den Zielpunkt. Sie zerstören keine Blöcke und verletzen und stoßen nur Feinde zurück.
+engineer.desc¦12 impactos em 3 s ao redor do ponto que você mira. Não quebram blocos e só ferem e empurram inimigos. 14.5 de dano por impacto.¦12 impacts en 3 s autour du point visé. Ils ne détruisent pas les blocs et ne blessent et repoussent que les ennemis. 14.5 dégâts par impact.¦12 Einschläge in 3 s um den anvisierten Punkt. Sie zerstören keine Blöcke und verletzen und stoßen nur Feinde zurück. 14.5 Schaden pro Einschlag.
 lancer¦Lança Celestial¦Lance céleste¦Himmlische Lanze
-lancer.desc¦Salto enorme e mergulho com uma onda de choque devastadora.¦Bond immense puis plongeon avec une onde de choc dévastatrice.¦Gewaltiger Sprung und Sturzangriff mit verheerender Schockwelle.
+lancer.desc¦Salto enorme e mergulho com uma onda de choque devastadora: 15.5 de dano em inimigos a 6 blocos.¦Bond immense puis plongeon avec une onde de choc dévastatrice : 15.5 dégâts aux ennemis dans un rayon de 6 blocs.¦Gewaltiger Sprung und Sturzangriff mit verheerender Schockwelle: 15.5 Schaden an Feinden im Umkreis von 6 Blöcken.
 swordsman¦Mil Cortes¦Mille entailles¦Tausend Schnitte
-swordsman.desc¦15 cortes em 3 s no inimigo mais próximo, ignorando invulnerabilidade entre golpes.¦15 coups en 3 s sur l'ennemi le plus proche, ignorant l'invulnérabilité entre les coups.¦15 Hiebe in 3 s gegen den nächsten Feind, ignorieren die Trefferunverwundbarkeit.
+swordsman.desc¦15 cortes em 3 s no inimigo mais próximo, ignorando a invulnerabilidade entre golpes. 4 de dano por corte.¦15 coups en 3 s sur l'ennemi le plus proche, ignorant l'invulnérabilité entre les coups. 4 dégâts par coup.¦15 Hiebe in 3 s gegen den nächsten Feind, die die Unverwundbarkeit zwischen den Treffern ignorieren. 4 Schaden pro Hieb.
 paladin¦Reino Eterno¦Royaume éternel¦Ewiges Königreich
 paladin.desc¦Área de 8 blocos por 8 s: aliados não podem morrer e mortos-vivos queimam.¦Zone de 8 blocs pendant 8 s : les alliés ne peuvent pas mourir et les morts-vivants brûlent.¦Bereich von 8 Blöcken für 8 s: Verbündete können nicht sterben und Untote brennen.
 necromancer¦Maré Carmesim¦Marée carmin¦Purpurflut
@@ -870,11 +870,11 @@ elementalist.desc¦Libera a explosão de todos os elementos dominados de uma só
 shapeshifter¦Forma Primordial¦Forme primordiale¦Urgestalt
 shapeshifter.desc¦Torna-se um Defensor por 20 s: +20 de vida, Força II, Resistência II, Escuridão em jogadores próximos e Estrondo Sônico como poder.¦Devient un Warden pendant 20 s : +20 de santé, Force II, Résistance II, Ténèbres aux joueurs proches et Bang sonique comme pouvoir.¦Werde für 20 s zum Warden: +20 Leben, Stärke II, Resistenz II, Dunkelheit für nahe Spieler und Schallknall als Kraft.
 gunslinger¦Duelo ao Meio-Dia¦Duel à midi¦Zwölf Uhr mittags
-gunslinger.desc¦Marca todos os inimigos em 32 blocos e dispara em todos após 1 s: 15/18/21 de dano.¦Marque tous les ennemis dans un rayon de 32 blocs et leur tire dessus après 1 s : 15/18/21 dégâts.¦Markiert alle Feinde im Umkreis von 32 Blöcken und beschießt sie nach 1 s: 15/18/21 Schaden.
+gunslinger.desc¦Marca todos os inimigos em 32 blocos e, após 1 s, atira em todos ao mesmo tempo: 27 de dano cada.¦Marque tous les ennemis dans un rayon de 32 blocs et, après 1 s, leur tire dessus en même temps : 27 dégâts chacun.¦Markiert alle Feinde im Umkreis von 32 Blöcken und schießt nach 1 s gleichzeitig auf alle: je 27 Schaden.
 weapon_summoner¦Arsenal Infinito¦Arsenal infini¦Unendliches Arsenal
-weapon_summoner.desc¦Por 5 s, a cada meio segundo uma lâmina atinge cada inimigo em 16 blocos.¦Pendant 5 s, une lame frappe chaque ennemi dans un rayon de 16 blocs toutes les demi-secondes.¦5 s lang trifft jede halbe Sekunde eine Klinge jeden Feind im Umkreis von 16 Blöcken.
+weapon_summoner.desc¦Por 5 s, a cada meio segundo uma lâmina atinge cada inimigo em 16 blocos: 8 de dano por golpe.¦Pendant 5 s, toutes les demi-secondes, une lame frappe chaque ennemi dans un rayon de 16 blocs : 8 dégâts par coup.¦5 s lang trifft jede halbe Sekunde eine Klinge jeden Feind im Umkreis von 16 Blöcken: 8 Schaden pro Treffer.
 hunter¦Caçada Selvagem¦Chasse sauvage¦Wilde Jagd
-hunter.desc¦Marca todos os inimigos em 24 blocos (+35%% do seu dano) e os atinge com 3 salvas de flechas.¦Marque tous les ennemis dans un rayon de 24 blocs (+35%% de vos dégâts) et les frappe de 3 volées de flèches.¦Markiert alle Feinde im Umkreis von 24 Blöcken (+35%% deines Schadens) und trifft sie mit 3 Pfeilsalven.
+hunter.desc¦Marca todos os inimigos em 24 blocos (+35%% do seu dano) e os atinge com 3 salvas de flechas: 8 de dano por salva.¦Marque tous les ennemis dans un rayon de 24 blocs (+35%% de vos dégâts) et les frappe de 3 volées de flèches : 8 dégâts par volée.¦Markiert alle Feinde im Umkreis von 24 Blöcken (+35%% deines Schadens) und trifft sie mit 3 Pfeilsalven: 8 Schaden pro Salve.
 bard¦Hino dos Heróis¦Hymne des héros¦Heldenhymne
 bard.desc¦Aliados em 20 blocos: vida completa, Força II, Resistência II e Absorção IV por 15 s.¦Alliés dans un rayon de 20 blocs : santé complète, Force II, Résistance II et Absorption IV pendant 15 s.¦Verbündete im Umkreis von 20 Blöcken: volles Leben, Stärke II, Resistenz II und Absorption IV für 15 s.
 warlock¦Avatar Demoníaco¦Avatar démoniaque¦Dämonischer Avatar
@@ -887,7 +887,7 @@ add('signature.aptitudes.', """
 berserker¦Rugido do Julgamento¦Rugissement du jugement¦Urteilsgebrüll
 berserker.desc¦Criaturas em 8 blocos perdem METADE da vida atual; você ganha Força III e Velocidade II (15 s).¦Les créatures dans un rayon de 8 blocs perdent la MOITIÉ de leur santé actuelle ; vous gagnez Force III et Vitesse II (15 s).¦Kreaturen im Umkreis von 8 Blöcken verlieren die HÄLFTE ihres aktuellen Lebens; du erhältst Stärke III und Schnelligkeit II (15 s).
 mage¦Chuva de Runas¦Pluie de runes¦Runenregen
-mage.desc¦8 runas arcanas caem no ponto-alvo: dano mágico em área e recuo. Sem fogo ou explosões.¦8 runes arcaniques tombent au point visé : dégâts magiques de zone et recul. Sans feu ni explosions.¦8 arkane Runen fallen auf den Zielpunkt: magischer Flächenschaden und Rückstoß. Kein Feuer und keine Explosionen.
+mage.desc¦8 runas arcanas caem no ponto que você mira: dano mágico em área e recuo. Sem fogo nem explosões. Mestre / Definitivo: 9 / 10 de dano por runa.¦8 runes arcaniques tombent sur le point visé : dégâts magiques de zone et recul. Sans feu ni explosions. Maître / Ultime : 9 / 10 dégâts par rune.¦8 arkane Runen fallen auf den anvisierten Punkt: magischer Flächenschaden und Rückstoß. Kein Feuer, keine Explosionen. Meister / Ultimativ: 9 / 10 Schaden pro Rune.
 assassin¦Marca da Morte¦Marque de mort¦Todesmal
 assassin.desc¦Marca o alvo: ele recebe o TRIPLO de dano de você por 10 s.¦Marque la cible : elle subit le TRIPLE de vos dégâts pendant 10 s.¦Markiert das Ziel: Es erleidet 10 s lang DREIFACHEN Schaden von dir.
 herbalist¦Elixir da Vida¦Élixir de vie¦Lebenselixier
@@ -913,15 +913,15 @@ elementalist.desc¦Ergue uma parede do elemento principal e libera seu domínio 
 shapeshifter¦Caos de Formas¦Chaos des formes¦Gestaltenchaos
 shapeshifter.desc¦Pegadinha: transforma jogadores próximos em galinhas por 10 s e faz monstros levitarem.¦Farce : transforme les joueurs proches en poules pendant 10 s et fait léviter les monstres.¦Streich: Verwandelt nahe Spieler für 10 s in Hühner und lässt Monster schweben.
 gunslinger¦Rajada Infinita¦Barrage sans fin¦Endloses Sperrfeuer
-gunslinger.desc¦20 disparos em 2 s contra inimigos próximos.¦20 tirs en 2 s sur les ennemis proches.¦20 Schüsse in 2 s auf nahe Feinde.
+gunslinger.desc¦20 disparos em 2 s contra inimigos próximos. Mestre / Definitivo: 5 / 5.5 de dano por disparo.¦20 tirs en 2 s sur les ennemis proches. Maître / Ultime : 5 / 5.5 dégâts par tir.¦20 Schüsse in 2 s auf nahe Feinde. Meister / Ultimativ: 5 / 5.5 Schaden pro Schuss.
 weapon_summoner¦Mil Lâminas¦Mille lames¦Tausend Klingen
-weapon_summoner.desc¦Um anel de lâminas em 5 blocos: 12/14/16 de dano e recuo.¦Un cercle de lames sur 5 blocs : 12/14/16 dégâts et recul.¦Ein Klingenring im Umkreis von 5 Blöcken: 12/14/16 Schaden und Rückstoß.
+weapon_summoner.desc¦Um anel de lâminas em 5 blocos fere e empurra inimigos. Mestre / Definitivo: 18 / 20 de dano.¦Un cercle de lames sur 5 blocs blesse et repousse les ennemis. Maître / Ultime : 18 / 20 dégâts.¦Ein Klingenring im Umkreis von 5 Blöcken verletzt und stößt Feinde zurück. Meister / Ultimativ: 18 / 20 Schaden.
 hunter¦Disparo do Caçador¦Tir du chasseur¦Jägerschuss
-hunter.desc¦Um disparo que atravessa tudo em 40 blocos: 14/16/18 de dano.¦Un tir qui transperce tout sur 40 blocs : 14/16/18 dégâts.¦Ein Schuss, der alles auf 40 Blöcken durchdringt: 14/16/18 Schaden.
+hunter.desc¦Um disparo que atravessa tudo em 40 blocos. Mestre / Definitivo: 20 / 22 de dano.¦Un tir qui transperce tout sur 40 blocs. Maître / Ultime : 20 / 22 dégâts.¦Ein Schuss, der alles auf 40 Blöcken durchdringt. Meister / Ultimativ: 20 / 22 Schaden.
 bard¦Sinfonia de Guerra¦Symphonie de guerre¦Kriegssymphonie
 bard.desc¦Aliados em 16 blocos: Força II, Velocidade II e Regeneração por 15 s.¦Alliés dans un rayon de 16 blocs : Force II, Vitesse II et Régénération pendant 15 s.¦Verbündete im Umkreis von 16 Blöcken: Stärke II, Schnelligkeit II und Regeneration für 15 s.
 warlock¦Portal do Abismo¦Porte de l'abîme¦Abgrundtor
-warlock.desc¦Abre um portal na direção do olhar: 8/10/12 de dano, Decomposição II e levitação em inimigos em 8 blocos.¦Ouvre une porte au point visé : 8/10/12 dégâts, Wither II et lévitation aux ennemis dans un rayon de 8 blocs.¦Öffnet ein Tor am Blickziel: 8/10/12 Schaden, Ausdörrung II und Schweben für Feinde im Umkreis von 8 Blöcken.
+warlock.desc¦Abre um portal na direção do olhar: inimigos em 8 blocos sofrem Decomposição II e levitação. Mestre / Definitivo: 14 / 16 de dano.¦Ouvre une porte au point visé : les ennemis dans un rayon de 8 blocs subissent Wither II et lévitation. Maître / Ultime : 14 / 16 dégâts.¦Öffnet ein Tor am Zielpunkt: Feinde im Umkreis von 8 Blöcken erhalten Wither II und Levitation. Meister / Ultimativ: 14 / 16 Schaden.
 tamer¦Matilha Espectral¦Meute spectrale¦Spektralrudel
 tamer.desc¦Invoca 4 lobos aliados com Força II por 30 s.¦Invoque 4 loups alliés avec Force II pendant 30 s.¦Beschwört 4 verbündete Wölfe mit Stärke II für 30 s.
 """)

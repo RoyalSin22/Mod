@@ -10,8 +10,8 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
   `logic/UnifiedTreeLayout`). Puntos de evolución 15/10 (76 a nivel 50) con migración. Se borraron `TreeScreen`,
   `PathsScreen` y `SpriteButton`, y la opción `newTreeScreen`.
 - **Descripciones:** las 980 descripciones de nodos (300 base, 480 de senda, 200 de evolución) y las 10 piedras
-  angulares, reescritas en estilo llano en los 5 idiomas. Pendiente: las 40 de firma y definitiva y los tooltips de la
-  configuración (es/en primero).
+  angulares, reescritas en estilo llano en los 5 idiomas. Las 40 de firma y definitiva ya dan las cifras reales de rango (13 corregidas). Los tooltips
+  de configuración están hechos.
 - **Versión:** número de commits → `a.b.c`. Revisión de mixins en `docs/REVISION_MIXINS.md`.
 - **F2 hecha:** 10 habilidades del Bersérker (Talentos, Veterano y Ascenso), equipamiento de 4 bits y encargo de
   iconos. Pendiente: validarlas en partida y el arte de sus iconos.

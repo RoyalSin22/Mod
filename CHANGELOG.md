@@ -5,6 +5,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Corregido
+- **v67 — Cifras de firma y definitiva.** La firma (rango 3 + etapa) y la definitiva se lanzan con rango 4–6, pero 13
+  descripciones mostraban cifras de los rangos 1–3 (p. ej. «15/18/21» o «8/10/12»), imposibles en el juego. Ahora dan los
+  valores reales («Maestro / Definitivo: 20 / 22 de daño», 27 de daño del Mediodía, 14,5 por impacto del Bombardeo
+  orbital…) en los 5 idiomas. Las 27 restantes no dependen del rango. Fuente: `tools/lang/ui_catalog.py` y en/es de los JSON.
+
 
 ### Seguridad
 - **v66 — Auditoría de red y configuración.** Se revisaron todos los payloads cliente → servidor (12 antes de retirar los pedidos, 11 después): todos validan su entrada en el
