@@ -1,5 +1,6 @@
 package dev.aptitudes.ability;
 
+import dev.aptitudes.role.Role;
 import dev.aptitudes.role.RoleManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -18,10 +19,28 @@ public final class SynergyRules {
 	// =====================================================================
 
 	/**
+	 * Contexto de sinergia para una habilidad: combina todos los bonificadores aplicables.
+	 * Se llama ANTES de ejecutar la habilidad.
+	 */
+	public static AbilitySynergyContext contextForAbility(ServerPlayerEntity player, Role role, String abilityId) {
+		// Placeholder: sin mapeos reales de senda ↔ activa aún.
+		// Retorna contexto sin bonificadores (1.0 para todos).
+		float radiusBonus = radiusModifierForPath(player, role);
+		float damageBonus = damageModifierForPath(player, role);
+		float energyCostBonus = energyCostModifierForPath(player, role);
+
+		// Si todos son 1.0, retornar NONE para no crear contextos innecesarios.
+		if (radiusBonus == 1.0f && damageBonus == 1.0f && energyCostBonus == 1.0f) {
+			return AbilitySynergyContext.NONE;
+		}
+		return new AbilitySynergyContext(radiusBonus, damageBonus, energyCostBonus);
+	}
+
+	/**
 	 * Bonificador de radio para activas basado en la senda actual.
 	 * Ejemplo: senda Velocidad → radio +20%.
 	 */
-	public static float radiusModifierForPath(ServerPlayerEntity player, String pathId) {
+	public static float radiusModifierForPath(ServerPlayerEntity player, Role role) {
 		// Placeholder: sin sendas específicas mapeadas aún.
 		// Retorna 1.0 (sin cambio) por defecto.
 		return 1.0f;
@@ -30,7 +49,7 @@ public final class SynergyRules {
 	/**
 	 * Bonificador de daño para activas basado en la senda actual.
 	 */
-	public static float damageModifierForPath(ServerPlayerEntity player, String pathId) {
+	public static float damageModifierForPath(ServerPlayerEntity player, Role role) {
 		return 1.0f; // Placeholder
 	}
 
@@ -38,7 +57,7 @@ public final class SynergyRules {
 	 * Bonificador de coste energético para activas.
 	 * Ejemplo: senda Eficiencia → coste −10%.
 	 */
-	public static float energyCostModifierForPath(ServerPlayerEntity player, String pathId) {
+	public static float energyCostModifierForPath(ServerPlayerEntity player, Role role) {
 		return 1.0f; // Placeholder
 	}
 
