@@ -165,13 +165,10 @@ public final class ModItems {
 	/** Corazón de campeón: solo lo sueltan los campeones. */
 	public static final Item CHAMPION_HEART = register("champion_heart",
 			new Item(new Item.Settings().rarity(Rarity.EPIC).fireproof()));
-	// Paso 2 de la reinvocación: sellos de invocación (fase C). Texturas, receta y textos: paso 3.
-	public static final Item FACELESS_COLOSSUS_SEAL = register("faceless_colossus_seal",
-			new dev.aptitudes.boss.SummonSealItem("faceless_colossus", CHAMPION_HEART, new Item.Settings().rarity(Rarity.EPIC)));
-	public static final Item DISMANTLED_GUARDIAN_SEAL = register("dismantled_guardian_seal",
-			new dev.aptitudes.boss.SummonSealItem("dismantled_guardian", ELITE_ESSENCE, new Item.Settings().rarity(Rarity.EPIC)));
-	public static final Item ANCIENT_AUTOMATON_SEAL = register("ancient_automaton_seal",
-			new dev.aptitudes.boss.SummonSealItem("ancient_automaton", ELITE_ESSENCE, new Item.Settings().rarity(Rarity.EPIC)));
+	// T6 (v67): sellos de invocación retirados. Los ítems se mantienen para compatibilidad pero no hacen nada.
+	// public static final Item FACELESS_COLOSSUS_SEAL = register("faceless_colossus_seal", ...);
+	// public static final Item DISMANTLED_GUARDIAN_SEAL = register("dismantled_guardian_seal", ...);
+	// public static final Item ANCIENT_AUTOMATON_SEAL = register("ancient_automaton_seal", ...);
 
 	public static final Item RUNE_FLAME = register("rune_flame", new dev.aptitudes.rune.RuneItem(dev.aptitudes.rune.RuneKind.FLAME, new Item.Settings().rarity(Rarity.UNCOMMON)));
 	public static final Item RUNE_LEECH = register("rune_leech", new dev.aptitudes.rune.RuneItem(dev.aptitudes.rune.RuneKind.LEECH, new Item.Settings().rarity(Rarity.RARE)));
@@ -249,9 +246,6 @@ public final class ModItems {
 						entries.add(ARMORY_VOUCHER);
 						entries.add(ELITE_ESSENCE);
 						entries.add(CHAMPION_HEART);
-						entries.add(FACELESS_COLOSSUS_SEAL);
-						entries.add(DISMANTLED_GUARDIAN_SEAL);
-						entries.add(ANCIENT_AUTOMATON_SEAL);
 						entries.add(RUNE_FLAME);
 						entries.add(RUNE_LEECH);
 						entries.add(RUNE_SWIFT);
