@@ -1,5 +1,9 @@
 package dev.aptitudes.block;
 
+import dev.aptitudes.event.EclipseSummoningRules;
+import dev.aptitudes.event.WorldEventKind;
+import dev.aptitudes.event.WorldEventManager;
+import dev.aptitudes.item.ModItems;
 import dev.aptitudes.souls.SoulsManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -34,12 +38,29 @@ public class BonfireBlock extends Block {
 		return SHAPE;
 	}
 
-	/** Con una Ofrenda de renacimiento o un Resonador del Umbral en la mano se hace el ritual (lo gestiona el ítem), no el descanso. */
+	/** Con una Ofrenda de renacimiento, un Resonador del Umbral o el Astrolabio del Ocaso en la mano se hace el ritual (lo gestiona el ítem), no el descanso. */
 	@Override
 	protected net.minecraft.util.ItemActionResult onUseWithItem(net.minecraft.item.ItemStack stack, BlockState state,
 			World world, BlockPos pos, PlayerEntity player, net.minecraft.util.Hand hand, BlockHitResult hit) {
-		if (stack.isOf(dev.aptitudes.item.ModItems.REBIRTH_OFFERING) || stack.isOf(dev.aptitudes.item.ModItems.RESONADOR_DEL_UMBRAL)) {
+		if (stack.isOf(ModItems.REBIRTH_OFFERING) || stack.isOf(ModItems.RESONADOR_DEL_UMBRAL)) {
 			return net.minecraft.util.ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+		}
+		// v60 (C3): Astrolabio del Ocaso invoca el Eclipse desde la Hoguera.
+		if (stack.isOf(ModItems.SUNSET_ASTROLABE)) {
+			if (!world.isClient() && player instanceof ServerPlayerEntity serverPlayer) {
+				if (!EclipseSummoningRules.canSummon(serverPlayer)) {
+					serverPlayer.sendMessage(EclipseSummoningRules.deniedMessage(), true);
+					return net.minecraft.util.ItemActionResult.FAIL;
+				}
+				// Consumir el ítem.
+				stack.decrement(1);
+				// Convocar el Eclipse.
+				if (serverPlayer.getServer() != null) {
+					WorldEventManager.forceStart(serverPlayer.getServer(), WorldEventKind.ECLIPSE);
+				}
+				serverPlayer.sendMessage(EclipseSummoningRules.summoned(), true);
+			}
+			return net.minecraft.util.ItemActionResult.SUCCESS;
 		}
 		return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
 	}

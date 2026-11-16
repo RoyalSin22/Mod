@@ -63,6 +63,9 @@ public final class ModItems {
 
 	public static final Item GUILD_SEAL = register("guild_seal", new GuildSealItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
 
+	/** Astrolabio del Ocaso (v60, C3): disco de bronce ennegrecido con sol eclipsado. Se consume en la Hoguera para invocar el Eclipse. */
+	public static final Item SUNSET_ASTROLABE = register("sunset_astrolabe", new SunsetAstralabeItem(new Item.Settings().maxCount(1).rarity(Rarity.EPIC).fireproof()));
+
 	/** Vendas de puño (Monje): en la mano secundaria dan daño y velocidad de ataque. */
 	public static final Item HAND_WRAPS = register("hand_wraps", new Item(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)
 			.attributeModifiers(AttributeModifiersComponent.builder()
