@@ -30,6 +30,9 @@ public final class LoreRules {
 	/** Lore desbloqueado al sobrevivir o presenciar el final del Eclipse (T1, T5). */
 	public static final String LORE_ECLIPSE_AFTERMATH = "eclipse_aftermath_lore";
 
+	/** Lore desbloqueado al superar la Cripta de la Niebla bajo el Templo del Custodio (V69). */
+	public static final String LORE_CRYPT_CLEARED = "crypt_cleared_lore";
+
 	/** Todas las ids de lore válidas en T7a. */
 	private static final Set<String> ALL_VALID_IDS = Set.of(
 			LORE_SOUL_FOG_TRIGGER,
@@ -37,7 +40,8 @@ public final class LoreRules {
 			LORE_CUSTODIAN_DEFEATED,
 			LORE_BEHELIT_FOUND,
 			LORE_ECLIPSE_SACRIFICE,
-			LORE_ECLIPSE_AFTERMATH
+			LORE_ECLIPSE_AFTERMATH,
+			LORE_CRYPT_CLEARED
 	);
 
 	/** Valida que un id de lore sea válido. */
@@ -82,5 +86,10 @@ public final class LoreRules {
 	/** Desbloqueos al finalizar el Eclipse (evento global). */
 	public static Set<String> unlocksOnEclipseEnd() {
 		return Set.of(LORE_ECLIPSE_AFTERMATH);
+	}
+
+	/** Desbloqueos al derrotar al campeón final de la Cripta de la Niebla (V69). */
+	public static Set<String> unlocksOnCryptCleared() {
+		return Set.of(LORE_CRYPT_CLEARED);
 	}
 }

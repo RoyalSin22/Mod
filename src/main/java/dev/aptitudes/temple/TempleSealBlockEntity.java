@@ -456,6 +456,7 @@ public class TempleSealBlockEntity extends BlockEntity {
 		world.playSound(null, chest, SoundEvents.BLOCK_VAULT_OPEN_SHUTTER, SoundCategory.BLOCKS, 1.4f, 0.8f);
 		world.spawnParticles(net.minecraft.particle.ParticleTypes.SOUL, chest.getX() + 0.5, chest.getY() + 1, chest.getZ() + 0.5, 40, 0.5, 0.6, 0.5, 0.05);
 		tell(inside, "temple.aptitudes.crypt.done");
+		for (ServerPlayerEntity p : inside) dev.aptitudes.guide.LoreManager.unlocksOnCryptCleared(p);
 		markDirty();
 	}
 

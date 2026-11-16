@@ -82,6 +82,11 @@ public final class LoreManager {
 		unlockAll(player, LoreRules.unlocksOnEclipseEnd());
 	}
 
+	/** Desbloquea lore al superar la Cripta de la Niebla (V69). */
+	public static void unlocksOnCryptCleared(ServerPlayerEntity player) {
+		unlockAll(player, LoreRules.unlocksOnCryptCleared());
+	}
+
 	/** Retorna True si un lore está desbloqueado para el jugador. */
 	public static boolean isUnlocked(ServerPlayerEntity player, String loreId) {
 		LoreState state = player.getAttachedOrCreate(ModAttachments.LORE);
