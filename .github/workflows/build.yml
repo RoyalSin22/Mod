@@ -45,6 +45,14 @@ jobs:
           python3 tools/lang/gen_path_lang.py --check
           python3 tools/lang/base_desc.py --check
 
+      - name: Comprobar texturas y modelos de las armas
+        run: |
+          python3 -m pip install --quiet pillow
+          python3 -m unittest discover -s tools/textures -p 'test_*.py'
+          python3 tools/textures/import_weapon_art.py --check
+          python3 tools/models/gen_weapon_models.py src/main/resources/assets/aptitudes/models/item --check
+          python3 tools/lang/gen_lore_lang.py --check
+
       - name: Compilar y probar
         run: ./gradlew build --no-daemon --stacktrace
 
