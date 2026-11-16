@@ -34,6 +34,17 @@ Validación en partida (pendiente):
    legible sobre el nuevo fondo y marco.
 6. **Idiomas:** cambia a es, en, pt, fr y de y comprueba nombres, consejos, lore y pistas.
 7. **Migración:** un mundo con muertes de Minecraft guardadas carga sin errores y las ignora.
+8. **Arte del G5 (marco y piezas):** con las texturas de `textures/gui/guide_ui/`, comprueba en escalas 1, 2, 3 y
+   automática:
+   - La ventana muestra el marco con el ojo arriba y el libro abajo, sin deformarse al cambiar de tamaño.
+   - El título (arriba a la izquierda) y las pestañas (arriba a la derecha, a 4 px del borde) no se montan sobre el marco
+     de unos 6 px de forma que dificulte leerlos o pulsarlos; la lista de la izquierda queda pegada al marco sin pisarlo.
+   - El retrato deja 7 px de marco y el modelo de la criatura no lo atraviesa (probar con un jefe grande).
+   - La cinta del nombre muestra calavera y dragón en los extremos y un tramo central sin banderines duplicados, también con
+     nombres largos.
+   - Los dos filetes con rombo no pisan la última línea de estadísticas ni el título «Consejos».
+   - La esquina dorada junto a «Muertes / Región» no tapa el texto.
+   - Quita temporalmente la carpeta `guide_ui` del paquete de recursos: el libro vuelve al dibujo con rellenos y no falla.
 
 ## v67 (F7) — Habilidades nuevas de Bardo, Brujo abisal y Domador
 
