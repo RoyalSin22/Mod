@@ -599,4 +599,19 @@ public final class EclipseManager {
 		end(server, world, state, false);
 		return true;
 	}
+
+	/** T5: comprueba si se puede iniciar un Eclipse (cooldown y sin evento activo). */
+	public static boolean canStartEclipse(ServerWorld world) {
+		EclipseState state = EclipseState.get(world);
+		return !state.active && !WorldEventManager.active(world.getServer());
+	}
+
+	/** T5: inicia un Eclipse desde el sacrificio del Behelit en la Hoguera. */
+	public static void startByBeherit(ServerWorld world) {
+		if (canStartEclipse(world)) {
+			EclipseState state = EclipseState.get(world);
+			MinecraftServer server = world.getServer();
+			start(server, world, state, true, EclipseRules.dayOf(world.getTimeOfDay()));
+		}
+	}
 }

@@ -378,21 +378,21 @@ Los textos de las runas muestran los valores por defecto: si un servidor los cam
 - Los tooltips de las runas muestran ahora los valores reales del servidor.
 - `/aptitudes admin reload` también reenvía la configuración a los clientes.
 
-## Eventos rotativos (v41)
+## Eventos rotativos (v41, DEPRECATED en v67)
 
-El calendario es el de `eclipseIntervalDays` y `eclipseFirstDay` (nombres históricos): cada fecha toca **un**
-evento elegido al azar entre los que tienen peso > 0, sin repetir el anterior (reproducible con la semilla del
-mundo). `eclipseEnabled = false` equivale a peso 0 para el Eclipse.
+**v67**: El calendario rotativo desapareció. Los eventos ahora se activan **solo por jugadores**:
+- **Eclipse**: sacrificio del Behelit en la Hoguera (cooldown 3 días por mundo desde el fin)
+- **Niebla de almas**: hablar con el aldeano del gremio (cooldown 10 días desde el inicio)
+- **Lluvia de brasas**: encender un portal al Nether en el Overworld (cooldown 5 días)
 
-> **T1 de la cadena narrativa:** el calendario solo programa el **Eclipse** (hasta que el Behelit lo sustituya). La
-> Niebla de almas y la Lluvia de brasas ya no salen por calendario: las activa un jugador (ver más abajo). Sus pesos
-> `worldEventWeightSoulFog` y `worldEventWeightEmberRain` solo sirven para **desactivarlas** (0).
+Los campos `eclipseIntervalDays`, `eclipseFirstDay` y `worldEventWeight*` se mantienen **por compatibilidad** 
+con configs guardadas, pero ya no se usan. Sus valores no afectan al juego.
 
 | Campo | Defecto | Límites | Descripción |
 |---|---|---|---|
-| `worldEventWeightEclipse` | 1 | [0, 100] | Peso del Eclipse. |
-| `worldEventWeightSoulFog` | 1 | [0, 100] | Peso de la Niebla de almas (0 = nunca). |
-| `worldEventWeightEmberRain` | 1 | [0, 100] | Peso de la Lluvia de brasas (0 = nunca). |
+| `worldEventWeightEclipse` | 0 | [0, 100] | **DEPRECATED**: siempre ignorado. |
+| `worldEventWeightSoulFog` | 0 | [0, 100] | **DEPRECATED**: siempre ignorado. |
+| `worldEventWeightEmberRain` | 0 | [0, 100] | **DEPRECATED**: siempre ignorado. |
 | `emberRainLargeChance` | 0.25 | [0, 1] | v41.2: probabilidad de meteorito grande. |
 | `emberRainHugeChance` | 0.05 | [0, 1] | v41.2: probabilidad de meteorito enorme (se comprueba antes que la de grande). Con ambas a 0, todos pequeños como antes. |
 | `emberRainMobChance` | 0.5 | [0, 1] | v41.2: probabilidad de que un impacto traiga criaturas del Nether (la mitad en los pequeños); 0 = ninguna. |

@@ -158,9 +158,9 @@ public class AptitudesConfig {
 	// ---------- Eclipse (v34) ----------
 	/** Evento del mundo: eclipse solar con oleadas, élites y el Heraldo del Eclipse. */
 	public boolean eclipseEnabled = true;
-	/** Cada cuántos días de juego hay eclipse. */
+	/** DEPRECATED (v67): el calendario rotativo desapareció. El Eclipse ahora se inicia solo por sacrificio del Behelit. Se mantiene por compatibilidad. */
 	public int eclipseIntervalDays = 10;
-	/** Primer día en el que puede haber eclipse (margen para mundos nuevos). */
+	/** DEPRECATED (v67): solo para compatibilidad. */
 	public int eclipseFirstDay = 10;
 	/** Segundos entre oleadas. */
 	public int eclipseWaveIntervalSeconds = 30;
@@ -196,12 +196,12 @@ public class AptitudesConfig {
 	public int eclipseMinChampionsTotality = 1;
 	/** Las élites y campeones usan humanoides con equipo completo que no se suelta al morir. */
 	public boolean eclipseGuaranteedEliteArmor = true;
-	// ---------- Eventos rotativos (v41) ----------
-	// El calendario es el de eclipseIntervalDays / eclipseFirstDay: cada fecha toca un evento al azar, sin repetir
-	// el anterior. El peso es la probabilidad relativa; 0 desactiva ese evento.
-	public int worldEventWeightEclipse = 1;
-	public int worldEventWeightSoulFog = 1;
-	public int worldEventWeightEmberRain = 1;
+	// ---------- Eventos rotativos (v41, DEPRECATED en v67) ----------
+	// DEPRECATED: v67 remove el calendario rotativo. El Eclipse se inicia por Behelit; Niebla y Lluvia por eventos.
+	// Se mantienen por compatibilidad.
+	public int worldEventWeightEclipse = 0;
+	public int worldEventWeightSoulFog = 0;
+	public int worldEventWeightEmberRain = 0;
 	/** v41.2: probabilidad de meteorito grande y enorme en la Lluvia de brasas (el resto, pequeños como antes). */
 	public double emberRainLargeChance = 0.25;
 	public double emberRainHugeChance = 0.05;
