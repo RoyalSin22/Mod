@@ -1,6 +1,9 @@
 package dev.aptitudes.event;
 
 import dev.aptitudes.Aptitudes;
+import dev.aptitudes.boss.BossEntities;
+import dev.aptitudes.boss.GreatOssuaryEntity;
+import dev.aptitudes.boss.OsarioBossRules;
 import dev.aptitudes.config.AptitudesConfig;
 import dev.aptitudes.elite.Elites;
 import dev.aptitudes.item.ModItems;
@@ -283,6 +286,7 @@ public final class WorldEventManager {
 		}
 		if (server.getTicks() % 100 == 15) syncAll(server, active, eventTime);
 		if (world.getDifficulty() == Difficulty.PEACEFUL) return;
+		if (active == WorldEventKind.SOUL_FOG && server.getTicks() % 100 == 40) spawnOsarioBoss(world, state, cfg, eventTime, duration);
 		if (active == WorldEventKind.SOUL_FOG && server.getTicks() >= nextWaveTick) {
 			nextWaveTick = server.getTicks() + EclipseRules.waveIntervalTicks(cfg.eclipseWaveIntervalSeconds);
 			fogWave(world, cfg);
@@ -290,6 +294,35 @@ public final class WorldEventManager {
 			emberRain(world);
 			emberMobs(world);
 		}
+	}
+
+	/**
+	 * V68: al pasar el porcentaje configurado de la Niebla, levanta una vez por sesión al Gran Osario Quebrado junto a un
+	 * jugador al azar (ver {@link OsarioBossRules}). Si no hay sitio libre, reintenta en el siguiente control (cada 100 ticks).
+	 */
+	private static void spawnOsarioBoss(ServerWorld world, WorldEventState state, AptitudesConfig cfg, long eventTime, long duration) {
+		if (state.fogSession == null) return;
+		List<ServerPlayerEntity> candidates = world.getPlayers(p -> p.isAlive() && !p.isSpectator() && !p.isCreative());
+		boolean already = state.fogSession.equals(state.bossSession);
+		if (!OsarioBossRules.shouldSpawn(eventTime, duration, cfg.osarioBossFogPercent, already, cfg.osarioBossEnabled,
+				world.getDifficulty() == Difficulty.PEACEFUL, candidates.size())) return;
+		ServerPlayerEntity player = candidates.get(world.random.nextInt(candidates.size()));
+		int distance = (int) Math.round(OsarioBossRules.spawnDistance(world.random.nextDouble()));
+		BlockPos pos = EclipseManager.findSpawn(world, player.getBlockPos(), distance, distance);
+		if (pos == null) return;
+		GreatOssuaryEntity boss = BossEntities.GREAT_OSSUARY.create(world);
+		if (boss == null) return;
+		boss.refreshPositionAndAngles(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, world.random.nextFloat() * 360f, 0);
+		if (!world.isSpaceEmpty(boss, boss.getBoundingBox())) return;
+		boss.initialize(world, world.getLocalDifficulty(pos), SpawnReason.EVENT, null);
+		boss.setFogSession(state.fogSession);
+		boss.setPersistent();
+		world.spawnEntityAndPassengers(boss);
+		world.spawnParticles(ParticleTypes.SOUL, boss.getX(), boss.getBodyY(0.5), boss.getZ(), 80, 1.2, 1.6, 1.2, 0.05);
+		state.bossSession = state.fogSession;
+		state.markDirty();
+		EclipseManager.broadcast(world.getServer(), Text.translatable("event.aptitudes.soul_fog.boss").formatted(Formatting.DARK_PURPLE, Formatting.BOLD));
+		EclipseManager.playToAll(world, SoundEvents.ENTITY_WITHER_SPAWN, 0.8f);
 	}
 
 	/**
