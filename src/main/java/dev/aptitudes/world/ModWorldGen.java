@@ -35,6 +35,8 @@ public final class ModWorldGen {
 	}
 
 	public static void init() {
+		Registry.register(Registries.PLACEMENT_MODIFIER_TYPE, Aptitudes.id("region_grid"), RegionGridPlacement.TYPE);
+		StructureSearch.init(); // V77: búsqueda activa de /aptitudes locate, repartida entre ticks
 		// V77: vuelca el índice de estructuras (/aptitudes locate) desde el hilo del servidor.
 		net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.END_SERVER_TICK.register(server -> {
 			if (server.getTicks() % 20 == 0) StructureIndex.drain(server);

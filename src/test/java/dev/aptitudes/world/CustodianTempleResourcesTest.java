@@ -19,12 +19,16 @@ class CustodianTempleResourcesTest {
 		assertEquals("aptitudes:custodian_temple", configured.get("type").getAsString());
 		JsonObject placed = json("placed_feature/custodian_temple.json");
 		assertEquals("aptitudes:custodian_temple", placed.get("feature").getAsString());
-		// Misma colocación que el templo antiguo salvo la frecuencia: 1 de cada 120 chunks (antes 1 de cada 400).
+		// Misma colocación que el templo antiguo salvo la frecuencia: desde la V77 un chunk designado por región (cuadrícula de
+		// 32×32 chunks, que permite localizarlo con /aptitudes locate) en lugar de «1 de cada N chunks».
 		var oldPlacement = json("placed_feature/temple.json").getAsJsonArray("placement");
 		var newPlacement = placed.getAsJsonArray("placement");
 		assertEquals(oldPlacement.size(), newPlacement.size());
-		assertEquals("minecraft:rarity_filter", newPlacement.get(0).getAsJsonObject().get("type").getAsString());
-		assertEquals(120, newPlacement.get(0).getAsJsonObject().get("chance").getAsInt());
+		var grid = newPlacement.get(0).getAsJsonObject();
+		assertEquals("aptitudes:region_grid", grid.get("type").getAsString());
+		assertEquals("custodian_temple", grid.get("kind").getAsString());
+		assertEquals(32, grid.get("region_size").getAsInt());
+		assertEquals(dev.aptitudes.world.StructureLocateRules.regionSize("custodian_temple"), grid.get("region_size").getAsInt(), "el JSON y el código usan la misma región");
 		assertEquals(400, oldPlacement.get(0).getAsJsonObject().get("chance").getAsInt(), "el templo antiguo no se toca");
 		for (int i = 1; i < oldPlacement.size(); i++) assertEquals(oldPlacement.get(i), newPlacement.get(i));
 	}

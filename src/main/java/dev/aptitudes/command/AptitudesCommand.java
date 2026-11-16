@@ -213,22 +213,47 @@ public final class AptitudesCommand {
 		return 1;
 	}
 
-	/** V77: la estructura registrada más cercana del tipo indicado, con coordenadas que se pueden pulsar para teletransportarse. */
+	/** Si lo conocido está más lejos de esto (bloques), se busca también en terreno sin explorar. */
+	private static final int LOCATE_KNOWN_OK_BLOCKS = 600;
+
+	/**
+	 * V77: la estructura del mod más cercana. Se usa el índice de las ya generadas; si no hay ninguna cerca, se explora en anillos
+	 * alrededor del jugador generando chunks <b>repartidos entre ticks</b> ({@link dev.aptitudes.world.StructureSearch}) hasta
+	 * encontrar una o llegar al radio máximo, y el resultado llega al terminar. Las coordenadas se pueden pulsar para teletransportarse.
+	 */
 	private static int locate(CommandContext<ServerCommandSource> ctx, String kind) throws CommandSyntaxException {
 		if (!dev.aptitudes.world.StructureLocateRules.isKind(kind)) throw UNKNOWN_STRUCTURE.create(kind);
 		ServerCommandSource src = ctx.getSource();
-		dev.aptitudes.world.StructureIndex.drain(src.getServer());
-		var positions = dev.aptitudes.world.StructureIndex.get(src.getWorld()).positions(kind);
-		var near = dev.aptitudes.world.StructureLocateRules.nearest(positions, (int) src.getPosition().x, (int) src.getPosition().z);
+		net.minecraft.server.world.ServerWorld world = src.getWorld();
+		int px = (int) src.getPosition().x, pz = (int) src.getPosition().z;
 		Text name = Text.translatable("aptitudes.structure." + kind);
-		if (near.isEmpty()) {
-			src.sendFeedback(() -> Text.translatable("aptitudes.cmd.locate_none", name, kind).formatted(Formatting.YELLOW), false);
-			return 0;
+		dev.aptitudes.world.StructureIndex.drain(src.getServer());
+		var known = dev.aptitudes.world.StructureLocateRules.nearest(dev.aptitudes.world.StructureIndex.get(world).positions(kind), px, pz);
+		if (!dev.aptitudes.world.StructureLocateRules.searchable(kind)
+				|| !dev.aptitudes.world.StructureLocateRules.shouldSearch(known, LOCATE_KNOWN_OK_BLOCKS)) {
+			if (known.isEmpty()) {
+				src.sendFeedback(() -> Text.translatable("aptitudes.cmd.locate_none", name, kind).formatted(Formatting.YELLOW), false);
+				return 0;
+			}
+			reportFound(src, name, known.get());
+			return known.get().distance();
 		}
-		var hit = near.get();
+		String owner = src.getEntity() != null ? src.getEntity().getUuidAsString() : "console";
+		src.sendFeedback(() -> Text.translatable("aptitudes.cmd.locate_searching", name).formatted(Formatting.GRAY), false);
+		var fallback = known;
+		dev.aptitudes.world.StructureSearch.start(owner, world, kind, px, pz,
+				hit -> reportFound(src, name, hit),
+				blocks -> {
+					if (fallback.isPresent()) reportFound(src, name, fallback.get());
+					else src.sendFeedback(() -> Text.translatable("aptitudes.cmd.locate_partial", blocks, name).formatted(Formatting.YELLOW), false);
+				},
+				blocks -> src.sendFeedback(() -> Text.translatable("aptitudes.cmd.locate_progress", blocks).formatted(Formatting.GRAY), false));
+		return 1;
+	}
+
+	private static void reportFound(ServerCommandSource src, Text name, dev.aptitudes.world.StructureLocateRules.Hit hit) {
 		net.minecraft.util.math.BlockPos pos = net.minecraft.util.math.BlockPos.fromLong(hit.pos());
 		src.sendFeedback(() -> Text.translatable("aptitudes.cmd.locate_found", name, coordinates(pos), hit.distance()), false);
-		return hit.distance();
 	}
 
 	/** Coordenadas entre corchetes que teletransportan al pulsarlas (como el /locate de vanilla). */

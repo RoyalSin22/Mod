@@ -14,6 +14,72 @@ class StructureLocateRulesTest {
 		assertFalse(StructureLocateRules.isKind(null));
 	}
 
+	@Test void ringsCoverEveryChunkExactlyOnceAndSpiralOutwards() {
+		assertArrayEquals(new int[][] {{0, 0}}, StructureLocateRules.ring(0));
+		java.util.Set<String> seen = new java.util.HashSet<>();
+		for (int r = 0; r <= 6; r++) {
+			int[][] ring = StructureLocateRules.ring(r);
+			assertEquals(r == 0 ? 1 : 8 * r, ring.length, "chunks del anillo " + r);
+			for (int[] c : ring) {
+				assertEquals(r, Math.max(Math.abs(c[0]), Math.abs(c[1])), "distancia de Chebyshev");
+				assertTrue(seen.add(c[0] + "," + c[1]), "sin repetir " + c[0] + "," + c[1]);
+			}
+		}
+		assertEquals(13 * 13, seen.size(), "los anillos 0..6 cubren el cuadrado de 13×13 sin huecos");
+	}
+
+	@Test void searchesOnlyWhenNothingIsKnownOrTheKnownOneIsFar() {
+		var near = StructureLocateRules.nearest(new long[] {StructureLocateRules.pack(100, 64, 0)}, 0, 0);
+		var far = StructureLocateRules.nearest(new long[] {StructureLocateRules.pack(5000, 64, 0)}, 0, 0);
+		assertFalse(StructureLocateRules.shouldSearch(near, 600));
+		assertTrue(StructureLocateRules.shouldSearch(far, 600));
+		assertTrue(StructureLocateRules.shouldSearch(java.util.Optional.empty(), 600));
+	}
+
+	@Test void theOldTempleIsNotSearchedBecauseItNoLongerGenerates() {
+		assertFalse(StructureLocateRules.searchable("temple"));
+		assertTrue(StructureLocateRules.searchable("custodian_temple"));
+		assertFalse(StructureLocateRules.searchable("village"));
+		assertFalse(StructureLocateRules.searchable(null));
+	}
+
+	@Test void designatedChunkStaysInsideItsRegionAndIsDeterministic() {
+		for (int rx = -5; rx <= 5; rx++) for (int rz = -5; rz <= 5; rz++) {
+			int[] c = StructureLocateRules.designatedChunk(123456789L, "custodian_temple", rx, rz, 32);
+			assertEquals(rx, StructureLocateRules.regionOf(c[0], 32), "región x " + rx);
+			assertEquals(rz, StructureLocateRules.regionOf(c[1], 32), "región z " + rz);
+			assertArrayEquals(c, StructureLocateRules.designatedChunk(123456789L, "custodian_temple", rx, rz, 32));
+			assertTrue(StructureLocateRules.isDesignated(123456789L, "custodian_temple", c[0], c[1], 32));
+		}
+	}
+
+	@Test void exactlyOneChunkPerRegionIsDesignated() {
+		long seed = -987654321L;
+		int count = 0;
+		for (int cx = 32; cx < 64; cx++) for (int cz = -32; cz < 0; cz++) if (StructureLocateRules.isDesignated(seed, "custodian_temple", cx, cz, 32)) count++;
+		assertEquals(1, count, "una región de 32×32 chunks, un solo chunk designado");
+	}
+
+	@Test void designationVariesWithSeedRegionAndKind() {
+		int[] base = StructureLocateRules.designatedChunk(1L, "custodian_temple", 0, 0, 32);
+		int different = 0;
+		for (long seed = 2; seed < 40; seed++) if (!java.util.Arrays.equals(base, StructureLocateRules.designatedChunk(seed, "custodian_temple", 0, 0, 32))) different++;
+		assertTrue(different > 30, "la semilla cambia la posición");
+		java.util.Set<String> seen = new java.util.HashSet<>();
+		for (int rx = 0; rx < 20; rx++) seen.add(StructureLocateRules.designatedChunk(1L, "custodian_temple", rx, 0, 32)[1] + "");
+		assertTrue(seen.size() > 8, "las regiones no repiten patrón");
+		assertFalse(java.util.Arrays.equals(base, StructureLocateRules.designatedChunk(1L, "tower", 0, 0, 32)), "otro tipo, otra posición");
+	}
+
+	@Test void onlyTheCustodianTempleUsesTheRegionGrid() {
+		assertEquals(32, StructureLocateRules.regionSize("custodian_temple"));
+		for (String k : new String[] {"temple", "tower", "bonfire_shrine", "camp", "village"}) assertEquals(0, StructureLocateRules.regionSize(k), k);
+		assertEquals(-1, StructureLocateRules.regionOf(-1, 32));
+		assertEquals(0, StructureLocateRules.regionOf(31, 32));
+		assertEquals(1, StructureLocateRules.regionOf(32, 32));
+		assertEquals(-2, StructureLocateRules.regionOf(-33, 32));
+	}
+
 	@Test void packMatchesTheBlockPosLayout() {
 		// BlockPos.asLong: x en los 26 bits altos, z en los 26 siguientes, y en los 12 bajos.
 		assertEquals(((long) 10 << 38) | ((long) 20 << 12) | 64, StructureLocateRules.pack(10, 64, 20));

@@ -33,8 +33,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   teletransportarse) y `/aptitudes place <estructura>` (genera una en un sitio llano a 24–96 bloques, para probar sin explorar).
   Estructuras: `custodian_temple`, `temple`, `tower`, `bonfire_shrine`, `camp`. Índice por mundo (`aptitudes_structures.dat`) que
   se rellena al generarse cada estructura (cola desde los hilos de generación y volcado en el hilo del servidor); solo recoge las
-  generadas con esta versión o posterior. Textos en los 5 idiomas y `StructureLocateRulesTest`. Verificado en un servidor: el
-  templo hondo aparece de forma natural a 39 bloques del origen y el índice persiste tras reiniciar.
+  generadas con esta versión o posterior. Si no hay ninguna cerca, `locate` **busca en terreno sin explorar**: genera chunks en
+  anillos repartidos entre ticks (sin congelar el servidor) y avisa del progreso. El templo del Custodio pasa de «1 de cada 120
+  chunks» a una **cuadrícula de regiones** de 32×32 chunks con un único chunk designado por región (modificador de colocación
+  `aptitudes:region_grid`, determinista con la semilla), así que sigue siendo raro (aprox. uno cada mil bloques) pero se sabe dónde
+  mirar: la búsqueda cuesta un chunk por región. Textos en los 5 idiomas y `StructureLocateRulesTest`. Verificado en un servidor con
+  mundo nuevo: `locate` encontró un templo hondo a 1205 bloques y las coordenadas coincidían con la estructura real (rampa,
+  patio y sello con `layout = 4`).
 
 ### Eliminado
 - **v74 — Sin armas de evolución Definitivo.** Se retiran del mod las 20 armas `<rol>_weapon_ultimate`: objetos, texturas, modelos,

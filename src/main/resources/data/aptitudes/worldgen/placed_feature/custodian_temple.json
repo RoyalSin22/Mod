@@ -2,8 +2,9 @@
   "feature": "aptitudes:custodian_temple",
   "placement": [
     {
-      "type": "minecraft:rarity_filter",
-      "chance": 120
+      "type": "aptitudes:region_grid",
+      "kind": "custodian_temple",
+      "region_size": 32
     },
     {
       "type": "minecraft:in_square"
