@@ -706,6 +706,8 @@ elementalist_weapon_master¦Orbe do Arquimago Elemental¦Orbe de l'archimage él
 gunslinger_weapon_master¦Revólver do Pistoleiro Rúnico¦Revolver du pistolero runique¦Revolver des Runenrevolverhelden
 bard_weapon_master¦Harpa do Mestre de Capela¦Harpe du maître de chapelle¦Harfe des Kapellmeisters
 warlock_weapon_master¦Crânio do Arquibruxo¦Crâne de l'archisorcier¦Schädel des Erzhexenmeisters
+sunset_astrolabe¦Astrolábio do Crepúsculo¦Astrolabe du Crépuscule¦Astrolabium der Abenddämmerung
+sunset_astrolabe.tooltip¦Consumido na Fogueira para convocar o Eclipse (apenas operadores ou líder do grupo).¦Consommé au Feu de camp pour invoquer l'Éclipse (opérateurs ou chef de groupe uniquement).¦Wird am Lagerfeuer verbraucht, um die Finsternis zu beschwören (nur Operatoren oder Gruppenleiter).
 """)
 
 add('trial.aptitudes.', """
@@ -1318,6 +1320,8 @@ contract_veteran.title¦Veterano da Guilda¦Vétéran de la guilde¦Gildenvetera
 contract_veteran.description¦Resgate 10 contratos da guilda¦Réclamez 10 contrats de guilde¦Rechne 10 Gildenaufträge ab
 guild_master.title¦Mestre da Guilda¦Maître de guilde¦Gildenmeister
 guild_master.description¦Alcance o grau Mestre na guilda (700 de reputação)¦Atteignez le rang Maître dans la guilde (700 de réputation)¦Erreiche den Gildenrang Meister (700 Ruf)
+summon_eclipse¦Invocador do Eclipse¦Invocateur de l'Éclipse¦Beschwörer der Finsternis
+summon_eclipse.description¦Convoque o Eclipse usando o Astrolábio do Crepúsculo em uma Fogueira¦Invoquez l'Éclipse avec l'Astrolabe du Crépuscule à un Feu de camp¦Beschwöre die Finsternis mit dem Astrolabium der Abenddämmerung an einem Lagerfeuer
 """)
 
 add('aptitudes.', """
