@@ -828,3 +828,35 @@ It is a temporary manifestation of its will.
 
 And, while adventurers struggle to survive, something remains hidden behind the frontiers of the Veil.
 """)))
+
+
+# ------------------------------------------------------- Mensajes de desbloqueo (T7a)
+
+# Avisos que el servidor muestra al desbloquear lore por un evento (no son entradas: sin título ni cuerpo).
+# Mismo orden que en los JSON de idioma. clave sin el prefijo lore.aptitudes. -> {'es': ..., 'en': ...}
+MESSAGES = {
+    'soul_fog_trigger': {
+        'es': 'La Niebla de Almas ha sido despertada. Apariciones extrañas caminan por donde se asientan las brumas.',
+        'en': 'The Soul Fog has been awakened. Strange apparitions walk where the mist settles.',
+    },
+    'ember_rain_trigger': {
+        'es': 'La Lluvia de Brasas ha sido invocada. Fuego y ceniza caen desde las grietas entre mundos.',
+        'en': 'The Ember Rain has been called. Fire and ash fall from the rifts between worlds.',
+    },
+    'custodian_defeated': {
+        'es': 'El guardián del templo sellado ha sido vencido. Sus secretos ahora pueden ser leídos.',
+        'en': 'The guardian of the sealed temple has been overcome. Its secrets may now be read.',
+    },
+    'behelit_found': {
+        'es': 'Un artefacto de inmenso poder ha sido descubierto. Su propósito en los templos antiguos es ahora conocido.',
+        'en': 'An artifact of immense power has been discovered. Its purpose in the old temples is now known.',
+    },
+    'eclipse_sacrifice': {
+        'es': 'La ofrenda ha sido aceptada. El Eclipse desciende sobre el mundo.',
+        'en': 'The offering has been accepted. The Eclipse descends upon the world.',
+    },
+    'eclipse_aftermath': {
+        'es': 'La oscuridad ha pasado. Lo que permanece en su estela aún está por ser comprendido.',
+        'en': 'The darkness has passed. What remains in its wake is yet to be understood.',
+    },
+}

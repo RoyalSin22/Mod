@@ -13,7 +13,7 @@ import json
 
 from check_lang import LANG_DIR, LOCALES, load, validate
 from generator_cli import SPANISH_VARIANTS
-from lore_catalog import ENTRIES
+from lore_catalog import ENTRIES, MESSAGES
 
 PREFIX = 'lore.aptitudes.'
 SOURCE_LOCALES = ('en_us', 'es_es', *LOCALES)
@@ -38,6 +38,8 @@ def lore_keys(language):
         if title is not None:
             out[key_for(entry_id, 'title')] = title
         out[key_for(entry_id, 'body')] = body
+    for name, texts in MESSAGES.items():  # avisos de desbloqueo: al final, tras las entradas
+        out[f'{PREFIX}{name}'] = texts[language]
     return out
 
 
