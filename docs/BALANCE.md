@@ -332,6 +332,24 @@ diferencia de altura mayor de 2 bloques protegen del impacto.
 
 Los tres jefes guardan sus fases en las etiquetas de entidad y usan el escalado y la barra de campeón.
 
+# Gran Osario Quebrado (V68)
+
+Jefe animado de la Niebla de almas (diseño en `docs/V68_JEFE_OSARIO.md`). Vida 340, armadura 8, daño base 8, velocidad
+0,20 y resistencia al empuje 0,6. Cifras estimadas a partir del Coloso (320 de vida, 12 de armadura) y del Autómata (300, 16);
+pendientes de ajuste tras la prueba en partida.
+
+| Ataque | Fase | Distancia | Aviso | Espera | Efecto |
+|---|---|---|---|---|---|
+| Zarpazo de huesos | 1+ | 0–4,5 | 16 t | 30 t | Arco de 120°, daño ×1, desviable con parry |
+| Anillo de niebla | 1+ | 0–6 | 28 t | 70 t | Círculo de radio 5,5, daño ×1,1 y Lentitud I 40 t |
+| Latigazo de almas | 1+ | 4–14 | 24 t | 80 t | Haz de 14 bloques y 1,2 de ancho, daño ×0,9; cura 1,5 por ciento de su vida por jugador alcanzado (tope 3 por ciento) |
+| Lamento | 2+ | 0–32 | 34 t | 400 t | Invoca 2 Errantes (máximo 4 vivos); solo con menos de 2 vivos |
+| Cosecha de almas | 3+ | 0–8 | 40 t | 220 t | Onda de radio 8, daño ×1,4; absorbe Errantes en 12 bloques y cura 2 por ciento por cada uno (tope 6 por ciento) |
+
+**Pacto de almas:** con Errantes invocados vivos recibe un 35 por ciento menos de daño. Esos Errantes no dan Jirón ni XP. Aparece al 75 por ciento de la
+Niebla (una vez por sesión) y se disuelve a los 5 minutos de cerrarse, sin botín. Cada jugador con al menos el 10 por ciento
+de su vida en daño recibe 1 Cráneo del Gran Osario (material narrativo, sin efecto en armas) y de 6 a 10 fragmentos de alma.
+
 Cada jefe deja un núcleo distinto. Aplicar un núcleo en la Mesa del gremio añade +0,5 de daño a un arma de evolución. Cada arma acepta una vez cada uno de los tres núcleos, hasta +1,5 total; no cambia la potencia de armas que no sean evolutivas.
 
 # Reforja y Templado (v48)

@@ -6,6 +6,16 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **v68 — Gran Osario Quebrado, jefe de la Niebla y su trofeo.** Jefe animado (GeckoLib) que la Niebla de almas levanta al
+  75 por ciento de su duración, una vez por sesión, junto a un jugador. Cinco ataques avisados (zarpazo, anillo de niebla,
+  latigazo que lo cura, lamento que invoca Errantes y cosecha de almas) y el pacto de almas (35 por ciento menos de daño
+  mientras vivan sus Errantes, que no dan Jirón ni XP). Se disuelve a los 5 minutos de cerrarse la Niebla, sin botín.
+  Cada jugador con al menos el 10 por ciento de su vida en daño recibe el **Cráneo del Gran Osario** (material
+  narrativo: no es un núcleo de arma y no cambia el tope de +1,5) y de 6 a 10 fragmentos de alma. Entrada 14 del
+  bestiario (el logro «Cronista» pasa a pedir 14; quien ya lo tiene lo conserva). Cuatro opciones de configuración
+  (`osarioBossEnabled`, `osarioBossFogPercent`, `osarioBossLingerTicks`, `osarioBossMinDamagePercent`), textos en los 5
+  idiomas, modelo y animaciones provisionales (`tools/models/gen_boss_models.py`) y reglas puras `OsarioBossRules` con
+  pruebas. Fuera de alcance: la receta del trofeo y la mazmorra interna del Custodio.
 - **v67 — Lore narrativo en pt/fr/de.** Las 23 entradas del Grimorio (cosmología, gremios, cronología, eventos,
   bestiario y crónicas) se traducen a portugués, francés y alemán en `tools/lang/lore_i18n_pt/fr/de.py`; el generador las
   usa por idioma y recurre al inglés si una entrada nueva aún no está traducida. Revisión nativa pendiente.
