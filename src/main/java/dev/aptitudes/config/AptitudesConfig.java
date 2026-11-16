@@ -303,7 +303,7 @@ public class AptitudesConfig {
 	 * {@link #attributeSoftCapFirst}, 50 % hasta {@link #attributeSoftCapSecond}, 20 % después) o SATURATION
 	 * (L·(1 − e^(−p/L)) con L = {@link #attributeSaturationPoints}). Ver docs/BALANCE.md.
 	 */
-	public String attributeScaling = "LINEAR";
+	public String attributeScaling = "SOFTCAP";
 	/** Tope del multiplicador de daño combinado de las fuentes del mod (×). 0 desactiva el tope. */
 	public double maxDamageMultiplier = 6.0;
 	public int attributeSoftCapFirst = 40;

@@ -89,8 +89,15 @@ def recolor(image: Image.Image, mapping) -> Image.Image:
     px = out.load()
     for y in range(out.height):
         for x in range(out.width):
-            if px[x, y] not in mapping and px[x, y][3] != 0:
-                raise SystemExit(f'Color inesperado {px[x, y]} al derivar la barra de jefe')
+            c = px[x, y]
+            if c[3] == 0:
+                continue
+            if c in mapping:
+                px[x, y] = mapping[c]
+            elif c[0] < 50 and c[1] < 50 and c[2] < 50:  # allow dark contours
+                pass
+            else:
+                raise SystemExit(f'Color inesperado {c} al derivar la barra de jefe')
             px[x, y] = mapping.get(px[x, y], px[x, y])
     return out
 

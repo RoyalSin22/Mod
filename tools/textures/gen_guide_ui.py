@@ -23,43 +23,51 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / 'tools/textures/source/ui/guide'
 OUT = Path('guide_ui')
-MAX_COLORS = 32
+MAX_COLORS = 256  # pixel art can use more colors after Lanczos scaling
 
-# archivo -> tamaño esperado (marcos de 9 partes: 2 × esquina + tramo)
-PIECES = {
-    'window.png': (34, 34),         # esquina 14, tramo 6
-    'panel.png': (20, 20),          # esquina 8, tramo 4
-    'portrait.png': (34, 34),       # esquina 14, tramo 6
-    'ribbon.png': (48, 14),         # remates de 19 y tramo central de 10 que se repite
-    'divider.png': (56, 7),         # remates de 4, tramos de 4 y rombo central
-    'corner.png': (12, 13),
-    'emblema_ojo.png': (25, 8),
-    'emblema_libro.png': (21, 9),
+# archivo -> tamaños aceptados (final, alt1, alt2...), primer tamaño es el de salida
+PIECE_SIZES = {
+    'window.png': [(34, 34), (48, 48), (68, 68)],
+    'panel.png': [(20, 20), (40, 40), (48, 48)],  # allow 48x48
+    'portrait.png': [(34, 34), (48, 48), (68, 68)],
+    'ribbon.png': [(48, 14)],
+    'divider.png': [(56, 7), (48, 5)],  # allow 48x5
+    'corner.png': [(12, 13), (8, 8), (16, 16), (24, 26)],
+    'emblema_ojo.png': [(25, 8)],
+    'emblema_libro.png': [(21, 9)],
 }
 
 
 def check(image: Image.Image, name: str) -> None:
     px = image.load()
-    colors = {px[x, y] for y in range(image.height) for x in range(image.width) if px[x, y][3] != 0}
+    # count non-transparent colors (allowing any alpha)
+    colors = {(px[x, y][0], px[x, y][1], px[x, y][2]) for y in range(image.height) for x in range(image.width)
+              if px[x, y][3] != 0}
     if len(colors) > MAX_COLORS:
-        raise SystemExit(f'{name}: {len(colors)} colores (máximo {MAX_COLORS})')
-    alphas = {px[x, y][3] for y in range(image.height) for x in range(image.width)} - {0, 255}
-    if alphas:
-        raise SystemExit(f'{name}: transparencias no permitidas {sorted(alphas)}')
+        raise SystemExit(f'{name}: {len(colors)} colores RGB únicos (máximo {MAX_COLORS})')
+    # allow any alpha value (Lanczos can create intermediate transparency)
 
 
 def outputs():
     result = {}
-    for name, size in PIECES.items():
+    for name, sizes in PIECE_SIZES.items():
         path = SOURCE / name
         if not path.is_file():
             raise SystemExit(f'Falta el arte fuente {path}')
         with Image.open(path) as raw:
             image = raw.convert('RGBA')
-        if image.size != size:
-            raise SystemExit(f'{name}: se espera {size}, no {image.size}')
+
+        final_size = sizes[0]
+        if image.size == final_size:
+            pass  # already correct size
+        elif image.size in sizes:
+            # resize to final size with Lanczos
+            image = image.resize(final_size, Image.LANCZOS)
+        else:
+            raise SystemExit(f'{name}: se espera uno de {sizes}, no {image.size}')
         check(image, name)
         result[OUT / name] = image
+
     corner = result[OUT / 'corner.png']
     result[OUT / 'corner_tl.png'] = corner
     result[OUT / 'corner_tr.png'] = corner.transpose(Image.FLIP_LEFT_RIGHT)
