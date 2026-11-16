@@ -33,6 +33,10 @@ public final class CustodianTempleLayout {
 	/** Fondo del casco. */
 	public static final int HULL_BOTTOM_Y = -9;
 	public static final int HEIGHT = ROOF_Y - HULL_BOTTOM_Y + 1;
+	/** V69: la Cripta de la Niebla vive bajo la cámara del Custodio. Fondo de su casco, suelo y techo de la sala. */
+	public static final int CRYPT_BOTTOM_Y = -19;
+	public static final int CRYPT_FLOOR_Y = -17;
+	public static final int CRYPT_CEILING_Y = -10;
 
 	public static final int LEVER_Z = -14;
 	public static final int[] LEVER_X_3 = {-9, -5, 5};
@@ -54,7 +58,11 @@ public final class CustodianTempleLayout {
 		/** T4: puertas de las cuatro cámaras de recompensa (1 de ancho × 2 de alto), una por metal. */
 		CHAMBER_DOOR_COPPER, CHAMBER_DOOR_IRON, CHAMBER_DOOR_GOLD, CHAMBER_DOOR_DIAMOND,
 		/** T4: cofre de cada cámara, con la tabla de botín de su metal. */
-		CHEST_COPPER, CHEST_IRON, CHEST_GOLD, CHEST_DIAMOND
+		CHEST_COPPER, CHEST_IRON, CHEST_GOLD, CHEST_DIAMOND,
+		/** V69: trampilla de la cripta (3×3 en el suelo de la cámara del Custodio): solo cede a la Llave del Velo. */
+		CRYPT_HATCH,
+		/** V69: escalera de mano del pozo de la cripta, pegada a un pilar al oeste (mira al este). */
+		LADDER_EAST
 	}
 
 	/** Celdas de puerta y de cofre por metal, en el orden de {@link TempleKeyRules.Metal}. */
@@ -63,7 +71,8 @@ public final class CustodianTempleLayout {
 
 	/** Resultado: las celdas y las posiciones que necesita el controlador (todas relativas al origen). */
 	public static final class Result {
-		private final Cell[] cells = new Cell[SIZE * HEIGHT * SIZE];
+		private final int bottomY;
+		private final Cell[] cells;
 		public final List<int[]> levers = new ArrayList<>();
 		public final List<int[]> plates = new ArrayList<>();
 		public final List<int[]> hatch = new ArrayList<>();
@@ -77,9 +86,38 @@ public final class CustodianTempleLayout {
 		public final List<int[]> chamberDoors = new ArrayList<>();
 		/** T4: cofres de las cámaras como {x, y, z, metal}. */
 		public final List<int[]> chests = new ArrayList<>();
+		/** V69: celdas de la trampilla de la cripta como {x, y, z} (vacío si el plano no tiene cripta). */
+		public final List<int[]> cryptHatch = new ArrayList<>();
+		/** V69: puntos de aparición de las oleadas dentro de la sala de la cripta. */
+		public final List<int[]> cryptSpawns = new ArrayList<>();
+		/** V69: dónde aparece el campeón del clímax y dónde emerge el cofre final. */
+		public final int[] cryptClimax = {6, -16, 10};
+		public final int[] cryptChest = {0, -16, 7};
+		/** V69: esquinas de la sala (mínima y máxima, inclusivas) para saber qué jugadores están dentro. */
+		public final int[] cryptMin = {-10, -16, 6};
+		public final int[] cryptMax = {10, -11, 14};
 
-		private static int index(int x, int y, int z) {
-			return ((y - HULL_BOTTOM_Y) * SIZE + (z + R)) * SIZE + (x + R);
+		Result() {
+			this(HULL_BOTTOM_Y);
+		}
+
+		Result(int bottomY) {
+			this.bottomY = bottomY;
+			this.cells = new Cell[SIZE * (ROOF_Y - bottomY + 1) * SIZE];
+		}
+
+		/** ¿Tiene este plano la Cripta de la Niebla? */
+		public boolean hasCrypt() {
+			return bottomY == CRYPT_BOTTOM_Y;
+		}
+
+		private int index(int x, int y, int z) {
+			return ((y - bottomY) * SIZE + (z + R)) * SIZE + (x + R);
+		}
+
+		/** ¿Cae la posición dentro de este plano (con su fondo)? */
+		private boolean contains(int x, int y, int z) {
+			return Math.abs(x) <= R && Math.abs(z) <= R && y >= bottomY && y <= ROOF_Y;
 		}
 
 		public static boolean inside(int x, int y, int z) {
@@ -88,11 +126,11 @@ public final class CustodianTempleLayout {
 
 		/** Celda en esa posición, o {@code null} si es exterior o no se toca. */
 		public Cell get(int x, int y, int z) {
-			return inside(x, y, z) ? cells[index(x, y, z)] : null;
+			return contains(x, y, z) ? cells[index(x, y, z)] : null;
 		}
 
 		void set(int x, int y, int z, Cell cell) {
-			if (!inside(x, y, z)) throw new IllegalArgumentException("fuera de la estructura: " + x + "," + y + "," + z);
+			if (!contains(x, y, z)) throw new IllegalArgumentException("fuera de la estructura: " + x + "," + y + "," + z);
 			cells[index(x, y, z)] = cell;
 		}
 
@@ -116,13 +154,21 @@ public final class CustodianTempleLayout {
 	 * @param plateOrder orden de las posiciones de placa ({@code plateCount} índices distintos de {@link #PLATE_SPOTS})
 	 */
 	public static Result build(boolean[] target, int plateCount, int[] plateOrder) {
+		return build(target, plateCount, plateOrder, false);
+	}
+
+	/**
+	 * Igual que {@link #build(boolean[], int, int[])}; con {@code crypt} añade la Cripta de la Niebla bajo la cámara del
+	 * Custodio (V69). Sin ella el plano es idéntico al de siempre ({@code layout = 1}).
+	 */
+	public static Result build(boolean[] target, int plateCount, int[] plateOrder, boolean crypt) {
 		if (target == null || target.length < TempleRules.MIN_LEVERS || target.length > TempleRules.MAX_LEVERS) {
 			throw new IllegalArgumentException("palancas: " + (target == null ? "null" : target.length));
 		}
 		if (plateCount < 0 || plateCount > TempleRules.MAX_PLATES || plateOrder == null || plateOrder.length < plateCount) {
 			throw new IllegalArgumentException("placas: " + plateCount);
 		}
-		Result r = new Result();
+		Result r = new Result(crypt ? CRYPT_BOTTOM_Y : HULL_BOTTOM_Y);
 
 		// 1) Casco macizo del subsuelo: ninguna cueva, agua o lava puede abrirlo.
 		r.fill(Cell.HULL, -R, R, HULL_BOTTOM_Y, -1, -R, R);
@@ -221,7 +267,35 @@ public final class CustodianTempleLayout {
 			r.chests.add(new int[] {k[6], -7, k[7], metal});
 			r.set(k[8], -7, k[9], Cell.LANTERN);
 		}
+		if (crypt) buildCrypt(r);
 		return r;
+	}
+
+	/**
+	 * V69: Cripta de la Niebla. Sala de 21×6 (x −10…10, z 6…14, y −16…−11) con suelo en y −17, bajo la cámara del Custodio y
+	 * envuelta por un casco de piedra (x ±11, z 5…15, y −19…−10). Un pozo de 3×3 sube hasta la trampilla del suelo de la
+	 * cámara (x −1…1, z 10…12) con una escalera de mano pegada a un pilar al oeste.
+	 */
+	private static void buildCrypt(Result r) {
+		r.fill(Cell.HULL, -11, 11, CRYPT_BOTTOM_Y, CRYPT_CEILING_Y, 5, R);
+		r.fill(Cell.AIR, -10, 10, CRYPT_FLOOR_Y + 1, -11, 6, 14);
+		r.fill(Cell.FLOOR, -10, 10, CRYPT_FLOOR_Y, CRYPT_FLOOR_Y, 6, 14);
+		r.fill(Cell.ACCENT, -1, 1, CRYPT_FLOOR_Y, CRYPT_FLOOR_Y, 10, 12);
+		// Pozo bajo la trampilla: corta las dos capas de casco entre la cámara (y −8) y el techo de la sala.
+		r.fill(Cell.AIR, -1, 1, CRYPT_CEILING_Y, HULL_BOTTOM_Y, 10, 12);
+		for (int x = -1; x <= 1; x++) {
+			for (int z = 10; z <= 12; z++) {
+				r.set(x, UNDER_FLOOR_Y, z, Cell.CRYPT_HATCH);
+				r.cryptHatch.add(new int[] {x, UNDER_FLOOR_Y, z});
+			}
+		}
+		// Pilar y escalera de mano: del suelo de la sala hasta la trampilla.
+		r.fill(Cell.WALL, -2, -2, CRYPT_FLOOR_Y + 1, -11, 11, 11);
+		r.fill(Cell.LADDER_EAST, -1, -1, CRYPT_FLOOR_Y + 1, HULL_BOTTOM_Y, 11, 11);
+		for (int[] c : new int[][] {{-10, 6}, {10, 6}, {-10, 14}, {10, 14}}) r.set(c[0], CRYPT_FLOOR_Y + 1, c[1], Cell.LANTERN);
+		for (int[] p : new int[][] {{-8, 8}, {8, 8}, {-8, 12}, {8, 12}, {-4, 7}, {4, 7}, {-4, 13}, {4, 13}}) {
+			r.cryptSpawns.add(new int[] {p[0], CRYPT_FLOOR_Y + 1, p[1]});
+		}
 	}
 
 	/** Orden de placas barajado con una semilla (permutación de 0..n-1). */

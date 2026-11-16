@@ -226,6 +226,13 @@ public class AptitudesConfig {
 	public int osarioBossLingerTicks = 6_000;
 	/** Daño mínimo (porcentaje de su vida) para recibir el trofeo. */
 	public int osarioBossMinDamagePercent = 10;
+	// ---------- Cripta de la Niebla, etapa interna del Templo del Custodio (V69) ----------
+	/** Los templos del Custodio que se generen tendrán cripta. */
+	public boolean cryptEnabled = true;
+	/** Segundos sin jugadores vivos en la sala antes de reiniciar la oleada en curso. */
+	public int cryptIdleResetSeconds = 30;
+	/** Porcentaje del tamaño de las oleadas (balance rápido). */
+	public int cryptWaveSizePercent = 100;
 	/** v67 (F2+): multiplicador del daño de las habilidades nuevas N1–N10 (1 = el de los textos). */
 	public double extraSkillDamageScale = 1.0;
 	// ---------- Piedras angulares de las Sendas (v46.1) ----------
@@ -593,6 +600,8 @@ public class AptitudesConfig {
 		c.osarioBossFogPercent = clamp(c.osarioBossFogPercent, 10, 100);
 		c.osarioBossLingerTicks = clamp(c.osarioBossLingerTicks, 0, 72_000);
 		c.osarioBossMinDamagePercent = clamp(c.osarioBossMinDamagePercent, 1, 100);
+		c.cryptIdleResetSeconds = clamp(c.cryptIdleResetSeconds, 5, 300);
+		c.cryptWaveSizePercent = clamp(c.cryptWaveSizePercent, 25, 300);
 		c.extraSkillDamageScale = Math.min(3.0, c.extraSkillDamageScale);
 		c.keystoneCarnageHeal = Math.min(1.0, c.keystoneCarnageHeal);
 		c.keystoneCarnageHasteSeconds = Math.min(60.0, c.keystoneCarnageHasteSeconds);

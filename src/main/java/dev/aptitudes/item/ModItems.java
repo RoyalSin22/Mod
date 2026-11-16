@@ -125,6 +125,10 @@ public final class ModItems {
 	public static final Item CRANEO_GRAN_OSARIO = register("craneo_gran_osario",
 			new TrophyItem("item.aptitudes.craneo_gran_osario.tooltip", new Item.Settings().maxCount(16).rarity(Rarity.EPIC)));
 
+	/** V69: se fabrica con el Cráneo del Gran Osario; abre (y se consume en) la trampilla de la Cripta de la Niebla. */
+	public static final Item LLAVE_DEL_VELO = register("llave_del_velo",
+			new VeilKeyItem(new Item.Settings().maxCount(16).rarity(Rarity.RARE)));
+
 	/** T5: se obtiene en la cámara de diamante del Custodio; se sacrifica en la Hoguera para iniciar el Eclipse (cooldown 3 días). */
 	public static final Item RESONADOR_DEL_UMBRAL = register("resonador_del_umbral",
 			new BeheritItem(new Item.Settings().maxCount(16).rarity(Rarity.EPIC).fireproof()));
@@ -245,6 +249,7 @@ public final class ModItems {
 						entries.add(NUCLEO_OSARIO);
 						entries.add(CRANEO_GRAN_OSARIO);
 						entries.add(ANCLA_DEL_VELO);
+						entries.add(LLAVE_DEL_VELO);
 						entries.add(RESONADOR_DEL_UMBRAL);
 						entries.add(dev.aptitudes.event.Expeditions.TOKEN); // F5: ficha de expedición
 						entries.add(REBIRTH_OFFERING);

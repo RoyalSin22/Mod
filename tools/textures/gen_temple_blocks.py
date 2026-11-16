@@ -156,10 +156,35 @@ def chamber_door(metal):
     return img
 
 
+def crypt_hatch():
+    """V69: trampilla de la Cripta de la Niebla. Piedra oscura con marco violeta y un ojo de almas en el centro."""
+    img = stone('crypt_hatch', (38, 34, 52))
+    px = img.load()
+    soul, soul_dark = (142, 124, 195), (94, 78, 140)
+    for i in range(16):
+        for (x, y) in ((i, 0), (i, 15), (0, i), (15, i)):
+            px[x, y] = soul_dark + (255,)
+    for i in range(1, 15):
+        for (x, y) in ((i, 1), (i, 14), (1, i), (14, i)):
+            if (x + y) % 2 == 0:
+                px[x, y] = soul + (255,)
+    for y in range(16):
+        for x in range(16):
+            d = math.hypot(x - 7.5, y - 7.5)
+            if d < 2.2:
+                px[x, y] = (230, 220, 255, 255)
+            elif d < 3.6:
+                px[x, y] = soul + (255,)
+            elif d < 4.6:
+                px[x, y] = soul_dark + (255,)
+    return img
+
+
 def files():
     out = {
         'sealed_stone.png': sealed_stone(),
         'custodian_door.png': custodian_door(),
+        'crypt_hatch.png': crypt_hatch(),
         'chamber_door_copper.png': chamber_door('copper'),
         'chamber_door_iron.png': chamber_door('iron'),
         'chamber_door_gold.png': chamber_door('gold'),

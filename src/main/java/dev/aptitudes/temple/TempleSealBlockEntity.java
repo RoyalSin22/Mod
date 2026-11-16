@@ -15,6 +15,8 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -65,6 +67,17 @@ public class TempleSealBlockEntity extends BlockEntity {
 	final List<BlockPos> chamberDoors = new ArrayList<>();
 	final List<TempleKeyRules.Metal> chamberMetals = new ArrayList<>();
 	int chambersOpen;
+	// V69: Cripta de la Niebla (etapa interna opcional; solo con layout 2). Todo se guarda al final del NBT.
+	CryptRules.Stage crypt = CryptRules.Stage.LOCKED;
+	/** Celdas de la trampilla, puntos de aparición y esquinas de la sala (relativos al sello). */
+	final List<BlockPos> cryptHatch = new ArrayList<>();
+	final List<BlockPos> cryptSpawns = new ArrayList<>();
+	BlockPos cryptMin = BlockPos.ORIGIN, cryptMax = BlockPos.ORIGIN, cryptClimax = BlockPos.ORIGIN, cryptChest = BlockPos.ORIGIN;
+	/** Estado de la oleada en curso: solo en memoria (tras un reinicio del servidor la oleada empieza de nuevo). */
+	private final java.util.Set<UUID> cryptMobs = new java.util.HashSet<>();
+	private int cryptRemaining;
+	private boolean cryptWaveLive;
+	private long cryptIdleTicks;
 
 	public TempleSealBlockEntity(BlockPos pos, BlockState state) {
 		super(Temples.SEAL_ENTITY, pos, state);
@@ -83,8 +96,11 @@ public class TempleSealBlockEntity extends BlockEntity {
 	}
 
 	private void serverTick(ServerWorld world) {
-		if (stage == Stage.CLEARED) return;
-		if (layout == TempleFlowRules.LAYOUT_CUSTODIAN) {
+		if (stage == Stage.CLEARED) {
+			if (hasCrypt()) serverTickCrypt(world);
+			return;
+		}
+		if (layout >= TempleFlowRules.LAYOUT_CUSTODIAN) {
 			serverTickCustodian(world);
 			return;
 		}
@@ -261,13 +277,13 @@ public class TempleSealBlockEntity extends BlockEntity {
 
 	/** ¿Esta posición absoluta es un bloque de alguna puerta (la del Custodio o la de una cámara) de este templo? */
 	public boolean ownsDoor(BlockPos absolute) {
-		return ownsInnerDoor(absolute) || chamberMetalAt(absolute) != null;
+		return ownsInnerDoor(absolute) || chamberMetalAt(absolute) != null || ownsCryptHatch(absolute);
 	}
 
 	/** Metal de la puerta de cámara en esa posición absoluta, o {@code null} si no es de este templo. */
 	@Nullable
 	public TempleKeyRules.Metal chamberMetalAt(BlockPos absolute) {
-		if (layout != TempleFlowRules.LAYOUT_CUSTODIAN) return null;
+		if (!TempleFlowRules.isCustodian(layout)) return null;
 		int i = chamberDoors.indexOf(absolute.subtract(pos));
 		return i < 0 || i >= chamberMetals.size() ? null : chamberMetals.get(i);
 	}
@@ -295,6 +311,154 @@ public class TempleSealBlockEntity extends BlockEntity {
 		markDirty();
 	}
 
+	// ------------------------------------------------------- Cripta de la Niebla (V69)
+
+	public boolean hasCrypt() {
+		return TempleFlowRules.hasCrypt(layout);
+	}
+
+	public CryptRules.Stage cryptStage() {
+		return crypt;
+	}
+
+	/** ¿Esta posición absoluta es un bloque de la trampilla de la cripta de este templo? */
+	public boolean ownsCryptHatch(BlockPos absolute) {
+		return hasCrypt() && cryptHatch.contains(absolute.subtract(pos));
+	}
+
+	/** La llama la generación de un templo con cripta; todas las posiciones son relativas al sello. */
+	public void setupCrypt(List<BlockPos> hatch, List<BlockPos> spawns, BlockPos min, BlockPos max, BlockPos climax, BlockPos chest) {
+		this.layout = TempleFlowRules.LAYOUT_CRYPT;
+		this.crypt = CryptRules.Stage.LOCKED;
+		this.cryptHatch.clear();
+		this.cryptHatch.addAll(hatch);
+		this.cryptSpawns.clear();
+		this.cryptSpawns.addAll(spawns);
+		this.cryptMin = min;
+		this.cryptMax = max;
+		this.cryptClimax = climax;
+		this.cryptChest = chest;
+		markDirty();
+	}
+
+	/** Abre la trampilla. Lo llama {@link Temples#useCryptHatch} tras comprobar el estado y gastar la Llave del Velo. */
+	void openCrypt(ServerWorld world) {
+		for (BlockPos rel : cryptHatch) {
+			BlockPos p = pos.add(rel);
+			if (world.getBlockState(p).isOf(Temples.CRYPT_HATCH)) world.breakBlock(p, false);
+		}
+		world.playSound(null, pos.add(cryptHatch.isEmpty() ? BlockPos.ORIGIN : cryptHatch.get(0)), SoundEvents.BLOCK_VAULT_OPEN_SHUTTER,
+				SoundCategory.BLOCKS, 1.4f, 0.5f);
+		crypt = CryptRules.afterKeyUsed(crypt);
+		tell(nearby(world, 40), "temple.aptitudes.crypt.opened");
+		markDirty();
+	}
+
+	private Box cryptRoom() {
+		return new Box(Vec3d.of(pos.add(cryptMin)), Vec3d.of(pos.add(cryptMax).add(1, 1, 1)));
+	}
+
+	private List<ServerPlayerEntity> playersInCrypt(ServerWorld world) {
+		Box room = cryptRoom();
+		return world.getPlayers(p -> p.isAlive() && !p.isSpectator() && room.contains(p.getPos()));
+	}
+
+	/** Oleadas y clímax. Corre cada {@code CHECK_EVERY} ticks una vez el templo está limpio. */
+	private void serverTickCrypt(ServerWorld world) {
+		if (crypt != CryptRules.Stage.OPEN && !CryptRules.isFighting(crypt)) return;
+		List<ServerPlayerEntity> inside = playersInCrypt(world);
+		if (crypt == CryptRules.Stage.OPEN) {
+			if (inside.isEmpty()) return;
+			crypt = CryptRules.afterPlayerEntered(crypt);
+			markDirty();
+			startWave(world, inside);
+			return;
+		}
+		if (inside.isEmpty()) {
+			// Sin nadie vivo en la sala: tras el tiempo configurado, la oleada en curso empieza de nuevo (la llave no se gasta).
+			cryptIdleTicks += CHECK_EVERY;
+			if (CryptRules.countsIdle(crypt) && CryptRules.shouldResetWave(cryptIdleTicks, dev.aptitudes.Aptitudes.config().cryptIdleResetSeconds)) {
+				CryptWaves.discardAll(world, cryptRoom());
+				cryptMobs.clear();
+				cryptWaveLive = false;
+				cryptIdleTicks = 0;
+			}
+			return;
+		}
+		cryptIdleTicks = 0;
+		if (!cryptWaveLive) {
+			startWave(world, inside);
+			return;
+		}
+		cryptMobs.removeIf(id -> {
+			net.minecraft.entity.Entity e = world.getEntity(id);
+			return e == null || !e.isAlive();
+		});
+		int toSpawn = CryptRules.toSpawn(cryptRemaining, cryptMobs.size());
+		for (int i = 0; i < toSpawn; i++) {
+			if (spawnWaveMob(world, inside)) cryptRemaining--;
+		}
+		if (!CryptRules.waveCleared(cryptRemaining, cryptMobs.size())) return;
+		if (crypt == CryptRules.Stage.CLIMAX) {
+			finishCrypt(world, inside);
+		} else {
+			crypt = CryptRules.afterWaveCleared(crypt);
+			cryptWaveLive = false;
+			markDirty();
+			tell(inside, crypt == CryptRules.Stage.CLIMAX ? "temple.aptitudes.crypt.climax" : "temple.aptitudes.crypt.next_wave");
+		}
+	}
+
+	/** Empieza (o reinicia) la oleada de la fase actual: retira restos y prepara lo que va a salir. */
+	private void startWave(ServerWorld world, List<ServerPlayerEntity> inside) {
+		CryptWaves.discardAll(world, cryptRoom());
+		cryptMobs.clear();
+		cryptWaveLive = true;
+		cryptIdleTicks = 0;
+		if (crypt == CryptRules.Stage.CLIMAX) {
+			cryptRemaining = 0;
+			net.minecraft.entity.mob.MobEntity champion = CryptWaves.spawnChampion(world, pos.add(cryptClimax), ring, inside.get(0));
+			if (champion != null) cryptMobs.add(champion.getUuid());
+			for (int i = 0; i < CryptRules.ESCORTS; i++) {
+				net.minecraft.entity.mob.MobEntity escort = CryptWaves.spawn(world, spawnSpot(world), CryptRules.Variant.ERRANTE,
+						inside.get(world.random.nextInt(inside.size())));
+				if (escort != null) cryptMobs.add(escort.getUuid());
+			}
+			if (cryptMobs.isEmpty()) cryptWaveLive = false; // sin sitio: se reintenta en el siguiente control
+		} else {
+			cryptRemaining = CryptRules.waveSize(CryptRules.waveIndex(crypt), inside.size(), ring,
+					dev.aptitudes.Aptitudes.config().cryptWaveSizePercent);
+			tell(inside, "temple.aptitudes.crypt.wave_" + CryptRules.waveIndex(crypt));
+		}
+	}
+
+	private BlockPos spawnSpot(ServerWorld world) {
+		return pos.add(cryptSpawns.get(world.random.nextInt(cryptSpawns.size())));
+	}
+
+	private boolean spawnWaveMob(ServerWorld world, List<ServerPlayerEntity> inside) {
+		if (cryptSpawns.isEmpty()) return false;
+		net.minecraft.entity.mob.MobEntity mob = CryptWaves.spawn(world, spawnSpot(world),
+				CryptRules.choose(world.random.nextInt(100)), inside.get(world.random.nextInt(inside.size())));
+		if (mob == null) return false;
+		cryptMobs.add(mob.getUuid());
+		return true;
+	}
+
+	/** Cae el clímax: la cripta queda superada, emerge el cofre y se desbloquea el lore. */
+	private void finishCrypt(ServerWorld world, List<ServerPlayerEntity> inside) {
+		crypt = CryptRules.afterClimaxDown(crypt);
+		cryptWaveLive = false;
+		cryptMobs.clear();
+		CryptWaves.discardAll(world, cryptRoom());
+		BlockPos chest = pos.add(cryptChest);
+		CryptWaves.placeChest(world, chest);
+		world.playSound(null, chest, SoundEvents.BLOCK_VAULT_OPEN_SHUTTER, SoundCategory.BLOCKS, 1.4f, 0.8f);
+		world.spawnParticles(net.minecraft.particle.ParticleTypes.SOUL, chest.getX() + 0.5, chest.getY() + 1, chest.getZ() + 0.5, 40, 0.5, 0.6, 0.5, 0.05);
+		tell(inside, "temple.aptitudes.crypt.done");
+		markDirty();
+	}
+
 	public int layout() {
 		return layout;
 	}
@@ -305,12 +469,12 @@ public class TempleSealBlockEntity extends BlockEntity {
 
 	/** ¿Esta posición absoluta es un bloque de la Puerta del Custodio de este templo? */
 	public boolean ownsInnerDoor(BlockPos absolute) {
-		return layout == TempleFlowRules.LAYOUT_CUSTODIAN && innerDoor.contains(absolute.subtract(pos));
+		return TempleFlowRules.isCustodian(layout) && innerDoor.contains(absolute.subtract(pos));
 	}
 
 	/** Clave de texto del estado actual (para el mensaje del Sello). */
 	String statusKey() {
-		if (layout == TempleFlowRules.LAYOUT_CUSTODIAN && flow != Flow.PUZZLE) {
+		if (TempleFlowRules.isCustodian(layout) && flow != Flow.PUZZLE) {
 			return "temple.aptitudes.seal.flow_" + flow.name().toLowerCase(java.util.Locale.ROOT);
 		}
 		return "temple.aptitudes.seal." + stage.name().toLowerCase(java.util.Locale.ROOT);
@@ -353,7 +517,8 @@ public class TempleSealBlockEntity extends BlockEntity {
 	/** Lo llama el gestor al morir el guardián (si este chunk está cargado). */
 	void cleared() {
 		stage = Stage.CLEARED;
-		if (layout == TempleFlowRules.LAYOUT_CUSTODIAN) flow = TempleFlowRules.afterCustodianDown(flow);
+		if (TempleFlowRules.isCustodian(layout)) flow = TempleFlowRules.afterCustodianDown(flow);
+		if (hasCrypt()) crypt = CryptRules.afterCustodianCleared(crypt);
 		guardian = null;
 		markDirty();
 	}
@@ -403,6 +568,14 @@ public class TempleSealBlockEntity extends BlockEntity {
 		for (int i = 0; i < metals.length; i++) metals[i] = (byte) chamberMetals.get(i).ordinal();
 		nbt.putByteArray("chamber_metals", metals);
 		nbt.putInt("chambers_open", chambersOpen);
+		// V69: un templo anterior no tiene estas claves y se lee con la cripta bloqueada y sin trampilla.
+		nbt.putInt("crypt", crypt.ordinal());
+		nbt.putLongArray("crypt_hatch", encode(cryptHatch));
+		nbt.putLongArray("crypt_spawns", encode(cryptSpawns));
+		nbt.putLong("crypt_min", cryptMin.asLong());
+		nbt.putLong("crypt_max", cryptMax.asLong());
+		nbt.putLong("crypt_climax", cryptClimax.asLong());
+		nbt.putLong("crypt_chest", cryptChest.asLong());
 	}
 
 	@Override
@@ -439,5 +612,16 @@ public class TempleSealBlockEntity extends BlockEntity {
 		}
 		while (chamberDoors.size() > chamberMetals.size()) chamberDoors.remove(chamberDoors.size() - 1);
 		chambersOpen = TempleKeyRules.sanitizeMask(nbt.getInt("chambers_open"));
+		// V69
+		crypt = nbt.contains("crypt") ? CryptRules.stageFromOrdinal(nbt.getInt("crypt")) : CryptRules.Stage.LOCKED;
+		decode(nbt.getLongArray("crypt_hatch"), cryptHatch, 16);
+		decode(nbt.getLongArray("crypt_spawns"), cryptSpawns, 32);
+		cryptMin = BlockPos.fromLong(nbt.getLong("crypt_min"));
+		cryptMax = BlockPos.fromLong(nbt.getLong("crypt_max"));
+		cryptClimax = BlockPos.fromLong(nbt.getLong("crypt_climax"));
+		cryptChest = BlockPos.fromLong(nbt.getLong("crypt_chest"));
+		cryptMobs.clear();
+		cryptWaveLive = false;
+		cryptIdleTicks = 0;
 	}
 }

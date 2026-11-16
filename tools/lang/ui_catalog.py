@@ -1808,6 +1808,21 @@ bestiary.aptitudes.gran_osario_quebrado.tip¦Um enorme ossuário que a Névoa da
 bestiary.aptitudes.gran_osario_quebrado.lore¦Tudo o que a névoa reúne acaba aqui: ossos, nomes e ecos que ninguém mais reclama.¦Tout ce que la brume rassemble finit ici : os, noms et échos que plus personne ne réclame.¦Alles, was der Nebel sammelt, endet hier: Knochen, Namen und Echos, die niemand mehr einfordert.
 item.aptitudes.craneo_gran_osario¦Crânio do Grande Ossuário¦Crâne du Grand Ossuaire¦Schädel des Großen Beinhauses
 item.aptitudes.craneo_gran_osario.tooltip¦Uma relíquia do maior ossuário da Névoa das Almas. Ainda não tem uso.¦Une relique du plus grand ossuaire de la Brume des âmes. Elle ne sert encore à rien.¦Eine Reliquie des größten Beinhauses des Seelennebels. Sie hat noch keinen Nutzen.
+item.aptitudes.llave_del_velo¦Chave do Véu¦Clé du Voile¦Schlüssel des Schleiers
+item.aptitudes.llave_del_velo.tooltip¦Abre a escotilha da Cripta da Névoa, sob a câmara do Custódio. É consumida.¦Ouvre la trappe de la Crypte de la Brume, sous la chambre du Gardien. Elle est consommée.¦Öffnet die Luke der Nebelgruft unter der Kammer des Wächters. Er wird verbraucht.
+block.aptitudes.crypt_hatch¦Escotilha da Cripta da Névoa¦Trappe de la Crypte de la Brume¦Luke der Nebelgruft
+temple.aptitudes.crypt.opened¦A escotilha da Cripta da Névoa se abre.¦La trappe de la Crypte de la Brume s’ouvre.¦Die Luke der Nebelgruft öffnet sich.
+temple.aptitudes.crypt.not_ready¦A escotilha está selada. Antes, derrote o Custódio.¦La trappe est scellée. Vainquez d’abord le Gardien.¦Die Luke ist versiegelt. Besiege zuerst den Wächter.
+temple.aptitudes.crypt.needs_key¦Esta escotilha se abre com uma Chave do Véu.¦Cette trappe s’ouvre avec une Clé du Voile.¦Diese Luke öffnet sich mit einem Schlüssel des Schleiers.
+temple.aptitudes.crypt.already_open¦A escotilha já está aberta.¦La trappe est déjà ouverte.¦Die Luke ist bereits offen.
+temple.aptitudes.crypt.no_crypt¦Este templo não tem cripta.¦Ce temple n’a pas de crypte.¦Dieser Tempel hat keine Gruft.
+temple.aptitudes.crypt.wave_1¦A névoa se agita: primeira onda!¦La brume s’agite : première vague !¦Der Nebel regt sich: erste Welle!
+temple.aptitudes.crypt.wave_2¦Segunda onda!¦Deuxième vague !¦Zweite Welle!
+temple.aptitudes.crypt.wave_3¦Terceira onda!¦Troisième vague !¦Dritte Welle!
+temple.aptitudes.crypt.next_wave¦A onda terminou. A névoa se reúne de novo…¦La vague est terminée. La brume se rassemble à nouveau…¦Die Welle ist vorbei. Der Nebel sammelt sich erneut…
+temple.aptitudes.crypt.climax¦A névoa se condensa em um campeão!¦La brume se condense en un champion !¦Der Nebel verdichtet sich zu einem Champion!
+temple.aptitudes.crypt.done¦A névoa se dissipa. Um baú surge do chão.¦La brume se dissipe. Un coffre jaillit du sol.¦Der Nebel löst sich auf. Eine Truhe steigt aus dem Boden.
+temple.aptitudes.crypt.champion¦Campeão da Cripta¦Champion de la Crypte¦Champion der Gruft
 """)
 
 # v63b-c (jefes): Guardián Desmontado y Autómata Antiguo.

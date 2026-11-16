@@ -1,6 +1,7 @@
 package dev.aptitudes.world;
 
 import com.mojang.serialization.Codec;
+import dev.aptitudes.Aptitudes;
 import dev.aptitudes.temple.CustodianTempleLayout;
 import dev.aptitudes.temple.CustodianTempleLayout.Cell;
 import dev.aptitudes.temple.ReliquaryBlockEntity;
@@ -11,6 +12,7 @@ import dev.aptitudes.temple.Temples;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CandleBlock;
+import net.minecraft.block.LadderBlock;
 import net.minecraft.block.LeverBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.enums.BlockFace;
@@ -56,10 +58,13 @@ public class CustodianTempleFeature extends Feature<DefaultFeatureConfig> {
 
 		boolean[] target = TempleRules.pattern(b.random.nextInt(16), TempleRules.leverCount(ring));
 		int plateCount = TempleRules.plateCount(ring);
+		// V69: la Cripta de la Niebla baja hasta y -19; si el volumen toca agua o lava, el templo se genera sin ella (layout 1).
+		boolean withCrypt = Aptitudes.config().cryptEnabled && cryptSiteOk(world, origin);
 		CustodianTempleLayout.Result layout = CustodianTempleLayout.build(target, plateCount,
-				CustodianTempleLayout.shuffledPlateOrder(plateCount, b.random.nextLong()));
+				CustodianTempleLayout.shuffledPlateOrder(plateCount, b.random.nextLong()), withCrypt);
 
-		for (int y = CustodianTempleLayout.HULL_BOTTOM_Y; y <= CustodianTempleLayout.ROOF_Y; y++) {
+		int lowest = withCrypt ? CustodianTempleLayout.CRYPT_BOTTOM_Y : CustodianTempleLayout.HULL_BOTTOM_Y;
+		for (int y = lowest; y <= CustodianTempleLayout.ROOF_Y; y++) {
 			for (int x = -CustodianTempleLayout.R; x <= CustodianTempleLayout.R; x++) {
 				for (int z = -CustodianTempleLayout.R; z <= CustodianTempleLayout.R; z++) {
 					Cell cell = layout.get(x, y, z);
@@ -94,9 +99,30 @@ public class CustodianTempleFeature extends Feature<DefaultFeatureConfig> {
 				metals.add(metal);
 			}
 			entity.setupChambers(doors, metals);
+			if (withCrypt) {
+				entity.setupCrypt(relative(b, seal, layout.cryptHatch), relative(b, seal, layout.cryptSpawns),
+						rel(b, seal, layout.cryptMin), rel(b, seal, layout.cryptMax), rel(b, seal, layout.cryptClimax),
+						rel(b, seal, layout.cryptChest));
+			}
 		}
 		if (world.getBlockEntity(b.at(layout.reliquary[0], layout.reliquary[1], layout.reliquary[2])) instanceof ReliquaryBlockEntity reliquary) {
 			reliquary.setTemple(temple);
+		}
+		return true;
+	}
+
+	/**
+	 * V69: ¿se puede excavar la cripta aquí? Debe caber por encima del fondo del mundo y su volumen (x ±11, z 5…15,
+	 * y −19…−10) no puede contener agua ni lava, que se colarían al abrirse. Si no, el templo se genera sin cripta.
+	 */
+	private static boolean cryptSiteOk(StructureWorldAccess world, BlockPos origin) {
+		if (origin.getY() + CustodianTempleLayout.CRYPT_BOTTOM_Y <= world.getBottomY() + 4) return false;
+		for (int x = -11; x <= 11; x++) {
+			for (int y = CustodianTempleLayout.CRYPT_BOTTOM_Y; y <= CustodianTempleLayout.CRYPT_CEILING_Y; y++) {
+				for (int z = 5; z <= CustodianTempleLayout.R; z++) {
+					if (!world.getFluidState(origin.add(x, y, z)).isEmpty()) return false;
+				}
+			}
 		}
 		return true;
 	}
@@ -147,6 +173,8 @@ public class CustodianTempleFeature extends Feature<DefaultFeatureConfig> {
 			case CHAMBER_DOOR_IRON -> Temples.CHAMBER_DOOR_IRON.getDefaultState();
 			case CHAMBER_DOOR_GOLD -> Temples.CHAMBER_DOOR_GOLD.getDefaultState();
 			case CHAMBER_DOOR_DIAMOND -> Temples.CHAMBER_DOOR_DIAMOND.getDefaultState();
+			case CRYPT_HATCH -> Temples.CRYPT_HATCH.getDefaultState();
+			case LADDER_EAST -> Blocks.LADDER.getDefaultState().with(LadderBlock.FACING, Direction.EAST);
 			// Los cofres se colocan con su botín en generate (chestLoot); aquí solo se completa el switch.
 			case CHEST_COPPER, CHEST_IRON, CHEST_GOLD, CHEST_DIAMOND -> Blocks.CHEST.getDefaultState();
 		};

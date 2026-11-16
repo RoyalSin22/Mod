@@ -39,7 +39,7 @@ public final class TempleKeyRules {
 	 * en el templo antiguo (que solo suelta la llave del Relicario).
 	 */
 	public static Metal[] keysToDrop(int layout) {
-		return TempleFlowRules.clampLayout(layout) == TempleFlowRules.LAYOUT_CUSTODIAN ? Metal.values() : new Metal[0];
+		return TempleFlowRules.isCustodian(TempleFlowRules.clampLayout(layout)) ? Metal.values() : new Metal[0];
 	}
 
 	/**

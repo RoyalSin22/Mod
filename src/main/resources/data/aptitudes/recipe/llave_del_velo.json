@@ -1,0 +1,34 @@
+{
+  "type": "aptitudes:guild_crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "aptitudes:craneo_gran_osario"
+    },
+    {
+      "item": "aptitudes:jiron_velo_espectral"
+    },
+    {
+      "item": "aptitudes:jiron_velo_espectral"
+    },
+    {
+      "item": "aptitudes:jiron_velo_espectral"
+    },
+    {
+      "item": "aptitudes:soul_shard"
+    },
+    {
+      "item": "aptitudes:soul_shard"
+    },
+    {
+      "item": "aptitudes:soul_shard"
+    },
+    {
+      "item": "aptitudes:soul_shard"
+    }
+  ],
+  "result": {
+    "id": "aptitudes:llave_del_velo",
+    "count": 1
+  }
+}

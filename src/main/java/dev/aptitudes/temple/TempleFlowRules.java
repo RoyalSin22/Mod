@@ -13,6 +13,8 @@ public final class TempleFlowRules {
 	public static final int LAYOUT_OLD = 0;
 	/** Distribución del Templo del Custodio (T3). */
 	public static final int LAYOUT_CUSTODIAN = 1;
+	/** V69: Templo del Custodio con la Cripta de la Niebla (mismo flujo hasta {@code CLEARED}; añade la cripta). */
+	public static final int LAYOUT_CRYPT = 2;
 	/** Distancia (bloques) al umbral del atrio a la que despierta el Autómata. */
 	public static final double TRIGGER_RADIUS = 9.0;
 	/** Comprobaciones seguidas sin ver a un jefe antes de volver a hacerlo aparecer (cada una dura medio segundo). */
@@ -38,7 +40,17 @@ public final class TempleFlowRules {
 	}
 
 	public static int clampLayout(int layout) {
-		return layout == LAYOUT_CUSTODIAN ? LAYOUT_CUSTODIAN : LAYOUT_OLD;
+		return layout == LAYOUT_CUSTODIAN || layout == LAYOUT_CRYPT ? layout : LAYOUT_OLD;
+	}
+
+	/** ¿Usa el flujo del Templo del Custodio (con o sin cripta)? Los templos antiguos no. */
+	public static boolean isCustodian(int layout) {
+		return layout == LAYOUT_CUSTODIAN || layout == LAYOUT_CRYPT;
+	}
+
+	/** ¿Tiene Cripta de la Niebla? */
+	public static boolean hasCrypt(int layout) {
+		return layout == LAYOUT_CRYPT;
 	}
 
 	/** Fase guardada → fase válida (un valor desconocido vuelve al principio, nunca lanza). */

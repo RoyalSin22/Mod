@@ -73,6 +73,10 @@ public final class Temples {
 	public static final Block CUSTODIAN_DOOR = Registry.register(Registries.BLOCK, Aptitudes.id("custodian_door"),
 			new TempleBlocks.CustodianDoor(unbreakable(MapColor.GOLD).luminance(state -> 4)));
 
+	/** V69: trampilla de la Cripta de la Niebla. Irrompible; solo cede a la Llave del Velo con el Custodio vencido. */
+	public static final Block CRYPT_HATCH = Registry.register(Registries.BLOCK, Aptitudes.id("crypt_hatch"),
+			new TempleBlocks.CryptHatch(unbreakable(MapColor.PURPLE).luminance(state -> 3)));
+
 	/** T4: puertas de las cuatro cámaras de recompensa (una por metal). */
 	public static final Block CHAMBER_DOOR_COPPER = chamberDoor("copper", TempleKeyRules.Metal.COPPER, MapColor.ORANGE);
 	public static final Block CHAMBER_DOOR_IRON = chamberDoor("iron", TempleKeyRules.Metal.IRON, MapColor.IRON_GRAY);
@@ -124,6 +128,8 @@ public final class Temples {
 			new BlockItem(SEALED_STONE, new Item.Settings()));
 	public static final Item CUSTODIAN_DOOR_ITEM = Registry.register(Registries.ITEM, Aptitudes.id("custodian_door"),
 			new BlockItem(CUSTODIAN_DOOR, new Item.Settings().rarity(Rarity.RARE)));
+	public static final Item CRYPT_HATCH_ITEM = Registry.register(Registries.ITEM, Aptitudes.id("crypt_hatch"),
+			new BlockItem(CRYPT_HATCH, new Item.Settings().rarity(Rarity.RARE)));
 	public static final Item TEMPLE_SEAL_ITEM = Registry.register(Registries.ITEM, Aptitudes.id("temple_seal"),
 			new BlockItem(TEMPLE_SEAL, new Item.Settings().rarity(Rarity.RARE)));
 	public static final Item RELIQUARY_ITEM = Registry.register(Registries.ITEM, Aptitudes.id("reliquary"),
@@ -197,6 +203,31 @@ public final class Temples {
 				case NEEDS_ANCHOR -> key = "temple.aptitudes.door.needs_anchor";
 				case ALREADY_OPEN -> key = "temple.aptitudes.door.already_open";
 				default -> key = "temple.aptitudes.door.not_ready";
+			}
+		}
+		player.sendMessage(Text.translatable(key).formatted(Formatting.GRAY), true);
+	}
+
+	/**
+	 * V69: un jugador usa la trampilla de la cripta ({@code stack} es lo que lleva en la mano, o vacío). Todo se decide en el
+	 * servidor con {@link CryptRules#useHatch}: solo la Llave del Velo la abre y se consume al hacerlo.
+	 */
+	static void useCryptHatch(ServerWorld world, BlockPos clicked, ServerPlayerEntity player, ItemStack stack) {
+		TempleSealBlockEntity seal = findSeal(world, clicked);
+		String key;
+		if (seal == null) {
+			key = "temple.aptitudes.crypt.not_ready";
+		} else {
+			switch (CryptRules.useHatch(seal.cryptStage(), stack.isOf(dev.aptitudes.item.ModItems.LLAVE_DEL_VELO), seal.hasCrypt())) {
+				case OPEN -> {
+					stack.decrement(1);
+					seal.openCrypt(world);
+					return;
+				}
+				case NEEDS_KEY -> key = "temple.aptitudes.crypt.needs_key";
+				case ALREADY_OPEN -> key = "temple.aptitudes.crypt.already_open";
+				case NO_CRYPT -> key = "temple.aptitudes.crypt.no_crypt";
+				default -> key = "temple.aptitudes.crypt.not_ready";
 			}
 		}
 		player.sendMessage(Text.translatable(key).formatted(Formatting.GRAY), true);

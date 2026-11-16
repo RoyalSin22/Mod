@@ -100,6 +100,37 @@ public final class TempleBlocks {
 		}
 	}
 
+	/** V69: trampilla de la Cripta de la Niebla. Con la Llave del Velo en la mano se abre (y se consume); sin ella, avisa. */
+	public static class CryptHatch extends Block {
+		public static final MapCodec<CryptHatch> CODEC = createCodec(CryptHatch::new);
+
+		public CryptHatch(Settings settings) {
+			super(settings);
+		}
+
+		@Override
+		protected MapCodec<? extends Block> getCodec() {
+			return CODEC;
+		}
+
+		@Override
+		protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player,
+												 Hand hand, BlockHitResult hit) {
+			if (!stack.isOf(dev.aptitudes.item.ModItems.LLAVE_DEL_VELO)) return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+			if (world.isClient) return ItemActionResult.SUCCESS;
+			if (world instanceof ServerWorld server && player instanceof ServerPlayerEntity sp) Temples.useCryptHatch(server, pos, sp, stack);
+			return ItemActionResult.CONSUME;
+		}
+
+		@Override
+		protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+			if (!world.isClient && world instanceof ServerWorld server && player instanceof ServerPlayerEntity sp) {
+				Temples.useCryptHatch(server, pos, sp, ItemStack.EMPTY);
+			}
+			return ActionResult.success(world.isClient);
+		}
+	}
+
 	/**
 	 * T4: puerta de una cámara de recompensa. Solo la abre la llave del Custodio de su metal y de su templo, y solo con el
 	 * Custodio vencido. Cada puerta es un bloque distinto por metal.
