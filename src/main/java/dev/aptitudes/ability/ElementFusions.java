@@ -74,15 +74,19 @@ public enum ElementFusions {
 		List<Element> mastered = data.elements();
 		ServerWorld world = p.getServerWorld();
 		DamageSource source = p.getDamageSources().indirectMagic(p, p);
+
+		// v65 C5 Y3: Sinergia elementos ↔ runas (bonificador de daño de fusión)
+		float runeBonus = SynergyRules.elementRuneSynergyBonus(p, active, p.getMainHandStack());
+
 		for (ElementFusions f : values()) {
 			if (!f.involves(active) || !f.unlocked(mastered)) continue;
 			switch (f) {
 				case FIRESTORM -> hostiles.forEach(e -> {
 					e.setOnFireFor(4);
-					e.damage(source, 2 + r);
+					e.damage(source, (2 + r) * runeBonus);
 				});
 				case ELECTROCUTION -> hostiles.forEach(e -> {
-					e.damage(source, 3 + r);
+					e.damage(source, (3 + r) * runeBonus);
 					e.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 40, 4)); // aturdido
 				});
 				case BLIZZARD -> hostiles.forEach(e -> {
@@ -119,7 +123,7 @@ public enum ElementFusions {
 					Vec3d pull = p.getPos().subtract(e.getPos()).normalize().multiply(1.2);
 					e.addVelocity(pull.x, 0.1, pull.z);
 					e.velocityModified = true;
-					e.damage(source, 4);
+					e.damage(source, 4 * runeBonus);
 				});
 				case RESONANCE -> hostiles.forEach(e -> {
 					e.takeKnockback(2.5, p.getX() - e.getX(), p.getZ() - e.getZ());
@@ -128,10 +132,10 @@ public enum ElementFusions {
 				case PRISM -> hostiles.stream().sorted(Comparator.comparingDouble(p::squaredDistanceTo)).limit(3)
 						.forEach(e -> {
 							Targeting.particleLine(world, ParticleTypes.GLOW, p.getEyePos(), e.getEyePos());
-							e.damage(source, 4 + r);
+							e.damage(source, (4 + r) * runeBonus);
 						});
 				case THERMAL_SHOCK -> hostiles.forEach(e -> {
-					e.damage(source, 3 + r);
+					e.damage(source, (3 + r) * runeBonus);
 					world.spawnParticles(ParticleTypes.CLOUD, e.getX(), e.getBodyY(0.6), e.getZ(), 8, 0.3, 0.3, 0.3, 0.02);
 				});
 			}
