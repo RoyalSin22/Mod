@@ -2,9 +2,9 @@
 """Fase 2a del lore: escribe las claves lore.aptitudes.* en los archivos de idioma.
 
 - en_us y es_es llevan el texto propio; es_mx/es_ar/es_cl/es_ec/es_uy/es_ve son copias de es_es.
-- pt_br, fr_fr y de_de llevan el texto de las entradas en inglés como respaldo hasta que se traduzcan (así
-  check_lang.py sigue exigiendo las mismas claves y el mismo orden que en_us). Los seis avisos de desbloqueo
-  (MESSAGES) ya están traducidos a los cinco idiomas.
+- pt_br, fr_fr y de_de llevan su traducción (lore_i18n_pt/fr/de.py y los avisos de MESSAGES); si una entrada nueva
+  aún no está traducida, usan el texto inglés como respaldo, de modo que check_lang.py sigue exigiendo las mismas
+  claves y el mismo orden que en_us.
 - Las claves nuevas se añaden al final y no se reformatea nada más.
 
 Ejecutar después de los demás generadores. --check comprueba sin escribir.
@@ -15,6 +15,7 @@ import json
 from check_lang import LANG_DIR, LOCALES, load, validate
 from generator_cli import SPANISH_VARIANTS
 from lore_catalog import ENTRIES, MESSAGES
+from lore_i18n import TRANSLATIONS
 
 PREFIX = 'lore.aptitudes.'
 SOURCE_LOCALES = ('en_us', 'es_es', *LOCALES)
@@ -32,17 +33,17 @@ def key_for(entry_id, part):
 
 
 def lore_keys(language, locale=None):
-    """Pares clave/texto en el orden del catálogo. language: 'es' o 'en' (texto de las entradas, aún sin traducir a
-    pt/fr/de). Los avisos de desbloqueo sí están traducidos: con locale (p. ej. 'pt_br') se usa su propio idioma."""
-    message_language = language if locale is None or locale.startswith('es') else locale.split('_')[0]
+    """Pares clave/texto en el orden del catálogo. language: 'es' o 'en' (texto base). Con locale (p. ej. 'pt_br') se
+    usa su propia traducción —entradas en lore_i18n*.py y avisos en MESSAGES— y, si falta, el inglés."""
+    code = language if locale is None or locale.startswith('es') else locale.split('_')[0]
     out = {}
     for entry_id, texts in ENTRIES.items():
-        title, body = texts[language]
+        title, body = TRANSLATIONS.get(code, {}).get(entry_id, texts[language])
         if title is not None:
             out[key_for(entry_id, 'title')] = title
         out[key_for(entry_id, 'body')] = body
     for name, texts in MESSAGES.items():  # avisos de desbloqueo: al final, tras las entradas
-        out[f'{PREFIX}{name}'] = texts.get(message_language, texts['en'])
+        out[f'{PREFIX}{name}'] = texts.get(code, texts['en'])
     return out
 
 

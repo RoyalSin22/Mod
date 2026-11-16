@@ -6,6 +6,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **v67 — Lore narrativo en pt/fr/de.** Las 23 entradas del Grimorio (cosmología, gremios, cronología, eventos,
+  bestiario y crónicas) se traducen a portugués, francés y alemán en `tools/lang/lore_i18n_pt/fr/de.py`; el generador las
+  usa por idioma y recurre al inglés si una entrada nueva aún no está traducida. Revisión nativa pendiente.
 - **v67 — Avisos de desbloqueo del lore en pt/fr/de.** Los seis avisos (Niebla, Lluvia de brasas, Custodio, Behelit,
   sacrificio y fin del Eclipse) se traducen a portugués, francés y alemán en `lore_catalog.py` (`MESSAGES`); las entradas
   del lore siguen con el respaldo en inglés. Revisión nativa pendiente.
