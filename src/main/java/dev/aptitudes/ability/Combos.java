@@ -34,9 +34,13 @@ import java.util.UUID;
  * de la ventana suman combo: +3 % de daño por golpe (máx. +15 %, dentro del tope global ×6). Al llegar a 5,
  * el siguiente golpe es un remate según la categoría del rol principal. Recibir más de 6 de daño rompe el combo.
  * Cada golpe de combo carga +2 del recurso del rol (el «Combo» del Asesino, ×2).
+ *
+ * <p>v65 C5 Y5: El remate puede disparar una piedra angular equipada con cooldown (20 s).</p>
  */
 public final class Combos {
 	private static final Map<UUID, ComboCounter> COUNTERS = new HashMap<>();
+	/** v65 C5 Y5: cooldown de remate de piedra angular (UUID → tick del servidor cuando termina). */
+	private static final Map<UUID, Long> KEYSTONE_COMBO_COOLDOWN = new HashMap<>();
 	/** Evita que el daño del propio remate cuente como golpe de combo. */
 	private static boolean finishing;
 
@@ -145,6 +149,32 @@ public final class Combos {
 			finishing = false;
 		}
 		CastFx.screen(player, dev.aptitudes.network.ScreenFxPayload.SHAKE, color, 0.35f);
+		// v65 C5 Y5: Intentar disparar piedra angular si está disponible.
+		tryTriggerKeystoneOnCombo(player);
+	}
+
+	/**
+	 * v65 C5 Y5: Disparar piedra angular del jugador si está disponible (cooldown).
+	 */
+	private static void tryTriggerKeystoneOnCombo(ServerPlayerEntity player) {
+		long now = player.getServer().getTicks();
+		UUID uuid = player.getUuid();
+
+		// Verificar si el cooldown de Y5 ha expirado.
+		long cooldownUntil = KEYSTONE_COMBO_COOLDOWN.getOrDefault(uuid, 0L);
+		if (now < cooldownUntil) return; // Aún en cooldown.
+
+		// Verificar si el jugador tiene una piedra angular equipada.
+		java.util.Set<dev.aptitudes.role.KeystoneRules.Template> keystones = Keystones.active(player);
+		if (keystones.isEmpty()) return; // Sin piedra angular.
+
+		// Obtener la primera piedra angular activa e intentar dispararla.
+		dev.aptitudes.role.KeystoneRules.Template template = keystones.iterator().next();
+
+		// TODO: Implementar disparo real de piedra angular.
+		// Por ahora: solo establecer cooldown para evitar spam.
+		long cooldown = SynergyRules.keystoneComboTrigerCooldown();
+		KEYSTONE_COMBO_COOLDOWN.put(uuid, now + cooldown);
 	}
 
 	/** Rayo que salta del objetivo a los {@code jumps} enemigos más cercanos (6 bloques). */
