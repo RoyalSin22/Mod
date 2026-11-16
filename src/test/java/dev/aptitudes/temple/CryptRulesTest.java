@@ -88,30 +88,45 @@ class CryptRulesTest {
 	// ----------------------------------------------------------------------------------------- Tamaño de oleada
 
 	@Test void waveSizeFollowsTheBaseAndGrowsWithPlayersAndRing() {
-		assertEquals(4, waveSize(1, 1, 0, 100));
-		assertEquals(6, waveSize(2, 1, 0, 100));
-		assertEquals(8, waveSize(3, 1, 0, 100));
-		assertEquals(6, waveSize(1, 2, 0, 100), "+2 por jugador adicional");
-		assertEquals(10, waveSize(1, 4, 0, 100));
-		assertEquals(5, waveSize(1, 1, 1, 100), "x(1 + 0,25 x anillo)");
-		assertEquals(9, waveSize(1, 1, 5, 100));
+		assertEquals(5, waveSize(1, 1, 0, 100));
+		assertEquals(7, waveSize(2, 1, 0, 100));
+		assertEquals(9, waveSize(3, 1, 0, 100));
+		assertEquals(7, waveSize(1, 2, 0, 100), "+2 por jugador adicional");
+		assertEquals(11, waveSize(1, 4, 0, 100));
+		assertEquals(6, waveSize(1, 1, 1, 100), "x(1 + 0,25 x anillo)");
+		assertEquals(11, waveSize(1, 1, 5, 100));
 	}
 
 	@Test void waveSizeScalesWithThePercentAndIsAlwaysSafe() {
-		assertEquals(2, waveSize(1, 1, 0, 50));
-		assertEquals(8, waveSize(1, 1, 0, 200));
+		assertEquals(3, waveSize(1, 1, 0, 50));
+		assertEquals(10, waveSize(1, 1, 0, 200));
 		assertEquals(1, waveSize(1, 1, 0, 25), "nunca baja de 1");
 		assertEquals(1, waveSize(1, 1, 0, -300), "porcentaje acotado");
-		assertEquals(12, waveSize(1, 1, 0, 9999), "porcentaje acotado a 300");
+		assertEquals(15, waveSize(1, 1, 0, 9999), "porcentaje acotado a 300");
 	}
 
 	@Test void waveSizeIgnoresNonsenseInputs() {
-		assertEquals(4, waveSize(0, 1, 0, 100), "oleada fuera de rango se toma como la primera");
-		assertEquals(8, waveSize(9, 1, 0, 100), "oleada fuera de rango se toma como la última");
-		assertEquals(4, waveSize(1, 0, 0, 100));
-		assertEquals(4, waveSize(1, -3, 0, 100));
+		assertEquals(5, waveSize(0, 1, 0, 100), "oleada fuera de rango se toma como la primera");
+		assertEquals(9, waveSize(9, 1, 0, 100), "oleada fuera de rango se toma como la última");
+		assertEquals(5, waveSize(1, 0, 0, 100));
+		assertEquals(5, waveSize(1, -3, 0, 100));
 		assertEquals(waveSize(1, 6, 5, 300), waveSize(1, 600, 5, 300), "los jugadores se acotan");
 		assertTrue(waveSize(3, 600, 99, 99999) <= MAX_WAVE_SIZE);
+	}
+
+	@Test void trialWavesAreSoftAndAlwaysBelowTheCryptOnes() {
+		assertEquals(4, trialWaveSize(1, 1, 0, 100));
+		assertEquals(6, trialWaveSize(2, 1, 0, 100));
+		assertEquals(6, trialWaveSize(2, 1, 0, 100));
+		assertEquals(8, trialWaveSize(1, 3, 0, 100), "+2 por jugador adicional");
+		assertEquals(5, trialWaveSize(1, 1, 1, 100));
+		assertEquals(6, trialWaveSize(9, 1, 0, 100), "oleada fuera de rango = la última de las dos");
+		assertEquals(4, trialWaveSize(-1, 0, 0, 100));
+		assertTrue(trialWaveSize(3, 600, 99, 99999) <= MAX_WAVE_SIZE);
+		for (int ring = 0; ring <= 5; ring++) for (int players = 1; players <= 6; players++) {
+			assertTrue(trialWaveSize(2, players, ring, 100) <= waveSize(2, players, ring, 100), "ring " + ring + " jugadores " + players);
+			assertTrue(trialWaveSize(1, players, ring, 100) < waveSize(3, players, ring, 100));
+		}
 	}
 
 	@Test void climaxHasTheBossLikeScalingAndTwoEscorts() {

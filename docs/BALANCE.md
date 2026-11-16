@@ -368,13 +368,20 @@ pendientes de ajuste tras la prueba en partida.
 
 | Fase | Tamaño base | Mezcla | Notas |
 |---|---|---|---|
-| Oleada 1 / 2 / 3 | 4 / 6 / 8 | 30 % Errante, 25 % Osario, 45 % zombi o esqueleto | +2 por jugador adicional (hasta 6 contados), ×(1 + 0,25 × anillo), ×`cryptWaveSizePercent`; tope 40 por oleada y 12 vivas a la vez |
+| Oleada 1 / 2 / 3 | 5 / 7 / 9 | 30 % Errante, 25 % Osario, 45 % zombi o esqueleto | +2 por jugador adicional (hasta 6 contados), ×(1 + 0,25 × anillo), ×`cryptWaveSizePercent`; tope 40 por oleada y 12 vivas a la vez |
 | Clímax | 1 campeón + 2 Errantes | Osario Quebrado campeón | +25 % de vida por anillo de Amenaza |
 
 Sin jugadores vivos en la sala durante `cryptIdleResetSeconds` la oleada se reinicia. Las criaturas de la Cripta no sueltan
 botín propio, ni Jirón ni Núcleo, y los Errantes no dan XP: la recompensa es el cofre final (5–7 tiradas: bloque de diamante,
 manzana dorada encantada, restos de netherita, bloque de esmeralda, fragmentos de alma, Corazón de campeón, Cupón de armería,
 Emblema de maestría y frascos de XP). Sin Resonador, sin Cráneo y sin llaves: es botín y lore, no poder nuevo.
+
+# Sala de pruebas del Templo hondo (V70)
+
+Piso 2: dos oleadas de zombis y esqueletos sin botín, de **4 y 6** criaturas (+2 por jugador adicional, ×(1 + 0,25 × anillo),
+×`cryptWaveSizePercent`; tope 12 vivas). Se mantienen siempre por debajo de las de la Cripta (5 / 7 / 9), que es el final
+opcional con llave: el orden de dificultad previsto es Autómata (jefe) < sala de pruebas < Custodio < Cripta. Cifras sin validar en partida;
+si resultan triviales, subir primero `cryptWaveSizePercent` (afecta a ambas) antes de tocar las bases.
 
 # Reforja y Templado (v48)
 

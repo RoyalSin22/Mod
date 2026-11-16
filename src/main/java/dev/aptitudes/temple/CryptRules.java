@@ -31,7 +31,9 @@ public final class CryptRules {
 	/** Oleadas antes del clímax. */
 	public static final int WAVES = 3;
 	/** Criaturas de cada oleada para un jugador, sin escalar. */
-	private static final int[] BASE_SIZES = {4, 6, 8};
+	private static final int[] BASE_SIZES = {5, 7, 9};
+	/** V70: criaturas de cada oleada de la sala de pruebas del Piso 2 (más suaves que las de la Cripta, que es el final opcional). */
+	private static final int[] TRIAL_BASE_SIZES = {4, 6};
 	/** Criaturas extra por cada jugador adicional dentro de la sala. */
 	public static final int EXTRA_PER_PLAYER = 2;
 	/** Jugadores que cuentan para el tamaño de la oleada. */
@@ -127,6 +129,16 @@ public final class CryptRules {
 		int p = Math.max(1, Math.min(MAX_PLAYERS_COUNTED, players));
 		int pct = Math.max(MIN_SIZE_PERCENT, Math.min(MAX_SIZE_PERCENT, sizePercent));
 		double raw = (BASE_SIZES[w - 1] + (double) EXTRA_PER_PLAYER * (p - 1))
+				* (1.0 + RING_BONUS * TempleRules.clampRing(ring)) * pct / 100.0;
+		return Math.max(1, Math.min(MAX_WAVE_SIZE, (int) Math.round(raw)));
+	}
+
+	/** V70: tamaño de una oleada de la sala de pruebas (2 oleadas, mismas reglas de jugadores, anillo y porcentaje). */
+	public static int trialWaveSize(int wave, int players, int ring, int sizePercent) {
+		int w = Math.max(1, Math.min(TRIAL_BASE_SIZES.length, wave));
+		int p = Math.max(1, Math.min(MAX_PLAYERS_COUNTED, players));
+		int pct = Math.max(MIN_SIZE_PERCENT, Math.min(MAX_SIZE_PERCENT, sizePercent));
+		double raw = (TRIAL_BASE_SIZES[w - 1] + (double) EXTRA_PER_PLAYER * (p - 1))
 				* (1.0 + RING_BONUS * TempleRules.clampRing(ring)) * pct / 100.0;
 		return Math.max(1, Math.min(MAX_WAVE_SIZE, (int) Math.round(raw)));
 	}

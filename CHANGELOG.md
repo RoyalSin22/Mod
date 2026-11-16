@@ -5,6 +5,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Cambiado
+- **v70.1 — Balance de las oleadas.** Las oleadas de la Cripta de la Niebla pasan de 4/6/8 a **5/7/9** y la sala de pruebas del
+  Piso 2 usa sus propias bases (4 y 6), siempre por debajo de las de la Cripta, que es el final opcional. Con pruebas
+  (`CryptRulesTest`).
+
 ### Añadido
 - **v71 — Crónicas del Grimorio (T7b).** Nueva pestaña «Crónicas» con las 18 entradas de lore y crónicas de eventos (las
   del bestiario siguen en sus cartas): las desbloqueadas se leen con desplazamiento y las demás aparecen como «Bloqueada»

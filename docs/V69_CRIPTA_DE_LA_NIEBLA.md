@@ -64,7 +64,7 @@ LOCKED ──Custodio cae (CLEARED)──▶ READY ──Llave del Velo (se cons
 - **Oleadas:** 3 oleadas y un clímax. Cada oleada aparece de golpe en los puntos de la sala y termina al matar a todas.
 - **Composición** (`CryptRules.choose`, propia para no tocar `FogMobRules`): 30 % Errante Velado, 25 % Osario Quebrado y 45 %
   no muertos vanilla. Las criaturas llevan `Elites.CHECKED` y no sueltan Jirón ni Núcleo (sin sesión de Niebla).
-- **Tamaño:** `base = 4 / 6 / 8` por oleada, **+2 por jugador adicional** dentro de la sala, **×(1 + 0,25 × anillo de Amenaza)**
+- **Tamaño:** `base = 5 / 7 / 9` por oleada (4 / 6 / 8 hasta la V70.1), **+2 por jugador adicional** dentro de la sala, **×(1 + 0,25 × anillo de Amenaza)**
   (el mismo escalado que el Autómata del templo, `TempleRules.clampRing`). Tope de vivas a la vez: 12.
 - **Clímax:** un **Campeón de la Cripta**, Osario Quebrado hecho campeón (`Elites.makeElite(…, champion = true)`) con vida
   +25 % por anillo y **2 Errantes de escolta**. No es un jefe nuevo: sin modelo, fases ni barra propias más allá de las del

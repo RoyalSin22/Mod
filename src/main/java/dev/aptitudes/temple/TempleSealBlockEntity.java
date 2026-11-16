@@ -363,7 +363,7 @@ public class TempleSealBlockEntity extends BlockEntity {
 		trialMobs.clear();
 		trialLive = true;
 		trialIdleTicks = 0;
-		trialRemaining = CryptRules.waveSize(trialWave, inside.size(), ring, dev.aptitudes.Aptitudes.config().cryptWaveSizePercent);
+		trialRemaining = CryptRules.trialWaveSize(trialWave, inside.size(), ring, dev.aptitudes.Aptitudes.config().cryptWaveSizePercent);
 		tell(inside, "temple.aptitudes.trial.wave_" + Math.min(trialWave, TempleFlowRules.TRIAL_WAVES));
 	}
 
