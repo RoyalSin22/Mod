@@ -31,7 +31,9 @@ public enum Achievement {
 	/** v64: abrir el relicario de un Templo sellado con su llave. */
 	TEMPLE_OPENED("temple_opened", SLAY_BOSS, Frame.GOAL, "aptitudes:temple_key"),
 	/** v64: usar un Vaso de vida. */
-	LIFE_VESSEL("life_vessel", TEMPLE_OPENED, Frame.GOAL, "aptitudes:life_vessel");
+	LIFE_VESSEL("life_vessel", TEMPLE_OPENED, Frame.GOAL, "aptitudes:life_vessel"),
+	/** v67: descubrir todas las criaturas del bestiario (al menos una muerte de cada una). */
+	BESTIARY_COMPLETE("bestiary_complete", ROOT, Frame.GOAL, "minecraft:enchanted_book");
 
 	/** Nombre del único criterio de cada logro (salvo la raíz, que usa {@code minecraft:tick}). */
 	public static final String CRITERION = "done";

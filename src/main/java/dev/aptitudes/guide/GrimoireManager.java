@@ -2,6 +2,7 @@ package dev.aptitudes.guide;
 
 import dev.aptitudes.Aptitudes;
 import dev.aptitudes.achievement.Achievement;
+import dev.aptitudes.achievement.Achievements;
 import dev.aptitudes.boss.BossKind;
 import dev.aptitudes.data.ModAttachments;
 import dev.aptitudes.elite.Elites;
@@ -92,6 +93,7 @@ public final class GrimoireManager {
 		}
 		player.setAttached(ModAttachments.BESTIARY, next);
 		if (unlocked == null) return;
+		if (BestiaryRules.complete(next)) Achievements.grant(player, Achievement.BESTIARY_COMPLETE);
 		player.sendMessage(Text.translatable("bestiary.aptitudes.unlocked",
 				Text.translatable(BestiaryRules.nameKey(unlocked))).formatted(Formatting.GOLD), true);
 		player.playSoundToPlayer(SoundEvents.ITEM_BOOK_PAGE_TURN, SoundCategory.PLAYERS, 0.8f, 1.2f);

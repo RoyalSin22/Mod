@@ -6,6 +6,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **v67 — Logro «Cronista».** Se concede al descubrir las 13 criaturas del bestiario (al menos una muerte de cada
+  una; no exige revelar todas las secciones). Regla pura `BestiaryRules.complete` (con `BestiaryAchievementTest`),
+  concedido al registrar una muerte nueva (`GrimoireManager`) y revisado al entrar (`Achievements.checkState`), de modo
+  que los mundos con bestiario ya completo lo reciben. Es un avance nuevo (`bestiary_complete`, hijo de la raíz) y
+  textos en los 5 idiomas. El capítulo «Logros» del grimorio ya indica 20 logros (decía 17) y suma una sección de
+  templos y bestiario.
 - **v67 (T7a) — Infraestructura de lore del Grimorio.** Estado de desbloqueos por jugador (`LoreState`, attachment
   `aptitudes:lore`, `copyOnDeath`), reglas puras de desbloqueo por evento (`LoreRules`, 6 hooks), gestor de desbloqueos
   (`LoreManager`) y sincronización S2C (`LorePayload`). Desbloqueos en: hablar con aldeano (Niebla/Lluvia), encuentro con

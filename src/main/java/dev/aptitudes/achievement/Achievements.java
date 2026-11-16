@@ -6,6 +6,8 @@ import dev.aptitudes.contract.ContractRules;
 import dev.aptitudes.data.PlayerProgress;
 import dev.aptitudes.data.Skill;
 import dev.aptitudes.event.WorldEventKind;
+import dev.aptitudes.guide.BestiaryRules;
+import dev.aptitudes.guide.GrimoireManager;
 import dev.aptitudes.logic.ProgressManager;
 import dev.aptitudes.role.Evolution;
 import dev.aptitudes.role.Role;
@@ -59,6 +61,7 @@ public final class Achievements {
 			}
 		}
 		checkContracts(player);
+		if (BestiaryRules.complete(GrimoireManager.get(player))) grant(player, Achievement.BESTIARY_COMPLETE); // retroactivo
 	}
 
 	/** Sobrevivir hasta el final a un evento del mundo. */

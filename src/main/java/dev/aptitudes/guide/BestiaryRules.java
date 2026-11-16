@@ -177,6 +177,11 @@ public final class BestiaryRules {
 		return n;
 	}
 
+	/** «Cronista»: ¿se ha descubierto (al menos una muerte) cada entrada del bestiario? */
+	public static boolean complete(Map<String, Integer> kills) {
+		return kills != null && !ENTRIES.isEmpty() && unlocked(kills, null) >= total(null);
+	}
+
 	public static int total(Kind kind) {
 		int n = 0;
 		for (Entry e : ENTRIES) if (kind == null || e.kind() == kind) n++;

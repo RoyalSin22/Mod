@@ -106,7 +106,7 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 - G3 Progreso: logros (servidor), bestiario, jefes, escalones de senda y piedras angulares.
 - G4 Cabeceras generadas por `tools/textures/gen_guide_headers.py` (25 ilustraciones, `--check`).
 - G5 Sendas por rol con iconos S1–S7 y piedra angular.
-- Pendiente: revisión nativa de los textos nuevos en pt_br/fr_fr/de_de; logro del bestiario (idea).
+- Pendiente: revisión nativa de los textos nuevos en pt_br/fr_fr/de_de; el logro del bestiario («Cronista») ya está hecho.
 
 ### v60 — Frascos y arenas (K2)
 - Fase 1. Mejora de Estus y Éter en la Hoguera con núcleos y Fragmentos de alma. Vista previa,

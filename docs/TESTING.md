@@ -34,6 +34,10 @@ Validación en partida (pendiente):
    legible sobre el nuevo fondo y marco.
 6. **Idiomas:** cambia a es, en, pt, fr y de y comprueba nombres, consejos, lore y pistas.
 7. **Migración:** un mundo con muertes de Minecraft guardadas carga sin errores y las ignora.
+7b. **Logro «Cronista»:** automática `BestiaryAchievementTest`. En partida: en la pestaña de avances «Aptitudes» aparece
+   «Cronista» bloqueado; descubre las 13 criaturas (con `/summon`; el Custodio al derrotar a un guardián de templo) y, al
+   desbloquear la última, se concede. Un jugador con el bestiario ya completo lo recibe al entrar al mundo. El capítulo
+   «Logros» del grimorio dice 20 logros y menciona templos y bestiario.
 8. **Arte del G5 (marco y piezas):** con las texturas de `textures/gui/guide_ui/`, comprueba en escalas 1, 2, 3 y
    automática:
    - La ventana muestra el marco con el ojo arriba y el libro abajo, sin deformarse al cambiar de tamaño.

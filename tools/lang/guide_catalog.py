@@ -539,7 +539,7 @@ Legion: +1 maximaler Diener; deine Diener heilen dich um 10%% ihres verursachten
 Klicke im Kapitel Pfade des Grimoires auf eine Rolle, um ihre drei Pfade mit Symbolen, Stufen und Schlüsselstein zu sehen."""))
 
 chapter('achievements', ('Conquistas', 'Succès', 'Fortschritte'), (
-    """Abra os progressos do Minecraft e selecione a aba «Aptitudes». São 17 conquistas, concedidas automaticamente pelo servidor quando os requisitos são cumpridos. Passe o mouse sobre um progresso para ler o objetivo.
+    """Abra os progressos do Minecraft e selecione a aba «Aptitudes». São 20 conquistas, concedidas automaticamente pelo servidor quando os requisitos são cumpridos. Passe o mouse sobre um progresso para ler o objetivo.
 
 FOGUEIRA E PROGRESSÃO:
 Descansar em uma Fogueira; atingir nível de alma 10; escolher uma classe; evoluir para Mestre e depois Definitivo; atingir nível 50 em uma habilidade por uso.
@@ -553,8 +553,11 @@ Concluir uma Névoa das Almas, uma Chuva de Brasas e um Eclipse; cada evento tem
 GRUPOS E GUILDA:
 Formar ou entrar em um grupo; resgatar o primeiro contrato; resgatar 10 contratos; atingir Mestre da Guilda (700 de reputação). Aceitar um contrato não conta como resgatá-lo.
 
+TEMPLOS E BESTIÁRIO:
+Abrir o Relicário de um templo com sua chave; usar um Vaso de vida; descobrir todas as criaturas do bestiário.
+
 Ao entrar, o servidor verifica conquistas baseadas no estado salvo: classe, evolução, nível de alma, habilidades e contratos. Mundos antigos podem concedê-las sem repetir esse progresso. Conquistas de ação exigem realizar a ação; conquistas já concedidas não se duplicam.""",
-    """Ouvrez les progrès de Minecraft et sélectionnez l'onglet «Aptitudes». Il contient 17 succès, accordés automatiquement par le serveur lorsque leurs conditions sont remplies. Survolez un progrès pour lire son objectif.
+    """Ouvrez les progrès de Minecraft et sélectionnez l'onglet «Aptitudes». Il contient 20 succès, accordés automatiquement par le serveur lorsque leurs conditions sont remplies. Survolez un progrès pour lire son objectif.
 
 FEU ET PROGRESSION :
 Se reposer à un feu de camp ; atteindre le niveau d'âme 10 ; choisir un rôle ; évoluer aux stades Maître puis Ultime ; atteindre le niveau 50 dans une compétence d'usage.
@@ -568,8 +571,11 @@ Terminer une Brume des âmes, une Pluie de braises et une Éclipse ; chaque év�
 GROUPES ET GUILDE :
 Former ou rejoindre un groupe ; réclamer un premier contrat ; en réclamer 10 ; atteindre Maître de guilde (700 de réputation). Accepter un contrat ne compte pas comme le réclamer.
 
+TEMPLES ET BESTIAIRE :
+Ouvrir le Reliquaire d'un temple avec sa clé ; utiliser un Vase de vie ; découvrir toutes les créatures du bestiaire.
+
 À la connexion, le serveur vérifie les succès fondés sur l'état sauvegardé : rôle, évolution, niveau d'âme, compétences et contrats. Les anciens mondes peuvent les accorder sans refaire cette progression. Les succès d'action demandent l'action ; ceux déjà obtenus ne sont pas dupliqués.""",
-    """Öffne die Minecraft-Fortschritte und wähle den Reiter «Aptitudes». Er enthält 17 Fortschritte, die der Server bei erfüllten Voraussetzungen automatisch vergibt. Fahre über einen Fortschritt, um sein Ziel zu lesen.
+    """Öffne die Minecraft-Fortschritte und wähle den Reiter «Aptitudes». Er enthält 20 Fortschritte, die der Server bei erfüllten Voraussetzungen automatisch vergibt. Fahre über einen Fortschritt, um sein Ziel zu lesen.
 
 LEUCHTFEUER UND FORTSCHRITT:
 An einem Leuchtfeuer rasten; Seelenstufe 10 erreichen; eine Rolle wählen; zum Meister und dann zu Ultimativ entwickeln; Stufe 50 in einer Nutzungsfertigkeit erreichen.
@@ -582,6 +588,9 @@ Seelennebel, Glutregen und Finsternis abschließen; jedes Ereignis hat einen eig
 
 GRUPPEN UND GILDE:
 Eine Gruppe gründen oder beitreten; den ersten Auftrag abrechnen; 10 Aufträge abrechnen; Gildenmeister erreichen (700 Ruf). Annahme zählt nicht als Abrechnung.
+
+TEMPEL UND BESTIARIUM:
+Das Reliquiar eines Tempels mit seinem Schlüssel öffnen; ein Lebensgefäß benutzen; alle Kreaturen des Bestiariums entdecken.
 
 Beim Beitritt prüft der Server Fortschritte anhand gespeicherter Daten: Rolle, Entwicklung, Seelenstufe, Fertigkeiten und Aufträge. Alte Welten können sie ohne erneutes Fortschreiten vergeben. Aktionsfortschritte erfordern die Aktion; bereits vergebene werden nicht verdoppelt."""))
 
