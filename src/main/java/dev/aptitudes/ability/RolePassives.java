@@ -99,16 +99,13 @@ public final class RolePassives {
 		RoleData data = RoleManager.get(player);
 		if (data == null) return;
 
-		// Verificar roles principal y secundario.
-		for (Role role : new Role[]{data.primary(), data.secondary()}) {
-			if (role == null) continue;
-			float bonus = SynergyRules.armorSynergyBonus(player, role);
-			if (bonus > 1.0f) {
-				SynergyTracker.mark(player, 3);
-				// Aplicar +10% de Knockback Resistance como defensa pasiva.
-				AttributeApplier.set(player, EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE,
-						Aptitudes.id("armor_synergy/" + role.key()), bonus - 1.0, Operation.ADD_VALUE);
-			}
+		// Solo los roles activos pueden tener el bonus; el resto se limpia (al quitarse la armadura o cambiar de rol).
+		for (Role role : Role.values()) {
+			boolean active = role == data.primary() || role == data.secondary();
+			float bonus = active ? SynergyRules.armorSynergyBonus(player, role) : 1.0f;
+			if (bonus > 1.0f) SynergyTracker.mark(player, 3);
+			AttributeApplier.set(player, EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE,
+					Aptitudes.id("armor_synergy/" + role.key()), bonus > 1.0f ? bonus - 1.0 : 0.0, Operation.ADD_VALUE);
 		}
 	}
 

@@ -86,13 +86,6 @@ class SynergyRulesTest {
 	}
 
 	@Test
-	void canTriggerKeystoneOnComboReturnsFalseByDefault() {
-		// Y5: Sin lógica de cooldown aún, debe retornar false.
-		boolean canTrigger = SynergyRules.canTriggerKeystoneOnCombo(null, "any_finisher");
-		assertFalse(canTrigger, "Placeholder should return false");
-	}
-
-	@Test
 	void keystoneComboTrigerCooldownReturnsValidTicks() {
 		// Y5: Espera debe ser un número positivo de ticks (≥ 0).
 		int cooldown = SynergyRules.keystoneComboTrigerCooldown();

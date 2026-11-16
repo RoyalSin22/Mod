@@ -190,20 +190,6 @@ public final class SynergyRules {
 	// =====================================================================
 
 	/**
-	 * Verificar si un remate de combo puede disparar una piedra angular.
-	 * El remate debe tener espera configurable (cooldown).
-	 *
-	 * @param player Jugador que ejecuta combo
-	 * @param comboFinisher ID de la habilidad que remata el combo
-	 * @return true si se puede ejecutar el remate de piedra angular
-	 */
-	public static boolean canTriggerKeystoneOnCombo(ServerPlayerEntity player, String comboFinisher) {
-		// Placeholder: sin lógica de cooldown aún.
-		// TODO: Verificar si existe cooldown de piedra angular y si ha expirado.
-		return false;
-	}
-
-	/**
 	 * Cooldown de espera para disparar piedra angular desde remate de combo.
 	 *
 	 * @return Ticks (segundos * 20) de espera antes de poder disparar de nuevo
