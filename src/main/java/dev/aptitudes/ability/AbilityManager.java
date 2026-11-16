@@ -47,6 +47,8 @@ public final class AbilityManager {
 	/** jugador → (id de nodo → tick del servidor en que termina el enfriamiento). */
 	/** Último valor de energía enviado (redondeado) para no inundar la red. */
 	private static final Map<UUID, Integer> LAST_SENT_ENERGY = new HashMap<>();
+	/** v65: contexto de sinergias por jugador (bonificadores activos durante ejecución). */
+	private static final Map<UUID, AbilitySynergyContext> SYNERGY_CONTEXT = new HashMap<>();
 
 	private AbilityManager() {
 	}
@@ -55,6 +57,7 @@ public final class AbilityManager {
 		RoleResources.forget(player);
 		LAST_SENT_ENERGY.remove(player.getUuid());
 		AbilityState.forget(player);
+		SYNERGY_CONTEXT.remove(player.getUuid()); // v65: limpiar contexto de sinergias
 	}
 
 	public static void use(ServerPlayerEntity player, int slot) {
@@ -84,12 +87,18 @@ public final class AbilityManager {
 			return;
 		}
 		int rank = learned + rawRank(data, role, "_mastery"); // Maestría
+
+		// v65 (C5 Y1): Calcular bonificadores de sinergia por senda.
+		// Placeholder: se implementarán mapeos reales de senda ↔ activa.
+		AbilitySynergyContext synergy = SynergyRules.contextForAbility(player, role, node.id());
+
 		int cost = (int) Math.ceil(node.energyCost() * (1.0 - 0.10 * rawRank(data, role, "_efficiency")) // Eficiencia
 				* RoleArmorSets.costMultiplier(player) // Set del Mago
-				* ExtraKits.costMultiplier(player, node.id())); // v67: Forma de arcano puro y Modo ahorro
+				* ExtraKits.costMultiplier(player, node.id()) // v67: Forma de arcano puro y Modo ahorro
+				* synergy.energyCostBonus()); // v65: Sinergia de senda
 		Ability ability = Abilities.get(node.id());
 		execute(player, role, node.id(), Text.translatable(node.translationKey()), cost,
-				cooldownTicks(player, node.cooldownSecs(), role), slot, ability == null ? null : (p, bonus) -> ability.use(p, capRank(rank + bonus)));
+				cooldownTicks(player, node.cooldownSecs(), role), slot, ability == null ? null : (p, bonus) -> ability.use(p, capRank(rank + bonus)), synergy); // v65: pasar contexto
 	}
 
 	/** Habilidad definitiva: la del rol principal si es Definitivo; si no, la del secundario. */
@@ -103,7 +112,8 @@ public final class AbilityManager {
 		Ability ability = Ultimates.get(role);
 		execute(player, role, "ultimate." + role.key(), Text.translatable(Evolution.ultimateKey(role)), ULTIMATE_ENERGY,
 				cooldownTicks(player, ULTIMATE_COOLDOWN_SECS, null), ULTIMATE_SLOT,
-				ability == null ? null : (p, bonus) -> ability.use(p, capRank(3 + data.tier(role) + bonus)));
+				ability == null ? null : (p, bonus) -> ability.use(p, capRank(3 + data.tier(role) + bonus)),
+				AbilitySynergyContext.NONE); // v65: sin sinergias para habilidad definitiva
 	}
 
 	/** Característica: la del principal si es Maestro o más; si no, la del secundario. */
@@ -117,7 +127,8 @@ public final class AbilityManager {
 		Ability ability = Signatures.get(role);
 		execute(player, role, "signature." + role.key(), Text.translatable(Evolution.signatureKey(role)),
 				Signatures.ENERGY, cooldownTicks(player, Signatures.COOLDOWN_SECS, null), SIGNATURE_SLOT,
-				ability == null ? null : (p, bonus) -> ability.use(p, capRank(3 + data.tier(role) + bonus)));
+				ability == null ? null : (p, bonus) -> ability.use(p, capRank(3 + data.tier(role) + bonus)),
+				AbilitySynergyContext.NONE); // v65: sin sinergias para habilidad característica
 	}
 
 	public static Role signatureRole(RoleData data) {
@@ -135,7 +146,8 @@ public final class AbilityManager {
 
 	/** Comprobaciones comunes (enfriamiento y coste), ejecución y cobro. */
 	private static void execute(ServerPlayerEntity player, Role role, String cooldownKey, Text name, int energyCost,
-								int cooldown, int slot, java.util.function.BiPredicate<ServerPlayerEntity, Integer> action) {
+								int cooldown, int slot, java.util.function.BiPredicate<ServerPlayerEntity, Integer> action,
+								AbilitySynergyContext synergy) { // v65: contexto de sinergia
 		if (dev.aptitudes.unique.UniqueEffects.isNegated(player)) {
 			fail(player, Text.translatable("aptitudes.unique.negated"));
 			return;
@@ -172,9 +184,17 @@ public final class AbilityManager {
 		}
 		// Recurso de rol al 50 % o más → habilidad potenciada (+1 rango). Se decide ANTES de lanzarla.
 		boolean empowered = RoleResources.canEmpower(player, role);
-		if (action == null || !action.test(player, empowered ? 1 : 0)) {
-			fail(player, Text.translatable("aptitudes.ability.no_effect"));
-			return;
+
+		// v65: Establecer contexto de sinergia ANTES de invocar la habilidad.
+		setSynergyContext(player, synergy);
+		try {
+			if (action == null || !action.test(player, empowered ? 1 : 0)) {
+				fail(player, Text.translatable("aptitudes.ability.no_effect"));
+				return;
+			}
+		} finally {
+			// Limpiar contexto DESPUÉS de ejecutar la habilidad.
+			setSynergyContext(player, AbilitySynergyContext.NONE);
 		}
 
 		if (!free) {
@@ -233,6 +253,22 @@ public final class AbilityManager {
 		cooldowns(player).clear(cooldownKey);
 		if (ServerPlayNetworking.canSend(player, CooldownPayload.ID)) {
 			ServerPlayNetworking.send(player, new CooldownPayload(slot, 0));
+		}
+	}
+
+	// ===== v65: Sinergias de senda (Y1 + Y4) =====
+
+	/** Retorna el contexto de sinergia activo del jugador, o NONE si no hay. */
+	public static AbilitySynergyContext synergyContext(ServerPlayerEntity player) {
+		return SYNERGY_CONTEXT.getOrDefault(player.getUuid(), AbilitySynergyContext.NONE);
+	}
+
+	/** Establece el contexto de sinergia para la habilidad actual (privado, llamado desde execute()). */
+	private static void setSynergyContext(ServerPlayerEntity player, AbilitySynergyContext context) {
+		if (context == AbilitySynergyContext.NONE) {
+			SYNERGY_CONTEXT.remove(player.getUuid());
+		} else {
+			SYNERGY_CONTEXT.put(player.getUuid(), context);
 		}
 	}
 

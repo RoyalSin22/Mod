@@ -1,0 +1,23 @@
+{
+  "type": "aptitudes:guild_crafting",
+  "pattern": [
+    "IBI",
+    "BAB",
+    "IBI"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_block"
+    },
+    "B": {
+      "item": "minecraft:copper_block"
+    },
+    "A": {
+      "item": "aptitudes:eclipse_fragment"
+    }
+  },
+  "result": {
+    "id": "aptitudes:sunset_astrolabe",
+    "count": 1
+  }
+}

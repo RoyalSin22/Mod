@@ -127,6 +127,9 @@ public final class PartyManager {
 		List<ServerPlayerEntity> members = onlineMembers(killer);
 		double bonus = PartyRules.bonus(members.size(), Aptitudes.config().partyXpBonusPerMember,
 				Aptitudes.config().partyXpBonusMax);
+		// v65 (C5 Y2): Resonancia de grupo (+15% si dos miembros comparten piedra angular).
+		float resonanceBonus = dev.aptitudes.ability.SynergyRules.groupResonanceBonus(killer);
+		bonus *= resonanceBonus;
 		int bonusXp = PartyRules.bonusXp(baseAmount, bonus);
 		for (ServerPlayerEntity member : members) {
 			if (member == killer && sourceAtCap && !masterySource) continue;
@@ -148,6 +151,9 @@ public final class PartyManager {
 		List<ServerPlayerEntity> members = onlineMembers(killer);
 		double bonus = PartyRules.bonus(members.size(), Aptitudes.config().partyXpBonusPerMember,
 				Aptitudes.config().partyXpBonusMax);
+		// v65 (C5 Y2): Resonancia de grupo (+15% si dos miembros comparten piedra angular).
+		float resonanceBonus = dev.aptitudes.ability.SynergyRules.groupResonanceBonus(killer);
+		bonus *= resonanceBonus;
 		int bonusXp = PartyRules.bonusXp(earned, bonus);
 		for (ServerPlayerEntity member : members) {
 			Role target = member == killer ? role : RoleManager.get(member).primary();

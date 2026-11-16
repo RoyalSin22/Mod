@@ -268,6 +268,24 @@ public class AptitudesConfig {
 	public double keystoneSanctuaryHeal = 2.0;
 	public double keystoneSanctuaryIntervalSeconds = 5.0;
 
+	// ---------- v65 C5: Sinergias (Y1-Y5) ----------
+	/** Habilitar sistema de sinergias. */
+	public boolean enableSynergies = true;
+	/** Y1 (Senda ↔ Activas): bonificador de radio (+%). */
+	public double synergyBonusY1Radius = 1.20;
+	/** Y1 (Senda ↔ Activas): bonificador de daño (+%). */
+	public double synergyBonusY1Damage = 1.15;
+	/** Y1 (Senda ↔ Activas): bonificador de coste energético (−%). */
+	public double synergyBonusY1Energy = 0.90;
+	/** Y2 (Resonancia grupo): bonificador de XP en grupo con keystones iguales (+%). */
+	public double synergyBonusY2Xp = 1.15;
+	/** Y3 (Elementos ↔ Runas): bonificador de daño de fusión con runa correcta (+%). */
+	public double synergyBonusY3Damage = 1.20;
+	/** Y4 (Armadura ↔ Senda): bonificador de defensa con armadura coincidente (+%). */
+	public double synergyBonusY4Defense = 1.10;
+	/** Y5 (Combos ↔ Keystones): espera entre disparos de keystone en remate (segundos). */
+	public int synergyY5KeystoneCooldownSeconds = 20;
+
 	// ---------- Runas (v35: antes eran valores fijos) ----------
 	public int runeFlameSeconds = 3;
 	public double runeLeechAmount = 1.0;
@@ -657,6 +675,14 @@ public class AptitudesConfig {
 		c.threatDamagePerRing = Math.min(0.2, c.threatDamagePerRing);
 		c.threatLootPerRing = Math.min(0.2, c.threatLootPerRing);
 		c.threatEliteChancePerRing = Math.min(1, c.threatEliteChancePerRing);
+		// v65 C5: Sinergias
+		c.synergyBonusY1Radius = Math.max(1.0f, Math.min(2.0f, c.synergyBonusY1Radius));
+		c.synergyBonusY1Damage = Math.max(1.0f, Math.min(2.0f, c.synergyBonusY1Damage));
+		c.synergyBonusY1Energy = Math.max(0.5f, Math.min(1.0f, c.synergyBonusY1Energy));
+		c.synergyBonusY2Xp = Math.max(1.0f, Math.min(2.0f, c.synergyBonusY2Xp));
+		c.synergyBonusY3Damage = Math.max(1.0f, Math.min(2.0f, c.synergyBonusY3Damage));
+		c.synergyBonusY4Defense = Math.max(1.0f, Math.min(2.0f, c.synergyBonusY4Defense));
+		c.synergyY5KeystoneCooldownSeconds = clamp(c.synergyY5KeystoneCooldownSeconds, 1, 120);
 		return c;
 	}
 
