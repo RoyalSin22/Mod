@@ -78,6 +78,9 @@ public final class BestiaryRules {
 		// v67 (G1): Custodio de las Cuatro Llaves (guardián de los templos sellados); se añade al final.
 		out.add(new Entry("custodio", Kind.CREATURE, Region.OVERWORLD, "aptitudes:custodio_cuatro_llaves", null,
 				"aptitudes:temple_key", List.of("aptitudes:temple_key")));
+		// V68: Gran Osario Quebrado, jefe de la Niebla; se añade al final. Con él el bestiario tiene 14 entradas.
+		out.add(new Entry("gran_osario_quebrado", Kind.BOSS, Region.OVERWORLD, "aptitudes:gran_osario_quebrado", null,
+				"aptitudes:craneo_gran_osario", List.of("aptitudes:craneo_gran_osario", "aptitudes:soul_shard")));
 		ENTRIES = Collections.unmodifiableList(out);
 		for (Entry e : ENTRIES) {
 			if (BY_ID.put(e.id(), e) != null) throw new IllegalStateException("Entrada duplicada: " + e.id());

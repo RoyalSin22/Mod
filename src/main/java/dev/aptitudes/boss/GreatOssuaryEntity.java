@@ -7,6 +7,7 @@ import dev.aptitudes.elite.Elites;
 import dev.aptitudes.event.WorldEventManager;
 import dev.aptitudes.mob.ErranteEntity;
 import dev.aptitudes.mob.NewMobs;
+import dev.aptitudes.item.ModItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -18,6 +19,9 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -303,8 +307,31 @@ public class GreatOssuaryEntity extends AnimatedBossEntity {
 		}
 	}
 
-	/** Reparto del trofeo y los fragmentos entre los jugadores con daño suficiente (F4). */
-	protected void rewardPlayers(ServerWorld world) {
+	/**
+	 * Reparto: cada jugador con daño suficiente ({@code osarioBossMinDamagePercent}) recibe 1 Cráneo del Gran Osario y de 6
+	 * a 10 fragmentos de alma. Va al inventario; si el jugador murió en el combate, cae donde cayó el jefe. Los jugadores
+	 * desconectados se pierden (el botín no se guarda).
+	 */
+	private void rewardPlayers(ServerWorld world) {
+		int minPercent = Aptitudes.config().osarioBossMinDamagePercent;
+		for (Map.Entry<UUID, Float> entry : credit.entrySet()) {
+			if (!OsarioBossRules.eligible(entry.getValue(), getMaxHealth(), minPercent)) continue;
+			ServerPlayerEntity player = world.getServer().getPlayerManager().getPlayer(entry.getKey());
+			if (player == null) continue;
+			ItemStack skull = new ItemStack(ModItems.CRANEO_GRAN_OSARIO);
+			ItemStack shards = new ItemStack(ModItems.SOUL_SHARD,
+					OsarioBossRules.shards(getRandom().nextInt(OsarioBossRules.SHARD_MAX - OsarioBossRules.SHARD_MIN + 1)));
+			if (player.isAlive()) {
+				player.giveItemStack(skull);
+				player.giveItemStack(shards);
+				player.sendMessage(Text.translatable("boss.aptitudes.gran_osario_reward", getDisplayName())
+						.formatted(Formatting.LIGHT_PURPLE), false);
+				player.playSoundToPlayer(SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 0.7f, 0.8f);
+			} else {
+				dropStack(skull);
+				dropStack(shards);
+			}
+		}
 	}
 
 	// ----------------------------------------------------------------------------------------------- Persistencia

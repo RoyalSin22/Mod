@@ -121,6 +121,10 @@ public final class ModItems {
 	public static final Item ANCLA_DEL_VELO = register("ancla_del_velo",
 			new VeilAnchorItem(new Item.Settings().maxCount(16).rarity(Rarity.RARE)));
 
+	/** V68: trofeo del Gran Osario Quebrado, jefe de la Niebla. Material narrativo: sin uso hasta la receta de la mazmorra del Custodio. */
+	public static final Item CRANEO_GRAN_OSARIO = register("craneo_gran_osario",
+			new TrophyItem("item.aptitudes.craneo_gran_osario.tooltip", new Item.Settings().maxCount(16).rarity(Rarity.EPIC)));
+
 	/** T5: se obtiene en la cámara de diamante del Custodio; se sacrifica en la Hoguera para iniciar el Eclipse (cooldown 3 días). */
 	public static final Item RESONADOR_DEL_UMBRAL = register("resonador_del_umbral",
 			new BeheritItem(new Item.Settings().maxCount(16).rarity(Rarity.EPIC).fireproof()));
@@ -239,6 +243,7 @@ public final class ModItems {
 						entries.add(SOUL_SHARD);
 						entries.add(JIRON_VELO_ESPECTRAL);
 						entries.add(NUCLEO_OSARIO);
+						entries.add(CRANEO_GRAN_OSARIO);
 						entries.add(ANCLA_DEL_VELO);
 						entries.add(RESONADOR_DEL_UMBRAL);
 						entries.add(dev.aptitudes.event.Expeditions.TOKEN); // F5: ficha de expedición
