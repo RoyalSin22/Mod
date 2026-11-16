@@ -1,5 +1,23 @@
 # Pruebas de Aptitudes
 
+## Prueba de arranque del servidor (sin cliente ni jugador)
+
+Comprueba que el mod carga en un Minecraft real: registros, recetas, avances, tablas de botín, mundo y las criaturas del
+mod. No cubre cliente, GUI, combate ni sistemas por jugador (logros, bestiario, HUD): eso sigue siendo prueba en partida.
+
+```bash
+mkdir -p run && echo "eula=true" > run/eula.txt   # run/ está en .gitignore
+( sleep 80
+  for e in osario_quebrado errante_velado custodio_cuatro_llaves escorificador_hierro faceless_colossus dismantled_guardian ancient_automaton; do
+    echo "execute in minecraft:overworld run summon aptitudes:$e 8 80 8"; sleep 1; done
+  echo "tick sprint 1200"; sleep 40; echo stop ) | ./gradlew runServer --offline --console=plain
+```
+
+Esperado: `Done (…s)!`, «Loaded N recipes», «Loaded N advancements», siete «Summoned new …» y ningún `Exception` ni
+`ERROR` propio. Son normales en desarrollo y se ignoran: «No data fixer registered for …» (entidades del mod),
+`server.properties` ausente y los fallos de Yggdrasil por falta de red. Verificado el 2026-11-16 sobre `main` (v67): 1426
+recetas, 1421 avances, arranque en ~9 s y las siete criaturas sin errores tras 1200 ticks.
+
 ## v67 — Tooltips de la pantalla de configuración
 
 Automática: `ConfigTooltipRulesTest` (cada opción editable tiene descripción en es/en, sin porcentajes ni textos
