@@ -95,7 +95,7 @@ public final class SynergyRules {
 	// =====================================================================
 
 	/**
-	 * Bonificador de fusión si una runa del mismo elemento potencia el activo.
+	 * Bonificador de fusión si una runa del mismo elemento potencia el activo (v65 C5 Y3).
 	 * Ejemplo: Elementalista usa FIRE + tiene runa FLAME → +20% daño de fusión.
 	 *
 	 * @param player Elementalista
@@ -104,9 +104,38 @@ public final class SynergyRules {
 	 * @return Multiplicador: 1.20 (fusión potenciada) o 1.0 (sin sinergia)
 	 */
 	public static float elementRuneSynergyBonus(ServerPlayerEntity player, Element activeElement, ItemStack weapon) {
-		// Placeholder: sin lógica de búsqueda aún.
-		// TODO: Buscar runa del elemento correspondiente en weapon.
-		return 1.0f;
+		if (player == null || activeElement == null || weapon == null || weapon.isEmpty()) {
+			return 1.0f;
+		}
+
+		return checkElementRuneMatch(activeElement, weapon) ? 1.20f : 1.0f;
+	}
+
+	/**
+	 * Verificar si el arma tiene una runa que coincida con el elemento activo.
+	 */
+	private static boolean checkElementRuneMatch(Element activeElement, ItemStack weapon) {
+		try {
+			// Obtener runas del arma.
+			var runeIds = RuneSocketing.runes(weapon);
+			if (runeIds.isEmpty()) return false;
+
+			// Obtener el mapeo runa → elemento.
+			var runeElementMap = getRuneElementMap();
+
+			// Buscar coincidencia.
+			for (String runeId : runeIds) {
+				Element runeElement = runeElementMap.get(runeId);
+				if (runeElement != null && runeElement == activeElement) {
+					return true; // Encontró coincidencia.
+				}
+			}
+
+			return false;
+		} catch (Exception e) {
+			// Defensivo: en caso de error, retornar false.
+			return false;
+		}
 	}
 
 	// =====================================================================
