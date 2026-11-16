@@ -88,6 +88,7 @@ public class CampFeature extends Feature<DefaultFeatureConfig> {
 				b.mob(EntityType.PILLAGER, 0, 0, -3);
 			}
 		}
+		StructureIndex.record(context.getWorld(), "camp", origin); // V77: /aptitudes locate
 		return true;
 	}
 

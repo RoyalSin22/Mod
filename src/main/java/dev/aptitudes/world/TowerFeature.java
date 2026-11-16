@@ -78,6 +78,7 @@ public class TowerFeature extends Feature<DefaultFeatureConfig> {
 		b.chest(0, top + 1, 0, "tower_top");
 		// Centinela de la torre: jefe de tres fases en la azotea.
 		b.boss(EntityType.WITHER_SKELETON, 1, top + 1, 1, dev.aptitudes.boss.BossKind.TOWER_SENTINEL);
+		StructureIndex.record(context.getWorld(), "tower", origin); // V77: /aptitudes locate
 		return true;
 	}
 }

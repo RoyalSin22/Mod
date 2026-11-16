@@ -1,5 +1,13 @@
 # Pruebas de Aptitudes
 
+## V77 — Localizar estructuras
+
+`/aptitudes locate custodian_temple` (o `temple`, `tower`, `bonfire_shrine`, `camp`) da las coordenadas de la más cercana ya generada; pulsa las
+coordenadas para teletransportarte. `/aptitudes place custodian_temple` genera una en un sitio llano cerca de ti. Las estructuras
+generadas antes de la V77 no están indexadas: los templos del Custodio «hondos» solo existen en terreno nuevo (chunks generados con la
+V70 o posterior); en un mundo ya explorado usa `place` o viaja a terreno sin explorar. Rareza natural: un intento por cada 120
+chunks, y solo en terreno con menos de 4 bloques de desnivel.
+
 ## V76 — Arte de las armas de evolución
 
 Automáticas: `python3 -m unittest discover -s tools/textures -p 'test_*.py'` (importador y validación) y

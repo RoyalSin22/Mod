@@ -123,6 +123,7 @@ public class TempleFeature extends Feature<DefaultFeatureConfig> {
 		for (int[] c : new int[][]{{-6, 1}, {6, 1}, {-6, 5}, {6, 5}}) {
 			if (b.random.nextFloat() < 0.5f) b.set(c[0], 5, c[1], Blocks.COBWEB.getDefaultState());
 		}
+		StructureIndex.record(context.getWorld(), "temple", origin); // V77: /aptitudes locate
 		return true;
 	}
 

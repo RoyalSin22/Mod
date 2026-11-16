@@ -27,6 +27,15 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   guarda en `tools/textures/source/weapons/`. `gen_items.py` usa ese arte en lugar del diseño provisional y
   `gen_weapon_models.py` extruye el modelo 3D de la mano del propio PNG. Alta densidad: 64×64 por defecto (32 o 16 con `--size`); el inventario usa una versión reducida a 32×32 y el modelo 3D la de 64×64 (`<arma>_hd.png`). Encargo de arte con dirección de fantasía oscura (estoico y dinámico), técnica de pixel art por píxel y una ficha por arma con su nombre oficial. 11 pruebas Python (`test_weapon_art.py`).
 
+### Añadido
+- **v77 — Localizar las estructuras del mod.** `/locate` de vanilla no conoce las estructuras de Aptitudes porque son `Feature`s.
+  Nuevos comandos de operador: `/aptitudes locate <estructura>` (la más cercana registrada, con coordenadas pulsables para
+  teletransportarse) y `/aptitudes place <estructura>` (genera una en un sitio llano a 24–96 bloques, para probar sin explorar).
+  Estructuras: `custodian_temple`, `temple`, `tower`, `bonfire_shrine`, `camp`. Índice por mundo (`aptitudes_structures.dat`) que
+  se rellena al generarse cada estructura (cola desde los hilos de generación y volcado en el hilo del servidor); solo recoge las
+  generadas con esta versión o posterior. Textos en los 5 idiomas y `StructureLocateRulesTest`. Verificado en un servidor: el
+  templo hondo aparece de forma natural a 39 bloques del origen y el índice persiste tras reiniciar.
+
 ### Eliminado
 - **v74 — Sin armas de evolución Definitivo.** Se retiran del mod las 20 armas `<rol>_weapon_ultimate`: objetos, texturas, modelos,
   nombres en los 11 idiomas, nodo de arma de la fila Definitivo del árbol y rama del Definitivo en las hojas y los focos.

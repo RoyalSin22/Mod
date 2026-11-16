@@ -92,6 +92,19 @@ reset¦O progresso de %s foi reiniciado.¦La progression de %s a été réinitia
 reload¦Configuração do Aptitudes recarregada.¦Configuration d'Aptitudes rechargée.¦Aptitudes-Konfiguration neu geladen.
 """)
 
+add('aptitudes.', """
+cmd.locate_found¦%s mais próximo: %s (a %s blocos)¦%s le plus proche : %s (à %s blocs)¦Nächste Struktur (%s): %s (%s Blöcke entfernt)
+cmd.locate_none¦Ainda não há %s registrado neste mundo. Só são indexadas as estruturas geradas com esta versão: explore terreno novo ou use /aptitudes place %s.¦Aucun(e) %s enregistré(e) dans ce monde pour l'instant. Seules les structures générées avec cette version sont indexées : explorez un nouveau terrain ou utilisez /aptitudes place %s.¦Noch keine Struktur „%s“ in dieser Welt erfasst. Nur mit dieser Version erzeugte Strukturen werden erfasst: Erkunde neues Gelände oder nutze /aptitudes place %s.
+cmd.unknown_structure¦Estrutura desconhecida: %s¦Structure inconnue : %s¦Unbekannte Struktur: %s
+cmd.place_ok¦%s gerado em %s.¦%s généré en %s.¦%s erzeugt bei %s.
+cmd.place_fail¦Nenhum local plano e seco encontrado em %s blocos. Vá para um terreno plano (sem água nem montanhas) e tente de novo.¦Aucun site plat et sec trouvé dans un rayon de %s blocs. Allez sur un terrain plat (ni eau ni montagnes) et réessayez.¦Kein flacher, trockener Platz im Umkreis von %s Blöcken gefunden. Geh auf flaches Gelände (kein Wasser, keine Berge) und versuche es erneut.
+structure.custodian_temple¦Templo do Custódio¦Temple du Gardien¦Tempel des Wächters
+structure.temple¦templo selado antigo¦ancien temple scellé¦alter versiegelter Tempel
+structure.tower¦torre em ruínas¦tour en ruine¦Turmruine
+structure.bonfire_shrine¦santuário da Fogueira¦sanctuaire du Feu de camp¦Lagerfeuer-Schrein
+structure.camp¦acampamento¦campement¦Lager
+""")
+
 add('key.aptitudes.', """
 roles¦Abrir classes¦Ouvrir les rôles¦Rollen öffnen
 ability_1¦Habilidade 1 (classe principal)¦Capacité 1 (rôle principal)¦Fähigkeit 1 (Hauptrolle)

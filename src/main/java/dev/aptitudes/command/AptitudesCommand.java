@@ -48,6 +48,10 @@ public final class AptitudesCommand {
 
 	private static final SuggestionProvider<ServerCommandSource> SKILLS = (ctx, builder) ->
 			CommandSource.suggestMatching(Arrays.stream(Skill.values()).map(Skill::key), builder);
+	private static final DynamicCommandExceptionType UNKNOWN_STRUCTURE =
+			new DynamicCommandExceptionType(v -> Text.translatable("aptitudes.cmd.unknown_structure", v));
+	private static final SuggestionProvider<ServerCommandSource> STRUCTURES = (ctx, builder) ->
+			CommandSource.suggestMatching(dev.aptitudes.world.StructureLocateRules.KINDS, builder);
 	private static final SuggestionProvider<ServerCommandSource> ATTRIBUTES = (ctx, builder) ->
 			CommandSource.suggestMatching(Arrays.stream(PlayerAttribute.values()).map(PlayerAttribute::key), builder);
 
@@ -93,6 +97,13 @@ public final class AptitudesCommand {
 										.executes(ctx -> eventStart(ctx, getString(ctx, "event"))))))
 				// v40: pantalla de configuración (cualquiera puede verla; solo los operadores pueden cambiar valores).
 				.then(literal("config").executes(AptitudesCommand::openConfig))
+				// V77: localizar y generar las estructuras del mod (son Features: el /locate de vanilla no las conoce).
+				.then(literal("locate").requires(src -> src.hasPermissionLevel(2))
+						.then(argument("structure", word()).suggests(STRUCTURES)
+								.executes(ctx -> locate(ctx, getString(ctx, "structure")))))
+				.then(literal("place").requires(src -> src.hasPermissionLevel(2))
+						.then(argument("structure", word()).suggests(STRUCTURES)
+								.executes(ctx -> placeStructure(ctx, getString(ctx, "structure")))))
 				.then(TutorialCommand.branch())
 				// v34: el Eclipse. Consultar es libre; iniciar y detener exige permiso de administrador.
 				.then(literal("eclipse")
@@ -200,6 +211,59 @@ public final class AptitudesCommand {
 		ctx.getSource().sendFeedback(() -> Text.translatable("aptitudes.cmd.addpoints",
 				amount, player.getDisplayName()), true);
 		return 1;
+	}
+
+	/** V77: la estructura registrada más cercana del tipo indicado, con coordenadas que se pueden pulsar para teletransportarse. */
+	private static int locate(CommandContext<ServerCommandSource> ctx, String kind) throws CommandSyntaxException {
+		if (!dev.aptitudes.world.StructureLocateRules.isKind(kind)) throw UNKNOWN_STRUCTURE.create(kind);
+		ServerCommandSource src = ctx.getSource();
+		dev.aptitudes.world.StructureIndex.drain(src.getServer());
+		var positions = dev.aptitudes.world.StructureIndex.get(src.getWorld()).positions(kind);
+		var near = dev.aptitudes.world.StructureLocateRules.nearest(positions, (int) src.getPosition().x, (int) src.getPosition().z);
+		Text name = Text.translatable("aptitudes.structure." + kind);
+		if (near.isEmpty()) {
+			src.sendFeedback(() -> Text.translatable("aptitudes.cmd.locate_none", name, kind).formatted(Formatting.YELLOW), false);
+			return 0;
+		}
+		var hit = near.get();
+		net.minecraft.util.math.BlockPos pos = net.minecraft.util.math.BlockPos.fromLong(hit.pos());
+		src.sendFeedback(() -> Text.translatable("aptitudes.cmd.locate_found", name, coordinates(pos), hit.distance()), false);
+		return hit.distance();
+	}
+
+	/** Coordenadas entre corchetes que teletransportan al pulsarlas (como el /locate de vanilla). */
+	private static Text coordinates(net.minecraft.util.math.BlockPos pos) {
+		return net.minecraft.text.Texts.bracketed(Text.translatable("chat.coordinates", pos.getX(), pos.getY(), pos.getZ())).styled(s -> s
+				.withColor(Formatting.GREEN)
+				.withClickEvent(new net.minecraft.text.ClickEvent(net.minecraft.text.ClickEvent.Action.RUN_COMMAND,
+						"/tp @s " + pos.getX() + " " + (pos.getY() + 2) + " " + pos.getZ()))
+				.withHoverEvent(new net.minecraft.text.HoverEvent(net.minecraft.text.HoverEvent.Action.SHOW_TEXT, Text.translatable("chat.coordinates.tooltip"))));
+	}
+
+	/** V77: genera la estructura en un sitio llano cercano al jugador (para probarla sin explorar). */
+	private static int placeStructure(CommandContext<ServerCommandSource> ctx, String kind) throws CommandSyntaxException {
+		if (!dev.aptitudes.world.StructureLocateRules.isKind(kind)) throw UNKNOWN_STRUCTURE.create(kind);
+		ServerCommandSource src = ctx.getSource();
+		net.minecraft.server.world.ServerWorld world = src.getWorld();
+		var key = net.minecraft.registry.RegistryKey.of(net.minecraft.registry.RegistryKeys.CONFIGURED_FEATURE, Aptitudes.id(kind));
+		var feature = world.getRegistryManager().get(net.minecraft.registry.RegistryKeys.CONFIGURED_FEATURE).get(key);
+		if (feature == null) throw UNKNOWN_STRUCTURE.create(kind);
+		final int minRadius = 24, maxRadius = 96;
+		int bx = (int) src.getPosition().x, bz = (int) src.getPosition().z;
+		for (int[] off : dev.aptitudes.world.StructureLocateRules.placementOffsets(60, minRadius, maxRadius, world.getTime() ^ bx * 31L ^ bz)) {
+			int x = bx + off[0], z = bz + off[1];
+			world.getChunk(x >> 4, z >> 4);
+			int y = world.getTopY(net.minecraft.world.Heightmap.Type.WORLD_SURFACE_WG, x, z);
+			net.minecraft.util.math.BlockPos origin = new net.minecraft.util.math.BlockPos(x, y, z);
+			if (feature.generate(world, world.getChunkManager().getChunkGenerator(), world.getRandom(), origin)) {
+				dev.aptitudes.world.StructureIndex.drain(src.getServer());
+				Text name = Text.translatable("aptitudes.structure." + kind);
+				src.sendFeedback(() -> Text.translatable("aptitudes.cmd.place_ok", name, coordinates(origin)), true);
+				return 1;
+			}
+		}
+		src.sendFeedback(() -> Text.translatable("aptitudes.cmd.place_fail", maxRadius).formatted(Formatting.RED), false);
+		return 0;
 	}
 
 	private static int adminReload(CommandContext<ServerCommandSource> ctx) {

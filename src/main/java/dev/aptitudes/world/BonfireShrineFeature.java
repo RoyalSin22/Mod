@@ -47,6 +47,7 @@ public class BonfireShrineFeature extends Feature<DefaultFeatureConfig> {
 		b.chest(2, 0, 0, "bonfire_shrine");
 		b.boss(net.minecraft.entity.EntityType.EVOKER, 0, 1, 2, dev.aptitudes.boss.BossKind.SHRINE_ORACLE);
 		b.set(-2, 0, 0, Blocks.CANDLE.getDefaultState().with(net.minecraft.block.CandleBlock.LIT, true));
+		StructureIndex.record(context.getWorld(), "bonfire_shrine", origin); // V77: /aptitudes locate
 		return true;
 	}
 }
