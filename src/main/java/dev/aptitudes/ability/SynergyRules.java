@@ -1,6 +1,7 @@
 package dev.aptitudes.ability;
 
 import dev.aptitudes.role.Element;
+import dev.aptitudes.role.PathRules;
 import dev.aptitudes.role.Role;
 import dev.aptitudes.role.RoleManager;
 import dev.aptitudes.rune.RuneKind;
@@ -217,12 +218,49 @@ public final class SynergyRules {
 	// =====================================================================
 
 	/**
-	 * Bonificador de atributos si la armadura coincide con la senda del rol.
+	 * Bonificador de atributos si la armadura coincide con la senda del rol (v65 C5 Y4).
 	 * Ejemplo: Paladin (Defensa) + armadura Paladín → +10% defensa.
+	 *
+	 * @param player Jugador
+	 * @param role Rol activo (principal o secundario)
+	 * @return Multiplicador: 1.10 (sinergia activa) o 1.0 (sin sinergia)
 	 */
-	public static float armorSynergyBonus(ServerPlayerEntity player, String roleId, String pathId) {
-		// Placeholder: verificar coincidencia de senda y armadura.
-		// Por ahora, retorna 1.0 (sin bonificación).
-		return 1.0f;
+	public static float armorSynergyBonus(ServerPlayerEntity player, Role role) {
+		if (player == null || role == null) return 1.0f;
+		return checkArmorPathMatch(player, role) ? 1.10f : 1.0f;
+	}
+
+	/**
+	 * Verificar si la armadura equipada coincide con la senda elegida del rol.
+	 */
+	private static boolean checkArmorPathMatch(ServerPlayerEntity player, Role role) {
+		try {
+			// Obtener armadura completa que se está usando.
+			Role wornSet = dev.aptitudes.ability.RoleArmorSets.wornSet(player);
+			if (wornSet == null || !wornSet.equals(role)) {
+				return false; // Armadura no coincide con el rol.
+			}
+
+			// Verificar si el rol tiene una senda elegida.
+			int pathNumber = getChosenPath(player, role);
+			return pathNumber > 0; // Sinergia si rol + senda + armadura coinciden.
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	/**
+	 * Obtener la senda elegida (1–3) del rol, o 0 si ninguna.
+	 * (Reutilizado de PathSynergyRules.)
+	 */
+	private static int getChosenPath(ServerPlayerEntity player, Role role) {
+		if (player == null || role == null) return 0;
+		try {
+			var data = RoleManager.get(player);
+			if (data == null) return 0;
+			return PathRules.chosenPath(nodeId -> RoleManager.activeRank(player, nodeId), role.key());
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 }

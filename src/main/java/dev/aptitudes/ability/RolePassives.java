@@ -88,6 +88,27 @@ public final class RolePassives {
 		}
 		ElementEffects.applyAttributes(player);
 		PathEffects.applyAttributes(player);
+		// v65 C5 Y4: Bonificador de armadura si coincide con senda elegida.
+		applyArmorSynergyBonus(player);
+	}
+
+	/**
+	 * v65 C5 Y4: Aplicar bonificador de defensa si la armadura coincide con la senda (10% Knockback Resistance).
+	 */
+	private static void applyArmorSynergyBonus(ServerPlayerEntity player) {
+		RoleData data = RoleManager.get(player);
+		if (data == null) return;
+
+		// Verificar roles principal y secundario.
+		for (Role role : new Role[]{data.primary(), data.secondary()}) {
+			if (role == null) continue;
+			float bonus = SynergyRules.armorSynergyBonus(player, role);
+			if (bonus > 1.0f) {
+				// Aplicar +10% de Knockback Resistance como defensa pasiva.
+				AttributeApplier.set(player, EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE,
+						Aptitudes.id("armor_synergy/" + role.key()), 0.10, Operation.ADD_VALUE);
+			}
+		}
 	}
 
 	// ----------------------------------------------------------------- Tick

@@ -36,8 +36,8 @@ class SynergyRulesTest {
 	@Test
 	void armorSynergyBonusReturnsValidBonus() {
 		// Y4: Armadura + senda coincidente = bonificación.
-		float bonus = SynergyRules.armorSynergyBonus(null, "paladin", "defensa");
-		assertEquals(1.0f, bonus, "Default bonus should be 1.0 (no synergy yet)");
+		float bonus = SynergyRules.armorSynergyBonus(null, Role.PALADIN);
+		assertEquals(1.0f, bonus, "Default bonus should be 1.0 (no player/armor)");
 	}
 
 	@Test
@@ -46,7 +46,7 @@ class SynergyRulesTest {
 		assertTrue(SynergyRules.radiusModifierForPath(null, Role.BERSERKER) >= 0.0f);
 		assertTrue(SynergyRules.damageModifierForPath(null, Role.BERSERKER) >= 0.0f);
 		assertTrue(SynergyRules.energyCostModifierForPath(null, Role.BERSERKER) >= 0.0f);
-		assertTrue(SynergyRules.armorSynergyBonus(null, "any", "any") >= 0.0f);
+		assertTrue(SynergyRules.armorSynergyBonus(null, Role.BERSERKER) >= 0.0f);
 	}
 
 	@Test
