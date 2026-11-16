@@ -5,6 +5,16 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Añadido
+- **v65 C5 — Sinergias (Y1–Y5).** Y1 senda ↔ activas (radio, daño y coste), Y2 resonancia de grupo (XP), Y3 elementos ↔ runas
+  (daño de fusión), Y4 armadura ↔ senda (resistencia al empuje) e Y5 combos ↔ piedras angulares (la piedra angular se dispara
+  en el remate, con espera). Ocho opciones nuevas (`enableSynergies`, `synergyBonusY1…Y4`, `synergyY5KeystoneCooldownSeconds`),
+  indicadores en el HUD (`SynergyHud`, avisados por `SynergyPayload`), partículas al activarse, logro «Sinergista» (las cinco en
+  una sesión) y `/aptitudes synergy status`. **Limitaciones conocidas:** Y1 todavía no consulta los efectos reales de la senda
+  (`PathSynergyRules.hasPathEffect` devuelve siempre verdadero y las habilidades se clasifican por palabras del id);
+  `SynergyRules.canTriggerKeystoneOnCombo` sigue siendo un marcador; Y4 no retira el modificador al quitarse la armadura;
+  sin pruebas en partida (`docs/V65_C5_TESTING_PLAN.md`).
+
 ### Cambiado
 - **v76 — Arte de las 20 armas de evolución Maestro.** Se integra el arte entregado (generado con ChatGPT siguiendo
   `docs/PROMPT_ARTE_ARMAS.md`): las 20 armas, una por rol, a 64×64. Cada arma tiene `<arma>.png` (32×32, inventario y HUD) y

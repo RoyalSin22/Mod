@@ -33,7 +33,9 @@ public enum Achievement {
 	/** v64: usar un Vaso de vida. */
 	LIFE_VESSEL("life_vessel", TEMPLE_OPENED, Frame.GOAL, "aptitudes:life_vessel"),
 	/** v67: descubrir todas las criaturas del bestiario (al menos una muerte de cada una). */
-	BESTIARY_COMPLETE("bestiary_complete", ROOT, Frame.GOAL, "minecraft:enchanted_book");
+	BESTIARY_COMPLETE("bestiary_complete", ROOT, Frame.GOAL, "minecraft:enchanted_book"),
+	/** v65 C5: activar las 5 sinergias en una sesión (Y1-Y5). */
+	SYNERGIST("synergist", ROOT, Frame.GOAL, "aptitudes:mastery_emblem");
 
 	/** Nombre del único criterio de cada logro (salvo la raíz, que usa {@code minecraft:tick}). */
 	public static final String CRITERION = "done";

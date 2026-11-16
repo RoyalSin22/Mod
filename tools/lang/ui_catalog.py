@@ -1735,6 +1735,18 @@ advancement.aptitudes.life_vessel.title¦Coração pleno¦Cœur comblé¦Volles 
 advancement.aptitudes.life_vessel.description¦Use um Vaso de vida.¦Utilisez un Vase de vie.¦Benutze ein Lebensgefäß.
 advancement.aptitudes.bestiary_complete.title¦Cronista¦Chroniqueur¦Chronist
 advancement.aptitudes.bestiary_complete.description¦Descubra todas as criaturas do bestiário.¦Découvrez toutes les créatures du bestiaire.¦Entdecke alle Kreaturen des Bestiariums.
+advancement.aptitudes.synergist.title¦Sinergista¦Synergiste¦Synergetiker
+advancement.aptitudes.synergist.description¦Ative as cinco sinergias (Y1-Y5) em uma única sessão.¦Activez les cinq synergies (Y1-Y5) en une seule session.¦Aktiviere alle fünf Synergien (Y1-Y5) in einer einzigen Sitzung.
+synergy.aptitudes.disabled¦As sinergias estão desativadas neste servidor.¦Les synergies sont désactivées sur ce serveur.¦Synergien sind auf diesem Server deaktiviert.
+synergy.aptitudes.status¦Sinergias ativadas nesta sessão: %s/%s¦Synergies activées durant cette session : %s/%s¦In dieser Sitzung aktivierte Synergien: %s/%s
+synergy.aptitudes.line¦%s · %s: %s¦%s · %s : %s¦%s · %s: %s
+synergy.aptitudes.name.1¦Trilha ↔ Habilidades¦Voie ↔ Capacités¦Pfad ↔ Fähigkeiten
+synergy.aptitudes.name.2¦Ressonância de grupo¦Résonance de groupe¦Gruppenresonanz
+synergy.aptitudes.name.3¦Elementos ↔ Runas¦Éléments ↔ Runes¦Elemente ↔ Runen
+synergy.aptitudes.name.4¦Armadura ↔ Trilha¦Armure ↔ Voie¦Rüstung ↔ Pfad
+synergy.aptitudes.name.5¦Combos ↔ Pedras angulares¦Combos ↔ Clés de voûte¦Kombos ↔ Schlusssteine
+synergy.aptitudes.seen¦ativa¦active¦aktiv
+synergy.aptitudes.unseen¦ainda não¦pas encore¦noch nicht
 """)
 
 # v63 (C4): jefes animados (GeckoLib).

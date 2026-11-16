@@ -104,9 +104,10 @@ public final class RolePassives {
 			if (role == null) continue;
 			float bonus = SynergyRules.armorSynergyBonus(player, role);
 			if (bonus > 1.0f) {
+				SynergyTracker.mark(player, 3);
 				// Aplicar +10% de Knockback Resistance como defensa pasiva.
 				AttributeApplier.set(player, EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE,
-						Aptitudes.id("armor_synergy/" + role.key()), 0.10, Operation.ADD_VALUE);
+						Aptitudes.id("armor_synergy/" + role.key()), bonus - 1.0, Operation.ADD_VALUE);
 			}
 		}
 	}
@@ -274,7 +275,9 @@ public final class RolePassives {
 		multiplier *= RoleArmorSets.outgoingMultiplier(player, target, source, direct); // Set de rol y arma de rol
 		multiplier *= RoleMechanics.outgoing(player, target, source, direct, amount); // Mecánica del rol
 		// v65 C5 Y1: Sinergia senda ↔ activas (bonificador de daño)
-		multiplier *= AbilityManager.synergyContext(player).damageBonus();
+		float synergyDamage = AbilityManager.synergyContext(player).damageBonus();
+		if (synergyDamage > 1.0f) SynergyTracker.mark(player, 0);
+		multiplier *= synergyDamage;
 		multiplier *= Signatures.markMultiplier(target, player); // Asesino: Marca de muerte
 		float result = PathEffects.outgoing(player, target, direct, amount * multiplier); // Sendas
 		// Tope del multiplicador combinado del mod (rol + set + mecánica + marca + críticos): evita remates

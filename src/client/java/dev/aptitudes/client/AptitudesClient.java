@@ -175,6 +175,8 @@ public class AptitudesClient implements ClientModInitializer {
 				(payload, context) -> dev.aptitudes.client.hud.ComboHud.onCombo(payload));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.KeystonePayload.ID,
 				(payload, context) -> dev.aptitudes.client.hud.KeystoneHud.onPayload(payload)); // v46.1
+		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.SynergyPayload.ID,
+				(payload, context) -> dev.aptitudes.client.hud.SynergyHud.activateSynergy(payload.index())); // v65 C5
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.EclipsePayload.ID,
 				(payload, context) -> ClientEclipse.onPayload(payload));
 		ClientPlayNetworking.registerGlobalReceiver(BossHudPayload.ID,

@@ -46,7 +46,7 @@ public final class SynergyRules {
 	 * Se llama ANTES de ejecutar la habilidad.
 	 */
 	public static AbilitySynergyContext contextForAbility(ServerPlayerEntity player, Role role, String abilityId) {
-		if (role == null || abilityId == null) {
+		if (!dev.aptitudes.Aptitudes.config().enableSynergies || role == null || abilityId == null) {
 			return AbilitySynergyContext.NONE;
 		}
 
@@ -105,11 +105,11 @@ public final class SynergyRules {
 	 * @return Multiplicador: 1.20 (fusión potenciada) o 1.0 (sin sinergia)
 	 */
 	public static float elementRuneSynergyBonus(ServerPlayerEntity player, Element activeElement, ItemStack weapon) {
-		if (player == null || activeElement == null || weapon == null || weapon.isEmpty()) {
+		if (!dev.aptitudes.Aptitudes.config().enableSynergies || player == null || activeElement == null || weapon == null || weapon.isEmpty()) {
 			return 1.0f;
 		}
 
-		return checkElementRuneMatch(activeElement, weapon) ? 1.20f : 1.0f;
+		return checkElementRuneMatch(activeElement, weapon) ? (float) dev.aptitudes.Aptitudes.config().synergyBonusY3Damage : 1.0f;
 	}
 
 	/**
@@ -148,8 +148,8 @@ public final class SynergyRules {
 	 * Retorna 1.15 (+15% XP) si hay resonancia, 1.0 si no.
 	 */
 	public static float groupResonanceBonus(ServerPlayerEntity player) {
-		if (player == null) return 1.0f;
-		return checkKeystoneResonance(player) ? 1.15f : 1.0f;
+		if (!dev.aptitudes.Aptitudes.config().enableSynergies || player == null) return 1.0f;
+		return checkKeystoneResonance(player) ? (float) dev.aptitudes.Aptitudes.config().synergyBonusY2Xp : 1.0f;
 	}
 
 	/**
@@ -210,7 +210,7 @@ public final class SynergyRules {
 	 */
 	public static int keystoneComboTrigerCooldown() {
 		// Placeholder: 20 segundos (400 ticks)
-		return 20 * 20;
+		return dev.aptitudes.Aptitudes.config().synergyY5KeystoneCooldownSeconds * 20;
 	}
 
 	// =====================================================================
@@ -226,8 +226,8 @@ public final class SynergyRules {
 	 * @return Multiplicador: 1.10 (sinergia activa) o 1.0 (sin sinergia)
 	 */
 	public static float armorSynergyBonus(ServerPlayerEntity player, Role role) {
-		if (player == null || role == null) return 1.0f;
-		return checkArmorPathMatch(player, role) ? 1.10f : 1.0f;
+		if (!dev.aptitudes.Aptitudes.config().enableSynergies || player == null || role == null) return 1.0f;
+		return checkArmorPathMatch(player, role) ? (float) dev.aptitudes.Aptitudes.config().synergyBonusY4Defense : 1.0f;
 	}
 
 	/**

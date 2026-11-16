@@ -129,6 +129,7 @@ public final class PartyManager {
 				Aptitudes.config().partyXpBonusMax);
 		// v65 (C5 Y2): Resonancia de grupo (+15% si dos miembros comparten piedra angular).
 		float resonanceBonus = dev.aptitudes.ability.SynergyRules.groupResonanceBonus(killer);
+		if (resonanceBonus > 1.0f) dev.aptitudes.ability.SynergyTracker.mark(killer, 1);
 		bonus *= resonanceBonus;
 		int bonusXp = PartyRules.bonusXp(baseAmount, bonus);
 		for (ServerPlayerEntity member : members) {
@@ -153,6 +154,7 @@ public final class PartyManager {
 				Aptitudes.config().partyXpBonusMax);
 		// v65 (C5 Y2): Resonancia de grupo (+15% si dos miembros comparten piedra angular).
 		float resonanceBonus = dev.aptitudes.ability.SynergyRules.groupResonanceBonus(killer);
+		if (resonanceBonus > 1.0f) dev.aptitudes.ability.SynergyTracker.mark(killer, 1);
 		bonus *= resonanceBonus;
 		int bonusXp = PartyRules.bonusXp(earned, bonus);
 		for (ServerPlayerEntity member : members) {

@@ -94,6 +94,7 @@ public final class AptitudesCommand {
 				// v40: pantalla de configuración (cualquiera puede verla; solo los operadores pueden cambiar valores).
 				.then(literal("config").executes(AptitudesCommand::openConfig))
 				.then(TutorialCommand.branch())
+				.then(SynergyCommand.branch())
 				// v34: el Eclipse. Consultar es libre; iniciar y detener exige permiso de administrador.
 				.then(literal("eclipse")
 						.executes(AptitudesCommand::eclipseStatus)

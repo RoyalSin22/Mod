@@ -41,7 +41,7 @@ public final class PathSynergyRules {
 		// Sinergia: SPEED → +radio en habilidades de movimiento (abilityNodeId contiene "dash", "move", etc.)
 		if (hasPathEffect(player, role, pathNumber, PathEffect.SPEED)) {
 			if (isMovementAbility(abilityNodeId)) {
-				bonus *= 1.20f; // +20% radio
+				bonus *= (float) dev.aptitudes.Aptitudes.config().synergyBonusY1Radius;
 			}
 		}
 
@@ -64,7 +64,7 @@ public final class PathSynergyRules {
 		if (hasPathEffect(player, role, pathNumber, PathEffect.CRIT) ||
 			hasPathEffect(player, role, pathNumber, PathEffect.EXECUTE)) {
 			if (isDamageAbility(abilityNodeId)) {
-				bonus *= 1.15f; // +15% daño
+				bonus *= (float) dev.aptitudes.Aptitudes.config().synergyBonusY1Damage;
 			}
 		}
 
@@ -92,7 +92,7 @@ public final class PathSynergyRules {
 		if ((hasPathEffect(player, role, pathNumber, PathEffect.MANA_REGEN) ||
 			 hasPathEffect(player, role, pathNumber, PathEffect.MAX_HEALTH)) &&
 			hasPathEffect(player, role, pathNumber, PathEffect.RESOURCE_GAIN)) {
-			return 0.90f; // Reduce coste a 90% (−10%)
+			return (float) dev.aptitudes.Aptitudes.config().synergyBonusY1Energy;
 		}
 
 		return 1.0f;
