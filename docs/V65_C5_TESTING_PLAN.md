@@ -193,7 +193,7 @@ Abre `logs/latest.log` después de probar:
 
 ## Notas importantes
 
-1. **Y1 heurística:** Los nombres de habilidades se detectan por contener palabras clave. Si una habilidad no recibe el bonus, su ID puede no coincidir con la heurística.
+1. **Y1:** la categoría de cada activa sale de la tabla `Y1Rules` (80 activas base, por id exacto) y los efectos, de los nodos con rango de la senda elegida. Una activa fuera de la tabla no recibe bonus; el daño y el radio solo se aplican durante el lanzamiento.
 
 2. **Y2 sincronización:** El bonus se aplica al cobrar XP de combate. Debe estar en grupo ANTES de matar.
 

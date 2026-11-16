@@ -43,6 +43,7 @@ public final class Targeting {
 	}
 
 	public static List<LivingEntity> hostilesAround(ServerPlayerEntity player, double radius) {
+		radius *= AbilityManager.synergyContext(player).radiusBonus(); // v65 C5 Y1 (solo durante el lanzamiento)
 		double r2 = radius * radius;
 		return player.getWorld().getEntitiesByClass(LivingEntity.class, player.getBoundingBox().expand(radius),
 				e -> isHostileTo(player, e) && e.squaredDistanceTo(player) <= r2);

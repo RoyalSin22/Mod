@@ -10,10 +10,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   (daño de fusión), Y4 armadura ↔ senda (resistencia al empuje) e Y5 combos ↔ piedras angulares (la piedra angular se dispara
   en el remate, con espera). Ocho opciones nuevas (`enableSynergies`, `synergyBonusY1…Y4`, `synergyY5KeystoneCooldownSeconds`),
   indicadores en el HUD (`SynergyHud`, avisados por `SynergyPayload`), partículas al activarse, logro «Sinergista» (las cinco en
-  una sesión) y `/aptitudes synergy status`. **Limitaciones conocidas:** Y1 todavía no consulta los efectos reales de la senda
-  (`PathSynergyRules.hasPathEffect` devuelve siempre verdadero y las habilidades se clasifican por palabras del id);
-  `SynergyRules.canTriggerKeystoneOnCombo` sigue siendo un marcador; Y4 no retira el modificador al quitarse la armadura;
-  sin pruebas en partida (`docs/V65_C5_TESTING_PLAN.md`).
+  una sesión) y `/aptitudes synergy status`. **Y1 usa los efectos reales** de los nodos aprendidos de la senda elegida del rol (`Y1Rules`, pura y probada): SPEED amplía el radio de las activas de movimiento, CRIT/EXECUTE el daño de las ofensivas, MINION_POWER el de las invocaciones y (MANA_REGEN o MAX_HEALTH) con RESOURCE_GAIN abarata las activas; el radio lo consume `Targeting.hostilesAround` mientras se lanza la habilidad. **Limitaciones conocidas:** solo están clasificadas las 80 activas base (las de las filas nuevas y evolucionadas no reciben Y1); el daño y el radio solo valen para lo que ocurre al lanzar (los golpes diferidos, como los giros del Torbellino, no); `SynergyRules.canTriggerKeystoneOnCombo` sigue siendo un marcador; Y4 no retira el modificador al quitarse la armadura; sin pruebas en partida (`docs/V65_C5_TESTING_PLAN.md`).
 
 ### Cambiado
 - **v76 — Arte de las 20 armas de evolución Maestro.** Se integra el arte entregado (generado con ChatGPT siguiendo
