@@ -3802,6 +3802,8 @@
   "item.aptitudes.nucleo_osario": "Núcleo do Ossuário",
   "item.aptitudes.ancla_del_velo": "Âncora do Véu",
   "item.aptitudes.ancla_del_velo.tooltip": "Forjada com restos do Véu. Alguma porta selada a espera.",
+  "item.aptitudes.resonador_del_umbral": "Ressonador do Limiar",
+  "item.aptitudes.resonador_del_umbral.tooltip": "Uma relíquia de poder antigo. Sua vibração invoca o próprio Eclipse.",
   "subtitles.aptitudes.errante_ambient": "O Errante Velado sussurra",
   "subtitles.aptitudes.errante_alert": "O Errante Velado fica alerta",
   "subtitles.aptitudes.errante_prepare": "O véu do Errante se estica",

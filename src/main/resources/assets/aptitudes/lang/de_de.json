@@ -3802,6 +3802,8 @@
   "item.aptitudes.nucleo_osario": "Ossuariumskern",
   "item.aptitudes.ancla_del_velo": "Schleieranker",
   "item.aptitudes.ancla_del_velo.tooltip": "Aus Resten des Schleiers geschmiedet. Eine versiegelte Tür wartet darauf.",
+  "item.aptitudes.resonador_del_umbral": "Schwellenresonator",
+  "item.aptitudes.resonador_del_umbral.tooltip": "Ein Relikt uralter Macht. Seine Schwingung ruft die Sonnenfinsternis selbst herbei.",
   "subtitles.aptitudes.errante_ambient": "Verhüllter Wanderer flüstert",
   "subtitles.aptitudes.errante_alert": "Verhüllter Wanderer wird aufmerksam",
   "subtitles.aptitudes.errante_prepare": "Schleier des Wanderers spannt sich",

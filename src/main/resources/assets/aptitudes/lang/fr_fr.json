@@ -3802,6 +3802,8 @@
   "item.aptitudes.nucleo_osario": "Noyau de l'ossuaire",
   "item.aptitudes.ancla_del_velo": "Ancre du voile",
   "item.aptitudes.ancla_del_velo.tooltip": "Forgée avec des restes du voile. Une porte scellée l'attend.",
+  "item.aptitudes.resonador_del_umbral": "Résonateur du Seuil",
+  "item.aptitudes.resonador_del_umbral.tooltip": "Une relique d'un pouvoir ancien. Sa vibration invoque l'Éclipse elle-même.",
   "subtitles.aptitudes.errante_ambient": "Le Vagabond voilé murmure",
   "subtitles.aptitudes.errante_alert": "Le Vagabond voilé se met en alerte",
   "subtitles.aptitudes.errante_prepare": "Le voile du Vagabond se tend",

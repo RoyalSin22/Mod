@@ -453,6 +453,8 @@ rune.frost.desc¦Ao acertar: Lentidão %s por %s s.¦À l'impact : Lenteur %s pe
 rune.thunder.desc¦Ao acertar: %s%% de chance de uma descarga atingir %s monstros próximos (%s de dano; %s s de recarga).¦À l'impact : %s%% de chance qu'une décharge saute sur %s monstres proches (%s dégâts ; recharge de %s s).¦Bei Treffer: %s%% Chance auf eine Entladung, die auf %s nahe Monster überspringt (%s Schaden; %s s Abklingzeit).
 rune.guard.desc¦Ao acertar: +%s de absorção (máx. %s; %s s de recarga).¦À l'impact : +%s d'absorption (max %s ; recharge de %s s).¦Bei Treffer: +%s Absorption (max. %s; %s s Abklingzeit).
 herb_petals¦Pétalas de Ervas¦Pétales d'herbes¦Kräuterblütenblätter
+resonador_del_umbral¦Ressonador do Limiar¦Résonateur du Seuil¦Schwellenresonator
+resonador_del_umbral.tooltip¦Uma relíquia de poder antigo. Sua vibração invoca o próprio Eclipse.¦Une relique d'un pouvoir ancien. Sa vibration invoque l'Éclipse elle-même.¦Ein Relikt uralter Macht. Seine Schwingung ruft die Sonnenfinsternis selbst herbei.
 """)
 
 for suffix, names in {
