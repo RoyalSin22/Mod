@@ -27,10 +27,10 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 - **F7 hecha:** 30 habilidades de Bardo, Brujo abisal y Domador (`docs/V67_F7_DISENO.md`) y encargo de sus iconos
   (`docs/PROMPT_ARTE_ICONOS_F7.md`). Con ella los 20 roles tienen sus 10 habilidades nuevas. Pendiente: validarlas en
   partida y el arte.
-- **Grimorio hecho (G1–G4):** bestiario solo del mod (13 entradas), cartas con revelado progresivo y estilo de pergamino
+- **Grimorio hecho (G1–G5):** bestiario solo del mod (13 entradas), cartas con revelado progresivo y estilo de pergamino
   (`docs/V67_GRIMORIO_DISENO.md`). **G5 integrado:** el arte de referencia (ventana, panel, retrato, cinta, divisor y
-  esquina) ya se dibuja desde `textures/gui/guide_ui/`. Pendiente: validarlo en partida y el lore, que define la sesión
-  narrativa.
+  esquina) ya se dibuja desde `textures/gui/guide_ui/`. **T7a:** infraestructura de lore por jugador (attachment, reglas
+  puras, desbloqueos por evento, sincronización S2C). Pendiente: validar en partida, interfaz de lore (T7b) y arte.
 - **Tooltips de configuración hechos:** descripción y valor por defecto de las 192 opciones en los 5 idiomas (pt/fr/de en
   `tools/lang/config_catalog.py`; revisión nativa pendiente).
 - **Siguiente:** el arte de los iconos y del grimorio. Validar F1–F7, el grimorio y los tooltips en partida.

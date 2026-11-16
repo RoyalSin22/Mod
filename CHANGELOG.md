@@ -6,6 +6,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **v67 (T7a) — Infraestructura de lore del Grimorio.** Estado de desbloqueos por jugador (`LoreState`, attachment
+  `aptitudes:lore`, `copyOnDeath`), reglas puras de desbloqueo por evento (`LoreRules`, 6 hooks), gestor de desbloqueos
+  (`LoreManager`) y sincronización S2C (`LorePayload`). Desbloqueos en: hablar con aldeano (Niebla/Lluvia), encuentro con
+  Custodio, cámara de diamante, sacrificio del Behelit, fin del Eclipse. Entrada del Custodio ya en bestiario (v67, G1).
+  Tests JUnit de codec e inmutabilidad.
 - **v67 — Arte del grimorio (G5).** El libro y las cartas del bestiario usan el arte de referencia: marco de la
   ventana con ojo y libro, hoja de página, marco del retrato, cinta del nombre, filete con rombo y remate de esquina.
   Del arte grande (`tools/textures/prepare_guide_art.py`) salen piezas reducidas en `tools/textures/source/ui/guide/` y
