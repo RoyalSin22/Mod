@@ -27,18 +27,7 @@ public final class PathEffects {
 
 	/** Valor total de cada efecto para el jugador (rango efectivo × valor por rango, solo roles activos). */
 	public static EnumMap<PathEffect, Double> all(ServerPlayerEntity player) {
-		EnumMap<PathEffect, Double> out = new EnumMap<>(PathEffect.class);
-		for (Map.Entry<String, RoleTree.PathSpec> e : RoleTree.pathSpecs().entrySet()) {
-			int rank = RoleManager.activeRank(player, e.getKey());
-			// v46: perRank() incluye el multiplicador del escalón (S6 = ×1,5).
-			if (rank > 0) out.merge(e.getValue().effect(), rank * e.getValue().perRank(), Double::sum);
-		}
-		// v23: pasivas de las filas de Maestro y Definitivo (mismo efecto, más valor por rango).
-		for (EvolvedTree.Passive p : EvolvedTree.passives().values()) {
-			int rank = RoleManager.learnedRank(player, p.id());
-			if (rank > 0) out.merge(p.effect(), rank * p.perRank(), Double::sum);
-		}
-		return out;
+		return CachedPathEffects.all(player);
 	}
 
 	public static double value(ServerPlayerEntity player, PathEffect effect) {
@@ -52,6 +41,11 @@ public final class PathEffects {
 			AttributeApplier.set(player, effect.attribute(), Aptitudes.id("path/" + effect.name().toLowerCase()),
 					values.getOrDefault(effect, 0.0), effect.operation());
 		}
+	}
+
+	/** v59 (R1): version cacheada para RolePassives.applyAttributes() cada 20 ticks. */
+	public static void applyAttributesCached(ServerPlayerEntity player) {
+		applyAttributes(player);
 	}
 
 	/** Daño saliente del jugador: críticos, ejecución, robo de vida y efectos al golpear. */

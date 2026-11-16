@@ -101,16 +101,7 @@ public final class Keystones {
 
 	/** Plantillas activas: la piedra angular aprendida de la senda elegida en el rol principal y en el secundario. */
 	public static Set<Template> active(ServerPlayerEntity player) {
-		Set<Template> out = EnumSet.noneOf(Template.class);
-		RoleData data = RoleManager.get(player);
-		for (Role role : new Role[] {data.primary(), data.secondary()}) {
-			if (role == null) continue;
-			int path = PathRules.chosenPath(data::rank, role.key());
-			if (path <= 0 || data.rank(PathRules.nodeId(role.key(), path, PathRules.Step.S7)) <= 0) continue;
-			Template t = KeystoneRules.template(role.key(), path);
-			if (t != null) out.add(t);
-		}
-		return out;
+		return CachedKeystones.active(player);
 	}
 
 	public static boolean has(ServerPlayerEntity player, Template template) {

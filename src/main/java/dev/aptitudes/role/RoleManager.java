@@ -45,6 +45,8 @@ public final class RoleManager {
 			}
 		});
 		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
+			dev.aptitudes.ability.CachedPathEffects.forget(handler.getPlayer().getUuid());
+			dev.aptitudes.ability.CachedKeystones.forget(handler.getPlayer().getUuid());
 			AbilityManager.forget(handler.getPlayer());
 			dev.aptitudes.morph.MorphManager.onLeave(handler.getPlayer());
 			dev.aptitudes.unique.UniqueManager.onLeave(handler.getPlayer());
@@ -462,6 +464,9 @@ public final class RoleManager {
 	public static void refresh(ServerPlayerEntity player) {
 		RoleData data = get(player);
 		ensureConsistent(player, data);
+		// v59 (R1/R2): invalida cachés de sendas y piedras angulares al mutar roles
+		dev.aptitudes.ability.CachedPathEffects.invalidate(player.getUuid());
+		dev.aptitudes.ability.CachedKeystones.invalidate(player.getUuid());
 		RolePassives.applyAttributes(player);
 		// La afinidad de atributos depende del rol: se recalculan los atributos y la pantalla.
 		dev.aptitudes.logic.AttributeApplier.apply(player, dev.aptitudes.logic.ProgressManager.get(player), Aptitudes.config());

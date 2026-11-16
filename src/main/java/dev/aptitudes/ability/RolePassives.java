@@ -87,7 +87,7 @@ public final class RolePassives {
 					spec.operation());
 		}
 		ElementEffects.applyAttributes(player);
-		PathEffects.applyAttributes(player);
+		PathEffects.applyAttributesCached(player);
 	}
 
 	// ----------------------------------------------------------------- Tick
