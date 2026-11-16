@@ -6,6 +6,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Cambiado
+- **v73 — Armas de evolución rediseñadas.** Las 40 armas Maestro y Definitivo tenían cuatro plantillas compartidas y solo
+  cambiaba el color. Ahora cada rol tiene su silueta: hacha de barba y de doble filo, dagas, hoz y guadaña de lianas, lanza
+  y alabarda alada, espadas, mazas, bastón de monje, garras, espadas flotantes, machete y hoja de caza, maza de domador,
+  báculos, guadaña con calavera, rama viva, llave inglesa y cañón, orbes, revólver, laúd y grimorio. Maestro con acero, oro y
+  gema del rol; Definitivo con metal oscuro, gema encendida y destellos. Diseños en `tools/textures/evolved_weapons.py`
+  (primitivas sobre rejilla de 16×16) y modelos 3D regenerados.
 - **v72 — El juramento sin cumplir.** La última entrada de las Crónicas se revela al sobrevivir a un **segundo Eclipse** (la
   primera vez solo anota una marca interna; quien cae no cuenta). El Santuario de las Dos Verdades, su fuente original,
   sigue sin existir. Sin estado nuevo: usa dos ids de `LoreRules`. Las 18 entradas ya tienen fuente.

@@ -18,6 +18,7 @@ Requiere Pillow. No modifica nada fuera de la carpeta indicada.
 """
 import colorsys
 import sys
+from pathlib import Path
 from PIL import Image
 
 # ----------------------------------------------------------------------------- Paletas
@@ -1072,14 +1073,23 @@ ITEMS = {
     'life_vessel': ('vessel', {'F': '#e9eef2', 'A': '#c2185b', 'J': '#ff8fab', 'G': '#e0b43a'}),
 }
 
-# Armas de evolución: hoja (cuerpo a cuerpo) o foco; Maestro con oro y gema; Definitivo, netherita y destellos.
+# V73: armas de evolución con silueta propia por rol y nivel (diseños en evolved_weapons.py). Maestro: acero, oro y gema del rol;
+# Definitivo: metal oscuro, acero brillante, gema encendida y destellos.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import evolved_weapons  # noqa: E402
+
+
+def _mix(color, other, t):
+    a, b = hex_rgb(color), hex_rgb(other)
+    return '#%02x%02x%02x' % tuple(round(a[i] + (b[i] - a[i]) * t) for i in range(3))
+
+
+for _name, _rows in evolved_weapons.templates().items():
+    T[_name] = _rows
 for role, color in ROLE_COLORS.items():
-    if role in MELEE:
-        ITEMS[f'{role}_weapon_master'] = ('sword', {'A': color, 'G': '#e0b43a', 'L': '#3a2a1a'})
-        ITEMS[f'{role}_weapon_ultimate'] = ('great_sword', {'A': color, 'G': '#4a4650', 'J': '#ffffff', 'L': '#1e1a22'})
-    else:
-        ITEMS[f'{role}_weapon_master'] = ('focus_master', {'J': color, 'G': '#e0b43a', 'A': '#c9d1d9', 'W': '#5d4037'})
-        ITEMS[f'{role}_weapon_ultimate'] = ('focus_ultimate', {'J': color, 'G': '#e0b43a', 'A': color, 'D': '#2b2530'})
+    common = {'A': color, 'L': '#3a2a1a', 'W': '#5d4037', 'K': '#1a1420', 'B': '#e6dcc8', 'Y': '#f1c40f'}
+    ITEMS[f'{role}_weapon_master'] = (f'{role}_master', dict(common, S='#a9b4c0', G='#e0b43a', J=_mix(color, '#ffffff', 0.35), D='#2b2530'))
+    ITEMS[f'{role}_weapon_ultimate'] = (f'{role}_ultimate', dict(common, S='#d0d8e0', G='#6b6577', J=_mix(color, '#ffffff', 0.55), D='#1e1a22'))
 
 
 # ----------------------------------------------------------------------------- Dibujo
