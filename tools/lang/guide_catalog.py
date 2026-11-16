@@ -229,37 +229,37 @@ for locale in LOCALES:
 chapter('evolution', ('Evolução', 'Évolution', 'Entwicklung'), (
     """Cada classe pode evoluir duas vezes:
 • MESTRE: nível 20, concluir a prova da classe (abates com sua arma, usos de habilidades…) e um Emblema de Maestria. Libera a característica (Z), +1 grau nos nós e uma arma nova.
-• DEFINITIVO: nível 30, ter derrotado um chefe (Wither, Dragão ou Defensor) com a classe ativa e um Núcleo Definitivo. Libera a definitiva (R), mais um grau e a arma definitiva.
+• DEFINITIVO: nível 30, ter derrotado um chefe (Wither, Dragão ou Defensor) com a classe ativa e um Núcleo Definitivo. Libera a definitiva (R), e mais um grau.
 
 O botão Evoluir fica na tela J (a dica mostra o que falta).""",
     """Chaque rôle peut évoluer deux fois :
 • MAÎTRE : niveau 20, terminer l'épreuve du rôle (éliminations avec son arme, capacités utilisées…) et un Emblème de maîtrise. Débloque la signature (Z), +1 rang aux nœuds et une nouvelle arme.
-• ULTIME : niveau 30, avoir vaincu un boss (Wither, Dragon ou Warden) avec le rôle actif et un Noyau ultime. Débloque l'ultime (R), un rang supplémentaire et l'arme ultime.
+• ULTIME : niveau 30, avoir vaincu un boss (Wither, Dragon ou Warden) avec le rôle actif et un Noyau ultime. Débloque l'ultime (R), et un rang supplémentaire.
 
 Le bouton Évoluer est sur l'écran J (son infobulle indique ce qui manque).""",
     """Jede Rolle kann sich zweimal entwickeln:
 • MEISTER: Stufe 20, die Rollenprüfung abschließen (Tötungen mit der Rollenwaffe, Fähigkeitsnutzungen…) und ein Meisterschaftsemblem. Schaltet die Signatur (Z), +1 Rang auf Knoten und eine neue Waffe frei.
-• ULTIMATIV: Stufe 30, einen Boss (Wither, Drache oder Warden) mit aktiver Rolle besiegt haben und ein Ultimativer Kern. Schaltet die ultimative Fähigkeit (R), einen weiteren Rang und die ultimative Waffe frei.
+• ULTIMATIV: Stufe 30, einen Boss (Wither, Drache oder Warden) mit aktiver Rolle besiegt haben und ein Ultimativer Kern. Schaltet die ultimative Fähigkeit (R), und einen weiteren Rang frei.
 
 Die Schaltfläche Entwickeln findest du auf Bildschirm J (der Tooltip zeigt fehlende Voraussetzungen)."""))
 
 chapter('weapons', ('Armas de evolução', "Armes d'évolution", 'Entwicklungswaffen'), (
-    """Ao evoluir para Mestre e Definitivo, você recebe uma arma nova da classe. Elas aparecem na fila superior da árvore, ao lado da característica e da definitiva.
+    """Ao evoluir para Mestre, você recebe uma arma nova da classe. Ela aparece na fila superior da árvore, ao lado da característica. O Definitivo não concede mais arma.
 
-• Classes corpo a corpo: uma lâmina (diamante em Mestre, netherita em Definitivo) que, com a classe ativa, cria um corte de sua cor, carrega o recurso e, na versão definitiva, cura um pouco.
-• Classes mágicas ou à distância: um foco de disparo instantâneo (7 ou 10 de dano + 0.2 por nível de classe) que custa mana.
+• Classes corpo a corpo: uma lâmina de diamante que, com a classe ativa, cria um corte de sua cor e carrega o recurso.
+• Classes mágicas ou à distância: um foco de disparo instantâneo (7 de dano + 0.2 por nível de classe) que custa mana.
 
 Se perder a arma, selecione-a na árvore e pressione Resgatar (apenas se ela não estiver no inventário ou baú do Ender).""",
-    """En évoluant aux stades Maître puis Ultime, vous recevez une nouvelle arme de votre rôle. Elles apparaissent dans la rangée supérieure de l'arbre, près de la signature et de l'ultime.
+    """En évoluant au stade Maître, vous recevez une nouvelle arme de votre rôle. Elle apparaît dans la rangée supérieure de l'arbre, près de la signature. Le stade Ultime n'octroie plus d'arme.
 
-• Rôles de mêlée : une lame (diamant au stade Maître, netherite au stade Ultime) qui, avec le rôle actif, produit un balayage coloré, charge sa ressource et, pour l'ultime, vous soigne légèrement.
-• Rôles magiques ou à distance : un focaliseur à tir instantané (7 ou 10 dégâts + 0.2 par niveau de rôle), qui coûte du mana.
+• Rôles de mêlée : une lame en diamant qui, avec le rôle actif, produit un balayage coloré et charge sa ressource.
+• Rôles magiques ou à distance : un focaliseur à tir instantané (7 dégâts + 0.2 par niveau de rôle), qui coûte du mana.
 
 Si vous la perdez, sélectionnez-la dans l'arbre et appuyez sur Réclamer (seulement si elle n'est pas déjà dans votre inventaire ou coffre de l'Ender).""",
-    """Bei der Entwicklung zum Meister und zu Ultimativ erhältst du jeweils eine neue Rollenwaffe. Sie erscheinen in der obersten Baumreihe neben Signatur und ultimativer Fähigkeit.
+    """Bei der Entwicklung zum Meister erhältst du eine neue Rollenwaffe. Sie erscheint in der obersten Baumreihe neben der Signatur. Ultimativ vergibt keine Waffe mehr.
 
-• Nahkampfrollen: Eine Klinge (Diamant als Meister, Netherit als Ultimativ), die bei aktiver Rolle einen farbigen Schwung erzeugt, die Rollenressource lädt und in der ultimativen Ausführung leicht heilt.
-• Magische oder Fernkampfrollen: Ein Sofortschuss-Fokus (7 oder 10 Schaden + 0.2 pro Rollenstufe), der Mana kostet.
+• Nahkampfrollen: Eine Diamantklinge, die bei aktiver Rolle einen farbigen Schwung erzeugt und die Rollenressource lädt.
+• Magische oder Fernkampfrollen: Ein Sofortschuss-Fokus (7 Schaden + 0.2 pro Rollenstufe), der Mana kostet.
 
 Verlierst du die Waffe, wähle sie im Baum und drücke Abholen (nur wenn sie nicht schon im Inventar oder in der Endertruhe liegt)."""))
 

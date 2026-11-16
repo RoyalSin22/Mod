@@ -61,9 +61,9 @@ public class RoleFocusItem extends Item {
 					Text.translatable(role.translationKey())).formatted(Formatting.RED), true);
 			return TypedActionResult.fail(stack);
 		}
-		double cost = tier >= Evolution.ULTIMATE ? 10 : 8;
+		double cost = 8;
 		if (!AbilityManager.tryConsume(player, cost)) return TypedActionResult.fail(stack);
-		int cooldown = tier >= Evolution.ULTIMATE ? 10 : 12;
+		int cooldown = 12;
 		cooldown = Math.max(4, cooldown - dev.aptitudes.rune.RuneSocketing.focusCooldownReduction(stack)); // v35: configurable
 		player.getItemCooldownManager().set(this, cooldown);
 
@@ -76,10 +76,10 @@ public class RoleFocusItem extends Item {
 		Targeting.particleLine(sworld, ParticleFx.dust(role.color(), 1.1f), from, to);
 		sworld.spawnParticles(ParticleTypes.ENCHANTED_HIT, to.x, to.y, to.z, 12, 0.3, 0.3, 0.3, 0.2);
 		world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ILLUSIONER_CAST_SPELL,
-				SoundCategory.PLAYERS, 0.8f, tier >= Evolution.ULTIMATE ? 0.9f : 1.3f);
+				SoundCategory.PLAYERS, 0.8f, 1.3f);
 
 		if (target != null) {
-			float damage = (tier >= Evolution.ULTIMATE ? 10f : 7f) + data.level(role) * 0.2f
+			float damage = 7f + data.level(role) * 0.2f
 					+ dev.aptitudes.rune.RuneSocketing.damageBonus(stack)
 					+ (float) dev.aptitudes.boss.BossManager.damageBonus(stack);
 			boolean hostile = Targeting.isHostileTo(player, target);
@@ -98,7 +98,6 @@ public class RoleFocusItem extends Item {
 	public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
 		tooltip.add(dev.aptitudes.item.RoleGlyphs.line(role,
 				Text.translatable("item.aptitudes.role_weapon.role", Text.translatable(role.translationKey()))));
-		tooltip.add(Text.translatable("item.aptitudes.role_weapon.focus", tier >= Evolution.ULTIMATE ? 10 : 7,
-				tier >= Evolution.ULTIMATE ? 10 : 8).formatted(Formatting.GRAY));
+		tooltip.add(Text.translatable("item.aptitudes.role_weapon.focus", 7, 8).formatted(Formatting.GRAY));
 	}
 }

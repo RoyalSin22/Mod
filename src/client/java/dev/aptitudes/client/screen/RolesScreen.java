@@ -49,7 +49,7 @@ public class RolesScreen extends Screen {
 	private static final int FOOTER_H = 34;
 	private static final int CANVAS_TOP = 50;
 
-	private enum NodeKind { CORE, NODE, SIGNATURE, ULTIMATE, WEAPON_MASTER, WEAPON_ULTIMATE }
+	private enum NodeKind { CORE, NODE, SIGNATURE, ULTIMATE, WEAPON_MASTER }
 
 	/** v67: las pestañas son accesos directos a las secciones del árbol unificado. */
 	private enum TalentTab {
@@ -445,7 +445,7 @@ public class RolesScreen extends Screen {
 				? "screen.aptitudes.paths.learn" : "screen.aptitudes.roles.upgrade");
 		upgradeButton.setMessage(UiStyle.fit(textRenderer, upgrade, 62));
 		upgradeButton.setTooltip(Tooltip.of(upgrade));
-		boolean weapon = !extraView && v != null && (v.kind() == NodeKind.WEAPON_MASTER || v.kind() == NodeKind.WEAPON_ULTIMATE);
+		boolean weapon = !extraView && v != null && v.kind() == NodeKind.WEAPON_MASTER;
 		claimButton.visible = weapon;
 		claimButton.active = weapon && ready && lit(data, v)
 				&& (selected == data.primaryRole() || selected == data.secondaryRole());
@@ -594,7 +594,7 @@ public class RolesScreen extends Screen {
 				NodeKind.WEAPON_MASTER);
 		addBridge(out, Section.ASCENT, ascent);
 		addEvolution(out, UnifiedTreeLayout.block(blocks, Section.ULTIMATE), Evolution.ULTIMATE, NodeKind.ULTIMATE,
-				NodeKind.WEAPON_ULTIMATE);
+				null);
 		return out;
 	}
 
@@ -630,7 +630,7 @@ public class RolesScreen extends Screen {
 		int mid = UnifiedTreeLayout.WIDTH / 2 - 12;
 		int y = block.bodyY();
 		out.add(new NodeView(first, null, mid - 36, y + UnifiedTreeLayout.EVO_TOP_Y));
-		out.add(new NodeView(weapon, null, mid + 36, y + UnifiedTreeLayout.EVO_TOP_Y));
+		if (weapon != null) out.add(new NodeView(weapon, null, mid + 36, y + UnifiedTreeLayout.EVO_TOP_Y)); // V74: el Definitivo ya no tiene arma
 		int[] xs = UnifiedTreeLayout.rowXs(upgrades.size(), UnifiedTreeLayout.EVO_PITCH);
 		for (int i = 0; i < upgrades.size(); i++) {
 			out.add(new NodeView(NodeKind.NODE, upgrades.get(i), xs[i], y + UnifiedTreeLayout.EVO_ROW_Y));
@@ -1045,7 +1045,7 @@ public class RolesScreen extends Screen {
 			UiStyle.Frame frame = switch (v.kind()) {
 				case CORE -> UiStyle.Frame.CORE;
 				case SIGNATURE -> UiStyle.Frame.SIGNATURE;
-				case ULTIMATE, WEAPON_ULTIMATE -> UiStyle.Frame.ULTIMATE;
+				case ULTIMATE -> UiStyle.Frame.ULTIMATE;
 				case WEAPON_MASTER -> UiStyle.Frame.SIGNATURE;
 				case NODE -> v.node().kind() == RoleNode.Kind.LEGENDARY ? UiStyle.Frame.UNIQUE
 						: v.node().active() || v.node().kind() == RoleNode.Kind.HASTE
@@ -1281,8 +1281,8 @@ public class RolesScreen extends Screen {
 			case CORE -> NodeIconRenderer.drawRole(ctx, selected, NodeIconRenderer.Badge.CORE, x, y);
 			case SIGNATURE -> NodeIconRenderer.drawRole(ctx, selected, NodeIconRenderer.Badge.SIGNATURE, x, y);
 			case ULTIMATE -> NodeIconRenderer.drawRole(ctx, selected, NodeIconRenderer.Badge.ULTIMATE, x, y);
-			case WEAPON_MASTER, WEAPON_ULTIMATE -> ctx.drawItem(new net.minecraft.item.ItemStack(
-					dev.aptitudes.item.weapon.RoleWeapons.get(selected, v.kind() == NodeKind.WEAPON_MASTER ? 1 : 2)), x, y);
+			case WEAPON_MASTER -> ctx.drawItem(new net.minecraft.item.ItemStack(
+					dev.aptitudes.item.weapon.RoleWeapons.get(selected, 1)), x, y);
 			case NODE -> NodeIconRenderer.draw(ctx, v.node(), x, y);
 		}
 	}
@@ -1291,7 +1291,7 @@ public class RolesScreen extends Screen {
 		return switch (v.kind()) {
 			case CORE -> true;
 			case SIGNATURE -> data.tier(selected) >= Evolution.MASTER;
-			case ULTIMATE, WEAPON_ULTIMATE -> data.tier(selected) >= Evolution.ULTIMATE;
+			case ULTIMATE -> data.tier(selected) >= Evolution.ULTIMATE;
 			case WEAPON_MASTER -> data.tier(selected) >= Evolution.MASTER;
 			case NODE -> data.rank(v.node().id()) > 0;
 		};
@@ -1303,7 +1303,6 @@ public class RolesScreen extends Screen {
 			case SIGNATURE -> Text.translatable(Evolution.signatureKey(selected));
 			case ULTIMATE -> Text.translatable(Evolution.ultimateKey(selected));
 			case WEAPON_MASTER -> dev.aptitudes.item.weapon.RoleWeapons.get(selected, 1).getName();
-			case WEAPON_ULTIMATE -> dev.aptitudes.item.weapon.RoleWeapons.get(selected, 2).getName();
 			case NODE -> Text.translatable(v.node().translationKey());
 		};
 	}
@@ -1313,7 +1312,7 @@ public class RolesScreen extends Screen {
 			return Text.translatable(switch (v.kind()) {
 				case SIGNATURE -> "screen.aptitudes.node.signature";
 				case ULTIMATE -> "screen.aptitudes.node.ultimate";
-				case WEAPON_MASTER, WEAPON_ULTIMATE -> "screen.aptitudes.node.weapon";
+				case WEAPON_MASTER -> "screen.aptitudes.node.weapon";
 				default -> "screen.aptitudes.node.core";
 			});
 		}
@@ -1345,7 +1344,7 @@ public class RolesScreen extends Screen {
 			case CORE -> Text.translatable(selected.descriptionKey());
 			case SIGNATURE -> Text.translatable(Evolution.signatureKey(selected) + ".desc");
 			case ULTIMATE -> Text.translatable(Evolution.ultimateKey(selected) + ".desc");
-			case WEAPON_MASTER, WEAPON_ULTIMATE -> Text.translatable(dev.aptitudes.item.weapon.RoleWeapons.melee(selected)
+			case WEAPON_MASTER -> Text.translatable(dev.aptitudes.item.weapon.RoleWeapons.melee(selected)
 					? "screen.aptitudes.node.weapon_blade" : "screen.aptitudes.node.weapon_focus");
 			case NODE -> Text.translatable(v.node().descriptionKey());
 		};
@@ -1390,7 +1389,6 @@ public class RolesScreen extends Screen {
 				case SIGNATURE -> "screen.aptitudes.node.signature_req";
 				case ULTIMATE -> "screen.aptitudes.node.ultimate_req";
 				case WEAPON_MASTER -> "screen.aptitudes.node.weapon_master_req";
-				case WEAPON_ULTIMATE -> "screen.aptitudes.node.weapon_ultimate_req";
 				default -> throw new IllegalStateException();
 			}).formatted(lit(data, v) ? Formatting.GRAY : Formatting.RED));
 		}

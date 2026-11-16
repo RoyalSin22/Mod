@@ -97,7 +97,7 @@ public class GuideScreen extends Screen {
 			chapter("roles", ModItems.REBIRTH_OFFERING, GuideScreen::roleItems),
 			chapter("tree", Items.BOOK, () -> List.of(Items.BOOK, ModItems.REBIRTH_OFFERING)),
 			chapter("evolution", ModItems.MASTERY_EMBLEM, () -> List.of(ModItems.MASTERY_EMBLEM, ModItems.ULTIMATE_CORE)),
-			chapter("weapons", Items.NETHERITE_SWORD, () -> RoleWeapons.all().stream().limit(10).toList()),
+			chapter("weapons", Items.NETHERITE_SWORD, () -> RoleWeapons.all()),
 			chapter("elements", ModItems.ELEMENTAL_ORB, () -> List.of(ModItems.ELEMENTAL_ORB)),
 			chapter("armor", Items.IRON_CHESTPLATE, GuideScreen::armorItems),
 			chapter("soul_items", ModItems.SOUL_PICKAXE,

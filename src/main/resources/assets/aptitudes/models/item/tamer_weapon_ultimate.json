@@ -1,6 +1,0 @@
-{
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "aptitudes:item/tamer_weapon_ultimate"
-  }
-}

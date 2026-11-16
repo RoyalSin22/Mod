@@ -1,6 +1,0 @@
-{
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "aptitudes:item/mage_weapon_ultimate"
-  }
-}

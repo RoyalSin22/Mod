@@ -5,8 +5,15 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Eliminado
+- **v74 — Sin armas de evolución Definitivo.** Se retiran del mod las 20 armas `<rol>_weapon_ultimate`: objetos, texturas, modelos,
+  nombres en los 11 idiomas, nodo de arma de la fila Definitivo del árbol y rama del Definitivo en las hojas y los focos.
+  Borrado completo del registro (decisión del autor: los mundos actuales son de prueba), así que quien las tuviera pierde el
+  objeto. El Definitivo conserva la habilidad definitiva y su rango extra; las 20 armas Maestro se mantienen. Textos de la guía
+  actualizados.
+
 ### Cambiado
-- **v73 — Armas de evolución rediseñadas.** Las 40 armas Maestro y Definitivo tenían cuatro plantillas compartidas y solo
+- **v73 — Armas de evolución rediseñadas.** (Desde la v74 solo las 20 Maestro.) Las 40 armas Maestro y Definitivo tenían cuatro plantillas compartidas y solo
   cambiaba el color. Ahora cada rol tiene su silueta: hacha de barba y de doble filo, dagas, hoz y guadaña de lianas, lanza
   y alabarda alada, espadas, mazas, bastón de monje, garras, espadas flotantes, machete y hoja de caza, maza de domador,
   báculos, guadaña con calavera, rama viva, llave inglesa y cañón, orbes, revólver, laúd y grimorio. Maestro con acero, oro y

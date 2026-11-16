@@ -498,7 +498,7 @@ Automáticas: `logic/ItemStatRulesTest`. Generadores con `--check`:
 `python3 tools/models/gen_weapon_models.py src/main/resources/assets/aptitudes/models/item --check` y
 `python3 tools/textures/gen_role_glyphs.py src/main/resources/assets/aptitudes --check`.
 
-1. Toma un arma de evolución y otra de rol (p. ej. `/give @s aptitudes:berserker_weapon_ultimate` y
+1. Toma un arma de evolución y otra de rol (p. ej. `/give @s aptitudes:berserker_weapon_master` y
    `aptitudes:holy_hammer`). En la barra y el inventario se ven planas; en la mano (primera y tercera
    persona), en el suelo y en un marco tienen volumen y la misma orientación que el icono.
 2. Tooltip: sello del rol junto a «Arma de rol» u «Objeto de rol»; daño por segundo en las armas cuerpo

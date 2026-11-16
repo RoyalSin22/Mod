@@ -221,7 +221,6 @@ node.weapon¦Arma de evolução¦Arme d'évolution¦Entwicklungswaffe
 node.weapon_blade¦Lâmina de classe: com a classe ativa, cria um corte de sua cor, carrega seu recurso e (Definitivo) cura um pouco ao acertar.¦Lame de rôle : avec le rôle actif, produit un balayage de sa couleur, charge sa ressource et (Ultime) soigne légèrement à l'impact.¦Rollenklinge: Mit aktiver Rolle erzeugt sie einen farbigen Schwung, lädt die Ressource und heilt (Ultimativ) bei Treffern leicht.
 node.weapon_focus¦Foco de classe: disparo instantâneo da cor da classe que custa mana; o dano aumenta com o nível da classe.¦Focaliseur de rôle : tir instantané de la couleur du rôle coûtant du mana ; dégâts accrus avec le niveau du rôle.¦Rollenfokus: Sofortschuss in der Rollenfarbe, der Mana kostet; mehr Schaden mit der Rollenstufe.
 node.weapon_master_req¦Obtida ao evoluir para Mestre¦Obtenue en évoluant au stade Maître¦Erhalten bei der Entwicklung zum Meister
-node.weapon_ultimate_req¦Obtida ao evoluir para Definitivo¦Obtenue en évoluant au stade Ultime¦Erhalten bei der Entwicklung zu Ultimativ
 weapon.claim¦Resgatar¦Réclamer¦Abholen
 hud.eclipse_sky¦Céu do Eclipse¦Ciel de l'Éclipse¦Finsternishimmel
 tab.config¦⚙¦⚙¦⚙
@@ -414,7 +413,6 @@ guide_book¦Grimório de Aptitudes¦Grimoire d'Aptitudes¦Aptitudes-Grimoire
 guide_book.tooltip¦Clique direito: guia do mod (Fogueira, classes, receitas, saque…).¦Clic droit : guide du mod (feu de camp, rôles, recettes, butin…).¦Rechtsklick: Mod-Anleitung (Leuchtfeuer, Rollen, Rezepte, Beute…).
 role_weapon.role¦Arma de classe: %s¦Arme de rôle : %s¦Rollenwaffe: %s
 role_weapon.blade_master¦Com a classe ativa: corte colorido e +3 de recurso por golpe.¦Avec le rôle actif : balayage coloré et +3 de ressource par coup.¦Mit aktiver Rolle: farbiger Schwung und +3 Ressource pro Treffer.
-role_weapon.blade_ultimate¦Com a classe ativa: corte colorido, +3 de recurso e cura de 0.5 por golpe.¦Avec le rôle actif : balayage coloré, +3 de ressource et soin de 0.5 par coup.¦Mit aktiver Rolle: farbiger Schwung, +3 Ressource und 0.5 Heilung pro Treffer.
 role_weapon.focus¦Clique direito: disparo de %s de dano (%s de mana). Requer a classe ativa.¦Clic droit : tir à %s dégâts (%s de mana). Nécessite le rôle actif.¦Rechtsklick: Schuss mit %s Schaden (%s Mana). Erfordert die aktive Rolle.
 role_weapon.needs_role¦Você precisa de %s como classe principal ou secundária.¦%s doit être votre rôle principal ou secondaire.¦Du benötigst %s als Haupt- oder Nebenrolle.
 rune_flame¦Runa da Chama¦Rune de flamme¦Flammenrune
@@ -673,45 +671,25 @@ milestone¦✦ Marco: %s ✦¦✦ Palier : %s ✦¦✦ Meilenstein: %s ✦
 
 add('item.aptitudes.', """
 berserker_weapon_master¦Machado do Senhor da Guerra¦Hache du seigneur de guerre¦Axt des Kriegsherrn
-berserker_weapon_ultimate¦Machado do Avatar da Ira¦Hache de l'avatar de la colère¦Axt des Zornavatars
 assassin_weapon_master¦Adaga do Mestre das Sombras¦Dague du maître des ombres¦Dolch des Schattenmeisters
-assassin_weapon_ultimate¦Adaga do Ceifador Silencioso¦Dague du faucheur silencieux¦Dolch des stillen Schnitters
 herbalist_weapon_master¦Foice do Alquimista Verde¦Faucille de l'alchimiste vert¦Sichel des grünen Alchemisten
-herbalist_weapon_ultimate¦Foice do Guardião do Éden¦Faucille du gardien de l'Éden¦Sichel des Wächters Edens
 lancer_weapon_master¦Lança do Lanceiro Real¦Lance du lancier royal¦Lanze des königlichen Lanzers
-lancer_weapon_ultimate¦Lança da Lança Celeste¦Lance de la lance céleste¦Lanze der Himmelslanze
 swordsman_weapon_master¦Katana do Mestre das Lâminas¦Katana du maître des lames¦Katana des Klingenmeisters
-swordsman_weapon_ultimate¦Katana do Santo da Espada¦Katana du saint de l'épée¦Katana des Schwertheiligen
 paladin_weapon_master¦Martelo do Cruzado¦Marteau du croisé¦Hammer des Kreuzritters
-paladin_weapon_ultimate¦Martelo do Rei Eterno¦Marteau du roi éternel¦Hammer des ewigen Königs
 merchant_weapon_master¦Florete do Magnata¦Rapière du magnat¦Rapier des Magnaten
-merchant_weapon_ultimate¦Florete do Senhor da Fortuna¦Rapière du seigneur de la fortune¦Rapier des Glücksherrn
 monk_weapon_master¦Cajado do Grão-Mestre¦Bâton du grand maître¦Stab des Großmeisters
-monk_weapon_ultimate¦Cajado do Iluminado¦Bâton de l'éveillé¦Stab des Erleuchteten
 shapeshifter_weapon_master¦Garras do Metamorfo¦Griffes du métamorphe¦Klauen des Metamorphs
-shapeshifter_weapon_ultimate¦Garras da Quimera Primordial¦Griffes de la chimère primordiale¦Klauen der Urchimäre
 weapon_summoner_weapon_master¦Lâmina do Senhor das Lâminas¦Lame du seigneur des lames¦Klinge des Klingenherrn
-weapon_summoner_weapon_ultimate¦Lâmina do Arsenal Vivo¦Lame de l'arsenal vivant¦Klinge des lebenden Arsenals
 hunter_weapon_master¦Facão do Mestre Caçador¦Machette du maître chasseur¦Machete des Meisterjägers
-hunter_weapon_ultimate¦Facão do Senhor da Caça¦Machette du seigneur de la chasse¦Machete des Jagdherrn
 tamer_weapon_master¦Chicote do Senhor das Feras¦Fouet du seigneur des bêtes¦Peitsche des Bestienherrn
-tamer_weapon_ultimate¦Chicote do Rei da Matilha¦Fouet du roi de la meute¦Peitsche des Rudelkönigs
 mage_weapon_master¦Varinha do Arquimago¦Baguette de l'archimage¦Zauberstab des Erzmagiers
-mage_weapon_ultimate¦Varinha do Soberano Arcano¦Baguette du souverain arcanique¦Zauberstab des arkanen Herrschers
 engineer_weapon_master¦Canhão do Mestre Engenheiro¦Canon du maître ingénieur¦Kanone des Meisteringenieurs
-engineer_weapon_ultimate¦Canhão do Arquiteto do Amanhã¦Canon de l'architecte de demain¦Kanone des Architekten von morgen
 necromancer_weapon_master¦Cetro do Nobre do Sangue¦Sceptre du noble du sang¦Zepter des Blutadligen
-necromancer_weapon_ultimate¦Cetro do Soberano Carmesim¦Sceptre du souverain carmin¦Zepter des Purpurfürsten
 druid_weapon_master¦Cajado do Arquidruida¦Bâton de l'archidruide¦Stab des Erzdruiden
-druid_weapon_ultimate¦Cajado do Espírito da Floresta¦Bâton de l'esprit de la forêt¦Stab des Waldgeistes
 elementalist_weapon_master¦Orbe do Arquimago Elemental¦Orbe de l'archimage élémentaire¦Kugel des elementaren Erzmagiers
-elementalist_weapon_ultimate¦Orbe do Senhor dos Elementos¦Orbe du seigneur des éléments¦Kugel des Elementeherrn
 gunslinger_weapon_master¦Revólver do Pistoleiro Rúnico¦Revolver du pistolero runique¦Revolver des Runenrevolverhelden
-gunslinger_weapon_ultimate¦Revólver da Lenda do Oeste Arcano¦Revolver de la légende de l'Ouest arcanique¦Revolver der Legende des arkanen Westens
 bard_weapon_master¦Harpa do Mestre de Capela¦Harpe du maître de chapelle¦Harfe des Kapellmeisters
-bard_weapon_ultimate¦Harpa da Voz dos Deuses¦Harpe de la voix des dieux¦Harfe der Götterstimme
 warlock_weapon_master¦Crânio do Arquibruxo¦Crâne de l'archisorcier¦Schädel des Erzhexenmeisters
-warlock_weapon_ultimate¦Crânio do Arauto do Abismo¦Crâne du héraut de l'abîme¦Schädel des Abgrundherolds
 """)
 
 add('trial.aptitudes.', """

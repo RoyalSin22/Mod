@@ -59,7 +59,7 @@ NEIGHBOURS = ((1, 0), (-1, 0), (0, 1), (0, -1))
 
 def weapons():
     names = list(ROLE_WEAPONS)
-    names += [n for n in gen_items.ITEMS if n.endswith(('_weapon_master', '_weapon_ultimate'))]
+    names += [n for n in gen_items.ITEMS if n.endswith('_weapon_master')]
     missing = [n for n in names if n not in gen_items.ITEMS]
     if missing:
         raise SystemExit(f'Armas sin plantilla en gen_items.py: {missing}')

@@ -49,7 +49,6 @@ public class RoleBladeItem extends SwordItem {
 			world.spawnParticles(ParticleFx.dust(role.color(), 1.2f), target.getX(), target.getBodyY(0.6), target.getZ(),
 					10, 0.35, 0.35, 0.35, 0);
 			RoleResources.gain(player, role, ForgeWeapons.impactGain(stack, player, Targeting.isHostileImpactTarget(player, target)));
-			if (tier >= Evolution.ULTIMATE && player.getHealth() < player.getMaxHealth()) player.heal(0.5f);
 		}
 		return super.postHit(stack, target, attacker);
 	}
@@ -58,7 +57,6 @@ public class RoleBladeItem extends SwordItem {
 	public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
 		tooltip.add(dev.aptitudes.item.RoleGlyphs.line(role,
 				Text.translatable("item.aptitudes.role_weapon.role", Text.translatable(role.translationKey()))));
-		tooltip.add(Text.translatable(tier >= Evolution.ULTIMATE ? "item.aptitudes.role_weapon.blade_ultimate"
-				: "item.aptitudes.role_weapon.blade_master").formatted(Formatting.GRAY));
+		tooltip.add(Text.translatable("item.aptitudes.role_weapon.blade_master").formatted(Formatting.GRAY));
 	}
 }
