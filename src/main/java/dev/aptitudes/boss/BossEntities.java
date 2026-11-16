@@ -57,6 +57,16 @@ public final class BossEntities {
 	public static final Item ANCIENT_AUTOMATON_EGG = Registry.register(Registries.ITEM, Aptitudes.id("ancient_automaton_spawn_egg"),
 			new SpawnEggItem(ANCIENT_AUTOMATON, 0x6B5A3E, 0x3FB6C9, new Item.Settings()));
 
+	/** V68: jefe de la Niebla de almas. Lo levanta el evento (ver {@code WorldEventManager}); también por huevo o {@code /summon}. */
+	public static final EntityType<GreatOssuaryEntity> GREAT_OSSUARY = Registry.register(Registries.ENTITY_TYPE,
+			Aptitudes.id("gran_osario_quebrado"),
+			EntityType.Builder.create(GreatOssuaryEntity::new, SpawnGroup.MONSTER)
+					.dimensions(1.6f, 3.2f).eyeHeight(2.9f).maxTrackingRange(10).makeFireImmune()
+					.build("gran_osario_quebrado"));
+
+	public static final Item GREAT_OSSUARY_EGG = Registry.register(Registries.ITEM, Aptitudes.id("gran_osario_quebrado_spawn_egg"),
+			new SpawnEggItem(GREAT_OSSUARY, 0x2A2236, 0x8E7CC3, new Item.Settings()));
+
 	private BossEntities() {
 	}
 
@@ -64,11 +74,13 @@ public final class BossEntities {
 		FabricDefaultAttributeRegistry.register(FACELESS_COLOSSUS, FacelessColossusEntity.createAttributes());
 		FabricDefaultAttributeRegistry.register(DISMANTLED_GUARDIAN, GuardianEntity.createAttributes());
 		FabricDefaultAttributeRegistry.register(ANCIENT_AUTOMATON, AutomatonEntity.createAttributes());
+		FabricDefaultAttributeRegistry.register(GREAT_OSSUARY, GreatOssuaryEntity.createAttributes());
 		ItemGroupEvents.modifyEntriesEvent(RegistryKey.of(RegistryKeys.ITEM_GROUP, Aptitudes.id("items")))
 				.register(entries -> {
 					entries.add(FACELESS_COLOSSUS_EGG);
 					entries.add(DISMANTLED_GUARDIAN_EGG);
 					entries.add(ANCIENT_AUTOMATON_EGG);
+					entries.add(GREAT_OSSUARY_EGG);
 				});
 	}
 }

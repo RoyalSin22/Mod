@@ -30,12 +30,14 @@ MATERIALS = {
     'cracked': (104, 100, 96), 'ember': (255, 84, 48), 'smooth_stone': (156, 156, 152),
     'crimson': (128, 30, 42), 'carved': (128, 124, 116), 'bronze': (158, 108, 56),
     'copper': (96, 160, 144), 'amber': (255, 166, 52),
+    # V68: Gran Osario Quebrado (hueso, tierra de cripta y almas violetas).
+    'soil': (58, 46, 40), 'ash': (96, 92, 98), 'soul': (142, 124, 195),
 }
 
 # Materiales con relieve en la textura: remaches (plate, iron, helm…), tejido (cloth), rejilla (dark), etc.
 RIVETED = {'plate', 'iron', 'helm', 'greave', 'shield', 'gauntlet', 'netherite'}
 # Materiales que brillan desde dentro: el centro es más intenso y el borde se aclara.
-CORE_LIKE = {'core', 'ember', 'amber'}
+CORE_LIKE = {'core', 'ember', 'amber', 'soul'}
 
 
 def box(x, y, z, w, h, d, mat):
@@ -297,10 +299,84 @@ AUTOMATON_ANIMS = {
     }),
 }
 
+# ------------------------------------------------------------------ Gran Osario Quebrado (V68)
+# Osamenta enorme de la Niebla de almas: caja torácica con un núcleo de almas violeta, cráneo con cuernos y brazos largos
+# con garras. Huesos: root, left_leg, right_leg, body, head, left_arm, right_arm (los mismos que el Autómata).
+_OSSUARY_LEG = [box(3, 9, -2, 4, 9, 4, 'bone'), box(3.5, 2, -1.5, 3, 7, 3, 'bone'), box(2.5, 0, -4, 5, 2, 7, 'ash')]
+_OSSUARY_ARM = [box(9, 24, -2, 4, 12, 4, 'bone'), box(9.5, 13, -1.5, 3, 11, 3, 'bone'), box(8.5, 11, -2.5, 4.5, 2, 5, 'bone'),
+                box(9, 6, -2.5, 1, 5, 1, 'bone'), box(10.5, 6, -2.5, 1, 5, 1, 'bone'), box(12, 6, -2.5, 1, 5, 1, 'bone')]
+_OSSUARY_RIBS = [box(-7, y, -5, 14, 1.5, 2, 'bone') for y in (22, 25.5, 29, 32.5)]
+_OSSUARY_SIDE_RIBS = [box(x, y, -3, 1.5, 1.5, 6, 'bone') for y in (22, 25.5, 29, 32.5) for x in (-8, 6.5)]
+OSSUARY_BONES = [
+    ('root', None, [0, 0, 0], None, []),
+    ('left_leg', 'root', [5, 18, 0], None, _OSSUARY_LEG),
+    ('right_leg', 'root', [-5, 18, 0], None, [mirror(c) for c in _OSSUARY_LEG]),
+    ('body', 'root', [0, 18, 0], None, [
+        box(-6, 17, -3, 12, 3, 6, 'bone'), box(-5.5, 21, -3.5, 11, 16, 7, 'soil'), box(-1.5, 20, 2.5, 3, 18, 2, 'bone'),
+        *_OSSUARY_RIBS, *_OSSUARY_SIDE_RIBS, box(-2, 27, -3, 4, 4, 3, 'soul'),
+        box(-14, 35, -3, 8, 4, 6, 'bone'), box(6, 35, -3, 8, 4, 6, 'bone'),
+        box(-14, 39, -1, 2, 5, 2, 'bone'), box(12, 39, -1, 2, 5, 2, 'bone')]),
+    ('head', 'body', [0, 38, 0], None, [
+        box(-5, 38, -4, 10, 9, 8, 'bone'), box(-4, 35.5, -3.5, 8, 2.5, 6, 'bone'),
+        box(-4, 42, -4.3, 3, 3, 0.5, 'dark'), box(1, 42, -4.3, 3, 3, 0.5, 'dark'),
+        box(-3.5, 42.5, -4.6, 2, 2, 0.4, 'soul'), box(1.5, 42.5, -4.6, 2, 2, 0.4, 'soul'),
+        box(-7, 45, -1.5, 2, 6, 3, 'bone'), box(5, 45, -1.5, 2, 6, 3, 'bone'),
+        box(-8, 50, -1, 1.5, 3, 2, 'bone'), box(6.5, 50, -1, 1.5, 3, 2, 'bone')]),
+    ('left_arm', 'body', [10, 36, 0], None, _OSSUARY_ARM),
+    ('right_arm', 'body', [-10, 36, 0], None, [mirror(c) for c in _OSSUARY_ARM]),
+]
+
+OSSUARY_ANIMS = {
+    'idle': (3.0, True, {
+        'body': {'rotation': {0: [0, 0, 0], 1.5: [2, 0, 0], 3.0: [0, 0, 0]}},
+        'head': {'rotation': {0: [0, 0, 0], 1.0: [0, 12, 0], 2.0: [0, -12, 0], 3.0: [0, 0, 0]}},
+        'left_arm': {'rotation': {0: [0, 0, 3], 1.5: [0, 0, 6], 3.0: [0, 0, 3]}},
+        'right_arm': {'rotation': {0: [0, 0, -3], 1.5: [0, 0, -6], 3.0: [0, 0, -3]}},
+    }),
+    'walk': (1.4, True, {
+        'right_leg': {'rotation': {0: [22, 0, 0], 0.7: [-22, 0, 0], 1.4: [22, 0, 0]}},
+        'left_leg': {'rotation': {0: [-22, 0, 0], 0.7: [22, 0, 0], 1.4: [-22, 0, 0]}},
+        'right_arm': {'rotation': {0: [-18, 0, 0], 0.7: [18, 0, 0], 1.4: [-18, 0, 0]}},
+        'left_arm': {'rotation': {0: [18, 0, 0], 0.7: [-18, 0, 0], 1.4: [18, 0, 0]}},
+    }),
+    # Zarpazo (aviso 16 t = 0,8 s): el brazo derecho se alza y barre.
+    'rake': (1.3, False, {
+        'right_arm': {'rotation': {0: [0, 0, 0], 0.7: [-110, 0, 0], 0.85: [35, 0, -10], 1.3: [0, 0, 0]}},
+        'body': {'rotation': {0: [0, 0, 0], 0.7: [0, 14, 0], 0.85: [0, -18, 0], 1.3: [0, 0, 0]}},
+    }),
+    # Anillo de niebla (aviso 28 t = 1,4 s): se encoge y golpea el suelo con ambos brazos.
+    'mist_ring': (2.0, False, {
+        'left_arm': {'rotation': {0: [0, 0, 0], 1.2: [-70, 0, 40], 1.4: [20, 0, 10], 2.0: [0, 0, 0]}},
+        'right_arm': {'rotation': {0: [0, 0, 0], 1.2: [-70, 0, -40], 1.4: [20, 0, -10], 2.0: [0, 0, 0]}},
+        'body': {'position': {0: [0, 0, 0], 1.2: [0, 1, 0], 1.4: [0, -2, 0], 2.0: [0, 0, 0]}},
+    }),
+    # Latigazo de almas (aviso 24 t = 1,2 s): el brazo derecho apunta al frente y se mantiene.
+    'soul_lash': (1.8, False, {
+        'right_arm': {'rotation': {0: [0, 0, 0], 0.8: [-90, 0, 0], 1.4: [-90, 0, 0], 1.8: [0, 0, 0]}},
+        'body': {'rotation': {0: [0, 0, 0], 0.8: [0, -20, 0], 1.3: [0, 20, 0], 1.8: [0, 0, 0]}},
+    }),
+    # Lamento (aviso 34 t = 1,7 s): echa la cabeza atrás con los brazos abiertos.
+    'wail': (2.4, False, {
+        'head': {'rotation': {0: [0, 0, 0], 1.0: [-35, 0, 0], 1.9: [-35, 0, 0], 2.4: [0, 0, 0]}},
+        'left_arm': {'rotation': {0: [0, 0, 0], 1.0: [0, 0, 70], 1.9: [0, 0, 70], 2.4: [0, 0, 0]}},
+        'right_arm': {'rotation': {0: [0, 0, 0], 1.0: [0, 0, -70], 1.9: [0, 0, -70], 2.4: [0, 0, 0]}},
+    }),
+    # Cosecha de almas (aviso 40 t = 2,0 s): alza ambos brazos y los deja caer.
+    'harvest': (2.6, False, {
+        'left_arm': {'rotation': {0: [0, 0, 0], 1.6: [-165, 0, 15], 2.0: [25, 0, 5], 2.6: [0, 0, 0]}},
+        'right_arm': {'rotation': {0: [0, 0, 0], 1.6: [-165, 0, -15], 2.0: [25, 0, -5], 2.6: [0, 0, 0]}},
+        'body': {'position': {0: [0, 0, 0], 1.6: [0, 1, 0], 2.0: [0, -2, 0], 2.6: [0, 0, 0]}},
+    }),
+    'phase_two': (1.5, False, {
+        'body': {'rotation': {0: [0, 0, 0], 0.25: [0, 0, 6], 0.5: [0, 0, -6], 0.75: [0, 0, 5], 1.5: [0, 0, 0]}},
+    }),
+}
+
 BOSSES = {
     'faceless_colossus': (COLOSSUS_BONES, COLOSSUS_ANIMS),
     'dismantled_guardian': (GUARDIAN_BONES, GUARDIAN_ANIMS),
     'ancient_automaton': (AUTOMATON_BONES, AUTOMATON_ANIMS),
+    'gran_osario_quebrado': (OSSUARY_BONES, OSSUARY_ANIMS),
 }
 
 

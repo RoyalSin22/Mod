@@ -717,6 +717,25 @@ T['heart'] = [
     "................",
 ]
 
+T['skull'] = [
+    "................",
+    "....BBBBBBBB....",
+    "...BBBBBBBBBB...",
+    "..BBBBBBBBBBBB..",
+    "..BBBBBBBBBBBB..",
+    "..BDDDBBBBDDDB..",
+    "..BDJDBBBBDJDB..",
+    "..BDDDBBBBDDDB..",
+    "..BBBBBDDBBBBB..",
+    "...BBBBDDBBBB...",
+    "....BBBBBBBB....",
+    "....BDBDBDBB....",
+    "....BBBBBBBB....",
+    ".....BBBBBB.....",
+    "................",
+    "................",
+]
+
 T['pickaxe'] = [
     "................",
     "....AAAAAA......",
@@ -995,6 +1014,8 @@ ITEMS = {
     # T2: materiales de la cadena de la Niebla
     'nucleo_osario': ('core', {'D': '#2c3a30', 'J': '#4de2a6'}),
     'ancla_del_velo': ('anchor', {'S': '#5a6b75', 'A': '#65d6d0', 'J': '#a2e9e1'}),
+    # V68: trofeo del Gran Osario Quebrado
+    'craneo_gran_osario': ('skull', {'B': '#cfc7b4', 'D': '#1a1426', 'J': '#8e7cf0'}),
     'mastery_emblem': ('emblem', {'G': '#e0b43a', 'J': '#4fc3f7', 'A': '#2980b9'}),
     'ultimate_core': ('core', {'D': '#3a2f4a', 'J': '#ff3d7f'}),
     'rebirth_offering': ('offering', {'J': '#ff9f1a', 'K': '#2b2d38', 'C': '#efe6d2', 'G': '#e0b43a', 'A': '#8e44ad'}),

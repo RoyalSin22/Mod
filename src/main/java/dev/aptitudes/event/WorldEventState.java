@@ -32,6 +32,8 @@ public final class WorldEventState extends PersistentState {
 	UUID fogSession;
 	UUID lastClosedFogSession;
 	long lastFogCloseTick;
+	/** V68: sesión de Niebla en la que ya apareció el Gran Osario Quebrado (una vez por sesión). Ausente = ninguna. */
+	UUID bossSession;
 	/** T1: reloj del mundo en que empezó la última Niebla / Lluvia provocada por un jugador (-1 = nunca). */
 	long lastFogStart = -1;
 	long lastEmberStart = -1;
@@ -53,6 +55,7 @@ public final class WorldEventState extends PersistentState {
 		nbt.putLong("start", startTick);
 		nbt.putLong("active_day", activeDay);
 		if (fogSession != null) nbt.putUuid("fog_session", fogSession);
+		if (bossSession != null) nbt.putUuid("boss_session", bossSession);
 		if (lastClosedFogSession != null) {
 			nbt.putUuid("closed_fog_session", lastClosedFogSession);
 			nbt.putLong("fog_close_tick", lastFogCloseTick);
@@ -75,6 +78,7 @@ public final class WorldEventState extends PersistentState {
 		s.startTick = nbt.getLong("start");
 		s.activeDay = nbt.contains("active_day") ? nbt.getLong("active_day") : -1;
 		if (nbt.containsUuid("fog_session")) s.fogSession = nbt.getUuid("fog_session");
+		if (nbt.containsUuid("boss_session")) s.bossSession = nbt.getUuid("boss_session");
 		if (nbt.containsUuid("closed_fog_session")) {
 			s.lastClosedFogSession = nbt.getUuid("closed_fog_session");
 			s.lastFogCloseTick = nbt.getLong("fog_close_tick");

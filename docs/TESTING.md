@@ -1,5 +1,36 @@
 # Pruebas de Aptitudes
 
+## V68 — Gran Osario Quebrado y su trofeo
+
+Automáticas: `OsarioBossRulesTest` (aparición, disolución, reparto, escudo y curas), `GreatOssuaryResourcesTest` (modelo,
+animaciones, texturas y textos en los idiomas) y `BestiaryRulesTest` (14 entradas).
+
+Verificado en servidor dedicado sin jugador: el mod arranca con el jefe registrado, `/summon aptitudes:gran_osario_quebrado`
+lo crea, aguanta 1200 ticks sin excepciones, se disuelve solo cuando su sesión de Niebla es desconocida y han pasado
+`osarioBossLingerTicks`, y su muerte sin daño de jugadores no reparte nada ni falla.
+
+También verificado: los jefes sin sesión sobreviven al guardado y la recarga del mundo, un jefe con una sesión de Niebla
+desconocida se disuelve en cuanto el reloj supera `osarioBossLingerTicks` y `kill` ejecuta la muerte (reparto y retirada de
+acompañantes) sin errores. Para consultar entidades desde la consola hay que cargar antes el chunk
+(`execute in minecraft:overworld run forceload add 0 0 32 32`); sin eso `execute if entity` dice «Test failed» aunque estén.
+
+No verificado sin jugador: el gancho de aparición de `WorldEventManager`, los ataques con objetivo real, el reparto del
+trofeo a jugadores conectados y todo lo que dibuja el cliente.
+
+Pendiente en partida (autor), porque exige un jugador y el cliente:
+
+1. **Aparición:** con `fogDurationTicks` en 1200 (mínimo) y `/aptitudes event start soul_fog`, a los 900 ticks (75 por
+   ciento) aparece el jefe a 24–36 bloques de un jugador con aviso global y barra de jefe. Una sola vez por sesión. Con
+   `osarioBossEnabled` en `false` no aparece.
+2. **Combate:** los cinco ataques se ven y se esquivan con su aviso (zarpazo, anillo, latigazo, lamento desde la fase 2 y
+   cosecha desde la fase 3). El lamento invoca 2 Errantes (máximo 4) y con ellos vivos el jefe recibe mucho menos daño.
+3. **Reparto:** al derrotarlo, cada jugador con al menos el 10 por ciento de su vida en daño recibe 1 Cráneo del Gran
+   Osario y de 6 a 10 fragmentos; quien casi no peleó no recibe nada. El trofeo no se puede aplicar a armas.
+4. **Fin de Niebla:** si la Niebla cierra con el jefe vivo, sigue 5 minutos (6000 ticks) y se disuelve sin botín ni XP. Los
+   Errantes invocados desaparecen con él y no sueltan Jirón.
+5. **Bestiario y logro:** la entrada «Gran Osario Quebrado» (14.ª) se desbloquea con la primera muerte; «Cronista» pide 14.
+6. **Aspecto:** el modelo es provisional; revisar escala (1,6 × 3,2), animaciones por ataque y legibilidad del aviso.
+
 ## Prueba de arranque del servidor (sin cliente ni jugador)
 
 Comprueba que el mod carga en un Minecraft real: registros, recetas, avances, tablas de botín, mundo y las criaturas del

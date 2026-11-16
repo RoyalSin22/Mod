@@ -2,6 +2,7 @@ package dev.aptitudes.guide;
 
 import dev.aptitudes.guide.BestiaryRules.Entry;
 import dev.aptitudes.guide.BestiaryRules.Kind;
+import dev.aptitudes.guide.BestiaryRules.Region;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -31,12 +32,23 @@ public class BestiaryRulesTest {
 			assertEquals(Kind.BOSS, e.kind());
 			assertEquals("boss.aptitudes." + boss, BestiaryRules.nameKey(e));
 		}
-		assertEquals(7, BestiaryRules.total(Kind.BOSS)); // 4 propios + Coloso, Guardián y Autómata
+		assertEquals(8, BestiaryRules.total(Kind.BOSS)); // 4 propios + Coloso, Guardián, Autómata y Gran Osario
 		assertEquals(2, BestiaryRules.total(Kind.ELITE));
 		assertEquals(4, BestiaryRules.total(Kind.CREATURE)); // Osario, Errante, Escorificador y Custodio
-		assertEquals(13, BestiaryRules.total(null));
+		assertEquals(14, BestiaryRules.total(null));
 		assertEquals(BestiaryRules.entries().size(), BestiaryRules.total(null));
 		assertTrue(BestiaryRules.entries().size() <= BestiaryRules.MAX_ENTRIES);
+	}
+
+	@Test public void greatOssuaryIsABossThatDropsItsTrophy() {
+		Entry e = BestiaryRules.byId("gran_osario_quebrado");
+		assertNotNull(e);
+		assertEquals(Kind.BOSS, e.kind());
+		assertEquals(Region.OVERWORLD, e.region());
+		assertEquals("entity.aptitudes.gran_osario_quebrado", BestiaryRules.nameKey(e));
+		assertTrue(e.drops().contains("aptitudes:craneo_gran_osario"));
+		assertEquals(List.of("gran_osario_quebrado"),
+				BestiaryRules.unlockedBy("aptitudes:gran_osario_quebrado", null, false, false));
 	}
 
 	@Test public void minecraftCreaturesAreNoLongerInTheCatalog() {

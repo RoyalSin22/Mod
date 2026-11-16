@@ -217,6 +217,15 @@ public class AptitudesConfig {
 	public int fogDurationTicks = 24_000;
 	/** Días de espera entre dos Lluvias de brasas provocadas por un portal. */
 	public int emberRainCooldownDays = 5;
+	// ---------- Gran Osario Quebrado, jefe de la Niebla (V68) ----------
+	/** Activa la aparición del jefe al final de la Niebla de almas. */
+	public boolean osarioBossEnabled = true;
+	/** Porcentaje de la duración de la Niebla a partir del cual aparece el jefe. */
+	public int osarioBossFogPercent = 75;
+	/** Ticks que sigue vivo tras cerrarse la Niebla antes de disolverse sin botín. */
+	public int osarioBossLingerTicks = 6_000;
+	/** Daño mínimo (porcentaje de su vida) para recibir el trofeo. */
+	public int osarioBossMinDamagePercent = 10;
 	/** v67 (F2+): multiplicador del daño de las habilidades nuevas N1–N10 (1 = el de los textos). */
 	public double extraSkillDamageScale = 1.0;
 	// ---------- Piedras angulares de las Sendas (v46.1) ----------
@@ -581,6 +590,9 @@ public class AptitudesConfig {
 		c.fogDurationTicks = clamp(c.fogDurationTicks, dev.aptitudes.event.EventTriggerRules.MIN_FOG_TICKS,
 				dev.aptitudes.event.EventTriggerRules.MAX_FOG_TICKS);
 		c.emberRainCooldownDays = clamp(c.emberRainCooldownDays, 1, 365);
+		c.osarioBossFogPercent = clamp(c.osarioBossFogPercent, 10, 100);
+		c.osarioBossLingerTicks = clamp(c.osarioBossLingerTicks, 0, 72_000);
+		c.osarioBossMinDamagePercent = clamp(c.osarioBossMinDamagePercent, 1, 100);
 		c.extraSkillDamageScale = Math.min(3.0, c.extraSkillDamageScale);
 		c.keystoneCarnageHeal = Math.min(1.0, c.keystoneCarnageHeal);
 		c.keystoneCarnageHasteSeconds = Math.min(60.0, c.keystoneCarnageHasteSeconds);

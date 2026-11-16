@@ -6,6 +6,7 @@ import dev.aptitudes.boss.AutomatonEntity;
 import dev.aptitudes.boss.AutomatonOrbEntity;
 import dev.aptitudes.boss.BossEntities;
 import dev.aptitudes.boss.FacelessColossusEntity;
+import dev.aptitudes.boss.GreatOssuaryEntity;
 import dev.aptitudes.boss.GuardianEntity;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
@@ -40,6 +41,12 @@ public final class BossRenderers {
 		EntityRendererRegistry.register(BossEntities.ANCIENT_AUTOMATON, ctx -> {
 			GeoEntityRenderer<AutomatonEntity> renderer = new GeoEntityRenderer<>(ctx,
 					new DefaultedEntityGeoModel<>(Aptitudes.id("ancient_automaton"), true));
+			renderer.withScale(1.0f);
+			return renderer;
+		});
+		EntityRendererRegistry.register(BossEntities.GREAT_OSSUARY, ctx -> {
+			GeoEntityRenderer<GreatOssuaryEntity> renderer = new GeoEntityRenderer<>(ctx,
+					new DefaultedEntityGeoModel<>(Aptitudes.id("gran_osario_quebrado"), true));
 			renderer.withScale(1.0f);
 			return renderer;
 		});

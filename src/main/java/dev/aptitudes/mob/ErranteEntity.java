@@ -259,6 +259,11 @@ public class ErranteEntity extends HostileEntity implements GeoEntity {
 		fogSession = session;
 	}
 
+	/** V68: acompañante del Gran Osario. Sin sesión de Niebla no suelta Jirón (ver canDropVeil); aquí tampoco da XP. */
+	public void dropNoExperience() {
+		experiencePoints = 0;
+	}
+
 	public boolean isRetiring() {
 		return retireAt >= 0;
 	}
