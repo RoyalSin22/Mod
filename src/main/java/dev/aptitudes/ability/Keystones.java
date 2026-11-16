@@ -357,6 +357,77 @@ public final class Keystones {
 		ServerPlayNetworking.send(player, new KeystonePayload(entries));
 	}
 
+	// ------------------------------------------------------------ v65 C5 Y5: Combo ↔ Keystones
+
+	/**
+	 * v65 C5 Y5: Disparar una piedra angular en remate de combo (sin coste de energía).
+	 * Elige la primera keystone activa y ejecuta su efecto principal.
+	 */
+	public static void triggerFromCombo(ServerPlayerEntity player) {
+		Set<Template> keystones = active(player);
+		if (keystones.isEmpty()) return;
+
+		// Elegir la primera keystone (orden de enum).
+		Template template = keystones.iterator().next();
+		AptitudesConfig cfg = Aptitudes.config();
+		ServerWorld world = player.getServerWorld();
+		long now = now(player);
+
+		switch (template) {
+			// Tempestad: daño y chispa a enemigo cercano.
+			case TEMPEST -> {
+				LivingEntity target = nearestHostile(player, player, TEMPEST_RADIUS);
+				if (target != null) {
+					damage(player, target, (float) cfg.keystoneTempestDamage);
+					Targeting.particleLine(world, ParticleTypes.ELECTRIC_SPARK,
+							player.getPos().add(0, player.getHeight() * 0.6, 0),
+							target.getPos().add(0, target.getHeight() * 0.6, 0));
+					sound(player, Template.TEMPEST, 0.7f);
+				}
+			}
+			// Baluarte: escudo defensivo temporal.
+			case BULWARK -> {
+				int ticks = (int) Math.round(cfg.keystoneBulwarkSeconds * 20);
+				int amp = KeystoneRules.absorptionAmplifier(cfg.keystoneBulwarkAbsorption);
+				if (ticks > 0) {
+					if (amp >= 0) player.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, ticks, amp, false, true, true));
+					player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, ticks, 0, false, true, true));
+				}
+				world.spawnParticles(ParticleTypes.TOTEM_OF_UNDYING, player.getX(), player.getBodyY(0.5),
+						player.getZ(), 24, 0.4, 0.6, 0.4, 0.15);
+				sound(player, Template.BULWARK, 1.0f);
+			}
+			// Espectro: crítico seguro en el siguiente golpe.
+			case SPECTER -> {
+				SPECTER_UNTIL.put(player.getUuid(), KeystoneRules.readyAt(now, cfg.keystoneSpecterSeconds));
+				world.spawnParticles(ParticleTypes.ENCHANT, player.getX(), player.getBodyY(0.6), player.getZ(),
+						12, 0.4, 0.5, 0.4, 0.05);
+				sound(player, Template.SPECTER, 0.6f);
+			}
+			// Santuario: curación inmediata en área.
+			case SANCTUARY -> {
+				float heal = (float) cfg.keystoneSanctuaryHeal;
+				if (heal > 0) {
+					boolean healed = false;
+					List<PlayerEntity> targets = new ArrayList<>(Targeting.playersAround(player, SANCTUARY_RADIUS));
+					if (!targets.contains(player)) targets.add(player);
+					for (PlayerEntity p : targets) {
+						if (p.getHealth() < p.getMaxHealth()) {
+							p.heal(heal);
+							healed = true;
+							world.spawnParticles(ParticleTypes.HEART, p.getX(), p.getBodyY(1.0), p.getZ(), 2, 0.3, 0.2, 0.3, 0.0);
+						}
+					}
+					if (healed) sound(player, Template.SANCTUARY, 0.5f);
+				}
+			}
+			// Sobrecarga: sin efecto combo (manejado aparte).
+			case OVERLOAD -> { }
+			// Otros: sin efecto combo específico.
+			default -> { }
+		}
+	}
+
 	// ------------------------------------------------------------ Utilidades
 
 	private static void damage(ServerPlayerEntity player, LivingEntity target, float amount) {

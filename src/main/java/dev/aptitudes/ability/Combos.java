@@ -154,7 +154,7 @@ public final class Combos {
 	}
 
 	/**
-	 * v65 C5 Y5: Disparar piedra angular del jugador si está disponible (cooldown).
+	 * v65 C5 Y5: Disparar piedra angular del jugador en remate de combo (si está disponible y cooldown expiró).
 	 */
 	private static void tryTriggerKeystoneOnCombo(ServerPlayerEntity player) {
 		long now = player.getServer().getTicks();
@@ -168,11 +168,10 @@ public final class Combos {
 		java.util.Set<dev.aptitudes.role.KeystoneRules.Template> keystones = Keystones.active(player);
 		if (keystones.isEmpty()) return; // Sin piedra angular.
 
-		// Obtener la primera piedra angular activa e intentar dispararla.
-		dev.aptitudes.role.KeystoneRules.Template template = keystones.iterator().next();
+		// Disparar la piedra angular sin coste de energía.
+		Keystones.triggerFromCombo(player);
 
-		// TODO: Implementar disparo real de piedra angular.
-		// Por ahora: solo establecer cooldown para evitar spam.
+		// Establecer cooldown global para evitar spam.
 		long cooldown = SynergyRules.keystoneComboTrigerCooldown();
 		KEYSTONE_COMBO_COOLDOWN.put(uuid, now + cooldown);
 	}
