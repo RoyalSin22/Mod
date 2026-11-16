@@ -6,6 +6,7 @@ from check_lang import LANG_DIR, LOCALES, load, markers, validate
 from gen_lore_lang import PREFIX, encode, key_for, lore_keys, managed, render
 from generator_cli import SPANISH_VARIANTS
 from lore_catalog import ENTRIES
+from lore_i18n import TRANSLATIONS
 
 META_PATH = Path(__file__).resolve().parents[1] / 'lore' / 'lore_entries.json'
 VERIFICATION = {'existing_hook', 'plausible_hook', 'unverified', 'blocked', 'undefined'}
@@ -131,6 +132,69 @@ class LoreTextTest(unittest.TestCase):
             self.assertIn(name, ENTRIES[entry_id]['en'][1], entry_id)
 
 
+# Títulos que se escriben igual en inglés y en algún idioma (cognados), p. ej. «Eclipse» en portugués.
+COGNATE_TITLES = {'Eclipse'}
+
+
+class LoreTranslationTest(unittest.TestCase):
+    """Traducciones pt/fr/de del lore (lore_i18n_*.py): cobertura, estructura y nombres oficiales."""
+    OFFICIAL = {
+        'pt': {'lore.bestiary.errante_velado': 'Andarilho Velado', 'lore.bestiary.osario_quebrado': 'Ossuário Quebrado',
+               'lore.bestiary.ancient_automaton': 'Autômato Antigo', 'lore.bestiary.custodio_cuatro_llaves': 'Custódio',
+               'lore.bestiary.escorificador_hierro': 'Escorificador de Ferro'},
+        'fr': {'lore.bestiary.errante_velado': 'Errant voilé', 'lore.bestiary.osario_quebrado': 'Ossuaire brisé',
+               'lore.bestiary.ancient_automaton': 'Automate ancien', 'lore.bestiary.custodio_cuatro_llaves': 'Gardien',
+               'lore.bestiary.escorificador_hierro': 'Scorificateur de fer'},
+        # En alemán el nombre va declinado tras el artículo («Der Verschleierte Wanderer»): se comprueba esa forma.
+        'de': {'lore.bestiary.errante_velado': 'Verschleierte Wanderer',
+               'lore.bestiary.osario_quebrado': 'Zerbrochene Beinhaus',
+               'lore.bestiary.ancient_automaton': 'Uralte Automat', 'lore.bestiary.custodio_cuatro_llaves': 'Wächter',
+               'lore.bestiary.escorificador_hierro': 'Eisenschlacker'},
+    }
+    SECRET = ('Consciência Ancestral', 'Conscience ancestrale', 'Uralte Bewusstsein', 'Ahnenbewusstsein', 'Urbewusstsein')
+
+    def test_every_entry_is_translated_and_nothing_is_orphaned(self):
+        for code, texts in TRANSLATIONS.items():
+            self.assertEqual(list(texts), list(ENTRIES), code)
+
+    def test_titles_follow_the_english_pattern(self):
+        for code, texts in TRANSLATIONS.items():
+            for entry_id, (title, body) in texts.items():
+                if entry_id.startswith('lore.bestiary.'):
+                    self.assertIsNone(title, f'{code}/{entry_id}')
+                else:
+                    self.assertTrue(title and title.strip(), f'{code}/{entry_id}: título vacío')
+                self.assertTrue(body.strip(), f'{code}/{entry_id}: cuerpo vacío')
+
+    def test_same_paragraphs_as_english(self):
+        for code, texts in TRANSLATIONS.items():
+            for entry_id, (_, body) in texts.items():
+                english = ENTRIES[entry_id]['en'][1]
+                self.assertEqual(len(body.split('\n\n')), len(english.split('\n\n')), f'{code}/{entry_id}')
+
+    def test_not_left_in_english(self):
+        for code, texts in TRANSLATIONS.items():
+            for entry_id, (title, body) in texts.items():
+                self.assertNotEqual(body, ENTRIES[entry_id]['en'][1], f'{code}/{entry_id}')
+                if title is not None and title not in COGNATE_TITLES:
+                    self.assertNotEqual(title, ENTRIES[entry_id]['en'][0], f'{code}/{entry_id}')
+
+    def test_no_percent_markers_and_secret_name_stays_secret(self):
+        for code, texts in TRANSLATIONS.items():
+            for entry_id, values in texts.items():
+                for value in values:
+                    if value is None:
+                        continue
+                    self.assertEqual(markers(value), [], f'{code}/{entry_id}')
+                    for name in self.SECRET:
+                        self.assertNotIn(name, value, f'{code}/{entry_id}')
+
+    def test_bestiary_uses_official_creature_names(self):
+        for code, expected in self.OFFICIAL.items():
+            for entry_id, name in expected.items():
+                self.assertIn(name, TRANSLATIONS[code][entry_id][1], f'{code}/{entry_id}')
+
+
 class LoreLangFilesTest(unittest.TestCase):
     """Los archivos de idioma deben coincidir con lo que genera gen_lore_lang.py."""
 
@@ -157,6 +221,14 @@ class LoreLangFilesTest(unittest.TestCase):
         reference = load(LANG_DIR / 'en_us.json')
         for locale in LOCALES:
             self.assertEqual(validate(reference, load(LANG_DIR / f'{locale}.json')), [], locale)
+
+    def test_unlock_messages_are_translated(self):
+        from lore_catalog import MESSAGES
+        for name, texts in MESSAGES.items():
+            self.assertEqual(set(texts), {'es', 'en', 'pt', 'fr', 'de'}, name)
+            for code in ('pt', 'fr', 'de'):
+                self.assertNotEqual(texts[code], texts['en'], f'{name}: {code} sigue en inglés')
+                self.assertTrue(texts[code].strip(), f'{name}: {code} vacío')
 
     def test_key_naming(self):
         self.assertEqual(key_for('lore.cosmology.echoes', 'title'), 'lore.aptitudes.cosmology.echoes.title')

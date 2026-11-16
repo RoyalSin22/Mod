@@ -1743,6 +1743,8 @@ advancement.aptitudes.temple_opened.title¦Sem selo¦Descellé¦Entsiegelt
 advancement.aptitudes.temple_opened.description¦Abra o Relicário de um templo com sua chave.¦Ouvrez le Reliquaire d'un temple avec sa clé.¦Öffne das Reliquiar eines Tempels mit seinem Schlüssel.
 advancement.aptitudes.life_vessel.title¦Coração pleno¦Cœur comblé¦Volles Herz
 advancement.aptitudes.life_vessel.description¦Use um Vaso de vida.¦Utilisez un Vase de vie.¦Benutze ein Lebensgefäß.
+advancement.aptitudes.bestiary_complete.title¦Cronista¦Chroniqueur¦Chronist
+advancement.aptitudes.bestiary_complete.description¦Descubra todas as criaturas do bestiário.¦Découvrez toutes les créatures du bestiaire.¦Entdecke alle Kreaturen des Bestiariums.
 """)
 
 # v63 (C4): jefes animados (GeckoLib).

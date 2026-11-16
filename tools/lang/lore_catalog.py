@@ -828,3 +828,53 @@ It is a temporary manifestation of its will.
 
 And, while adventurers struggle to survive, something remains hidden behind the frontiers of the Veil.
 """)))
+
+
+# ------------------------------------------------------- Mensajes de desbloqueo (T7a)
+
+# Avisos que el servidor muestra al desbloquear lore por un evento (no son entradas: sin título ni cuerpo).
+# Mismo orden que en los JSON de idioma. clave sin el prefijo lore.aptitudes. -> {'es', 'en', 'pt', 'fr', 'de'}.
+MESSAGES = {
+    'soul_fog_trigger': {
+        'es': 'La Niebla de Almas ha sido despertada. Apariciones extrañas caminan por donde se asientan las brumas.',
+        'en': 'The Soul Fog has been awakened. Strange apparitions walk where the mist settles.',
+        'pt': 'A Névoa das Almas foi despertada. Aparições estranhas vagam por onde a bruma se assenta.',
+        'fr': "La Brume des âmes a été éveillée. D'étranges apparitions rôdent là où la brume se pose.",
+        'de': 'Der Seelennebel wurde erweckt. Seltsame Erscheinungen wandeln dort, wo sich der Nebel niederlässt.',
+    },
+    'ember_rain_trigger': {
+        'es': 'La Lluvia de Brasas ha sido invocada. Fuego y ceniza caen desde las grietas entre mundos.',
+        'en': 'The Ember Rain has been called. Fire and ash fall from the rifts between worlds.',
+        'pt': 'A Chuva de Brasas foi invocada. Fogo e cinzas caem das fendas entre os mundos.',
+        'fr': 'La Pluie de braises a été invoquée. Le feu et la cendre tombent des failles entre les mondes.',
+        'de': 'Der Glutregen wurde herbeigerufen. Feuer und Asche fallen aus den Rissen zwischen den Welten.',
+    },
+    'custodian_defeated': {
+        'es': 'El guardián del templo sellado ha sido vencido. Sus secretos ahora pueden ser leídos.',
+        'en': 'The guardian of the sealed temple has been overcome. Its secrets may now be read.',
+        'pt': 'O guardião do templo selado foi vencido. Seus segredos agora podem ser lidos.',
+        'fr': 'Le gardien du temple scellé a été vaincu. Ses secrets peuvent maintenant être lus.',
+        'de': 'Der Wächter des versiegelten Tempels wurde besiegt. Seine Geheimnisse können nun gelesen werden.',
+    },
+    'behelit_found': {
+        'es': 'Un artefacto de inmenso poder ha sido descubierto. Su propósito en los templos antiguos es ahora conocido.',
+        'en': 'An artifact of immense power has been discovered. Its purpose in the old temples is now known.',
+        'pt': 'Um artefato de imenso poder foi descoberto. Seu propósito nos templos antigos agora é conhecido.',
+        'fr': "Un artefact d'une puissance immense a été découvert. Son rôle dans les anciens temples est désormais connu.",
+        'de': 'Ein Artefakt von gewaltiger Macht wurde entdeckt. Sein Zweck in den alten Tempeln ist nun bekannt.',
+    },
+    'eclipse_sacrifice': {
+        'es': 'La ofrenda ha sido aceptada. El Eclipse desciende sobre el mundo.',
+        'en': 'The offering has been accepted. The Eclipse descends upon the world.',
+        'pt': 'A oferenda foi aceita. O Eclipse desce sobre o mundo.',
+        'fr': "L'offrande a été acceptée. L'Éclipse s'abat sur le monde.",
+        'de': 'Das Opfer wurde angenommen. Die Finsternis senkt sich über die Welt.',
+    },
+    'eclipse_aftermath': {
+        'es': 'La oscuridad ha pasado. Lo que permanece en su estela aún está por ser comprendido.',
+        'en': 'The darkness has passed. What remains in its wake is yet to be understood.',
+        'pt': 'A escuridão passou. O que resta em seu rastro ainda está por ser compreendido.',
+        'fr': 'Les ténèbres se sont dissipées. Ce qui subsiste dans leur sillage reste à comprendre.',
+        'de': 'Die Dunkelheit ist vergangen. Was in ihrem Kielwasser zurückbleibt, ist noch zu begreifen.',
+    },
+}
