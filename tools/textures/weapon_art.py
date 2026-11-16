@@ -17,6 +17,7 @@ DEFAULT_SIZE = 64  # alta densidad: el modelo 3D de la mano usa bloques de ¼ de
 GUI_SIZE = 32
 SIZE = DEFAULT_SIZE
 SUFFIX = '_weapon_master'
+MIN_ASPECT = 0.3  # lado corto / lado largo mínimo de la pieza de un arma (ver shape_problem y split_auto)
 
 
 def limits(size):
@@ -110,6 +111,15 @@ def remove_background(img, tolerance):
             continue
         px[x, y] = (0, 0, 0, 0)
         stack.extend(((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)))
+    # Huecos cerrados del arma (el interior de un anillo de cuentas, un asa…): el magenta que quedó dentro no está conectado al
+    # borde. Un fondo saturado se quita en toda la imagen; los grises y negros solo por conexión, para no comerse contornos.
+    saturated = [(bg, t) for bg, t in backgrounds if max(bg) - min(bg) > 100]
+    if saturated:
+        for y in range(h):
+            for x in range(w):
+                c = px[x, y]
+                if c[3] and any(max(abs(c[i] - bg[i]) for i in range(3)) <= t for bg, t in saturated):
+                    px[x, y] = (0, 0, 0, 0)
     return img
 
 
@@ -213,9 +223,18 @@ def split_auto(img, tolerance=40, min_area=0.0005, join=0.03, report=None):
         groups.append(comp)
     total = sw * sh
     groups = [g for g in groups if len(g) >= total * min_area]
-    m = max(2, round(min(sw, sh) * 0.03))  # margen del borde: los restos del marco o las armas cortadas quedan dentro
-    edge = [g for g in groups if min(p[0] for p in g) <= m or min(p[1] for p in g) <= m
-            or max(p[0] for p in g) >= sw - 1 - m or max(p[1] for p in g) >= sh - 1 - m]
+    # Restos del marco o de la captura: piezas pegadas al borde que además son estrechas o mucho más pequeñas que las demás.
+    # (Un arma que toca el borde pero tiene cuerpo se conserva: el generador a veces la deja muy cerca del límite.)
+    m = max(2, round(min(sw, sh) * 0.03))
+    biggest = max((len(g) for g in groups), default=0)
+
+    def stray(g):
+        xs, ys = [p[0] for p in g], [p[1] for p in g]
+        touches = min(xs) <= m or min(ys) <= m or max(xs) >= sw - 1 - m or max(ys) >= sh - 1 - m
+        bw, bh = max(xs) - min(xs) + 1, max(ys) - min(ys) + 1
+        return touches and (min(bw, bh) / max(bw, bh) < MIN_ASPECT or len(g) < 0.2 * biggest)
+
+    edge = [g for g in groups if stray(g)]
     if report is not None:
         report['edge'] = len(edge)
     groups = [g for g in groups if g not in edge]
@@ -261,9 +280,6 @@ def split_auto(img, tolerance=40, min_area=0.0005, join=0.03, report=None):
     return crops
 
 
-MIN_ASPECT = 0.3
-
-
 def shape_problem(img, tolerance=40):
     """Texto del problema si la pieza no parece un arma en diagonal (astilla estrecha o raya), o ``None``.
 
@@ -278,3 +294,22 @@ def shape_problem(img, tolerance=40):
         return (f'la pieza mide {w}×{h}: demasiado estrecha para un arma en diagonal (¿una astilla, una línea o un arma '
                 f'vertical/horizontal?). Pide esa arma de nuevo con cuerpo y en diagonal a 45°')
     return None
+
+
+JOIN_CANDIDATES = (0.03, 0.02, 0.015, 0.01, 0.045, 0.06, 0.08, 0.1, 0.13)
+
+
+def split_auto_expect(img, expected, tolerance=40, join=None):
+    """Como ``split_auto`` pero busca el radio de unión que da exactamente ``expected`` armas (hojas con armas de piezas sueltas,
+    como espadas flotantes, o con armas muy juntas). Devuelve ``(recortes, join usado, informe)``; si ninguno cuadra, los del radio
+    por defecto."""
+    candidates = (join,) if join is not None else JOIN_CANDIDATES
+    first = None
+    for j in candidates:
+        report = {}
+        crops = split_auto(img, tolerance=tolerance, join=j, report=report)
+        if first is None:
+            first = (crops, j, report)
+        if len(crops) == expected:
+            return crops, j, report
+    return first

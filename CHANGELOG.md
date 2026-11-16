@@ -5,6 +5,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Cambiado
+- **v76 — Arte de las 20 armas de evolución Maestro.** Se integra el arte entregado (generado con ChatGPT siguiendo
+  `docs/PROMPT_ARTE_ARMAS.md`): las 20 armas, una por rol, a 64×64. Cada arma tiene `<arma>.png` (32×32, inventario y HUD) y
+  `<arma>_hd.png` (64×64, textura del modelo 3D de la mano, de 235 a 430 piezas por modelo). Arte fuente en
+  `tools/textures/source/weapons/`; el diseño provisional por plantilla queda de respaldo. El importador detecta ahora los
+  huecos cerrados (el interior de un anillo de cuentas) y ajusta solo el radio de unión de las piezas sueltas (espadas flotantes).
+  Vista previa en `docs/V75_armas_externas_preview.png`. Pendiente: verlas en la mano y en el inventario en partida.
+
 ### Corregido
 - **v75.1 — Importación de hojas de armas.** El importador cortaba las hojas en una cuadrícula fija y se estropeaba cuando el generador
   de imágenes no respetaba las celdas (armas de menos, una como astilla, otro tamaño). Ahora `--sheet auto` detecta cada arma por sí

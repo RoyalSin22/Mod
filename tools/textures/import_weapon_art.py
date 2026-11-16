@@ -84,8 +84,11 @@ def do_import(args):
                 raise SystemExit(f'Rol desconocido en --roles: {r}')
         if args.sheet.lower() == 'auto':
             source = Image.open(args.inputs[0])
-            report = {}
-            cells = weapon_art.split_auto(source, tolerance=args.tolerance, report=report)
+            if roles is None:
+                raise SystemExit('Con --sheet auto indica los roles en orden con --roles')
+            cells, used_join, report = weapon_art.split_auto_expect(source, len(roles), tolerance=args.tolerance, join=args.join)
+            if used_join != weapon_art.JOIN_CANDIDATES[0]:
+                print(f'  (radio de unión ajustado a {used_join} para detectar {len(cells)} armas)')
             if args.debug_split:
                 debug_split(source, cells, args.debug_split)
             if roles is None:
@@ -163,6 +166,7 @@ def main():
     p.add_argument('inputs', nargs='*')
     p.add_argument('--sheet', metavar='CxR')
     p.add_argument('--roles')
+    p.add_argument('--join', type=float, help='con --sheet auto: radio para unir las piezas de una misma arma (fracción; por defecto se ajusta solo)')
     p.add_argument('--debug-split', metavar='SALIDA.png', help='con --sheet auto: guarda la imagen con las armas detectadas numeradas')
     p.add_argument('--colors', type=int, default=48)
     p.add_argument('--size', type=int, default=weapon_art.DEFAULT_SIZE, choices=weapon_art.SIZES, help='densidad final: 64 (por defecto), 32 o 16')

@@ -182,6 +182,32 @@ class WeaponArtTest(unittest.TestCase):
         self.assertIsNone(weapon_art.shape_problem(diagonal))
         self.assertIn('vacía', weapon_art.shape_problem(Image.new('RGB', (50, 50), (255, 0, 255))))
 
+    def test_the_join_radius_is_tuned_to_find_the_expected_count(self):
+        # Un arma de piezas sueltas (espadas flotantes) separadas por huecos mayores que el radio por defecto.
+        img = self._sheet((900, 300), [
+            ('rect', [30, 100, 90, 160], (150, 60, 60)), ('rect', [130, 100, 190, 160], (150, 60, 60)), ('rect', [230, 100, 290, 160], (150, 60, 60)),
+            ('rect', [600, 40, 700, 260], (60, 90, 150))])
+        default = weapon_art.split_auto(img)
+        self.assertEqual(len(default), 4)
+        crops, join, _ = weapon_art.split_auto_expect(img, 2)
+        self.assertEqual(len(crops), 2)
+        self.assertGreater(join, 0.03)
+
+    def test_a_weapon_close_to_the_border_is_kept_but_a_thin_remnant_is_dropped(self):
+        img = self._sheet((600, 300), [
+            ('rect', [4, 60, 100, 240], (150, 60, 60)),       # arma con cuerpo, casi pegada al borde
+            ('rect', [596, 20, 598, 280], (200, 150, 120)),   # resto estrecho del marco
+            ('rect', [300, 60, 400, 240], (60, 90, 150))])
+        report = {}
+        self.assertEqual(len(weapon_art.split_auto(img, report=report)), 2)
+        self.assertEqual(report['edge'], 1)
+
+    def test_background_inside_a_closed_hole_is_removed(self):
+        img = self._sheet((200, 200), [('rect', [40, 40, 160, 160], (150, 120, 60)), ('rect', [80, 80, 120, 120], (255, 0, 255))])
+        cleaned = weapon_art.remove_background(img, 40)
+        self.assertEqual(cleaned.getpixel((100, 100))[3], 0, 'el hueco interior (magenta) queda transparente')
+        self.assertEqual(cleaned.getpixel((50, 50))[3], 255)
+
     def test_auto_split_of_an_empty_image_finds_nothing(self):
         self.assertEqual(weapon_art.split_auto(Image.new('RGB', (200, 100), (255, 0, 255))), [])
 
@@ -192,7 +218,7 @@ class WeaponArtTest(unittest.TestCase):
             sheet = Path(tmp) / 'hoja.png'
             self._sheet((418, 244), [('rect', [20, 20, 120, 220], (150, 60, 60)), ('rect', [250, 20, 350, 220], (150, 130, 90))]).save(sheet)
 
-            args = SimpleNamespace(inputs=[str(sheet)], sheet='auto', roles='berserker,paladin,lancer', debug_split=None,
+            args = SimpleNamespace(inputs=[str(sheet)], sheet='auto', roles='berserker,paladin,lancer', debug_split=None, join=None,
                                    colors=32, tolerance=40, size=64, no_fit=False, flip=False, rotate=0, dry_run=False)
             try:
                 with self.assertRaises(SystemExit) as raised:

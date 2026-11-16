@@ -1,5 +1,13 @@
 # Pruebas de Aptitudes
 
+## V76 — Arte de las armas de evolución
+
+Automáticas: `python3 -m unittest discover -s tools/textures -p 'test_*.py'` (importador y validación) y
+`python3 tools/models/gen_weapon_models.py src/main/resources/assets/aptitudes/models/item --check`. En partida (pendiente): 1) `/give @s
+aptitudes:<rol>_weapon_master` para los 20 roles; 2) el icono del inventario y de la barra (32×32 reducido) se lee bien; 3) en la mano
+(primera y tercera persona), en el suelo y en un marco el modelo 3D tiene volumen, la orientación correcta y no hay huecos ni caras
+invertidas; 4) rendimiento con varias armas a la vista (los modelos tienen entre 235 y 430 piezas).
+
 ## V71 — Crónicas del Grimorio
 
 Automáticas: `LoreFlowTest` (cada hook del juego revela entradas nuevas, un hook repetido no cambia el estado, el payload de
