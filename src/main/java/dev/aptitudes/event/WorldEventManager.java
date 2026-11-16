@@ -292,6 +292,17 @@ public final class WorldEventManager {
 		}
 	}
 
+	/**
+	 * V68: tick en que cerró la sesión de Niebla {@code session}. Devuelve -1 si sigue abierta o si no hay sesión (un
+	 * jefe invocado a mano nunca se disuelve) y 0 si la sesión es desconocida (ya cerró hace tiempo).
+	 */
+	public static long fogClosedAt(ServerWorld world, UUID session) {
+		if (session == null) return -1;
+		WorldEventState state = WorldEventState.get(world.getServer().getOverworld());
+		if (session.equals(state.fogSession)) return -1;
+		return session.equals(state.lastClosedFogSession) ? state.lastFogCloseTick : 0;
+	}
+
 	/** Empieza un evento nuevo ({@code forced}: por comando, con su propio reloj). El Eclipse lo lleva EclipseManager. */
 	public static void start(MinecraftServer server, ServerWorld world, WorldEventKind kind, boolean forced, long day) {
 		if (kind == WorldEventKind.ECLIPSE) return;
