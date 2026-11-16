@@ -11,8 +11,10 @@ suelo y en los marcos se ve a plena resolución; en el inventario y el HUD el sc
 bien a 64×64 directamente: se le pide **como una rejilla de 64×64 ampliada ×4** (celdas de 256×256 px con bloques nítidos de 4×4
 px) y el script la reduce. Si hiciera falta menos detalle, se importa con `--size 32` o `--size 16` (aspecto vanilla).
 
-Conviene pedirlo **en 4 tandas de 5 armas** (una hoja de 5 en fila por tanda) para que cada tanda comparta estilo y paleta. Si una
-hoja sale floja, es mejor pedir **cada arma por separado** repitiendo el bloque de estilo.
+**Modo recomendado: UNA ARMA POR IMAGEN.** Las hojas de 5 armas en una fila se estropean casi siempre: el generador ignora el tamaño
+pedido, dibuja menos armas, deja una como una astilla o las coloca sin respetar las celdas (ver §6, «Fallos conocidos»). Una arma
+por imagen sale mucho más fiable. Si aun así quieres ahorrar peticiones, pide tandas, pero el script **detecta cada arma solo**
+(no depende de la cuadrícula) y se detiene sin escribir nada si el número de armas no cuadra.
 
 ---
 
@@ -56,23 +58,29 @@ vectorial reescalado.
 8. **Textura y detalle:** al menos 10–14 detalles pequeños por arma (remaches, runas de 2×2, eslabones, muescas, hilos, cabezas de
    clavo…), siempre subordinados a la silueta: **la silueta se tiene que reconocer incluso rellena de un solo color.**
 
-## 3. Prompt para pegar en ChatGPT (una tanda de 5 armas)
+## 3. Prompt para pegar en ChatGPT
 
-> Necesito **5 armas en pixel art de máxima calidad** para un mod de Minecraft de **fantasía oscura**, al estilo de los objetos de
-> *Dark Souls* / *Elden Ring*: armas viejas, usadas, pesadas, con historia; tono **estoico y dinámico**, paleta contenida y
-> desaturada con **un único acento de luz** por arma. Quiero un acabado **profesional, trabajado píxel a píxel**, como el de un
-> pixel artist veterano: nada de siluetas planas, iconos genéricos, plástico brillante ni dibujo vectorial reescalado.
+### 3.1 Una arma por imagen (recomendado)
+
+Empieza una conversación nueva para cada tanda, pega **primero el bloque de estilo** y después, **una por mensaje**, la ficha del
+arma de la sección 4.
+
+> Necesito **UN arma en pixel art de máxima calidad** para un mod de Minecraft de **fantasía oscura**, al estilo de los objetos de
+> *Dark Souls* / *Elden Ring*: arma vieja, usada, pesada, con historia; tono **estoico y dinámico**, paleta contenida y desaturada
+> con **un único acento de luz**. Acabado **profesional, trabajado píxel a píxel**: nada de siluetas planas, iconos genéricos,
+> plástico brillante ni dibujo vectorial reescalado.
 >
 > ### Formato (obligatorio)
-> - **Una sola imagen PNG de 1280×256 px** con las 5 armas **en una fila**, cada una centrada en su propia celda cuadrada de
->   256×256 px, sin solaparse.
-> - Cada arma es un **pixel art de 64×64 píxeles ampliado ×4**: bloques nítidos de 4×4 px, **sin antialiasing, sin degradados
->   suaves, sin desenfoque, sin sombras proyectadas, sin transparencias parciales**.
+> - **Imagen PNG cuadrada de 1024×1024 px con UN SOLO objeto: el arma pedida.** Ningún otro objeto, ninguna mano, personaje, suelo,
+>   sombra proyectada, marco ni texto.
+> - El arma **entera dentro de la imagen**, centrada, **sin cortar ningún borde**, con un margen vacío de al menos 80 px alrededor.
 > - **Fondo liso magenta puro #FF00FF** en toda la imagen (un script lo elimina). Ningún píxel del arma puede ser magenta.
-> - Cada arma **en diagonal**: **empuñadura abajo a la izquierda** y **punta o cabeza arriba a la derecha**. Ocupa casi toda la
->   celda (al menos 54 de los 64 píxeles de largo). Un margen de 1 píxel.
-> - **Máximo 48 colores por arma.** Sin letras, números, marcos ni texto. Sin manos ni personajes.
-> - Las 5 comparten estilo, grosor de contorno, nivel de detalle y calidad de luz, como una familia coherente.
+> - **En diagonal a 45°**: **empuñadura abajo a la izquierda** y **punta o cabeza arriba a la derecha**, como las espadas de
+>   Minecraft. **Nunca vertical ni horizontal.** Ocupa unos 900 px de largo en la diagonal.
+> - **Con cuerpo:** ninguna pieza puede ser una línea fina de 1–2 píxeles; las partes más finas (mango, hoja, asta) miden al menos
+>   **3–4 píxeles de pixel art** (48–64 px en la imagen).
+> - Es un **pixel art de 64×64 píxeles ampliado ×16**: bloques nítidos de 16×16 px, **sin antialiasing, sin degradados suaves, sin
+>   desenfoque, sin transparencias parciales**. **Máximo 48 colores.**
 >
 > ### Técnica
 > 1. **Una sola luz arriba a la izquierda**, con un borde iluminado de 1 píxel en los cantos superiores.
@@ -82,22 +90,37 @@ vectorial reescalado.
 >    puro, sin píxeles sueltos, líneas con escalón regular.
 > 4. **Metal** con picaduras, brillo especular de 1–2 px y ranuras de sangre; **oro deslucido**; **madera** con veta y nudos;
 >    **cuero** con costuras y remaches; **tela** rasgada con 3 tonos; **hueso** amarillento con grietas.
-> 5. **Gemas, runas y filos encendidos**: 3 tonos del color del rol y **un píxel de núcleo casi blanco**; su luz tiñe 1–2 píxeles
->    de los materiales vecinos. Nada de halos difuminados.
+> 5. **Gemas, runas y filos encendidos**: 3 tonos del color del rol y **un píxel de núcleo casi blanco**; su luz tiñe 1–2 píxeles de
+>    los materiales vecinos. Nada de halos difuminados.
 > 6. **Desgaste y carácter**: filos mellados, pátina en las juntas, tela deshilachada, runas medio borradas, ceniza o sangre seca.
->    Entre 10 y 14 detalles pequeños por arma y **una cosa especial** que cuente su historia.
-> 7. **La silueta debe reconocerse incluso rellena de un solo color** y distinguirse con claridad de las otras cuatro.
-> 8. Estoico y dinámico: masas graves y sólidas, pero con la diagonal, una asimetría intencionada y pequeñas chispas o ascuas.
+>    Entre 10 y 14 detalles pequeños y **una cosa especial** que cuente su historia.
+> 7. **La silueta debe reconocerse incluso rellena de un solo color.**
+> 8. Estoico y dinámico: masas graves y sólidas, pero con la diagonal, una asimetría intencionada y pequeñas chispas o ascuas
+>    **pegadas al arma** (nunca flotando lejos de ella).
 >
-> ### Las 5 armas de esta tanda, de izquierda a derecha
-> (pega aquí las 5 fichas de la tanda, de la sección 4)
->
-> ### Entrega
-> Una única imagen PNG con las 5 armas en el orden indicado. Si alguna no cumple, regenérala **sola** manteniendo el mismo estilo.
+> ### El arma
+> (pega aquí la ficha del arma, de la sección 4)
+
+Después de cada imagen, comprueba antes de seguir: ¿hay **una sola** arma?, ¿va **en diagonal** y **entera**?, ¿el fondo es magenta liso?
+Si algo falla, pídele solo esa corrección («misma arma, en diagonal a 45°, entera y centrada, fondo #FF00FF»).
+
+### 3.2 Hoja de varias armas (alternativa, menos fiable)
+
+Usa el mismo bloque de estilo, pero cambia el formato por esto y pide **solo 3–5 armas de la misma tanda**:
+
+> - **Una sola imagen PNG con las N armas dispuestas en UNA FILA**, de izquierda a derecha en el orden indicado, **todas del mismo
+>   tamaño** y con **al menos 120 px de magenta liso entre ellas**; nunca se tocan ni se solapan. No importa el tamaño total de
+>   la imagen.
+> - Cada arma entera, en diagonal a 45° (empuñadura abajo a la izquierda, punta arriba a la derecha), con cuerpo (nada de líneas
+>   finas) y sin objetos extra. **Cuenta las armas antes de entregar: deben ser exactamente N.**
+
+El script detecta las armas por sí mismo (`--sheet auto`), pero no puede inventar una que no se haya dibujado.
+
+---
 
 ## 4. Fichas de las 20 armas (nombre oficial del juego, silueta, materiales, acento y carácter)
 
-El **orden de izquierda a derecha** es el de cada tanda. El id es el que usa el script de importación.
+Para una arma por imagen se pega **una** ficha (la fila de la tabla). Si pides una hoja, el **orden de izquierda a derecha** es el de la tanda. El id es el que usa el script de importación y el nombre del archivo.
 
 ### Tanda 1 — cuerpo a cuerpo pesado
 | # | Arma (id) | Acento | Ficha |
@@ -139,23 +162,26 @@ El **orden de izquierda a derecha** es el de cada tanda. El id es el que usa el 
 
 ## 5. Qué hacer con lo que entregue ChatGPT
 
-1. Guarda cada hoja fuera del repositorio, p. ej. `entregas/tanda1.png`.
-2. Impórtala (los roles se leen de izquierda a derecha en el orden de la tanda; por defecto sale a **64×64**):
+1. Guarda las imágenes fuera del repositorio, p. ej. en `entregas/`.
+2. **Una arma por imagen (recomendado):** nombra cada archivo con el id del rol (`berserker.png`, `paladin.png`…) e impórtalas todas:
 
 ```bash
-python3 tools/textures/import_weapon_art.py entregas/tanda1.png --sheet 5x1 --roles berserker,paladin,lancer,swordsman,monk
-python3 tools/textures/import_weapon_art.py entregas/tanda2.png --sheet 5x1 --roles assassin,hunter,shapeshifter,merchant,tamer
-python3 tools/textures/import_weapon_art.py entregas/tanda3.png --sheet 5x1 --roles mage,necromancer,druid,herbalist,elementalist
-python3 tools/textures/import_weapon_art.py entregas/tanda4.png --sheet 5x1 --roles gunslinger,engineer,weapon_summoner,bard,warlock
+python3 tools/textures/import_weapon_art.py entregas/*.png
 ```
 
-   Si el generador devolvió armas sueltas, llámalas `<rol>.png` y pásalas directamente
-   (`import_weapon_art.py entregas/*.png`). Si una sale al revés usa `--flip` (o `--rotate 90`); si el fondo no se quita bien,
-   sube `--tolerance`; si quedan demasiados colores, baja `--colors`; para menos detalle usa `--size 32` o `--size 16`. Con
-   `--dry-run` solo se valida.
-3. Revisa el resultado: `python3 tools/textures/import_weapon_art.py --preview vista.png` y
-   `python3 tools/textures/import_weapon_art.py --check` (tamaño, solo 0 % o 100 % de opacidad, ≤ 56 colores, largo mínimo y
-   orientación).
+   **Hoja con varias armas:** el script las detecta solo, de arriba abajo y de izquierda a derecha, y asigna los roles en el
+   orden que indiques. Si el número detectado no coincide con el de roles, se detiene **sin escribir nada** y te dice cuántas ha
+   visto:
+
+```bash
+python3 tools/textures/import_weapon_art.py entregas/tanda1.png --sheet auto --roles berserker,paladin,lancer,swordsman,monk --debug-split vista.png
+```
+
+   `--debug-split` guarda una imagen con las armas detectadas numeradas: revísala para comprobar que el orden es el esperado. Si una
+   sale al revés usa `--flip` (o `--rotate 90`); si el fondo no se quita bien, sube `--tolerance`; si quedan demasiados colores,
+   baja `--colors`; para menos detalle, `--size 32` o `--size 16`. Con `--dry-run` solo se valida.
+3. Revisa: `python3 tools/textures/import_weapon_art.py --preview vista.png` y `python3 tools/textures/import_weapon_art.py --check`
+   (tamaño, solo 0 % o 100 % de opacidad, ≤ 56 colores, largo mínimo y orientación).
 4. Regenera texturas y modelos 3D de la mano (los modelos se extruyen del propio PNG, con bloques de ¼ de píxel; lo oscuro tiene
    más grosor). Se crean `<arma>.png` (32×32, para el inventario) y `<arma>_hd.png` (64×64, para el modelo 3D):
 
@@ -178,3 +204,18 @@ python3 tools/models/gen_weapon_models.py src/main/resources/assets/aptitudes/mo
 - **Técnica:** diagonal correcta, sin píxeles semitransparentes ni sueltos, ≤ 48 colores, bordes nítidos.
 - **En la mano:** el modelo 3D se ve con volumen y sin huecos raros; revisarlo en partida con
   `/give @s aptitudes:<rol>_weapon_master`.
+
+## 7. Fallos conocidos de los generadores de imágenes (y qué hacer)
+
+Observados al probar el primer encargo con ChatGPT:
+
+| Fallo | Causa | Remedio |
+|---|---|---|
+| La hoja no tiene las 5 armas o tiene otro tamaño (p. ej. 418×244, no 1280×256) | El generador ignora el tamaño y las celdas pedidos | Una arma por imagen; si es hoja, el script detecta cada arma sin cuadrícula y se detiene si el recuento no coincide |
+| Una arma sale como una **astilla** de 2–3 px (lanza, látigo) | Se ha pedido una forma muy fina | Exigir «con cuerpo, partes más finas ≥ 3–4 px de pixel art»; la lanza y el látigo llevan banderola, punta ancha o curva marcada |
+| Una pieza estrecha o una raya se importa como arma | El generador dibujó una astilla | El importador la rechaza con un mensaje (`demasiado estrecha para un arma en diagonal`) y no la guarda; repite esa arma |
+| Marco negro o esquinas redondeadas en la captura | La imagen viene de una captura de pantalla | El importador quita el marco negro y el magenta; lo mejor es descargar el PNG original del generador, no una captura |
+| Fragmentos magenta o recortes al importar | La hoja se cortaba en una cuadrícula fija que no coincidía con el dibujo | Corregido: `--sheet auto` detecta las armas; ya no hay cuadrícula obligatoria |
+| El arma queda vertical, horizontal o cortada por el borde | No se respetó la diagonal ni el margen | Repetir solo esa arma pidiendo diagonal a 45°, entera y con margen |
+| Bordes suaves, halos o degradados | Antialiasing del generador | Pedir bloques nítidos y «sin antialiasing»; el importador reduce con bordes duros y paleta limitada (`--colors`) |
+| Chispas lejos del arma que se importan como otra arma | Elementos sueltos | Pedir chispas pegadas al arma; el importador une piezas cercanas y descarta motas minúsculas |

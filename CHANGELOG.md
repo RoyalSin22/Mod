@@ -5,6 +5,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Corregido
+- **v75.1 — Importación de hojas de armas.** El importador cortaba las hojas en una cuadrícula fija y se estropeaba cuando el generador
+  de imágenes no respetaba las celdas (armas de menos, una como astilla, otro tamaño). Ahora `--sheet auto` detecta cada arma por sí
+  mismo (componentes conexas, orden de lectura por filas), une las chispas pegadas, descarta las motas y se detiene sin escribir
+  nada si el recuento no coincide con los roles; `--debug-split` muestra lo detectado. Quita también el marco negro y las esquinas transparentes de las capturas, descarta restos pegados al borde y rechaza las piezas demasiado estrechas (astillas o rayas) antes de reescalarlas. Probado con la imagen real de ChatGPT del primer encargo. El encargo recomienda una arma por imagen y
+  recoge los fallos conocidos. 20 pruebas Python.
+
 ### Añadido
 - **v75 — Canal para el arte externo de las armas de evolución.** Encargo para ChatGPT en `docs/PROMPT_ARTE_ARMAS.md` (20 armas
   Maestro en 4 tandas de 5, con concepto, color y reglas de pixel art) y herramienta `tools/textures/import_weapon_art.py`: corta

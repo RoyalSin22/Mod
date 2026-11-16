@@ -3,8 +3,10 @@
 
 Importar a 64×64 (imágenes sueltas con el nombre del rol, p. ej. ``berserker.png`` o ``berserker_weapon_master.png``):
     python3 tools/textures/import_weapon_art.py entregas/*.png
-Importar una hoja de varias armas en una cuadrícula (se cortan en orden de izquierda a derecha y de arriba abajo):
-    python3 tools/textures/import_weapon_art.py hoja.png --sheet 5x1 --roles berserker,mage,assassin,herbalist,engineer
+Importar una hoja de varias armas SIN fiarse de una cuadrícula (detecta cada arma y las ordena de arriba abajo y de izquierda a derecha):
+    python3 tools/textures/import_weapon_art.py hoja.png --sheet auto --roles berserker,paladin,lancer,swordsman,monk
+(también vale una cuadrícula fija: --sheet 5x1). Si el número de armas detectadas no coincide con --roles, se detiene y no escribe nada;
+--debug-split salida.png dibuja lo detectado.
 Validar lo ya importado (para CI y antes de regenerar):
     python3 tools/textures/import_weapon_art.py --check
 Vista previa ampliada de lo importado:
@@ -45,6 +47,21 @@ def split_sheet(img, cols, rows):
     return [img.crop((c * cw, r * ch, (c + 1) * cw, (r + 1) * ch)) for r in range(rows) for c in range(cols)]
 
 
+def debug_split(source, cells, out):
+    """Muestra las armas detectadas, numeradas en el orden en que se asignarán a los roles."""
+    from PIL import ImageDraw
+    h = 160
+    sheet = Image.new('RGBA', (max(1, len(cells)) * h, h), (58, 60, 72, 255))
+    d = ImageDraw.Draw(sheet)
+    for i, c in enumerate(cells):
+        c = c.copy()
+        c.thumbnail((h - 8, h - 24))
+        sheet.paste(c, (i * h + 4, 20), c)
+        d.text((i * h + 6, 4), f'#{i + 1}', fill=(255, 255, 255, 255))
+    sheet.save(out)
+    print(f'Detectadas {len(cells)} armas; vista en {out}')
+
+
 def save(role, img, dry):
     errors, warnings = weapon_art.validate(img)
     name = role + weapon_art.SUFFIX
@@ -61,12 +78,26 @@ def do_import(args):
     if args.sheet:
         if len(args.inputs) != 1:
             raise SystemExit('Con --sheet se pasa una sola imagen')
-        cols, rows = (int(v) for v in args.sheet.lower().split('x'))
-        roles = args.roles.split(',') if args.roles else ROLES[: cols * rows]
-        for r in roles:
+        roles = args.roles.split(',') if args.roles else None
+        for r in roles or []:
             if r not in ROLES:
                 raise SystemExit(f'Rol desconocido en --roles: {r}')
-        cells = split_sheet(Image.open(args.inputs[0]), cols, rows)
+        if args.sheet.lower() == 'auto':
+            source = Image.open(args.inputs[0])
+            report = {}
+            cells = weapon_art.split_auto(source, tolerance=args.tolerance, report=report)
+            if args.debug_split:
+                debug_split(source, cells, args.debug_split)
+            if roles is None:
+                raise SystemExit('Con --sheet auto indica los roles en orden con --roles')
+            if len(cells) != len(roles):
+                raise SystemExit(f'Se detectaron {len(cells)} armas y --roles tiene {len(roles)}. No se ha escrito nada: '
+                                 'revisa la imagen (¿falta alguna arma, se tocan dos o hay una pieza suelta?) o usa --debug-split para verla.'
+                                 + (f' Se descartaron {report["edge"]} piezas pegadas al borde (armas cortadas o restos del marco).' if report.get('edge') else ''))
+        else:
+            cols, rows = (int(v) for v in args.sheet.lower().split('x'))
+            roles = roles or ROLES[: cols * rows]
+            cells = split_sheet(Image.open(args.inputs[0]), cols, rows)
         if len(roles) > len(cells):
             raise SystemExit(f'--roles tiene {len(roles)} roles y la hoja solo {len(cells)} celdas')
         jobs = list(zip(roles, cells))
@@ -79,6 +110,11 @@ def do_import(args):
             jobs.append((role, Image.open(item)))
     ok = True
     for role, image in jobs:
+        shape = weapon_art.shape_problem(image, args.tolerance)
+        if shape:
+            print(f'  {role}{weapon_art.SUFFIX}: ERROR\n    - {shape}')
+            ok = False
+            continue
         try:
             norm = weapon_art.normalize(image, colors=args.colors, tolerance=args.tolerance, fit=not args.no_fit,
                                         flip=args.flip, rotate=args.rotate, size=args.size)
@@ -127,6 +163,7 @@ def main():
     p.add_argument('inputs', nargs='*')
     p.add_argument('--sheet', metavar='CxR')
     p.add_argument('--roles')
+    p.add_argument('--debug-split', metavar='SALIDA.png', help='con --sheet auto: guarda la imagen con las armas detectadas numeradas')
     p.add_argument('--colors', type=int, default=48)
     p.add_argument('--size', type=int, default=weapon_art.DEFAULT_SIZE, choices=weapon_art.SIZES, help='densidad final: 64 (por defecto), 32 o 16')
     p.add_argument('--tolerance', type=int, default=40)

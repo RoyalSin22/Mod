@@ -2,6 +2,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 
 from PIL import Image, ImageDraw
 
@@ -116,6 +117,90 @@ class WeaponArtTest(unittest.TestCase):
         self.assertEqual({small.getpixel((x, y))[3] for x in range(32) for y in range(32)}, {0, 255})
         self.assertEqual(weapon_art.downscale(small).size, (32, 32), 'ya reducida: no cambia')
         self.assertEqual(weapon_art.validate(small)[0], [])
+
+    def _sheet(self, size, items):
+        img = Image.new('RGB', size, (255, 0, 255))
+        d = ImageDraw.Draw(img)
+        for kind, a, b in items:
+            if kind == 'line':
+                d.line(a, fill=(120, 90, 60), width=b)
+            else:
+                d.rectangle(a, fill=b)
+        return img
+
+    def test_auto_split_ignores_the_grid_and_keeps_reading_order(self):
+        # Como la hoja que entrega un generador de imágenes: tamaños y huecos irregulares, una pieza fina en medio.
+        img = self._sheet((418, 244), [
+            ('line', [(40, 200), (150, 40)], 14), ('rect', [110, 20, 170, 80], (150, 60, 60)),
+            ('line', [(245, 70), (245, 20)], 3),
+            ('line', [(270, 210), (370, 60)], 14), ('rect', [320, 20, 390, 70], (150, 130, 90))])
+        crops = weapon_art.split_auto(img)
+        self.assertEqual(len(crops), 3)
+        self.assertEqual([c.size[0] > c.size[1] for c in crops], [False, False, False])
+        self.assertLess(crops[1].size[0], 40, 'la pieza fina queda en el centro, entre las dos armas')
+
+    def test_auto_split_reads_rows_top_to_bottom_then_left_to_right(self):
+        img = self._sheet((400, 400), [
+            ('rect', [20, 20, 120, 120], (200, 50, 50)), ('rect', [250, 30, 350, 130], (50, 200, 50)),
+            ('rect', [30, 260, 130, 360], (50, 50, 200)), ('rect', [260, 250, 360, 380], (200, 200, 50))])
+        crops = weapon_art.split_auto(img)
+        self.assertEqual(len(crops), 4)
+        colors = [c.getpixel((c.size[0] // 2, c.size[1] // 2))[:3] for c in crops]
+        self.assertEqual(colors, [(200, 50, 50), (50, 200, 50), (50, 50, 200), (200, 200, 50)])
+
+    def test_auto_split_keeps_sparks_with_their_weapon_and_drops_stray_dust(self):
+        img = self._sheet((500, 250), [
+            ('rect', [30, 40, 150, 200], (180, 180, 190)), ('rect', [154, 60, 162, 68], (255, 200, 60)),
+            ('rect', [300, 40, 420, 200], (160, 120, 80)), ('rect', [250, 120, 251, 121], (255, 255, 255))])
+        crops = weapon_art.split_auto(img)
+        self.assertEqual(len(crops), 2, 'la chispa pegada se une al arma; la mota suelta (1 px) se descarta')
+
+    def test_auto_split_drops_pieces_stuck_to_the_border(self):
+        img = self._sheet((418, 244), [
+            ('rect', [5, 60, 8, 140], (200, 150, 120)),      # resto del marco, pegado al borde izquierdo
+            ('line', [(40, 200), (150, 40)], 14), ('line', [(270, 210), (370, 60)], 14)])
+        report = {}
+        crops = weapon_art.split_auto(img, report=report)
+        self.assertEqual(len(crops), 2)
+        self.assertEqual(report['edge'], 1)
+
+    def test_a_black_capture_frame_and_magenta_background_are_both_removed(self):
+        img = Image.new('RGB', (300, 200), (0, 0, 0))
+        d = ImageDraw.Draw(img)
+        d.rectangle([10, 10, 289, 189], fill=(255, 0, 255))
+        d.line([(60, 160), (220, 40)], fill=(120, 90, 60), width=14)
+        d.line([(60, 160), (80, 140)], fill=(8, 8, 8), width=4)      # contorno oscuro del arma: no debe borrarse
+        crops = weapon_art.split_auto(img)
+        self.assertEqual(len(crops), 1)
+
+    def test_slivers_and_straight_bars_are_rejected_before_they_are_scaled_up(self):
+        sliver = self._sheet((200, 200), [('rect', [90, 40, 98, 160], (200, 150, 120))])
+        self.assertIn('demasiado estrecha', weapon_art.shape_problem(sliver))
+        bar = self._sheet((300, 200), [('rect', [20, 90, 280, 104], (200, 150, 120))])
+        self.assertIn('demasiado estrecha', weapon_art.shape_problem(bar))
+        diagonal = self._sheet((256, 256), [('line', [(30, 226), (226, 30)], 20)])
+        self.assertIsNone(weapon_art.shape_problem(diagonal))
+        self.assertIn('vacía', weapon_art.shape_problem(Image.new('RGB', (50, 50), (255, 0, 255))))
+
+    def test_auto_split_of_an_empty_image_finds_nothing(self):
+        self.assertEqual(weapon_art.split_auto(Image.new('RGB', (200, 100), (255, 0, 255))), [])
+
+    def test_cli_stops_without_writing_when_the_count_does_not_match(self):
+        old = weapon_art.SOURCE
+        with tempfile.TemporaryDirectory() as tmp:
+            weapon_art.SOURCE = Path(tmp) / 'out'
+            sheet = Path(tmp) / 'hoja.png'
+            self._sheet((418, 244), [('rect', [20, 20, 120, 220], (150, 60, 60)), ('rect', [250, 20, 350, 220], (150, 130, 90))]).save(sheet)
+
+            args = SimpleNamespace(inputs=[str(sheet)], sheet='auto', roles='berserker,paladin,lancer', debug_split=None,
+                                   colors=32, tolerance=40, size=64, no_fit=False, flip=False, rotate=0, dry_run=False)
+            try:
+                with self.assertRaises(SystemExit) as raised:
+                    imp.do_import(args)
+                self.assertIn('2 armas', str(raised.exception))
+                self.assertFalse((Path(tmp) / 'out').exists())
+            finally:
+                weapon_art.SOURCE = old
 
     def test_roles_match_the_mod_role_order(self):
         import importlib.util

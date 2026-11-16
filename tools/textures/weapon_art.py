@@ -22,7 +22,7 @@ SUFFIX = '_weapon_master'
 def limits(size):
     """Límites de validación según la densidad: (máx. colores, mín. y máx. de píxeles opacos, largo mínimo)."""
     k = size // 16
-    return {16: 24, 32: 40, 64: 56}[size], 24 * k * k, 200 * k * k, 10 * k
+    return {16: 24, 32: 40, 64: 56}[size], (24 if k == 1 else 16 * k * k), 200 * k * k, 10 * k
 
 
 def path_for(name):
@@ -69,20 +69,38 @@ def validate(img):
 
 
 def remove_background(img, tolerance):
-    """Si la imagen no tiene transparencia, quita el fondo: color más frecuente de las esquinas y relleno desde el borde."""
+    """Si la imagen no tiene transparencia de verdad, quita el fondo: color más frecuente del borde y relleno desde el borde.
+
+    Las imágenes de los generadores suelen traer esquinas redondeadas transparentes con el fondo magenta opaco: eso no cuenta como
+    «ya transparente». Solo se respeta la transparencia si afecta a más de una quinta parte de la imagen."""
     img = img.convert('RGBA')
     px = img.load()
     w, h = img.size
-    if any(px[x, y][3] < 255 for x in range(w) for y in range(h)):
+    clear = sum(1 for x in range(w) for y in range(h) if px[x, y][3] < 128)
+    if clear > 0.2 * w * h:
         return img
-    corners = Counter(px[x, y][:3] for x, y in ((0, 0), (w - 1, 0), (0, h - 1), (w - 1, h - 1)))
-    bg = corners.most_common(1)[0][0]
+    border = [(x, y) for x in range(w) for y in (0, h - 1)] + [(x, y) for y in range(h) for x in (0, w - 1)]
+    colors = Counter(px[x, y][:3] for x, y in border if px[x, y][3] >= 128)
+    if not colors:
+        return img
+    # Fondos: el color dominante del borde (a veces un marco negro de la captura) y el dominante de toda la imagen (el magenta).
+    # Un fondo saturado (magenta) admite la tolerancia completa; uno gris o negro solo una muy pequeña, para no comerse los
+    # contornos oscuros del arma.
+    def tol_for(c):
+        return tolerance if max(c) - min(c) > 100 else min(tolerance, 10)
+
+    backgrounds = [(colors.most_common(1)[0][0],)]
+    overall = Counter(px[x, y][:3] for x in range(0, w, 2) for y in range(0, h, 2) if px[x, y][3] >= 128)
+    top, count = overall.most_common(1)[0]
+    if count * 4 > (w // 2) * (h // 2) * 0.25 and top != backgrounds[0][0]:
+        backgrounds.append((top,))
+    backgrounds = [(c[0], tol_for(c[0])) for c in backgrounds]
 
     def near(c):
-        return max(abs(c[i] - bg[i]) for i in range(3)) <= tolerance
+        return c[3] < 128 or any(max(abs(c[i] - bg[i]) for i in range(3)) <= t for bg, t in backgrounds)
 
     seen = set()
-    stack = [(x, y) for x in range(w) for y in (0, h - 1)] + [(x, y) for y in range(h) for x in (0, w - 1)]
+    stack = list(border)
     while stack:
         x, y = stack.pop()
         if (x, y) in seen or not (0 <= x < w and 0 <= y < h):
@@ -157,3 +175,106 @@ def downscale(img, size=GUI_SIZE):
             r, g, b, a = px[x, y]
             px[x, y] = (r, g, b, 255 if a >= 128 else 0)
     return small
+
+
+def split_auto(img, tolerance=40, min_area=0.0005, join=0.03, report=None):
+    """Detecta las armas de una imagen sin fijarse en cuadrículas (V75): quita el fondo, une las piezas cercanas de cada arma y
+    devuelve una imagen RGBA recortada por arma, ordenadas por filas (arriba abajo) y de izquierda a derecha.
+
+    ``min_area``: fracción mínima de la imagen que debe ocupar una pieza para contar (descarta motas).
+    ``join``: distancia (fracción del lado menor) a la que dos piezas se consideran la misma arma.
+    Las piezas pegadas al borde de la imagen se descartan (restos del marco o armas cortadas, que no sirven); si se pasa un
+    diccionario en ``report`` se anota cuántas en ``report['edge']``.
+    """
+    img = remove_background(img, tolerance)
+    w, h = img.size
+    scale = min(1.0, 320 / max(w, h))
+    sw, sh = max(1, round(w * scale)), max(1, round(h * scale))
+    alpha = img.getchannel('A').point(lambda a: 255 if a >= 128 else 0).resize((sw, sh), Image.BOX).point(lambda a: 255 if a >= 64 else 0)
+    r = max(1, round(min(sw, sh) * join))
+    mask = alpha.load()
+    # Etiquetado por relleno con puentes de radio r (cada píxel opaco une a los vecinos opacos dentro de r).
+    pts = {(x, y) for y in range(sh) for x in range(sw) if mask[x, y]}
+    label, groups = {}, []
+    for start in sorted(pts):
+        if start in label:
+            continue
+        stack, comp = [start], []
+        label[start] = len(groups)
+        while stack:
+            x, y = stack.pop()
+            comp.append((x, y))
+            for dy in range(-r, r + 1):
+                for dx in range(-r, r + 1):
+                    q = (x + dx, y + dy)
+                    if q in pts and q not in label:
+                        label[q] = len(groups)
+                        stack.append(q)
+        groups.append(comp)
+    total = sw * sh
+    groups = [g for g in groups if len(g) >= total * min_area]
+    m = max(2, round(min(sw, sh) * 0.03))  # margen del borde: los restos del marco o las armas cortadas quedan dentro
+    edge = [g for g in groups if min(p[0] for p in g) <= m or min(p[1] for p in g) <= m
+            or max(p[0] for p in g) >= sw - 1 - m or max(p[1] for p in g) >= sh - 1 - m]
+    if report is not None:
+        report['edge'] = len(edge)
+    groups = [g for g in groups if g not in edge]
+    boxes = []
+    for g in groups:
+        xs, ys = [p[0] for p in g], [p[1] for p in g]
+        boxes.append((min(xs), min(ys), max(xs) + 1, max(ys) + 1, g))
+    if not boxes:
+        return []
+    # Orden de lectura: se agrupan en filas por solapamiento vertical (aunque las armas tengan tamaños muy distintos) y dentro
+    # de cada fila se ordenan de izquierda a derecha.
+    boxes.sort(key=lambda b: b[1])
+    rows = []
+    for b in boxes:
+        for row in rows:
+            ry0, ry1 = min(x[1] for x in row), max(x[3] for x in row)
+            overlap = min(b[3], ry1) - max(b[1], ry0)
+            if overlap >= 0.3 * min(b[3] - b[1], ry1 - ry0):
+                row.append(b)
+                break
+        else:
+            rows.append([b])
+    rows.sort(key=lambda row: min(x[1] for x in row))
+    ordered = [b for row in rows for b in sorted(row, key=lambda b: b[0])]
+    crops = []
+    full = img.load()
+    for x0, y0, x1, y1, comp in ordered:
+        pad = r
+        fx0, fy0 = max(0, int((x0 - pad) / scale)), max(0, int((y0 - pad) / scale))
+        fx1, fy1 = min(w, int((x1 + pad) / scale) + 1), min(h, int((y1 + pad) / scale) + 1)
+        part = img.crop((fx0, fy0, fx1, fy1))
+        keep = {(px // 1, py // 1) for px, py in comp}
+        pp = part.load()
+        for y in range(part.size[1]):
+            for x in range(part.size[0]):
+                if pp[x, y][3] and (int((x + fx0) * scale), int((y + fy0) * scale)) not in keep:
+                    # píxel opaco que no pertenece a esta arma (vecina): se borra
+                    sx, sy = int((x + fx0) * scale), int((y + fy0) * scale)
+                    near = any((sx + dx, sy + dy) in keep for dx in (-1, 0, 1) for dy in (-1, 0, 1))
+                    if not near:
+                        pp[x, y] = (0, 0, 0, 0)
+        crops.append(part)
+    return crops
+
+
+MIN_ASPECT = 0.3
+
+
+def shape_problem(img, tolerance=40):
+    """Texto del problema si la pieza no parece un arma en diagonal (astilla estrecha o raya), o ``None``.
+
+    Un arma en diagonal de 45° ocupa un cuadro casi cuadrado; un bastón largo, algo más estrecho. Una pieza cuyo cuadro mide menos
+    de ``MIN_ASPECT`` en su lado corto respecto al largo es una astilla (el generador dibujó una forma demasiado fina) o está
+    vertical u horizontal: al reducirla se vería como una raya."""
+    box = remove_background(img, tolerance).getchannel('A').point(lambda a: 255 if a >= 128 else 0).getbbox()
+    if box is None:
+        return 'la imagen está vacía (todo transparente)'
+    w, h = box[2] - box[0], box[3] - box[1]
+    if min(w, h) / max(w, h) < MIN_ASPECT:
+        return (f'la pieza mide {w}×{h}: demasiado estrecha para un arma en diagonal (¿una astilla, una línea o un arma '
+                f'vertical/horizontal?). Pide esa arma de nuevo con cuerpo y en diagonal a 45°')
+    return None
