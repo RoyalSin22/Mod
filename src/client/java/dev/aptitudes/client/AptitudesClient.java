@@ -161,6 +161,8 @@ public class AptitudesClient implements ClientModInitializer {
 				(payload, context) -> PartyClientState.onSync(payload));
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.GrimoirePayload.ID,
 				(payload, context) -> ClientGrimoire.onPayload(payload));
+		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.LorePayload.ID,
+				(payload, context) -> ClientLore.onPayload(payload)); // v67 (T7a)
 		ClientPlayNetworking.registerGlobalReceiver(dev.aptitudes.network.TutorialPayload.ID,
 				(payload, context) -> ClientTutorial.onPayload(payload));
 		ClientPlayNetworking.registerGlobalReceiver(EnergyPayload.ID,
@@ -206,6 +208,7 @@ public class AptitudesClient implements ClientModInitializer {
 			PartyClientState.clear();
 			ClientTutorial.clear();
 			ClientGrimoire.clear();
+			ClientLore.clear(); // v67 (T7a)
 			dev.aptitudes.client.hud.TutorialHud.clear();
 			dev.aptitudes.client.hud.ComboHud.clear();
 			dev.aptitudes.client.hud.ThreatHud.clear();
