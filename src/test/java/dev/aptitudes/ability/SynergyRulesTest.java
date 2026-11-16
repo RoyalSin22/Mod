@@ -1,5 +1,6 @@
 package dev.aptitudes.ability;
 
+import dev.aptitudes.role.Element;
 import dev.aptitudes.role.Role;
 import org.junit.jupiter.api.Test;
 
@@ -67,5 +68,20 @@ class SynergyRulesTest {
 	void groupResonanceBonusIsNonNegative() {
 		// Bonificador debe ser ≥ 1.0 (nunca penaliza).
 		assertTrue(SynergyRules.groupResonanceBonus(null) >= 1.0f, "Bonus must be >= 1.0");
+	}
+
+	@Test
+	void elementRuneSynergyBonusReturnsValidBonus() {
+		// Y3: +20% daño si runa del mismo elemento potencia la fusión.
+		// Placeholder: sin runas aún. Usar null para elemento (no bootstrappable en tests).
+		float bonus = SynergyRules.elementRuneSynergyBonus(null, null, null);
+		assertEquals(1.0f, bonus, "Default bonus should be 1.0 (no synergy)");
+	}
+
+	@Test
+	void elementRuneSynergyBonusIsNonNegative() {
+		// Bonificador debe ser ≥ 1.0 (nunca penaliza).
+		assertTrue(SynergyRules.elementRuneSynergyBonus(null, null, null) >= 1.0f,
+				"Bonus must be >= 1.0");
 	}
 }

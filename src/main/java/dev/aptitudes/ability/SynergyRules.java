@@ -1,17 +1,39 @@
 package dev.aptitudes.ability;
 
+import dev.aptitudes.role.Element;
 import dev.aptitudes.role.Role;
 import dev.aptitudes.role.RoleManager;
+import dev.aptitudes.rune.RuneKind;
+import dev.aptitudes.rune.RuneSocketing;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * v65 (C5 Y1+Y4): Sinergias entre sendas, activas, runas y armaduras.
+ * v65 (C5 Y1+Y2+Y3+Y4): Sinergias entre sendas, activas, runas y armaduras.
  *
  * <p>Puro: reglas de bonificación sin invocar APIs de Minecraft directamente. Los cálculos se validan
  * con JUnit.</p>
  */
 public final class SynergyRules {
 	private SynergyRules() {
+	}
+
+	// Mapeo: runa (id) → elemento que potencia (lazy initialized)
+	private static Map<String, Element> RUNE_ELEMENT_MAP;
+
+	private static Map<String, Element> getRuneElementMap() {
+		if (RUNE_ELEMENT_MAP == null) {
+			RUNE_ELEMENT_MAP = new HashMap<>();
+			// v65 (C5 Y3): Mapeo de runas a elementos para sinergia
+			RUNE_ELEMENT_MAP.put("flame", Element.FIRE);
+			RUNE_ELEMENT_MAP.put("frost", Element.ICE);
+			RUNE_ELEMENT_MAP.put("thunder", Element.LIGHTNING);
+			// Runas sin elemento específico: LEECH, SWIFT, FORCE, ECLIPSE, GUARD
+		}
+		return RUNE_ELEMENT_MAP;
 	}
 
 	// =====================================================================
@@ -59,6 +81,25 @@ public final class SynergyRules {
 	 */
 	public static float energyCostModifierForPath(ServerPlayerEntity player, Role role) {
 		return 1.0f; // Placeholder
+	}
+
+	// =====================================================================
+	// Y3: Elementos ↔ Runas
+	// =====================================================================
+
+	/**
+	 * Bonificador de fusión si una runa del mismo elemento potencia el activo.
+	 * Ejemplo: Elementalista usa FIRE + tiene runa FLAME → +20% daño de fusión.
+	 *
+	 * @param player Elementalista
+	 * @param activeElement Elemento activo de la habilidad
+	 * @param weapon Arma con runas insertadas
+	 * @return Multiplicador: 1.20 (fusión potenciada) o 1.0 (sin sinergia)
+	 */
+	public static float elementRuneSynergyBonus(ServerPlayerEntity player, Element activeElement, ItemStack weapon) {
+		// Placeholder: sin lógica de búsqueda aún.
+		// TODO: Buscar runa del elemento correspondiente en weapon.
+		return 1.0f;
 	}
 
 	// =====================================================================
