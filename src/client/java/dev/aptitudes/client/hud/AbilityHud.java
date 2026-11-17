@@ -183,9 +183,9 @@ public final class AbilityHud {
 		int x = w / 2 + 10;
 		int bottom = h - 51; // encima de las burbujas de aire
 		final int step = 6;
-		int food = player.getHungerManager().getFoodLevel();
 		// Filas de arriba abajo; la última (aguante) queda pegada a la barra de hambre.
-		int count = 1 + (showMana ? 1 : 0);
+		// V81: se quitó la fila verde de «aguante» (repetía la barra de hambre de Minecraft, que está justo debajo).
+		int count = showMana ? 1 : 0;
 		Role[] roles = {data.primaryRole(), data.secondaryRole()};
 		for (Role role : roles) if (role != null) count++;
 		int y = bottom - count * step;
@@ -196,6 +196,20 @@ public final class AbilityHud {
 			Text label = UiStyle.fit(text, Text.translatable("hud.aptitudes.element", Text.translatable(element.translationKey())),
 					(int) (STATUS_W / 0.7f));
 			small(ctx, text, label, x, y - 7, 0xFF000000 | element.color());
+		}
+		// Nombre del recurso de rol (p. ej. Furia) sobre las filas, para saber qué muestra cada barra.
+		if (count > 0) {
+			StringBuilder names = new StringBuilder();
+			for (Role role : roles) {
+				if (role == null) continue;
+				if (names.length() > 0) names.append(" · ");
+				names.append(Text.translatable(RoleResource.of(role).translationKey()).getString());
+			}
+			if (names.length() > 0) {
+				int color = data.primaryRole() == null ? 0xFFBBBBBB : 0xFF000000 | RoleResource.of(data.primaryRole()).color();
+				small(ctx, text, UiStyle.fit(text, Text.literal(names.toString()), (int) (STATUS_W / 0.7f)),
+						x, y - (elementalist ? 14 : 7), color);
+			}
 		}
 		if (showMana) {
 			statusRow(ctx, x, y, manaFill, 0xFF42A5F5, 0xFF82CFFF, 0xFF1565C0, false);
@@ -212,8 +226,6 @@ public final class AbilityHud {
 			statusRow(ctx, x, y, value / RoleResource.MAX, flash ? 0xFFFFE082 : color, lighter(color), darker(color), ready);
 			y += step;
 		}
-		// Aguante (hambre: en Minecraft es lo que limita esprintar), pegado a la barra de hambre.
-		statusRow(ctx, x, y, food / 20f, 0xFF9CCC65, 0xFFC5E1A5, 0xFF558B2F, false);
 	}
 
 	/**

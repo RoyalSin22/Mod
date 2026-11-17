@@ -1803,3 +1803,12 @@ Desde T3d los chunks **nuevos** generan este templo solos (los ya generados cons
    «unknown item» en el registro del servidor).
 7. Mata un campeón varias veces: ~10 % suelta una plantilla.
 8. Grimorio → «Armadura Ascendida»: muestra las 4 piezas, la plantilla y el corazón con sus recetas reales.
+
+# v81 — correcciones de la prueba en partida (verificación manual)
+
+1. Mata o acércate a un campeón: la barra aparece **arriba y centrada**, sin tapar la barra de habilidades; con varios, crece hacia abajo
+   sin pasar de la mitad de la pantalla.
+2. Bloque de estado sobre el hambre: ya no hay barra verde; sobre las barras de recurso de rol aparece su nombre (p. ej. Furia).
+3. Grimorio (K/tecla del libro): índice solo de texto, cabecera con título y subtítulo sin ilustración, pestañas sin cajas.
+4. Hoguera: piedras irregulares alrededor, troncos, espada con espiral y llama animada; se ve bien desde todos los lados.
+5. `/give @s aptitudes:berserker_weapon_master`: en la mano, el suelo y un marco se ve plano y limpio (sin bultos ni bordes).

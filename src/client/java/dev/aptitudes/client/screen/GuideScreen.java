@@ -372,8 +372,8 @@ public class GuideScreen extends Screen {
 			Tab tab = isTutorial ? null : TABS.get(i);
 			boolean active = tab != null && page == tab.page();
 			boolean hover = mouseX >= x && mouseX < x + 18 && mouseY >= top + 4 && mouseY < top + 20;
-			ctx.fill(x, top + 4, x + 18, top + 20, active ? 0x60C9A54C : hover ? 0x40303850 : 0x20303850);
-			ctx.drawBorder(x, top + 4, 18, 16, active || hover ? UiStyle.GOLD : UiStyle.BORDER);
+			if (active || hover) ctx.fill(x, top + 4, x + 18, top + 20, active ? 0x40C9A54C : 0x20303850);
+			if (active) UiStyle.line(ctx, x + 1, top + 20, x + 17, top + 20, UiStyle.GOLD);
 			ctx.drawItem(new ItemStack(isTutorial ? Items.WRITABLE_BOOK : tab.icon()), x + 1, top + 4);
 			if (hover) {
 				tip.set(List.of(isTutorial ? Text.translatable("screen.aptitudes.guide.tab.tutorial", tutorialText())
@@ -412,16 +412,14 @@ public class GuideScreen extends Screen {
 					   @Nullable String bookmark, int mouseX, int mouseY, Tooltip tip) {
 		int px = pageX();
 		int pw = pageW();
-		Identifier texture = Aptitudes.id("textures/gui/guide/" + banner + ".png");
-		ctx.drawTexture(texture, px - 2, top + 24, 0f, 0f, Math.min(pw + 4, BANNER_W), BANNER_H, BANNER_W, BANNER_H);
-		bigItem(ctx, icon, px + pw - 34, top + 25);
-		int textW = pw - 40 - (bookmark != null ? 14 : 0);
+		// V81: cabecera limpia (antes llevaba una ilustración con estrellas y libros y un icono grande: demasiado ruido visual).
+		int textW = pw - 8 - (bookmark != null ? 14 : 0);
 		ctx.drawTextWithShadow(textRenderer, UiStyle.fit(textRenderer, heading.copy().formatted(Formatting.BOLD), textW),
-				px + 2, top + 30, UiStyle.GOLD);
-		ctx.drawTextWithShadow(textRenderer, UiStyle.fit(textRenderer, subtitle, textW), px + 2, top + 43, UiStyle.TEXT);
-		if (bookmark != null) star(ctx, bookmark, px + pw - 48, top + 29, mouseX, mouseY, tip);
-		UiStyle.line(ctx, px, top + 59, px + pw, top + 59, UiStyle.GOLD_DARK);
-		return top + 63;
+				px + 2, top + 28, UiStyle.GOLD);
+		ctx.drawTextWithShadow(textRenderer, UiStyle.fit(textRenderer, subtitle, textW), px + 2, top + 40, UiStyle.MUTED);
+		if (bookmark != null) star(ctx, bookmark, px + pw - 12, top + 28, mouseX, mouseY, tip);
+		UiStyle.line(ctx, px, top + 52, px + pw, top + 52, UiStyle.GOLD_DARK);
+		return top + 57;
 	}
 
 	/** Estrella de marcador (☆ / ★); el clic añade o quita la página. */
@@ -444,15 +442,9 @@ public class GuideScreen extends Screen {
 			boolean current = i == chapter && (page == Page.CHAPTER || page == Page.ITEM || page == Page.ROLE);
 			boolean hover = mouseX >= left + 6 && mouseX < left + 6 + LIST_W && mouseY >= y && mouseY < y + rh;
 			if (current || hover) ctx.fill(left + 6, y, left + 6 + LIST_W, y + rh, sel ? 0x60C9A54C : current ? 0x40C9A54C : 0x30303850);
-			// Con 23 capítulos, la ventana mínima usa filas e iconos de 9 px para que quepa el índice.
-			int iconSize = Math.min(10, rh);
-			ctx.getMatrices().push();
-			ctx.getMatrices().translate(left + 8, y + (rh - iconSize) / 2f, 0);
-			ctx.getMatrices().scale(iconSize / 16f, iconSize / 16f, 1f);
-			ctx.drawItem(new ItemStack(CHAPTERS.get(i).icon()), 0, 0);
-			ctx.getMatrices().pop();
+			// V81: índice solo de texto (los iconos de colores de cada capítulo recargaban la lista).
 			UiStyle.label(ctx, textRenderer, Text.translatable("guide.aptitudes." + CHAPTERS.get(i).id() + ".title"),
-					left + 21, y + (rh - 8) / 2, LIST_W - 17, current ? UiStyle.GOLD : UiStyle.TEXT);
+					left + 11, y + (rh - 8) / 2, LIST_W - 8, current ? UiStyle.GOLD : UiStyle.TEXT);
 			final int index = i;
 			hits.add(new Hit(left + 6, y, LIST_W, rh, () -> openChapter(index)));
 		}

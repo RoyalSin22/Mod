@@ -57,9 +57,16 @@ DISPLAY = {
 NEIGHBOURS = ((1, 0), (-1, 0), (0, 1), (0, -1))
 
 
+# V81: las armas Maestro con arte externo se ven en la mano como una lámina plana limpia (el icono de 32×32 extruido por
+# Minecraft), porque el relieve vóxel del arte generado por IA se veía ruidoso. Pon esto a True para volver a generar
+# sus modelos 3D (`<arma>_3d.json`) o sustitúyelos por modelos hechos en Blockbench con ese mismo nombre.
+MASTER_VOXEL = False
+
+
 def weapons():
     names = list(ROLE_WEAPONS)
-    names += [n for n in gen_items.ITEMS if n.endswith('_weapon_master')]
+    if MASTER_VOXEL:
+        names += [n for n in gen_items.ITEMS if n.endswith('_weapon_master')]
     missing = [n for n in names if n not in gen_items.ITEMS]
     if missing:
         raise SystemExit(f'Armas sin plantilla en gen_items.py: {missing}')

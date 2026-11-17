@@ -6,6 +6,16 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Cambiado
+- **v81 — Correcciones tras la prueba en partida.** (1) La barra de **campeones y jefes** pasa **arriba, centrada**, como las barras de
+  jefe del juego (antes iba sobre la barra de acción y tapaba la vista). (2) El bloque de estado ya no dibuja la barra verde
+  de «aguante»: solo repetía la barra de hambre; las barras de recurso de rol llevan ahora su nombre encima. (3) **Grimorio más
+  limpio**: cabecera sin ilustración ni icono grande, índice solo de texto y pestañas sin cajas de color. (4) **Hoguera
+  rediseñada**: anillo de 14 piedras irregulares, lecho de brasas, troncos cruzados, espada con espiral y tres cruces de
+  llama (`tools/models/gen_bonfire_model.py`, mismo formato que exporta Blockbench, con `--check` en CI). (5) Las **20 armas
+  Maestro** se ven en la mano como una lámina plana limpia (icono de 32×32 extruido): se retiran sus modelos vóxel
+  (`MASTER_VOXEL` en `gen_weapon_models.py`); un modelo hecho en Blockbench con el nombre `<arma>_3d.json` se carga solo.
+
+### Cambiado
 - **v80 — Armadura Ascendida: un único set, mejora de la netherita.** Sustituye por completo a las 20 armaduras de rol (80 piezas,
   recetas, modelos, texturas, textos y el material de rol del aldeano; sin migración: son mundos de prueba). Se fabrica en la
   **mesa de herrería** con una **Plantilla de ascensión** + una pieza de netherita + un **Corazón de campeón** por pieza. Defensa

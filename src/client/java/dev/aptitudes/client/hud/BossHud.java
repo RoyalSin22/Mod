@@ -1,7 +1,6 @@
 package dev.aptitudes.client.hud;
 
 import dev.aptitudes.client.ClientConfig;
-import dev.aptitudes.client.ClientEclipse;
 import dev.aptitudes.client.screen.KUi;
 import dev.aptitudes.client.screen.UiStyle;
 import dev.aptitudes.logic.TreeScreenLayout;
@@ -53,8 +52,7 @@ public final class BossHud {
 		if (player == null || !player.isAlive() || client.options.hudHidden || view.entries().isEmpty()) return;
 		int width = ctx.getScaledWindowWidth();
 		int height = ctx.getScaledWindowHeight();
-		var layout = BossHudLayout.place(width, height, view.entries().size(), view.total(),
-				ClientEclipse.active() && ClientEclipse.phase() > 0, AbilityHud.activeBarLayout(width, height));
+		var layout = BossHudLayout.place(width, height, view.entries().size(), view.total());
 		if (layout.rows() == 0) return;
 
 		int x = layout.x();
