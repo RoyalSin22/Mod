@@ -3,8 +3,6 @@ package dev.aptitudes.world;
 import com.google.common.collect.ImmutableSet;
 import dev.aptitudes.Aptitudes;
 import dev.aptitudes.item.ModItems;
-import dev.aptitudes.item.RoleArmor;
-import dev.aptitudes.role.Role;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.fabricmc.fabric.api.object.builder.v1.world.poi.PointOfInterestHelper;
 import net.minecraft.block.AbstractBlock;
@@ -63,13 +61,11 @@ public final class GuildVillagers {
 		TradeOfferHelper.registerVillagerOffers(GUILDMASTER, 2, f -> {
 			f.add(sell(Items.EMERALD, 10, ModItems.ESTUS_FLASK, 1, 3, 10));
 			f.add(sell(Items.EMERALD, 10, ModItems.ETHER_FLASK, 1, 3, 10));
-			f.add(roleMaterial());
 		});
 		// Nivel 3 – Oficial
 		TradeOfferHelper.registerVillagerOffers(GUILDMASTER, 3, f -> {
-			f.add((entity, random) -> new TradeOffer(new TradedItem(Items.EMERALD, 12),
-					Optional.of(new TradedItem(ModItems.SOUL_SHARD, 1)), new ItemStack(ModItems.ARMORY_VOUCHER), 6, 15, 0.05f));
-			f.add(roleMaterial());
+			f.add((entity, random) -> new TradeOffer(new TradedItem(Items.EMERALD, 32),
+					Optional.of(new TradedItem(ModItems.SOUL_SHARD, 4)), new ItemStack(ModItems.ARMORY_VOUCHER), 3, 15, 0.05f));
 		});
 		// Nivel 4 – Experto
 		TradeOfferHelper.registerVillagerOffers(GUILDMASTER, 4, f -> {
@@ -93,13 +89,5 @@ public final class GuildVillagers {
 	private static TradeOffers.Factory buy(Item item, int count, int emeralds, int maxUses, int xp) {
 		return (entity, random) -> new TradeOffer(new TradedItem(item, count), new ItemStack(Items.EMERALD, emeralds),
 				maxUses, xp, 0.05f);
-	}
-
-	/** Material base de un rol al azar (para fabricar su set de armadura). */
-	private static TradeOffers.Factory roleMaterial() {
-		return (entity, random) -> {
-			Role role = Role.values()[random.nextInt(Role.values().length)];
-			return new TradeOffer(new TradedItem(Items.EMERALD, 4), new ItemStack(RoleArmor.baseMaterial(role), 8), 8, 5, 0.05f);
-		};
 	}
 }

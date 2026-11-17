@@ -119,7 +119,7 @@ retematizaron (p. ej., «Talismán maldito»).
 | Fabricación en la Mesa del gremio (armaduras de rol) | `world/GuildCrafting` (tipo `aptitudes:guild_crafting`), `GuildShapedRecipe`, `GuildDeskScreenHandler`, `GuildDeskBlock`; cliente `GuildDeskScreen` |
 | Configuración validada al cargar | `config/AptitudesConfig.validated` |
 | Texturas de armas y objetos (generadas) | `tools/textures/gen_items.py` |
-| Texturas de armaduras: 80 iconos y 40 capas del modelo puesto (generadas) | `tools/textures/gen_armor.py` |
+| Texturas de la Armadura Ascendida (V80): 4 iconos, la plantilla y 2 capas del modelo (generadas) | `tools/textures/gen_ascended_armor.py` |
 | Textos de los 200 nodos evolucionados (generados) | `tools/lang/gen_evolved_lang.py` |
 
 Historial en `main`: auditoría de seguridad y balance, v14–v28 (grimorio,
@@ -162,8 +162,8 @@ de armaduras, colisión de las transformaciones, Mesa del gremio, atributos −3
     - Texturas de armas y objetos:
       `python3 tools/textures/gen_items.py src/main/resources/assets/aptitudes/textures/item`
       (plantillas `T`, colores en `ITEMS`).
-    - Texturas de armaduras (iconos y capas 64×32):
-      `python3 tools/textures/gen_armor.py src/main/resources/assets/aptitudes/textures`.
+    - Texturas de la Armadura Ascendida (iconos y capas 64×32):
+      `python3 tools/textures/gen_ascended_armor.py src/main/resources/assets/aptitudes/textures`.
     - Textos de los nodos evolucionados: `python3 tools/lang/gen_evolved_lang.py` (sus números deben
       coincidir con `EvolvedTree` / `EvolvedAbilities`; si cambias uno, cambia el otro).
     - No subas cachés de Python (`__pycache__/`, `*.pyc` ya están en `.gitignore`).

@@ -28,6 +28,35 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   indicadores en el HUD (`SynergyHud`, avisados por `SynergyPayload`), partículas al activarse, logro «Sinergista» (las cinco en
   una sesión) y `/aptitudes synergy status`. **Y1 usa los efectos reales** de los nodos aprendidos de la senda elegida del rol (`Y1Rules`, pura y probada): SPEED amplía el radio de las activas de movimiento, CRIT/EXECUTE el daño de las ofensivas, MINION_POWER el de las invocaciones y (MANA_REGEN o MAX_HEALTH) con RESOURCE_GAIN abarata las activas; el radio lo consume `Targeting.hostilesAround` mientras se lanza la habilidad. **Cobertura de Y1:** las 80 activas base, las 100 activas nuevas (v67, clasificadas a mano por lo que hacen) y las evolucionadas por plantilla (NOVA, BEAM, CONE, ZONE y DASH dañan; DASH también cuenta como movimiento; SUMMON invoca); una activa puede ser de varias categorías. Los golpes diferidos (giros del Torbellino, oleadas) conservan el bonus de la habilidad que los programó. El tooltip del árbol muestra qué aporta la senda a cada activa. **Limitaciones conocidas:** sin pruebas en partida (`docs/V65_C5_TESTING_PLAN.md`).
 
+### Cambiado
+- **v81 — Correcciones tras la prueba en partida.** (1) La barra de **campeones y jefes** pasa **arriba, centrada**, como las barras de
+  jefe del juego (antes iba sobre la barra de acción y tapaba la vista). (2) El bloque de estado ya no dibuja la barra verde
+  de «aguante»: solo repetía la barra de hambre; las barras de recurso de rol llevan ahora su nombre encima. (3) **Grimorio más
+  limpio**: cabecera sin ilustración ni icono grande, índice solo de texto y pestañas sin cajas de color. (4) **Hoguera
+  rediseñada**: anillo de 14 piedras irregulares, lecho de brasas, troncos cruzados, espada con espiral y tres cruces de
+  llama (`tools/models/gen_bonfire_model.py`, mismo formato que exporta Blockbench, con `--check` en CI). (5) Las **20 armas
+  Maestro** se ven en la mano como una lámina plana limpia (icono de 32×32 extruido): se retiran sus modelos vóxel
+  (`MASTER_VOXEL` en `gen_weapon_models.py`); un modelo hecho en Blockbench con el nombre `<arma>_3d.json` se carga solo.
+
+### Cambiado
+- **v80 — Armadura Ascendida: un único set, mejora de la netherita.** Sustituye por completo a las 20 armaduras de rol (80 piezas,
+  recetas, modelos, texturas, textos y el material de rol del aldeano; sin migración: son mundos de prueba). Se fabrica en la
+  **mesa de herrería** con una **Plantilla de ascensión** + una pieza de netherita + un **Corazón de campeón** por pieza. Defensa
+  4/7/9/4 (la netherita da 3/6/8/3), dureza 4, resistencia al retroceso 0,15 y más durabilidad. Con las cuatro piezas: −10 % de
+  coste y esperas, +10 % de daño de habilidades (+4 % cuerpo a cuerpo) y el **aspecto de tu rol principal** (los 20 efectos por rol
+  de `RoleArmorSets`, que ya no piden llevar un set distinto). La plantilla sale del Vale de armería (ahora lo canjea por una; el
+  aldeano lo vende por 32 esmeraldas y 4 fragmentos de alma), de los cofres del Custodio y de la cripta, de torres y campamentos y,
+  con un 10 %, de los campeones. Diseño propio en `tools/textures/gen_ascended_armor.py`: netherita violeta, oro brasa y runas del
+  Velo. Grimorio, idiomas (5), pruebas (`AscendedRulesTest`, `AscendedArmorResourcesTest`) y CI actualizados.
+
+### Cambiado
+- **v79 — Armaduras de rol con identidad propia.** Las 20 armaduras eran el mismo dibujo teñido según el peso (pesada, media, ligera).
+  Ahora cada rol lleva: un **emblema** 6×5 en el pecho (y en la espalda del modelo), un **adorno de casco** propio (cuernos, estrella,
+  máscara, antena de hoja, gafas, pico, diadema, halo, calavera, astas, corona, gema, orejas, sombrero, runas, notas, ojo o colmillos),
+  un **ribete** de color propio en lugar del dorado común y una base más oscura (fantasía oscura) para que el color del rol destaque.
+  Los iconos 16×16 y las capas 64×32 salen de las mismas tablas (`EMBLEM`, `CREST`/`BROW`, `TRIM` de `tools/textures/gen_armor.py`).
+  Solo texturas: el modelo, los ids y las estadísticas no cambian. Falta revisión en partida.
+
 ### Corregido
 - **v76.2 — Armas en la mano con relieve biselado («modelo a mano»).** El grosor del modelo 3D ya no es uniforme: crece desde la
   orilla de la silueta hacia el interior (`weapon_art.bevel_depth_map`, distancia de ajedrez al vacío, múltiplos de 0,25), de modo que

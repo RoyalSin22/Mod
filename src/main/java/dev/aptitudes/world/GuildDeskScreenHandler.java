@@ -193,8 +193,7 @@ public class GuildDeskScreenHandler extends ScreenHandler {
 			stack.onCraftByPlayer(world, player, stack.getCount());
 			if (player.isCreative()) return;
 			// Los contratos conservan los resultados que ya contaban antes de ampliar la Mesa.
-			if (stack.getItem() instanceof dev.aptitudes.item.RoleArmorItem
-					|| stack.getItem() instanceof dev.aptitudes.rune.RuneItem) {
+			if (stack.getItem() instanceof dev.aptitudes.rune.RuneItem) {
 				dev.aptitudes.contract.ContractManager.forge(serverPlayer);
 			}
 			GuildCrafting.onCrafted(serverPlayer);

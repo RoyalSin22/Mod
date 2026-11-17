@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:smithing_transform",
+  "template": {
+    "item": "aptitudes:ascended_template"
+  },
+  "base": {
+    "item": "minecraft:netherite_boots"
+  },
+  "addition": {
+    "item": "aptitudes:champion_heart"
+  },
+  "result": {
+    "id": "aptitudes:ascended_boots",
+    "count": 1
+  }
+}

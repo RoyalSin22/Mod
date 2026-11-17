@@ -1788,3 +1788,27 @@ Desde T3d los chunks **nuevos** generan este templo solos (los ya generados cons
 6. Con el rol en Maestro: aparecen ofertas Élite; en Definitivo, Legendarias (Jefe o Evento).
 7. `/aptitudes event start soul_fog` y espera al final (o detenlo con `stop`: no cuenta); un contrato de Evento
    de Niebla avanza al terminar el evento con éxito.
+
+# v80 — Armadura Ascendida (verificación manual)
+
+1. `/give @s aptitudes:ascended_template` y `/give @s aptitudes:champion_heart 4`; coloca una pieza de netherita en la mesa de
+   herrería con la plantilla y el corazón: sale la pieza Ascendida (conserva encantamientos). Repite con las 4 piezas.
+2. Equipa solo 3 piezas: no hay bonus ni aviso. Equipa las 4 con un rol principal: aviso «Armadura Ascendida: <aspecto>»,
+   partículas del color del rol y los efectos del rol (p. ej. Bersérker: +10 % de daño; Mago: −25 % de maná).
+3. Con el set completo y sin rol principal: solo el bonus común (−10 % de coste y esperas, +10 % de daño de habilidades).
+4. Cambia de rol principal (Hoguera): el aspecto cambia al siguiente segundo; con el rol antiguo ya no hay efecto.
+5. Usa un Vale de armería: recibes una Plantilla de ascensión. El aldeano del gremio (nivel 3) lo vende por 32 esmeraldas y 4
+   fragmentos de alma.
+6. Abre los cofres de una torre, un campamento y el Custodio: aparecen plantillas, nunca piezas de rol antiguas (sin errores de
+   «unknown item» en el registro del servidor).
+7. Mata un campeón varias veces: ~10 % suelta una plantilla.
+8. Grimorio → «Armadura Ascendida»: muestra las 4 piezas, la plantilla y el corazón con sus recetas reales.
+
+# v81 — correcciones de la prueba en partida (verificación manual)
+
+1. Mata o acércate a un campeón: la barra aparece **arriba y centrada**, sin tapar la barra de habilidades; con varios, crece hacia abajo
+   sin pasar de la mitad de la pantalla.
+2. Bloque de estado sobre el hambre: ya no hay barra verde; sobre las barras de recurso de rol aparece su nombre (p. ej. Furia).
+3. Grimorio (K/tecla del libro): índice solo de texto, cabecera con título y subtítulo sin ilustración, pestañas sin cajas.
+4. Hoguera: piedras irregulares alrededor, troncos, espada con espiral y llama animada; se ve bien desde todos los lados.
+5. `/give @s aptitudes:berserker_weapon_master`: en la mano, el suelo y un marco se ve plano y limpio (sin bultos ni bordes).

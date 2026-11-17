@@ -129,43 +129,8 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "aptitudes:warlock_helmet",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "aptitudes:warlock_chestplate",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "aptitudes:warlock_leggings",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "aptitudes:warlock_boots",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "aptitudes:necromancer_helmet",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "aptitudes:necromancer_chestplate",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "aptitudes:necromancer_leggings",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "aptitudes:necromancer_boots",
-          "weight": 1
+          "name": "aptitudes:ascended_template",
+          "weight": 2
         }
       ]
     }

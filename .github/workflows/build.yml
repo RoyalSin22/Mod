@@ -55,6 +55,8 @@ jobs:
           python3 tools/textures/import_weapon_art.py --check
           python3 tools/models/gen_weapon_models.py src/main/resources/assets/aptitudes/models/item --check
           python3 tools/lang/gen_lore_lang.py --check
+          python3 tools/models/gen_bonfire_model.py src/main/resources/assets/aptitudes/models/block --check
+          python3 tools/textures/gen_ascended_armor.py src/main/resources/assets/aptitudes/textures --check
 
       - name: Compilar y probar
         run: ./gradlew build --no-daemon --stacktrace

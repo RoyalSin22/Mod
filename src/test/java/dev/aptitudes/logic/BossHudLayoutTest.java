@@ -3,44 +3,36 @@ package dev.aptitudes.logic;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BossHudLayoutTest {
 	@Test
-	void centersThePanelAboveActionMessages() {
-		var layout = BossHudLayout.place(426, 240, 1, 1, false, null);
+	void anchorsThePanelAtTheTopCenter() {
+		var layout = BossHudLayout.place(426, 240, 1, 1);
 
-		assertEquals(new BossHudLayout(95, 136, 236, 26, 1), layout);
+		assertEquals(new BossHudLayout(95, 10, 236, 26, 1), layout);
 	}
 
 	@Test
-	void leavesRoomForTheWorldEventNotice() {
-		var layout = BossHudLayout.place(426, 240, 4, 6, true, null);
+	void growsDownwardWithMoreEntries() {
+		var layout = BossHudLayout.place(426, 240, 4, 6);
 
-		assertEquals(new BossHudLayout(95, 41, 236, 91, 4), layout);
+		assertEquals(10, layout.y());
+		assertEquals(4, layout.rows());
+		assertEquals(91, layout.height());
 	}
 
 	@Test
-	void movesUpOnlyWhenTheAbilityBarOverlaps() {
-		var overlapping = new AbilityHudLayout(244, 170, 1, 238, 150, 420, 196);
-		var away = new AbilityHudLayout(15, 175, 1, 9, 150, 90, 201);
+	void neverReachesPastHalfTheScreenAndKeepsTheSummary() {
+		var layout = BossHudLayout.place(240, 170, 4, 4);
 
-		var shifted = BossHudLayout.place(426, 240, 1, 1, false, overlapping);
-		var unchanged = BossHudLayout.place(426, 240, 1, 1, false, away);
-
-		assertEquals(146, shifted.y() + shifted.height());
-		assertEquals(162, unchanged.y() + unchanged.height());
-	}
-
-	@Test
-	void keepsTheSummaryWhenOnlyTwoRowsFit() {
-		var layout = BossHudLayout.place(240, 170, 4, 4, true, null);
-
-		assertEquals(new BossHudLayout(8, 7, 224, 55, 2), layout);
+		assertEquals(3, layout.rows());
+		assertTrue(layout.y() + layout.height() <= 85);
 	}
 
 	@Test
 	void hidesThePanelWhenNotEvenOneRowFits() {
-		assertEquals(0, BossHudLayout.place(426, 100, 1, 1, false, null).rows());
-		assertEquals(0, BossHudLayout.place(120, 240, 1, 1, false, null).rows());
+		assertEquals(0, BossHudLayout.place(426, 60, 1, 1).rows());
+		assertEquals(0, BossHudLayout.place(120, 240, 1, 1).rows());
 	}
 }

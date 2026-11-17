@@ -8,7 +8,7 @@ Sistema RPG con tres capas que se combinan:
 - **20 roles** (clases) en **5 categorías**. Eliges uno **principal** y uno **secundario**; ambos conservan su progreso, árbol de talentos, habilidades equipables y evoluciones. Nivel máximo inicial 50, una senda exclusiva por rol y una piedra angular al final.
 - **Evolución de roles**: Base → **Maestro** → **Definitivo** (nivel + prueba + ítem), con títulos propios, una **habilidad característica** al llegar a Maestro (tecla `Z`) y una **definitiva** al llegar a Definitivo (tecla `R`).
 - **16 habilidades legendarias** (tecla `H`; se eligen en el árbol de talentos): la exclusividad por servidor es opcional y está desactivada por defecto.
-- **Armas, armaduras, accesorios, runas y cuatro pociones propias**, con recetas consultables en el grimorio.
+- **Armas, la Armadura Ascendida, accesorios, runas y cuatro pociones propias**, con recetas consultables en el grimorio.
 - **Templos sellados** con puzles, un guardián y Vasos de vida (+1 corazón permanente, hasta 5) (v64).
 - **Niebla de almas**: el Errante Velado avisa antes de su barrido, que puede debilitar a varios objetivos. Los
   ejemplares del evento pueden soltar un Jirón de Velo Espectral.
@@ -505,8 +505,7 @@ Comandos: `/unique` (lista) · `/unique admin give <jugador> <habilidad>` · `/u
 - **Élite** (5 % de los monstruos, `eliteChance` en la config): 1-2 modificadores, ×2 de vida,
   nombre visible. Suelta Fragmentos de alma, **Esencia de élite** (50 %) y más XP.
 - **Campeón** (10 % de las élites, y siempre uno en la azotea de cada torre): 3 modificadores,
-  ×4 de vida y **barra de jefe**. Suelta un **Corazón de campeón**, esencias y una pieza de armadura
-  de rol; se anuncia en el chat quién lo derrota.
+  ×4 de vida y **barra de jefe**. Suelta un **Corazón de campeón**, esencias y, a veces, una Plantilla de ascensión; se anuncia en el chat quién lo derrota.
 - Modificadores: Veloz, Blindado, Vampírico, Brutal, Regenerante, Explosivo (sin romper bloques),
   Gélido, Escurridizo (se teletransporta al recibir golpes) y Gigante.
 
@@ -550,7 +549,7 @@ Si tienes las dos, cuenta la del rol principal.
 ### Estructuras (Overworld)
 | Estructura | Rareza (1 de cada N chunks) | Contenido |
 |---|---|---|
-| Torre en ruinas | 240 | 4 pisos, cofre por piso, generadores (zombi/esqueleto/araña), cofre de azotea con armaduras de rol y herramientas de alma |
+| Torre en ruinas | 240 | 4 pisos, cofre por piso, generadores (zombi/esqueleto/araña), cofre de azotea con Plantillas de ascensión y herramientas de alma |
 | Santuario de Hoguera | 150 | Hoguera encendida, cofre con fragmentos, frascos y a veces una Ofrenda |
 | Campamento | 200 | Cazadores (pillagers), brujos (brujas) o bandidos (vindicadores); botín temático |
 
@@ -678,19 +677,19 @@ Ráfaga elemental, Aura elemental, Abalanzarse, Aullido de la bestia.
 
 ## Equipo, objetos y efectos visuales (v8)
 
-### Sets de armadura por rol
-14 sets × 4 piezas. Cualquiera puede llevarlos por su defensa; la **bonificación de set completo**
-solo se activa si ese rol es tu principal o secundario.
+### Armadura Ascendida
+Un único set de 4 piezas, **mejora de la netherita**, que sustituye a las antiguas armaduras de rol. Se hace en la
+**mesa de herrería**: **Plantilla de ascensión** + pieza de netherita + **Corazón de campeón** (una pieza cada vez).
 
-| Peso | Roles | Defensa (casco/peto/grebas/botas) | Dureza |
-|---|---|---|---|
-| Pesado | Bersérker, Lancero, Paladín | 3/8/6/3 (≈ diamante) | 2 |
-| Medio | Espadachín, Ingeniero, Druida, Nigromante | 2/6/5/2 | 1 |
-| Ligero | resto | 2/5/4/2 | 0 |
+| | Netherita | Ascendida |
+|---|---|---|
+| Defensa (casco/peto/grebas/botas) | 3/8/6/3 | 4/9/7/4 |
+| Dureza | 3 | 4 |
+| Resistencia al retroceso | 0,1 | 0,15 |
 
-Receta: patrón de armadura vanilla con el **material del rol** (hierro, amatista, membrana, panal, cobre,
-prismarina, cuarzo, oro, hueso, musgo, esmeralda, lana, vara de breeze, piel de conejo) y un
-**Fragmento de alma** en el hueco central.
+Con las cuatro piezas: −10 % de coste y esperas, +10 % de daño de habilidades (+4 % cuerpo a cuerpo) y el **aspecto de tu
+rol principal** (un efecto distinto para cada uno de los 20 roles). La plantilla se consigue con el Vale de armería (aldeano del
+gremio y contratos), en los cofres del Custodio, la cripta, las torres y los campamentos y, a veces, de campeones.
 
 ### Armas de rol
 El ítem característico del rol gana +1 % de daño por nivel del rol, +10 % en Maestro y +20 % en Definitivo.

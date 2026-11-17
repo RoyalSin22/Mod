@@ -129,43 +129,8 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "aptitudes:hunter_helmet",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "aptitudes:hunter_chestplate",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "aptitudes:hunter_leggings",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "aptitudes:hunter_boots",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "aptitudes:tamer_helmet",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "aptitudes:tamer_chestplate",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "aptitudes:tamer_leggings",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "aptitudes:tamer_boots",
-          "weight": 1
+          "name": "aptitudes:ascended_template",
+          "weight": 2
         }
       ]
     }

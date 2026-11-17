@@ -1,7 +1,8 @@
 package dev.aptitudes.ability;
 
 import dev.aptitudes.Aptitudes;
-import dev.aptitudes.item.RoleArmorItem;
+import dev.aptitudes.item.AscendedArmor;
+import dev.aptitudes.item.AscendedRules;
 import dev.aptitudes.logic.AttributeApplier;
 import dev.aptitudes.role.Evolution;
 import dev.aptitudes.role.Role;
@@ -39,9 +40,8 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Bonificaciones de set completo (4 piezas del mismo rol) y escalado de las armas
- * de rol. El set solo se activa si ese rol es tu principal o secundario: cualquiera
- * puede llevar la armadura por su defensa, pero el poder es del rol.
+ * Bonificaciones de la Armadura Ascendida (V80, 4 piezas) y escalado de las armas de rol. Con el set completo hay un bonus
+ * común (menos coste y esperas, más daño) y un aspecto que depende de tu rol principal: los efectos de la tabla de abajo.
  *
  * <table>
  *   <tr><th>Rol</th><th>Bonificación</th></tr>
@@ -86,25 +86,25 @@ public final class RoleArmorSets {
 	private RoleArmorSets() {
 	}
 
-	/** Rol del set completo que lleva puesto (4 piezas del mismo rol), o null. */
+	/**
+	 * Rol cuyo aspecto adopta la Armadura Ascendida (V80): las cuatro piezas puestas y un rol principal elegido. La armadura
+	 * es única; el efecto de rol depende de tu rol principal. {@code null} si no llevas el set completo o no tienes rol.
+	 */
 	@Nullable
 	public static Role wornSet(LivingEntity entity) {
-		Role found = null;
-		for (EquipmentSlot slot : new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS,
-				EquipmentSlot.FEET}) {
-			ItemStack stack = entity.getEquippedStack(slot);
-			if (!(stack.getItem() instanceof RoleArmorItem piece)) return null;
-			if (found == null) found = piece.role();
-			else if (found != piece.role()) return null;
-		}
-		return found;
+		if (!(entity instanceof ServerPlayerEntity player) || !AscendedArmor.wearingFullSet(player)) return null;
+		return RoleManager.get(player).primary();
 	}
 
-	/** Rol cuyo set está activo: set completo puesto y ese rol es principal o secundario. */
+	/** Alias de {@link #wornSet}: el rol principal es siempre un rol activo. */
 	@Nullable
 	public static Role activeSet(ServerPlayerEntity player) {
-		Role role = wornSet(player);
-		return role != null && RoleManager.get(player).isActive(role) ? role : null;
+		return wornSet(player);
+	}
+
+	/** Las cuatro piezas de la Armadura Ascendida puestas (bonus común, aunque aún no tengas rol). */
+	public static boolean fullSet(LivingEntity entity) {
+		return AscendedArmor.wearingFullSet(entity);
 	}
 
 	public static boolean has(ServerPlayerEntity player, Role role) {
@@ -188,13 +188,15 @@ public final class RoleArmorSets {
 
 	/** Multiplicador del coste de maná de las activas. */
 	public static double costMultiplier(ServerPlayerEntity player) {
-		return has(player, Role.MAGE) ? 0.75 : 1.0;
+		double mult = has(player, Role.MAGE) ? 0.75 : 1.0;
+		return fullSet(player) ? mult * AscendedRules.COST_MULTIPLIER : mult;
 	}
 
 	/** Reducción adicional de enfriamientos (se suma a Fe, Presteza, etc.). */
 	public static double cooldownReduction(ServerPlayerEntity player) {
 		Role set = activeSet(player);
-		return set == Role.ENGINEER || set == Role.SHAPESHIFTER ? 0.15 : 0.0;
+		double aspect = set == Role.ENGINEER || set == Role.SHAPESHIFTER ? 0.15 : 0.0;
+		return fullSet(player) ? aspect + AscendedRules.COOLDOWN_REDUCTION : aspect;
 	}
 
 	// ----------------------------------------------------------------- Daño
@@ -202,6 +204,7 @@ public final class RoleArmorSets {
 	/** Multiplicador de daño saliente del set y del arma de rol. */
 	public static float outgoingMultiplier(ServerPlayerEntity player, LivingEntity target, DamageSource source, boolean direct) {
 		float mult = 1.0f;
+		if (fullSet(player)) mult += AscendedRules.damageBonus(direct); // bonus común de la Armadura Ascendida
 		Role set = activeSet(player);
 		if (set != null) {
 			boolean magic = !direct || source.isOf(DamageTypes.MAGIC) || source.isOf(DamageTypes.INDIRECT_MAGIC);

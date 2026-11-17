@@ -1,25 +1,6 @@
 {
   "replace": false,
   "values": [
-    "aptitudes:berserker_helmet",
-    "aptitudes:mage_helmet",
-    "aptitudes:assassin_helmet",
-    "aptitudes:herbalist_helmet",
-    "aptitudes:engineer_helmet",
-    "aptitudes:lancer_helmet",
-    "aptitudes:swordsman_helmet",
-    "aptitudes:paladin_helmet",
-    "aptitudes:necromancer_helmet",
-    "aptitudes:druid_helmet",
-    "aptitudes:merchant_helmet",
-    "aptitudes:monk_helmet",
-    "aptitudes:elementalist_helmet",
-    "aptitudes:shapeshifter_helmet",
-    "aptitudes:gunslinger_helmet",
-    "aptitudes:weapon_summoner_helmet",
-    "aptitudes:hunter_helmet",
-    "aptitudes:bard_helmet",
-    "aptitudes:warlock_helmet",
-    "aptitudes:tamer_helmet"
+    "aptitudes:ascended_helmet"
   ]
 }

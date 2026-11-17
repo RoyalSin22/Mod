@@ -1,7 +1,5 @@
 package dev.aptitudes.item;
 
-import dev.aptitudes.role.Role;
-import dev.aptitudes.role.RoleManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,12 +13,11 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Vale de armería (del aldeano de gremio): al usarlo te da una pieza del set de
- * armadura de tu rol PRINCIPAL; primero las que aún no tienes.
+ * Vale de armería (aldeano de gremio, contratos y botín): al usarlo se canjea por una Plantilla de ascensión, que sirve
+ * para mejorar una pieza de netherita en la mesa de herrería (V80).
  */
 public class ArmoryVoucherItem extends Item {
 	public ArmoryVoucherItem(Settings settings) {
@@ -31,25 +28,12 @@ public class ArmoryVoucherItem extends Item {
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		ItemStack stack = user.getStackInHand(hand);
 		if (world.isClient() || !(user instanceof ServerPlayerEntity player)) return TypedActionResult.success(stack, true);
-		Role role = RoleManager.get(player).primary();
-		if (role == null) {
-			player.sendMessage(Text.translatable("item.aptitudes.armory_voucher.no_role").formatted(Formatting.RED), true);
-			return TypedActionResult.fail(stack);
-		}
-		List<Item> pieces = RoleArmor.pieces(role);
-		List<Item> missing = new ArrayList<>();
-		for (Item piece : pieces) {
-			boolean has = player.getInventory().count(piece) > 0;
-			for (ItemStack worn : player.getArmorItems()) if (worn.isOf(piece)) has = true;
-			if (!has) missing.add(piece);
-		}
-		List<Item> pool = missing.isEmpty() ? pieces : missing;
-		Item reward = pool.get(world.random.nextInt(pool.size()));
+		ItemStack reward = new ItemStack(ModItems.ASCENDED_TEMPLATE);
 		stack.decrementUnlessCreative(1, player);
-		if (!player.getInventory().insertStack(new ItemStack(reward))) player.dropItem(new ItemStack(reward), false);
-		world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_ARMOR_EQUIP_GOLD,
+		if (!player.getInventory().insertStack(reward)) player.dropItem(reward, false);
+		world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE.value(),
 				SoundCategory.PLAYERS, 1.0f, 1.0f);
-		player.sendMessage(Text.translatable("item.aptitudes.armory_voucher.received", new ItemStack(reward).getName())
+		player.sendMessage(Text.translatable("item.aptitudes.armory_voucher.received", reward.getName())
 				.formatted(Formatting.GOLD), true);
 		return TypedActionResult.success(stack);
 	}
