@@ -211,6 +211,8 @@ threatHealthPerRing¦Vida base extra por anel (com teto interno de +200).¦Sant�
 threatDamagePerRing¦Dano extra por anel (golpes, projéteis e explosões; com teto do dobro).¦Dégâts supplémentaires par anneau (coups, projectiles et explosions ; plafonnés au double).¦Zusätzlicher Schaden pro Ring (Treffer, Geschosse und Explosionen; auf das Doppelte begrenzt).
 threatLootPerRing¦Chance por anel de uma rolagem de saque extra; teto de 100.¦Probabilité par anneau d’un tirage de butin supplémentaire ; plafond de 100.¦Chance pro Ring auf einen zusätzlichen Beutewurf; Obergrenze von 100.
 threatEliteChancePerRing¦Aumento relativo por anel de eliteChance: base × (1 + anel × valor).¦Augmentation relative par anneau de eliteChance : base × (1 + anneau × valeur).¦Relativer Anstieg von eliteChance pro Ring: Basis × (1 + Ring × Wert).
+threatTactics¦As criaturas usam táticas por anel: pedem ajuda, esquivam, enfurecem e resistem ao recuo.¦Les créatures utilisent des tactiques par anneau : appel à l’aide, esquive, fureur et résistance au recul.¦Kreaturen nutzen Taktiken je Ring: Hilferuf, Ausweichen, Raserei und Rückstoßresistenz.
+threatDodgePerRing¦Chance por anel (a partir do II) de uma criatura esquivar de um projétil de jogador; limite de um quarto.¦Probabilité par anneau (dès le II) qu’une créature esquive un projectile de joueur ; plafonnée à un quart.¦Chance pro Ring (ab Ring II), dass eine Kreatur einem Spielergeschoss ausweicht; auf ein Viertel begrenzt.
 """)
 
 rows("""

@@ -4364,6 +4364,8 @@
   "config.aptitudes.field.threatDamagePerRing": "Zusätzlicher Schaden pro Ring (Treffer, Geschosse und Explosionen; auf das Doppelte begrenzt).",
   "config.aptitudes.field.threatLootPerRing": "Chance pro Ring auf einen zusätzlichen Beutewurf; Obergrenze von 100.",
   "config.aptitudes.field.threatEliteChancePerRing": "Relativer Anstieg von eliteChance pro Ring: Basis × (1 + Ring × Wert).",
+  "config.aptitudes.field.threatTactics": "Kreaturen nutzen Taktiken je Ring: Hilferuf, Ausweichen, Raserei und Rückstoßresistenz.",
+  "config.aptitudes.field.threatDodgePerRing": "Chance pro Ring (ab Ring II), dass eine Kreatur einem Spielergeschoss ausweicht; auf ein Viertel begrenzt.",
   "config.aptitudes.field.fogCooldownDays": "Tage Wartezeit zwischen zwei Seelennebeln.",
   "config.aptitudes.field.fogDurationTicks": "Dauer des Seelennebels in Ticks (24000 ist ein Minecraft-Tag).",
   "config.aptitudes.field.emberRainCooldownDays": "Tage Wartezeit zwischen zwei durch ein Portal ausgelösten Glutregen.",

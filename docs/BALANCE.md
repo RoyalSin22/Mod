@@ -141,7 +141,21 @@ Las coordenadas no finitas producen 0; no se cuadran/restan coordenadas en enter
   No hay consumo de inventario; en grupo existe una sola tirada por criatura, con drops físicos normales.
 - Élite: `min(1, eliteChance × (1 + anillo × threatEliteChancePerRing))`, conservando el 10 % de esa
   probabilidad para campeón y el marcador persistente anterior de tirada comprobada. No añade una
+
   segunda tirada. En 0, desactivado o excluido conserva la probabilidad anterior.
+
+### V83 — dificultad más alta y tácticas por anillo
+Decisión del autor tras jugar («demasiado fácil»). Valores por defecto nuevos: anillos de 700 bloques (antes 1000), vida +25 % por anillo
+(antes 15 %), daño +15 % (antes 10 %) y `eliteChance` 0,08 (antes 0,05); los archivos con los valores antiguos se migran una vez
+(`configRevision` 83) y los valores elegidos a mano se respetan. Con `threatTactics` activo, las criaturas elegibles de Amenaza (Overworld,
+hostiles, sin jefes, invocaciones ni eventos) hacen lo siguiente (reglas puras en `logic/ThreatTactics`):
+
+| Táctica | Anillo | Efecto |
+|---|---|---|
+| Llamada de auxilio | I+ | Al ser herida por un jugador avisa a hasta 6 hostiles sin objetivo en 8 + 2×anillo bloques (espera de 3 s) |
+| Esquiva | II+ | `(anillo − 1) × threatDodgePerRing` de esquivar un proyectil de jugador (tope 25 %); humo y sonido |
+| Furia | III+ | Una vez, al bajar del 35 % de vida: Velocidad y Fuerza 5–9 s (nivel II en el anillo V) |
+| Retroceso | I+ | +8 % de resistencia al retroceso por anillo (tope 40 %) |
 
 Solo aparecen escaladas criaturas hostiles nuevas del Mundo Normal. Se excluyen Wither, Dragón,
 Warden, Guardián anciano, jefes propios, invocaciones/esbirros, Eclipse/eventos y nombres previos.

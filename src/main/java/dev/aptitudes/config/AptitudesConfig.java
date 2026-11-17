@@ -334,7 +334,8 @@ public class AptitudesConfig {
 	 */
 	public boolean legendaryExclusive = false;
 	/** Probabilidad de que un monstruo aparezca como élite (el 10 % de esas, campeón). 0 lo desactiva. */
-	public double eliteChance = 0.05;
+	/** v83: 0,08 (antes 0,05). Los archivos anteriores con 0,05 se migran ({@link ConfigMigration}). */
+	public double eliteChance = 0.08;
 	/** Sustituir un rol ya elegido exige quemar una Ofrenda de renacimiento en una Hoguera. */
 	public boolean roleChangeRequiresRitual = true;
 	public int roleXpPerAbilityUse = 5;
@@ -400,12 +401,17 @@ public class AptitudesConfig {
 
 	// ---------- Amenaza por distancia (v43) ----------
 	public boolean threatEnabled = true;
-	public int threatRingSize = 1000;
+	/** v83: 700 (antes 1000), vida 0,25 (antes 0,15) y daño 0,15 (antes 0,10) por anillo; ver {@link ConfigMigration}. */
+	public int threatRingSize = 700;
 	public int threatMaxRing = 5;
-	public double threatHealthPerRing = 0.15;
-	public double threatDamagePerRing = 0.10;
+	public double threatHealthPerRing = 0.25;
+	public double threatDamagePerRing = 0.15;
 	public double threatLootPerRing = 0.10;
 	public double threatEliteChancePerRing = 0.25;
+	/** v83: tácticas de las criaturas por anillo (llamada de auxilio, esquiva de proyectiles, furia y retroceso). */
+	public boolean threatTactics = true;
+	/** v83: probabilidad de esquivar un proyectil por anillo desde el II (tope interno 25 %). */
+	public double threatDodgePerRing = 0.06;
 
 	public static AptitudesConfig load() {
 		Path path = path();
@@ -421,6 +427,10 @@ public class AptitudesConfig {
 					cfg.maxRoleLevel = ConfigMigration.maxRoleLevel(from, cfg.maxRoleLevel);
 					cfg.masterBonusPoints = ConfigMigration.masterBonusPoints(from, cfg.masterBonusPoints);
 					cfg.ultimateBonusPoints = ConfigMigration.ultimateBonusPoints(from, cfg.ultimateBonusPoints);
+					cfg.eliteChance = ConfigMigration.eliteChance(from, cfg.eliteChance);
+					cfg.threatRingSize = ConfigMigration.threatRingSize(from, cfg.threatRingSize);
+					cfg.threatHealthPerRing = ConfigMigration.threatHealthPerRing(from, cfg.threatHealthPerRing);
+					cfg.threatDamagePerRing = ConfigMigration.threatDamagePerRing(from, cfg.threatDamagePerRing);
 					cfg.configRevision = ConfigMigration.CURRENT;
 				}
 			} catch (IOException | JsonParseException e) {
@@ -675,6 +685,7 @@ public class AptitudesConfig {
 		c.threatDamagePerRing = Math.min(0.2, c.threatDamagePerRing);
 		c.threatLootPerRing = Math.min(0.2, c.threatLootPerRing);
 		c.threatEliteChancePerRing = Math.min(1, c.threatEliteChancePerRing);
+		c.threatDodgePerRing = Math.min(0.15, c.threatDodgePerRing);
 		// v65 C5: Sinergias
 		c.synergyBonusY1Radius = Math.max(1.0f, Math.min(2.0f, c.synergyBonusY1Radius));
 		c.synergyBonusY1Damage = Math.max(1.0f, Math.min(2.0f, c.synergyBonusY1Damage));

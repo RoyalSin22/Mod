@@ -4364,6 +4364,8 @@
   "config.aptitudes.field.threatDamagePerRing": "Dégâts supplémentaires par anneau (coups, projectiles et explosions ; plafonnés au double).",
   "config.aptitudes.field.threatLootPerRing": "Probabilité par anneau d’un tirage de butin supplémentaire ; plafond de 100.",
   "config.aptitudes.field.threatEliteChancePerRing": "Augmentation relative par anneau de eliteChance : base × (1 + anneau × valeur).",
+  "config.aptitudes.field.threatTactics": "Les créatures utilisent des tactiques par anneau : appel à l’aide, esquive, fureur et résistance au recul.",
+  "config.aptitudes.field.threatDodgePerRing": "Probabilité par anneau (dès le II) qu’une créature esquive un projectile de joueur ; plafonnée à un quart.",
   "config.aptitudes.field.fogCooldownDays": "Jours d’attente entre deux Brumes des âmes.",
   "config.aptitudes.field.fogDurationTicks": "Durée de la Brume des âmes en ticks (24000 correspond à un jour Minecraft).",
   "config.aptitudes.field.emberRainCooldownDays": "Jours d’attente entre deux Pluies de braises provoquées par un portail.",

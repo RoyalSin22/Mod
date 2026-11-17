@@ -4364,6 +4364,8 @@
   "config.aptitudes.field.threatDamagePerRing": "Dano extra por anel (golpes, projéteis e explosões; com teto do dobro).",
   "config.aptitudes.field.threatLootPerRing": "Chance por anel de uma rolagem de saque extra; teto de 100.",
   "config.aptitudes.field.threatEliteChancePerRing": "Aumento relativo por anel de eliteChance: base × (1 + anel × valor).",
+  "config.aptitudes.field.threatTactics": "As criaturas usam táticas por anel: pedem ajuda, esquivam, enfurecem e resistem ao recuo.",
+  "config.aptitudes.field.threatDodgePerRing": "Chance por anel (a partir do II) de uma criatura esquivar de um projétil de jogador; limite de um quarto.",
   "config.aptitudes.field.fogCooldownDays": "Dias de espera entre duas Névoas das Almas.",
   "config.aptitudes.field.fogDurationTicks": "Duração da Névoa das Almas em ticks (24000 é um dia de Minecraft).",
   "config.aptitudes.field.emberRainCooldownDays": "Dias de espera entre duas Chuvas de Brasas provocadas por um portal.",

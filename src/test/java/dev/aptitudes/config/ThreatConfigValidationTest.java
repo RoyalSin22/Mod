@@ -6,10 +6,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class ThreatConfigValidationTest {
 	@Test void defaultsEnableThousandBlockRingsAndConservativeBonuses() {
 		var c = AptitudesConfig.validated(new AptitudesConfig());
-		assertTrue(c.threatEnabled); assertEquals(1000, c.threatRingSize); assertEquals(5, c.threatMaxRing);
-		assertEquals(0.15, c.threatHealthPerRing); assertEquals(0.10, c.threatDamagePerRing);
+		assertTrue(c.threatEnabled); assertEquals(700, c.threatRingSize); assertEquals(5, c.threatMaxRing);
+		assertEquals(0.25, c.threatHealthPerRing); assertEquals(0.15, c.threatDamagePerRing);
 		assertEquals(0.10, c.threatLootPerRing); assertEquals(0.25, c.threatEliteChancePerRing);
-		assertEquals(0.05, c.eliteChance);
+		assertEquals(0.08, c.eliteChance);
+		assertTrue(c.threatTactics); assertEquals(0.06, c.threatDodgePerRing);
 	}
 	@Test void clampsHugeValuesAndSupportsZeroBonusesAndDisabledFeature() {
 		var c = new AptitudesConfig();
@@ -31,8 +32,8 @@ class ThreatConfigValidationTest {
 		c.threatRingSize = -1; c.threatMaxRing = -1; c.threatHealthPerRing = Double.NaN;
 		c.threatDamagePerRing = Double.POSITIVE_INFINITY; c.threatLootPerRing = -1; c.threatEliteChancePerRing = Double.NEGATIVE_INFINITY;
 		AptitudesConfig.validated(c);
-		assertEquals(1000, c.threatRingSize); assertEquals(5, c.threatMaxRing);
-		assertEquals(0.15, c.threatHealthPerRing); assertEquals(0.10, c.threatDamagePerRing);
+		assertEquals(700, c.threatRingSize); assertEquals(5, c.threatMaxRing);
+		assertEquals(0.25, c.threatHealthPerRing); assertEquals(0.15, c.threatDamagePerRing);
 		assertEquals(0.10, c.threatLootPerRing); assertEquals(0.25, c.threatEliteChancePerRing);
 	}
 }

@@ -32,4 +32,16 @@ public class ConfigMigrationTest {
 		assertEquals(0, ConfigMigration.ultimateBonusPoints(46, 0));
 		assertEquals(8, ConfigMigration.ultimateBonusPoints(0, 8));
 	}
+
+	@Test public void oldThreatDefaultsAreRaisedOnce() {
+		assertEquals(0.08, ConfigMigration.eliteChance(67, 0.05), 1e-9);
+		assertEquals(700, ConfigMigration.threatRingSize(67, 1000));
+		assertEquals(0.25, ConfigMigration.threatHealthPerRing(0, 0.15), 1e-9);
+		assertEquals(0.15, ConfigMigration.threatDamagePerRing(46, 0.10), 1e-9);
+		// Ya migrado, o elegido a mano: se respeta.
+		assertEquals(0.05, ConfigMigration.eliteChance(ConfigMigration.CURRENT, 0.05), 1e-9);
+		assertEquals(1000, ConfigMigration.threatRingSize(ConfigMigration.CURRENT, 1000));
+		assertEquals(0.2, ConfigMigration.threatHealthPerRing(0, 0.2), 1e-9);
+		assertEquals(0.0, ConfigMigration.threatDamagePerRing(0, 0.0), 1e-9);
+	}
 }

@@ -4364,6 +4364,8 @@
   "config.aptitudes.field.threatDamagePerRing": "Extra damage per ring (hits, projectiles and explosions; capped at double).",
   "config.aptitudes.field.threatLootPerRing": "Chance per ring of one extra loot roll; capped at 100.",
   "config.aptitudes.field.threatEliteChancePerRing": "Relative increase per ring of eliteChance: base × (1 + ring × value).",
+  "config.aptitudes.field.threatTactics": "Creatures use tactics by ring: call for help, dodge, enrage, resist knockback.",
+  "config.aptitudes.field.threatDodgePerRing": "Chance per ring (from II) that a creature dodges a player projectile; capped at one quarter.",
   "config.aptitudes.field.fogCooldownDays": "Days of waiting between two Soul Fogs.",
   "config.aptitudes.field.fogDurationTicks": "Duration of the Soul Fog in ticks (24000 is one Minecraft day).",
   "config.aptitudes.field.emberRainCooldownDays": "Days of waiting between two Ember Rains triggered by a portal.",

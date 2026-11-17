@@ -9,7 +9,7 @@ package dev.aptitudes.config;
  */
 public final class ConfigMigration {
 	/** Revisión actual de la configuración. */
-	public static final int CURRENT = 67;
+	public static final int CURRENT = 83;
 	/** Valor por defecto anterior y nuevo del nivel máximo de rol. */
 	public static final int OLD_MAX_ROLE_LEVEL = 30;
 	public static final int NEW_MAX_ROLE_LEVEL = 50;
@@ -31,6 +31,23 @@ public final class ConfigMigration {
 	/** v67: los puntos al evolucionar a Maestro pasan de 10 a 15; un valor elegido a mano se respeta. */
 	public static int masterBonusPoints(int fromRevision, int value) {
 		return fromRevision < 67 && value == OLD_MASTER_BONUS ? NEW_MASTER_BONUS : value;
+	}
+
+	/** v83 (decisión del autor: mobs más difíciles): valores por defecto anterior y nuevo; un valor elegido a mano se respeta. */
+	public static double eliteChance(int fromRevision, double value) {
+		return fromRevision < 83 && value == 0.05 ? 0.08 : value;
+	}
+
+	public static int threatRingSize(int fromRevision, int value) {
+		return fromRevision < 83 && value == 1000 ? 700 : value;
+	}
+
+	public static double threatHealthPerRing(int fromRevision, double value) {
+		return fromRevision < 83 && value == 0.15 ? 0.25 : value;
+	}
+
+	public static double threatDamagePerRing(int fromRevision, double value) {
+		return fromRevision < 83 && value == 0.10 ? 0.15 : value;
 	}
 
 	/** v67: los puntos al evolucionar a Definitivo pasan de 5 a 10; un valor elegido a mano se respeta. */

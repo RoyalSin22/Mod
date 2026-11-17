@@ -102,12 +102,14 @@ conserva la maestría, pero suspende su efecto hasta volver a alcanzarlo.
 | Campo del servidor | Defecto | Límites | Descripción |
 |---|---:|---:|---|
 | `threatEnabled` | true | booleano | Activa escalado, botín y aviso. Desactivarlo retira vida añadida en hasta 20 ticks y pausa daño/botín; conserva instantáneas. |
-| `threatRingSize` | 1000 | [100, 1 000 000] | Anchura horizontal de cada anillo desde la aparición del mundo. La zona inicial tiene nivel 0. |
+| `threatRingSize` | 700 | [100, 1 000 000] | Anchura horizontal de cada anillo desde la aparición del mundo. La zona inicial tiene nivel 0. |
 | `threatMaxRing` | 5 | [1, 5] | Máximo I–V; la distancia mayor conserva ese nivel. |
-| `threatHealthPerRing` | 0.15 | [0, 0.4] | Vida base adicional por anillo; máximo interno +200 %. Se suma a otros modificadores de base, sin multiplicar élites. |
-| `threatDamagePerRing` | 0.10 | [0, 0.2] | Daño adicional por anillo, golpes/proyectiles/explosiones; máximo ×2 y sujeto a `maxDamageMultiplier` cuando es positivo. |
+| `threatHealthPerRing` | 0.25 | [0, 0.4] | Vida base adicional por anillo; máximo interno +200 %. Se suma a otros modificadores de base, sin multiplicar élites. |
+| `threatDamagePerRing` | 0.15 | [0, 0.2] | Daño adicional por anillo, golpes/proyectiles/explosiones; máximo ×2 y sujeto a `maxDamageMultiplier` cuando es positivo. |
 | `threatLootPerRing` | 0.10 | [0, 0.2] | Probabilidad por anillo de una única tirada adicional de la tabla de botín; máximo 100 %, sin XP ni equipo extra. |
 | `threatEliteChancePerRing` | 0.25 | [0, 1] | Incremento relativo por anillo de `eliteChance`: `base × (1 + anillo × valor)`, limitado a 100 %. |
+| `threatTactics` | true | booleano | V83: tácticas de las criaturas con Amenaza (llamada de auxilio desde el anillo I, esquiva de proyectiles desde el II, furia al 35 % de vida desde el III y resistencia al retroceso del 8 % por anillo). Desactivarlo las retira en un segundo. |
+| `threatDodgePerRing` | 0.06 | [0, 0.15] | V83: probabilidad por anillo (desde el II) de esquivar un proyectil de un jugador; tope interno 25 %. |
 
 Negativos y no finitos vuelven al defecto antes de aplicar límites. Las siete opciones pasan por la
 pantalla existente y la validación del servidor. Cada criatura nueva conserva anillo y multiplicadores
@@ -234,7 +236,7 @@ su forma normal de juego.
 
 | Opción | Defecto | Descripción |
 |---|---|---|
-| `eliteChance` | 0.05 | Probabilidad de élite (el 10 % de ellas, campeón). 0 desactiva. |
+| `eliteChance` | 0.08 | Probabilidad de élite (el 10 % de ellas, campeón). 0 desactiva. |
 | `roleChangeRequiresRitual` | true | Sustituir un rol exige quemar una Ofrenda de renacimiento en una Hoguera. |
 | `roleChangeCooldownMinutes` | 0 | Obsoleto (ya no se usa). |
 | `maxPointsPerAttribute` | 99 | Puntos máximos por atributo. |

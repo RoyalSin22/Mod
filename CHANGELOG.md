@@ -5,6 +5,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Cambiado
+- **v83 — Criaturas más difíciles.** Valores por defecto nuevos: anillos de Amenaza de 700 bloques (antes 1000), vida +25 % por anillo
+  (antes 15 %), daño +15 % (antes 10 %) y `eliteChance` 0,08 (antes 0,05); los `config/aptitudes.json` con los valores antiguos se migran una
+  vez (`configRevision` 83) y los elegidos a mano se respetan. **Tácticas por anillo** (`threatTactics`, `logic/ThreatTactics`): llamada de auxilio
+  desde el anillo I (avisan a hasta 6 hostiles cercanos), esquiva de proyectiles desde el II (`threatDodgePerRing`, tope 25 %), furia
+  una vez al bajar del 35 % de vida desde el III (Velocidad y Fuerza) y +8 % de resistencia al retroceso por anillo. Excluye jefes,
+  invocaciones y eventos. Pruebas `ThreatTacticsTest` y migración en `ConfigMigrationTest`; `docs/BALANCE.md` y `docs/CONFIGURATION.md`.
+
 ### Añadido
 - **V78.1 — Animaciones visibles en primera persona y más dinámicas.** Las animaciones no se veían porque PAL las deja transparentes en
   primera persona por defecto; ahora se activa el modo `THIRD_PERSON_MODEL` mientras suenan. Las cinco animaciones del Bersérker se

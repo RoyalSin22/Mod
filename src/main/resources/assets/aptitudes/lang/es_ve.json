@@ -4364,6 +4364,8 @@
   "config.aptitudes.field.threatDamagePerRing": "Daño extra por anillo (golpes, proyectiles y explosiones; con tope del doble).",
   "config.aptitudes.field.threatLootPerRing": "Probabilidad por anillo de una tirada de botín extra; tope de 100.",
   "config.aptitudes.field.threatEliteChancePerRing": "Incremento relativo por anillo de eliteChance: base × (1 + anillo × valor).",
+  "config.aptitudes.field.threatTactics": "Las criaturas usan tácticas por anillo: piden ayuda, esquivan, se enfurecen y resisten el retroceso.",
+  "config.aptitudes.field.threatDodgePerRing": "Probabilidad por anillo (desde el II) de que una criatura esquive un proyectil de un jugador; tope de una cuarta parte.",
   "config.aptitudes.field.fogCooldownDays": "Días de espera entre dos Nieblas de almas.",
   "config.aptitudes.field.fogDurationTicks": "Duración de la Niebla de almas en ticks (24000 es un día de Minecraft).",
   "config.aptitudes.field.emberRainCooldownDays": "Días de espera entre dos Lluvias de brasas provocadas por un portal.",
