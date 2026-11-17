@@ -6,6 +6,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **V78.1 — Animaciones visibles en primera persona y más dinámicas.** Las animaciones no se veían porque PAL las deja transparentes en
+  primera persona por defecto; ahora se activa el modo `THIRD_PERSON_MODEL` mientras suenan. Las cinco animaciones del Bersérker se
+  rehacen con preparación, sobrepaso, congelado en el impacto, rebote y brazos desfasados, son más cortas (Furia 1,0 s, Grito 0,8 s,
+  aterrizaje 0,75 s) y las partículas, la cámara y el estruendo del aterrizaje caen en el fotograma de impacto. Encargo para animar otros
+  roles en `docs/PROMPT_ANIMACIONES_CODEX.md`. **Sin ver en partida.**
 - **V78 — Animaciones del cuerpo del jugador (Player Animation Library).** Dependencia obligatoria nueva, aprobada por el autor:
   PAL 1.1.6+mc.1.21.1 (MIT). Furia, Grito de guerra, Salto demoledor y Torbellino animan el cuerpo del jugador (también a ojos de los
   demás), con transición suave entre el salto y el aterrizaje. Poses generadas con `tools/models/gen_player_animations.py`, probadas con

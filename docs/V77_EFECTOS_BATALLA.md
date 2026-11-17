@@ -49,22 +49,28 @@ Dependencia obligatoria aprobada por el autor: Player Animation Library 1.1.6+mc
 (`aptitudes:body`, prioridad 1500) reproduce lo que disparan los efectos de batalla, también sobre los demás jugadores. La librería
 apila capas, así que no pisa a otros mods de animación.
 
-| Habilidad | Animación | Duración |
-|---|---|---|
-| Furia | `berserker_rage`: se agacha, explota hacia arriba y ruge con los brazos abiertos | 1,5 s |
-| Grito de guerra | `berserker_war_cry`: brazos arriba, cabeza atrás y golpe seco hacia delante | 1,1 s |
-| Salto demoledor (despegue) | `berserker_leap`: se encoge y se estira con los brazos arriba; se mantiene hasta el aterrizaje | 0,9 s (se mantiene) |
-| Salto demoledor (aterrizaje) | `berserker_slam`: machaca con los brazos y se incorpora (con fundido de 3 ticks) | 1,0 s |
-| Torbellino | `berserker_whirl`: un giro completo con los brazos extendidos, uno por cada giro | 0,5 s |
+**Primera persona (V78.1).** Por defecto PAL deja las animaciones «transparentes» en primera persona (modo `NONE`), así que el jugador no
+veía ninguna. `PlayerAnims.register()` activa `THIRD_PERSON_MODEL` mientras suena una animación (se dibujan los brazos y objetos del modelo
+desde la cámara) y devuelve las manos vanilla en reposo. En primera persona solo se ven los brazos: los brazos deben ir hacia delante o
+arriba (pitch entre −35° y −170°) para entrar en pantalla.
 
-- Los archivos los genera `tools/models/gen_player_animations.py` (poses en grados, con la convención del modelo vanilla que usa la
-  librería: sin invertir signos). No se editan a mano; para otro estilo se puede sustituir por archivos de Blockbench en el mismo
-  directorio sin tocar el código.
+| Habilidad | Animación | Duración | Golpe |
+|---|---|---|---|
+| Furia | `berserker_rage`: se encoge, explota con los brazos abiertos (sobrepaso), congela el rugido y tiembla | 1,0 s | tick 4 |
+| Grito de guerra | `berserker_war_cry`: brazos arriba cargando, golpe seco hacia delante con congelado y rebote | 0,8 s | tick 8 |
+| Salto demoledor (despegue) | `berserker_leap`: se hunde y sale disparado con los brazos arriba; se mantiene hasta el aterrizaje | 0,3 s (se mantiene) | — |
+| Salto demoledor (aterrizaje) | `berserker_slam`: sube más (preparación), machaca, queda clavado y se incorpora con rebote (fundido de 3 ticks) | 0,75 s | tick 3 |
+| Torbellino | `berserker_whirl`: un giro completo con brazos que se lanzan hacia fuera en cada vuelta | 0,5 s | — |
+
+- **Estructura común:** preparación → golpe con sobrepaso → congelado de ~0,08 s en el fotograma de impacto → asentamiento con rebote. El
+  brazo izquierdo espeja al derecho con 0,03–0,05 s de retraso (acción solapada).
+- **Sincronía:** las partículas y la cámara de la Furia, el Grito y el aterrizaje se retrasan `PlayerAnimIds.IMPACT_TICKS` ticks para caer
+  en el golpe; el estruendo del aterrizaje suena en ese tick. Una prueba comprueba que haya una clave del brazo derecho en cada tick.
+- Los archivos los genera `tools/models/gen_player_animations.py` (grados, convención del modelo vanilla de PAL, sin invertir signos).
+  No se editan a mano. Se pueden sustituir por archivos de Blockbench en el mismo directorio sin tocar el código.
 - Opción de cliente `playerAnimations` (por defecto activa) en `config/aptitudes-client.json`.
-- **Para ver y ajustar las poses:** `/aptfx anim <nombre>` las reproduce sobre tu personaje (mira tu cuerpo con F5) y `/aptfx stop`
-  las corta. Solo es un comando de cliente.
-- **Verificado:** `PlayerAnimationResourcesTest` carga los archivos con el cargador real de PAL (nombres, duraciones y huesos).
-- **No verificado:** el aspecto de las poses. El signo de los giros laterales (roll) de brazos y piernas y la dirección del giro del
-  Torbellino se dedujeron del código de la librería y del modelo vanilla, pero no se han visto en el juego: si algún brazo se cruza
-  en vez de abrirse, basta invertir el signo en el generador y regenerar.
-- La primera persona la maneja PAL por su cuenta (sus mixins `firstPerson`); tampoco se ha comprobado el resultado.
+- **Para ver y ajustar las poses:** `/aptfx anim <nombre>` las reproduce sobre tu personaje y `/aptfx stop` las corta.
+- Para encargar las de otro rol a Codex: `docs/PROMPT_ANIMACIONES_CODEX.md`.
+- **Verificado:** `PlayerAnimationResourcesTest` carga los archivos con el cargador real de PAL (nombres, duraciones, huesos y golpes).
+- **No verificado:** el aspecto de las poses en primera persona. La causa de que no se vieran era el modo `NONE`; el arreglo se ha
+  comprobado en el código de la librería, pero no se ha visto en partida. El signo del roll de los brazos sigue siendo una deducción.

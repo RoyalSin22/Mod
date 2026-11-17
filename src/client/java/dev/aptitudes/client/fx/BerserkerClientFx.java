@@ -36,6 +36,10 @@ final class BerserkerClientFx {
 	// ------------------------------------------------------------------ Furia
 
 	static void rage(ClientWorld world, FxEventPayload p) {
+		FxTimeline.later(PlayerAnimIds.IMPACT_TICKS.get(PlayerAnimIds.BERSERKER_RAGE), () -> rageImpact(world, p));
+	}
+
+	private static void rageImpact(ClientWorld world, FxEventPayload p) {
 		Random rng = new Random(p.seed());
 		Vec3d at = FxClient.entityPos(world, p);
 		int durationTicks = Math.round(p.power() * 20);
@@ -99,6 +103,10 @@ final class BerserkerClientFx {
 	// ------------------------------------------------------------------ Grito de guerra
 
 	static void warCry(ClientWorld world, FxEventPayload p) {
+		FxTimeline.later(PlayerAnimIds.IMPACT_TICKS.get(PlayerAnimIds.BERSERKER_WAR_CRY), () -> warCryImpact(world, p));
+	}
+
+	private static void warCryImpact(ClientWorld world, FxEventPayload p) {
 		Random rng = new Random(p.seed());
 		Vec3d at = FxClient.entityPos(world, p);
 		double radius = Math.max(2, p.power());
@@ -196,6 +204,10 @@ final class BerserkerClientFx {
 	}
 
 	static void slam(ClientWorld world, FxEventPayload p) {
+		FxTimeline.later(PlayerAnimIds.IMPACT_TICKS.get(PlayerAnimIds.BERSERKER_SLAM), () -> slamImpact(world, p));
+	}
+
+	private static void slamImpact(ClientWorld world, FxEventPayload p) {
 		Random rng = new Random(p.seed());
 		Vec3d at = new Vec3d(p.x(), p.y(), p.z());
 		double radius = Math.max(2, p.power());

@@ -47,7 +47,20 @@ class PlayerAnimationResourcesTest {
 			}
 			// 0,5 s = 10 ticks: el Torbellino encadena tres giros de 10 ticks.
 			assertEquals(10f, loaded.get(PlayerAnimIds.BERSERKER_WHIRL).length(), 1e-3);
-			assertEquals(30f, loaded.get(PlayerAnimIds.BERSERKER_RAGE).length(), 1e-3);
+			assertEquals(20f, loaded.get(PlayerAnimIds.BERSERKER_RAGE).length(), 1e-3);
+			assertEquals(16f, loaded.get(PlayerAnimIds.BERSERKER_WAR_CRY).length(), 1e-3);
+			assertEquals(15f, loaded.get(PlayerAnimIds.BERSERKER_SLAM).length(), 1e-3);
+		}
+	}
+
+	@Test
+	void impactTicksMatchAKeyframeOfTheRightArm() throws IOException {
+		JsonObject animations = json().getAsJsonObject("animations");
+		for (var entry : PlayerAnimIds.IMPACT_TICKS.entrySet()) {
+			JsonObject rotation = animations.getAsJsonObject(entry.getKey()).getAsJsonObject("bones")
+					.getAsJsonObject("right_arm").getAsJsonObject("rotation");
+			boolean found = rotation.keySet().stream().anyMatch(t -> Math.abs(Double.parseDouble(t) * 20 - entry.getValue()) < 0.01);
+			assertTrue(found, entry.getKey() + ": el brazo derecho no tiene una clave en el tick de impacto " + entry.getValue());
 		}
 	}
 

@@ -4,6 +4,8 @@ import com.zigythebird.playeranim.animation.PlayerAnimationController;
 import com.zigythebird.playeranim.api.PlayerAnimationAccess;
 import com.zigythebird.playeranim.api.PlayerAnimationFactory;
 import com.zigythebird.playeranimcore.animation.layered.IAnimation;
+import com.zigythebird.playeranimcore.api.firstPerson.FirstPersonConfiguration;
+import com.zigythebird.playeranimcore.api.firstPerson.FirstPersonMode;
 import com.zigythebird.playeranimcore.animation.layered.modifier.AbstractFadeModifier;
 import com.zigythebird.playeranimcore.easing.EasingType;
 import com.zigythebird.playeranimcore.enums.PlayState;
@@ -29,8 +31,14 @@ public final class PlayerAnims {
 
 	/** Registra la capa para todos los jugadores del cliente. Se llama una vez en el arranque del cliente. */
 	public static void register() {
-		PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(LAYER, PRIORITY,
-				player -> new PlayerAnimationController(player, (controller, state, setter) -> PlayState.STOP));
+		PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(LAYER, PRIORITY, player -> {
+			PlayerAnimationController controller = new PlayerAnimationController(player, (c, state, setter) -> PlayState.STOP);
+			// Por defecto PAL deja la animación «transparente» en primera persona (modo NONE) y no se ve nada. Mientras suena una
+			// animación se dibujan los brazos y objetos del modelo desde la cámara; en reposo se devuelve el control a las manos vanilla.
+			controller.setFirstPersonModeHandler(c -> c.isActive() ? FirstPersonMode.THIRD_PERSON_MODEL : FirstPersonMode.NONE);
+			controller.setFirstPersonConfiguration(new FirstPersonConfiguration(true, true, true, true));
+			return controller;
+		});
 	}
 
 	/** Dispara la animación en el jugador si {@code entity} lo es y el jugador no las ha desactivado. */

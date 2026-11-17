@@ -1,6 +1,7 @@
 package dev.aptitudes.ability;
 
 import dev.aptitudes.logic.FxIds;
+import dev.aptitudes.logic.PlayerAnimIds;
 import dev.aptitudes.role.Role;
 import dev.aptitudes.sound.ModSounds;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -78,8 +79,11 @@ public final class BerserkerFx {
 	/** Aterrizaje del salto: el golpe más pesado del kit. */
 	public static void slam(ServerPlayerEntity p, double radius) {
 		Vec3d ground = groundBelow(p);
-		sound(p, ModSounds.BERSERKER_SLAM, 1.8f, jitter(p, 1.0f, 0.1f));
-		sound(p, SoundEvents.ENTITY_GENERIC_EXPLODE.value(), 0.5f, 0.55f);
+		// Suena en el fotograma de impacto de la animación (PlayerAnimIds.IMPACT_TICKS), no al empezar el gesto.
+		AbilityState.schedule(p.getServer(), PlayerAnimIds.IMPACT_TICKS.get(PlayerAnimIds.BERSERKER_SLAM), () -> {
+			sound(p, ModSounds.BERSERKER_SLAM, 1.8f, jitter(p, 1.0f, 0.1f));
+			sound(p, SoundEvents.ENTITY_GENERIC_EXPLODE.value(), 0.5f, 0.55f);
+		});
 		FxEvents.onAt(p, ground, FxIds.BERSERKER_SLAM, color(p), (float) radius, Vec3d.ZERO, seed(p));
 	}
 
