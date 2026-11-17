@@ -5,6 +5,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Cambiado
+- **v79 — Armaduras de rol con identidad propia.** Las 20 armaduras eran el mismo dibujo teñido según el peso (pesada, media, ligera).
+  Ahora cada rol lleva: un **emblema** 6×5 en el pecho (y en la espalda del modelo), un **adorno de casco** propio (cuernos, estrella,
+  máscara, antena de hoja, gafas, pico, diadema, halo, calavera, astas, corona, gema, orejas, sombrero, runas, notas, ojo o colmillos),
+  un **ribete** de color propio en lugar del dorado común y una base más oscura (fantasía oscura) para que el color del rol destaque.
+  Los iconos 16×16 y las capas 64×32 salen de las mismas tablas (`EMBLEM`, `CREST`/`BROW`, `TRIM` de `tools/textures/gen_armor.py`).
+  Solo texturas: el modelo, los ids y las estadísticas no cambian. Falta revisión en partida.
+
 ### Corregido
 - **v76.2 — Armas en la mano con relieve biselado («modelo a mano»).** El grosor del modelo 3D ya no es uniforme: crece desde la
   orilla de la silueta hacia el interior (`weapon_art.bevel_depth_map`, distancia de ajedrez al vacío, múltiplos de 0,25), de modo que

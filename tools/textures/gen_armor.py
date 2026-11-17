@@ -251,6 +251,83 @@ ICONS = {
 }
 
 
+
+# ----------------------------------------------------------------------------- Identidad de cada rol (V79)
+# Cada rol lleva un emblema 6×5 en el pecho (y en la espalda del modelo), un adorno de casco propio y un ribete de color propio.
+# '#' = color del rol aclarado, '+' = ribete del rol, 'K' = oscuro. Son los mismos dibujos en el icono y en la capa del modelo.
+TRIM = {
+    'berserker': '#d8cdb0', 'mage': '#c9d1e6', 'assassin': '#b3314a', 'herbalist': '#d9c27a', 'engineer': '#cf7f3e',
+    'lancer': '#d3dbe6', 'swordsman': '#e0b43a', 'paladin': '#fff0a8', 'necromancer': '#7fe0a8', 'druid': '#b8925a',
+    'merchant': '#e8c24a', 'monk': '#f3d06a', 'elementalist': '#bfe9ff', 'shapeshifter': '#e6b8ff', 'gunslinger': '#c9a15a',
+    'weapon_summoner': '#e8e2c8', 'hunter': '#c9b27a', 'bard': '#ffd9a0', 'warlock': '#ff7aa8', 'tamer': '#e6d3a8',
+}
+EMBLEM = {
+    'berserker': ["..+##.", "..+###", "..+##.", "..+...", "..+..."],
+    'mage': ["..##..", ".#++#.", "#+##+#", ".#++#.", "..##.."],
+    'assassin': ["..##..", "..##..", ".####.", "..++..", "..++.."],
+    'herbalist': ["...##.", "..####", ".#+##.", "#+#...", "+....."],
+    'engineer': ["#.##.#", "######", "##++##", "######", "#.##.#"],
+    'lancer': ["..##..", ".####.", "#.##.#", "..++..", "..++.."],
+    'swordsman': ["..##..", "..##..", "..##..", "######", "..++.."],
+    'paladin': ["..##..", "######", "..##..", "..##..", "..++.."],
+    'necromancer': ["######", "#K##K#", "######", ".#++#.", ".#..#."],
+    'druid': ["..##..", ".####.", "######", "..++..", "..++.."],
+    'merchant': [".####.", "#++++#", "#+##+#", "#++++#", ".####."],
+    'monk': [".####.", "#....#", "#.++.#", "#....#", ".####."],
+    'elementalist': ["#.##.#", ".####.", "..++..", ".####.", "#.##.#"],
+    'shapeshifter': ["#.##.#", "#.##.#", ".####.", "..++..", ".#..#."],
+    'gunslinger': ["..##..", ".####.", ".####.", ".++++.", ".++++."],
+    'weapon_summoner': ["#....#", ".#..#.", "..++..", ".#..#.", "#....#"],
+    'hunter': ["....#.", "...##.", "######", "...##.", "....#."],
+    'bard': ["..####", "..#..#", "..#..#", ".##.##", ".##.##"],
+    'warlock': ["..##..", ".#KK#.", "#K##K#", ".#KK#.", "..##.."],
+    'tamer': ["#.##.#", "#.##.#", "..##..", ".####.", "#.##.#"],
+}
+# Adorno de la frente del casco: 3 filas × 8 columnas; la fila de «WRAP» se repite alrededor de la cabeza.
+BROW = {
+    'horns': (["+......+", "++....++", ".+....+."], None),
+    'star': (["...##...", "..####..", "...##..."], None),
+    'mask': (["........", "KKKKKKKK", "KKKKKKKK"], 1),
+    'leaf': (["..+..+..", ".+#++#+.", "..+..+.."], None),
+    'goggles': (["........", "K##KK##K", "K##KK##K"], 1),
+    'spike': (["...+....", "..+++...", "...+...."], None),
+    'band': (["........", "########", "........"], 1),
+    'halo': (["++++++++", "........", "........"], 0),
+    'skull': (["..####..", ".#K##K#.", "..#KK#.."], None),
+    'antler': ([".+.++.+.", "+.+..+.+", "..+..+.."], None),
+    'crown': (["+.+.+.+.", "++++++++", "........"], 1),
+    'gem': (["........", "...++...", "...##..."], None),
+    'ears': (["#......#", "##....##", "........"], None),
+    'hat': (["########", "++++++++", "........"], 1),
+    'runes': (["#.#.#.#.", ".#.#.#.#", "........"], None),
+    'notes': (["..#..#..", ".##.##..", "........"], None),
+    'eye': (["...##...", "..#KK#..", "...##..."], None),
+    'fang': (["........", "K.K..K.K", "..K..K.."], None),
+}
+CREST = {
+    'berserker': 'horns', 'mage': 'star', 'assassin': 'mask', 'herbalist': 'leaf', 'engineer': 'goggles', 'lancer': 'spike',
+    'swordsman': 'band', 'paladin': 'halo', 'necromancer': 'skull', 'druid': 'antler', 'merchant': 'crown', 'monk': 'band',
+    'elementalist': 'gem', 'shapeshifter': 'ears', 'gunslinger': 'hat', 'weapon_summoner': 'runes', 'hunter': 'antler',
+    'bard': 'notes', 'warlock': 'eye', 'tamer': 'fang',
+}
+# Píxeles extra que sobresalen de la silueta del icono del casco (cuernos, astas, picos…).
+CREST_ICON_EXTRA = {
+    'horns': [(3, 1), (3, 2), (12, 1), (12, 2), (3, 0), (12, 0)], 'antler': [(4, 1), (6, 0), (9, 0), (11, 1), (5, 2), (10, 2)],
+    'ears': [(4, 1), (11, 1), (4, 2), (11, 2)], 'spike': [(7, 0), (8, 0), (7, 1), (8, 1)], 'star': [(7, 1), (8, 1)],
+    'crown': [(5, 1), (7, 1), (9, 1), (11, 1)], 'halo': [(5, 1), (6, 1), (7, 1), (8, 1), (9, 1), (10, 1)],
+}
+
+
+def dark_main(role, main):
+    return mix(main, '#14161f', 0.22)
+
+
+def crest_pixels(role):
+    """[(columna 0-7, fila 0-2, carácter)] del adorno del rol."""
+    rows, _ = BROW[CREST[role]]
+    return [(x, y, c) for y, row in enumerate(rows) for x, c in enumerate(row) if c != '.']
+
+
 def palette(role):
     color = ROLE_COLORS[role]
     w = weight(role)
@@ -260,7 +337,7 @@ def palette(role):
         main = mix(color, LEATHER, 0.15)
     else:
         main = color                     # tela
-    return {'A': main, 'S': STEEL, 'L': LEATHER, 'G': GOLD, 'J': color if w != 'HEAVY' else '#ffffff',
+    return {'A': dark_main(role, main), 'S': STEEL, 'L': LEATHER, 'G': TRIM[role], 'J': color if w != 'HEAVY' else '#ffffff',
             'K': DARK}
 
 
@@ -268,7 +345,35 @@ def icon(role, piece):
     pal = palette(role)
     if weight(role) == 'HEAVY':
         pal['J'] = ROLE_COLORS[role]
-    return render(ICONS[(weight(role), piece)], pal)
+    img = render(ICONS[(weight(role), piece)], pal)
+    decorate_icon(img, role, piece, pal)
+    return img
+
+
+def _pix(pal, ch, role):
+    if ch == '#':
+        return ramp(mix(ROLE_COLORS[role], '#ffffff', 0.25))[3]
+    if ch == '+':
+        return ramp(TRIM[role])[3]
+    return ramp(DARK)[1]
+
+
+def decorate_icon(img, role, piece, pal):
+    """Emblema del rol en el peto y adorno propio en el casco (V79)."""
+    px = img.load()
+    if piece == 'chestplate':
+        for dy, row in enumerate(EMBLEM[role]):
+            for dx, ch in enumerate(row):
+                if ch != '.':
+                    px[5 + dx, 4 + dy] = _pix(pal, ch, role)
+    elif piece == 'helmet':
+        kind = CREST[role]
+        for x, y, ch in crest_pixels(role):
+            ix, iy = 4 + x, 2 + y
+            if px[ix, iy][3] and not (weight(role) == 'LIGHT' and iy >= 5):
+                px[ix, iy] = _pix(pal, ch, role)
+        for ix, iy in CREST_ICON_EXTRA.get(kind, []):
+            px[ix, iy] = ramp(TRIM[role])[2 if iy else 3]
 
 
 # ----------------------------------------------------------------------------- Capas del modelo (64×32)
@@ -413,7 +518,39 @@ def layer1(role):
         p.hline(lx, lx + lw - 1, ly + 6, 'G' if w != 'MEDIUM' else 'L', 3)
         p.hline(lx, lx + lw - 1, ly + lh - 1, 'K' if w != 'HEAVY' else 'S', 1)
     p.face(LEG['bottom'], 'K')
+    decorate_layer(p, role)
     return p.img
+
+
+def decorate_layer(p, role):
+    """Emblema del rol en el pecho y la espalda y adorno del casco alrededor de la cabeza (V79)."""
+    def put(x, y, ch, only_opaque=False):
+        if only_opaque and not p.px[x, y][3]:
+            return
+        if ch == '#':
+            p.px[x, y] = p.r('J')[3]
+        elif ch == '+':
+            p.px[x, y] = p.r('G')[3]
+        else:
+            p.px[x, y] = p.r('K')[1]
+    for face in ('front', 'back'):
+        bx, by = BODY[face][0], BODY[face][1]
+        for dy, row in enumerate(EMBLEM[role]):
+            for dx, ch in enumerate(row):
+                if ch != '.':
+                    put(bx + 1 + dx, by + 1 + dy, ch)
+    rows, wrap = BROW[CREST[role]]
+    fx, fy = HEAD['front'][0], HEAD['front'][1]
+    for y, row in enumerate(rows):
+        for x, ch in enumerate(row):
+            if ch != '.':
+                put(fx + x, fy + y, ch, True)
+    if wrap is not None:
+        ch = next((c for c in rows[wrap] if c != '.'), None)
+        for face in ('right', 'left', 'back'):
+            hx, hy, hw, _ = HEAD[face]
+            for x in range(hw):
+                put(hx + x, hy + wrap, ch, True)
 
 
 def layer2(role):
