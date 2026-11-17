@@ -5,6 +5,15 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Corregido
+- **v76.1 — Armas en la mano sin borde morado ni bultos.** En partida el modelo 3D de las armas se veía con un borde morado grueso y
+  la hoja llena de relieve irregular. Causas: (1) el contorno de 1 píxel que dibuja el generador de imágenes viene mezclado con el
+  fondo magenta (por ejemplo `#5A065B`), y las caras laterales del modelo 3D heredaban ese color; (2) el grosor 3D variaba con la
+  luminosidad (2 en lo oscuro, 1 en lo claro). Ahora el importador rehace el contorno contaminado como un contorno oscuro neutro
+  derivado del color vecino (`weapon_art.defringe`, sin tocar los morados intencionados) y el modelo usa un grosor uniforme, como
+  los objetos de vanilla. Las 20 armas se reimportaron desde las imágenes originales; los modelos pasan de 235–430 piezas a 64–152.
+  Pruebas Python: 25.
+
 ### Cambiado
 - **v76 — Arte de las 20 armas de evolución Maestro.** Se integra el arte entregado (generado con ChatGPT siguiendo
   `docs/PROMPT_ARTE_ARMAS.md`): las 20 armas, una por rol, a 64×64. Cada arma tiene `<arma>.png` (32×32, inventario y HUD) y
