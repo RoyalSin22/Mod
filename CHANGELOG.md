@@ -6,6 +6,17 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Cambiado
+- **v80 — Armadura Ascendida: un único set, mejora de la netherita.** Sustituye por completo a las 20 armaduras de rol (80 piezas,
+  recetas, modelos, texturas, textos y el material de rol del aldeano; sin migración: son mundos de prueba). Se fabrica en la
+  **mesa de herrería** con una **Plantilla de ascensión** + una pieza de netherita + un **Corazón de campeón** por pieza. Defensa
+  4/7/9/4 (la netherita da 3/6/8/3), dureza 4, resistencia al retroceso 0,15 y más durabilidad. Con las cuatro piezas: −10 % de
+  coste y esperas, +10 % de daño de habilidades (+4 % cuerpo a cuerpo) y el **aspecto de tu rol principal** (los 20 efectos por rol
+  de `RoleArmorSets`, que ya no piden llevar un set distinto). La plantilla sale del Vale de armería (ahora lo canjea por una; el
+  aldeano lo vende por 32 esmeraldas y 4 fragmentos de alma), de los cofres del Custodio y de la cripta, de torres y campamentos y,
+  con un 10 %, de los campeones. Diseño propio en `tools/textures/gen_ascended_armor.py`: netherita violeta, oro brasa y runas del
+  Velo. Grimorio, idiomas (5), pruebas (`AscendedRulesTest`, `AscendedArmorResourcesTest`) y CI actualizados.
+
+### Cambiado
 - **v79 — Armaduras de rol con identidad propia.** Las 20 armaduras eran el mismo dibujo teñido según el peso (pesada, media, ligera).
   Ahora cada rol lleva: un **emblema** 6×5 en el pecho (y en la espalda del modelo), un **adorno de casco** propio (cuernos, estrella,
   máscara, antena de hoja, gafas, pico, diadema, halo, calavera, astas, corona, gema, orejas, sombrero, runas, notas, ojo o colmillos),

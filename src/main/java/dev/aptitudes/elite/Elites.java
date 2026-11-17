@@ -229,8 +229,9 @@ public final class Elites {
 		if (champion) {
 			mob.dropStack(new ItemStack(ModItems.CHAMPION_HEART));
 			mob.dropStack(new ItemStack(ModItems.ELITE_ESSENCE, 2 + random.nextInt(2)));
-			List<net.minecraft.item.Item> armor = dev.aptitudes.item.RoleArmor.all();
-			if (!armor.isEmpty()) mob.dropStack(new ItemStack(armor.get(random.nextInt(armor.size()))));
+			if (random.nextFloat() < dev.aptitudes.item.AscendedRules.CHAMPION_TEMPLATE_CHANCE) {
+				mob.dropStack(new ItemStack(ModItems.ASCENDED_TEMPLATE)); // V80: plantilla de la Armadura Ascendida
+			}
 		} else if (random.nextFloat() < 0.5f) {
 			mob.dropStack(new ItemStack(ModItems.ELITE_ESSENCE));
 		}

@@ -21,6 +21,9 @@ class GuildRecipeResourcesTest {
 				String type = recipe(path).get("type").getAsString();
 				if (path.getFileName().toString().equals("guild_desk.json")) {
 					assertEquals("minecraft:crafting_shaped", type);
+				} else if (path.getFileName().toString().startsWith("ascended_")) {
+					// V80: la Armadura Ascendida es una mejora de netherita y se hace en la mesa de herrería.
+					assertEquals("minecraft:smithing_transform", type, path.toString());
 				} else {
 					assertTrue(type.equals("aptitudes:guild_crafting") || type.equals("aptitudes:guild_crafting_shapeless"),
 							() -> path + " tiene tipo " + type);

@@ -308,35 +308,14 @@ craft.short¦OFI¦ART¦HAN
 craft.desc¦Engenhosidade e comércio: Engenheiro e Mercador.¦Ingéniosité et commerce : Ingénieur et Marchand.¦Erfindungsgeist und Handel: Ingenieur und Händler.
 """)
 
-# Los nombres de las piezas comparten el mismo tema de cada conjunto.
-ARMOR_THEMES = {
-    'berserker': ('da Fúria', 'de la fureur', 'der Raserei'),
-    'mage': ('do Arquimago', 'de l’archimage', 'des Erzmagiers'),
-    'assassin': ('das Sombras', 'des ombres', 'der Schatten'),
-    'herbalist': ('do Boticário', 'd’apothicaire', 'des Apothekers'),
-    'engineer': ('do Exoesqueleto de Cobre', 'd’exoarmure en cuivre', 'des Kupferexoskeletts'),
-    'lancer': ('do Dragoneiro', 'de dragon', 'des Dragoners'),
-    'swordsman': ('do Duelista', 'du duelliste', 'des Duellanten'),
-    'paladin': ('da Consagração', 'de la consécration', 'der Weihe'),
-    'necromancer': ('do Ossuário', 'de l’ossuaire', 'des Beinhauses'),
-    'druid': ('de Casca', 'd’écorce', 'der Borke'),
-    'merchant': ('da Guilda', 'de la guilde', 'der Gilde'),
-    'monk': ('da Serenidade', 'de la sérénité', 'der Gelassenheit'),
-    'elementalist': ('dos Elementos', 'des éléments', 'der Elemente'),
-    'shapeshifter': ('da Metamorfose', 'de métamorphose', 'des Wandels'),
-    'gunslinger': ('do Pistoleiro', 'du pistolero', 'des Revolverhelden'),
-    'weapon_summoner': ('do Arsenal', 'de l’arsenal', 'des Arsenals'),
-    'hunter': ('do Caçador', 'du chasseur', 'des Jägers'),
-    'bard': ('do Trovador', 'du troubadour', 'des Troubadours'),
-    'warlock': ('da Maldição', 'de la malédiction', 'des Fluchs'),
-    'tamer': ('do Domador', 'du dompteur', 'des Tierbändigers'),
-}
-for role, suffixes in ARMOR_THEMES.items():
-    for piece, names in {
-        'helmet': ('Elmo', 'Casque', 'Helm'), 'chestplate': ('Peitoral', 'Plastron', 'Brustpanzer'),
-        'leggings': ('Calças', 'Jambières', 'Beinschutz'), 'boots': ('Botas', 'Bottes', 'Stiefel'),
-    }.items():
-        TRANSLATIONS[f'item.aptitudes.{role}_{piece}'] = tuple(f'{name} {suffix}' for name, suffix in zip(names, suffixes, strict=True))
+# V80: Armadura Ascendida (un único set); los textos del Vale y de la Plantilla van más abajo, en el bloque de objetos.
+for piece, names in {
+    'helmet': ('Elmo Ascendido', 'Casque ascendé', 'Aufgestiegener Helm'),
+    'chestplate': ('Peitoral Ascendido', 'Plastron ascendé', 'Aufgestiegener Brustpanzer'),
+    'leggings': ('Calças Ascendidas', 'Jambières ascendées', 'Aufgestiegener Beinschutz'),
+    'boots': ('Botas Ascendidas', 'Bottes ascendées', 'Aufgestiegene Stiefel'),
+}.items():
+    TRANSLATIONS[f'item.aptitudes.ascended_{piece}'] = names
 
 add('item.aptitudes.', """
 berserker_axe¦Machado do Berserker¦Hache de berserker¦Berserkeraxt
@@ -365,9 +344,13 @@ ultimate_core¦Núcleo Definitivo¦Noyau ultime¦Ultimativer Kern
 mimic_mask¦Máscara de Mil Faces¦Masque aux mille visages¦Maske der tausend Gesichter
 mimic_mask.tooltip¦Clique direito: transforma / retorna à forma humana (Metamorfo).¦Clic droit : transformation / retour à la forme humaine (Métamorphe).¦Rechtsklick: Verwandeln / menschliche Form annehmen (Gestaltwandler).
 mimic_mask.not_shapeshifter¦Você precisa ter a classe Metamorfo ativa.¦Le rôle de Métamorphe doit être actif.¦Du musst die Rolle Gestaltwandler aktiviert haben.
-armor.role¦Conjunto de %s¦Ensemble de %s¦%s-Set
-armor.set_header¦Conjunto completo (4 peças):¦Ensemble complet (4 pièces) :¦Vollständiges Set (4 Teile):
-armor.requires¦Requer a classe como principal ou secundária¦Nécessite le rôle comme principal ou secondaire¦Benötigt die Rolle als Haupt- oder Nebenrolle
+ascended_template¦Modelo de Ascensão¦Gabarit d'ascension¦Aufstiegsvorlage
+ascended_template.tooltip¦Melhora uma peça de netherita para a Armadura Ascendida.¦Améliore une pièce de netherite en Armure ascendée.¦Verbessert ein Netherit-Rüstungsteil zur Aufgestiegenen Rüstung.
+ascended_template.recipe¦Mesa de ferraria: modelo + peça de netherita + Coração de Campeão.¦Table de forgeron : gabarit + pièce de netherite + Cœur de champion.¦Schmiedetisch: Vorlage + Netherit-Teil + Championherz.
+ascended.set_header¦Conjunto completo (4 peças):¦Ensemble complet (4 pièces) :¦Vollständiges Set (4 Teile):
+ascended.common¦−10%% de custo e de recarga; +10%% de dano de habilidades (+4%% corpo a corpo)¦−10%% de coût et de recharge ; +10%% de dégâts de compétences (+4%% au corps à corps)¦−10%% Kosten und Abklingzeit; +10%% Fähigkeitsschaden (+4%% im Nahkampf)
+ascended.aspect¦Adota o aspecto da sua classe principal.¦Prend l'aspect de votre rôle principal.¦Nimmt den Aspekt deiner Hauptrolle an.
+ascended.requires¦Requer as 4 peças e uma classe principal¦Nécessite les 4 pièces et un rôle principal¦Benötigt alle 4 Teile und eine Hauptrolle
 soul_shard¦Fragmento de Alma¦Fragment d'âme¦Seelensplitter
 estus_flask¦Frasco de Estus¦Fiole d'Estus¦Estusflakon
 ether_flask¦Frasco de Éter¦Fiole d'éther¦Ätherflakon
@@ -395,8 +378,7 @@ pact_talisman¦Talismã Amaldiçoado¦Talisman maudit¦Verfluchter Talisman
 beast_whistle¦Apito de Feras¦Sifflet des bêtes¦Bestienpfeife
 beast_whistle.tooltip¦Clique direito: chama, cura e acelera seus animais.¦Clic droit : appelle, soigne et accélère vos animaux.¦Rechtsklick: Ruft und heilt deine Tiere und beschleunigt sie.
 armory_voucher¦Vale de Arsenal¦Bon d'armurerie¦Rüstkammergutschein
-armory_voucher.tooltip¦Use para receber uma peça do conjunto da sua classe principal.¦Utilisez-le pour recevoir une pièce de l'armure de votre rôle principal.¦Benutze ihn, um ein Rüstungsteil deiner Hauptrolle zu erhalten.
-armory_voucher.no_role¦Você precisa de uma classe principal para resgatar o vale.¦Vous devez avoir un rôle principal pour échanger ce bon.¦Du benötigst eine Hauptrolle, um den Gutschein einzulösen.
+armory_voucher.tooltip¦Use para receber um Modelo de Ascensão.¦Utilisez-le pour recevoir un Gabarit d'ascension.¦Löse ihn gegen eine Aufstiegsvorlage ein.
 armory_voucher.received¦Você recebe: %s¦Vous recevez : %s¦Du erhältst: %s
 accessory.ring¦Anel¦Anneau¦Ring
 accessory.amulet¦Amuleto¦Amulette¦Amulett
@@ -1153,7 +1135,7 @@ add('aptitudes.', """
 milestone.unlocked¦✦ Marco de %s (nível %s): %s¦✦ Palier de %s (niveau %s) : %s¦✦ Meilenstein für %s (Stufe %s): %s
 milestone.second_chance¦Segunda chance! Você sobreviveu a um golpe fatal¦Seconde chance ! Vous avez survécu à un coup fatal¦Zweite Chance! Du hast einen tödlichen Treffer überlebt
 toast.level¦Nv. %s¦Niv. %s¦St. %s
-set.activated¦✦ Bônus de conjunto ativo: %s¦✦ Bonus d'ensemble actif : %s¦✦ Setbonus aktiv: %s
+set.activated¦✦ Armadura Ascendida: %s¦✦ Armure ascendée : %s¦✦ Aufgestiegene Rüstung: %s
 mech.counter_ready¦Reflexos! Seu próximo golpe causa +50%%¦Réflexes ! Votre prochain coup inflige +50%%¦Reflexe! Dein nächster Treffer verursacht +50%%
 mech.free_cast¦Cargas arcanas: feitiço grátis¦Charges arcaniques : sort gratuit¦Arkane Ladungen: kostenloser Zauber
 mech.overdrive¦SOBRECARGA!¦SURRÉGIME !¦ÜBERLASTUNG!

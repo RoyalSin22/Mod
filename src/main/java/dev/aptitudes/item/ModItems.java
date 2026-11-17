@@ -165,7 +165,10 @@ public final class ModItems {
 	public static final Item GUIDE_BOOK = register("guide_book",
 			new GuideBookItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
 
-	/** Vale de armería (aldeano de gremio): una pieza del set de tu rol principal. */
+	/** Vale de armería (aldeano de gremio, contratos y botín): se canjea por una Plantilla de ascensión (V80). */
+	public static final Item ASCENDED_TEMPLATE = register("ascended_template",
+			new AscendedTemplateItem(new Item.Settings().rarity(Rarity.EPIC)));
+
 	public static final Item ARMORY_VOUCHER = register("armory_voucher",
 			new ArmoryVoucherItem(new Item.Settings().maxCount(16).rarity(Rarity.UNCOMMON)));
 
@@ -212,7 +215,7 @@ public final class ModItems {
 	}
 
 	static {
-		RoleArmor.register(); // un set de 4 piezas por rol
+		AscendedArmor.register(); // V80: un único set, la Armadura Ascendida
 		dev.aptitudes.item.weapon.RoleWeapons.register(); // armas de evolución (Maestro y Definitivo)
 	}
 
@@ -257,6 +260,7 @@ public final class ModItems {
 						entries.add(dev.aptitudes.event.Expeditions.TOKEN); // F5: ficha de expedición
 						entries.add(REBIRTH_OFFERING);
 						entries.add(ARMORY_VOUCHER);
+						entries.add(ASCENDED_TEMPLATE);
 						entries.add(ELITE_ESSENCE);
 						entries.add(CHAMPION_HEART);
 						entries.add(RUNE_FLAME);
@@ -281,7 +285,7 @@ public final class ModItems {
 						entries.add(SOUL_SHOVEL);
 						entries.add(SOUL_AXE);
 						entries.add(SOUL_HOE);
-						for (Item piece : RoleArmor.all()) entries.add(piece);
+						for (Item piece : AscendedArmor.pieces()) entries.add(piece);
 						entries.add(HERB_PETALS);
 						for (var potion : dev.aptitudes.alchemy.AlchemyPotions.all()) {
 							entries.add(net.minecraft.component.type.PotionContentsComponent.createStack(

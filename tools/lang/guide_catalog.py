@@ -280,22 +280,22 @@ FUSIONEN: Meisterst du beide Elemente eines Paares und wirkst den Elementarausbr
 Feuer+Wind: Feuersturm · Wasser+Blitz: Stromschlag · Eis+Wasser: Schneesturm · Erde+Magma: Eruption · Pflanze+Gift: Seuche · Licht+Schatten: Finsternis · Leere+Kristall: Kristallsingularität · Klang+Wind: Resonanz · Blitz+Kristall: Prisma · Feuer+Eis: Temperaturschock.
 In der Elementansicht (J → Elemente) zeigt jedes Element seine Fusionen."""))
 
-chapter('armor', ('Armaduras de classe', 'Armures de rôle', 'Rollenrüstung'), (
-    """Cada classe tem um conjunto de 4 peças. A fabricação é feita SOMENTE na MESA DA GUILDA (clique direito): consulte a receita de cada peça no grimório, sem confundir com a bancada comum.
+chapter('armor', ('Armadura Ascendida', 'Armure ascendée', 'Aufgestiegene Rüstung'), (
+    """Existe um único conjunto de 4 peças: a Armadura Ascendida, uma melhora da netherita. Para fabricá-la, use a MESA DE FERRARIA: Modelo de Ascensão + peça de netherita + Coração de Campeão (uma peça por vez).
 
-Com as 4 peças equipadas e a classe como principal ou secundária, o bônus do conjunto é ativado (veja a dica de cada peça). O peso altera a defesa: pesada (Berserker, Lanceiro, Paladino), média e leve.
+O Modelo de Ascensão sai de um Vale de Arsenal, dos baús do Templo do Custodiano e de sua cripta e, às vezes, de campeões. O Vale é vendido pelo aldeão da guilda e vem de contratos.
 
-As peças também aparecem em baús de torres e acampamentos, podem ser compradas com Vales de Arsenal do aldeão da guilda e são deixadas por campeões.""",
-    """Chaque rôle possède un ensemble de 4 pièces. Elles se fabriquent UNIQUEMENT à la TABLE DE GUILDE (clic droit) : consultez la recette de chaque pièce dans le grimoire, sans la confondre avec l'établi ordinaire.
+Com as 4 peças equipadas: −10%% de custo e de recarga e +10%% de dano de habilidades. Além disso, a armadura adota o aspecto da sua classe principal (cada classe tem um efeito próprio).""",
+    """Il n'existe qu'un seul ensemble de 4 pièces : l'Armure ascendée, une amélioration de la netherite. Pour la fabriquer, utilisez la TABLE DE FORGERON : Gabarit d'ascension + pièce de netherite + Cœur de champion (une pièce à la fois).
 
-Avec les 4 pièces équipées et ce rôle comme principal ou secondaire, le bonus d'ensemble s'active (voir l'infobulle de chaque pièce). Le poids modifie la défense : lourde (Berserker, Lancier, Paladin), moyenne et légère.
+Le Gabarit d'ascension provient d'un Bon d'armurerie, des coffres du Temple du Gardien et de sa crypte, et parfois des champions. Le Bon est vendu par le villageois de guilde et récompense des contrats.
 
-Ces pièces apparaissent aussi dans les coffres des tours et camps, s'achètent avec les Bons d'armurerie du villageois de guilde et sont lâchées par les champions.""",
-    """Jede Rolle besitzt ein Set aus 4 Teilen. Herstellung NUR am GILDENTISCH (Rechtsklick): Sieh dir das Rezept jedes Teils im Grimoire an; die normale Werkbank genügt nicht.
+Avec les 4 pièces équipées : −10 %% de coût et de recharge et +10 %% de dégâts de compétences. De plus, l'armure prend l'aspect de votre rôle principal (chaque rôle a un effet propre).""",
+    """Es gibt nur ein einziges Set aus 4 Teilen: die Aufgestiegene Rüstung, eine Verbesserung der Netherit-Rüstung. Hergestellt wird sie am SCHMIEDETISCH: Aufstiegsvorlage + Netherit-Teil + Championherz (ein Teil nach dem anderen).
 
-Mit allen 4 Teilen und dieser Rolle als Haupt- oder Nebenrolle wird der Setbonus aktiv (siehe Tooltip jedes Teils). Das Gewicht beeinflusst die Verteidigung: schwer (Berserker, Lanzer, Paladin), mittel und leicht.
+Die Aufstiegsvorlage stammt aus einem Rüstkammergutschein, aus den Truhen des Hüter-Tempels und seiner Krypta und manchmal von Champions. Den Gutschein verkauft der Gildendorfbewohner; er ist auch Vertragsbelohnung.
 
-Die Teile findest du auch in Turm- und Lagertruhen, beim Gildendorfbewohner über Rüstkammergutscheine und als Beute von Champions."""))
+Mit allen 4 Teilen: −10 %% Kosten und Abklingzeit und +10 %% Fähigkeitsschaden. Außerdem nimmt die Rüstung den Aspekt deiner Hauptrolle an (jede Rolle hat einen eigenen Effekt)."""))
 
 chapter('soul_items', ('Itens de alma', "Objets d'âme", 'Seelengegenstände'), (
     """Fragmento de Alma: material básico. Deixado por monstros (veja Saque).

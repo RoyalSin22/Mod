@@ -27,7 +27,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.util.Identifier;
 import dev.aptitudes.world.GuildShapelessRecipe;
-import dev.aptitudes.item.RoleArmor;
+import dev.aptitudes.item.AscendedArmor;
 import dev.aptitudes.item.weapon.RoleWeapons;
 import dev.aptitudes.role.Role;
 import net.minecraft.client.gui.DrawContext;
@@ -99,7 +99,7 @@ public class GuideScreen extends Screen {
 			chapter("evolution", ModItems.MASTERY_EMBLEM, () -> List.of(ModItems.MASTERY_EMBLEM, ModItems.ULTIMATE_CORE)),
 			chapter("weapons", Items.NETHERITE_SWORD, () -> RoleWeapons.all()),
 			chapter("elements", ModItems.ELEMENTAL_ORB, () -> List.of(ModItems.ELEMENTAL_ORB)),
-			chapter("armor", Items.IRON_CHESTPLATE, GuideScreen::armorItems),
+			chapter("armor", Items.NETHERITE_CHESTPLATE, GuideScreen::armorItems),
 			chapter("soul_items", ModItems.SOUL_PICKAXE,
 					() -> List.of(ModItems.SOUL_SHARD, ModItems.SOUL_PICKAXE, ModItems.SOUL_AXE, ModItems.SOUL_SHOVEL, ModItems.SOUL_HOE)),
 			chapter("accessories", Items.GOLD_INGOT, () -> List.copyOf(ModItems.ACCESSORIES.values())),
@@ -226,11 +226,9 @@ public class GuideScreen extends Screen {
 	}
 
 	private static List<Item> armorItems() {
-		List<Item> out = new ArrayList<>(RoleArmor.pieces(Role.BERSERKER));
-		for (Role role : new Role[]{Role.MAGE, Role.ASSASSIN, Role.DRUID}) {
-			List<Item> p = RoleArmor.pieces(role);
-			if (!p.isEmpty()) out.add(p.get(Math.min(1, p.size() - 1))); // peto de otros roles
-		}
+		List<Item> out = new ArrayList<>(AscendedArmor.pieces());
+		out.add(ModItems.ASCENDED_TEMPLATE);
+		out.add(ModItems.CHAMPION_HEART);
 		return out;
 	}
 
