@@ -1737,6 +1737,21 @@ advancement.aptitudes.life_vessel.title¦Coração pleno¦Cœur comblé¦Volles 
 advancement.aptitudes.life_vessel.description¦Use um Vaso de vida.¦Utilisez un Vase de vie.¦Benutze ein Lebensgefäß.
 advancement.aptitudes.bestiary_complete.title¦Cronista¦Chroniqueur¦Chronist
 advancement.aptitudes.bestiary_complete.description¦Descubra todas as criaturas do bestiário.¦Découvrez toutes les créatures du bestiaire.¦Entdecke alle Kreaturen des Bestiariums.
+advancement.aptitudes.synergist.title¦Sinergista¦Synergiste¦Synergetiker
+advancement.aptitudes.synergist.description¦Ative as cinco sinergias (Y1-Y5) em uma única sessão.¦Activez les cinq synergies (Y1-Y5) en une seule session.¦Aktiviere alle fünf Synergien (Y1-Y5) in einer einzigen Sitzung.
+synergy.aptitudes.disabled¦As sinergias estão desativadas neste servidor.¦Les synergies sont désactivées sur ce serveur.¦Synergien sind auf diesem Server deaktiviert.
+synergy.aptitudes.status¦Sinergias ativadas nesta sessão: %s/%s¦Synergies activées durant cette session : %s/%s¦In dieser Sitzung aktivierte Synergien: %s/%s
+synergy.aptitudes.line¦%s · %s: %s¦%s · %s : %s¦%s · %s: %s
+synergy.aptitudes.name.1¦Trilha ↔ Habilidades¦Voie ↔ Capacités¦Pfad ↔ Fähigkeiten
+synergy.aptitudes.name.2¦Ressonância de grupo¦Résonance de groupe¦Gruppenresonanz
+synergy.aptitudes.name.3¦Elementos ↔ Runas¦Éléments ↔ Runes¦Elemente ↔ Runen
+synergy.aptitudes.name.4¦Armadura ↔ Trilha¦Armure ↔ Voie¦Rüstung ↔ Pfad
+synergy.aptitudes.name.5¦Combos ↔ Pedras angulares¦Combos ↔ Clés de voûte¦Kombos ↔ Schlusssteine
+synergy.aptitudes.seen¦ativa¦active¦aktiv
+synergy.aptitudes.unseen¦ainda não¦pas encore¦noch nicht
+synergy.aptitudes.tip.radius¦Sinergia de trilha: +%s%% de raio¦Synergie de voie : +%s%% de rayon¦Pfadsynergie: +%s%% Radius
+synergy.aptitudes.tip.damage¦Sinergia de trilha: +%s%% de dano¦Synergie de voie : +%s%% de dégâts¦Pfadsynergie: +%s%% Schaden
+synergy.aptitudes.tip.energy¦Sinergia de trilha: -%s%% de custo de mana¦Synergie de voie : -%s%% de coût en mana¦Pfadsynergie: -%s%% Manakosten
 """)
 
 # v63 (C4): jefes animados (GeckoLib).
@@ -1789,6 +1804,12 @@ subtitles.aptitudes.errante_rend¦O Errante rasga o ar¦Le Vagabond lacère¦Ver
 subtitles.aptitudes.errante_hurt¦O Errante Velado sofre dano¦Le Vagabond voilé est blessé¦Verhüllter Wanderer wird verletzt
 subtitles.aptitudes.errante_death¦O Errante Velado desaba¦Le Vagabond voilé s’effondre¦Verhüllter Wanderer bricht zusammen
 subtitles.aptitudes.errante_despawn¦O Errante Velado se dissipa¦Le Vagabond voilé se dissipe¦Verhüllter Wanderer verblasst
+subtitles.aptitudes.berserker_roar¦O Berserker ruge¦Le Berserker rugit¦Berserker brüllt
+subtitles.aptitudes.berserker_war_cry¦Grito de guerra¦Cri de guerre¦Kriegsschrei
+subtitles.aptitudes.berserker_slam¦O chão se despedaça¦Le sol se fissure¦Der Boden zerbirst
+subtitles.aptitudes.berserker_whoosh¦Uma lâmina assobia¦Une lame siffle¦Eine Klinge zischt
+subtitles.aptitudes.berserker_heartbeat¦A fúria pulsa¦La fureur bat¦Die Wut pocht
+subtitles.aptitudes.berserker_leap¦O Berserker salta¦Le Berserker bondit¦Berserker springt
 entity.aptitudes.custodio_cuatro_llaves¦O Custódio das Quatro Chaves¦Le Gardien des Quatre Clés¦Der Wächter der vier Schlüssel
 item.aptitudes.faceless_colossus_spawn_egg¦Ovo gerador do Colosso Sem Rosto¦Œuf d'apparition du Colosse sans visage¦Spawn-Ei des gesichtslosen Kolosses
 bestiary.aptitudes.faceless_colossus.tip¦Guerreiro gigante com espadão. Anuncia um golpe amplo e um golpe descendente com onda: saia do círculo marcado. Com metade da vida sua armadura racha: fica mais rápido, investe de longe e recebe mais dano.¦Guerrier géant armé d'une grande épée. Il annonce un large balayage et un coup plongeant avec onde de choc : sortez du cercle marqué. À mi-vie son armure se fissure : il va plus vite, charge de loin et subit plus de dégâts.¦Riesiger Krieger mit Zweihänder. Er kündigt einen weiten Hieb und einen Abwärtsschlag mit Schockwelle an: Verlasse den markierten Kreis. Bei halber Lebenskraft bricht seine Rüstung: Er wird schneller, stürmt aus der Ferne an und erleidet mehr Schaden.

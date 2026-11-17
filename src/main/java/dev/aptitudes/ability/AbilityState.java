@@ -161,7 +161,9 @@ public final class AbilityState {
 	// ----------------------------------------------------- Tareas y estados
 
 	public static void schedule(MinecraftServer server, int delayTicks, Runnable task) {
-		SCHEDULED.add(new Scheduled(server.getTicks() + Math.max(1, delayTicks), task));
+		// v65 C5 Y1: los golpes diferidos conservan el bonus de sinergia de la habilidad que los programó.
+		SCHEDULED.add(new Scheduled(server.getTicks() + Math.max(1, delayTicks),
+				AbilityManager.withSynergy(AbilityManager.synergySnapshot(), task)));
 	}
 
 	/** Ejecuta {@code body(i)} {@code times} veces, cada {@code interval} ticks, empezando ya. */

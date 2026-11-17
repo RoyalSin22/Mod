@@ -1392,8 +1392,25 @@ public class RolesScreen extends Screen {
 				default -> throw new IllegalStateException();
 			}).formatted(lit(data, v) ? Formatting.GRAY : Formatting.RED));
 		}
+		if (v.node() != null && v.node().active()) lines.addAll(synergyTips(data, v.node()));
 		lines.add(nodeDescription(v));
 		return lines;
+	}
+
+	/** v65 C5 Y1: qué le aporta la senda elegida a esta activa (con los valores del servidor). */
+	private List<Text> synergyTips(RoleSyncPayload data, RoleNode node) {
+		dev.aptitudes.config.AptitudesConfig cfg = dev.aptitudes.client.ClientServerConfig.get();
+		if (!cfg.enableSynergies || (data.primaryRole() != node.role() && data.secondaryRole() != node.role())) return List.of();
+		var profile = dev.aptitudes.ability.PathSynergyRules.profile(data::rank, node.role());
+		String template = dev.aptitudes.ability.PathSynergyRules.templateOf(node.id());
+		List<Text> out = new ArrayList<>();
+		float radius = dev.aptitudes.ability.Y1Rules.radius(profile, node.id(), template, cfg.synergyBonusY1Radius);
+		float damage = dev.aptitudes.ability.Y1Rules.damage(profile, node.id(), template, cfg.synergyBonusY1Damage);
+		float energy = dev.aptitudes.ability.Y1Rules.energy(profile, cfg.synergyBonusY1Energy);
+		if (radius > 1.0f) out.add(Text.translatable("synergy.aptitudes.tip.radius", Math.round((radius - 1.0f) * 100)).formatted(Formatting.AQUA));
+		if (damage > 1.0f) out.add(Text.translatable("synergy.aptitudes.tip.damage", Math.round((damage - 1.0f) * 100)).formatted(Formatting.AQUA));
+		if (energy < 1.0f) out.add(Text.translatable("synergy.aptitudes.tip.energy", Math.round((1.0f - energy) * 100)).formatted(Formatting.AQUA));
+		return out;
 	}
 
 	/** El texto completo queda disponible al pasar por la ficha o por el nodo. */

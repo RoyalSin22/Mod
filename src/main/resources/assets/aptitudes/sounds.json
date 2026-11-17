@@ -166,5 +166,41 @@
     "sounds": [
       "aptitudes:errante_despawn"
     ]
+  },
+  "berserker_roar": {
+    "subtitle": "subtitles.aptitudes.berserker_roar",
+    "sounds": [
+      "aptitudes:berserker_roar"
+    ]
+  },
+  "berserker_war_cry": {
+    "subtitle": "subtitles.aptitudes.berserker_war_cry",
+    "sounds": [
+      "aptitudes:berserker_war_cry"
+    ]
+  },
+  "berserker_slam": {
+    "subtitle": "subtitles.aptitudes.berserker_slam",
+    "sounds": [
+      "aptitudes:berserker_slam"
+    ]
+  },
+  "berserker_whoosh": {
+    "subtitle": "subtitles.aptitudes.berserker_whoosh",
+    "sounds": [
+      "aptitudes:berserker_whoosh"
+    ]
+  },
+  "berserker_heartbeat": {
+    "subtitle": "subtitles.aptitudes.berserker_heartbeat",
+    "sounds": [
+      "aptitudes:berserker_heartbeat"
+    ]
+  },
+  "berserker_leap": {
+    "subtitle": "subtitles.aptitudes.berserker_leap",
+    "sounds": [
+      "aptitudes:berserker_leap"
+    ]
   }
 }

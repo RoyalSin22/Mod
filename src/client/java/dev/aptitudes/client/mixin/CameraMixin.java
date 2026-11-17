@@ -1,5 +1,6 @@
 package dev.aptitudes.client.mixin;
 
+import dev.aptitudes.client.fx.ScreenDynamics;
 import dev.aptitudes.client.hud.ClientFx;
 import net.minecraft.client.render.Camera;
 import net.minecraft.entity.Entity;
@@ -25,8 +26,8 @@ public abstract class CameraMixin {
 	@Inject(method = "update", at = @At("TAIL"), require = 0)
 	private void aptitudes$shake(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView,
 								 float tickDelta, CallbackInfo ci) {
-		float yaw = ClientFx.shakeYaw();
-		float pitch = ClientFx.shakePitch();
+		float yaw = ClientFx.shakeYaw() + ScreenDynamics.yawOffset(); // V77: retroceso y sacudida suaves
+		float pitch = ClientFx.shakePitch() + ScreenDynamics.pitchOffset();
 		if (yaw != 0 || pitch != 0) setRotation(getYaw() + yaw, getPitch() + pitch);
 	}
 }

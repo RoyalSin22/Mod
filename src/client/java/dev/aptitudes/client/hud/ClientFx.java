@@ -131,6 +131,7 @@ public final class ClientFx {
 		TOASTS.clear();
 		flashStrength = 0;
 		shakeStrength = 0;
+		dev.aptitudes.client.fx.ScreenDynamics.clear(); // V77
 	}
 
 	// ------------------------------------------------------------ Temblor
@@ -161,6 +162,7 @@ public final class ClientFx {
 		int w = ctx.getScaledWindowWidth();
 		int h = ctx.getScaledWindowHeight();
 		renderFlash(ctx, now, w, h);
+		dev.aptitudes.client.fx.ScreenDynamics.renderVignette(ctx, w, h); // V77
 		ClientConfig cfg = ClientConfig.get();
 		if (cfg.hudMinimal) {
 			TOASTS.clear();

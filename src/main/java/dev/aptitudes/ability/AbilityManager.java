@@ -207,7 +207,7 @@ public final class AbilityManager {
 			}
 		}
 		CastFx.onCast(player, role, slot == ULTIMATE_SLOT ? Kind.ULTIMATE
-				: slot == SIGNATURE_SLOT ? Kind.SIGNATURE : Kind.ACTIVE);
+				: slot == SIGNATURE_SLOT ? Kind.SIGNATURE : Kind.ACTIVE, cooldownKey);
 		if (empowered) RoleResources.consumeEmpower(player, role);
 		if (overload) cooldown = cooldown / 2;
 		if (concat && ExtraKits.concatHalvesCooldown(player)) cooldown = cooldown / 2;
@@ -261,6 +261,29 @@ public final class AbilityManager {
 	/** Retorna el contexto de sinergia activo del jugador, o NONE si no hay. */
 	public static AbilitySynergyContext synergyContext(ServerPlayerEntity player) {
 		return SYNERGY_CONTEXT.getOrDefault(player.getUuid(), AbilitySynergyContext.NONE);
+	}
+
+	/** Contextos activos ahora mismo (como mucho el de la habilidad que se está lanzando). */
+	static Map<UUID, AbilitySynergyContext> synergySnapshot() {
+		return SYNERGY_CONTEXT.isEmpty() ? Map.of() : Map.copyOf(SYNERGY_CONTEXT);
+	}
+
+	/** Devuelve una tarea que, al ejecutarse más tarde, vuelve a tener el contexto de sinergia con el que se programó. */
+	static Runnable withSynergy(Map<UUID, AbilitySynergyContext> snapshot, Runnable task) {
+		if (snapshot.isEmpty()) return task;
+		return () -> {
+			Map<UUID, AbilitySynergyContext> previous = new HashMap<>();
+			for (UUID id : snapshot.keySet()) previous.put(id, SYNERGY_CONTEXT.get(id));
+			SYNERGY_CONTEXT.putAll(snapshot);
+			try {
+				task.run();
+			} finally {
+				previous.forEach((id, old) -> {
+					if (old == null) SYNERGY_CONTEXT.remove(id);
+					else SYNERGY_CONTEXT.put(id, old);
+				});
+			}
+		};
 	}
 
 	/** Establece el contexto de sinergia para la habilidad actual (privado, llamado desde execute()). */

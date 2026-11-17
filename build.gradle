@@ -54,6 +54,15 @@ repositories {
 		name = "TerraformersMC"
 		url = "https://maven.terraformersmc.com/releases/"
 	}
+	// V78: Player Animation Library (dependencia obligatoria para las animaciones del cuerpo del jugador). Aprobada por el autor.
+	maven {
+		name = "RedlanceMinecraft"
+		url = "https://repo.redlance.org/public"
+		content {
+			includeGroup "com.zigythebird.playeranim"
+			includeGroup "com.zigythebird" // mochafloats (solo para las pruebas)
+		}
+	}
 	// v63: GeckoLib (dependencia obligatoria para los jefes animados). Excepción aprobada por el autor; ver AGENTS.md.
 	maven {
 		name = "GeckoLib"
@@ -71,9 +80,14 @@ dependencies {
 	modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 	// v63: GeckoLib fijado; sin transitivas para no mover las versiones fijadas de Loader y Fabric API.
 	modImplementation("software.bernie.geckolib:geckolib-fabric-1.21.1:${project.geckolib_version}") { transitive = false }
+	// V78: PAL fijada; el JAR trae su núcleo, mochafloats y javassist dentro, así que no hacen falta transitivas.
+	modImplementation("com.zigythebird.playeranim:PlayerAnimationLibFabric:${project.pal_version}") { transitive = false }
 
 	// Pruebas unitarias (src/test/java). Se ejecutan con ./gradlew test (y en build).
 	// JUnit Platform con dos motores: Jupiter (JUnit 5) y Vintage (JUnit 4), así conviven pruebas de ambos tipos.
+	// V78: PAL lleva mochafloats anidado en su JAR; las pruebas no cargan jars anidados, así que se añade aparte.
+	testImplementation("com.zigythebird:mochafloats:${project.mochafloats_version}") { transitive = false }
+	testImplementation("org.javassist:javassist:3.30.2-GA") // también anidado en PAL (misma versión que declara su POM)
 	testImplementation platform("org.junit:junit-bom:5.10.2")
 	testImplementation "org.junit.jupiter:junit-jupiter"
 	testImplementation "junit:junit:4.13.2"

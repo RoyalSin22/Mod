@@ -417,6 +417,14 @@ desde que el evento **empieza** (provisional) y no las consumen los comandos `/a
 | `osarioBossFogPercent` | 75 | [10, 100] | V68: porcentaje de la duración de la Niebla a partir del cual aparece el jefe (una vez por sesión). |
 | `osarioBossLingerTicks` | 6000 | [0, 72000] | V68: ticks que sigue vivo tras cerrarse la Niebla antes de disolverse sin botín ni XP. 6000 = 5 minutos. |
 | `osarioBossMinDamagePercent` | 10 | [1, 100] | V68: daño mínimo (porcentaje de su vida) que debe hacer un jugador para recibir el trofeo. |
+| `enableSynergies` | true | — | v65 C5: interruptor general de las sinergias Y1–Y5. |
+| `synergyBonusY1Radius` | 1.20 | [1.0, 2.0] | Y1: multiplicador de radio de activas de movimiento con senda coincidente. |
+| `synergyBonusY1Damage` | 1.15 | [1.0, 2.0] | Y1: multiplicador de daño de activas ofensivas con senda coincidente. |
+| `synergyBonusY1Energy` | 0.90 | [0.5, 1.0] | Y1: multiplicador del coste de energía (menor es más barato). |
+| `synergyBonusY2Xp` | 1.15 | [1.0, 2.0] | Y2: multiplicador de la bonificación de XP de grupo con piedra angular compartida. |
+| `synergyBonusY3Damage` | 1.20 | [1.0, 2.0] | Y3: multiplicador de daño de fusión con runa del elemento activo. |
+| `synergyBonusY4Defense` | 1.10 | [1.0, 2.0] | Y4: sinergia armadura ↔ senda; el exceso sobre 1.0 se aplica como resistencia al empuje (1.10 = +0,10). |
+| `synergyY5KeystoneCooldownSeconds` | 20 | [1, 120] | Y5: espera entre disparos de piedra angular por remate de combo. |
 | `cryptEnabled` | true | — | V69: los Templos del Custodio nuevos pueden generarse con la Cripta de la Niebla (si el terreno lo permite). No afecta a templos ya generados. |
 | `cryptIdleResetSeconds` | 30 | [5, 300] | V69: segundos sin jugadores vivos en la sala tras los que la oleada en curso se reinicia (la Llave del Velo no se vuelve a gastar). También rige la sala de pruebas del Piso 2 del templo hondo (V70). |
 | `cryptWaveSizePercent` | 100 | [25, 300] | V69: porcentaje del tamaño de las oleadas de la Cripta (base 5/7/9, +2 por jugador adicional, ×(1 + 0,25 × anillo)). También escala las dos oleadas de la sala de pruebas del templo hondo (V70). |

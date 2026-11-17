@@ -35,6 +35,7 @@ Licencia MIT. Procedencia del arte (parte generada con IA, parte dibujada por pr
 | Fabric Loader | ≥ 0.16.0 |
 | Fabric API | 0.116.6+1.21.1 (cualquier versión para 1.21.1 debería servir) |
 | GeckoLib | 4.7.7 (obligatoria desde v63, para los jefes animados) |
+| Player Animation Library (PAL) | 1.1.6+mc.1.21.1 (obligatoria desde V78, para las animaciones del cuerpo del jugador; MIT) |
 | Gradle | 8.14.3 (incluido mediante el wrapper) |
 
 > La versión del mod sale del número de commits (240 → 2.4.0); sin historial de git, de `mod_version` en

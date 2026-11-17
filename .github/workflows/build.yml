@@ -45,6 +45,9 @@ jobs:
           python3 tools/lang/gen_path_lang.py --check
           python3 tools/lang/base_desc.py --check
 
+      - name: Comprobar animaciones del jugador
+        run: python3 tools/models/gen_player_animations.py src/main/resources/assets/aptitudes --check
+
       - name: Comprobar texturas y modelos de las armas
         run: |
           python3 -m pip install --quiet pillow

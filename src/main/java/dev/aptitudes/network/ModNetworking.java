@@ -60,6 +60,8 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playC2S().register(ContractActionPayload.ID, ContractActionPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(ContractViewPayload.ID, ContractViewPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(KeystonePayload.ID, KeystonePayload.CODEC); // v46.1
+		PayloadTypeRegistry.playS2C().register(SynergyPayload.ID, SynergyPayload.CODEC); // v65 C5
+		PayloadTypeRegistry.playS2C().register(FxEventPayload.ID, FxEventPayload.CODEC); // V77
 		PayloadTypeRegistry.playS2C().register(TutorialPayload.ID, TutorialPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(MasteryPayload.ID, MasteryPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(ThreatPayload.ID, ThreatPayload.CODEC);

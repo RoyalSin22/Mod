@@ -77,6 +77,7 @@ public enum ElementFusions {
 
 		// v65 C5 Y3: Sinergia elementos ↔ runas (bonificador de daño de fusión)
 		float runeBonus = SynergyRules.elementRuneSynergyBonus(p, active, p.getMainHandStack());
+		if (runeBonus > 1.0f) SynergyTracker.mark(p, 2);
 
 		for (ElementFusions f : values()) {
 			if (!f.involves(active) || !f.unlocked(mastered)) continue;

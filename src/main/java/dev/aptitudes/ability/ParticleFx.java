@@ -22,6 +22,13 @@ public final class ParticleFx {
 				size);
 	}
 
+	/** Polvo que cambia de color con el tiempo (brasa que se apaga: de {@code fromRgb} a {@code toRgb}). */
+	public static net.minecraft.particle.DustColorTransitionParticleEffect transition(int fromRgb, int toRgb, float size) {
+		return new net.minecraft.particle.DustColorTransitionParticleEffect(
+				new Vector3f((fromRgb >> 16 & 0xFF) / 255f, (fromRgb >> 8 & 0xFF) / 255f, (fromRgb & 0xFF) / 255f),
+				new Vector3f((toRgb >> 16 & 0xFF) / 255f, (toRgb >> 8 & 0xFF) / 255f, (toRgb & 0xFF) / 255f), size);
+	}
+
 	private static void point(ServerWorld world, ParticleEffect particle, double x, double y, double z) {
 		world.spawnParticles(particle, x, y, z, 1, 0, 0, 0, 0);
 	}

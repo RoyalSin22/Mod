@@ -41,8 +41,7 @@ public final class Abilities {
 			int ticks = (6 + 2 * r) * 20;
 			effect(p, StatusEffects.STRENGTH, ticks, r >= 3 ? 1 : 0);
 			effect(p, StatusEffects.SPEED, ticks, 0);
-			Targeting.burst(world(p), ParticleTypes.ANGRY_VILLAGER, p, 10, 0.6);
-			sound(p, SoundEvents.ENTITY_RAVAGER_ROAR, 0.8f);
+			BerserkerFx.rage(p, ticks); // V77
 			return true;
 		});
 		register("war_cry", (p, r) -> {
@@ -52,8 +51,7 @@ public final class Abilities {
 				effect(e, StatusEffects.SLOWNESS, 100, r - 1);
 				e.takeKnockback(0.6 + 0.2 * r, p.getX() - e.getX(), p.getZ() - e.getZ());
 			}
-			Targeting.burst(world(p), ParticleTypes.SONIC_BOOM, p, 1, 0);
-			sound(p, SoundEvents.ENTITY_RAVAGER_ROAR, 1.3f);
+			BerserkerFx.warCry(p, 4 + r); // V77
 			return true;
 		});
 
