@@ -488,6 +488,27 @@ T['sigil'] = [
     "................",
 ]
 
+# V81/V82: cada runa lleva su propio glifo dentro del mismo aro (antes las 8 eran idénticas y solo cambiaba el color).
+RUNE_GLYPHS = {
+    'flame': ["...S....", "..SS.S..", "..SSSS..", ".SSJJSS.", ".SSJJSS.", ".SSJJSS.", "..SSSS..", "...SS..."],
+    'leech': ["...JJ...", "..JSSJ..", ".JSSSSJ.", ".SSSSSS.", ".SSJJSS.", "..SSSS..", "...SS...", "...JJ..."],
+    'swift': ["S.......", "SS......", ".SSS.S..", "..SSSSS.", "...SSJJS", "..SSSSS.", ".SSS.S..", "SS......"],
+    'force': ["...JJ...", "..JSSJ..", ".JSSSSJ.", "JSSJJSSJ", "..SJJS..", "..SJJS..", "..SSSS..", "..SSSS.."],
+    'eclipse': ["..SSSS..", ".SSJJSS.", "SSJ..JSS", "SJ....JS", "SJ....JS", "SSJ..JSS", ".SSJJSS.", "..SSSS.."],
+    'frost': ["...JJ...", ".J.JJ.J.", "..JSSJ..", "JJSSSSJJ", "JJSSSSJJ", "..JSSJ..", ".J.JJ.J.", "...JJ..."],
+    'thunder': ["...SSJ..", "..SSJ...", ".SSJ....", "SSSSSS..", "..SSSSS.", "...SSJ..", "..SJ....", ".SJ....."],
+    'guard': ["SSSSSSSS", "SJJSSJJS", "SJSSSSJS", "SSSJJSSS", ".SSJJSS.", ".SSSSSS.", "..SSSS..", "...SS..."],
+}
+for _kind, _glyph in RUNE_GLYPHS.items():
+    _rows = [''.join('.' if c in 'SsJ' else c for c in row) for row in T['sigil']]
+    for _dy, _g in enumerate(_glyph):
+        _row = list(_rows[3 + _dy].ljust(16, '.'))
+        for _dx, _c in enumerate(_g):
+            if _c != '.':
+                _row[4 + _dx] = _c
+        _rows[3 + _dy] = ''.join(_row)
+    T[f'rune_{_kind}'] = _rows
+
 T['lute'] = [
     "...........WW...",
     "..........WwW...",
@@ -1030,21 +1051,21 @@ ITEMS = {
     'automaton_orb': ('automaton_orb', {'S': '#7d7a72', 'B': '#9e6c38', 'A': '#ffa434', 'D': '#3b3a38'}),
     'automaton_orb_deflected': ('automaton_orb', {'S': '#3d7f8a', 'B': '#4dd0e1', 'A': '#b2ebf2', 'D': '#1b3a40'}),
     'champion_heart': ('heart', {'R': '#d32f2f', 'G': '#e0b43a', 'J': '#ffffff'}),
-    'rune_flame': ('sigil', {'G': '#e0a12a', 'S': '#bd3928', 'J': '#fff176'}),
-    'rune_leech': ('sigil', {'G': '#51202d', 'S': '#a3223b', 'J': '#f06277'}),
-    'rune_swift': ('sigil', {'G': '#d0e8f2', 'S': '#2788c7', 'J': '#8be8ff'}),
-    'rune_force': ('sigil', {'G': '#d4a017', 'S': '#6545ae', 'J': '#d1b5ff'}),
+    'rune_flame': ('rune_flame', {'G': '#e0a12a', 'S': '#bd3928', 'J': '#fff176'}),
+    'rune_leech': ('rune_leech', {'G': '#51202d', 'S': '#a3223b', 'J': '#f06277'}),
+    'rune_swift': ('rune_swift', {'G': '#d0e8f2', 'S': '#2788c7', 'J': '#8be8ff'}),
+    'rune_force': ('rune_force', {'G': '#d4a017', 'S': '#6545ae', 'J': '#d1b5ff'}),
     'tower_core': ('core', {'D': '#39333b', 'J': '#f49a34'}),
     'shrine_sigil': ('sigil', {'G': '#b7d9e8', 'S': '#5a9ab5', 'J': '#f5efbd'}),
     'warlord_medallion': ('emblem', {'G': '#b9813c', 'J': '#c83d36', 'A': '#6c7782'}),
     # v34: Eclipse
     'eclipse_fragment': ('shard', {'A': '#8a1420'}),
     'eclipse_core': ('core', {'D': '#1c1012', 'J': '#e0242f'}),
-    'rune_eclipse': ('sigil', {'G': '#2a1a1c', 'S': '#7a0f17', 'J': '#ff3b3b'}),
+    'rune_eclipse': ('rune_eclipse', {'G': '#2a1a1c', 'S': '#7a0f17', 'J': '#ff3b3b'}),
     # v35: Runas+
-    'rune_frost': ('sigil', {'G': '#cfe8f5', 'S': '#4a8fc2', 'J': '#e8fbff'}),
-    'rune_thunder': ('sigil', {'G': '#3b3f52', 'S': '#d9b31e', 'J': '#fff59d'}),
-    'rune_guard': ('sigil', {'G': '#8c8f96', 'S': '#3f7d52', 'J': '#b9f6ca'}),
+    'rune_frost': ('rune_frost', {'G': '#cfe8f5', 'S': '#4a8fc2', 'J': '#e8fbff'}),
+    'rune_thunder': ('rune_thunder', {'G': '#3b3f52', 'S': '#d9b31e', 'J': '#fff59d'}),
+    'rune_guard': ('rune_guard', {'G': '#8c8f96', 'S': '#3f7d52', 'J': '#b9f6ca'}),
     'soul_pickaxe': ('pickaxe', {'A': '#8e7cf0', 'W': '#3a2f4a', 'J': '#d1c4ff'}),
     'soul_axe': ('axe', {'A': '#8e7cf0', 'W': '#3a2f4a', 'G': '#d1c4ff'}),
     'soul_shovel': ('shovel', {'A': '#8e7cf0', 'W': '#3a2f4a', 'L': '#2b2238', 'J': '#d1c4ff'}),

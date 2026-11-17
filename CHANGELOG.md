@@ -6,6 +6,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Cambiado
+- **v82 — Limpieza y créditos.** Las 8 runas tienen **glifo propio** (llama, gota, ala, puño, eclipse, copo, rayo, escudo) dentro del mismo
+  aro; antes eran idénticas salvo el color. Se borran las 25 ilustraciones de cabecera del grimorio y `gen_guide_headers.py` (ya no se
+  dibujaban desde la v81). Nuevo `CREDITS.md` con la procedencia del arte (parte generada con IA, parte por programa), audio
+  sintetizado y dependencias, enlazado desde el README. `docs/PROMPTS_REDISENO.md`: inventario y un prompt por sección pendiente.
+
+### Cambiado
 - **v81 — Correcciones tras la prueba en partida.** (1) La barra de **campeones y jefes** pasa **arriba, centrada**, como las barras de
   jefe del juego (antes iba sobre la barra de acción y tapaba la vista). (2) El bloque de estado ya no dibuja la barra verde
   de «aguante»: solo repetía la barra de hambre; las barras de recurso de rol llevan ahora su nombre encima. (3) **Grimorio más
