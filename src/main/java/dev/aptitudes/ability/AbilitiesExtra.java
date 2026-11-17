@@ -102,18 +102,17 @@ final class AbilitiesExtra {
 			for (LivingEntity e : targets) {
 				e.damage(p.getDamageSources().playerAttack(p), 3 + r);
 				effect(e, StatusEffects.POISON, 60 + 20 * r, 0);
-				Targeting.particleLine(world(p), ParticleTypes.CRIT, p.getEyePos(), e.getEyePos());
 			}
-			sound(p, SoundEvents.ENTITY_ARROW_SHOOT, 1.6f);
-			return !targets.isEmpty();
+			if (targets.isEmpty()) return false;
+			AssassinFx.fan(p, 5, targets); // V84
+			return true;
 		});
 		// Shuriken: impacto a distancia que marca y ralentiza.
 		Abilities.register("shuriken", (p, r) -> {
 			LivingEntity target = Targeting.raycastLiving(p, 20);
 			Vec3d end = target != null ? target.getEyePos() : Targeting.lookEnd(p, 20);
-			Targeting.particleLine(world(p), ParticleTypes.CRIT, p.getEyePos(), end);
-			sound(p, SoundEvents.ENTITY_ARROW_SHOOT, 1.8f);
 			if (target == null) return false;
+			AssassinFx.shuriken(p, end, true); // V84
 			target.damage(p.getDamageSources().playerAttack(p), 5 + 2 * r);
 			effect(target, StatusEffects.GLOWING, 100, 0);
 			effect(target, StatusEffects.SLOWNESS, 60, 1);

@@ -238,5 +238,35 @@
     "sounds": [
       "aptitudes:mage_impact"
     ]
+  },
+  "assassin_vanish": {
+    "subtitle": "subtitles.aptitudes.assassin_vanish",
+    "sounds": [
+      "aptitudes:assassin_vanish"
+    ]
+  },
+  "assassin_slash": {
+    "subtitle": "subtitles.aptitudes.assassin_slash",
+    "sounds": [
+      "aptitudes:assassin_slash"
+    ]
+  },
+  "assassin_step": {
+    "subtitle": "subtitles.aptitudes.assassin_step",
+    "sounds": [
+      "aptitudes:assassin_step"
+    ]
+  },
+  "assassin_throw": {
+    "subtitle": "subtitles.aptitudes.assassin_throw",
+    "sounds": [
+      "aptitudes:assassin_throw"
+    ]
+  },
+  "assassin_impact": {
+    "subtitle": "subtitles.aptitudes.assassin_impact",
+    "sounds": [
+      "aptitudes:assassin_impact"
+    ]
   }
 }

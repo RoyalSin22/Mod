@@ -6,6 +6,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **V84 — Efectos de batalla, fase 3 (Asesino).** Desaparecer, Paso de sombra, Abanico de cuchillas y Shuriken tienen coreografía propia:
+  bomba de humo con jirones que suben mientras dura la invisibilidad y túnel oscuro en la cámara, estela de posimágenes y estocada al
+  reaparecer, abanico de tajos con esquirlas de hierro que caen, y cuchillas y shuriken que giran con su estela y se clavan. Cuatro
+  animaciones del cuerpo en primera persona (`assassin.json`), cinco sonidos sintetizados con subtítulos en los 11 idiomas y los efectos
+  sincronizados con el golpe de cada animación. Desaparecer, Paso de sombra, Abanico y Shuriken ya no dibujan nada si fallan (antes la
+  línea y el sonido salían aunque no hubiera objetivo). **Sin ver en partida.**
 - **V83 — Efectos de batalla, fase 2 (Mago).** Proyectil arcano, Salto arcano, Distorsión temporal y Misiles arcanos tienen coreografía propia:
   carga en la mano y rayo helicoidal con fragmentos de amatista que caen, estela y estallido en el salto, relojes que giran y motas congeladas
   al frenar el tiempo, y misiles con arco. Cinco animaciones del cuerpo en primera persona (`mage.json`), seis sonidos sintetizados con

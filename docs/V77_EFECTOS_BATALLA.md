@@ -94,3 +94,22 @@ destellos, runas y cristal en vez de escombros y brasas.
 - Las animaciones salen de `tools/models/gen_player_animations.py`, que ahora escribe un archivo por rol (`berserker.json`, `mage.json`).
 - Pieza nueva: `FxClient.handPos` (posición aproximada de la mano, para que la carga y el misil salgan de ella).
 - **No verificado en partida:** el aspecto, el momento exacto de las partículas respecto a la mano y el rendimiento de los fragmentos.
+
+## Fase 3: Asesino (V84)
+
+Identidad de sombra: acero oscuro, humo negro, tajos y esquirlas de hierro. Mismo sistema (un evento por efecto, cliente que dibuja,
+animación PAL, golpe sincronizado).
+
+| Activa | Efecto | Animación (primera persona) | Golpe |
+|---|---|---|---|
+| Desaparecer (`vanish`) | El humo se recoge al cruzar los brazos y estalla en el barrido de capa; jirones que suben mientras dura; la cámara se cierra en túnel oscuro | `assassin_vanish`: brazos cruzados ante el rostro y barrido de capa | tick 3 |
+| Paso de sombra (`shadow_step`) | Nube en el origen, posimágenes de humo a lo largo del recorrido, estocada con tajo y chispas al reaparecer; estirón de FOV | `assassin_step`: se enrosca hacia atrás y se lanza con una estocada | tick 3 |
+| Abanico de cuchillas (`fan_of_knives`) | Destellos que se reúnen en el pecho, ocho tajos que se abren hasta el radio, una cuchilla por objetivo que vuela girando y se clava | `assassin_fan`: brazos cruzados que se lanzan abiertos | tick 4 |
+| Shuriken (`shuriken`) | Brillo en la mano, estrella de cuatro puntas que gira por el aire con estela de sombra, clavada con esquirlas de hierro | `assassin_shuriken`: brazo sobre el hombro y latigazo | tick 3 |
+
+- Cinco sonidos sintetizados (`assassin_vanish`, `assassin_slash`, `assassin_step`, `assassin_throw`, `assassin_impact`), oscuros y secos.
+- **Cambio de comportamiento:** las cuatro activas dibujan y suenan solo si tienen éxito (antes el abanico y el shuriken pintaban la línea
+  y sonaban aunque fallaran).
+- `PlayerAnimIds.IMPACT_TICKS` pasa a `Map.ofEntries` (superaba las 10 entradas de `Map.of`).
+- **Verificado:** compilación y 908 pruebas, incluida la carga de `assassin.json` con el cargador real de PAL.
+- **No verificado en partida:** el aspecto, el momento exacto de las partículas respecto a la mano, el rendimiento y la mezcla de sonido.

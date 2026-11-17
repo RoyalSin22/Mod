@@ -498,6 +498,52 @@ def mage_impact(rng):
     return fade_out(normalize(burst + glass + thump, 0.85))
 
 
+# ---------------------------------------------------------------- Asesino (V84)
+
+def assassin_vanish(rng):
+    """Bomba de humo: un soplido grave que se abre y se apaga, con un susurro de tela."""
+    t = t_axis(0.8)
+    puff = _soft_air(rng, len(t), 120, 1400) * env(t, 0.012, 0.16) * 1.0
+    thud = np.sin(2 * np.pi * (140 * np.exp(-t * 14) + 55) * t) * env(t, 0.003, 0.1) * 0.7
+    cloth = _soft_air(rng, len(t), 1800, 5200) * env(t, 0.03, 0.18) * 0.22
+    return fade_out(normalize(puff + thud + cloth, 0.8), 0.1)
+
+
+def assassin_slash(rng):
+    """Tajo: un siseo de filo que cruza y un tintineo metálico corto."""
+    t, noise = _sweep_noise(rng, 0.32, 2200.0, 4800.0, 1800.0, 0.8)
+    amp = np.sin(np.pi * np.clip(t / 0.3, 0, 1)) ** 1.4
+    ring = _bell(t, 2600, [(1.0, 0.5), (1.9, 0.35), (2.7, 0.2)], 0.16) * env(t, 0.05, 0.2) * 0.35
+    return fade_out(normalize(normalize(noise) * amp * 0.8 + ring, 0.82), 0.05)
+
+
+def assassin_step(rng):
+    """Paso de sombra: un barrido rápido hacia dentro y un golpe sordo al reaparecer a la espalda."""
+    t, noise = _sweep_noise(rng, 0.45, 900.0, 3200.0, 700.0, 0.7)
+    amp = np.sin(np.pi * np.clip(t / 0.16, 0, 1)) ** 1.2 * (t < 0.16)
+    land_t = np.maximum(t - 0.14, 0)
+    land = (np.sin(2 * np.pi * (150 * np.exp(-land_t * 20) + 60) * land_t) * env(land_t, 0.001, 0.12) * 0.9
+            + _soft_air(rng, len(t), 600, 3500) * env(land_t, 0.0008, 0.03) * 0.4) * (t >= 0.14)
+    return fade_out(normalize(normalize(noise) * amp * 0.5 + land, 0.85), 0.06)
+
+
+def assassin_throw(rng):
+    """Lanzamiento de cuchillas: un zumbido agudo y rápido que se aleja."""
+    t, noise = _sweep_noise(rng, 0.3, 3000.0, 6000.0, 2500.0, 0.9)
+    amp = env(t, 0.006, 0.07)
+    spin = np.sin(2 * np.pi * np.cumsum(1800 * np.exp(-t * 6) + 700) / RATE) * env(t, 0.004, 0.06) * 0.25
+    return fade_out(normalize(normalize(noise) * amp * 0.7 + spin, 0.78), 0.05)
+
+
+def assassin_impact(rng):
+    """Clavada: un golpe seco en madera o carne y un tic metálico."""
+    t = t_axis(0.35)
+    thunk = np.sin(2 * np.pi * (240 * np.exp(-t * 26) + 90) * t) * env(t, 0.001, 0.07) * 0.9
+    tick = _soft_air(rng, len(t), 2000, 6500) * env(t, 0.0005, 0.018) * 0.5
+    metal = _bell(t, 3100, [(1.0, 0.4), (2.2, 0.25)], 0.1) * 0.25
+    return fade_out(normalize(thunk + tick + metal, 0.85), 0.05)
+
+
 SOUNDS = {
     'eclipse_announce': eclipse_announce,
     'eclipse_start': eclipse_start,
@@ -539,6 +585,11 @@ SOUNDS = {
     'mage_time': mage_time,
     'mage_missile': mage_missile,
     'mage_impact': mage_impact,
+    'assassin_vanish': assassin_vanish,
+    'assassin_slash': assassin_slash,
+    'assassin_step': assassin_step,
+    'assassin_throw': assassin_throw,
+    'assassin_impact': assassin_impact,
 }
 
 

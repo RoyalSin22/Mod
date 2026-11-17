@@ -47,6 +47,11 @@ public final class ModSounds {
 	public static final SoundEvent MAGE_TIME = register("mage_time");
 	public static final SoundEvent MAGE_MISSILE = register("mage_missile");
 	public static final SoundEvent MAGE_IMPACT = register("mage_impact");
+	public static final SoundEvent ASSASSIN_VANISH = register("assassin_vanish");
+	public static final SoundEvent ASSASSIN_SLASH = register("assassin_slash");
+	public static final SoundEvent ASSASSIN_STEP = register("assassin_step");
+	public static final SoundEvent ASSASSIN_THROW = register("assassin_throw");
+	public static final SoundEvent ASSASSIN_IMPACT = register("assassin_impact");
 
 	private ModSounds() {
 	}

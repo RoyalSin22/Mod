@@ -94,8 +94,7 @@ public final class Abilities {
 					m -> m.getTarget() == p)) {
 				mob.setTarget(null);
 			}
-			Targeting.burst(world(p), ParticleTypes.LARGE_SMOKE, p, 25, 0.5);
-			sound(p, SoundEvents.ENTITY_ILLUSIONER_MIRROR_MOVE, 1.0f);
+			AssassinFx.vanish(p); // V84
 			return true;
 		});
 		register("shadow_step", (p, r) -> {
@@ -104,11 +103,11 @@ public final class Abilities {
 			Vec3d behind = target.getPos().subtract(Targeting.horizontalFacing(target).multiply(1.2));
 			Vec3d spot = Targeting.findFreeSpot(p, behind);
 			if (spot == null) return false;
-			Targeting.burst(world(p), ParticleTypes.LARGE_SMOKE, p, 15, 0.4);
+			Vec3d from = p.getPos();
 			// Aparece mirando en la misma dirección que el objetivo: justo a su espalda.
 			p.networkHandler.requestTeleport(spot.x, spot.y, spot.z, target.getYaw(), 10.0f);
 			p.fallDistance = 0;
-			sound(p, SoundEvents.ENTITY_ENDERMAN_TELEPORT, 0.6f);
+			AssassinFx.step(p, from, spot); // V84
 			return true;
 		});
 

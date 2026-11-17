@@ -64,6 +64,11 @@ public final class FxClient {
 			case FxIds.MAGE_BLINK -> MageClientFx.blink(world, p);
 			case FxIds.MAGE_TIME_WARP -> MageClientFx.timeWarp(world, p);
 			case FxIds.MAGE_MISSILE -> MageClientFx.missile(world, p);
+			case FxIds.ASSASSIN_VANISH -> AssassinClientFx.vanish(world, p);
+			case FxIds.ASSASSIN_STEP -> AssassinClientFx.step(world, p);
+			case FxIds.ASSASSIN_FAN -> AssassinClientFx.fan(world, p);
+			case FxIds.ASSASSIN_KNIFE -> AssassinClientFx.knife(world, p);
+			case FxIds.ASSASSIN_SHURIKEN -> AssassinClientFx.shuriken(world, p);
 			default -> { }
 		}
 	}

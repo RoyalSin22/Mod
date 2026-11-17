@@ -33,7 +33,8 @@ HOLD = "linear"
 
 # Fotograma de impacto de cada animación, en ticks (20 por segundo). Debe coincidir con PlayerAnimIds.IMPACT_TICKS.
 IMPACT_TICKS = {"berserker_rage": 4, "berserker_war_cry": 8, "berserker_slam": 3, "mage_bolt": 4, "mage_blink": 3,
-                "mage_time_warp": 6, "mage_missile_r": 3, "mage_missile_l": 3}
+                "mage_time_warp": 6, "mage_missile_r": 3, "mage_missile_l": 3, "assassin_vanish": 3, "assassin_step": 3,
+                "assassin_fan": 4, "assassin_shuriken": 3}
 
 
 def kf(vec, easing=OUT):
@@ -225,7 +226,51 @@ def build_mage():
     return {"format_version": "1.8.0", "animations": anims}
 
 
-FILES = {"berserker.json": build_berserker, "mage.json": build_mage}
+def build_assassin():
+    anims = {}
+
+    # ---- Desaparecer (0,7 s): cruza los brazos ante el rostro mientras se encoge (preparación) y los abre de un barrido de capa
+    # en el tick 3, quedándose un instante agachado antes de erguirse.
+    vanish_r = {0: NEUTRAL, 0.07: ([-78, -34, -10], OUT), 0.15: ([-52, 26, 78], SMASH), 0.24: ([-52, 26, 78], HOLD),
+                0.36: ([-40, 12, 40], SOFT), 0.70: (NEUTRAL, SOFT)}
+    anims["assassin_vanish"] = animation(False, limbs(
+        vanish_r, 0.02, 0.95,
+        torso=({0: NEUTRAL, 0.07: [20, 0, 0], 0.15: ([6, 8, 0], SMASH), 0.24: ([6, 8, 0], HOLD), 0.70: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.07: [14, 0, 0], 0.15: ([-4, 0, 0], BACK), 0.24: ([-4, 0, 0], HOLD), 0.70: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.07: [0, -2.6, 0], 0.15: ([0, -1.8, 0], SMASH), 0.24: ([0, -1.8, 0], HOLD), 0.70: (NEUTRAL, SOFT)}),
+    ))
+
+    # ---- Paso de sombra (0,5 s): se enrosca hacia atrás con el arma baja y se lanza con una estocada al frente en el tick 3.
+    step_r = {0: NEUTRAL, 0.07: ([28, -10, 22], OUT), 0.15: ([-104, 4, 4], SMASH), 0.23: ([-104, 4, 4], HOLD), 0.50: (NEUTRAL, SOFT)}
+    anims["assassin_step"] = animation(False, limbs(
+        step_r, 0.03, 0.9,
+        torso=({0: NEUTRAL, 0.07: [-6, -14, 0], 0.15: ([22, 10, 0], SMASH), 0.23: ([22, 10, 0], HOLD), 0.50: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.07: [-4, -8, 0], 0.15: ([-8, 4, 0], BACK), 0.23: ([-8, 4, 0], HOLD), 0.50: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.07: [0, -2.0, 0], 0.15: ([0, -1.4, 0], SMASH), 0.23: ([0, -1.4, 0], HOLD), 0.50: (NEUTRAL, SOFT)}),
+    ))
+
+    # ---- Abanico de cuchillas (0,75 s): cruza los brazos sobre el pecho cargando las cuchillas y los lanza abiertos en el tick 4.
+    fan_r = {0: NEUTRAL, 0.10: ([-66, -38, -18], OUT), 0.15: ([-70, -40, -22], SOFT), 0.20: ([-84, 14, 82], SMASH),
+             0.30: ([-84, 14, 82], HOLD), 0.42: ([-70, 8, 60], SOFT), 0.75: (NEUTRAL, SOFT)}
+    anims["assassin_fan"] = animation(False, limbs(
+        fan_r, 0.015, 0.96,
+        torso=({0: NEUTRAL, 0.10: [10, 0, 0], 0.20: ([-6, 0, 0], SMASH), 0.30: ([-6, 0, 0], HOLD), 0.75: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.10: [8, 0, 0], 0.20: ([-4, 0, 0], BACK), 0.30: ([-4, 0, 0], HOLD), 0.75: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.10: [0, -1.4, 0], 0.20: ([0, 0.6, 0], BACK), 0.30: ([0, 0.6, 0], HOLD), 0.75: (NEUTRAL, SOFT)}),
+    ))
+
+    # ---- Shuriken (0,6 s): arma el brazo por encima del hombro, el otro guía al frente, y lo lanza con un latigazo en el tick 3.
+    shu_r = {0: NEUTRAL, 0.07: ([-150, 6, 38], OUT), 0.15: ([-78, -4, 6], SMASH), 0.23: ([-78, -4, 6], HOLD), 0.55: (NEUTRAL, SOFT)}
+    shu_l = {0: NEUTRAL, 0.07: ([-70, 14, -24], OUT), 0.15: ([-58, 8, -18], SOFT), 0.23: ([-58, 8, -18], HOLD), 0.55: (NEUTRAL, SOFT)}
+    anims["assassin_shuriken"] = animation(False, {
+        "right_arm": bone(rot=shu_r), "left_arm": bone(rot=shu_l),
+        "torso": bone(rot={0: NEUTRAL, 0.07: [-4, -14, 0], 0.15: ([6, 12, 0], SMASH), 0.23: ([6, 12, 0], HOLD), 0.55: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.07: [-4, -6, 0], 0.15: ([2, 4, 0], BACK), 0.23: ([2, 4, 0], HOLD), 0.55: (NEUTRAL, SOFT)}),
+    })
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+FILES = {"berserker.json": build_berserker, "mage.json": build_mage, "assassin.json": build_assassin}
 
 
 def render(name):
