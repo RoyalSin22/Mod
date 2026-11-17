@@ -75,6 +75,17 @@ class WeaponArtTest(unittest.TestCase):
         b = weapon_art.normalize(fake_ai_sword(), flip=True, size=16)
         self.assertNotEqual(list(a.getdata()), list(b.getdata()))
 
+    def test_bevel_grows_from_the_edge_to_the_centre_and_stays_in_range(self):
+        img = Image.new('RGBA', (16, 16), (0, 0, 0, 0))
+        for y in range(4, 12):
+            for x in range(4, 12):
+                img.putpixel((x, y), (200, 200, 200, 255))
+        d = weapon_art.bevel_depth_map(img, min_units=0.5, max_units=1.5)
+        self.assertEqual(d[0][0], 0)
+        self.assertEqual(d[4][4], 0.5)
+        self.assertGreater(d[7][7], d[4][4])
+        self.assertLessEqual(max(max(row) for row in d), 1.5)
+
     def test_depth_is_uniform_so_the_blade_surface_is_smooth(self):
         img = Image.new('RGBA', (16, 16), (0, 0, 0, 0))
         img.putpixel((3, 3), (230, 230, 240, 255))

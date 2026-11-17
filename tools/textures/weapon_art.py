@@ -181,6 +181,48 @@ def depth_map(img, thickness=1):
     return [[0 if px[x, y][3] < 255 else thickness for x in range(n)] for y in range(n)]
 
 
+def bevel_depth_map(img, min_units=0.5, max_units=1.5, per_cell=0.25, step=0.25):
+    """Grosor 3D biselado (V76.2): crece desde el borde de la silueta hacia el interior, como un objeto tallado.
+
+    ``min_units``: grosor en la orilla; sube ``per_cell`` unidades por cada píxel que se entra, hasta ``max_units``; se
+    redondea a múltiplos de ``step`` para que los bloques contiguos se puedan fundir. Las hojas quedan con una arista central, los
+    mangos redondeados y las gemas abombadas. Distancia de ajedrez (8 vecinos) a la transparencia más cercana."""
+    img = img.convert('RGBA')
+    px = img.load()
+    n = img.size[0]
+    inf = 10 ** 6
+    dist = [[0 if px[x, y][3] < 255 else inf for x in range(n)] for y in range(n)]
+    from collections import deque
+    queue = deque((x, y) for y in range(n) for x in range(n) if dist[y][x] == 0)
+    # Los bordes de la imagen cuentan como vacío.
+    for x in range(n):
+        for y in (0, n - 1):
+            if dist[y][x] == inf:
+                dist[y][x] = 1
+                queue.append((x, y))
+    for y in range(n):
+        for x in (0, n - 1):
+            if dist[y][x] == inf:
+                dist[y][x] = 1
+                queue.append((x, y))
+    while queue:
+        x, y = queue.popleft()
+        for dx in (-1, 0, 1):
+            for dy in (-1, 0, 1):
+                qx, qy = x + dx, y + dy
+                if (dx or dy) and 0 <= qx < n and 0 <= qy < n and dist[qy][qx] > dist[y][x] + 1:
+                    dist[qy][qx] = dist[y][x] + 1
+                    queue.append((qx, qy))
+    out = [[0.0] * n for _ in range(n)]
+    for y in range(n):
+        for x in range(n):
+            if dist[y][x] == 0:
+                continue
+            t = min(max_units, min_units + per_cell * (dist[y][x] - 1))
+            out[y][x] = round(round(t / step) * step, 4)
+    return out
+
+
 def downscale(img, size=GUI_SIZE):
     """Versión reducida (caja) con bordes duros, p. ej. el icono de inventario de un arte de 64×64."""
     img = img.convert('RGBA')

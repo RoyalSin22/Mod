@@ -6,6 +6,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Corregido
+- **v76.2 — Armas en la mano con relieve biselado («modelo a mano»).** El grosor del modelo 3D ya no es uniforme: crece desde la
+  orilla de la silueta hacia el interior (`weapon_art.bevel_depth_map`, distancia de ajedrez al vacío, múltiplos de 0,25), de modo que
+  las hojas quedan con arista central, los mangos redondeados y las gemas abombadas. Cada arma tiene su perfil (orilla, máximo) en
+  `PROFILE` de `tools/models/gen_weapon_models.py`: 1,0 para hojas finas, 1,25 por defecto, 1,5–2,0 para mazas, laúd y cráneos. Los 20
+  modelos `*_3d.json` se regeneraron (más piezas: unos 3 MB en total) y `--check` los valida. Prueba nueva en `test_weapon_art.py`
+  (26 pruebas). Revisado con un renderizador oblicuo propio; falta la comprobación en partida.
 - **v76.1 — Armas en la mano sin borde morado ni bultos.** En partida el modelo 3D de las armas se veía con un borde morado grueso y
   la hoja llena de relieve irregular. Causas: (1) el contorno de 1 píxel que dibuja el generador de imágenes viene mezclado con el
   fondo magenta (por ejemplo `#5A065B`), y las caras laterales del modelo 3D heredaban ese color; (2) el grosor 3D variaba con la

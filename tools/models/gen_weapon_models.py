@@ -79,7 +79,8 @@ def depth_map(name):
     """Grosor por píxel (0 = vacío) a partir de la plantilla y del icono ya dibujado (o del arte externo)."""
     art = gen_items.weapon_art.override(name)
     if art is not None:
-        return gen_items.weapon_art.depth_map(art)
+        lo, hi = PROFILE.get(name, DEFAULT_PROFILE)
+        return gen_items.weapon_art.bevel_depth_map(art, min_units=lo, max_units=hi)
     template, colors = gen_items.ITEMS[name]
     grid = [row.ljust(16, '.')[:16] for row in gen_items.T[template]]
     image = gen_items.render(gen_items.T[template], colors)
@@ -109,6 +110,18 @@ def depth_map(name):
 
 def r(v):
     return round(v, 4)
+
+
+# V76.2: perfil de volumen (grosor en la orilla, grosor máximo en el centro; unidades de modelo, 16 = un bloque) de cada arma con
+# arte externo. Por defecto un relieve suave; las piezas voluminosas (mazas, cráneos, laúd) más gruesas y las hojas finas más planas.
+DEFAULT_PROFILE = (0.5, 1.25)
+PROFILE = {
+    'paladin_weapon_master': (0.5, 2.0), 'warlock_weapon_master': (0.5, 2.0), 'bard_weapon_master': (0.5, 2.0),
+    'tamer_weapon_master': (0.5, 1.75), 'necromancer_weapon_master': (0.5, 1.5), 'berserker_weapon_master': (0.5, 1.5),
+    'elementalist_weapon_master': (0.5, 1.5), 'engineer_weapon_master': (0.5, 1.75), 'gunslinger_weapon_master': (0.5, 1.5),
+    'weapon_summoner_weapon_master': (0.5, 1.0), 'assassin_weapon_master': (0.5, 1.0), 'swordsman_weapon_master': (0.5, 1.0),
+    'merchant_weapon_master': (0.5, 1.0), 'hunter_weapon_master': (0.5, 1.0), 'shapeshifter_weapon_master': (0.5, 1.25),
+}
 
 
 def hd(name):
