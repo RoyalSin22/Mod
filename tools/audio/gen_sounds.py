@@ -317,6 +317,102 @@ def errante_despawn(rng):
     return _errante_voice(rng, 0.69, (156, 263, 398), 0.28, 0.88, 2700, 0.19)
 
 
+# ---------------------------------------------------------------- Bersérker (V77)
+
+def _sweep_noise(rng, seconds, f_start, f_peak, f_end, width):
+    """Ruido de banda cuya frecuencia central sube y baja (aire cortado). Pasos de 12 dB/oct arriba y abajo."""
+    t = t_axis(seconds)
+    n = len(t)
+    pos = np.clip(t / seconds, 0, 1)
+    freq = np.where(pos < 0.4, f_start + (f_peak - f_start) * (pos / 0.4), f_peak + (f_end - f_peak) * ((pos - 0.4) / 0.6))
+    noise = rng.standard_normal(n)
+    out = np.empty(n)
+    up1 = up2 = lo1 = lo2 = 0.0
+    for i in range(n):
+        a_up = 1 - np.exp(-2 * np.pi * freq[i] * (1 + width) / RATE)
+        a_lo = 1 - np.exp(-2 * np.pi * freq[i] / (1 + width) / RATE)
+        up1 += a_up * (noise[i] - up1)
+        up2 += a_up * (up1 - up2)
+        lo1 += a_lo * (noise[i] - lo1)
+        lo2 += a_lo * (lo1 - lo2)
+        out[i] = up2 - lo2
+    return t, out
+
+
+def _growl(rng, seconds, f_start, f_end, drive, breath, formants, ceiling):
+    """Gruñido: diente de sierra con vibrato que baja de tono, formantes y aire, saturado y oscurecido."""
+    t = t_axis(seconds)
+    glide = np.clip(t / seconds, 0, 1)
+    f0 = (f_start + (f_end - f_start) * glide) * (1 + 0.025 * np.sin(2 * np.pi * 6.5 * t) + 0.012 * np.sin(2 * np.pi * 31 * t))
+    phase = 2 * np.pi * np.cumsum(f0) / RATE
+    saw = sum(np.sin(k * phase) / k for k in range(1, 9))
+    voiced = sum(w * lowpass(saw, c) for c, w in formants)
+    air = lowpass(rng.standard_normal(len(t)), 1800) * breath * (0.6 + 0.4 * np.sin(2 * np.pi * 9 * t))
+    body = np.tanh(drive * (voiced + air))
+    return t, lowpass(lowpass(body, ceiling), ceiling)
+
+
+def berserker_roar(rng):
+    """Rugido grave y sostenido que se hunde: el Bersérker se enfurece."""
+    t, body = _growl(rng, 1.7, 98.0, 58.0, 1.7, 0.4, [(520, 1.0), (1100, 0.5), (1900, 0.15)], 1500)
+    amp = np.clip(t / 0.14, 0, 1) * np.exp(-np.maximum(t - 1.0, 0) / 0.32)
+    thump = np.sin(2 * np.pi * 52 * t) * env(t, 0.003, 0.22) * 0.9
+    return fade_out(normalize(body * amp + thump, 0.85))
+
+
+def berserker_war_cry(rng):
+    """Grito de guerra corto y áspero con un golpe sordo al inicio."""
+    t, body = _growl(rng, 1.05, 168.0, 112.0, 2.6, 0.5, [(760, 1.0), (1500, 0.6), (2400, 0.2)], 2100)
+    amp = np.clip(t / 0.05, 0, 1) * np.exp(-np.maximum(t - 0.45, 0) / 0.2)
+    boom = (np.sin(2 * np.pi * (90 * np.exp(-t * 7) + 38) * t) + 0.5 * lowpass(rng.standard_normal(len(t)), 300)) * env(t, 0.002, 0.2)
+    return fade_out(normalize(body * amp * 0.8 + boom, 0.88))
+
+
+def berserker_slam(rng):
+    """Impacto demoledor: golpe de graves que cae, chasquido de roca, retumbo y escombros."""
+    t = t_axis(2.2)
+    thump = np.sin(2 * np.pi * np.cumsum(34 + 70 * np.exp(-t * 9)) / RATE) * env(t, 0.002, 0.45) * 2.2
+    crack = lowpass(rng.standard_normal(len(t)), 3500) * env(t, 0.0008, 0.03) * 0.7
+    body = lowpass(rng.standard_normal(len(t)), 380) * env(t, 0.004, 0.34) * 1.6
+    rumble = lowpass(rng.standard_normal(len(t)), 85) * env(t, 0.03, 0.9) * 6.0
+    debris = np.zeros(len(t))
+    for _ in range(46):
+        at = 0.12 + rng.random() ** 1.6 * 1.5
+        i = int(at * RATE)
+        n = int(0.012 * RATE)
+        if i + n < len(t):
+            debris[i:i + n] += rng.standard_normal(n) * np.exp(-np.arange(n) / (0.003 * RATE)) * (0.5 + rng.random()) * np.exp(-at * 1.3)
+    mix = thump + crack + body + rumble + 0.18 * lowpass(debris, 3500)
+    return fade_out(normalize(np.tanh(0.9 * mix), 0.92), 0.12)
+
+
+def berserker_whoosh(rng):
+    """Corte de aire de un arma pesada que gira."""
+    t, noise = _sweep_noise(rng, 0.55, 300.0, 1500.0, 380.0, 0.8)
+    amp = np.sin(np.pi * np.clip(t / 0.55, 0, 1)) ** 1.4
+    low = np.sin(2 * np.pi * (60 + 25 * np.sin(np.pi * np.clip(t / 0.55, 0, 1))) * t) * amp * 0.35
+    return fade_out(normalize(normalize(noise) * amp + low, 0.8))
+
+
+def berserker_heartbeat(rng):
+    """Latido doble y grave: la furia late en el pecho."""
+    t = t_axis(0.7)
+    x = np.zeros_like(t)
+    for start, gain in ((0.0, 1.0), (0.24, 0.75)):
+        tt = np.maximum(t - start, 0)
+        x += gain * (np.sin(2 * np.pi * (46 + 40 * np.exp(-tt * 22)) * tt) + 0.5 * np.sin(2 * np.pi * 92 * tt)
+                     + 0.3 * np.sin(2 * np.pi * 150 * tt)) * env(tt, 0.004, 0.11) * (t >= start)
+    return fade_out(normalize(x, 0.85))
+
+
+def berserker_leap(rng):
+    """Impulso de salto: gruñido seco y un bufido de aire."""
+    t, body = _growl(rng, 0.42, 130.0, 210.0, 2.2, 0.45, [(700, 1.0), (1400, 0.4)], 1900)
+    amp = np.clip(t / 0.03, 0, 1) * np.exp(-t / 0.13)
+    _, air = _sweep_noise(rng, 0.42, 300.0, 1200.0, 500.0, 0.8)
+    return fade_out(normalize(body * amp * 0.9 + normalize(air) * np.sin(np.pi * np.clip(t / 0.42, 0, 1)) * 0.45, 0.82))
+
+
 SOUNDS = {
     'eclipse_announce': eclipse_announce,
     'eclipse_start': eclipse_start,
@@ -346,6 +442,12 @@ SOUNDS = {
     'errante_hurt': errante_hurt,
     'errante_death': errante_death,
     'errante_despawn': errante_despawn,
+    'berserker_roar': berserker_roar,
+    'berserker_war_cry': berserker_war_cry,
+    'berserker_slam': berserker_slam,
+    'berserker_whoosh': berserker_whoosh,
+    'berserker_heartbeat': berserker_heartbeat,
+    'berserker_leap': berserker_leap,
 }
 
 

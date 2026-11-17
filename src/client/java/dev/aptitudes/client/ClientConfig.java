@@ -20,6 +20,8 @@ public final class ClientConfig {
 	public boolean hudVisible = true;
 	/** Destellos de color y temblor de cámara al lanzar habilidades o recibir golpes fuertes. */
 	public boolean screenEffects = true;
+	/** V77: intensidad de los efectos de batalla (partículas, cámara y pantalla): 0 los apaga, 1 es lo normal, hasta 1,5. */
+	public float fxIntensity = 1.0f;
 	/** Remates geométricos de las habilidades en el mundo. */
 	public Boolean castAnimations = true;
 	/** Números de daño flotantes. */
@@ -78,6 +80,7 @@ public final class ClientConfig {
 		if (config.hudMinimal == null) config.hudMinimal = false;
 		if (config.hudAnimations == null) config.hudAnimations = true;
 		config.hudPreset = config.preset().id();
+		config.fxIntensity = Float.isFinite(config.fxIntensity) ? Math.clamp(config.fxIntensity, 0f, 1.5f) : 1.0f;
 		config.guideBookmarks = dev.aptitudes.guide.GuideRules.sanitizeBookmarks(config.guideBookmarks);
 		config.hudScale = AbilityHudLayout.validatedScale(config.hudScale);
 		config.hudOffsetX = Math.clamp(config.hudOffsetX, -4096, 4096);

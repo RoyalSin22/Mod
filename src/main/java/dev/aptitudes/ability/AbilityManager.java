@@ -207,7 +207,7 @@ public final class AbilityManager {
 			}
 		}
 		CastFx.onCast(player, role, slot == ULTIMATE_SLOT ? Kind.ULTIMATE
-				: slot == SIGNATURE_SLOT ? Kind.SIGNATURE : Kind.ACTIVE);
+				: slot == SIGNATURE_SLOT ? Kind.SIGNATURE : Kind.ACTIVE, cooldownKey);
 		if (empowered) RoleResources.consumeEmpower(player, role);
 		if (overload) cooldown = cooldown / 2;
 		if (concat && ExtraKits.concatHalvesCooldown(player)) cooldown = cooldown / 2;

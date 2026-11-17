@@ -44,6 +44,15 @@ public final class CastFx {
 		return role == null ? 0xB388FF : role.color();
 	}
 
+	/** Igual que {@link #onCast(ServerPlayerEntity, Role, Kind)}, pero las activas con guion propio solo hacen el gesto. */
+	public static void onCast(ServerPlayerEntity player, Role role, Kind kind, String abilityId) {
+		if (kind == Kind.ACTIVE && BerserkerFx.handles(abilityId)) {
+			player.swingHand(net.minecraft.util.Hand.MAIN_HAND, true);
+			return;
+		}
+		onCast(player, role, kind);
+	}
+
 	public static void onCast(ServerPlayerEntity player, Role role, Kind kind) {
 		ServerWorld world = player.getServerWorld();
 		int color = colorOf(player, role);

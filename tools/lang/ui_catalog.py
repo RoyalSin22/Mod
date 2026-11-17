@@ -1802,6 +1802,12 @@ subtitles.aptitudes.errante_rend¦O Errante rasga o ar¦Le Vagabond lacère¦Ver
 subtitles.aptitudes.errante_hurt¦O Errante Velado sofre dano¦Le Vagabond voilé est blessé¦Verhüllter Wanderer wird verletzt
 subtitles.aptitudes.errante_death¦O Errante Velado desaba¦Le Vagabond voilé s’effondre¦Verhüllter Wanderer bricht zusammen
 subtitles.aptitudes.errante_despawn¦O Errante Velado se dissipa¦Le Vagabond voilé se dissipe¦Verhüllter Wanderer verblasst
+subtitles.aptitudes.berserker_roar¦O Berserker ruge¦Le Berserker rugit¦Berserker brüllt
+subtitles.aptitudes.berserker_war_cry¦Grito de guerra¦Cri de guerre¦Kriegsschrei
+subtitles.aptitudes.berserker_slam¦O chão se despedaça¦Le sol se fissure¦Der Boden zerbirst
+subtitles.aptitudes.berserker_whoosh¦Uma lâmina assobia¦Une lame siffle¦Eine Klinge zischt
+subtitles.aptitudes.berserker_heartbeat¦A fúria pulsa¦La fureur bat¦Die Wut pocht
+subtitles.aptitudes.berserker_leap¦O Berserker salta¦Le Berserker bondit¦Berserker springt
 entity.aptitudes.custodio_cuatro_llaves¦O Custódio das Quatro Chaves¦Le Gardien des Quatre Clés¦Der Wächter der vier Schlüssel
 item.aptitudes.faceless_colossus_spawn_egg¦Ovo gerador do Colosso Sem Rosto¦Œuf d'apparition du Colosse sans visage¦Spawn-Ei des gesichtslosen Kolosses
 bestiary.aptitudes.faceless_colossus.tip¦Guerreiro gigante com espadão. Anuncia um golpe amplo e um golpe descendente com onda: saia do círculo marcado. Com metade da vida sua armadura racha: fica mais rápido, investe de longe e recebe mais dano.¦Guerrier géant armé d'une grande épée. Il annonce un large balayage et un coup plongeant avec onde de choc : sortez du cercle marqué. À mi-vie son armure se fissure : il va plus vite, charge de loin et subit plus de dégâts.¦Riesiger Krieger mit Zweihänder. Er kündigt einen weiten Hieb und einen Abwärtsschlag mit Schockwelle an: Verlasse den markierten Kreis. Bei halber Lebenskraft bricht seine Rüstung: Er wird schneller, stürmt aus der Ferne an und erleidet mehr Schaden.

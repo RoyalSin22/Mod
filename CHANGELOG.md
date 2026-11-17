@@ -6,6 +6,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **V77 — Efectos de batalla, fase 1 (Bersérker).** Furia, Grito de guerra, Salto demoledor y Torbellino tienen coreografía propia: brasas
+  que se apagan, escombros con física real (gravedad, rebote y giro), grietas en abanico, onda de choque, pulso de FOV, retroceso
+  suave de cámara, sacudida con ruido continuo y viñeteado, todo atenuado por distancia, más seis sonidos sintetizados y subtítulos.
+  Un solo paquete (`FxEventPayload`) por efecto; el cliente dibuja con su calidad. Nueva opción de cliente `fxIntensity` (0–1,5).
+  Diseño y cómo extenderlo a otros roles en `docs/V77_EFECTOS_BATALLA.md`. **No verificado en partida** y sin animación del cuerpo
+  del jugador en tercera persona (necesitaría una biblioteca o un mixin al modelo).
 - **v65 C5 — Sinergias (Y1–Y5).** Y1 senda ↔ activas (radio, daño y coste), Y2 resonancia de grupo (XP), Y3 elementos ↔ runas
   (daño de fusión), Y4 armadura ↔ senda (resistencia al empuje) e Y5 combos ↔ piedras angulares (la piedra angular se dispara
   en el remate, con espera). Ocho opciones nuevas (`enableSynergies`, `synergyBonusY1…Y4`, `synergyY5KeystoneCooldownSeconds`),
