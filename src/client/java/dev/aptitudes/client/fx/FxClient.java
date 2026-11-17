@@ -1,0 +1,133 @@
+package dev.aptitudes.client.fx;
+
+import dev.aptitudes.Aptitudes;
+import dev.aptitudes.client.ClientConfig;
+import dev.aptitudes.client.hud.ClientFx;
+import dev.aptitudes.logic.FxIds;
+import dev.aptitudes.logic.FxMath;
+import dev.aptitudes.network.FxEventPayload;
+import dev.aptitudes.network.ScreenFxPayload;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.ParticlesMode;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+
+/**
+ * V77: receptor de los eventos de efectos de batalla y utilidades comunes (calidad de partículas, suelo, distancias).
+ * Cada rol añade su coreografía en su propia clase y la enlaza en {@link #dispatch}.
+ */
+public final class FxClient {
+	private static int failures;
+
+	private FxClient() {
+	}
+
+	public static void register() {
+		FxTimeline.register();
+		PlayerAnims.register();
+		FxDebugCommand.register();
+		ClientPlayNetworking.registerGlobalReceiver(FxEventPayload.ID, (payload, context) -> onEvent(payload));
+	}
+
+	public static void clear() {
+		FxTimeline.clear();
+		ScreenDynamics.clear();
+	}
+
+	private static void onEvent(FxEventPayload p) {
+		MinecraftClient mc = MinecraftClient.getInstance();
+		if (mc.world == null || mc.player == null || !FxIds.valid(p.id()) || intensity() <= 0f) return;
+		try {
+			dispatch(mc.world, p);
+		} catch (RuntimeException e) {
+			// Un efecto visual nunca debe tumbar el cliente; se avisa unas pocas veces para no inundar el registro.
+			if (failures++ < 5) Aptitudes.LOGGER.warn("[Aptitudes] Falló el efecto {}", p.id(), e);
+		}
+	}
+
+	private static void dispatch(ClientWorld world, FxEventPayload p) {
+		switch (p.id()) {
+			case FxIds.BERSERKER_RAGE -> BerserkerClientFx.rage(world, p);
+			case FxIds.BERSERKER_WAR_CRY -> BerserkerClientFx.warCry(world, p);
+			case FxIds.BERSERKER_LEAP_TAKEOFF -> BerserkerClientFx.leapTakeoff(world, p);
+			case FxIds.BERSERKER_LEAP_TRAIL -> BerserkerClientFx.leapTrail(world, p);
+			case FxIds.BERSERKER_SLAM -> BerserkerClientFx.slam(world, p);
+			case FxIds.BERSERKER_WHIRL -> BerserkerClientFx.whirl(world, p);
+			default -> { }
+		}
+	}
+
+	// ------------------------------------------------------------------ Calidad
+
+	public static float intensity() {
+		return ClientConfig.get().fxIntensity;
+	}
+
+	/** Factor del ajuste de partículas del juego: todas, reducidas o mínimas. */
+	public static float particleFactor() {
+		ParticlesMode mode = MinecraftClient.getInstance().options.getParticles().getValue();
+		return mode == ParticlesMode.ALL ? 1f : mode == ParticlesMode.DECREASED ? 0.5f : 0.2f;
+	}
+
+	/** Cantidad de partículas tras aplicar intensidad y ajuste de partículas. */
+	public static int n(int base) {
+		return FxMath.scaledCount(base, intensity(), particleFactor());
+	}
+
+	// ------------------------------------------------------------------ Partículas
+
+	public static Particle spawn(ParticleEffect effect, double x, double y, double z, double vx, double vy, double vz) {
+		return MinecraftClient.getInstance().particleManager.addParticle(effect, x, y, z, vx, vy, vz);
+	}
+
+	public static void chunk(ClientWorld world, BlockState state, double x, double y, double z, double vx, double vy, double vz,
+							 float scale, int life, float gravity, float bounce) {
+		MinecraftClient.getInstance().particleManager.addParticle(
+				new ChunkParticle(world, x, y, z, vx, vy, vz, state, scale, life, gravity, bounce));
+	}
+
+	/** Bloque del suelo bajo el punto (hasta 3 bloques); piedra si no hay nada con textura. */
+	public static BlockState groundState(ClientWorld world, double x, double y, double z) {
+		BlockPos pos = BlockPos.ofFloored(x, y - 0.3, z);
+		for (int i = 0; i < 3; i++) {
+			BlockState state = world.getBlockState(pos.down(i));
+			if (!state.isAir() && state.getFluidState().isEmpty()) return state;
+		}
+		return Blocks.STONE.getDefaultState();
+	}
+
+	// ------------------------------------------------------------------ Entidades y distancias
+
+	/** Posición actual de la entidad ligada al evento, o la del paquete si ya no existe. */
+	public static Vec3d entityPos(ClientWorld world, FxEventPayload p) {
+		Entity e = p.entityId() >= 0 ? world.getEntityById(p.entityId()) : null;
+		return e != null ? e.getPos() : new Vec3d(p.x(), p.y(), p.z());
+	}
+
+	public static Entity entity(ClientWorld world, int id) {
+		return id >= 0 ? world.getEntityById(id) : null;
+	}
+
+	public static boolean isLocal(int entityId) {
+		var player = MinecraftClient.getInstance().player;
+		return player != null && player.getId() == entityId;
+	}
+
+	public static double distanceTo(Vec3d pos) {
+		var player = MinecraftClient.getInstance().player;
+		return player == null ? Double.MAX_VALUE : player.getPos().distanceTo(pos);
+	}
+
+	/** Destello de pantalla escalado por la intensidad. */
+	public static void flash(int rgb, float strength) {
+		float s = strength * intensity();
+		if (s > 0.01f) ClientFx.onScreenFx(new ScreenFxPayload(ScreenFxPayload.FLASH, rgb, Math.min(1f, s)));
+	}
+}

@@ -5,6 +5,29 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Añadido
+- **V78.1 — Animaciones visibles en primera persona y más dinámicas.** Las animaciones no se veían porque PAL las deja transparentes en
+  primera persona por defecto; ahora se activa el modo `THIRD_PERSON_MODEL` mientras suenan. Las cinco animaciones del Bersérker se
+  rehacen con preparación, sobrepaso, congelado en el impacto, rebote y brazos desfasados, son más cortas (Furia 1,0 s, Grito 0,8 s,
+  aterrizaje 0,75 s) y las partículas, la cámara y el estruendo del aterrizaje caen en el fotograma de impacto. Encargo para animar otros
+  roles en `docs/PROMPT_ANIMACIONES_CODEX.md`. **Sin ver en partida.**
+- **V78 — Animaciones del cuerpo del jugador (Player Animation Library).** Dependencia obligatoria nueva, aprobada por el autor:
+  PAL 1.1.6+mc.1.21.1 (MIT). Furia, Grito de guerra, Salto demoledor y Torbellino animan el cuerpo del jugador (también a ojos de los
+  demás), con transición suave entre el salto y el aterrizaje. Poses generadas con `tools/models/gen_player_animations.py`, probadas con
+  el cargador real de la librería, opción de cliente `playerAnimations` y comando de cliente `/aptfx anim <nombre>` para verlas.
+  **Los jugadores deben instalar PAL junto al mod.** Las poses no se han visto en partida (signos de giros laterales por confirmar).
+- **V77 — Efectos de batalla, fase 1 (Bersérker).** Furia, Grito de guerra, Salto demoledor y Torbellino tienen coreografía propia: brasas
+  que se apagan, escombros con física real (gravedad, rebote y giro), grietas en abanico, onda de choque, pulso de FOV, retroceso
+  suave de cámara, sacudida con ruido continuo y viñeteado, todo atenuado por distancia, más seis sonidos sintetizados y subtítulos.
+  Un solo paquete (`FxEventPayload`) por efecto; el cliente dibuja con su calidad. Nueva opción de cliente `fxIntensity` (0–1,5).
+  Diseño y cómo extenderlo a otros roles en `docs/V77_EFECTOS_BATALLA.md`. **No verificado en partida** y sin animación del cuerpo
+  del jugador en tercera persona (necesitaría una biblioteca o un mixin al modelo).
+- **v65 C5 — Sinergias (Y1–Y5).** Y1 senda ↔ activas (radio, daño y coste), Y2 resonancia de grupo (XP), Y3 elementos ↔ runas
+  (daño de fusión), Y4 armadura ↔ senda (resistencia al empuje) e Y5 combos ↔ piedras angulares (la piedra angular se dispara
+  en el remate, con espera). Ocho opciones nuevas (`enableSynergies`, `synergyBonusY1…Y4`, `synergyY5KeystoneCooldownSeconds`),
+  indicadores en el HUD (`SynergyHud`, avisados por `SynergyPayload`), partículas al activarse, logro «Sinergista» (las cinco en
+  una sesión) y `/aptitudes synergy status`. **Y1 usa los efectos reales** de los nodos aprendidos de la senda elegida del rol (`Y1Rules`, pura y probada): SPEED amplía el radio de las activas de movimiento, CRIT/EXECUTE el daño de las ofensivas, MINION_POWER el de las invocaciones y (MANA_REGEN o MAX_HEALTH) con RESOURCE_GAIN abarata las activas; el radio lo consume `Targeting.hostilesAround` mientras se lanza la habilidad. **Cobertura de Y1:** las 80 activas base, las 100 activas nuevas (v67, clasificadas a mano por lo que hacen) y las evolucionadas por plantilla (NOVA, BEAM, CONE, ZONE y DASH dañan; DASH también cuenta como movimiento; SUMMON invoca); una activa puede ser de varias categorías. Los golpes diferidos (giros del Torbellino, oleadas) conservan el bonus de la habilidad que los programó. El tooltip del árbol muestra qué aporta la senda a cada activa. **Limitaciones conocidas:** sin pruebas en partida (`docs/V65_C5_TESTING_PLAN.md`).
+
 ### Cambiado
 - **v81 — Correcciones tras la prueba en partida.** (1) La barra de **campeones y jefes** pasa **arriba, centrada**, como las barras de
   jefe del juego (antes iba sobre la barra de acción y tapaba la vista). (2) El bloque de estado ya no dibuja la barra verde

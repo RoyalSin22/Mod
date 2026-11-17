@@ -43,7 +43,7 @@ final class AbilitiesExtra {
 		Abilities.register("leap_slam", (p, r) -> {
 			Vec3d facing = Targeting.horizontalFacing(p);
 			push(p, facing.multiply(1.1).add(0, 0.9, 0));
-			sound(p, SoundEvents.ENTITY_RAVAGER_STEP, 0.7f);
+			BerserkerFx.leapTakeoff(p, 16); // V77
 			AbilityState.schedule(server(p), 16, () -> {
 				if (!p.isAlive()) return;
 				for (LivingEntity e : Targeting.hostilesAround(p, 3 + 0.5 * r)) {
@@ -51,9 +51,7 @@ final class AbilitiesExtra {
 					e.addVelocity(0, 0.5, 0);
 					e.velocityModified = true;
 				}
-				ParticleFx.shockwave(server(p), world(p), p.getPos(), 3 + 0.5 * r, ParticleTypes.CRIT, 6);
-				world(p).spawnParticles(ParticleTypes.EXPLOSION, p.getX(), p.getY(), p.getZ(), 3, 0.5, 0.1, 0.5, 0);
-				sound(p, SoundEvents.ENTITY_DRAGON_FIREBALL_EXPLODE, 1.2f);
+				BerserkerFx.slam(p, 3 + 0.5 * r); // V77
 			});
 			return true;
 		});
@@ -65,8 +63,7 @@ final class AbilitiesExtra {
 					e.damage(p.getDamageSources().playerAttack(p), 2 + r);
 					e.takeKnockback(0.3, p.getX() - e.getX(), p.getZ() - e.getZ());
 				}
-				ParticleFx.ring(world(p), p.getPos().add(0, 1, 0), 2.6, ParticleTypes.SWEEP_ATTACK, 10);
-				sound(p, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 0.7f + 0.15f * i);
+				BerserkerFx.whirl(p, i, 3.2); // V77
 			});
 			return true;
 		});

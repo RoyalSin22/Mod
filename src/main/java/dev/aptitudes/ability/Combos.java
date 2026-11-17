@@ -157,6 +157,7 @@ public final class Combos {
 	 * v65 C5 Y5: Disparar piedra angular del jugador en remate de combo (si está disponible y cooldown expiró).
 	 */
 	private static void tryTriggerKeystoneOnCombo(ServerPlayerEntity player) {
+		if (!Aptitudes.config().enableSynergies) return;
 		long now = player.getServer().getTicks();
 		UUID uuid = player.getUuid();
 
@@ -170,6 +171,7 @@ public final class Combos {
 
 		// Disparar la piedra angular sin coste de energía.
 		Keystones.triggerFromCombo(player);
+		SynergyTracker.mark(player, 4);
 
 		// Establecer cooldown global para evitar spam.
 		long cooldown = SynergyRules.keystoneComboTrigerCooldown();

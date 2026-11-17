@@ -33,6 +33,13 @@ public final class ModSounds {
 	public static final SoundEvent ERRANTE_HURT = register("errante_hurt");
 	public static final SoundEvent ERRANTE_DEATH = register("errante_death");
 	public static final SoundEvent ERRANTE_DESPAWN = register("errante_despawn");
+	// V77: efectos de batalla del Bersérker.
+	public static final SoundEvent BERSERKER_ROAR = register("berserker_roar");
+	public static final SoundEvent BERSERKER_WAR_CRY = register("berserker_war_cry");
+	public static final SoundEvent BERSERKER_SLAM = register("berserker_slam");
+	public static final SoundEvent BERSERKER_WHOOSH = register("berserker_whoosh");
+	public static final SoundEvent BERSERKER_HEARTBEAT = register("berserker_heartbeat");
+	public static final SoundEvent BERSERKER_LEAP = register("berserker_leap");
 
 	private ModSounds() {
 	}
