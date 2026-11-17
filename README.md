@@ -16,6 +16,9 @@ Sistema RPG con tres capas que se combinan:
 - **Jefes animados** con ataques anunciados. El Coloso Sin Rostro muestra la armadura agrietada al entrar en su segunda fase.
 - **GUI** rediseñada (`K` atributos/habilidades, `J` roles, `G` cambiar elemento, `U` ver un objeto en el grimorio desde un inventario), **HUD** de energía, enfriamientos y elemento activo, **comandos** y **configuración JSON**.
 
+## Créditos y licencia
+Licencia MIT. Procedencia del arte (parte generada con IA, parte dibujada por programa), audio sintetizado y dependencias: ver [`CREDITS.md`](CREDITS.md).
+
 ## Documentación técnica
 
 - [docs/ROADMAP_APTITUDES.md](docs/ROADMAP_APTITUDES.md): estado real, cambios y pendientes.

@@ -531,8 +531,7 @@ barra, martillo con volumen en primera persona y tooltips del punto 2.
 ## v61 — Grimorio (K3)
 
 Automáticas: `guide/BestiaryRulesTest` (catálogo, desbloqueos, topes y saneado) y `guide/GuideRulesTest`
-(buscador sin tildes, marcadores, porcentajes y progreso de sendas). Cabeceras:
-`python3 tools/textures/gen_guide_headers.py src/main/resources/assets/aptitudes/textures/gui/guide --check`.
+(buscador sin tildes, marcadores, porcentajes y progreso de sendas). Desde la v81 el grimorio no lleva ilustraciones de cabecera.
 
 1. Abre el grimorio en un mundo nuevo: pestañas Bestiario, Progreso, Buscar y Marcadores a la derecha
    del título, más Tutorial si hay un paso pendiente (lleva al capítulo recomendado y lo indica en amarillo).

@@ -77,7 +77,7 @@ import java.util.function.Supplier;
  *   <li><b>Recetario</b>: catálogo de todos los objetos fabricables del mod con buscador.</li>
  *   <li>v61: <b>Bestiario</b> (páginas que se desbloquean al vencer a cada criatura o jefe), <b>Progreso</b>,
  *       <b>buscador</b> global, <b>marcadores</b>, sendas de cada rol con sus iconos, enlace al capítulo del
- *       tutorial e ilustraciones de cabecera generadas ({@code tools/textures/gen_guide_headers.py}).</li>
+ *       tutorial (V81: sin ilustraciones de cabecera, para reducir el ruido visual).</li>
  * </ul>
  * Solo lee datos del cliente; lo único que envía es la petición de refresco del bestiario al abrirse.
  */
@@ -138,9 +138,6 @@ public class GuideScreen extends Screen {
 			new Tab(Page.SEARCH, Items.SPYGLASS, "screen.aptitudes.guide.tab.search"),
 			new Tab(Page.BOOKMARKS, Items.NAME_TAG, "screen.aptitudes.guide.tab.bookmarks"));
 
-	/** Ilustraciones de cabecera: 384×34, generadas por {@code tools/textures/gen_guide_headers.py}. */
-	private static final int BANNER_W = 384;
-	private static final int BANNER_H = 34;
 
 	/** Último capítulo abierto (dura la sesión de juego). */
 	private static int lastChapter;
