@@ -35,6 +35,12 @@ public final class ModWorldGen {
 	}
 
 	public static void init() {
+		Registry.register(Registries.PLACEMENT_MODIFIER_TYPE, Aptitudes.id("region_grid"), RegionGridPlacement.TYPE);
+		StructureSearch.init(); // V77: búsqueda activa de /aptitudes locate, repartida entre ticks
+		// V77: vuelca el índice de estructuras (/aptitudes locate) desde el hilo del servidor.
+		net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.END_SERVER_TICK.register(server -> {
+			if (server.getTicks() % 20 == 0) StructureIndex.drain(server);
+		});
 		// T3d: en chunks nuevos el Templo del Custodio sustituye al templo sellado antiguo (v64), cuyo feature y datos siguen
 		// registrados para que los templos ya generados en mundos existentes sigan funcionando.
 		for (String id : new String[]{"tower", "bonfire_shrine", "camp", "custodian_temple"}) {

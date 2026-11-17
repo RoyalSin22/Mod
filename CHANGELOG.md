@@ -23,6 +23,21 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   indicadores en el HUD (`SynergyHud`, avisados por `SynergyPayload`), partículas al activarse, logro «Sinergista» (las cinco en
   una sesión) y `/aptitudes synergy status`. **Y1 usa los efectos reales** de los nodos aprendidos de la senda elegida del rol (`Y1Rules`, pura y probada): SPEED amplía el radio de las activas de movimiento, CRIT/EXECUTE el daño de las ofensivas, MINION_POWER el de las invocaciones y (MANA_REGEN o MAX_HEALTH) con RESOURCE_GAIN abarata las activas; el radio lo consume `Targeting.hostilesAround` mientras se lanza la habilidad. **Cobertura de Y1:** las 80 activas base, las 100 activas nuevas (v67, clasificadas a mano por lo que hacen) y las evolucionadas por plantilla (NOVA, BEAM, CONE, ZONE y DASH dañan; DASH también cuenta como movimiento; SUMMON invoca); una activa puede ser de varias categorías. Los golpes diferidos (giros del Torbellino, oleadas) conservan el bonus de la habilidad que los programó. El tooltip del árbol muestra qué aporta la senda a cada activa. **Limitaciones conocidas:** sin pruebas en partida (`docs/V65_C5_TESTING_PLAN.md`).
 
+### Corregido
+- **v76.2 — Armas en la mano con relieve biselado («modelo a mano»).** El grosor del modelo 3D ya no es uniforme: crece desde la
+  orilla de la silueta hacia el interior (`weapon_art.bevel_depth_map`, distancia de ajedrez al vacío, múltiplos de 0,25), de modo que
+  las hojas quedan con arista central, los mangos redondeados y las gemas abombadas. Cada arma tiene su perfil (orilla, máximo) en
+  `PROFILE` de `tools/models/gen_weapon_models.py`: 1,0 para hojas finas, 1,25 por defecto, 1,5–2,0 para mazas, laúd y cráneos. Los 20
+  modelos `*_3d.json` se regeneraron (más piezas: unos 3 MB en total) y `--check` los valida. Prueba nueva en `test_weapon_art.py`
+  (26 pruebas). Revisado con un renderizador oblicuo propio; falta la comprobación en partida.
+- **v76.1 — Armas en la mano sin borde morado ni bultos.** En partida el modelo 3D de las armas se veía con un borde morado grueso y
+  la hoja llena de relieve irregular. Causas: (1) el contorno de 1 píxel que dibuja el generador de imágenes viene mezclado con el
+  fondo magenta (por ejemplo `#5A065B`), y las caras laterales del modelo 3D heredaban ese color; (2) el grosor 3D variaba con la
+  luminosidad (2 en lo oscuro, 1 en lo claro). Ahora el importador rehace el contorno contaminado como un contorno oscuro neutro
+  derivado del color vecino (`weapon_art.defringe`, sin tocar los morados intencionados) y el modelo usa un grosor uniforme, como
+  los objetos de vanilla. Las 20 armas se reimportaron desde las imágenes originales; los modelos pasan de 235–430 piezas a 64–152.
+  Pruebas Python: 25.
+
 ### Cambiado
 - **v76 — Arte de las 20 armas de evolución Maestro.** Se integra el arte entregado (generado con ChatGPT siguiendo
   `docs/PROMPT_ARTE_ARMAS.md`): las 20 armas, una por rol, a 64×64. Cada arma tiene `<arma>.png` (32×32, inventario y HUD) y
@@ -44,6 +59,20 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   hojas o toma imágenes sueltas, quita el fondo magenta, reduce a 16×16 con bordes duros y paleta limitada, valida (`--check`) y
   guarda en `tools/textures/source/weapons/`. `gen_items.py` usa ese arte en lugar del diseño provisional y
   `gen_weapon_models.py` extruye el modelo 3D de la mano del propio PNG. Alta densidad: 64×64 por defecto (32 o 16 con `--size`); el inventario usa una versión reducida a 32×32 y el modelo 3D la de 64×64 (`<arma>_hd.png`). Encargo de arte con dirección de fantasía oscura (estoico y dinámico), técnica de pixel art por píxel y una ficha por arma con su nombre oficial. 11 pruebas Python (`test_weapon_art.py`).
+
+### Añadido
+- **v77 — Localizar las estructuras del mod.** `/locate` de vanilla no conoce las estructuras de Aptitudes porque son `Feature`s.
+  Nuevos comandos de operador: `/aptitudes locate <estructura>` (la más cercana registrada, con coordenadas pulsables para
+  teletransportarse) y `/aptitudes place <estructura>` (genera una en un sitio llano a 24–96 bloques, para probar sin explorar).
+  Estructuras: `custodian_temple`, `temple`, `tower`, `bonfire_shrine`, `camp`. Índice por mundo (`aptitudes_structures.dat`) que
+  se rellena al generarse cada estructura (cola desde los hilos de generación y volcado en el hilo del servidor); solo recoge las
+  generadas con esta versión o posterior. Si no hay ninguna cerca, `locate` **busca en terreno sin explorar**: genera chunks en
+  anillos repartidos entre ticks (sin congelar el servidor) y avisa del progreso. El templo del Custodio pasa de «1 de cada 120
+  chunks» a una **cuadrícula de regiones** de 32×32 chunks con un único chunk designado por región (modificador de colocación
+  `aptitudes:region_grid`, determinista con la semilla), así que sigue siendo raro (aprox. uno cada mil bloques) pero se sabe dónde
+  mirar: la búsqueda cuesta un chunk por región. Textos en los 5 idiomas y `StructureLocateRulesTest`. Verificado en un servidor con
+  mundo nuevo: `locate` encontró un templo hondo a 1205 bloques y las coordenadas coincidían con la estructura real (rampa,
+  patio y sello con `layout = 4`).
 
 ### Eliminado
 - **v74 — Sin armas de evolución Definitivo.** Se retiran del mod las 20 armas `<rol>_weapon_ultimate`: objetos, texturas, modelos,

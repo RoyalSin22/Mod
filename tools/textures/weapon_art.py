@@ -144,6 +144,12 @@ def normalize(img, colors=24, tolerance=40, fit=True, flip=False, rotate=0, size
     canvas = Image.new('RGBA', (size, size), (0, 0, 0, 0))
     canvas.paste(small, ((size - nw) // 2, (size - nh) // 2))
     px = canvas.load()
+    for y in range(size):
+        for x in range(size):
+            r, g, b, a = px[x, y]
+            px[x, y] = (r, g, b, 255 if a >= 128 else 0)
+    canvas = defringe(canvas, rings=2 if size >= 32 else 1)
+    px = canvas.load()
     rgb = Image.new('RGB', (size, size), (0, 0, 0))
     for y in range(size):
         for x in range(size):
@@ -165,12 +171,56 @@ def luminance(c):
     return 0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]
 
 
-def depth_map(img, dark=85):
-    """Grosor 3D por píxel para el modelo de la mano: 1 de base y 2 en lo oscuro (empuñadura, contorno, madera, cuero)."""
+def depth_map(img, thickness=1):
+    """Grosor 3D por píxel para el modelo de la mano (V76.1): uniforme, como los objetos de vanilla. Antes variaba con la
+    luminosidad (el contorno y la madera más gruesos) y la hoja quedaba llena de bultos; con un grosor constante la
+    superficie es lisa y el relieve lo da la propia textura."""
     img = img.convert('RGBA')
     px = img.load()
     n = img.size[0]
-    return [[0 if px[x, y][3] < 255 else (2 if luminance(px[x, y]) < dark else 1) for x in range(n)] for y in range(n)]
+    return [[0 if px[x, y][3] < 255 else thickness for x in range(n)] for y in range(n)]
+
+
+def bevel_depth_map(img, min_units=0.5, max_units=1.5, per_cell=0.25, step=0.25):
+    """Grosor 3D biselado (V76.2): crece desde el borde de la silueta hacia el interior, como un objeto tallado.
+
+    ``min_units``: grosor en la orilla; sube ``per_cell`` unidades por cada píxel que se entra, hasta ``max_units``; se
+    redondea a múltiplos de ``step`` para que los bloques contiguos se puedan fundir. Las hojas quedan con una arista central, los
+    mangos redondeados y las gemas abombadas. Distancia de ajedrez (8 vecinos) a la transparencia más cercana."""
+    img = img.convert('RGBA')
+    px = img.load()
+    n = img.size[0]
+    inf = 10 ** 6
+    dist = [[0 if px[x, y][3] < 255 else inf for x in range(n)] for y in range(n)]
+    from collections import deque
+    queue = deque((x, y) for y in range(n) for x in range(n) if dist[y][x] == 0)
+    # Los bordes de la imagen cuentan como vacío.
+    for x in range(n):
+        for y in (0, n - 1):
+            if dist[y][x] == inf:
+                dist[y][x] = 1
+                queue.append((x, y))
+    for y in range(n):
+        for x in (0, n - 1):
+            if dist[y][x] == inf:
+                dist[y][x] = 1
+                queue.append((x, y))
+    while queue:
+        x, y = queue.popleft()
+        for dx in (-1, 0, 1):
+            for dy in (-1, 0, 1):
+                qx, qy = x + dx, y + dy
+                if (dx or dy) and 0 <= qx < n and 0 <= qy < n and dist[qy][qx] > dist[y][x] + 1:
+                    dist[qy][qx] = dist[y][x] + 1
+                    queue.append((qx, qy))
+    out = [[0.0] * n for _ in range(n)]
+    for y in range(n):
+        for x in range(n):
+            if dist[y][x] == 0:
+                continue
+            t = min(max_units, min_units + per_cell * (dist[y][x] - 1))
+            out[y][x] = round(round(t / step) * step, 4)
+    return out
 
 
 def downscale(img, size=GUI_SIZE):
@@ -313,3 +363,43 @@ def split_auto_expect(img, expected, tolerance=40, join=None):
         if len(crops) == expected:
             return crops, j, report
     return first
+
+
+def is_fringe(c):
+    """¿Parece un píxel de borde contaminado por el fondo magenta? Oscuro y con rojo y azul casi iguales y verde muy bajo
+    (mezcla de un contorno oscuro con #FF00FF). Los morados intencionados tienen el azul claramente por encima del rojo."""
+    r, g, b = c[:3]
+    return r >= 28 and b >= 28 and g <= 34 and abs(r - b) <= 26 and g < 0.45 * min(r, b) + 6
+
+
+def defringe(img, rings=2, outline=0.36):
+    """Quita el tinte magenta del contorno (V76.1): los píxeles de borde contaminados por el fondo se rehacen como un contorno
+    oscuro derivado del color vecino sano más cercano (``outline`` = fracción de su brillo), o se borran si no tienen ninguno.
+    Se aplica a los ``rings`` píxeles más externos, que es donde el generador mezcla el magenta."""
+    img = img.convert('RGBA')
+    px = img.load()
+    n = img.size[0]
+    for _ in range(rings):
+        changes = {}
+        for y in range(n):
+            for x in range(n):
+                c = px[x, y]
+                if c[3] < 255 or not is_fringe(c):
+                    continue
+                if not any(not (0 <= x + dx < n and 0 <= y + dy < n) or px[x + dx, y + dy][3] == 0
+                           for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, -1), (1, -1), (-1, 1))):
+                    continue  # solo píxeles de la orilla; el interior intencionado no se toca
+                neighbours = []
+                for dy in range(-2, 3):
+                    for dx in range(-2, 3):
+                        qx, qy = x + dx, y + dy
+                        if (dx or dy) and 0 <= qx < n and 0 <= qy < n and px[qx, qy][3] == 255 and not is_fringe(px[qx, qy]):
+                            neighbours.append(px[qx, qy][:3])
+                if neighbours:
+                    avg = [sum(v[i] for v in neighbours) / len(neighbours) for i in range(3)]
+                    changes[(x, y)] = tuple(max(0, min(255, round(a * outline))) for a in avg) + (255,)
+                else:
+                    changes[(x, y)] = (0, 0, 0, 0)
+        for (x, y), c in changes.items():
+            px[x, y] = c
+    return img

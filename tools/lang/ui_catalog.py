@@ -92,6 +92,22 @@ reset¦O progresso de %s foi reiniciado.¦La progression de %s a été réinitia
 reload¦Configuração do Aptitudes recarregada.¦Configuration d'Aptitudes rechargée.¦Aptitudes-Konfiguration neu geladen.
 """)
 
+add('aptitudes.', """
+cmd.locate_found¦%s mais próximo: %s (a %s blocos)¦%s le plus proche : %s (à %s blocs)¦Nächste Struktur (%s): %s (%s Blöcke entfernt)
+cmd.locate_none¦Ainda não há %s registrado neste mundo. Só são indexadas as estruturas geradas com esta versão: explore terreno novo ou use /aptitudes place %s.¦Aucun(e) %s enregistré(e) dans ce monde pour l'instant. Seules les structures générées avec cette version sont indexées : explorez un nouveau terrain ou utilisez /aptitudes place %s.¦Noch keine Struktur „%s“ in dieser Welt erfasst. Nur mit dieser Version erzeugte Strukturen werden erfasst: Erkunde neues Gelände oder nutze /aptitudes place %s.
+cmd.locate_searching¦Procurando %s em terreno inexplorado (pode levar alguns segundos)…¦Recherche de %s en terrain inexploré (cela peut prendre quelques secondes)…¦Suche nach %s in unerkundetem Gelände (das kann einige Sekunden dauern)…
+cmd.locate_progress¦Ainda procurando… explorado até %s blocos de distância.¦Recherche en cours… exploré jusqu'à %s blocs de distance.¦Suche läuft… bis %s Blöcke Entfernung erkundet.
+cmd.locate_partial¦Procurou-se até %s blocos sem encontrar %s. Execute o comando de novo para continuar procurando.¦Recherche jusqu'à %s blocs sans trouver %s. Relancez la commande pour continuer.¦Bis %s Blöcke Entfernung gesucht, ohne %s zu finden. Führe den Befehl erneut aus, um weiterzusuchen.
+cmd.unknown_structure¦Estrutura desconhecida: %s¦Structure inconnue : %s¦Unbekannte Struktur: %s
+cmd.place_ok¦%s gerado em %s.¦%s généré en %s.¦%s erzeugt bei %s.
+cmd.place_fail¦Nenhum local plano e seco encontrado em %s blocos. Vá para um terreno plano (sem água nem montanhas) e tente de novo.¦Aucun site plat et sec trouvé dans un rayon de %s blocs. Allez sur un terrain plat (ni eau ni montagnes) et réessayez.¦Kein flacher, trockener Platz im Umkreis von %s Blöcken gefunden. Geh auf flaches Gelände (kein Wasser, keine Berge) und versuche es erneut.
+structure.custodian_temple¦Templo do Custódio¦Temple du Gardien¦Tempel des Wächters
+structure.temple¦templo selado antigo¦ancien temple scellé¦alter versiegelter Tempel
+structure.tower¦torre em ruínas¦tour en ruine¦Turmruine
+structure.bonfire_shrine¦santuário da Fogueira¦sanctuaire du Feu de camp¦Lagerfeuer-Schrein
+structure.camp¦acampamento¦campement¦Lager
+""")
+
 add('key.aptitudes.', """
 roles¦Abrir classes¦Ouvrir les rôles¦Rollen öffnen
 ability_1¦Habilidade 1 (classe principal)¦Capacité 1 (rôle principal)¦Fähigkeit 1 (Hauptrolle)
@@ -690,6 +706,8 @@ elementalist_weapon_master¦Orbe do Arquimago Elemental¦Orbe de l'archimage él
 gunslinger_weapon_master¦Revólver do Pistoleiro Rúnico¦Revolver du pistolero runique¦Revolver des Runenrevolverhelden
 bard_weapon_master¦Harpa do Mestre de Capela¦Harpe du maître de chapelle¦Harfe des Kapellmeisters
 warlock_weapon_master¦Crânio do Arquibruxo¦Crâne de l'archisorcier¦Schädel des Erzhexenmeisters
+sunset_astrolabe¦Astrolábio do Crepúsculo¦Astrolabe du Crépuscule¦Astrolabium der Abenddämmerung
+sunset_astrolabe.tooltip¦Consumido na Fogueira para convocar o Eclipse (apenas operadores ou líder do grupo).¦Consommé au Feu de camp pour invoquer l'Éclipse (opérateurs ou chef de groupe uniquement).¦Wird am Lagerfeuer verbraucht, um die Finsternis zu beschwören (nur Operatoren oder Gruppenleiter).
 """)
 
 add('trial.aptitudes.', """
@@ -1302,6 +1320,8 @@ contract_veteran.title¦Veterano da Guilda¦Vétéran de la guilde¦Gildenvetera
 contract_veteran.description¦Resgate 10 contratos da guilda¦Réclamez 10 contrats de guilde¦Rechne 10 Gildenaufträge ab
 guild_master.title¦Mestre da Guilda¦Maître de guilde¦Gildenmeister
 guild_master.description¦Alcance o grau Mestre na guilda (700 de reputação)¦Atteignez le rang Maître dans la guilde (700 de réputation)¦Erreiche den Gildenrang Meister (700 Ruf)
+summon_eclipse¦Invocador do Eclipse¦Invocateur de l'Éclipse¦Beschwörer der Finsternis
+summon_eclipse.description¦Convoque o Eclipse usando o Astrolábio do Crepúsculo em uma Fogueira¦Invoquez l'Éclipse avec l'Astrolabe du Crépuscule à un Feu de camp¦Beschwöre die Finsternis mit dem Astrolabium der Abenddämmerung an einem Lagerfeuer
 """)
 
 add('aptitudes.', """

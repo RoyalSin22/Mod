@@ -494,9 +494,9 @@ Comandos: `/unique` (lista) · `/unique admin give <jugador> <habilidad>` · `/u
 - **Elementalista**: 14 elementos (nuevos: Luz, Vacío, Veneno, Cristal, Sonido) y 10 **fusiones**
   (Tormenta ígnea, Electrocución, Ventisca, Erupción, Plaga, Eclipse, Singularidad cristalina,
   Resonancia, Prisma, Choque térmico) que se añaden al Estallido si dominas los dos elementos.
-- **Armas de evolución**: al evolucionar a Maestro y a Definitivo recibes un arma nueva del rol
-  (hoja de diamante/netherita o foco mágico). Aparecen en la fila superior del árbol; si la pierdes,
-  botón **Reclamar**.
+- **Armas de evolución**: al evolucionar a Maestro recibes un arma nueva del rol (hoja de diamante o foco
+  mágico); desde la v74 el Definitivo ya no entrega arma. Aparece en la fila superior del árbol; si la
+  pierdes, botón **Reclamar**.
 - **Efectos**: estallidos del color del rol al impactar con habilidades, disparos y armas de rol.
 
 ## v13: élites, campeones y accesorios

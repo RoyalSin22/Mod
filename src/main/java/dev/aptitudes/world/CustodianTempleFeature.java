@@ -112,6 +112,7 @@ public class CustodianTempleFeature extends Feature<DefaultFeatureConfig> {
 		if (world.getBlockEntity(b.at(layout.reliquary[0], layout.reliquary[1], layout.reliquary[2])) instanceof ReliquaryBlockEntity reliquary) {
 			reliquary.setTemple(temple);
 		}
+		StructureIndex.record(context.getWorld(), "custodian_temple", origin); // V77: /aptitudes locate
 		return true;
 	}
 
