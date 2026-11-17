@@ -22,6 +22,8 @@ public final class ClientConfig {
 	public boolean screenEffects = true;
 	/** V77: intensidad de los efectos de batalla (partículas, cámara y pantalla): 0 los apaga, 1 es lo normal, hasta 1,5. */
 	public float fxIntensity = 1.0f;
+	/** V78: animaciones del cuerpo del jugador en los efectos de batalla (Player Animation Library). Boolean permite recuperar un null escrito a mano. */
+	public Boolean playerAnimations = true;
 	/** Remates geométricos de las habilidades en el mundo. */
 	public Boolean castAnimations = true;
 	/** Números de daño flotantes. */
@@ -77,6 +79,7 @@ public final class ClientConfig {
 		// Su dominio es booleano; un null explícito conserva el valor seguro por defecto.
 		if (config.showTutorial == null) config.showTutorial = true;
 		if (config.castAnimations == null) config.castAnimations = true;
+		if (config.playerAnimations == null) config.playerAnimations = true;
 		if (config.hudMinimal == null) config.hudMinimal = false;
 		if (config.hudAnimations == null) config.hudAnimations = true;
 		config.hudPreset = config.preset().id();

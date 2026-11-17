@@ -4,7 +4,6 @@ import dev.aptitudes.logic.FxIds;
 import dev.aptitudes.role.Role;
 import dev.aptitudes.sound.ModSounds;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -81,7 +80,7 @@ public final class BerserkerFx {
 		Vec3d ground = groundBelow(p);
 		sound(p, ModSounds.BERSERKER_SLAM, 1.8f, jitter(p, 1.0f, 0.1f));
 		sound(p, SoundEvents.ENTITY_GENERIC_EXPLODE.value(), 0.5f, 0.55f);
-		FxEvents.at((ServerWorld) p.getWorld(), ground, FxIds.BERSERKER_SLAM, color(p), (float) radius, Vec3d.ZERO, seed(p));
+		FxEvents.onAt(p, ground, FxIds.BERSERKER_SLAM, color(p), (float) radius, Vec3d.ZERO, seed(p));
 	}
 
 	/** Un giro del Torbellino. {@code spin} = 0, 1, 2. */

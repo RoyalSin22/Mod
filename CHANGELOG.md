@@ -6,6 +6,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **V78 — Animaciones del cuerpo del jugador (Player Animation Library).** Dependencia obligatoria nueva, aprobada por el autor:
+  PAL 1.1.6+mc.1.21.1 (MIT). Furia, Grito de guerra, Salto demoledor y Torbellino animan el cuerpo del jugador (también a ojos de los
+  demás), con transición suave entre el salto y el aterrizaje. Poses generadas con `tools/models/gen_player_animations.py`, probadas con
+  el cargador real de la librería, opción de cliente `playerAnimations` y comando de cliente `/aptfx anim <nombre>` para verlas.
+  **Los jugadores deben instalar PAL junto al mod.** Las poses no se han visto en partida (signos de giros laterales por confirmar).
 - **V77 — Efectos de batalla, fase 1 (Bersérker).** Furia, Grito de guerra, Salto demoledor y Torbellino tienen coreografía propia: brasas
   que se apagan, escombros con física real (gravedad, rebote y giro), grietas en abanico, onda de choque, pulso de FOV, retroceso
   suave de cámara, sacudida con ruido continuo y viñeteado, todo atenuado por distancia, más seis sonidos sintetizados y subtítulos.

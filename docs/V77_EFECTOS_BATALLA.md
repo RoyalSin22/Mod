@@ -38,8 +38,33 @@ las activas nuevas siguen con el efecto genérico de `CastFx` hasta que se les h
 
 ## Límites conocidos
 
-- **Sin animación del cuerpo del jugador en tercera persona.** Requiere una biblioteca de animación o un mixin al modelo; no se
-  añadió ninguna dependencia nueva. La sensación de movimiento se logra con cámara, FOV y partículas.
+- **Las poses del cuerpo no se han visto en partida.** Ver la sección siguiente.
 - **No verificado en partida.** Compila y las matemáticas están probadas, pero el aspecto, la mezcla de sonido y el rendimiento
   deben juzgarse jugando. Los sonidos son síntesis por programa (medidos, no escuchados).
 - Las activas nuevas (v67) y los demás roles siguen con el efecto genérico.
+
+## Animaciones del cuerpo (V78, Player Animation Library)
+
+Dependencia obligatoria aprobada por el autor: Player Animation Library 1.1.6+mc.1.21.1 (MIT, `repo.redlance.org`). Una sola capa
+(`aptitudes:body`, prioridad 1500) reproduce lo que disparan los efectos de batalla, también sobre los demás jugadores. La librería
+apila capas, así que no pisa a otros mods de animación.
+
+| Habilidad | Animación | Duración |
+|---|---|---|
+| Furia | `berserker_rage`: se agacha, explota hacia arriba y ruge con los brazos abiertos | 1,5 s |
+| Grito de guerra | `berserker_war_cry`: brazos arriba, cabeza atrás y golpe seco hacia delante | 1,1 s |
+| Salto demoledor (despegue) | `berserker_leap`: se encoge y se estira con los brazos arriba; se mantiene hasta el aterrizaje | 0,9 s (se mantiene) |
+| Salto demoledor (aterrizaje) | `berserker_slam`: machaca con los brazos y se incorpora (con fundido de 3 ticks) | 1,0 s |
+| Torbellino | `berserker_whirl`: un giro completo con los brazos extendidos, uno por cada giro | 0,5 s |
+
+- Los archivos los genera `tools/models/gen_player_animations.py` (poses en grados, con la convención del modelo vanilla que usa la
+  librería: sin invertir signos). No se editan a mano; para otro estilo se puede sustituir por archivos de Blockbench en el mismo
+  directorio sin tocar el código.
+- Opción de cliente `playerAnimations` (por defecto activa) en `config/aptitudes-client.json`.
+- **Para ver y ajustar las poses:** `/aptfx anim <nombre>` las reproduce sobre tu personaje (mira tu cuerpo con F5) y `/aptfx stop`
+  las corta. Solo es un comando de cliente.
+- **Verificado:** `PlayerAnimationResourcesTest` carga los archivos con el cargador real de PAL (nombres, duraciones y huesos).
+- **No verificado:** el aspecto de las poses. El signo de los giros laterales (roll) de brazos y piernas y la dirección del giro del
+  Torbellino se dedujeron del código de la librería y del modelo vanilla, pero no se han visto en el juego: si algún brazo se cruza
+  en vez de abrirse, basta invertir el signo en el generador y regenerar.
+- La primera persona la maneja PAL por su cuenta (sus mixins `firstPerson`); tampoco se ha comprobado el resultado.

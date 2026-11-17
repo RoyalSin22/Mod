@@ -31,6 +31,8 @@ public final class FxClient {
 
 	public static void register() {
 		FxTimeline.register();
+		PlayerAnims.register();
+		FxDebugCommand.register();
 		ClientPlayNetworking.registerGlobalReceiver(FxEventPayload.ID, (payload, context) -> onEvent(payload));
 	}
 

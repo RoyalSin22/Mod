@@ -28,6 +28,12 @@ public final class FxEvents {
 		send(world, pos, new FxEventPayload(id, entity.getId(), pos.x, pos.y, pos.z, (float) dir.x, (float) dir.y, (float) dir.z, color, power, seed));
 	}
 
+	/** Efecto ligado a una entidad pero situado en otro punto (el aterrizaje de un salto cae en el suelo). */
+	public static void onAt(Entity entity, Vec3d pos, int id, int color, float power, Vec3d dir, int seed) {
+		if (!(entity.getWorld() instanceof ServerWorld world)) return;
+		send(world, pos, new FxEventPayload(id, entity.getId(), pos.x, pos.y, pos.z, (float) dir.x, (float) dir.y, (float) dir.z, color, power, seed));
+	}
+
 	private static void send(ServerWorld world, Vec3d pos, FxEventPayload payload) {
 		double max = RANGE * RANGE;
 		for (ServerPlayerEntity viewer : PlayerLookup.around(world, pos, RANGE)) {

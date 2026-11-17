@@ -2,6 +2,7 @@ package dev.aptitudes.client.fx;
 
 import dev.aptitudes.ability.ParticleFx;
 import dev.aptitudes.logic.FxMath;
+import dev.aptitudes.logic.PlayerAnimIds;
 import dev.aptitudes.network.FxEventPayload;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.world.ClientWorld;
@@ -39,6 +40,7 @@ final class BerserkerClientFx {
 		Vec3d at = FxClient.entityPos(world, p);
 		int durationTicks = Math.round(p.power() * 20);
 		ParticleEffect hot = ember(1.3f);
+		PlayerAnims.play(FxClient.entity(world, p.entityId()), PlayerAnimIds.BERSERKER_RAGE);
 
 		// Anillo de brasas que sale de los pies.
 		int ring = FxClient.n(40);
@@ -101,6 +103,7 @@ final class BerserkerClientFx {
 		Vec3d at = FxClient.entityPos(world, p);
 		double radius = Math.max(2, p.power());
 		double yaw = yawDegrees(p);
+		PlayerAnims.play(FxClient.entity(world, p.entityId()), PlayerAnimIds.BERSERKER_WAR_CRY);
 
 		FxClient.spawn(ParticleTypes.SONIC_BOOM, at.x, at.y + 1.2, at.z, 0, 0, 0);
 		// Onda de choque que se expande y levanta escombros del suelo.
@@ -145,6 +148,7 @@ final class BerserkerClientFx {
 	static void leapTakeoff(ClientWorld world, FxEventPayload p) {
 		Random rng = new Random(p.seed());
 		Vec3d at = FxClient.entityPos(world, p);
+		PlayerAnims.play(FxClient.entity(world, p.entityId()), PlayerAnimIds.BERSERKER_LEAP);
 		BlockState ground = FxClient.groundState(world, at.x, at.y, at.z);
 		int ring = FxClient.n(26);
 		for (int i = 0; i < ring; i++) {
@@ -195,6 +199,7 @@ final class BerserkerClientFx {
 		Random rng = new Random(p.seed());
 		Vec3d at = new Vec3d(p.x(), p.y(), p.z());
 		double radius = Math.max(2, p.power());
+		PlayerAnims.playWithFade(FxClient.entity(world, p.entityId()), PlayerAnimIds.BERSERKER_SLAM);
 		BlockState ground = FxClient.groundState(world, at.x, at.y, at.z);
 
 		FxClient.spawn(ParticleTypes.EXPLOSION, at.x, at.y + 0.2, at.z, 0, 0, 0);
@@ -269,6 +274,7 @@ final class BerserkerClientFx {
 		double radius = Math.max(2, p.power());
 		double start = Math.toRadians(yawDegrees(p)) + p.seed() * 0.7;
 		int steps = 10;
+		PlayerAnims.play(FxClient.entity(world, p.entityId()), PlayerAnimIds.BERSERKER_WHIRL);
 		FxTimeline.every(steps, 1, i -> {
 			Vec3d c = FxClient.entityPos(world, p);
 			double head = start + Math.PI * 2 * (i + 1) / steps;
