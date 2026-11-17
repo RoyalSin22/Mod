@@ -1810,6 +1810,12 @@ subtitles.aptitudes.berserker_slam¦O chão se despedaça¦Le sol se fissure¦De
 subtitles.aptitudes.berserker_whoosh¦Uma lâmina assobia¦Une lame siffle¦Eine Klinge zischt
 subtitles.aptitudes.berserker_heartbeat¦A fúria pulsa¦La fureur bat¦Die Wut pocht
 subtitles.aptitudes.berserker_leap¦O Berserker salta¦Le Berserker bondit¦Berserker springt
+subtitles.aptitudes.mage_charge¦A magia se concentra¦La magie se concentre¦Magie sammelt sich
+subtitles.aptitudes.mage_bolt¦Um raio arcano crepita¦Un éclair arcanique crépite¦Ein Arkanblitz knistert
+subtitles.aptitudes.mage_blink¦O mago pisca¦Le mage se téléporte¦Der Magier blinzelt
+subtitles.aptitudes.mage_time¦O tempo desacelera¦Le temps ralentit¦Die Zeit verlangsamt sich
+subtitles.aptitudes.mage_missile¦Um míssil arcano assobia¦Un missile arcanique siffle¦Ein Arkangeschoss pfeift
+subtitles.aptitudes.mage_impact¦Um cristal estoura¦Un cristal éclate¦Ein Kristall zerspringt
 entity.aptitudes.custodio_cuatro_llaves¦O Custódio das Quatro Chaves¦Le Gardien des Quatre Clés¦Der Wächter der vier Schlüssel
 item.aptitudes.faceless_colossus_spawn_egg¦Ovo gerador do Colosso Sem Rosto¦Œuf d'apparition du Colosse sans visage¦Spawn-Ei des gesichtslosen Kolosses
 bestiary.aptitudes.faceless_colossus.tip¦Guerreiro gigante com espadão. Anuncia um golpe amplo e um golpe descendente com onda: saia do círculo marcado. Com metade da vida sua armadura racha: fica mais rápido, investe de longe e recebe mais dano.¦Guerrier géant armé d'une grande épée. Il annonce un large balayage et un coup plongeant avec onde de choc : sortez du cercle marqué. À mi-vie son armure se fissure : il va plus vite, charge de loin et subit plus de dégâts.¦Riesiger Krieger mit Zweihänder. Er kündigt einen weiten Hieb und einen Abwärtsschlag mit Schockwelle an: Verlasse den markierten Kreis. Bei halber Lebenskraft bricht seine Rüstung: Er wird schneller, stürmt aus der Ferne an und erleidet mehr Schaden.

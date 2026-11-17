@@ -98,7 +98,8 @@ class FxMathTest {
 	@Test
 	void fxIdsAreUniqueAndValid() {
 		int[] ids = {FxIds.BERSERKER_RAGE, FxIds.BERSERKER_WAR_CRY, FxIds.BERSERKER_LEAP_TAKEOFF,
-				FxIds.BERSERKER_LEAP_TRAIL, FxIds.BERSERKER_SLAM, FxIds.BERSERKER_WHIRL};
+				FxIds.BERSERKER_LEAP_TRAIL, FxIds.BERSERKER_SLAM, FxIds.BERSERKER_WHIRL,
+				FxIds.MAGE_BOLT, FxIds.MAGE_BLINK, FxIds.MAGE_TIME_WARP, FxIds.MAGE_MISSILE};
 		java.util.Set<Integer> seen = new java.util.HashSet<>();
 		for (int id : ids) {
 			assertTrue(FxIds.valid(id));

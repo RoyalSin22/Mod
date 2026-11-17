@@ -60,8 +60,6 @@ public final class Abilities {
 		register("fireball", (p, r) -> {
 			LivingEntity target = Targeting.raycastLiving(p, 24);
 			Vec3d end = target != null ? target.getPos().add(0, target.getHeight() / 2, 0) : Targeting.lookEnd(p, 24);
-			Targeting.particleLine(world(p), ParticleFx.dust(0xB388FF, 1.2f), p.getEyePos(), end);
-			sound(p, SoundEvents.ENTITY_ILLUSIONER_CAST_SPELL, 1.3f);
 			if (target == null) return false;
 			float damage = 4 + 2 * r;
 			for (LivingEntity e : p.getWorld().getEntitiesByClass(LivingEntity.class, target.getBoundingBox().expand(2),
@@ -69,8 +67,7 @@ public final class Abilities {
 				e.damage(p.getDamageSources().indirectMagic(p, p), e == target ? damage : damage / 2);
 				if (e == target) effect(e, StatusEffects.GLOWING, 60, 0); // runa de rastreo
 			}
-			world(p).spawnParticles(ParticleTypes.WITCH, end.x, end.y, end.z, 20, 0.5, 0.5, 0.5, 0.1);
-			ParticleFx.ring(world(p), end, 1.5, ParticleTypes.ENCHANT, 16);
+			MageFx.bolt(p, end); // V83
 			return true;
 		});
 		register("blink", (p, r) -> {
@@ -80,11 +77,10 @@ public final class Abilities {
 			Vec3d feet = eyeTarget.subtract(0, p.getStandingEyeHeight(), 0);
 			Vec3d spot = Targeting.findFreeSpot(p, feet);
 			if (spot == null) return false;
-			Targeting.burst(world(p), ParticleTypes.PORTAL, p, 30, 0.5);
+			Vec3d from = p.getPos();
 			p.requestTeleport(spot.x, spot.y, spot.z);
 			p.fallDistance = 0;
-			Targeting.burst(world(p), ParticleTypes.REVERSE_PORTAL, p, 30, 0.5);
-			sound(p, SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.2f);
+			MageFx.blink(p, from, spot); // V83
 			return true;
 		});
 

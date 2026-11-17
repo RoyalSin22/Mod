@@ -60,6 +60,10 @@ public final class FxClient {
 			case FxIds.BERSERKER_LEAP_TRAIL -> BerserkerClientFx.leapTrail(world, p);
 			case FxIds.BERSERKER_SLAM -> BerserkerClientFx.slam(world, p);
 			case FxIds.BERSERKER_WHIRL -> BerserkerClientFx.whirl(world, p);
+			case FxIds.MAGE_BOLT -> MageClientFx.bolt(world, p);
+			case FxIds.MAGE_BLINK -> MageClientFx.blink(world, p);
+			case FxIds.MAGE_TIME_WARP -> MageClientFx.timeWarp(world, p);
+			case FxIds.MAGE_MISSILE -> MageClientFx.missile(world, p);
 			default -> { }
 		}
 	}
@@ -113,6 +117,14 @@ public final class FxClient {
 
 	public static Entity entity(ClientWorld world, int id) {
 		return id >= 0 ? world.getEntityById(id) : null;
+	}
+
+	/** Posición aproximada de la mano (derecha o izquierda) de una entidad, en el mundo: delante del ojo, al lado y algo por debajo. */
+	public static Vec3d handPos(Entity entity, boolean right) {
+		Vec3d forward = entity.getRotationVec(1.0f);
+		Vec3d side = forward.crossProduct(new Vec3d(0, 1, 0));
+		side = side.lengthSquared() < 1e-6 ? new Vec3d(-1, 0, 0) : side.normalize();
+		return entity.getEyePos().add(forward.multiply(0.55)).add(side.multiply(right ? 0.32 : -0.32)).add(0, -0.30, 0);
 	}
 
 	public static boolean isLocal(int entityId) {

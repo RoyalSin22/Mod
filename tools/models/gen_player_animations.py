@@ -3,7 +3,7 @@
 Generador de las animaciones del cuerpo del jugador (V78, Player Animation Library).
 
 Uso:  python3 tools/models/gen_player_animations.py <carpeta assets/aptitudes> [--check]
-Escribe <carpeta>/player_animations/berserker.json. Con --check no escribe: falla si el archivo no coincide.
+Escribe <carpeta>/player_animations/<rol>.json (berserker.json y mage.json). Con --check no escribe: falla si algún archivo no coincide.
 
 Convención de PAL (leída de su código): los ángulos están en GRADOS y se aplican tal cual a las partes del modelo vanilla
 (sin invertir signos). En el modelo vanilla, pitch NEGATIVO levanta un brazo o una pierna hacia delante, pitch positivo
@@ -32,7 +32,8 @@ SOFT = "easeinoutsine"
 HOLD = "linear"
 
 # Fotograma de impacto de cada animación, en ticks (20 por segundo). Debe coincidir con PlayerAnimIds.IMPACT_TICKS.
-IMPACT_TICKS = {"berserker_rage": 4, "berserker_war_cry": 8, "berserker_slam": 3}
+IMPACT_TICKS = {"berserker_rage": 4, "berserker_war_cry": 8, "berserker_slam": 3, "mage_bolt": 4, "mage_blink": 3,
+                "mage_time_warp": 6, "mage_missile_r": 3, "mage_missile_l": 3}
 
 
 def kf(vec, easing=OUT):
@@ -97,7 +98,7 @@ def limbs(right_arm, left_lag=0.04, left_roll=0.92, **others):
     return b
 
 
-def build():
+def build_berserker():
     anims = {}
 
     # ---- Furia (1,0 s): se encoge hacia atrás, EXPLOTA hacia delante con los brazos abiertos (sobrepaso), se queda congelado un
@@ -174,8 +175,61 @@ def build():
     return {"format_version": "1.8.0", "animations": anims}
 
 
-def render():
-    return json.dumps(build(), indent=2, ensure_ascii=False) + "\n"
+def build_mage():
+    anims = {}
+
+    # ---- Rayo arcano (0,6 s): lleva la mano derecha al pecho para cargar mientras la izquierda guía, lanza hacia delante con sobrepaso
+    # (tick 4), se queda un instante y recoge. Gesto preciso y contenido: menos ancho que el del Bersérker, más limpio.
+    bolt_r = {0: NEUTRAL, 0.08: ([-42, -8, 24], OUT), 0.14: ([-50, -6, 28], SOFT), 0.20: ([-98, 4, 4], BACK), 0.28: ([-98, 4, 4], HOLD),
+              0.36: ([-86, 2, 9], OUT), 0.60: (NEUTRAL, SOFT)}
+    bolt_l = {0: NEUTRAL, 0.08: ([-72, 12, -30], OUT), 0.14: ([-76, 10, -32], SOFT), 0.22: ([-62, 6, -22], BACK),
+              0.30: ([-62, 6, -22], HOLD), 0.60: (NEUTRAL, SOFT)}
+    anims["mage_bolt"] = animation(False, {
+        "right_arm": bone(rot=bolt_r),
+        "left_arm": bone(rot=bolt_l),
+        "torso": bone(rot={0: NEUTRAL, 0.08: [8, 0, -4], 0.20: ([-7, 3, 0], BACK), 0.28: ([-7, 3, 0], HOLD), 0.60: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.08: [5, 0, 0], 0.20: ([-5, 0, 0], BACK), 0.28: ([-5, 0, 0], HOLD), 0.60: (NEUTRAL, SOFT)}),
+        "body": bone(pos={0: NEUTRAL, 0.08: [0, -1, 0], 0.20: ([0, 0.4, 0], BACK), 0.28: ([0, 0.4, 0], HOLD), 0.60: (NEUTRAL, SOFT)}),
+    })
+
+    # ---- Salto arcano (0,55 s): cruza los brazos hacia dentro mientras se agacha y los abre de golpe al reaparecer (tick 3).
+    blink_r = {0: NEUTRAL, 0.08: ([-72, -32, -16], OUT), 0.15: ([-34, 10, 64], BACK), 0.23: ([-34, 10, 64], HOLD),
+               0.30: ([-30, 6, 50], OUT), 0.55: (NEUTRAL, SOFT)}
+    anims["mage_blink"] = animation(False, limbs(
+        blink_r, 0.03, 0.95,
+        torso=({0: NEUTRAL, 0.08: [16, 0, 0], 0.15: ([-12, 0, 0], BACK), 0.23: ([-12, 0, 0], HOLD), 0.55: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.08: [8, 0, 0], 0.15: ([-8, 0, 0], BACK), 0.23: ([-8, 0, 0], HOLD), 0.55: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.08: [0, -2.2, 0], 0.15: ([0, 1.2, 0], BACK), 0.23: ([0, 1.2, 0], HOLD), 0.55: (NEUTRAL, SOFT)}),
+    ))
+
+    # ---- Distorsión temporal (0,9 s): abre los brazos hacia arriba, los cierra con un golpe de palmas hacia delante (tick 6) y los
+    # mantiene un instante empujando el tiempo antes de soltar.
+    warp_r = {0: NEUTRAL, 0.14: ([-122, 0, 50], OUT), 0.24: ([-128, 0, 54], SOFT), 0.30: ([-86, -12, 6], SMASH),
+              0.38: ([-86, -12, 6], HOLD), 0.50: ([-98, -4, 12], OUT), 0.64: ([-94, -6, 10], SOFT), 0.90: (NEUTRAL, SOFT)}
+    anims["mage_time_warp"] = animation(False, limbs(
+        warp_r, 0.02, 0.95,
+        torso=({0: NEUTRAL, 0.14: [-6, 0, 0], 0.30: ([10, 0, 0], SMASH), 0.38: ([10, 0, 0], HOLD), 0.90: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.14: [-10, 0, 0], 0.30: ([6, 0, 0], SMASH), 0.38: ([6, 0, 0], HOLD), 0.90: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.14: [0, 0.6, 0], 0.30: ([0, -1.2, 0], SMASH), 0.38: ([0, -1.2, 0], HOLD), 0.90: (NEUTRAL, SOFT)}),
+    ))
+
+    # ---- Misiles arcanos: un empujón corto por misil, alternando brazo (se dispara una animación por cada misil).
+    punch_r = {0: NEUTRAL, 0.07: ([-52, -6, 20], OUT), 0.15: ([-102, 4, 6], SMASH), 0.21: ([-102, 4, 6], HOLD), 0.32: (NEUTRAL, SOFT)}
+    guide_l = {0: NEUTRAL, 0.07: ([-30, 6, -12], OUT), 0.15: ([-42, 4, -16], OUT), 0.21: ([-42, 4, -16], HOLD), 0.32: (NEUTRAL, SOFT)}
+    torso_r = {0: NEUTRAL, 0.07: [4, -5, 0], 0.15: ([-3, 5, 0], SMASH), 0.21: ([-3, 5, 0], HOLD), 0.32: (NEUTRAL, SOFT)}
+    anims["mage_missile_r"] = animation(False, {
+        "right_arm": bone(rot=punch_r), "left_arm": bone(rot=guide_l), "torso": bone(rot=torso_r)})
+    anims["mage_missile_l"] = animation(False, {
+        "left_arm": bone(rot=lagged_mirror(punch_r, 0, 1.0)), "right_arm": bone(rot=lagged_mirror(guide_l, 0, 1.0)),
+        "torso": bone(rot=lagged_mirror(torso_r, 0, 1.0))})
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+FILES = {"berserker.json": build_berserker, "mage.json": build_mage}
+
+
+def render(name):
+    return json.dumps(FILES[name](), indent=2, ensure_ascii=False) + "\n"
 
 
 def main():
@@ -184,18 +238,19 @@ def main():
     if len(args) != 1:
         print(__doc__)
         sys.exit(1)
-    path = os.path.join(args[0], "player_animations", "berserker.json")
-    text = render()
-    if check:
-        current = open(path, encoding="utf-8").read() if os.path.exists(path) else None
-        if current != text:
-            sys.exit("player_animations/berserker.json no coincide con el generador: ejecútalo sin --check")
-        print("player_animations/berserker.json correcto")
-        return
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w", encoding="utf-8", newline="\n") as f:
-        f.write(text)
-    print(path)
+    for name in FILES:
+        path = os.path.join(args[0], "player_animations", name)
+        text = render(name)
+        if check:
+            current = open(path, encoding="utf-8").read() if os.path.exists(path) else None
+            if current != text:
+                sys.exit(f"player_animations/{name} no coincide con el generador: ejecútalo sin --check")
+            print(f"player_animations/{name} correcto")
+            continue
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8", newline="\n") as f:
+            f.write(text)
+        print(path)
 
 
 if __name__ == "__main__":

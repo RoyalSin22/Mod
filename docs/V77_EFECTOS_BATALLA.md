@@ -74,3 +74,23 @@ arriba (pitch entre −35° y −170°) para entrar en pantalla.
 - **Verificado:** `PlayerAnimationResourcesTest` carga los archivos con el cargador real de PAL (nombres, duraciones, huesos y golpes).
 - **No verificado:** el aspecto de las poses en primera persona. La causa de que no se vieran era el modo `NONE`; el arreglo se ha
   comprobado en el código de la librería, pero no se ha visto en partida. El signo del roll de los brazos sigue siendo una deducción.
+
+## Fase 2: Mago (V83)
+
+Mismo sistema (un evento por efecto, cliente que dibuja, animación PAL, golpe sincronizado), con identidad arcana: violeta y turquesa,
+destellos, runas y cristal en vez de escombros y brasas.
+
+| Activa | Efecto | Animación (primera persona) | Golpe |
+|---|---|---|---|
+| Proyectil arcano (`fireball`) | La magia se concentra en la mano durante la carga; rayo helicoidal hasta el blanco; estallido con runas, destellos y **fragmentos de amatista con gravedad** | `mage_bolt`: la mano derecha va al pecho a cargar, la izquierda guía, lanzamiento con sobrepaso y recogida (0,6 s) | tick 4 |
+| Salto arcano (`blink`) | Implosión en el origen, estela hasta el destino y estallido al reaparecer; la cámara estira el campo de visión | `mage_blink`: cruza los brazos hacia dentro y los abre de golpe (0,55 s) | tick 3 |
+| Distorsión temporal (`time_warp`) | Dos anillos de runas que giran en sentidos contrarios, manecilla de reloj que barre el círculo y motas de luz congeladas; viñeteado turquesa que late | `mage_time_warp`: brazos arriba, golpe de palmas hacia delante y empuje (0,9 s) | tick 6 |
+| Misiles arcanos (`arcane_missiles`) | Un misil por evento, con arco de Bézier y estallido; el brazo alterna | `mage_missile_r` / `mage_missile_l`: un empujón corto por misil (0,32 s) | tick 3 |
+
+- Seis sonidos sintetizados (`mage_charge`, `mage_bolt`, `mage_blink`, `mage_time`, `mage_missile`, `mage_impact`), brillantes y con cuerpo.
+  Cada uno suena en el tick de impacto de su animación (el chasquido del salto está en el segundo 0,15 del propio audio).
+- **Cambio de comportamiento:** el proyectil arcano ya no dibuja línea ni suena si no hay objetivo (antes sí, aunque fallara); en ese caso
+  solo aparece el aviso de que no tuvo efecto.
+- Las animaciones salen de `tools/models/gen_player_animations.py`, que ahora escribe un archivo por rol (`berserker.json`, `mage.json`).
+- Pieza nueva: `FxClient.handPos` (posición aproximada de la mano, para que la carga y el misil salgan de ella).
+- **No verificado en partida:** el aspecto, el momento exacto de las partículas respecto a la mano y el rendimiento de los fragmentos.

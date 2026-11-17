@@ -202,5 +202,41 @@
     "sounds": [
       "aptitudes:berserker_leap"
     ]
+  },
+  "mage_charge": {
+    "subtitle": "subtitles.aptitudes.mage_charge",
+    "sounds": [
+      "aptitudes:mage_charge"
+    ]
+  },
+  "mage_bolt": {
+    "subtitle": "subtitles.aptitudes.mage_bolt",
+    "sounds": [
+      "aptitudes:mage_bolt"
+    ]
+  },
+  "mage_blink": {
+    "subtitle": "subtitles.aptitudes.mage_blink",
+    "sounds": [
+      "aptitudes:mage_blink"
+    ]
+  },
+  "mage_time": {
+    "subtitle": "subtitles.aptitudes.mage_time",
+    "sounds": [
+      "aptitudes:mage_time"
+    ]
+  },
+  "mage_missile": {
+    "subtitle": "subtitles.aptitudes.mage_missile",
+    "sounds": [
+      "aptitudes:mage_missile"
+    ]
+  },
+  "mage_impact": {
+    "subtitle": "subtitles.aptitudes.mage_impact",
+    "sounds": [
+      "aptitudes:mage_impact"
+    ]
   }
 }

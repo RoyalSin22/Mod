@@ -40,6 +40,13 @@ public final class ModSounds {
 	public static final SoundEvent BERSERKER_WHOOSH = register("berserker_whoosh");
 	public static final SoundEvent BERSERKER_HEARTBEAT = register("berserker_heartbeat");
 	public static final SoundEvent BERSERKER_LEAP = register("berserker_leap");
+	// V83: efectos de batalla del Mago.
+	public static final SoundEvent MAGE_CHARGE = register("mage_charge");
+	public static final SoundEvent MAGE_BOLT = register("mage_bolt");
+	public static final SoundEvent MAGE_BLINK = register("mage_blink");
+	public static final SoundEvent MAGE_TIME = register("mage_time");
+	public static final SoundEvent MAGE_MISSILE = register("mage_missile");
+	public static final SoundEvent MAGE_IMPACT = register("mage_impact");
 
 	private ModSounds() {
 	}

@@ -6,6 +6,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **V83 — Efectos de batalla, fase 2 (Mago).** Proyectil arcano, Salto arcano, Distorsión temporal y Misiles arcanos tienen coreografía propia:
+  carga en la mano y rayo helicoidal con fragmentos de amatista que caen, estela y estallido en el salto, relojes que giran y motas congeladas
+  al frenar el tiempo, y misiles con arco. Cinco animaciones del cuerpo en primera persona (`mage.json`), seis sonidos sintetizados con
+  subtítulos y los efectos sincronizados con el golpe de cada animación. El proyectil arcano ya no dibuja nada si no hay objetivo.
+  **Sin ver en partida.**
 - **V78.1 — Animaciones visibles en primera persona y más dinámicas.** Las animaciones no se veían porque PAL las deja transparentes en
   primera persona por defecto; ahora se activa el modo `THIRD_PERSON_MODEL` mientras suenan. Las cinco animaciones del Bersérker se
   rehacen con preparación, sobrepaso, congelado en el impacto, rebote y brazos desfasados, son más cortas (Furia 1,0 s, Grito 0,8 s,

@@ -413,6 +413,91 @@ def berserker_leap(rng):
     return fade_out(normalize(body * amp * 0.9 + normalize(air) * np.sin(np.pi * np.clip(t / 0.42, 0, 1)) * 0.45, 0.82))
 
 
+# ---------------------------------------------------------------- Mago (V83)
+
+def _highpass(x, cutoff):
+    return x - lowpass(x, cutoff)
+
+
+def _bell(t, base, partials, decay):
+    """Campana: parciales inarmónicos con caída propia (como eclipse_announce, pero más corta y brillante)."""
+    return sum(a * np.sin(2 * np.pi * base * r * t) * env(t, 0.002, decay / (1 + 0.6 * i)) for i, (r, a) in enumerate(partials))
+
+
+def _soft_air(rng, n, low, high):
+    """Ruido limitado a una banda (evita el siseo estridente de un paso alto a secas)."""
+    return lowpass(_highpass(rng.standard_normal(n), low), high)
+
+
+def mage_charge(rng):
+    """Carga arcana: un brillo que sube de tono mientras la magia se reúne en la mano."""
+    t = t_axis(0.42)
+    glide = 520 + 1500 * np.clip(t / 0.4, 0, 1) ** 1.6
+    phase = 2 * np.pi * np.cumsum(glide) / RATE
+    tone = (np.sin(phase) + 0.4 * np.sin(2 * phase) + 0.15 * np.sin(3.02 * phase)) * np.clip(t / 0.35, 0, 1) ** 1.5
+    shimmer = _soft_air(rng, len(t), 2500, 7000) * 0.18 * np.clip(t / 0.4, 0, 1)
+    return fade_out(normalize(tone * 0.8 + shimmer, 0.8), 0.06)
+
+
+def mage_bolt(rng):
+    """Rayo arcano: chasquido con cuerpo, un barrido que cae y chispas finas."""
+    t = t_axis(0.65)
+    sweep = np.sin(2 * np.pi * np.cumsum(2200 * np.exp(-t * 8) + 220) / RATE) * env(t, 0.001, 0.16)
+    body = np.sin(2 * np.pi * (420 * np.exp(-t * 6) + 110) * t) * env(t, 0.001, 0.14) * 0.8
+    zap = _soft_air(rng, len(t), 1800, 6500) * env(t, 0.0008, 0.05) * 0.4
+    sparkle = _bell(t, 1500, [(1.0, 0.5), (1.5, 0.35), (2.3, 0.2)], 0.22) * 0.3
+    return fade_out(normalize(sweep + body + zap + sparkle, 0.85))
+
+
+def mage_blink(rng):
+    """Salto arcano: un barrido que se cierra hacia dentro (0,15 s) y un chasquido seco al reaparecer, a la vez que los brazos se abren."""
+    t, noise = _sweep_noise(rng, 0.5, 1700.0, 420.0, 1500.0, 0.7)
+    amp = np.sin(np.pi * np.clip(t / 0.15, 0, 1)) ** 1.2 * (t < 0.15)
+    tone = np.sin(2 * np.pi * np.cumsum(300 + 1500 * np.clip(t / 0.15, 0, 1)) / RATE) * amp * 0.45
+    pop_t = np.maximum(t - 0.15, 0)
+    pop = (np.sin(2 * np.pi * (170 * np.exp(-pop_t * 22) + 65) * pop_t) * env(pop_t, 0.001, 0.12)
+           + _soft_air(rng, len(t), 1200, 5000) * env(pop_t, 0.0005, 0.03) * 0.5
+           + _bell(pop_t, 1400, [(1.0, 0.4), (1.5, 0.3)], 0.25) * 0.35) * (t >= 0.15)
+    return fade_out(normalize(normalize(noise) * amp * 0.5 + tone + pop, 0.85))
+
+
+def mage_time(rng):
+    """Distorsión temporal: una campana grave y una cuenta de chasquidos que se frena."""
+    t = t_axis(1.3)
+    bell = _bell(t, 196.0, [(1.0, 1.0), (2.01, 0.6), (2.76, 0.45), (4.07, 0.3), (5.4, 0.2)], 0.9) * 1.4
+    ticks = np.zeros(len(t))
+    when = 0.12
+    gap = 0.08
+    for _ in range(9):
+        i = int(when * RATE)
+        n = int(0.02 * RATE)
+        if i + n < len(t):
+            ticks[i:i + n] += _soft_air(rng, n, 1500, 5500) * np.exp(-np.arange(n) / (0.004 * RATE)) * 0.6
+        when += gap
+        gap *= 1.28
+    hum = np.sin(2 * np.pi * 98 * t) * env(t, 0.08, 0.7) * 0.6
+    return fade_out(normalize(bell + ticks * 0.5 + hum, 0.85), 0.12)
+
+
+def mage_missile(rng):
+    """Misil arcano: un «piu» corto que cae de tono."""
+    t = t_axis(0.26)
+    f = 1600 * np.exp(-t * 7) + 520
+    phase = 2 * np.pi * np.cumsum(f) / RATE
+    x = (np.sin(phase) + 0.3 * np.sin(2 * phase)) * env(t, 0.003, 0.08)
+    x += _soft_air(rng, len(t), 2500, 6000) * env(t, 0.001, 0.02) * 0.15
+    return fade_out(normalize(x, 0.78), 0.04)
+
+
+def mage_impact(rng):
+    """Estallido de cristal: golpe con cuerpo y parciales de vidrio que se apagan."""
+    t = t_axis(0.7)
+    burst = _soft_air(rng, len(t), 1800, 6500) * env(t, 0.0006, 0.07) * 0.45
+    glass = _bell(t, 1900, [(1.0, 0.6), (1.58, 0.5), (2.12, 0.4), (2.9, 0.25)], 0.32) * 0.6
+    thump = np.sin(2 * np.pi * (200 * np.exp(-t * 18) + 75) * t) * env(t, 0.001, 0.1) * 0.9
+    return fade_out(normalize(burst + glass + thump, 0.85))
+
+
 SOUNDS = {
     'eclipse_announce': eclipse_announce,
     'eclipse_start': eclipse_start,
@@ -448,6 +533,12 @@ SOUNDS = {
     'berserker_whoosh': berserker_whoosh,
     'berserker_heartbeat': berserker_heartbeat,
     'berserker_leap': berserker_leap,
+    'mage_charge': mage_charge,
+    'mage_bolt': mage_bolt,
+    'mage_blink': mage_blink,
+    'mage_time': mage_time,
+    'mage_missile': mage_missile,
+    'mage_impact': mage_impact,
 }
 
 

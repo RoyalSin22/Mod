@@ -79,9 +79,7 @@ final class AbilitiesExtra {
 			}
 			effect(p, StatusEffects.SPEED, 60 + 20 * r, 1);
 			effect(p, StatusEffects.HASTE, 60 + 20 * r, 1);
-			ParticleFx.shockwave(server(p), world(p), p.getPos(), radius, ParticleFx.dust(0x80DEEA, 1.2f), 8);
-			ParticleFx.runeCircle(world(p), p.getPos(), radius * 0.6, ParticleTypes.ENCHANT);
-			sound(p, SoundEvents.BLOCK_BELL_RESONATE, 1.6f);
+			MageFx.timeWarp(p, radius); // V83
 			return true;
 		});
 		// Misiles arcanos: 3 + r proyectiles teledirigidos a los enemigos más cercanos.
@@ -91,10 +89,8 @@ final class AbilitiesExtra {
 			AbilityState.repeat(server(p), 3 + r, 4, i -> {
 				LivingEntity t = targets.get(i % targets.size());
 				if (!t.isAlive()) return;
-				Targeting.particleLine(world(p), ParticleFx.dust(0xB388FF, 1.0f), p.getEyePos(),
-						t.getPos().add(0, t.getHeight() / 2, 0));
+				MageFx.missile(p, t.getPos().add(0, t.getHeight() / 2, 0), i); // V83
 				t.damage(magic(p), 3.0f);
-				sound(p, SoundEvents.ENTITY_ILLUSIONER_CAST_SPELL, 1.6f);
 			});
 			return true;
 		});
