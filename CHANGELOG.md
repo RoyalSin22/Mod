@@ -12,6 +12,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   desde el anillo I (avisan a hasta 6 hostiles cercanos), esquiva de proyectiles desde el II (`threatDodgePerRing`, tope 25 %), furia
   una vez al bajar del 35 % de vida desde el III (Velocidad y Fuerza) y +8 % de resistencia al retroceso por anillo. Excluye jefes,
   invocaciones y eventos. Pruebas `ThreatTacticsTest` y migración en `ConfigMigrationTest`; `docs/BALANCE.md` y `docs/CONFIGURATION.md`.
+- **v83 — Descripciones de habilidades más claras (primera tanda).** Se reescriben las 15 más densas de los talentos activos (Relámpago en cadena,
+  Muro de espadas, Distorsión temporal, Remolino, Posturas, Respuesta, Rayo sagrado, Maldición, Marca explosiva, Moneda, Luz sagrada, Semilla,
+  Muro elemental, Hacha arrojadiza y Cicatrices) en los 5 idiomas: frases cortas, alcance y duración en una frase aparte y, al final, una sola línea
+  «Rango 1 / 2 / 3» con todas las cifras que cambian. Fuente: `tools/lang/base_desc.py` (`--apply`).
 
 ### Añadido
 - **V78.1 — Animaciones visibles en primera persona y más dinámicas.** Las animaciones no se veían porque PAL las deja transparentes en
