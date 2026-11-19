@@ -1619,7 +1619,7 @@ bestiary.aptitudes.reveal¦%s abates a mais para revelar¦%s victoires de plus p
 bestiary.aptitudes.reveal.one¦1 abate a mais para revelar¦1 victoire de plus pour révéler¦Noch 1 Sieg, um dies zu enthüllen
 bestiary.aptitudes.section.tips¦Dicas¦Conseils¦Tipps
 bestiary.aptitudes.section.lore¦Lenda¦Légende¦Legende
-bestiary.aptitudes.osario_quebrado.lore¦Ossos e terra que se recusam a descansar, reunidos por um luto antigo de que ninguém se lembra.¦Des os et de la terre qui refusent le repos, rassemblés par un vieux deuil dont nul ne se souvient.¦Knochen und Erde, die sich weigern zu ruhen, vereint durch eine alte Trauer, an die sich niemand erinnert.
+bestiary.aptitudes.osario_quebrado.lore¦Ele arrasta ossos e terra de uma sepultura inacabada. Um luto antigo ainda mantém os restos unidos.¦Il traîne les os et la terre d’une sépulture inachevée. Un vieux deuil lie encore ces restes.¦Es schleift Knochen und Erde aus einem unvollendeten Grab mit sich. Eine alte Trauer hält die Überreste noch zusammen.
 bestiary.aptitudes.errante_velado.lore¦Uma alma perdida na névoa que vaga até o amanhecer dissolvê-la.¦Une âme perdue dans la brume qui erre jusqu’à ce que l’aube la dissolve.¦Eine im Nebel verlorene Seele, die umherirrt, bis die Morgendämmerung sie auflöst.
 bestiary.aptitudes.escorificador_hierro.lore¦Escória e ferro com vontade própria pela chuva de brasas; não forja nada, só queima.¦Scories et fer dotés d’une volonté par la pluie de braises ; il ne forge rien, il ne fait que brûler.¦Schlacke und Eisen, denen der Funkenregen einen Willen gab; es schmiedet nichts, es brennt nur.
 bestiary.aptitudes.custodio.lore¦Do seu corpo de pedra pendem quatro chaves e ele ainda lembra o juramento de guardar o selo.¦Quatre clés pendent à son corps de pierre, et il se souvient encore du serment de garder le sceau.¦Vier Schlüssel hängen an seinem steinernen Körper, und er erinnert sich noch an den Eid, das Siegel zu bewachen.
@@ -1759,7 +1759,7 @@ add('', """
 entity.aptitudes.faceless_colossus¦O Colosso Sem Rosto¦Le Colosse sans visage¦Der gesichtslose Koloss
 entity.aptitudes.osario_quebrado¦Ossuário Quebrado¦Ossuaire brisé¦Zerbrochenes Beinhaus
 item.aptitudes.osario_quebrado_spawn_egg¦Ovo de aparição do Osario Quebrado¦Œuf d'apparition de l'Ossuaire brisé¦Erscheinungsei des Zerbrochenen Beinhauses
-bestiary.aptitudes.osario_quebrado.tip¦Osso e terra que não descansam. Arrasta um braço e avança ao te ver.¦Os et terre qui refusent le repos. Il traîne un bras et charge dès qu'il vous voit.¦Knochen und Erde, die nicht ruhen wollen. Er schleift einen Arm und stürmt los, sobald er dich sieht.
+bestiary.aptitudes.osario_quebrado.tip¦O Ossuário avisa antes de atacar. Esquive para o lado quando ele investir e recue quando erguer a carga.¦L’Ossuaire donne un signe avant de frapper. Esquivez de côté quand il charge et reculez quand il soulève sa charge.¦Das Beinhaus kündigt seine Schläge an. Weiche seitlich aus, wenn es anstürmt, und geh auf Abstand, wenn es seine Last hebt.
 contract.aptitudes.kind.nether¦Caça no Nether¦Chasse au Nether¦Jagd im Nether
 contract.aptitudes.kind.new_mob¦Criaturas novas¦Créatures nouvelles¦Neue Kreaturen
 contract.aptitudes.kind.expedition¦Expedição¦Expédition¦Expedition
@@ -1804,6 +1804,16 @@ subtitles.aptitudes.errante_rend¦O Errante rasga o ar¦Le Vagabond lacère¦Ver
 subtitles.aptitudes.errante_hurt¦O Errante Velado sofre dano¦Le Vagabond voilé est blessé¦Verhüllter Wanderer wird verletzt
 subtitles.aptitudes.errante_death¦O Errante Velado desaba¦Le Vagabond voilé s’effondre¦Verhüllter Wanderer bricht zusammen
 subtitles.aptitudes.errante_despawn¦O Errante Velado se dissipa¦Le Vagabond voilé se dissipe¦Verhüllter Wanderer verblasst
+subtitles.aptitudes.osario.ambient¦O Ossuário Quebrado chocalha¦L’Ossuaire brisé cliquette¦Zerbrochenes Beinhaus klappert
+subtitles.aptitudes.osario.alert¦O Ossuário Quebrado rosna¦L’Ossuaire brisé gronde¦Zerbrochenes Beinhaus knurrt
+subtitles.aptitudes.osario.hurt¦Os ossos do Ossuário estalam¦Les os de l’Ossuaire craquent¦Knochen des Beinhauses knacken
+subtitles.aptitudes.osario.death¦O Ossuário Quebrado desmorona¦L’Ossuaire brisé s’effondre¦Zerbrochenes Beinhaus stürzt ein
+subtitles.aptitudes.osario.claw¦O Ossuário prepara um arranhão¦L’Ossuaire prépare un coup de griffe¦Beinhaus holt zum Krallenhieb aus
+subtitles.aptitudes.osario.heavy¦O Ossuário prepara um golpe amplo¦L’Ossuaire prépare un grand balayage¦Beinhaus holt zum Rundumschlag aus
+subtitles.aptitudes.osario.slam_charge¦O Ossuário ergue sua carga¦L’Ossuaire soulève sa charge¦Beinhaus hebt seine Last
+subtitles.aptitudes.osario.slam_hit¦A carga do Ossuário atinge o chão¦La charge de l’Ossuaire heurte le sol¦Die Last des Beinhauses kracht auf den Boden
+subtitles.aptitudes.osario.lunge¦O Ossuário se prepara para investir¦L’Ossuaire se prépare à charger¦Beinhaus setzt zum Ansturm an
+subtitles.aptitudes.osario.step¦O Ossuário arrasta sua carga¦L’Ossuaire traîne sa charge¦Beinhaus schleift seine Last
 subtitles.aptitudes.berserker_roar¦O Berserker ruge¦Le Berserker rugit¦Berserker brüllt
 subtitles.aptitudes.berserker_war_cry¦Grito de guerra¦Cri de guerre¦Kriegsschrei
 subtitles.aptitudes.berserker_slam¦O chão se despedaça¦Le sol se fissure¦Der Boden zerbirst

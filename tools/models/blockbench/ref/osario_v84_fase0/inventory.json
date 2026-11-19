@@ -1,0 +1,91 @@
+{
+  "main": {
+    "bones": 7,
+    "cubes": 8,
+    "texture": [
+      64,
+      64
+    ],
+    "colors": 5,
+    "description": {
+      "identifier": "geometry.osario_quebrado",
+      "texture_width": 64,
+      "texture_height": 64,
+      "visible_bounds_width": 3,
+      "visible_bounds_height": 1,
+      "visible_bounds_offset": [
+        0,
+        1,
+        0
+      ]
+    },
+    "animations": {
+      "animation.osario_quebrado.idle": {
+        "length": 2.0,
+        "loop": true
+      },
+      "animation.osario_quebrado.walk": {
+        "length": 1.0,
+        "loop": true
+      },
+      "animation.osario_quebrado.heavy_swipe": {
+        "length": 1.4,
+        "loop": null
+      }
+    },
+    "editable": null,
+    "glowmask": false
+  },
+  "v65": {
+    "bones": 15,
+    "cubes": 21,
+    "texture": [
+      256,
+      256
+    ],
+    "colors": 14,
+    "description": {
+      "identifier": "geometry.osario_quebrado",
+      "texture_width": 128,
+      "texture_height": 128,
+      "visible_bounds_width": 6,
+      "visible_bounds_height": 4.5,
+      "visible_bounds_offset": [
+        0,
+        1.75,
+        0
+      ]
+    },
+    "animations": {
+      "animation.osario_quebrado.idle": {
+        "length": 2.0,
+        "loop": true
+      },
+      "animation.osario_quebrado.walk": {
+        "length": 1.0,
+        "loop": true
+      },
+      "animation.osario_quebrado.heavy_swipe": {
+        "length": 1.4,
+        "loop": null
+      },
+      "animation.osario_quebrado.sweep": {
+        "length": 0.6,
+        "loop": null
+      }
+    },
+    "editable": {
+      "format": {
+        "format_version": "5.0",
+        "model_format": "bedrock",
+        "box_uv": true
+      },
+      "elements": 21
+    },
+    "glowmask": true
+  },
+  "budget_table": {
+    "total": 145,
+    "rows": 28
+  }
+}

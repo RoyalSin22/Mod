@@ -5,6 +5,19 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Documentación
+- **v84 — Osario Quebrado, Fases 0–5.** Verificación del encargo y las referencias, respaldos históricos y
+  calibración de ejes. Bloqueo y rig aprobados; geometría detallada de 169 cubos sobre los mismos 30 huesos:
+  cráneo fracturado, mandíbula hueca, costillas separadas, falanges y masa funeraria articulada. Altura 29,783 u,
+  hombros 12 u y apoyos en el suelo conservados. Holgura del núcleo hasta escala 1,35 y exportación/reapertura
+  de las 169 piezas comprobadas. Fases 0–2 aprobadas. Atlas 256² a 2 px/u con 25 colores, cinco capas editables
+  y máscara independiente de 84 píxeles. Ajuste autorizado del tórax aplicado y Fase 3 aprobada.
+  Diez animaciones con poses, claves y verificación de contactos en `docs/V84_OSARIO_FASE4.md`.
+  Puerta 4 aprobada. Integración con cuatro ataques de servidor, diez clips, máscara emisiva, diez sonidos propios
+  y textos del bestiario en los 11 idiomas. Compilación y recursos comprobados. La pasada emisiva recorre
+  los huesos que transforman el núcleo y emite solo sus cinco cubos. Las pruebas de juego y las medidas
+  exploratorias se registran en `docs/V84_OSARIO_FASE6.md`.
+
 ### Cambiado
 - **v83 — Criaturas más difíciles.** Valores por defecto nuevos: anillos de Amenaza de 700 bloques (antes 1000), vida +25 % por anillo
   (antes 15 %), daño +15 % (antes 10 %) y `eliteChance` 0,08 (antes 0,05); los `config/aptitudes.json` con los valores antiguos se migran una

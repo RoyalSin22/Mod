@@ -1,0 +1,58 @@
+{
+  "tolerance": 0.01,
+  "pulse": [
+    {
+      "scale": 1,
+      "overlaps": []
+    },
+    {
+      "scale": 1.12,
+      "overlaps": []
+    },
+    {
+      "scale": 1.35,
+      "overlaps": []
+    }
+  ],
+  "joints": [
+    [
+      "manubrium",
+      [
+        [
+          "sternum",
+          0.4383297722270463
+        ]
+      ]
+    ],
+    [
+      "sternum",
+      [
+        [
+          "manubrium",
+          0.4383297722270463
+        ],
+        [
+          "xiphoid",
+          0.1550155596950602
+        ],
+        [
+          "rib_left_3_front",
+          0.08084704383689179
+        ],
+        [
+          "rib_left_4_front",
+          0.11315445160413296
+        ]
+      ]
+    ],
+    [
+      "xiphoid",
+      [
+        [
+          "sternum",
+          0.1550155596950602
+        ]
+      ]
+    ]
+  ]
+}

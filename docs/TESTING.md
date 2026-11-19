@@ -1,5 +1,71 @@
 # Pruebas de Aptitudes
 
+## V84 — Osario Quebrado, Fases 0–6
+
+Referencia en `20bc230`: `.\gradlew.bat build --offline --console=plain` terminó con **BUILD SUCCESSFUL**;
+915 pruebas Java (151 clases), sin fallos ni omisiones. Las 59 pruebas de idiomas y los `--check` de idiomas
+también pasan. `gen_mob_models.py --check` **devuelve 1** por diferencias binarias en los PNG de Osario y Custodio;
+comparados en RGBA, ambos tienen **0 píxeles distintos**. No se regeneraron los recursos.
+
+`python tools/models/archive_osario_v84.py` verifica 34 archivos previos y 13 del placeholder, sin sobrescribir
+contenido distinto. Las sondas de Blockbench confirman el error de signo X para el torso y la equivalencia
+lateral incorrecta del encargo. Informe, capturas, medidas y resultados en
+[`V84_OSARIO_QUEBRADO.md`](V84_OSARIO_QUEBRADO.md).
+
+En Fase 1 se comprobaron el editable GeckoLib nuevo y su exportación de diagnóstico: 30 huesos, 74 cubos,
+dimensiones múltiplos de 0,5 u, altura 29,783 u, hombros 12 u, suelas y base funeraria en y = 0. Las 44 cajas
+fraccionarias exportan seis caras UV no degeneradas, con coordenadas enteras al convertir a 2 px/u.
+Reabrir el geo conserva la caja global del editable. Las pruebas estáticas de mandíbula y pulgar se restauraron;
+no se crearon clips ni texturas. El validador no detecta partes separadas; los contactos entre articulaciones,
+anclajes y piezas incrustadas están documentados en [`V84_OSARIO_FASE1.md`](V84_OSARIO_FASE1.md).
+No se volvió a ejecutar Gradle en Fase 1: sus cambios están fuera de los recursos y código del juego.
+La Fase 1 fue aprobada. En Fase 2 se verificaron 169 cubos, 30 huesos con los mismos pivotes y rotaciones,
+dimensiones positivas múltiplos de 0,5 u, altura 29,783 u, hombros 12 u y los tres apoyos en y = 0.
+Las 120 cajas fraccionarias exportan 720 caras UV no degeneradas, dentro de 128² y sin islas compartidas.
+Comparadas las 169 cajas globales del editable con el geo reabierto: error máximo **0,00000646 u**.
+La medición usa la geometría de cada cubo, excluyendo contornos invisibles del editor con cachés antiguas.
+El núcleo a escala 1, 1,12 y 1,35 no penetra la estructura a tolerancia 0,01 u; prueba estática restaurada,
+sin clips. El detector de partes separadas devuelve 0; los contactos intencionales se detallan en
+[`V84_OSARIO_FASE2.md`](V84_OSARIO_FASE2.md) y sus JSON de evidencia. La Fase 1 aprobada conserva su SHA-256.
+No se ejecutó Gradle en Fase 2; tampoco cambió código o recursos activos del juego.
+
+La Fase 2 fue aprobada al autorizar la Fase 3. Se ejecutó
+`python tools/models/blockbench/studies/osario_v84/fase3/check_assets.py`: sin fallos.
+La geometría, el rig y los hashes anteriores se conservan. Se verificaron atlas físico 256² / lógico 128²,
+1014 caras a 2 px/u, márgenes de 1 px y cero solapes o píxeles transparentes dentro de caras. La composición
+de cinco capas coincide con la base embebida y el PNG. Usa exactamente 25 colores, seis píxeles `#C9FFF0`,
+162 píxeles de ectoplasma y máscara independiente de 84 píxeles (26 alfa 255, 58 alfa 160), solo en el núcleo.
+La ampliación ×8 es NEAREST exacta; no se encuentran patrones de cara idénticos en la muestra de caras
+con ancho y alto ≥ 4 px y área ≥ 24 px. El musgo ocupa aproximadamente el 1,063 % de la superficie expuesta muestreada de la masa.
+
+Las capturas detectaron una limitación de la geometría aprobada: manubrio, esternón y mandíbula ocultan
+gran parte del núcleo. Muestreo por rayos: 15,7 % frontal / 29,7 % en tres cuartos; son estimaciones de superficie,
+no porcentajes exactos de pantalla. La propuesta virtual mejora esos valores a 42,5 % / 49,9 %, sin modificar
+el modelo. Su pulso virtual a 1 / 1,12 / 1,35 no penetra la estructura más de 0,01 u. Se descartó adelantar
+el núcleo por producir penetraciones durante el pulso. No se da por aprobado el criterio artístico de legibilidad. Evidencias y límites en
+[`V84_OSARIO_FASE3.md`](V84_OSARIO_FASE3.md). La vista emisiva es una previsualización del editor;
+la capa real y la retirada de píxeles de la base por GeckoLib se comprobarán durante la integración.
+No se ejecutó Gradle en Fase 3 ni se cambiaron recursos activos del juego.
+La Puerta 3 se cerró tras aplicar el ajuste autorizado. Pasó `check_assets.py --adjusted`. El núcleo tiene
+holgura a escala 1,35, el esternón mantiene contacto con dos costillas y las 1014 caras conservan 2 px/u.
+
+En Fase 4 pasó `python tools/models/blockbench/studies/osario_v84/fase4/check_clips.py`. Se comprobaron
+10 clips y 10 042 claves en el editable, 2042 poses medidas en Blockbench, cierre de los tres bucles,
+la huella final de 1,378 × 1,370 bloques y una Y mínima de −0,00601 u. Gradle no se ejecutó para la
+autoría en el editor. La Puerta 4 fue aprobada. [Capturas y resultados de Fase 4](V84_OSARIO_FASE4.md).
+
+En Fase 5, `gradlew.bat build --offline --console=plain` dio **BUILD SUCCESSFUL** con 924 pruebas JUnit
+en 153 clases. Los cargadores reales de GeckoLib construyen 30 huesos, 169 cubos y los diez clips.
+`OsarioStrikeRulesTest` cubre ventanas y deduplicación, sectores, discos, cápsula, pesos y fichas.
+`OsarioResourcesTest` cubre los cargadores, UV, máscara, audio y subtítulos. También pasaron las 59
+pruebas de idiomas, los siete generadores de traducción y `gen_mob_models.py --check`. La Puerta 5 fue aprobada.
+[Informe de integración](V84_OSARIO_FASE5.md).
+
+La Fase 6 usa un mod de laboratorio aislado mediante `tools/testing/osario_v84/runtime.init.gradle`.
+Los GameTests ejecutan combate en Minecraft. Las series de FPS y MSPT comparan Osario V84, el Errante
+y el placeholder previo. La [validación en Minecraft](V84_OSARIO_FASE6.md) recoge las pruebas, sus
+límites y los criterios pendientes.
+
 ## V77 — Localizar estructuras
 
 `/aptitudes locate custodian_temple` (o `temple`, `tower`, `bonfire_shrine`, `camp`) da las coordenadas de la más cercana ya generada; pulsa las

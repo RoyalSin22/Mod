@@ -33,6 +33,17 @@ public final class ModSounds {
 	public static final SoundEvent ERRANTE_HURT = register("errante_hurt");
 	public static final SoundEvent ERRANTE_DEATH = register("errante_death");
 	public static final SoundEvent ERRANTE_DESPAWN = register("errante_despawn");
+
+	public static final SoundEvent OSARIO_AMBIENT = register("osario_ambient");
+	public static final SoundEvent OSARIO_ALERT = register("osario_alert");
+	public static final SoundEvent OSARIO_HURT = register("osario_hurt");
+	public static final SoundEvent OSARIO_DEATH = register("osario_death");
+	public static final SoundEvent OSARIO_CLAW = register("osario_claw");
+	public static final SoundEvent OSARIO_HEAVY = register("osario_heavy");
+	public static final SoundEvent OSARIO_SLAM_CHARGE = register("osario_slam_charge");
+	public static final SoundEvent OSARIO_SLAM_HIT = register("osario_slam_hit");
+	public static final SoundEvent OSARIO_LUNGE = register("osario_lunge");
+	public static final SoundEvent OSARIO_STEP = register("osario_step");
 	// V77: efectos de batalla del Bersérker.
 	public static final SoundEvent BERSERKER_ROAR = register("berserker_roar");
 	public static final SoundEvent BERSERKER_WAR_CRY = register("berserker_war_cry");

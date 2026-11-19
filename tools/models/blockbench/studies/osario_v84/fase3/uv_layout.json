@@ -1,0 +1,2253 @@
+{
+  "logical": [
+    128,
+    128
+  ],
+  "physical": [
+    256,
+    256
+  ],
+  "density": 2,
+  "islands": [
+    {
+      "element": "cranium_occipital",
+      "parent": "head",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        1,
+        1,
+        46,
+        21
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "cranium_frontal_left",
+      "parent": "head",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        48,
+        1,
+        18,
+        14
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "cranium_frontal_right",
+      "parent": "head",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        67,
+        1,
+        20,
+        14
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "mandible_body_left",
+      "parent": "jaw",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        88,
+        1,
+        16,
+        8
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "mandible_body_right",
+      "parent": "jaw",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        105,
+        1,
+        16,
+        8
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "mandible_ramus_left",
+      "parent": "jaw",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        122,
+        1,
+        8,
+        7
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "mandible_ramus_right",
+      "parent": "jaw",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        131,
+        1,
+        8,
+        7
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "nasal_bridge",
+      "parent": "head",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        140,
+        1,
+        8,
+        7
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "orbital_bar_left",
+      "parent": "head",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        149,
+        1,
+        8,
+        7
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "orbital_bar_right",
+      "parent": "head",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        158,
+        1,
+        8,
+        7
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "fracture_chip",
+      "parent": "head",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        167,
+        1,
+        12,
+        6
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "zygomatic_left",
+      "parent": "head",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        180,
+        1,
+        12,
+        6
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "zygomatic_right",
+      "parent": "head",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        193,
+        1,
+        12,
+        6
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "brow_left",
+      "parent": "head",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        206,
+        1,
+        16,
+        5
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "brow_right",
+      "parent": "head",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        223,
+        1,
+        18,
+        5
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "mandible_chin",
+      "parent": "jaw",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        1,
+        23,
+        24,
+        5
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "maxillary_plate",
+      "parent": "head",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        26,
+        23,
+        32,
+        5
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "tooth_upper_1",
+      "parent": "head",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        59,
+        23,
+        6,
+        4
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "tooth_upper_2",
+      "parent": "head",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        66,
+        23,
+        8,
+        4
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "tooth_upper_4",
+      "parent": "head",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        75,
+        23,
+        8,
+        4
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "tooth_upper_5",
+      "parent": "head",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        84,
+        23,
+        6,
+        4
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "tooth_lower_1",
+      "parent": "jaw",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        91,
+        23,
+        6,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "tooth_lower_2",
+      "parent": "jaw",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        98,
+        23,
+        6,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "tooth_lower_3",
+      "parent": "jaw",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        105,
+        23,
+        8,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "tooth_lower_4",
+      "parent": "jaw",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        114,
+        23,
+        6,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "tooth_lower_5",
+      "parent": "jaw",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        121,
+        23,
+        6,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "tooth_upper_3",
+      "parent": "head",
+      "material": "bone",
+      "zone": "bone_head",
+      "rectangle": [
+        128,
+        23,
+        6,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "ilium_left_fractured",
+      "parent": "pelvis",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        1,
+        30,
+        28,
+        13
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "ilium_right",
+      "parent": "pelvis",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        30,
+        30,
+        28,
+        13
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_left_3_arc",
+      "parent": "ribs_left",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        59,
+        30,
+        26,
+        12
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_left_4_arc",
+      "parent": "ribs_left",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        86,
+        30,
+        26,
+        12
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_right_3_arc",
+      "parent": "ribs_right",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        113,
+        30,
+        26,
+        12
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_right_4_arc",
+      "parent": "ribs_right",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        140,
+        30,
+        26,
+        12
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "sacrum",
+      "parent": "pelvis",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        167,
+        30,
+        20,
+        11
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_left_1_arc",
+      "parent": "ribs_left",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        188,
+        30,
+        22,
+        10
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_right_2_arc",
+      "parent": "ribs_right",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        211,
+        30,
+        22,
+        10
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "cervicothoracic_arch",
+      "parent": "chest",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        234,
+        30,
+        18,
+        9
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_left_2_arc",
+      "parent": "ribs_left",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        1,
+        44,
+        20,
+        9
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_left_5_arc",
+      "parent": "ribs_left",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        22,
+        44,
+        20,
+        9
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_right_1_arc",
+      "parent": "ribs_right",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        43,
+        44,
+        20,
+        9
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "sternum",
+      "parent": "chest",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        64,
+        44,
+        10,
+        9
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "lumbar_1",
+      "parent": "body",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        75,
+        44,
+        18,
+        8
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "lumbar_2",
+      "parent": "body",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        94,
+        44,
+        18,
+        8
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_left_6_arc",
+      "parent": "ribs_left",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        113,
+        44,
+        18,
+        8
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_right_5_arc",
+      "parent": "ribs_right",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        132,
+        44,
+        18,
+        8
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_right_6_arc",
+      "parent": "ribs_right",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        151,
+        44,
+        18,
+        8
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "thoracic_1",
+      "parent": "spine_upper",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        170,
+        44,
+        18,
+        8
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "thoracic_2",
+      "parent": "spine_upper",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        189,
+        44,
+        18,
+        8
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "thoracic_3",
+      "parent": "spine_upper",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        208,
+        44,
+        18,
+        8
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "thoracic_4",
+      "parent": "spine_upper",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        227,
+        44,
+        18,
+        8
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "cervical_1",
+      "parent": "neck",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        1,
+        54,
+        12,
+        6
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "cervical_2",
+      "parent": "neck",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        14,
+        54,
+        12,
+        6
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "hip_chip_left",
+      "parent": "pelvis",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        27,
+        54,
+        12,
+        6
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "hip_chip_right",
+      "parent": "pelvis",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        40,
+        54,
+        10,
+        6
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "manubrium",
+      "parent": "chest",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        51,
+        54,
+        12,
+        6
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "pubic_arch",
+      "parent": "pelvis",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        64,
+        54,
+        24,
+        6
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "dorsal_spur",
+      "parent": "spine_upper",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        89,
+        54,
+        10,
+        5
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "intervertebral_disc",
+      "parent": "body",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        100,
+        54,
+        10,
+        5
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_left_1_front",
+      "parent": "ribs_left",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        111,
+        54,
+        16,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_left_2_front",
+      "parent": "ribs_left",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        128,
+        54,
+        12,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_left_3_front",
+      "parent": "ribs_left",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        141,
+        54,
+        20,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_left_4_front",
+      "parent": "ribs_left",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        162,
+        54,
+        20,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_left_5_front",
+      "parent": "ribs_left",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        183,
+        54,
+        14,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_left_6_front",
+      "parent": "ribs_left",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        198,
+        54,
+        12,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_right_1_front",
+      "parent": "ribs_right",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        211,
+        54,
+        16,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_right_2_front",
+      "parent": "ribs_right",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        228,
+        54,
+        16,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_right_3_front",
+      "parent": "ribs_right",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        1,
+        61,
+        18,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_right_4_front",
+      "parent": "ribs_right",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        20,
+        61,
+        18,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_right_5_front",
+      "parent": "ribs_right",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        39,
+        61,
+        10,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "rib_right_6_front",
+      "parent": "ribs_right",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        50,
+        61,
+        12,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "xiphoid",
+      "parent": "chest",
+      "material": "bone",
+      "zone": "bone_torso",
+      "rectangle": [
+        63,
+        61,
+        6,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "femur_right",
+      "parent": "thigh_right",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        1,
+        66,
+        16,
+        16
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "tibia_left",
+      "parent": "shin_left",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        18,
+        66,
+        16,
+        16
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "tibia_right",
+      "parent": "shin_right",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        35,
+        66,
+        16,
+        16
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "femur_left_short",
+      "parent": "thigh_left",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        52,
+        66,
+        16,
+        15
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "humerus",
+      "parent": "bone_upper_arm",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        69,
+        66,
+        12,
+        14
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "radius",
+      "parent": "bone_forearm",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        82,
+        66,
+        8,
+        13
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "ulna",
+      "parent": "bone_forearm",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        91,
+        66,
+        8,
+        13
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "fibula_left",
+      "parent": "shin_left",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        100,
+        66,
+        8,
+        12
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "fibula_right",
+      "parent": "shin_right",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        109,
+        66,
+        8,
+        12
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "patella_left",
+      "parent": "shin_left",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        118,
+        66,
+        20,
+        9
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "patella_right",
+      "parent": "shin_right",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        139,
+        66,
+        20,
+        9
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "heel_left",
+      "parent": "foot_left",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        160,
+        66,
+        20,
+        8
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "heel_right",
+      "parent": "foot_right",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        181,
+        66,
+        20,
+        8
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "metatarsal_left",
+      "parent": "foot_left",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        202,
+        66,
+        22,
+        8
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "metatarsal_right",
+      "parent": "foot_right",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        225,
+        66,
+        22,
+        8
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "humeral_head",
+      "parent": "bone_upper_arm",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        1,
+        83,
+        16,
+        7
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "olecranon",
+      "parent": "bone_forearm",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        18,
+        83,
+        16,
+        7
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "trochanter_left",
+      "parent": "thigh_left",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        35,
+        83,
+        16,
+        7
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "trochanter_right",
+      "parent": "thigh_right",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        52,
+        83,
+        16,
+        7
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "bone_scapula",
+      "parent": "bone_shoulder",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        69,
+        83,
+        12,
+        6
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "middle_proximal",
+      "parent": "bone_fingers",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        82,
+        83,
+        8,
+        6
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "palm",
+      "parent": "bone_hand",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        91,
+        83,
+        16,
+        5
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "toe_left_inner",
+      "parent": "foot_left",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        108,
+        83,
+        8,
+        5
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "toe_left_middle",
+      "parent": "foot_left",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        117,
+        83,
+        10,
+        5
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "toe_left_outer",
+      "parent": "foot_left",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        128,
+        83,
+        8,
+        5
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "toe_right_inner",
+      "parent": "foot_right",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        137,
+        83,
+        8,
+        5
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "toe_right_middle",
+      "parent": "foot_right",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        146,
+        83,
+        10,
+        5
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "toe_right_outer",
+      "parent": "foot_right",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        157,
+        83,
+        8,
+        5
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "bone_clavicle",
+      "parent": "bone_shoulder",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        166,
+        83,
+        16,
+        4
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "carpals",
+      "parent": "bone_hand",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        183,
+        83,
+        12,
+        4
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "clavicle_medial_fragment",
+      "parent": "bone_shoulder",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        196,
+        83,
+        20,
+        4
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "index_proximal",
+      "parent": "bone_fingers",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        217,
+        83,
+        4,
+        4
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "ring_proximal",
+      "parent": "bone_fingers",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        222,
+        83,
+        4,
+        4
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "index_distal",
+      "parent": "bone_fingers",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        227,
+        83,
+        4,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "middle_distal",
+      "parent": "bone_fingers",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        232,
+        83,
+        4,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "ring_distal",
+      "parent": "bone_fingers",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        237,
+        83,
+        4,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "thumb_distal",
+      "parent": "bone_thumb",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        242,
+        83,
+        4,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "thumb_proximal",
+      "parent": "bone_thumb",
+      "material": "bone",
+      "zone": "bone_limbs",
+      "rectangle": [
+        247,
+        83,
+        4,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "embedded_femur_shaft",
+      "parent": "dragging_upper",
+      "material": "bone",
+      "zone": "bone_embedded",
+      "rectangle": [
+        1,
+        92,
+        8,
+        16
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "embedded_rib_a",
+      "parent": "dragging_middle",
+      "material": "bone",
+      "zone": "bone_embedded",
+      "rectangle": [
+        10,
+        92,
+        8,
+        12
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "embedded_rib_b",
+      "parent": "dragging_middle",
+      "material": "bone",
+      "zone": "bone_embedded",
+      "rectangle": [
+        19,
+        92,
+        8,
+        12
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "ground_bone_tip",
+      "parent": "dragging_end",
+      "material": "bone",
+      "zone": "bone_embedded",
+      "rectangle": [
+        28,
+        92,
+        20,
+        10
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "lower_ossified_fragment",
+      "parent": "dragging_lower",
+      "material": "bone",
+      "zone": "bone_embedded",
+      "rectangle": [
+        49,
+        92,
+        18,
+        9
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "middle_bone_splinter",
+      "parent": "dragging_middle",
+      "material": "bone",
+      "zone": "bone_embedded",
+      "rectangle": [
+        68,
+        92,
+        8,
+        8
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "debris_bone_1",
+      "parent": "debris_chips",
+      "material": "bone",
+      "zone": "bone_embedded",
+      "rectangle": [
+        77,
+        92,
+        8,
+        6
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "debris_bone_2",
+      "parent": "debris_chips",
+      "material": "bone",
+      "zone": "bone_embedded",
+      "rectangle": [
+        86,
+        92,
+        8,
+        6
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "embedded_vertebra_a",
+      "parent": "dragging_lower",
+      "material": "bone",
+      "zone": "bone_embedded",
+      "rectangle": [
+        95,
+        92,
+        12,
+        6
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "embedded_vertebra_b",
+      "parent": "dragging_lower",
+      "material": "bone",
+      "zone": "bone_embedded",
+      "rectangle": [
+        108,
+        92,
+        12,
+        6
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "embedded_vertebra_c",
+      "parent": "dragging_lower",
+      "material": "bone",
+      "zone": "bone_embedded",
+      "rectangle": [
+        121,
+        92,
+        12,
+        6
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "embedded_femur_condyle",
+      "parent": "dragging_upper",
+      "material": "bone",
+      "zone": "bone_embedded",
+      "rectangle": [
+        134,
+        92,
+        12,
+        5
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "embedded_femur_head",
+      "parent": "dragging_upper",
+      "material": "bone",
+      "zone": "bone_embedded",
+      "rectangle": [
+        147,
+        92,
+        12,
+        5
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "mass_clavicle_exposed",
+      "parent": "mass_shoulder",
+      "material": "bone",
+      "zone": "bone_embedded",
+      "rectangle": [
+        160,
+        92,
+        16,
+        4
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "middle_earth_core",
+      "parent": "dragging_middle",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        1,
+        110,
+        38,
+        26
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "upper_earth_spine",
+      "parent": "dragging_upper",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        40,
+        110,
+        34,
+        25
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "lower_earth_core",
+      "parent": "dragging_lower",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        75,
+        110,
+        42,
+        22
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "middle_rear_chunk",
+      "parent": "dragging_middle",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        118,
+        110,
+        30,
+        18
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "upper_back_ridge",
+      "parent": "dragging_upper",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        149,
+        110,
+        24,
+        18
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "middle_front_chunk",
+      "parent": "dragging_middle",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        174,
+        110,
+        24,
+        16
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "shoulder_earth_core",
+      "parent": "mass_shoulder",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        199,
+        110,
+        34,
+        16
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "upper_front_slab",
+      "parent": "dragging_upper",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        1,
+        137,
+        22,
+        16
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "lower_outer_slab",
+      "parent": "dragging_lower",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        24,
+        137,
+        26,
+        15
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "lower_rear_clod",
+      "parent": "dragging_lower",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        51,
+        137,
+        32,
+        14
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "shoulder_outer_clod",
+      "parent": "mass_shoulder",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        84,
+        137,
+        26,
+        14
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "ground_outer_sprawl",
+      "parent": "dragging_end",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        111,
+        137,
+        34,
+        13
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "middle_mud_lump",
+      "parent": "dragging_middle",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        146,
+        137,
+        24,
+        12
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "ground_front_earth",
+      "parent": "dragging_end",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        171,
+        137,
+        32,
+        11
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "ground_central_ridge",
+      "parent": "dragging_end",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        204,
+        137,
+        24,
+        10
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "lower_inner_clump",
+      "parent": "dragging_lower",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        229,
+        137,
+        24,
+        10
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "shoulder_rear_clod",
+      "parent": "mass_shoulder",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        1,
+        154,
+        28,
+        10
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "ground_rear_earth",
+      "parent": "dragging_end",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        30,
+        154,
+        30,
+        8
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "upper_earth_chip",
+      "parent": "dragging_upper",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        61,
+        154,
+        16,
+        8
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "ground_earth_chip_a",
+      "parent": "dragging_end",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        78,
+        154,
+        16,
+        7
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "ground_earth_chip_b",
+      "parent": "dragging_end",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        95,
+        154,
+        16,
+        7
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "debris_stone_1",
+      "parent": "debris_chips",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        112,
+        154,
+        12,
+        6
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "debris_stone_2",
+      "parent": "debris_chips",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        125,
+        154,
+        12,
+        6
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "debris_mud_1",
+      "parent": "debris_chips",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        138,
+        154,
+        8,
+        4
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "debris_mud_2",
+      "parent": "debris_chips",
+      "material": "earth",
+      "zone": "earth",
+      "rectangle": [
+        147,
+        154,
+        8,
+        4
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "middle_root_c",
+      "parent": "dragging_middle",
+      "material": "root",
+      "zone": "root",
+      "rectangle": [
+        1,
+        166,
+        8,
+        14
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "lower_root_d",
+      "parent": "dragging_lower",
+      "material": "root",
+      "zone": "root",
+      "rectangle": [
+        10,
+        166,
+        8,
+        12
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "upper_root_a",
+      "parent": "dragging_upper",
+      "material": "root",
+      "zone": "root",
+      "rectangle": [
+        19,
+        166,
+        8,
+        12
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "ground_root_front",
+      "parent": "dragging_end",
+      "material": "root",
+      "zone": "root",
+      "rectangle": [
+        28,
+        166,
+        20,
+        10
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "ground_root_inner",
+      "parent": "dragging_end",
+      "material": "root",
+      "zone": "root",
+      "rectangle": [
+        49,
+        166,
+        20,
+        10
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "ground_root_outer",
+      "parent": "dragging_end",
+      "material": "root",
+      "zone": "root",
+      "rectangle": [
+        70,
+        166,
+        20,
+        10
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "hanging_root_0",
+      "parent": "debris_roots",
+      "material": "root",
+      "zone": "root",
+      "rectangle": [
+        91,
+        166,
+        8,
+        10
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "hanging_root_1",
+      "parent": "debris_roots",
+      "material": "root",
+      "zone": "root",
+      "rectangle": [
+        100,
+        166,
+        8,
+        10
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "hanging_root_2",
+      "parent": "debris_roots",
+      "material": "root",
+      "zone": "root",
+      "rectangle": [
+        109,
+        166,
+        8,
+        10
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "hanging_root_3",
+      "parent": "debris_roots",
+      "material": "root",
+      "zone": "root",
+      "rectangle": [
+        118,
+        166,
+        8,
+        10
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "hanging_root_4",
+      "parent": "debris_roots",
+      "material": "root",
+      "zone": "root",
+      "rectangle": [
+        127,
+        166,
+        8,
+        10
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "upper_root_b",
+      "parent": "dragging_upper",
+      "material": "root",
+      "zone": "root",
+      "rectangle": [
+        136,
+        166,
+        8,
+        10
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "shoulder_root_inner",
+      "parent": "mass_shoulder",
+      "material": "root",
+      "zone": "root",
+      "rectangle": [
+        145,
+        166,
+        8,
+        8
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "shoulder_root_outer",
+      "parent": "mass_shoulder",
+      "material": "root",
+      "zone": "root",
+      "rectangle": [
+        154,
+        166,
+        8,
+        8
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "middle_moss_patch",
+      "parent": "dragging_middle",
+      "material": "moss",
+      "zone": "moss",
+      "rectangle": [
+        1,
+        182,
+        18,
+        6
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "upper_moss_clump",
+      "parent": "dragging_upper",
+      "material": "moss",
+      "zone": "moss",
+      "rectangle": [
+        20,
+        182,
+        16,
+        5
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "ecto_vertical",
+      "parent": "chest_core",
+      "material": "ecto",
+      "zone": "ecto",
+      "rectangle": [
+        1,
+        190,
+        8,
+        8
+      ],
+      "explicit_faces": false
+    },
+    {
+      "element": "ecto_core",
+      "parent": "chest_core",
+      "material": "ecto",
+      "zone": "ecto",
+      "rectangle": [
+        10,
+        190,
+        12,
+        6
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "ecto_horizontal",
+      "parent": "chest_core",
+      "material": "ecto",
+      "zone": "ecto",
+      "rectangle": [
+        23,
+        190,
+        14,
+        3
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "ecto_shard_high",
+      "parent": "chest_core",
+      "material": "ecto",
+      "zone": "ecto",
+      "rectangle": [
+        38,
+        190,
+        4,
+        2
+      ],
+      "explicit_faces": true
+    },
+    {
+      "element": "ecto_shard_low",
+      "parent": "chest_core",
+      "material": "ecto",
+      "zone": "ecto",
+      "rectangle": [
+        43,
+        190,
+        4,
+        2
+      ],
+      "explicit_faces": true
+    }
+  ],
+  "bands": [
+    {
+      "group": "bone_head",
+      "top": 1,
+      "bottom": 28
+    },
+    {
+      "group": "bone_torso",
+      "top": 30,
+      "bottom": 64
+    },
+    {
+      "group": "bone_limbs",
+      "top": 66,
+      "bottom": 90
+    },
+    {
+      "group": "bone_embedded",
+      "top": 92,
+      "bottom": 108
+    },
+    {
+      "group": "earth",
+      "top": 110,
+      "bottom": 164
+    },
+    {
+      "group": "root",
+      "top": 166,
+      "bottom": 180
+    },
+    {
+      "group": "moss",
+      "top": 182,
+      "bottom": 188
+    },
+    {
+      "group": "ecto",
+      "top": 190,
+      "bottom": 198
+    }
+  ],
+  "last_row": 198
+}

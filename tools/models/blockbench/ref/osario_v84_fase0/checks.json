@@ -1,0 +1,107 @@
+[
+  {
+    "command": [
+      "python",
+      "tools/models/gen_mob_models.py",
+      "src/main/resources/assets/aptitudes",
+      "--check"
+    ],
+    "exit_code": 1,
+    "stdout": "Distinto del generador:\n  src\\main\\resources\\assets\\aptitudes\\textures\\entity\\osario_quebrado.png\n  src\\main\\resources\\assets\\aptitudes\\textures\\entity\\custodio_cuatro_llaves.png\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python",
+      "tools/lang/check_lang.py"
+    ],
+    "exit_code": 0,
+    "stdout": "pt_br: 4447 claves, orden y marcadores correctos\nfr_fr: 4447 claves, orden y marcadores correctos\nde_de: 4447 claves, orden y marcadores correctos\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/lang",
+      "-p",
+      "test_*_lang.py"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "...........................................................\n----------------------------------------------------------------------\nRan 59 tests in 2.196s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python",
+      "tools/lang/gen_interface_lang.py",
+      "--check"
+    ],
+    "exit_code": 0,
+    "stdout": "pt_br: 1662 claves de fase 1; 2785 de fases posteriores\nfr_fr: 1662 claves de fase 1; 2785 de fases posteriores\nde_de: 1662 claves de fase 1; 2785 de fases posteriores\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python",
+      "tools/lang/gen_guide_lang.py",
+      "--check"
+    ],
+    "exit_code": 0,
+    "stdout": "pt_br: 46 claves del grimorio; las demás se conservan\nfr_fr: 46 claves del grimorio; las demás se conservan\nde_de: 46 claves del grimorio; las demás se conservan\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python",
+      "tools/lang/gen_nodes_lang.py",
+      "--check"
+    ],
+    "exit_code": 0,
+    "stdout": "pt_br: 2480 claves de nodos traducidas\nfr_fr: 2480 claves de nodos traducidas\nde_de: 2480 claves de nodos traducidas\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python",
+      "tools/lang/gen_evolved_lang.py",
+      "--check"
+    ],
+    "exit_code": 0,
+    "stdout": "en_us: generación comprobada\nes_es: generación comprobada\npt_br: generación comprobada\nfr_fr: generación comprobada\nde_de: generación comprobada\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python",
+      "tools/lang/gen_path_lang.py",
+      "--check"
+    ],
+    "exit_code": 0,
+    "stdout": "en_us: generación comprobada\nes_es: generación comprobada\npt_br: generación comprobada\nfr_fr: generación comprobada\nde_de: generación comprobada\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python",
+      "tools/lang/base_desc.py",
+      "--check"
+    ],
+    "exit_code": 0,
+    "stdout": "descripciones base comprobadas\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python",
+      "tools/lang/gen_lore_lang.py",
+      "--check"
+    ],
+    "exit_code": 0,
+    "stdout": "en_us: lore comprobado\nes_es: lore comprobado\npt_br: lore comprobado\nfr_fr: lore comprobado\nde_de: lore comprobado\n",
+    "stderr": ""
+  }
+]

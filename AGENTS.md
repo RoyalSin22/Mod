@@ -26,6 +26,7 @@ exige y lo que **no** debes hacer. Responde al autor en **español**, con rigor 
 
 | Sistema | Dónde |
 |---|---|
+| Osario Quebrado V84, Fases 0–6 aprobadas por el autor. Diez clips, cuatro ataques con reloj de servidor, máscara emisiva y sonidos originales | `docs/V84_OSARIO_FASE6.md`, editable `tools/models/blockbench/osario_quebrado.bbmodel`, `mob/OsarioStrikeRules` (puro, JUnit), `mob/OsarioStrikeGoal`, `mob/OsarioEntity` y `client/render/OsarioRenderer` |
 | 10 habilidades por uso (Minería, Excavación, Tala, Agricultura, Combate, Tiro con arco, Defensa, Agilidad, Pesca, Encantamiento) con hitos 10–50; la pantalla K está diseñada para 5 filas × 2 | `data/Skill`, `logic/XpEvents`, `logic/SkillMilestones` |
 | Rendimiento decreciente de XP por fuente repetida | `logic/XpDiminishing` (puro, con pruebas) |
 | Maestría (v43, T6 fase 1): XP sobrante al máximo, +0,5 % por punto con tope inicial +10 %, pasivas de habilidades y eficiencia energética de roles | `logic/MasteryRules` (puro), `MasteryManager`, `data/MasteryProgress` dentro de `PlayerProgress.mastery` (`copyOnDeath`); ganchos `ProgressManager`, `RoleManager`, `PartyManager`; S2C `MasteryPayload`, `sync/ClientMastery`; K conserva 10 tarjetas 5×2 y 430×262 |

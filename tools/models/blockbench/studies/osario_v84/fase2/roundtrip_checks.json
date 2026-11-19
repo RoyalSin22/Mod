@@ -1,0 +1,7 @@
+{
+  "pieces_compared": 169,
+  "max_world_box_error": 6.456291972156691e-06,
+  "tolerance": 0.001,
+  "geometry_only": true,
+  "passed": true
+}

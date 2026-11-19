@@ -1,0 +1,11 @@
+suite,case,count,warm_ticks,samples,wall_seconds,mean_ms,p95_ms,p99_ms,heap_bytes,min_mob_ticks,target_fraction
+bench_sprint_v84_control,sin_jugador,1,1200,2400,2.950,1.1321,2.2951,3.8108,400547824,2399,0.0000
+bench_sprint_v84_control,sin_jugador,5,1200,2400,3.114,1.2025,2.1726,4.0674,351030808,2399,0.0000
+bench_sprint_v84_control,sin_jugador,10,1200,2400,3.135,1.2226,2.4108,4.1738,676898336,2399,0.0000
+bench_sprint_v84_control,sin_jugador,20,1200,2400,3.580,1.4227,2.7819,3.7166,847147632,2399,0.0000
+bench_sprint_v84_control,sin_jugador,30,1200,2400,2.999,1.2027,2.1757,2.9593,853478432,2399,0.0000
+bench_sprint_v84_control,persecucion,1,1200,2400,2.097,0.7884,1.6179,2.9211,905009376,2399,1.0000
+bench_sprint_v84_control,persecucion,5,1200,2400,1.768,0.6709,1.5225,2.2083,590671096,2399,1.0000
+bench_sprint_v84_control,persecucion,10,1200,2400,1.821,0.7051,1.6015,2.2559,673375792,2399,1.0000
+bench_sprint_v84_control,persecucion,20,1200,2400,3.030,1.1858,2.6481,4.3794,599718848,2399,1.0000
+bench_sprint_v84_control,persecucion,30,1200,2400,4.860,1.9039,3.7815,5.3667,358326744,2399,1.0000

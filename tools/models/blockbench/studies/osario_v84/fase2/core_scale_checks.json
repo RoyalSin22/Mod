@@ -1,0 +1,18 @@
+{
+  "tolerance": 0.01,
+  "cases": [
+    {
+      "scale": 1,
+      "overlaps": []
+    },
+    {
+      "scale": 1.12,
+      "overlaps": []
+    },
+    {
+      "scale": 1.35,
+      "overlaps": []
+    }
+  ],
+  "restored": true
+}

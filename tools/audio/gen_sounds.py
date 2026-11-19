@@ -413,6 +413,67 @@ def berserker_leap(rng):
     return fade_out(normalize(body * amp * 0.9 + normalize(air) * np.sin(np.pi * np.clip(t / 0.42, 0, 1)) * 0.45, 0.82))
 
 
+def ossuary_sound(rng, duration, knocks=(), scrape=0.0, pulse=0.0, rise=False):
+    """Percusión de hueso, arrastre de tierra e impulso hueco en capas independientes."""
+    t = t_axis(duration)
+    noise = rng.standard_normal(len(t))
+    dust = lowpass(noise, 1150) - .7 * lowpass(noise, 190)
+    swell = np.sin(np.pi * np.minimum(t / duration, 1)) ** (2 if rise else 1)
+    grit = scrape * dust * swell * (0.6 + 0.4 * np.sin(2 * np.pi * 21 * t) ** 2)
+    voice_phase = 2 * np.pi * (64 * t + (24 if rise else -18) * t * t / duration)
+    voice = pulse * (np.sin(voice_phase) + .34 * np.sin(voice_phase * 2.17)) * swell
+    voice *= .7 + .3 * np.sin(2 * np.pi * 13 * t)
+    result = grit + voice
+    for start, gain, pitch in knocks:
+        after = np.maximum(t - start, 0)
+        # Parciales rígidos al principio, tierra y cámara baja en la cola.
+        snap = sum(weight * np.sin(2 * np.pi * pitch * ratio * after) * np.exp(-after / decay)
+                   for ratio, weight, decay in [(1, .70, .053), (2.31, .37, .023), (4.78, .18, .012)])
+        rumble = .6 * lowpass(noise, 350) * np.exp(-after / .11)
+        result += gain * (snap + rumble) * np.minimum(after / .003, 1) * (t >= start)
+    return fade_out(normalize(result, .82), .045)
+
+
+def osario_ambient(rng):
+    return ossuary_sound(rng, .92, [(.14, .25, 214), (.63, .22, 182)], .48, .25)
+
+
+def osario_alert(rng):
+    return ossuary_sound(rng, .61, [(.06, .38, 182), (.18, .55, 236)], .41, .74, True)
+
+
+def osario_hurt(rng):
+    return ossuary_sound(rng, .30, [(.008, .72, 253), (.084, .45, 183)], .19, .14)
+
+
+def osario_death(rng):
+    return ossuary_sound(rng, .91, [(.08, .35, 216), (.42, .65, 128), (.67, 1., 83), (.76, .28, 158)], .65, .19)
+
+
+def osario_claw(rng):
+    return ossuary_sound(rng, .42, [(.015, .27, 346), (.30, .79, 274)], .59, .11)
+
+
+def osario_heavy(rng):
+    return ossuary_sound(rng, .81, [(.04, .35, 190), (.33, .30, 208), (.55, .94, 147)], .82, .28, True)
+
+
+def osario_slam_charge(rng):
+    return ossuary_sound(rng, .66, [(.10, .24, 138), (.28, .37, 159), (.49, .39, 182)], .72, .55, True)
+
+
+def osario_slam_hit(rng):
+    return ossuary_sound(rng, .57, [(.006, 1.35, 74), (.04, .52, 168), (.12, .37, 220), (.21, .29, 135)], .70, .34)
+
+
+def osario_lunge(rng):
+    return ossuary_sound(rng, .77, [(.025, .37, 203), (.50, .69, 101), (.65, .62, 133)], .65, .73, True)
+
+
+def osario_step(rng):
+    return ossuary_sound(rng, .26, [(.005, .63, 146), (.071, .39, 197)], .72)
+
+
 SOUNDS = {
     'eclipse_announce': eclipse_announce,
     'eclipse_start': eclipse_start,
@@ -442,6 +503,16 @@ SOUNDS = {
     'errante_hurt': errante_hurt,
     'errante_death': errante_death,
     'errante_despawn': errante_despawn,
+    'osario_ambient': osario_ambient,
+    'osario_alert': osario_alert,
+    'osario_hurt': osario_hurt,
+    'osario_death': osario_death,
+    'osario_claw': osario_claw,
+    'osario_heavy': osario_heavy,
+    'osario_slam_charge': osario_slam_charge,
+    'osario_slam_hit': osario_slam_hit,
+    'osario_lunge': osario_lunge,
+    'osario_step': osario_step,
     'berserker_roar': berserker_roar,
     'berserker_war_cry': berserker_war_cry,
     'berserker_slam': berserker_slam,

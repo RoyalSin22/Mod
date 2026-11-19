@@ -1,0 +1,10 @@
+aptitudes:osario_ambient master=0.50
+aptitudes:osario_alert master=0.50
+aptitudes:osario_hurt master=0.50
+aptitudes:osario_death master=0.50
+aptitudes:osario_claw master=0.50
+aptitudes:osario_heavy master=0.50
+aptitudes:osario_slam_charge master=0.50
+aptitudes:osario_slam_hit master=0.50
+aptitudes:osario_lunge master=0.50
+aptitudes:osario_step master=0.50

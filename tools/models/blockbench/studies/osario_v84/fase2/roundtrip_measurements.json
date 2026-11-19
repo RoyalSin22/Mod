@@ -1,0 +1,36 @@
+{
+  "model_aabb": {
+    "min": [
+      -8.752,
+      0,
+      -11.375
+    ],
+    "max": [
+      12.987,
+      29.783,
+      9.56
+    ],
+    "size": [
+      21.739,
+      29.783,
+      20.935
+    ],
+    "center": [
+      2.118,
+      14.892,
+      -0.908
+    ]
+  },
+  "lowest_point": {
+    "y": 0,
+    "at": [
+      12.436,
+      0,
+      3.237
+    ],
+    "element": "dragging_end"
+  },
+  "highest_y": 29.783,
+  "ground_clearance": 0,
+  "units": "1 unit = 1/16 block; y=0 is the floor"
+}

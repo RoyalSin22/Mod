@@ -1,0 +1,88 @@
+{
+  "date": "2026-11-18",
+  "blockbench": "5.2.2",
+  "bridge": "1.11.1.1",
+  "format": "geckolib_model",
+  "box_uv": true,
+  "euler_order": "ZYX",
+  "front": [
+    0,
+    0,
+    -1
+  ],
+  "pivot": [
+    0,
+    8,
+    0
+  ],
+  "probe_top_neutral": [
+    0,
+    20,
+    0
+  ],
+  "front_marker_neutral": [
+    0,
+    12,
+    -7
+  ],
+  "tests": [
+    {
+      "bone": "spine_upper",
+      "rotation": [
+        10,
+        0,
+        0
+      ],
+      "top": [
+        0,
+        19.817693,
+        2.083778
+      ],
+      "effect": "La parte superior va a +Z (atrás); una extremidad colgante va a -Z (delante)."
+    },
+    {
+      "bone": "body",
+      "rotation": [
+        0,
+        10,
+        0
+      ],
+      "front": [
+        -1.215537,
+        12,
+        -6.893654
+      ],
+      "effect": "El frente gira a -X."
+    },
+    {
+      "bone": "body",
+      "rotation": [
+        0,
+        0,
+        10
+      ],
+      "top": [
+        -2.083778,
+        19.817693,
+        0
+      ],
+      "effect": "La parte alta cae a -X."
+    }
+  ],
+  "north_projection": {
+    "left": "+X",
+    "right": "-X",
+    "minus_x_marker": {
+      "name": "mass_minus_x",
+      "color": "violeta",
+      "screen": "derecha"
+    },
+    "plus_x_marker": {
+      "name": "bone_plus_x",
+      "color": "amarillo",
+      "screen": "izquierda"
+    }
+  },
+  "proposal": "Priorizar la silueta aprobada: masa a +X, brazo delgado a -X, con nombres semánticos; conservar *_left=+X y *_right=-X. Corregir X por el efecto de cada cadena y validar en espacio global; una inversión ciega de X en toda la tabla no describe igual torso y extremidades.",
+  "status": "PROPUESTA pendiente de aprobación de Puerta 0; ninguna tabla aplicada al modelo de producción."
+}

@@ -5,6 +5,21 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+### v84 — Osario Quebrado (por fases)
+
+- **Fases 0–2 aprobadas:** geometría de 169 cubos sobre los 30 huesos
+  aprobados; medidas, apoyos, holgura del núcleo hasta escala 1,35 y reapertura del geo comprobados.
+  Recuento y capturas en [`V84_OSARIO_FASE2.md`](V84_OSARIO_FASE2.md); copias de las fases conservadas.
+- **Fase 3 aprobada:** UV a 2 px/u, atlas 256² de 25 colores en cinco capas y máscara independiente de 84 px.
+  Ajuste autorizado del tórax aplicado. Informe y capturas en [Fase 3](V84_OSARIO_FASE3.md).
+- **Fase 4 aprobada:** diez clips, contactos y cierres medidos, secuencias y claves en [Fase 4](V84_OSARIO_FASE4.md).
+- **Fase 5 aprobada:** cuatro ataques de servidor, recursos de producción, emisión, audio y textos.
+  Build en verde con 924 pruebas.
+  [Informe de integración](V84_OSARIO_FASE5.md).
+- **Fase 6 aprobada por el autor:** combate probado en el servidor y emisión comprobada en el cliente.
+  El autor confirmó las verificaciones manuales de rendimiento, latencia y aviso del zarpazo.
+  [Informe de Fase 6](V84_OSARIO_FASE6.md).
+
 ### v67 — Árbol unificado, descripciones llanas y versión por commits
 - **F1 hecha:** Talentos, Sendas, Maestro, Definitivo y Maestría en un solo lienzo de J (`RolesScreen` +
   `logic/UnifiedTreeLayout`). Puntos de evolución 15/10 (76 a nivel 50) con migración. Se borraron `TreeScreen`,

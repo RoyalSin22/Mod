@@ -1,0 +1,826 @@
+{
+  "findings": [
+    {
+      "level": "info",
+      "type": "no_textures",
+      "message": "The model has no textures yet. Use generate_texture_template after modeling."
+    }
+  ],
+  "stats": {
+    "cubes": 169,
+    "meshes": 0,
+    "faces": 1014,
+    "bones": 30,
+    "max_bone_depth": 10,
+    "locators": 0,
+    "textures": [],
+    "animations": 0,
+    "keyframes": 0
+  },
+  "ok": true,
+  "intersections": [
+    {
+      "a": "shoulder_earth_core",
+      "b": "upper_earth_spine",
+      "bone_a": "mass_shoulder",
+      "bone_b": "dragging_upper",
+      "penetration": 2.09
+    },
+    {
+      "a": "shoulder_outer_clod",
+      "b": "upper_earth_spine",
+      "bone_a": "mass_shoulder",
+      "bone_b": "dragging_upper",
+      "penetration": 1.521
+    },
+    {
+      "a": "lower_earth_core",
+      "b": "debris_stone_2",
+      "bone_a": "dragging_lower",
+      "bone_b": "debris_chips",
+      "penetration": 1.418
+    },
+    {
+      "a": "lower_earth_core",
+      "b": "debris_stone_1",
+      "bone_a": "dragging_lower",
+      "bone_b": "debris_chips",
+      "penetration": 1.397
+    },
+    {
+      "a": "ilium_right",
+      "b": "trochanter_right",
+      "bone_a": "pelvis",
+      "bone_b": "thigh_right",
+      "penetration": 1.175
+    },
+    {
+      "a": "femur_left_short",
+      "b": "patella_left",
+      "bone_a": "thigh_left",
+      "bone_b": "shin_left",
+      "penetration": 1.149
+    },
+    {
+      "a": "ilium_left_fractured",
+      "b": "trochanter_left",
+      "bone_a": "pelvis",
+      "bone_b": "thigh_left",
+      "penetration": 1.137
+    },
+    {
+      "a": "lower_rear_clod",
+      "b": "debris_stone_1",
+      "bone_a": "dragging_lower",
+      "bone_b": "debris_chips",
+      "penetration": 1.128
+    },
+    {
+      "a": "femur_right",
+      "b": "patella_right",
+      "bone_a": "thigh_right",
+      "bone_b": "shin_right",
+      "penetration": 1.119
+    },
+    {
+      "a": "shoulder_earth_core",
+      "b": "upper_back_ridge",
+      "bone_a": "mass_shoulder",
+      "bone_b": "dragging_upper",
+      "penetration": 1.002
+    },
+    {
+      "a": "lower_outer_slab",
+      "b": "debris_stone_2",
+      "bone_a": "dragging_lower",
+      "bone_b": "debris_chips",
+      "penetration": 1.002
+    },
+    {
+      "a": "hip_chip_right",
+      "b": "trochanter_right",
+      "bone_a": "pelvis",
+      "bone_b": "thigh_right",
+      "penetration": 1
+    },
+    {
+      "a": "bone_clavicle",
+      "b": "humeral_head",
+      "bone_a": "bone_shoulder",
+      "bone_b": "bone_upper_arm",
+      "penetration": 1
+    },
+    {
+      "a": "shoulder_root_inner",
+      "b": "upper_earth_spine",
+      "bone_a": "mass_shoulder",
+      "bone_b": "dragging_upper",
+      "penetration": 1
+    },
+    {
+      "a": "shoulder_root_outer",
+      "b": "upper_earth_spine",
+      "bone_a": "mass_shoulder",
+      "bone_b": "dragging_upper",
+      "penetration": 1
+    },
+    {
+      "a": "middle_earth_core",
+      "b": "hanging_root_0",
+      "bone_a": "dragging_middle",
+      "bone_b": "debris_roots",
+      "penetration": 1
+    },
+    {
+      "a": "middle_earth_core",
+      "b": "hanging_root_1",
+      "bone_a": "dragging_middle",
+      "bone_b": "debris_roots",
+      "penetration": 1
+    },
+    {
+      "a": "middle_earth_core",
+      "b": "hanging_root_4",
+      "bone_a": "dragging_middle",
+      "bone_b": "debris_roots",
+      "penetration": 1
+    },
+    {
+      "a": "middle_front_chunk",
+      "b": "hanging_root_1",
+      "bone_a": "dragging_middle",
+      "bone_b": "debris_roots",
+      "penetration": 1
+    },
+    {
+      "a": "middle_front_chunk",
+      "b": "hanging_root_2",
+      "bone_a": "dragging_middle",
+      "bone_b": "debris_roots",
+      "penetration": 1
+    },
+    {
+      "a": "middle_rear_chunk",
+      "b": "hanging_root_4",
+      "bone_a": "dragging_middle",
+      "bone_b": "debris_roots",
+      "penetration": 1
+    },
+    {
+      "a": "lower_earth_core",
+      "b": "debris_bone_1",
+      "bone_a": "dragging_lower",
+      "bone_b": "debris_chips",
+      "penetration": 1
+    },
+    {
+      "a": "lower_earth_core",
+      "b": "debris_bone_2",
+      "bone_a": "dragging_lower",
+      "bone_b": "debris_chips",
+      "penetration": 1
+    },
+    {
+      "a": "lower_outer_slab",
+      "b": "debris_bone_1",
+      "bone_a": "dragging_lower",
+      "bone_b": "debris_chips",
+      "penetration": 1
+    },
+    {
+      "a": "bone_clavicle",
+      "b": "humerus",
+      "bone_a": "bone_shoulder",
+      "bone_b": "bone_upper_arm",
+      "penetration": 0.998
+    },
+    {
+      "a": "lower_earth_core",
+      "b": "debris_mud_2",
+      "bone_a": "dragging_lower",
+      "bone_b": "debris_chips",
+      "penetration": 0.942
+    },
+    {
+      "a": "cranium_occipital",
+      "b": "mandible_ramus_left",
+      "bone_a": "head",
+      "bone_b": "jaw",
+      "penetration": 0.928
+    },
+    {
+      "a": "cranium_occipital",
+      "b": "mandible_ramus_right",
+      "bone_a": "head",
+      "bone_b": "jaw",
+      "penetration": 0.928
+    },
+    {
+      "a": "femur_right",
+      "b": "tibia_right",
+      "bone_a": "thigh_right",
+      "bone_b": "shin_right",
+      "penetration": 0.872
+    },
+    {
+      "a": "lower_outer_slab",
+      "b": "debris_mud_2",
+      "bone_a": "dragging_lower",
+      "bone_b": "debris_chips",
+      "penetration": 0.86
+    },
+    {
+      "a": "femur_left_short",
+      "b": "tibia_left",
+      "bone_a": "thigh_left",
+      "bone_b": "shin_left",
+      "penetration": 0.846
+    },
+    {
+      "a": "middle_earth_core",
+      "b": "hanging_root_2",
+      "bone_a": "dragging_middle",
+      "bone_b": "debris_roots",
+      "penetration": 0.838
+    },
+    {
+      "a": "lower_earth_core",
+      "b": "debris_mud_1",
+      "bone_a": "dragging_lower",
+      "bone_b": "debris_chips",
+      "penetration": 0.816
+    },
+    {
+      "a": "lower_earth_core",
+      "b": "ground_central_ridge",
+      "bone_a": "dragging_lower",
+      "bone_b": "dragging_end",
+      "penetration": 0.813
+    },
+    {
+      "a": "lumbar_2",
+      "b": "thoracic_1",
+      "bone_a": "body",
+      "bone_b": "spine_upper",
+      "penetration": 0.807
+    },
+    {
+      "a": "lower_outer_slab",
+      "b": "debris_bone_2",
+      "bone_a": "dragging_lower",
+      "bone_b": "debris_chips",
+      "penetration": 0.802
+    },
+    {
+      "a": "shoulder_outer_clod",
+      "b": "upper_back_ridge",
+      "bone_a": "mass_shoulder",
+      "bone_b": "dragging_upper",
+      "penetration": 0.8
+    },
+    {
+      "a": "sacrum",
+      "b": "lumbar_1",
+      "bone_a": "pelvis",
+      "bone_b": "body",
+      "penetration": 0.756
+    },
+    {
+      "a": "hip_chip_left",
+      "b": "femur_left_short",
+      "bone_a": "pelvis",
+      "bone_b": "thigh_left",
+      "penetration": 0.7
+    },
+    {
+      "a": "hip_chip_right",
+      "b": "femur_right",
+      "bone_a": "pelvis",
+      "bone_b": "thigh_right",
+      "penetration": 0.68
+    },
+    {
+      "a": "ilium_right",
+      "b": "femur_right",
+      "bone_a": "pelvis",
+      "bone_b": "thigh_right",
+      "penetration": 0.621
+    },
+    {
+      "a": "hip_chip_left",
+      "b": "trochanter_left",
+      "bone_a": "pelvis",
+      "bone_b": "thigh_left",
+      "penetration": 0.621
+    },
+    {
+      "a": "cervical_2",
+      "b": "cranium_occipital",
+      "bone_a": "neck",
+      "bone_b": "head",
+      "penetration": 0.613
+    },
+    {
+      "a": "ilium_left_fractured",
+      "b": "femur_left_short",
+      "bone_a": "pelvis",
+      "bone_b": "thigh_left",
+      "penetration": 0.564
+    },
+    {
+      "a": "middle_earth_core",
+      "b": "lower_earth_core",
+      "bone_a": "dragging_middle",
+      "bone_b": "dragging_lower",
+      "penetration": 0.552
+    },
+    {
+      "a": "bone_scapula",
+      "b": "humeral_head",
+      "bone_a": "bone_shoulder",
+      "bone_b": "bone_upper_arm",
+      "penetration": 0.526
+    },
+    {
+      "a": "thoracic_1",
+      "b": "rib_right_6_arc",
+      "bone_a": "spine_upper",
+      "bone_b": "ribs_right",
+      "penetration": 0.5
+    },
+    {
+      "a": "thoracic_2",
+      "b": "rib_left_5_arc",
+      "bone_a": "spine_upper",
+      "bone_b": "ribs_left",
+      "penetration": 0.5
+    },
+    {
+      "a": "thoracic_3",
+      "b": "rib_left_4_arc",
+      "bone_a": "spine_upper",
+      "bone_b": "ribs_left",
+      "penetration": 0.5
+    },
+    {
+      "a": "thoracic_3",
+      "b": "rib_right_4_arc",
+      "bone_a": "spine_upper",
+      "bone_b": "ribs_right",
+      "penetration": 0.5
+    },
+    {
+      "a": "thoracic_4",
+      "b": "rib_left_3_arc",
+      "bone_a": "spine_upper",
+      "bone_b": "ribs_left",
+      "penetration": 0.5
+    },
+    {
+      "a": "rib_left_4_arc",
+      "b": "upper_root_a",
+      "bone_a": "ribs_left",
+      "bone_b": "dragging_upper",
+      "penetration": 0.5
+    },
+    {
+      "a": "tibia_left",
+      "b": "heel_left",
+      "bone_a": "shin_left",
+      "bone_b": "foot_left",
+      "penetration": 0.493
+    },
+    {
+      "a": "thoracic_4",
+      "b": "cervicothoracic_arch",
+      "bone_a": "spine_upper",
+      "bone_b": "chest",
+      "penetration": 0.479
+    },
+    {
+      "a": "thoracic_4",
+      "b": "rib_right_3_arc",
+      "bone_a": "spine_upper",
+      "bone_b": "ribs_right",
+      "penetration": 0.473
+    },
+    {
+      "a": "ground_central_ridge",
+      "b": "debris_mud_1",
+      "bone_a": "dragging_end",
+      "bone_b": "debris_chips",
+      "penetration": 0.47
+    },
+    {
+      "a": "tibia_right",
+      "b": "heel_right",
+      "bone_a": "shin_right",
+      "bone_b": "foot_right",
+      "penetration": 0.468
+    },
+    {
+      "a": "rib_left_1_arc",
+      "b": "cervical_1",
+      "bone_a": "ribs_left",
+      "bone_b": "neck",
+      "penetration": 0.452
+    },
+    {
+      "a": "embedded_vertebra_c",
+      "b": "ground_central_ridge",
+      "bone_a": "dragging_lower",
+      "bone_b": "dragging_end",
+      "penetration": 0.446
+    },
+    {
+      "a": "rib_right_2_arc",
+      "b": "cervicothoracic_arch",
+      "bone_a": "ribs_right",
+      "bone_b": "chest",
+      "penetration": 0.439
+    },
+    {
+      "a": "lower_earth_core",
+      "b": "hanging_root_1",
+      "bone_a": "dragging_lower",
+      "bone_b": "debris_roots",
+      "penetration": 0.439
+    },
+    {
+      "a": "shoulder_root_inner",
+      "b": "upper_back_ridge",
+      "bone_a": "mass_shoulder",
+      "bone_b": "dragging_upper",
+      "penetration": 0.42
+    },
+    {
+      "a": "pubic_arch",
+      "b": "femur_left_short",
+      "bone_a": "pelvis",
+      "bone_b": "thigh_left",
+      "penetration": 0.418
+    },
+    {
+      "a": "rib_left_3_arc",
+      "b": "upper_root_a",
+      "bone_a": "ribs_left",
+      "bone_b": "dragging_upper",
+      "penetration": 0.416
+    },
+    {
+      "a": "pubic_arch",
+      "b": "femur_right",
+      "bone_a": "pelvis",
+      "bone_b": "thigh_right",
+      "penetration": 0.399
+    },
+    {
+      "a": "middle_earth_core",
+      "b": "hanging_root_3",
+      "bone_a": "dragging_middle",
+      "bone_b": "debris_roots",
+      "penetration": 0.384
+    },
+    {
+      "a": "rib_right_1_arc",
+      "b": "cervicothoracic_arch",
+      "bone_a": "ribs_right",
+      "bone_b": "chest",
+      "penetration": 0.378
+    },
+    {
+      "a": "middle_mud_lump",
+      "b": "hanging_root_0",
+      "bone_a": "dragging_middle",
+      "bone_b": "debris_roots",
+      "penetration": 0.378
+    },
+    {
+      "a": "rib_left_2_arc",
+      "b": "cervicothoracic_arch",
+      "bone_a": "ribs_left",
+      "bone_b": "chest",
+      "penetration": 0.367
+    },
+    {
+      "a": "sternum",
+      "b": "rib_left_4_front",
+      "bone_a": "chest",
+      "bone_b": "ribs_left",
+      "penetration": 0.363
+    },
+    {
+      "a": "humerus",
+      "b": "olecranon",
+      "bone_a": "bone_upper_arm",
+      "bone_b": "bone_forearm",
+      "penetration": 0.363
+    },
+    {
+      "a": "ilium_right",
+      "b": "lumbar_1",
+      "bone_a": "pelvis",
+      "bone_b": "body",
+      "penetration": 0.356
+    },
+    {
+      "a": "thoracic_1",
+      "b": "rib_left_6_arc",
+      "bone_a": "spine_upper",
+      "bone_b": "ribs_left",
+      "penetration": 0.347
+    },
+    {
+      "a": "sternum",
+      "b": "rib_left_3_front",
+      "bone_a": "chest",
+      "bone_b": "ribs_left",
+      "penetration": 0.331
+    },
+    {
+      "a": "middle_mud_lump",
+      "b": "lower_earth_core",
+      "bone_a": "dragging_middle",
+      "bone_b": "dragging_lower",
+      "penetration": 0.31
+    },
+    {
+      "a": "tibia_left",
+      "b": "metatarsal_left",
+      "bone_a": "shin_left",
+      "bone_b": "foot_left",
+      "penetration": 0.308
+    },
+    {
+      "a": "rib_left_5_arc",
+      "b": "upper_earth_chip",
+      "bone_a": "ribs_left",
+      "bone_b": "dragging_upper",
+      "penetration": 0.296
+    },
+    {
+      "a": "shoulder_root_outer",
+      "b": "upper_front_slab",
+      "bone_a": "mass_shoulder",
+      "bone_b": "dragging_upper",
+      "penetration": 0.282
+    },
+    {
+      "a": "pubic_arch",
+      "b": "trochanter_left",
+      "bone_a": "pelvis",
+      "bone_b": "thigh_left",
+      "penetration": 0.28
+    },
+    {
+      "a": "lumbar_2",
+      "b": "rib_right_6_arc",
+      "bone_a": "body",
+      "bone_b": "ribs_right",
+      "penetration": 0.28
+    },
+    {
+      "a": "shoulder_root_outer",
+      "b": "upper_back_ridge",
+      "bone_a": "mass_shoulder",
+      "bone_b": "dragging_upper",
+      "penetration": 0.253
+    },
+    {
+      "a": "tibia_right",
+      "b": "metatarsal_right",
+      "bone_a": "shin_right",
+      "bone_b": "foot_right",
+      "penetration": 0.25
+    },
+    {
+      "a": "ilium_left_fractured",
+      "b": "lumbar_1",
+      "bone_a": "pelvis",
+      "bone_b": "body",
+      "penetration": 0.249
+    },
+    {
+      "a": "cervical_1",
+      "b": "cervicothoracic_arch",
+      "bone_a": "neck",
+      "bone_b": "chest",
+      "penetration": 0.237
+    },
+    {
+      "a": "middle_front_chunk",
+      "b": "hanging_root_0",
+      "bone_a": "dragging_middle",
+      "bone_b": "debris_roots",
+      "penetration": 0.232
+    },
+    {
+      "a": "ground_central_ridge",
+      "b": "debris_bone_2",
+      "bone_a": "dragging_end",
+      "bone_b": "debris_chips",
+      "penetration": 0.232
+    },
+    {
+      "a": "palm",
+      "b": "middle_proximal",
+      "bone_a": "bone_hand",
+      "bone_b": "bone_fingers",
+      "penetration": 0.21
+    },
+    {
+      "a": "shoulder_earth_core",
+      "b": "upper_front_slab",
+      "bone_a": "mass_shoulder",
+      "bone_b": "dragging_upper",
+      "penetration": 0.203
+    },
+    {
+      "a": "lower_inner_clump",
+      "b": "debris_stone_1",
+      "bone_a": "dragging_lower",
+      "bone_b": "debris_chips",
+      "penetration": 0.201
+    },
+    {
+      "a": "rib_left_5_front",
+      "b": "upper_earth_chip",
+      "bone_a": "ribs_left",
+      "bone_b": "dragging_upper",
+      "penetration": 0.198
+    },
+    {
+      "a": "upper_earth_spine",
+      "b": "middle_earth_core",
+      "bone_a": "dragging_upper",
+      "bone_b": "dragging_middle",
+      "penetration": 0.194
+    },
+    {
+      "a": "lower_earth_core",
+      "b": "ground_front_earth",
+      "bone_a": "dragging_lower",
+      "bone_b": "dragging_end",
+      "penetration": 0.192
+    },
+    {
+      "a": "lower_earth_core",
+      "b": "ground_earth_chip_a",
+      "bone_a": "dragging_lower",
+      "bone_b": "dragging_end",
+      "penetration": 0.192
+    },
+    {
+      "a": "lower_earth_core",
+      "b": "hanging_root_4",
+      "bone_a": "dragging_lower",
+      "bone_b": "debris_roots",
+      "penetration": 0.19
+    },
+    {
+      "a": "lower_rear_clod",
+      "b": "debris_bone_1",
+      "bone_a": "dragging_lower",
+      "bone_b": "debris_chips",
+      "penetration": 0.18
+    },
+    {
+      "a": "pubic_arch",
+      "b": "trochanter_right",
+      "bone_a": "pelvis",
+      "bone_b": "thigh_right",
+      "penetration": 0.175
+    },
+    {
+      "a": "lower_outer_slab",
+      "b": "ground_central_ridge",
+      "bone_a": "dragging_lower",
+      "bone_b": "dragging_end",
+      "penetration": 0.156
+    },
+    {
+      "a": "thoracic_3",
+      "b": "rib_right_3_arc",
+      "bone_a": "spine_upper",
+      "bone_b": "ribs_right",
+      "penetration": 0.154
+    },
+    {
+      "a": "shoulder_outer_clod",
+      "b": "upper_front_slab",
+      "bone_a": "mass_shoulder",
+      "bone_b": "dragging_upper",
+      "penetration": 0.137
+    },
+    {
+      "a": "lower_root_d",
+      "b": "ground_central_ridge",
+      "bone_a": "dragging_lower",
+      "bone_b": "dragging_end",
+      "penetration": 0.136
+    },
+    {
+      "a": "lower_rear_clod",
+      "b": "debris_mud_1",
+      "bone_a": "dragging_lower",
+      "bone_b": "debris_chips",
+      "penetration": 0.117
+    },
+    {
+      "a": "ulna",
+      "b": "carpals",
+      "bone_a": "bone_forearm",
+      "bone_b": "bone_hand",
+      "penetration": 0.111
+    },
+    {
+      "a": "thoracic_2",
+      "b": "rib_right_5_arc",
+      "bone_a": "spine_upper",
+      "bone_b": "ribs_right",
+      "penetration": 0.106
+    },
+    {
+      "a": "palm",
+      "b": "ring_proximal",
+      "bone_a": "bone_hand",
+      "bone_b": "bone_fingers",
+      "penetration": 0.106
+    },
+    {
+      "a": "thoracic_2",
+      "b": "rib_right_4_arc",
+      "bone_a": "spine_upper",
+      "bone_b": "ribs_right",
+      "penetration": 0.101
+    },
+    {
+      "a": "palm",
+      "b": "index_proximal",
+      "bone_a": "bone_hand",
+      "bone_b": "bone_fingers",
+      "penetration": 0.101
+    },
+    {
+      "a": "lower_outer_slab",
+      "b": "debris_mud_1",
+      "bone_a": "dragging_lower",
+      "bone_b": "debris_chips",
+      "penetration": 0.099
+    },
+    {
+      "a": "radius",
+      "b": "carpals",
+      "bone_a": "bone_forearm",
+      "bone_b": "bone_hand",
+      "penetration": 0.096
+    },
+    {
+      "a": "thoracic_4",
+      "b": "rib_right_2_arc",
+      "bone_a": "spine_upper",
+      "bone_b": "ribs_right",
+      "penetration": 0.094
+    },
+    {
+      "a": "palm",
+      "b": "thumb_proximal",
+      "bone_a": "bone_hand",
+      "bone_b": "bone_thumb",
+      "penetration": 0.093
+    },
+    {
+      "a": "bone_scapula",
+      "b": "humerus",
+      "bone_a": "bone_shoulder",
+      "bone_b": "bone_upper_arm",
+      "penetration": 0.091
+    },
+    {
+      "a": "lower_earth_core",
+      "b": "hanging_root_0",
+      "bone_a": "dragging_lower",
+      "bone_b": "debris_roots",
+      "penetration": 0.08
+    },
+    {
+      "a": "middle_mud_lump",
+      "b": "hanging_root_4",
+      "bone_a": "dragging_middle",
+      "bone_b": "debris_roots",
+      "penetration": 0.07
+    },
+    {
+      "a": "manubrium",
+      "b": "clavicle_medial_fragment",
+      "bone_a": "chest",
+      "bone_b": "bone_shoulder",
+      "penetration": 0.057
+    }
+  ],
+  "intersection_count": 114,
+  "detached": [],
+  "detached_count": 0,
+  "intersection_note": "Overlaps within the same bone are skipped by default (intentional in blocky modeling). penetration is in model units (1/16 block).",
+  "detached_note": "detached = cube/mesh not touching the main body through its own, parent, child or sibling bones; gap is the world-space [x,y,z] distance in units to the nearest such neighbour."
+}

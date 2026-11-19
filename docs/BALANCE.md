@@ -3,6 +3,15 @@
 Documento de referencia de las fórmulas de progresión. Cada cambio indica fórmula anterior, nueva,
 justificación, valores de ejemplo e impacto, como pide la política del proyecto.
 
+## Osario Quebrado (V84)
+
+El golpe inmediato de base 5 se sustituye por cuatro ataques con aviso. Conserva 24 de vida, velocidad 0,27
+y seguimiento 24. Los multiplicadores sobre el daño vigente dan **4,5 / 6,5 / 8 / 5** sin afijos para
+zarpazo, barrido, impacto y embestida. El Osario común espera 200 ticks tras un impacto antes de repetirlo.
+El élite y el campeón esperan 120. El enfriamiento global de 20 ticks se cuenta al terminar la acción.
+Los sectores y el disco permiten esquivar durante el aviso. La embestida fija la dirección al arrancar y se
+detiene con el primer contacto. [Tiempos, volúmenes y escalado](V84_OSARIO_FASE5.md#combate).
+
 ## Coloso Sin Rostro
 
 El tajo conserva un alcance de 4,5 bloques y el golpe descendente conserva un radio de 5,5. La caja del objetivo

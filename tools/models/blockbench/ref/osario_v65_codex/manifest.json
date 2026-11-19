@@ -1,0 +1,210 @@
+{
+  "revision": "1534389a752513da383ea9bc5a0f172644cac6bd",
+  "files": [
+    {
+      "path": "docs/V65_OSARIO_QUEBRADO.md",
+      "bytes": 7912,
+      "sha256": "df1d22aeaa2fd0b98396aa3f8432a8c0b996887d2349e6106802e2eef0864a46",
+      "git_blob": "971e430f1113928a804335b3b9005ac27e68e5d1"
+    },
+    {
+      "path": "src/client/java/dev/aptitudes/client/render/MobRenderers.java",
+      "bytes": 2025,
+      "sha256": "b3349fb86ec60368afe42212fb481f337092f975734533c06d2489d8a1aa6923",
+      "git_blob": "7d5b14221616d9e9a361943583295b7ffdd9f737"
+    },
+    {
+      "path": "src/main/java/dev/aptitudes/mob/OsarioEntities.java",
+      "bytes": 1515,
+      "sha256": "bfbfcb93ff9147d5533cd0395141c6e8e79d6fbee44831c5b29b8e97acb4c2e3",
+      "git_blob": "43d2812b1d50abc6f1f3cab067b8e74ffb1e935d"
+    },
+    {
+      "path": "src/main/java/dev/aptitudes/mob/OsarioEntity.java",
+      "bytes": 4411,
+      "sha256": "ef6c378ed2ce064f368957968acd3ed934d41fbeee9c06960797b3f47a3e3de5",
+      "git_blob": "d4b253caeb46d85610efd539b45aa3092667d4d2"
+    },
+    {
+      "path": "src/main/java/dev/aptitudes/mob/OsarioRules.java",
+      "bytes": 503,
+      "sha256": "f7839ddd467372aadc46bf6fd1b9f1a589fa1fce305cb5bebacfb3168a9ff159",
+      "git_blob": "1e4fd9f0e25a5d469967ce15905d95f90b65cbd6"
+    },
+    {
+      "path": "src/main/resources/assets/aptitudes/animations/entity/osario_quebrado.animation.json",
+      "bytes": 11848,
+      "sha256": "7c2cea62c0a73b7fd4661ebce4ae8008f14219c04dfdbbe285f7a10d384f88e9",
+      "git_blob": "ad30e1c77969c178363ba7ac47616bbdddbfb73e"
+    },
+    {
+      "path": "src/main/resources/assets/aptitudes/geo/entity/osario_quebrado.geo.json",
+      "bytes": 12598,
+      "sha256": "619a95f613d3d302c0a5eccbaeaa25a68c99a26f90dcdc6260e582fa4dcf2a8e",
+      "git_blob": "7c8c7e6b0378180a240c98d454b4b87aefd21fc8"
+    },
+    {
+      "path": "src/main/resources/assets/aptitudes/models/item/osario_quebrado_spawn_egg.json",
+      "bytes": 52,
+      "sha256": "d2d67b22443c23da9188100f1a63ddf1f7ec4e0e4a3dcc4e6a1d04d87b2213ef",
+      "git_blob": "ddd15597643b640aff93a8b94f352937a45ae24f"
+    },
+    {
+      "path": "src/main/resources/assets/aptitudes/textures/entity/osario_quebrado.png",
+      "bytes": 6832,
+      "sha256": "e248560d3df95e7d983b7d36d45ff63a1284d0d70d07b95b5f88eedd0207623e",
+      "git_blob": "7fe82ebe9cffe5e389e7892b4be4ceb69a6ef7d7"
+    },
+    {
+      "path": "src/main/resources/assets/aptitudes/textures/entity/osario_quebrado_glowmask.png",
+      "bytes": 741,
+      "sha256": "c94a23f715c141fc2cd809914e8c660b53f9e05c1cae51824379579aa4fc0a44",
+      "git_blob": "4cb56192d4dbd496ff2cc3c53632b22fa018b98a"
+    },
+    {
+      "path": "src/test/java/dev/aptitudes/mob/OsarioRulesTest.java",
+      "bytes": 479,
+      "sha256": "81986eca4933a6b27eddd6c2f6f0000b6d7fe4d51a040a583179d3b9ce2bbb00",
+      "git_blob": "4154a2265deef048692b002777b37fbc81740b82"
+    },
+    {
+      "path": "tools/models/blockbench/osario_quebrado.bbmodel",
+      "bytes": 63955,
+      "sha256": "6ebd2f9bc0e1718744ffe21f0de39080c32b2115999455a3332c445d4a5be131",
+      "git_blob": "53d2763224167b4f5ea4719642c3efb874a0eaf3"
+    },
+    {
+      "path": "tools/models/blockbench/ref/osario_textura_previa/PROPUESTA_osario_quebrado.png",
+      "bytes": 6832,
+      "sha256": "e248560d3df95e7d983b7d36d45ff63a1284d0d70d07b95b5f88eedd0207623e",
+      "git_blob": "7fe82ebe9cffe5e389e7892b4be4ceb69a6ef7d7"
+    },
+    {
+      "path": "tools/models/blockbench/ref/osario_textura_previa/PROPUESTA_osario_quebrado_glowmask.png",
+      "bytes": 741,
+      "sha256": "c94a23f715c141fc2cd809914e8c660b53f9e05c1cae51824379579aa4fc0a44",
+      "git_blob": "4cb56192d4dbd496ff2cc3c53632b22fa018b98a"
+    },
+    {
+      "path": "tools/models/blockbench/ref/osario_textura_previa/SPEC_textura.md",
+      "bytes": 5663,
+      "sha256": "f9de75cc6076eec5438ccd2ff111398299f43d95101ce6ebce4f6508ab4b5a0a",
+      "git_blob": "1ff3a3992fd471f5cf6d11240dfa8300745dd62c"
+    },
+    {
+      "path": "tools/models/blockbench/ref/osario_textura_previa/gen_osario_texture.py",
+      "bytes": 42680,
+      "sha256": "2e8029dc4468f37b684037b00ecc821cb1ed4da5bc693f7667dd5590583b7e5f",
+      "git_blob": "267fa21fd0a261825a22e7c674f032327a1de98a"
+    },
+    {
+      "path": "tools/models/blockbench/ref/osario_textura_previa/hoja_brillo.png",
+      "bytes": 127366,
+      "sha256": "f2cdc8b8468775f6e01e1302857ef356b82a707be6eade79e1f383b6bfdd2750",
+      "git_blob": "7469e3eaa1bd0a8a92050115707b97214bba1202"
+    },
+    {
+      "path": "tools/models/blockbench/ref/osario_textura_previa/hoja_glowmask_x3.png",
+      "bytes": 8388,
+      "sha256": "f6d7136dc6e0b20a4353a64a25e8333925372436f706775cf7c63296a1878eec",
+      "git_blob": "20e921907816167e766a7092b2ec5a0a69b3a261"
+    },
+    {
+      "path": "tools/models/blockbench/ref/osario_textura_previa/hoja_paleta.png",
+      "bytes": 28972,
+      "sha256": "0dd41e05c16e3b44edde5635f270269c2621fac5c2662deca3ededea6360a3a2",
+      "git_blob": "eeee7d4759e61f97b9977be15202ad3cdaad6763"
+    },
+    {
+      "path": "tools/models/blockbench/ref/osario_textura_previa/hoja_uv_256_x3.png",
+      "bytes": 15722,
+      "sha256": "9153b2307a7a8d37ad60fb9a3d02d8be8831183f5aac61cf36b5af1de80e035e",
+      "git_blob": "cefa2d088c5baf566bff985fd50d6d0c6997542b"
+    },
+    {
+      "path": "tools/models/blockbench/ref/osario_textura_previa/hoja_vistas_luz.png",
+      "bytes": 66262,
+      "sha256": "684ea5fb7757bcf185f41e9686b275a26768103553becb6d356850606079c6e3",
+      "git_blob": "27e9dfa59987d9ea85574c3f52b63d43b27c19f0"
+    },
+    {
+      "path": "tools/models/blockbench/ref/osario_textura_previa/make_sheets.py",
+      "bytes": 3713,
+      "sha256": "875a3809802fd152e2719399cdd06e523353148b1055307e940f597c00ef68db",
+      "git_blob": "0b440c9ff70dc7ab13f9e482b1fadd10c7d98365"
+    },
+    {
+      "path": "tools/models/blockbench/ref/osario_textura_previa/uv_layout.json",
+      "bytes": 31782,
+      "sha256": "8ef0b6b91cb9a34a96834d9e7861fa380fbb34903eecc4fd5089fa5ca50035a4",
+      "git_blob": "50cefa1b4fead4af425e43312d6d83491d7ed896"
+    },
+    {
+      "path": "tools/models/blockbench/ref/osario_textura_previa/vista_east_luz.png",
+      "bytes": 18777,
+      "sha256": "2c02559aa056509ac43b28b090b67af9b5ed8c3bc2ad94605808c543508fdbbc",
+      "git_blob": "3409dbac0628cda23d8440fb75bc4979380ebbdf"
+    },
+    {
+      "path": "tools/models/blockbench/ref/osario_textura_previa/vista_east_oscuro_con_brillo.png",
+      "bytes": 18084,
+      "sha256": "cda78af10c9651e90c0da2672a469acb5d28aec79340ecbb0171558ea7dd541b",
+      "git_blob": "740f2aafcd6d99cf38c80b740d584a2833e12308"
+    },
+    {
+      "path": "tools/models/blockbench/ref/osario_textura_previa/vista_east_oscuro_sin_brillo.png",
+      "bytes": 17895,
+      "sha256": "69184a617077d56af833526ba43a8512bd66c819416e377e3ba04fc62153a97d",
+      "git_blob": "533b90e447cc47b2b4e59ad6aeb70beb04933b93"
+    },
+    {
+      "path": "tools/models/blockbench/ref/osario_textura_previa/vista_espalda_luz.png",
+      "bytes": 7688,
+      "sha256": "e9fa22fbaa6c39c371c99e4194d00a209118a6847950c04bfc24f4e7816d8539",
+      "git_blob": "70c55ba68dd8ac23a157db0e4f0fd3cc9e9cd2c6"
+    },
+    {
+      "path": "tools/models/blockbench/ref/osario_textura_previa/vista_iso_luz.png",
+      "bytes": 34710,
+      "sha256": "054d895c771097242c7840f188a3f22f2241a0ff0868b45a0596ebaf810e6acc",
+      "git_blob": "b474c4e7133f87db179421ce4d297d2ecb76adab"
+    },
+    {
+      "path": "tools/models/blockbench/ref/osario_textura_previa/vista_iso_oscuro_con_brillo.png",
+      "bytes": 32671,
+      "sha256": "0661fda3d3554231a5db39355eec36079d07b69e1e38caba368dea78b94440b3",
+      "git_blob": "369df717b4bcea3cf130d6d0811fdd7104a5bd54"
+    },
+    {
+      "path": "tools/models/blockbench/ref/osario_textura_previa/vista_iso_oscuro_sin_brillo.png",
+      "bytes": 32647,
+      "sha256": "8eea505b730b65751e7a65fcb4affd612b19fc47cfcafaeb7503ad5623a98aa4",
+      "git_blob": "2a88ea9c628ce0e118166cdabbc6c261da7e66ca"
+    },
+    {
+      "path": "tools/models/blockbench/ref/osario_textura_previa/vista_north_luz.png",
+      "bytes": 9175,
+      "sha256": "131a932e349f1903ec52dd6f05926a71b4624dd50528ccbf0ac11897b58eaba6",
+      "git_blob": "e942134386f9cdc3de39544a8fa6cd7e45a1dcf1"
+    },
+    {
+      "path": "tools/models/blockbench/ref/osario_textura_previa/vista_north_oscuro_con_brillo.png",
+      "bytes": 8801,
+      "sha256": "36c75a5746feb7d2e65bc044fb934d5cc81ace2c48daddd4de3d6a40bb80b351",
+      "git_blob": "46b5a3e81f2ebc8130866e68610514a2b4a68ab0"
+    },
+    {
+      "path": "tools/models/blockbench/ref/osario_textura_previa/vista_north_oscuro_sin_brillo.png",
+      "bytes": 8683,
+      "sha256": "417651222e82f9c4a1d7c9d94126fdc3dde85f9e5d6e79b287929d26382ccf4b",
+      "git_blob": "d35872f87958080908fe24dd3276b4525b6f4b94"
+    },
+    {
+      "path": "tools/models/gen_mob_models.py",
+      "bytes": 11297,
+      "sha256": "2c6dbb29a8d45e4734b63cbc7052d4bdf8181c0346584923cef3f511968271a4",
+      "git_blob": "f589dad7af3263b5c97a9bbb27864955c3616530"
+    }
+  ],
+  "note": "Instantánea histórica; no integrar ni usar como generador de los recursos activos."
+}

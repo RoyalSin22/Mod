@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "osario_validation",
+  "version": "1.0.0",
+  "name": "Osario validation",
+  "environment": "*",
+  "entrypoints": {
+    "client": ["dev.aptitudes.validation.OsarioRenderQa"],
+    "fabric-gametest": [
+      "dev.aptitudes.validation.OsarioCombatGameTests",
+      "dev.aptitudes.validation.OsarioBenchmarkGameTests"
+    ]
+  },
+  "depends": {
+    "aptitudes": "*",
+    "fabric-gametest-api-v1": "*"
+  }
+}

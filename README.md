@@ -21,6 +21,9 @@ Licencia MIT. Procedencia del arte (parte generada con IA, parte dibujada por pr
 
 ## Documentación técnica
 
+- [Osario Quebrado V84](docs/V84_OSARIO_FASE5.md) integrado con cuatro ataques avisados, diez clips, máscara emisiva
+  y sonidos propios. Compilación y combate comprobados. Resultados y aprobación del autor en la
+  [validación en Minecraft](docs/V84_OSARIO_FASE6.md).
 - [docs/ROADMAP_APTITUDES.md](docs/ROADMAP_APTITUDES.md): estado real, cambios y pendientes.
 - [docs/BALANCE.md](docs/BALANCE.md): fórmulas, límites y decisiones de balance.
 - [docs/CONFIGURATION.md](docs/CONFIGURATION.md): todas las opciones y su validación.

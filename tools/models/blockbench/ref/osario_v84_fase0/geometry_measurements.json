@@ -1,0 +1,46 @@
+[
+  {
+    "name": "00_neutro",
+    "measure": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"model_aabb\": {\n    \"min\": [\n      -8,\n      7,\n      -7\n    ],\n    \"max\": [\n      8,\n      20,\n      1\n    ],\n    \"size\": [\n      16,\n      13,\n      8\n    ],\n    \"center\": [\n      0,\n      13.5,\n      -3\n    ]\n  },\n  \"lowest_point\": {\n    \"y\": 7,\n    \"at\": [\n      -8,\n      7,\n      -1\n    ],\n    \"element\": \"mass_minus_x\"\n  },\n  \"highest_y\": 20,\n  \"ground_clearance\": 7,\n  \"elements\": [\n    {\n      \"name\": \"spine_probe\",\n      \"type\": \"cube\",\n      \"bone\": \"spine_upper\",\n      \"min\": [\n        -0.5,\n        8,\n        -0.5\n      ],\n      \"max\": [\n        0.5,\n        20,\n        0.5\n      ],\n      \"center\": [\n        0,\n        14,\n        0\n      ]\n    },\n    {\n      \"name\": \"front_probe\",\n      \"type\": \"cube\",\n      \"bone\": \"body\",\n      \"min\": [\n        -0.5,\n        12,\n        -7\n      ],\n      \"max\": [\n        0.5,\n        13,\n        0\n      ],\n      \"center\": [\n        0,\n        12.5,\n        -3.5\n      ]\n    },\n    {\n      \"name\": \"mass_minus_x\",\n      \"type\": \"cube\",\n      \"bone\": \"body\",\n      \"min\": [\n        -8,\n        7,\n        -1\n      ],\n      \"max\": [\n        -6,\n        9,\n        1\n      ],\n      \"center\": [\n        -7,\n        8,\n        0\n      ]\n    },\n    {\n      \"name\": \"bone_plus_x\",\n      \"type\": \"cube\",\n      \"bone\": \"body\",\n      \"min\": [\n        6,\n        7,\n        -1\n      ],\n      \"max\": [\n        8,\n        9,\n        1\n      ],\n      \"center\": [\n        7,\n        8,\n        0\n      ]\n    }\n  ],\n  \"bones\": [\n    {\n      \"name\": \"root\",\n      \"world_pivot\": [\n        0,\n        0,\n        0\n      ]\n    },\n    {\n      \"name\": \"body\",\n      \"world_pivot\": [\n        0,\n        8,\n        0\n      ]\n    },\n    {\n      \"name\": \"spine_upper\",\n      \"world_pivot\": [\n        0,\n        8,\n        0\n      ]\n    }\n  ],\n  \"units\": \"1 unit = 1/16 block; y=0 is the floor\"\n}"
+        }
+      ]
+    }
+  },
+  {
+    "name": "01_columna_x_10",
+    "measure": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"model_aabb\": {\n    \"min\": [\n      -8,\n      7,\n      -7\n    ],\n    \"max\": [\n      8,\n      19.905,\n      2.576\n    ],\n    \"size\": [\n      16,\n      12.905,\n      9.576\n    ],\n    \"center\": [\n      0,\n      13.452,\n      -2.212\n    ]\n  },\n  \"lowest_point\": {\n    \"y\": 7,\n    \"at\": [\n      -8,\n      7,\n      -1\n    ],\n    \"element\": \"mass_minus_x\"\n  },\n  \"highest_y\": 19.905,\n  \"ground_clearance\": 7,\n  \"elements\": [\n    {\n      \"name\": \"spine_probe\",\n      \"type\": \"cube\",\n      \"bone\": \"spine_upper\",\n      \"min\": [\n        -0.5,\n        7.913,\n        -0.492\n      ],\n      \"max\": [\n        0.5,\n        19.905,\n        2.576\n      ],\n      \"center\": [\n        0,\n        13.909,\n        1.042\n      ]\n    },\n    {\n      \"name\": \"front_probe\",\n      \"type\": \"cube\",\n      \"bone\": \"body\",\n      \"min\": [\n        -0.5,\n        12,\n        -7\n      ],\n      \"max\": [\n        0.5,\n        13,\n        0\n      ],\n      \"center\": [\n        0,\n        12.5,\n        -3.5\n      ]\n    },\n    {\n      \"name\": \"mass_minus_x\",\n      \"type\": \"cube\",\n      \"bone\": \"body\",\n      \"min\": [\n        -8,\n        7,\n        -1\n      ],\n      \"max\": [\n        -6,\n        9,\n        1\n      ],\n      \"center\": [\n        -7,\n        8,\n        0\n      ]\n    },\n    {\n      \"name\": \"bone_plus_x\",\n      \"type\": \"cube\",\n      \"bone\": \"body\",\n      \"min\": [\n        6,\n        7,\n        -1\n      ],\n      \"max\": [\n        8,\n        9,\n        1\n      ],\n      \"center\": [\n        7,\n        8,\n        0\n      ]\n    }\n  ],\n  \"bones\": [\n    {\n      \"name\": \"root\",\n      \"world_pivot\": [\n        0,\n        0,\n        0\n      ]\n    },\n    {\n      \"name\": \"body\",\n      \"world_pivot\": [\n        0,\n        8,\n        0\n      ]\n    },\n    {\n      \"name\": \"spine_upper\",\n      \"world_pivot\": [\n        0,\n        8,\n        0\n      ]\n    }\n  ],\n  \"units\": \"1 unit = 1/16 block; y=0 is the floor\"\n}"
+        }
+      ]
+    }
+  },
+  {
+    "name": "02_cuerpo_y_10",
+    "measure": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"model_aabb\": {\n    \"min\": [\n      -8.052,\n      7,\n      -6.98\n    ],\n    \"max\": [\n      8.052,\n      20,\n      2.374\n    ],\n    \"size\": [\n      16.104,\n      13,\n      9.354\n    ],\n    \"center\": [\n      0,\n      13.5,\n      -2.303\n    ]\n  },\n  \"lowest_point\": {\n    \"y\": 7,\n    \"at\": [\n      -8.052,\n      7,\n      0.404\n    ],\n    \"element\": \"mass_minus_x\"\n  },\n  \"highest_y\": 20,\n  \"ground_clearance\": 7,\n  \"elements\": [\n    {\n      \"name\": \"spine_probe\",\n      \"type\": \"cube\",\n      \"bone\": \"spine_upper\",\n      \"min\": [\n        -0.579,\n        8,\n        -0.579\n      ],\n      \"max\": [\n        0.579,\n        20,\n        0.579\n      ],\n      \"center\": [\n        0,\n        14,\n        0\n      ]\n    },\n    {\n      \"name\": \"front_probe\",\n      \"type\": \"cube\",\n      \"bone\": \"body\",\n      \"min\": [\n        -1.708,\n        12,\n        -6.98\n      ],\n      \"max\": [\n        0.492,\n        13,\n        0.087\n      ],\n      \"center\": [\n        -0.608,\n        12.5,\n        -3.447\n      ]\n    },\n    {\n      \"name\": \"mass_minus_x\",\n      \"type\": \"cube\",\n      \"bone\": \"body\",\n      \"min\": [\n        -8.052,\n        7,\n        0.057\n      ],\n      \"max\": [\n        -5.735,\n        9,\n        2.374\n      ],\n      \"center\": [\n        -6.894,\n        8,\n        1.216\n      ]\n    },\n    {\n      \"name\": \"bone_plus_x\",\n      \"type\": \"cube\",\n      \"bone\": \"body\",\n      \"min\": [\n        5.735,\n        7,\n        -2.374\n      ],\n      \"max\": [\n        8.052,\n        9,\n        -0.057\n      ],\n      \"center\": [\n        6.894,\n        8,\n        -1.216\n      ]\n    }\n  ],\n  \"bones\": [\n    {\n      \"name\": \"root\",\n      \"world_pivot\": [\n        0,\n        0,\n        0\n      ]\n    },\n    {\n      \"name\": \"body\",\n      \"world_pivot\": [\n        0,\n        8,\n        0\n      ]\n    },\n    {\n      \"name\": \"spine_upper\",\n      \"world_pivot\": [\n        0,\n        8,\n        0\n      ]\n    }\n  ],\n  \"units\": \"1 unit = 1/16 block; y=0 is the floor\"\n}"
+        }
+      ]
+    }
+  },
+  {
+    "name": "03_cuerpo_z_10",
+    "measure": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"model_aabb\": {\n    \"min\": [\n      -8.052,\n      5.626,\n      -7\n    ],\n    \"max\": [\n      8.052,\n      19.905,\n      1\n    ],\n    \"size\": [\n      16.104,\n      14.279,\n      8\n    ],\n    \"center\": [\n      0,\n      12.765,\n      -3\n    ]\n  },\n  \"lowest_point\": {\n    \"y\": 5.626,\n    \"at\": [\n      -7.705,\n      5.626,\n      -1\n    ],\n    \"element\": \"mass_minus_x\"\n  },\n  \"highest_y\": 19.905,\n  \"ground_clearance\": 5.626,\n  \"elements\": [\n    {\n      \"name\": \"spine_probe\",\n      \"type\": \"cube\",\n      \"bone\": \"spine_upper\",\n      \"min\": [\n        -2.576,\n        7.913,\n        -0.5\n      ],\n      \"max\": [\n        0.492,\n        19.905,\n        0.5\n      ],\n      \"center\": [\n        -1.042,\n        13.909,\n        0\n      ]\n    },\n    {\n      \"name\": \"front_probe\",\n      \"type\": \"cube\",\n      \"bone\": \"body\",\n      \"min\": [\n        -1.361,\n        11.852,\n        -7\n      ],\n      \"max\": [\n        -0.202,\n        13.011,\n        0\n      ],\n      \"center\": [\n        -0.781,\n        12.432,\n        -3.5\n      ]\n    },\n    {\n      \"name\": \"mass_minus_x\",\n      \"type\": \"cube\",\n      \"bone\": \"body\",\n      \"min\": [\n        -8.052,\n        5.626,\n        -1\n      ],\n      \"max\": [\n        -5.735,\n        7.943,\n        1\n      ],\n      \"center\": [\n        -6.894,\n        6.784,\n        0\n      ]\n    },\n    {\n      \"name\": \"bone_plus_x\",\n      \"type\": \"cube\",\n      \"bone\": \"body\",\n      \"min\": [\n        5.735,\n        8.057,\n        -1\n      ],\n      \"max\": [\n        8.052,\n        10.374,\n        1\n      ],\n      \"center\": [\n        6.894,\n        9.216,\n        0\n      ]\n    }\n  ],\n  \"bones\": [\n    {\n      \"name\": \"root\",\n      \"world_pivot\": [\n        0,\n        0,\n        0\n      ]\n    },\n    {\n      \"name\": \"body\",\n      \"world_pivot\": [\n        0,\n        8,\n        0\n      ]\n    },\n    {\n      \"name\": \"spine_upper\",\n      \"world_pivot\": [\n        0,\n        8,\n        0\n      ]\n    }\n  ],\n  \"units\": \"1 unit = 1/16 block; y=0 is the floor\"\n}"
+        }
+      ]
+    }
+  }
+]

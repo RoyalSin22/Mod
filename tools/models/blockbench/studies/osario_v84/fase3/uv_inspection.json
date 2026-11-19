@@ -1,0 +1,55 @@
+{
+  "project_uv_size": [
+    128,
+    128
+  ],
+  "cubes": 169,
+  "faces": 1014,
+  "box_uv_cubes": 49,
+  "texel_density": {
+    "min": 2,
+    "median": 2,
+    "max": 2,
+    "unit": "texture px per model unit"
+  },
+  "textures": [
+    {
+      "name": "osario_quebrado.png",
+      "bitmap": [
+        256,
+        256
+      ],
+      "uv_size": [
+        128,
+        128
+      ],
+      "pixels_per_uv_unit": [
+        2,
+        2
+      ],
+      "faces": 1014,
+      "used_uv_extent": [
+        126.5,
+        99
+      ],
+      "uv_area_used_pct": 76
+    }
+  ],
+  "rotation_counts": {
+    "0": 1014
+  },
+  "mirrored_u_by_face": {
+    "up": 49,
+    "down": 49
+  },
+  "mirrored_v_by_face": {
+    "up": 49
+  },
+  "findings": [
+    {
+      "level": "info",
+      "type": "uv_scale",
+      "message": "\"osario_quebrado.png\": bitmap is 256x256 over a 128x128 UV grid — 2 bitmap pixels per UV unit. Absolute paint coordinates are in BITMAP pixels."
+    }
+  ]
+}
