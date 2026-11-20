@@ -540,9 +540,25 @@ HAND_EDITED_GEO = {
         'sword': 'right_hand', 'cape': 'body', 'cape_root': 'cape',
         'cape_mid': 'cape_root', 'cape_lower': 'cape_mid',
     },
+    'gran_osario_quebrado': {
+        'root': None, 'rise': 'root', 'pelvis': 'rise', 'body': 'pelvis',
+        'spine_mid': 'body', 'shock': 'spine_mid', 'spine_upper': 'shock',
+        'chest': 'spine_upper', 'neck': 'chest', 'head': 'neck', 'jaw': 'head',
+        'shoulder_right': 'chest', 'upper_right': 'shoulder_right',
+        'fore_right': 'upper_right', 'hand_right': 'fore_right',
+        'fingers_right': 'hand_right',
+        'shoulder_left': 'chest', 'upper_left': 'shoulder_left',
+        'fore_left': 'upper_left', 'hand_left': 'fore_left',
+        'thigh_right': 'rise', 'shin_right': 'thigh_right', 'foot_right': 'shin_right',
+        'thigh_left': 'rise', 'shin_left': 'thigh_left', 'foot_left': 'shin_left',
+        'core_main_live': 'core_main', 'core_left_live': 'core_left',
+        'core_right_live': 'core_right', 'p3_arm_a': 'mass_left_a',
+        'p3_arm_b': 'mass_right_a',
+    },
 }
-HAND_EDITED_ANIMATIONS = {'faceless_colossus'}
-PAINTED_TEXTURES = {'faceless_colossus'}
+HAND_EDITED_ANIMATIONS = {'faceless_colossus', 'gran_osario_quebrado'}
+HAND_EDITED_EXTRA_CLIPS = {'gran_osario_quebrado': {'spawn', 'phase_three', 'hurt', 'death'}}
+PAINTED_TEXTURES = {'faceless_colossus', 'gran_osario_quebrado'}
 
 
 def files(assets):
@@ -588,7 +604,12 @@ def check_hand_animations(data, names, bones):
         tracks = clip.get('bones', {})
         if not tracks or tracks.keys() - bones:
             return f'{name}: pistas ausentes o referencias a huesos inexistentes'
-        if clip.get('loop', False) is not (name in ('idle', 'walk')):
+        loop = clip.get('loop', False)
+        if name == 'death':
+            valid = loop == 'hold_on_last_frame'
+        else:
+            valid = loop is (name in ('idle', 'walk'))
+        if not valid:
             return f'{name}: tipo de bucle incorrecto'
     return None
 
@@ -624,8 +645,8 @@ def main():
                 stale.append(f'{path}: faltan las animaciones de Blockbench')
                 continue
             data = json.loads(path.read_text(encoding='utf-8'))
-            problem = check_hand_animations(data, BOSSES[boss][1].keys() | {'stun'},
-                                            {bone['name'] for bone in geo['bones']})
+            expected = BOSSES[boss][1].keys() | {'stun'} | HAND_EDITED_EXTRA_CLIPS.get(boss, set())
+            problem = check_hand_animations(data, expected, {bone['name'] for bone in geo['bones']})
             if problem:
                 stale.append(f'{path}: {problem}')
     for path, data in files(args.assets).items():
