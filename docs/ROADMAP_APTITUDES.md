@@ -51,6 +51,12 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 - **Siguiente:** el arte de los iconos y del grimorio. Validar F1–F7, el grimorio y los tooltips en partida.
 
 ### v65 — Errante Velado: combate, Niebla y botín
+- **Pruebas previas en partida confirmadas por el autor**, incluida la aparición durante Niebla de almas.
+  La confirmación general se conserva sin atribuirle métricas ni escenarios adicionales.
+- **Pulido implementado:** cancelación al cambiar de objetivo hasta emitir el aviso, dirección fija después,
+  pausa de navegación durante hurt y contorno cian del sector real. Clasificación vanilla de no muerto
+  para Heraldo de la Muerte y sus interacciones asociadas. Comprobaciones de regresión en
+  `tools/testing/errante/`; resultados y límites en `TESTING.md`, sección del Errante.
 - Modelo editable independiente en `tools/models/blockbench/errante_velado.bbmodel`, atlas de 256 × 256 y seis
   clips GeckoLib. El renderer conserva la escala de la entidad y el afijo Gigante.
 - Rasgado Espectral resuelto por el servidor: aviso al tick 6, barrido al 10, recuperación hasta el 20.

@@ -9,6 +9,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 - **Coloso Sin Rostro.** La embestida mantiene su avance durante los ocho ticks previstos, se detiene ante
   obstáculos y cancela el impulso al invalidarse el objetivo o al aturdirse. Banco de doce pruebas en Minecraft
   para combate, selección, colisión, navegación y persistencia, más comprobación de render con dos clientes.
+- **Errante Velado.** Cancela la preparación si cambia de objetivo antes de emitir el aviso, incluido el tick 6.
+  Tras el aviso conserva la dirección anunciada. Detiene la navegación durante la reacción al daño, también
+  sin objetivo. Once motas cian adicionales delinean el sector real de 120° y su radio, con la escala del
+  ejemplar. Se añade a la etiqueta vanilla de no muertos, por lo que Heraldo de la Muerte y las reglas
+  vanilla de Castigo, pociones, respiración y selección del Wither reconocen su naturaleza.
+  Se registra la confirmación del autor sobre las pruebas previas y su aparición en la Niebla.
 
 ### Documentación
 - **v84 — Osario Quebrado, Fases 0–5.** Verificación del encargo y las referencias, respaldos históricos y
