@@ -1600,13 +1600,38 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
 
 # v65 — Errante Velado (verificación)
 
+El autor confirmó realizadas las pruebas previas en partida y la aparición del Errante durante Niebla de almas.
+Esta aceptación general se registra sin añadir métricas ni atribuirle capturas o mediciones no entregadas.
+
+El pulido posterior añade regresiones en `tools/testing/errante/`, con el jugador local reutilizado del
+laboratorio del Osario. Se ejecutan con Java 21 mediante
+`gradlew.bat -I tools/testing/errante/runtime.init.gradle runErranteQa --offline --console=plain`.
+El informe del servidor queda en `build/errante-qa/gametest.xml`. El mod de laboratorio se carga solo
+al usar ese script y queda fuera del JAR de producción.
+Los escenarios comprueban cambio de objetivo antes del aviso, en el tick 6 y después del aviso,
+pausa de navegación durante hurt con y sin objetivo, recuperación de la persecución y Heraldo de la Muerte.
+La prueba del límite del aviso desactiva temporalmente la IA para fijar el orden de asignación en ese tick.
+Los demás escenarios de combate dejan que el servidor avance el reloj y la IA.
+JUnit comprueba que el contorno cian pertenece al sector real en distintas orientaciones y a escala 1 y 1,35.
+La compilación final con Java 21 (`gradlew.bat build --offline --console=plain`) terminó correctamente,
+con 927 pruebas JUnit en 153 clases, cero fallos, errores u omisiones. Los seis GameTests quedaron aprobados.
+Se comprobó que el JAR contiene la etiqueta de no muertos y excluye las clases del laboratorio.
+La prueba de navegación deja actuar dos ticks
+a la física antes de solicitar una ruta, para que Minecraft registre el apoyo del ejemplar recién activado.
+La evaluación visual del contorno nuevo en cliente queda pendiente. El banco de servidor tampoco
+reproduce audio en dos clientes; la confirmación del autor cierra las pruebas previas.
+Durante el arranque se registró el error ya existente del avance
+`aptitudes:aptitudes_achievements/summon_eclipse` (`No key id` en su predicado de objeto).
+El servidor ejecutó las seis regresiones; ese recurso queda fuera del alcance de este ajuste.
+
 - `SpectralRendRulesTest`: comprueba alcance, altura, sector, reloj y deduplicación de impactos.
 - `FogErranteRulesTest`: comprueba pertenencia a la sesión, retirada y persistencia del estado del evento.
 - La validación en Minecraft 1.21.1 cubrió el ataque hasta tres blancos, las cancelaciones por muerte y por
   cierre de Niebla, los límites de oleadas y retirada, y la recuperación de la sesión tras reiniciar un
   servidor integrado. También se comprobó la limpieza al recargar un chunk descargado.
 - El cliente registró los siete sonidos y recibió el de preparación a 2 y 12 bloques. A 24 bloques quedó
-  fuera del radio. La comparación auditiva entre dos clientes queda pendiente.
+  fuera del radio. Ese registro local cubre un cliente; la confirmación general del autor no aporta
+  un registro específico de comparación auditiva entre dos clientes.
 - En un mundo de desarrollo, invoca `aptitudes:errante_velado` y pasa a supervivencia. Comprueba desde varios
   ángulos los cinco jirones, la elevación antes del barrido, las cinco motas, los sonidos y el colapso.
 - Con dos jugadores en el sector, comprueba un impacto por objetivo y Debilidad I. Repite detrás de un bloque,

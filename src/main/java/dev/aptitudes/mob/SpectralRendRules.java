@@ -29,6 +29,23 @@ public final class SpectralRendRules {
 
 	record Point(double x, double y, double z) {}
 
+	/** Contorno del sector a la altura inferior del barrido, escalado también para Gigantes. */
+	static List<Point> warningOutline(double forwardX, double forwardZ, double scale) {
+		List<Point> points = new ArrayList<>(11);
+		double halfAngle = Math.acos(HALF_ANGLE_COS);
+		for (int i = 0; i <= 8; i++) {
+			double angle = -halfAngle + 2 * halfAngle * i / 8;
+			double x = forwardX * Math.cos(angle) + forwardZ * Math.sin(angle);
+			double z = forwardZ * Math.cos(angle) - forwardX * Math.sin(angle);
+			points.add(new Point(x * REACH * scale, MIN_HEIGHT * scale, z * REACH * scale));
+		}
+		for (int edge : new int[] {0, 8}) {
+			Point end = points.get(edge);
+			points.add(new Point(end.x * 0.5, end.y, end.z * 0.5));
+		}
+		return points;
+	}
+
 	/** Interseca la caja horizontal con ambos lados del sector y busca el punto más cercano del polígono. */
 	static Point contact(double minX, double minY, double minZ, double maxX, double maxY, double maxZ,
 			double forwardX, double forwardZ, double scale) {
@@ -115,7 +132,8 @@ public final class SpectralRendRules {
 		}
 
 		boolean preparing(long now) {
-			return now - started < WARNING_TICK;
+			// En el tick del aviso aún se valida el objetivo antes de emitir las partículas.
+			return !warned && now - started <= WARNING_TICK;
 		}
 
 		void cancel() {

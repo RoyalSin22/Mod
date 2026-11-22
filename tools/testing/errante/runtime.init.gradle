@@ -1,0 +1,22 @@
+// Reutiliza el jugador local del laboratorio existente sin incluir sus escenarios del Osario.
+gradle.projectsEvaluated {
+	def host = gradle.rootProject
+	def lab = new File(host.projectDir, 'tools/testing/errante')
+	def qa = host.sourceSets.create('erranteQa')
+	qa.java.setSrcDirs([new File(lab, 'java'), host.file('tools/testing/osario_v84/java')])
+	qa.java.include '**/ErranteCombatGameTests.java', '**/LabPlayer.java'
+	qa.resources.setSrcDirs([new File(lab, 'resources')])
+	qa.compileClasspath += host.sourceSets.main.output + host.sourceSets.main.compileClasspath
+	qa.runtimeClasspath += host.sourceSets.main.runtimeClasspath
+	host.loom.mods.create('errante_validation') { sourceSet qa }
+	host.loom.runs.create('erranteQa') {
+		server()
+		source qa
+		runDir 'build/errante-qa'
+		vmArg '-Dfabric-api.gametest'
+		vmArg "-Dfabric-api.gametest.report-file=${host.file('build/errante-qa/gametest.xml').absolutePath}"
+		vmArg '-Xms1G'
+		vmArg '-Xmx2G'
+		programArg 'nogui'
+	}
+}

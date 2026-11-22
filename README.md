@@ -10,7 +10,8 @@ Sistema RPG con tres capas que se combinan:
 - **16 habilidades legendarias** (tecla `H`; se eligen en el árbol de talentos): la exclusividad por servidor es opcional y está desactivada por defecto.
 - **Armas, la Armadura Ascendida, accesorios, runas y cuatro pociones propias**, con recetas consultables en el grimorio.
 - **Templos sellados** con puzles, un guardián y Vasos de vida (+1 corazón permanente, hasta 5) (v64).
-- **Niebla de almas**: el Errante Velado avisa antes de su barrido, que puede debilitar a varios objetivos. Los
+- **Niebla de almas**: el Errante Velado anuncia el sector de su barrido con un contorno cian y puede debilitar
+  a varios objetivos. Heraldo de la Muerte lo reconoce como no muerto. Los
   ejemplares del evento pueden soltar un Jirón de Velo Espectral.
 - **Grimorio** con bestiario que se desbloquea al vencer a cada criatura o jefe, progreso, buscador, marcadores y sendas de cada rol (v61).
 - **Jefes animados** con ataques anunciados. El Coloso Sin Rostro muestra la armadura agrietada al entrar en su segunda fase.

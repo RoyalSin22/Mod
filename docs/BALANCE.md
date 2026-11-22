@@ -488,8 +488,13 @@ uno de cada tres eventos de media.
 120° y 1,75 bloques de radio a escala base, independiente de la caja corporal. El barrido solo se resuelve al
 tick 10 y aplica Debilidad I durante 40 ticks si inflige daño a un objetivo que sobrevive. Una muerte válida
 atribuida a un jugador durante la sesión activa permite una tirada del 85 % para un Jirón. La retirada por cierre
-del evento se reparte entre 1 y 6 segundos y no genera experiencia ni botín. Queda por calibrar el tiempo de
-obtención cuando exista la receta de progresión.
+del evento se reparte entre 1 y 6 segundos y no genera experiencia ni botín.
+La preparación se cancela si cambia el objetivo antes de emitir el aviso del tick 6; después conserva la dirección.
+El aviso añade once partículas al contorno de 120° y radio 1,75, escalado para Gigante. La reacción al daño
+pausa la navegación durante sus nueve ticks y permite conservar el retroceso físico.
+El Errante pertenece a `minecraft:undead`: Heraldo de la Muerte bloquea su selección de objetivo.
+Hereda además Castigo, inversión de curación/daño instantáneos, inmunidad a veneno/regeneración,
+respiración bajo el agua y la selección de aliados del Wither mediante las etiquetas vanilla.
 
 # Grupos (v29)
 
