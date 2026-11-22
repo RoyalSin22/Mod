@@ -13,7 +13,8 @@ Sistema RPG con tres capas que se combinan:
 - **Niebla de almas**: el Errante Velado avisa antes de su barrido, que puede debilitar a varios objetivos. Los
   ejemplares del evento pueden soltar un Jirón de Velo Espectral.
 - **Grimorio** con bestiario que se desbloquea al vencer a cada criatura o jefe, progreso, buscador, marcadores y sendas de cada rol (v61).
-- **Jefes animados** con ataques anunciados. El Coloso Sin Rostro muestra la armadura agrietada al entrar en su segunda fase.
+- **Jefes animados** con ataques anunciados. El Coloso Sin Rostro muestra la armadura agrietada al entrar en su segunda fase
+  y mantiene el avance de la embestida hasta contactar, chocar o completar su recorrido.
 - **GUI** rediseñada (`K` atributos/habilidades, `J` roles, `G` cambiar elemento, `U` ver un objeto en el grimorio desde un inventario), **HUD** de energía, enfriamientos y elemento activo, **comandos** y **configuración JSON**.
 
 ## Créditos y licencia

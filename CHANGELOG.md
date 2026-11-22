@@ -5,6 +5,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Corregido
+- **Coloso Sin Rostro.** La embestida mantiene su avance durante los ocho ticks previstos, se detiene ante
+  obstáculos y cancela el impulso al invalidarse el objetivo o al aturdirse. Banco de doce pruebas en Minecraft
+  para combate, selección, colisión, navegación y persistencia, más comprobación de render con dos clientes.
+
 ### Documentación
 - **v84 — Osario Quebrado, Fases 0–5.** Verificación del encargo y las referencias, respaldos históricos y
   calibración de ejes. Bloqueo y rig aprobados; geometría detallada de 169 cubos sobre los mismos 30 huesos:

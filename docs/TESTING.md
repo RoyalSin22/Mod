@@ -556,6 +556,49 @@ Atlas y emisión del Coloso: `python3 tools/textures/gen_faceless_glowmask.py sr
 
 Verificado por Claude en el cliente de desarrollo: puntos 1–3 (render, barra y golpes recibidos).
 
+### Coloso Sin Rostro · Cierre técnico de 2026-11-22
+
+Ejecutadas doce pruebas en un servidor GameTest real de Minecraft 1.21.1 con GeckoLib 4.7.7.
+El informe `build/coloso-qa/server/gametest.xml` registra cero fallos. Cubren el tajo en el tick 18,
+el golpe descendente en el tick 28, la dirección y recuperación, embestida con un único impacto,
+paredes, esquiva lateral, cambio de fase durante el aturdimiento, cancelación frente a objetivos
+creativos, NBT de fase y velocidad, selección de la corona, un pasillo de 2 × 3,5 bloques y adquisición
+y persecución con la entidad registrada. El banco restringe el repertorio en los escenarios de ataques
+para comprobar cada golpe por separado. La prueba de adquisición usa la entidad registrada completa.
+
+Dos clientes reales conectados por LAN coincidieron en 15 pares de estado de animación y armadura.
+Cada cliente comprobó los ocho estados exigidos por el laboratorio. El observador capturó además el retorno
+a `walk` tras la embestida.
+Se comprobaron los siete clips, ambos atlas, la capa emisiva y la caja 1,6 × 3,4. Las capturas de ambas
+vistas, incluidas las capturas de impacto, están en `build/coloso-qa/{host,peer}/screenshots/` y los registros en
+`build/coloso-client-{host,peer}-verified.log`. El cliente de pruebas usa una GTX 1050 Ti a 960 × 540.
+
+Se reabrió desde disco el mundo guardado por `host`. La entidad conservó fase 2 y armadura agrietada,
+con registro `COLOSO DISK RELOAD PASS` en `build/coloso-client-reload.log`.
+
+La integración de la rama antigua `codex/coloso-auditoria-main` conserva la caja 1,6 × 3,4 y el controlador
+único ya integrados en `main`, con los clips y el editable vigentes. Sus propuestas anteriores de otra
+anchura, dos controladores y una embestida más larga quedan resueltas por la implementación comprobada.
+La corrección pendiente se aplica al mantenimiento del impulso durante la ventana actual de ocho ticks.
+
+Reproducción desde un worktree aislado con Java 21. Cada comando de cliente se ejecuta en su terminal.
+Arranca `host`, espera `COLOSO LAN READY` en su registro y arranca `peer`. Ambos cierran al terminar.
+La reapertura `reload` utiliza el mundo guardado por `host`.
+
+```powershell
+.\gradlew.bat -I tools/testing/coloso/runtime.init.gradle runColosoQa --offline --no-daemon --console=plain
+.\gradlew.bat -I tools/testing/coloso/runtime.init.gradle -PcolosoQaClient=host runColosoClientQa --offline --no-daemon --console=plain
+.\gradlew.bat -I tools/testing/coloso/runtime.init.gradle -PcolosoQaClient=peer runColosoClientQa -x compileJava -x compileClientJava -x compileColosoQaJava -x compileColosoClientQaJava --offline --no-daemon --console=plain
+.\gradlew.bat -I tools/testing/coloso/runtime.init.gradle -PcolosoQaClient=reload runColosoClientQa --offline --no-daemon --console=plain
+```
+
+El mod de pruebas se añade solo a la invocación con `-I`. Sus mundos y salidas se guardan bajo `build/coloso-qa/`.
+El puerto 25592 pertenece a la sesión LAN del laboratorio. Las comprobaciones de recursos se repiten con
+`gen_boss_models.py` y `gen_faceless_glowmask.py`, ambos con `--check`.
+
+Los arranques también muestran avisos previos de modelos de `sunset_astrolabe` y `resonador_del_umbral`,
+y del avance `summon_eclipse`. El diagnóstico del Coloso conserva estos mensajes en los registros de Minecraft.
+
 ## v64 — Templos sellados y Vasos de vida (K6)
 
 Automáticas: `temple/TempleRulesTest` y `temple/VesselRulesTest`. Texturas:

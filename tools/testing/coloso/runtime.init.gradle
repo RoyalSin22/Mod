@@ -1,0 +1,39 @@
+// Solo esta invocación carga el banco de pruebas. El JAR publicado conserva sus fuentes habituales.
+gradle.projectsEvaluated {
+	def host = gradle.rootProject
+	def lab = host.file('tools/testing/coloso')
+	def qa = host.sourceSets.create('colosoQa')
+	qa.java.setSrcDirs([new File(lab, 'java')])
+	qa.resources.setSrcDirs([new File(lab, 'resources')])
+	qa.compileClasspath += host.sourceSets.main.output + host.sourceSets.main.compileClasspath
+	qa.runtimeClasspath += host.sourceSets.main.runtimeClasspath
+	host.loom.mods.create('coloso_validation') { sourceSet qa }
+	host.loom.runs.create('colosoQa') {
+		server()
+		source qa
+		runDir 'build/coloso-qa/server'
+		vmArg '-Dfabric-api.gametest'
+		vmArg "-Dfabric-api.gametest.report-file=${host.file('build/coloso-qa/server/gametest.xml').absolutePath}"
+		vmArg '-Xmx2G'
+		programArg 'nogui'
+	}
+	if (host.hasProperty('colosoQaClient')) {
+		def role = host.property('colosoQaClient').toString()
+		def clientQa = host.sourceSets.create('colosoClientQa')
+		clientQa.java.setSrcDirs([new File(lab, 'client')])
+		clientQa.compileClasspath += host.sourceSets.client.compileClasspath + host.sourceSets.main.output + qa.output
+		clientQa.runtimeClasspath += host.sourceSets.client.runtimeClasspath + qa.output
+		clientQa.runtimeClasspath += host.configurations.testRuntimeClasspath.filter {
+			it.name.startsWith('mochafloats-') || it.name.startsWith('javassist-')
+		}
+		host.loom.mods.getByName('coloso_validation').sourceSet(clientQa)
+		host.loom.runs.create('colosoClientQa') {
+			client()
+			source clientQa
+			runDir "build/coloso-qa/${role == 'reload' ? 'host' : role}"
+			vmArg "-Dcoloso.qa.role=${role}"
+			vmArg '-Xmx2G'
+			programArgs '--username', "Coloso${role}", '--width', '960', '--height', '540'
+		}
+	}
+}

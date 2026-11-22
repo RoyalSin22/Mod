@@ -39,6 +39,12 @@ de transición y un recobro de 12 ticks para el tajo o 14 para el golpe descende
 El aturdimiento prevalece sobre la transición de fase. El bono de velocidad de la armadura agrietada se aplica
 también al restaurar un Coloso de fase avanzada.
 
+La embestida mantiene 1,6 bloques por tick durante su ventana de ocho ticks. La física resuelve cada paso
+y el contacto se comprueba sobre el recorrido entre dos posiciones. Se cancela antes de avanzar si termina
+la ventana, se invalida el objetivo, muere el Coloso o se rompe su postura. El banco aislado de
+`tools/testing/coloso/` comprueba estos casos en Minecraft y permite ejecutar dos clientes de desarrollo.
+Los resultados de cierre están en `docs/TESTING.md`.
+
 Los recursos de Blockbench son la fuente de verdad. `tools/models/gen_boss_models.py --check` comprueba
 geometría y animaciones con la ruta de recursos indicada en `docs/TESTING.md`. Las herramientas de pintura
 legada se usan únicamente sobre copias del atlas antiguo.

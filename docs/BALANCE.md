@@ -16,7 +16,11 @@ detiene con el primer contacto. [Tiempos, volúmenes y escalado](V84_OSARIO_FASE
 
 El tajo conserva un alcance de 4,5 bloques y el golpe descendente conserva un radio de 5,5. La caja del objetivo
 debe cruzar la banda vertical del ataque y la trayectoria hasta él debe estar libre de bloques. La embestida
-conserva su impulso inicial y solo aplica el daño al objetivo si hay contacto durante el desplazamiento.
+mantiene una velocidad horizontal de 1,6 bloques por tick durante ocho ticks y aplica el daño al objetivo
+si hay contacto durante el desplazamiento. Antes solo fijaba la velocidad inicial y la fricción agotaba el
+avance antes de llegar a un objetivo situado a siete bloques. La corrección aumenta el recorrido efectivo
+en terreno libre. El movimiento sigue resolviendo gravedad y colisiones de Minecraft, y termina al chocar,
+golpear o perder al objetivo.
 La recuperación global tras el impacto es de 12 ticks para el tajo y 14 para el golpe descendente y la embestida.
 Vida, daño base y enfriamientos por ataque conservan sus cifras.
 
