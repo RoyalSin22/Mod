@@ -6,6 +6,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Corregido
+- **Rendimiento R1–R3 (C2).** `PathEffects.all` (420+ especificaciones por llamada, en cada golpe y cada segundo por
+  jugador) y `Keystones.active` (en cada golpe, esquiva, muerte y daño) usan ahora una caché por jugador
+  (`role/VersionedCache`) que se invalida sola: `RoleData` lleva un contador de versión que suben `setRank`, `clearRanks`,
+  `setPrimary`, `setSecondary` y `setTier`, y la caché compara además la identidad del objeto (reinicio o copia al morir).
+  `RoleData.ranks()` pasa a ser de solo lectura para que nada evite la versión. `RoleTree.keystone(id)` usa un mapa
+  construido una vez. Se vacían al desconectarse. Los resultados cacheados son de solo lectura. **R4 (medir con spark en
+  un servidor con 5–10 jugadores) sigue pendiente**: no se midió la mejora.
 - **Espera de 3 días del Behelit (T5, D-25).** El Resonador del Umbral solo puede sacrificarse una vez cada
   `beheritCooldownDays` días (3 por defecto, 0 = sin espera) por mundo, **contados desde el fin del Eclipse anterior**.
   Si se intenta antes, el objeto **no se consume** y la barra de acción indica las horas de juego que faltan; también
