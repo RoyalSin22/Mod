@@ -11,10 +11,12 @@ Una estructura de **superficie** formada por **tres torres señoriales** de pied
 Plantilla de ascensión** (`aptitudes:ascended_template`, ya existe).
 
 **Lore (ambientación, sin mecánica):** durante el **Primer Eclipse** (hecho histórico de la Primera Era, `docs/lore/02_CRONOLOGIA.md`, período 8)
-el líder de la casa que gobernaba estas torres vio corrompida su alma, y esta quedó infundida en su armadura: es el Coloso «Sin Rostro», un
-yelmo vacío que aún se cree el señor. Sus vasallos corrieron la misma suerte: son los Guardianes «Desmontados». **Reglas:** nunca llamar «Primer
-Eclipse» al que invoca el jugador; **no** introducir linajes, razas, pactos, herencias ni progresión por ascendencia (`AGENTS.md` §3). «Casa»,
-«Señor» y «vasallos» son solo texto. El nombre de la casa y del Señor **no está fijado**: usa claves de idioma, no cadenas en el código.
+el **Mariscal** de la orden que guardaba estas torres vio corrompida su alma, y esta quedó infundida en su armadura: es el Coloso «Sin Rostro», un
+yelmo vacío que aún se cree el jefe de la guarnición (su nombre se perdió con su rostro). Sus caballeros corrieron la misma suerte: son los
+Guardianes «Desmontados». **Reglas:** nunca llamar «Primer Eclipse» al que invoca el jugador; **no** introducir linajes, razas, pactos, herencias
+ni progresión por ascendencia (`AGENTS.md` §3); **no** hablar de «casa», «estirpe» ni «herederos», y **no** inspirarse en Juego de Tronos. Es una
+**orden** (institución, como la Orden de los Cuatro Sellos) y el líder tiene un **cargo**, no un título hereditario. El nombre de la orden
+**no está fijado** (lluvia de ideas en `V86_DUNGEON_COLOSO.md` §7): usa claves de idioma, no cadenas en el código.
 
 ## 2. Referencias visuales (solo inspiración de silueta y proporción)
 
@@ -34,7 +36,8 @@ El autor aportó tres imágenes. No se copian bloque a bloque (son obra de otros
 
 - Un `Feature` solo escribe dentro del **radio 15** del origen (como `CustodianTempleFeature`). Tres torres de ≈ 9×9 en triángulo caben:
   p. ej. centros en (−9,−6), (9,−6) y (0,9). Verifica con una prueba que **ningún bloque cae fuera del radio**.
-- Alturas orientativas: vasallas ≈ 26, Señor ≈ 40, desde el suelo del patio. Comprueba `origin.getY() + altura < world.getTopY() - 1`.
+- Medidas ya fijadas por `dungeon/TowersLayout` (fase 1 hecha): vasallas 11×11 con techo en y 26, Señor 13×13 con techo en y 34; con la
+  empuñadura la cota máxima es 44. Comprueba `origin.getY() + TowersLayout.TOP_Y < world.getTopY() - 1`.
 - Terreno: `StructureBuilder.suitable(world, origin, R, MAX_SLOPE)`; nada de agua ni lava en la huella; el patio se nivela con un zócalo.
 - **No crear entidades durante la generación.** Los Guardianes y el Coloso los despierta después un **bloque controlador** (patrón de
   `TempleSealBlockEntity` / `Temples.spawnAutomaton`), en el hilo del servidor, etiquetando las entidades para no duplicarlas.
@@ -63,8 +66,7 @@ Reutiliza el modificador `aptitudes:region_grid` con una región **más grande q
 
 ## 6. Entregables por fase (cada una con `./gradlew build` real y su commit)
 
-1. **Layout puro + pruebas** (`dungeon/TowersLayout`, `TowersLayoutTest`): conectividad entre pisos, alturas libres ≥ 3 (≥ 7 en la sala del
-   Coloso), puertas, que los dos Guardianes y el Coloso caben, y que nada sale del radio 15.
+1. **Layout puro + pruebas — HECHA** (`dungeon/TowersLayout`, `TowersLayoutTest`). La traducción de celdas a bloques es de la fase 2.
 2. **Feature y datos de mundo:** `ThreeTowersFeature`, `configured_feature` y `placed_feature`, registro en `ModWorldGen`, `locate|place`.
 3. **Controlador y jefes:** bloque + entidad de bloque, despertar, arenas, estado persistente, dificultad.
 4. **Recompensa y narrativa:** plantilla de ascensión, **logro** (añadir a `achievement/Achievement` y regenerar con

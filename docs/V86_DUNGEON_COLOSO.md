@@ -10,7 +10,7 @@ primera propuesta, «Dungeon del Coloso»; se conserva para no romper enlaces.)
 |---|---|
 | Nombre | **Las Tres Torres Señoriales** |
 | Jefes | **Coloso Sin Rostro** = jefe final (el Señor corrompido en su armadura). **Guardián Desmontado** = subjefe (un vasallo). Sin sellos de invocación; dormidos al generarse; **una sola vez por estructura** |
-| Lore | Al caer el Primer Eclipse, el líder de la casa vio corrompida su alma y esta se infundió en su armadura: ahora es un ente corrompido. Sus vasallos, también |
+| Lore | Al caer el Primer Eclipse, el líder de la **orden** (nombre por elegir, ver §7; **no** una casa noble ni inspirado en Juego de Tronos) vio corrompida su alma y esta se infundió en su armadura: ahora es un ente corrompido. Sus caballeros, también |
 | Forma | **Tres torres** sobre la superficie (referencias en el brief), no un templo subterráneo |
 | Recompensa | **Un logro y una Plantilla de ascensión** (objeto que ya existe desde V80) |
 | Rareza | **Más rara que el Templo del Custodio** (hoy 1 de cada 120 chunks) |
@@ -35,9 +35,9 @@ Tres torres de piedra musgosa en triángulo dentro del radio 15 del `Feature`, u
 
 | Torre | Altura | Contenido |
 |---|---|---|
-| Vasalla Oeste | ≈ 26 | Pisos de combate (vasallos corrompidos) y, arriba, un **Guardián** dormido. Al vencerlo se abre la puerta del Señor |
-| Vasalla Este | ≈ 26 | Igual, con otro Guardián (variante de fase avanzada) |
-| **Torre del Señor** | ≈ 40 | Cerrada hasta vencer a los dos Guardianes. Piso alto con la sala del **Coloso** y la cámara con la Plantilla de ascensión |
+| Vasalla Oeste | 11×11, techo en y 26 (con empuñadura, 34) | 3 plantas de combate y, arriba, la sala del **Guardián** (9×9×7). Al vencerlo cuenta 1/2 |
+| Vasalla Este | 11×11, techo en y 26 | Igual, con otro Guardián |
+| **Torre del Señor** | 13×13, techo en y 34 (con empuñadura, 42) | Puerta sellada 3×3 hasta vencer a los dos Guardianes; 4 plantas de combate y la sala del **Coloso** (11×11×9) con la cámara de la Plantilla de ascensión |
 
 Remates de las torres con **gárgolas/empuñaduras de espada gigantes** (guiño a la tercera referencia: tres espadas hincadas). El estado del
 controlador es `DORMIDO → VASALLOS (0/2, 1/2) → SEÑOR_ABIERTO → COLOSO_VIVO → VENCIDO` y **nunca retrocede**.
@@ -56,7 +56,7 @@ controlador es `DORMIDO → VASALLOS (0/2, 1/2) → SEÑOR_ABIERTO → COLOSO_VI
 
 ## 5. Fases
 
-1. **Layout puro** (`dungeon/TowersLayout` + pruebas: conectividad, alturas, cabida de los jefes, que ningún bloque salga del radio 15).
+1. **Layout puro — HECHA** (`dungeon/TowersLayout`, `TowersLayoutTest`, 12 pruebas): recorrido real por BFS con escaleras (se probó que falla si se rompe un peldaño), puerta del Señor sellada/abierta, cabida de los jefes, nada fuera del radio 15, almenas y empuñaduras.
 2. **Feature y datos de mundo:** `ThreeTowersFeature`, JSON de configured/placed feature, `RegionGridPlacement` más raro, `StructureIndex`, `locate|place`.
 3. **Controlador y jefes:** vasallos, despertar de Guardianes y Coloso, arenas, estado persistente, dificultad alta.
 4. **Recompensa y narrativa:** Plantilla de ascensión, logro, cartas de bestiario (el Coloso y el Guardián), Crónicas, textos en 5 idiomas, `CONFIGURATION.md`.
@@ -66,10 +66,32 @@ controlador es `DORMIDO → VASALLOS (0/2, 1/2) → SEÑOR_ABIERTO → COLOSO_VI
 
 | # | Pregunta | Recomendación |
 |---|---|---|
-| 1 | **Nombre de la casa y del Señor** (hoy «tal casa») | Dejar el nombre de la casa sin fijar en el código; solo claves de idioma para poder cambiarlo |
+| 1 | **Nombre de la orden** y título de su líder (§7). El líder queda **sin nombre propio** (el Coloso es «Sin Rostro»: se borró con su rostro) | Elegir de la lluvia de ideas; en el código solo claves de idioma |
 | 2 | ¿Las dos torres vasallas deben vencerse **antes** de abrir la del Señor? | Sí: da el recorrido de «tres torres» y justifica el subjefe |
 | 3 | **Cuánto más rara:** frecuencia concreta | Región de 64×64 chunks-grid (≈4 veces más rara que el Custodio) |
 | 4 | **Cuánto más difícil:** ¿anillo del lugar +2, o mínimo fijo III? | Mínimo fijo III y +1 sobre el anillo del lugar, con tope V |
 | 5 | **Acceso:** ¿abierto o con objeto de la cadena? | Abierto |
 | 6 | ¿Además de la Plantilla, una pequeña tabla de botín por anillo? | Sí, sin poder nuevo |
-| 7 | **Quién lo ejecuta:** Claude (en código, con el brief) o Codex | Claude el código (layout, `Feature`, controlador, pruebas); Codex puede encargarse de los textos de lore y de las cartas del bestiario |
+| 7 | ~~Quién lo ejecuta~~ | **Decidido (autor, 2026-11-24): Claude el código; Codex los textos** (`PROMPT_CODEX_TRES_TORRES_TEXTOS.md`) |
+
+## 7. Lluvia de ideas: nombre de la orden
+
+**Criterios.** El lore de Aptitudes nombra **instituciones**, no familias («Orden de los Cuatro Sellos», «Concordia de los Gremios», «Testigos
+del Umbral»), y ya retiró «Herederos de los Sellos» por la exclusión de linajes. Por eso: nada de «Casa», «Estirpe», «Dinastía» ni «Herederos», y
+nada que recuerde a Juego de Tronos (ni «Guardia de la Noche», ni casas con animales heráldicos, ni «Mano del Rey»). El líder lleva un **cargo**, no
+un título hereditario: **Mariscal** (recomendado) o Castellano.
+
+| # | Nombre | Por qué encaja | Riesgo |
+|---|---|---|---|
+| A | **Orden de las Tres Guardas** | «Guarda» = vigilar *y* la guarda en cruz de una espada (los remates de las tres torres). Suena a las órdenes ya existentes | Parecido a «Cuatro Sellos»: podría sugerir una relación que D-08 aún no autoriza |
+| B | **Guarnición de la Atalaya Última** | Militar y sin aristocracia; «última» sugiere que resistió hasta el final del Primer Eclipse | Más genérico |
+| C | **Orden del Yelmo Vacío** | Enlaza con el Coloso «Sin Rostro» | Cuenta el final del jefe en el nombre |
+| D | **Guardia de la Concordia** | Ala armada de la Concordia de los Gremios (ya canónica); cargo: «Mariscal de la Concordia» | Añade lore a una facción existente: exige tu aprobación |
+| E | **Compañía del Faro Negro** | Las torres como faros que vigilaban el Velo | Tono más marino que el del mod |
+| F | **Hermandad de las Tres Espadas** | Referencia directa a las tres espadas de la imagen 3 | Común; «hermandad» roza el parentesco |
+| G | **Atalaya del Alba Eclipsada** | El alba justo antes del Primer Eclipse | Largo; «Eclipsada» confunde con el Eclipse que invoca el jugador |
+| H | **Vigilia de las Tres Almenas** | Visual (las almenas de la referencia) y de «vigilia» | «Almenas» suena menor que «espadas» |
+| I | **Orden del Ocaso Firme** | Eclipse y resistencia | «Ocaso» ya lo usa el Astrolabio del Ocaso |
+| J | **Centinelas de Piedra y Esencia** | Usa «Esencia», término del lore | Largo y poco memorable |
+
+**Mi orden de preferencia:** A, B, D. Los nombres del lore existente (Edran, Lysara, Vaelor) son personales; **no** se propone nombre para el líder.

@@ -17,6 +17,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 - **S3 Parada y contraataque se queda activada por defecto** (confirmado por el autor).
 
 ### Añadido
+- **V86 fase 1 · Las Tres Torres Señoriales: layout puro.** `dungeon/TowersLayout` distribuye tres torres de superficie dentro del
+  radio 15: dos vasallas de 11×11 (techo en y 26, 3 plantas de combate y sala del Guardián de 9×9×7) y la Torre del Señor de 13×13 (techo
+  en y 34, 4 plantas y sala del Coloso de 11×11×9) con puerta sellada 3×3, escaleras rectas por planta, ventanas, faroles, parapetos con
+  almenas y una empuñadura de espada gigante como remate. `TowersLayoutTest` (12 pruebas) recorre el edificio con una búsqueda real que sube
+  las escaleras; se comprobó que falla si se rompe un peldaño. **Aún no genera nada en el mundo** (fase 2). Diseño y lluvia de ideas del
+  nombre de la orden en `docs/V86_DUNGEON_COLOSO.md`; encargo de textos para Codex en `docs/PROMPT_CODEX_TRES_TORRES_TEXTOS.md`.
 - **C7 · S6 Ecos de muerte.** Al morir un jugador, un **eco** (su cabeza, con su skin y brillante) aparece donde cayó y **repite sus
   últimos 5 segundos** en bucle mientras haya otro jugador a menos de 24 bloques; sin público no cuesta nada. Dura 120 s y
   hay un máximo de 6 a la vez (se retira el más antiguo). Sin cliente ni mixins: un `item_display` de vanilla movido desde
