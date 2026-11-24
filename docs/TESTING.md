@@ -1993,3 +1993,14 @@ Desde T3d los chunks **nuevos** generan este templo solos (los ya generados cons
 7. Borra `world/data/aptitudes_ground_messages.dat` con el servidor parado y arranca: las notas viejas desaparecen al cargar su chunk (se retiran por no
    constar en el estado), sin errores.
 8. `groundMessagesEnabled = false`: el comando avisa de que está desactivado. Con el mod en un cliente sin la traducción, el texto se ve como la clave.
+
+# C7 · S6 — Ecos de muerte (verificación manual, pendiente; desactivados por defecto)
+
+1. Activa `deathEchoesEnabled` en la configuración. Con dos jugadores: el primero corre unos segundos, salta y muere (p. ej. `/kill`).
+2. En el sitio de la muerte aparece una **cabeza con su skin, brillante**. Si el segundo jugador está a menos de 24 bloques, la cabeza **repite el recorrido**
+   de los últimos 5 s (a saltos de unos 10 pasos por segundo), se detiene 2 s y vuelve a empezar. Si se aleja, deja de moverse.
+3. A los 120 s (o `deathEchoLifetimeSeconds`) desaparece. Con 7 muertes seguidas y `deathEchoMaxActive = 6`, la más antigua se retira.
+4. Un jugador que murió sin haberse movido (menos de 1 s de recorrido) no deja eco. En espectador no se anota nada.
+5. Reinicia el servidor con un eco vivo: al cargar el chunk, el eco guardado se retira (no queda ninguna cabeza fantasma). Sin errores en el registro.
+6. Desactiva la opción con un eco vivo: todos desaparecen en un tick. Con la opción apagada (por defecto) no se crea ninguna entidad al morir.
+7. Rendimiento: con 10 jugadores el coste es una copia de 4 números cada 2 ticks por jugador; con los ecos lejos de todos, cero.

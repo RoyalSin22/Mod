@@ -6,6 +6,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **C7 · S6 Ecos de muerte.** Al morir un jugador, un **eco** (su cabeza, con su skin y brillante) aparece donde cayó y **repite sus
+  últimos 5 segundos** en bucle mientras haya otro jugador a menos de 24 bloques; sin público no cuesta nada. Dura 120 s y
+  hay un máximo de 6 a la vez (se retira el más antiguo). Sin cliente ni mixins: un `item_display` de vanilla movido desde
+  el servidor (≈10 pasos por segundo; sin interpolación en 1.21.1), y los ecos guardados en un chunk se retiran tras un
+  reinicio. Recorrido en `echo/DeathEchoRules` (`DeathEchoRulesTest`), gestor en `echo/DeathEchoes`. **Desactivado por
+  defecto** (`deathEchoesEnabled = false`) porque genera entidades y no está probado en partida; tres opciones
+  (`deathEcho*`), textos en 5 idiomas y fila en `docs/CONFIGURATION.md`. Es una versión reducida de la idea original
+  (una silueta de cuerpo entero exigiría un renderizador de cliente).
 - **C7 · S5 Mensajes en el suelo.** `/aptitudes message <frase>` deja una nota con una de **12 frases predefinidas** (nunca
   texto libre: no hay nada que moderar); los demás la leen y la **valoran una vez** con clic derecho (el texto muestra
   `[+N]`). Cada jugador tiene un máximo de notas (3), una espera entre notas (30 s) y las notas caducan (7 días);

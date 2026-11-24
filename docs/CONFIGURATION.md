@@ -419,6 +419,9 @@ desde que el evento **empieza** (provisional) y no las consumen los comandos `/a
 | `fogDurationTicks` | 24000 | [1200, 240000] | Duración de la Niebla en ticks (24 000 = un día de Minecraft). Antes duraba 12 000 desde las 18:00. |
 | `emberRainCooldownDays` | 5 | [1, 365] | Días de espera entre dos Lluvias de brasas provocadas por un portal. |
 | `beheritCooldownDays` | 3 | [0, 365] | Días de espera, por mundo, entre dos usos del Resonador del Umbral (Behelit), contados desde el **fin** del Eclipse anterior (D-25). 0 = sin espera. Si se intenta antes, el objeto no se consume y se avisa en la barra de acción. |
+| `deathEchoesEnabled` | **false** | — | C7 · S6: al morir un jugador, un eco con su cabeza (brillante) repite sus últimos 5 s mientras haya otro jugador a menos de 24 bloques. **Desactivado por defecto** porque genera entidades y no está probado en partida. |
+| `deathEchoLifetimeSeconds` | 120 | [10, 1800] | Segundos que dura un eco. |
+| `deathEchoMaxActive` | 6 | [1, 50] | Ecos vivos a la vez en el servidor; al pasarse se retira el más antiguo. |
 | `groundMessagesEnabled` | true | — | C7 · S5: permite dejar y valorar notas con frases **predefinidas** (`/aptitudes message <frase>`); nunca texto libre. |
 | `groundMessagesPerPlayer` | 3 | [1, 20] | Notas que cada jugador puede tener colocadas a la vez. |
 | `groundMessageLifetimeDays` | 7 | [1, 365] | Días que dura una nota. |

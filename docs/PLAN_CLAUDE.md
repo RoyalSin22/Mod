@@ -21,12 +21,12 @@ validada en partida**, salvo que se indique.
 
 | Tarea | Estado | Evidencia | Qué falta |
 |---|---|---|---|
-| C1 Revisión de v42–v58 | **Sin evidencia** | No hay informe, rama `fix/…` ni commit de revisión de esas versiones. Los `fix:` recientes (`37da946`, `01590fc`) corrigen jefes y Errante, no son la revisión | Hacerla, o dar la tarea por descartada (decisión del autor) |
-| C2 Rendimiento R1–R3 | **No hecho** | `PathEffects.all` (`PathEffects.java:29`) construye un `EnumMap` y recorre `RoleTree.pathSpecs()` en cada llamada; `Keystones.active` (`Keystones.java:103`) recalcula las piedras activas en cada llamada y `Combos` la consulta en cada remate; no hay caché por jugador ni mapa id → piedra angular; no hay medición con spark en la documentación | Las tres cachés (con invalidación al cambiar roles o rangos) y medir con spark (R4 de `IDEAS_v47_v55.md`) |
+| C1 Revisión de v42–v58 | **Hecha (auditoría transversal)** | `docs/C1_REVISION.md`, commit `446d2ab`: corrige `SynergyRules` (excepciones tragadas) y `Elites.BLINK_READY` (fuga) | No es una lectura línea a línea: Alquimia, tutorial, Maestría, Forja y remates 3D no se revisaron por dentro |
+| C2 Rendimiento R1–R3 | **Hecho, sin medir** | `role/VersionedCache`, `RoleData.version()`, cachés en `PathEffects.all` y `Keystones.active`, índice en `RoleTree.keystone` (commit `5ee61c4`) | R4: medir con spark en un servidor con 5–10 jugadores (no se puede hacer aquí) |
 | C3 Convocar el Eclipse y Lluvia por portal | **Parcial** | Lluvia por portal: hecha dentro de T1 (`01ed9ff`, `WorldEventManager.watchPortalLighting`). Astrolabio del Ocaso: `ModItems.SUNSET_ASTROLABE`, `item/SunsetAstralabeItem`, receta `sunset_astrolabe.json`, integración en `BonfireBlock` (`747ef50`, `d9bd3ac`) | Ver abajo |
 | C4 ✔ GeckoLib | Hecho | Marcado en la tabla; `boss/AnimatedBossEntity` | — |
 | C5 Sinergias Y1–Y5 | **Hecho, sin validar en partida** | Y1 `Targeting.java:46` y `RolePassives.java:275`; Y2 `PartyManager.java:131`; Y3 `ElementFusions.java:79`; Y4 `RolePassives`; Y5 `Keystones.triggerFromCombo` llamado en `Combos.java:173`; PR #3 (`27b2c40`). Detalle en `docs/C5_PENDIENTES.md` | Partida (`V65_C5_TESTING_PLAN.md`) |
-| C7 Combate avanzado S3/S5/S6 | **No hecho** | No hay código de parada con golpe de gracia para jugadores, mensajes en el suelo ni ecos de muerte. El único «parry» es el de los jefes (`AnimatedBossEntity`, `GuardRules`, tarea B3), distinto de S3. Los commits con «C7» (`b0b1003`) son de la Cripta, otra numeración. Nota: el número de versión «v67» de la tabla ya lo ocupa el árbol unificado | Diseño y código; S4 sigue aplazado por decisión del autor |
+| C7 Combate avanzado S3/S5/S6 | **Hecho, sin probar en partida** | S3 `ability/Parry` + `logic/ParryRules` (`50254a6`); S5 `message/GroundMessages` (`fe4e99d`); S6 `echo/DeathEchoes` (desactivado por defecto). Guiones en `docs/TESTING.md` | Probar los tres. S6 es una versión reducida (cabeza, no silueta). S4 (estamina y rodar) sigue aplazado por decisión del autor |
 
 **C3 — lo que falta del Astrolabio**
 

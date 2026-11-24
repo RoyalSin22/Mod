@@ -223,6 +223,13 @@ public class AptitudesConfig {
 	 * anterior (D-25). 0 = sin espera.
 	 */
 	public int beheritCooldownDays = 3;
+	// ---------- Ecos de muerte (C7 · S6) ----------
+	/** Al morir, un eco con la cabeza del jugador repite sus últimos 5 s mientras haya alguien cerca. Desactivado por defecto: genera entidades. */
+	public boolean deathEchoesEnabled = false;
+	/** Segundos que dura un eco antes de desaparecer. */
+	public int deathEchoLifetimeSeconds = 120;
+	/** Ecos activos a la vez en el servidor; al pasarse se retira el más antiguo. */
+	public int deathEchoMaxActive = 6;
 	// ---------- Mensajes en el suelo (C7 · S5) ----------
 	/** Permite dejar y valorar notas con frases predefinidas ({@code /aptitudes message}). */
 	public boolean groundMessagesEnabled = true;
@@ -652,6 +659,8 @@ public class AptitudesConfig {
 				dev.aptitudes.event.EventTriggerRules.MAX_FOG_TICKS);
 		c.emberRainCooldownDays = clamp(c.emberRainCooldownDays, 1, 365);
 		c.beheritCooldownDays = clamp(c.beheritCooldownDays, 0, 365);
+		c.deathEchoLifetimeSeconds = clamp(c.deathEchoLifetimeSeconds, 10, 1800);
+		c.deathEchoMaxActive = clamp(c.deathEchoMaxActive, 1, 50);
 		c.groundMessagesPerPlayer = clamp(c.groundMessagesPerPlayer, 1, 20);
 		c.groundMessageLifetimeDays = clamp(c.groundMessageLifetimeDays, 1, 365);
 		c.groundMessageCooldownSeconds = clamp(c.groundMessageCooldownSeconds, 1, 3600);
