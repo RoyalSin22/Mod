@@ -2,6 +2,7 @@ package dev.aptitudes.role;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.aptitudes.logic.VersionedCache;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -62,6 +63,14 @@ public final class RoleData {
 	private final EnumMap<Role, Integer> loadout;
 	/** Cambios de rol concedidos por el ritual de la Ofrenda de renacimiento y aún no usados. */
 	private int rebirths;
+	/**
+	 * C2: versión de lo que determina las Sendas y las piedras angulares (roles activos, rangos y evolución). Sube
+	 * en cada mutador de esos campos; no se guarda (un objeto nuevo, p. ej. tras morir, empieza con la caché vacía).
+	 */
+	private long version;
+	/** C2: valores derivados en caché ({@code PathEffects.all} y {@code Keystones.active}); solo hilo del servidor. */
+	private final VersionedCache<Map<PathEffect, Double>> pathEffectsCache = new VersionedCache<>();
+	private final VersionedCache<java.util.Set<KeystoneRules.Template>> keystonesCache = new VersionedCache<>();
 
 	public RoleData() {
 		this("", "", Map.of(), Map.of(), Map.of(), 0.0, Long.MIN_VALUE, List.of(), 0, Map.of(), Map.of(), List.of(),
@@ -124,7 +133,10 @@ public final class RoleData {
 	}
 
 	public int tier(Role role) { return tiers.getOrDefault(role, Evolution.BASE); }
-	public void setTier(Role role, int tier) { tiers.put(role, Math.max(0, Math.min(Evolution.ULTIMATE, tier))); }
+	public void setTier(Role role, int tier) {
+		tiers.put(role, Math.max(0, Math.min(Evolution.ULTIMATE, tier)));
+		version++;
+	}
 	public int trialProgress(Role role) { return trials.getOrDefault(role, 0); }
 	public void addTrialProgress(Role role, int amount) {
 		trials.merge(role, amount, (a, b) -> (int) Math.min(Integer.MAX_VALUE, (long) a + b));
@@ -134,8 +146,14 @@ public final class RoleData {
 
 	@Nullable public Role primary() { return primary; }
 	@Nullable public Role secondary() { return secondary; }
-	public void setPrimary(@Nullable Role role) { this.primary = role; }
-	public void setSecondary(@Nullable Role role) { this.secondary = role; }
+	public void setPrimary(@Nullable Role role) {
+		this.primary = role;
+		version++;
+	}
+	public void setSecondary(@Nullable Role role) {
+		this.secondary = role;
+		version++;
+	}
 
 	public boolean isActive(Role role) {
 		return role == primary || role == secondary;
@@ -150,8 +168,22 @@ public final class RoleData {
 	public void setRank(String nodeId, int rank) {
 		if (rank <= 0) ranks.remove(nodeId);
 		else ranks.put(nodeId, Math.min(rank, RoleTree.get(nodeId) != null ? RoleTree.get(nodeId).maxRank() : RoleNode.MAX_RANK));
+		version++;
 	}
-	public Map<String, Integer> ranks() { return ranks; }
+	/** Solo lectura (C2): cambiar rangos por fuera de {@link #setRank} dejaría la caché obsoleta. */
+	public Map<String, Integer> ranks() { return Collections.unmodifiableMap(ranks); }
+
+	/**
+	 * C2: versión de roles activos, rangos y evolución; cambia en cada mutación de esos campos. Para cachés
+	 * derivadas ({@link VersionedCache}).
+	 */
+	public long version() { return version; }
+
+	/** C2: caché de {@code PathEffects.all} (la gestiona {@code PathEffects}). */
+	public VersionedCache<Map<PathEffect, Double>> pathEffectsCache() { return pathEffectsCache; }
+
+	/** C2: caché de {@code Keystones.active} (la gestiona {@code Keystones}). */
+	public VersionedCache<java.util.Set<KeystoneRules.Template>> keystonesCache() { return keystonesCache; }
 
 	public int spentPoints(Role role) {
 		int sum = 0;
@@ -162,6 +194,7 @@ public final class RoleData {
 	/** Reinicia el árbol de un rol. En el Elementalista también libera los elementos dominados. */
 	public void clearRanks(Role role) {
 		for (RoleNode node : RoleTree.nodes(role)) ranks.remove(node.id());
+		version++;
 		if (role == Role.ELEMENTALIST) clearElements();
 	}
 

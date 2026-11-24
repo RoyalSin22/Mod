@@ -5,6 +5,15 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+### C2 — Rendimiento de Sendas y piedras angulares (Claude, sin medir en partida)
+
+- R1 y R2: `PathEffects.all` y `Keystones.active` se guardan en `RoleData` (`VersionedCache`, pura con prueba) y
+  se recalculan solo cuando sube `RoleData.version()`, que cambia en los cinco mutadores de sus entradas
+  (`setPrimary`, `setSecondary`, `setRank`, `clearRanks`, `setTier`). `ranks()` pasa a ser de solo lectura.
+- R3: `RoleTree.keystone(id)` consulta un mapa id → piedra angular construido una vez.
+- Microbanco aislado (sin Minecraft): `all()` ≈ 8 µs y `active()` ≈ 1,8 µs por llamada antes del cambio; con la
+  caché, una comparación de versión. Pendiente: medir con spark en partida (procedimiento en `docs/TESTING.md`).
+
 ### v84 — Osario Quebrado (por fases)
 
 - **Fases 0–2 aprobadas:** geometría de 169 cubos sobre los 30 huesos

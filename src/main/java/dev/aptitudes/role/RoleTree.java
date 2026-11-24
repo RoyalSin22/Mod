@@ -454,19 +454,30 @@ public final class RoleTree {
 	/** v46.1: piedra angular (S7) de una senda: rol, senda (1–3) y plantilla. */
 	public record KeystoneSpec(Role role, int path, KeystoneRules.Template template) {}
 
-	/** Piedra angular del nodo, o null si no es un S7. */
+	/** Piedra angular del nodo, o null si no es un S7. C2 (R3): consulta a un mapa id → piedra angular. */
 	@Nullable
 	public static KeystoneSpec keystone(String nodeId) {
-		for (Role role : Role.values()) {
-			if (!nodeId.startsWith(role.key() + "_")) continue;
-			for (int path = 1; path <= 3; path++) {
-				if (nodeId.equals(PathRules.nodeId(role.key(), path, PathRules.Step.S7))) {
+		return KeystoneIndex.BY_ID.get(nodeId);
+	}
+
+	/**
+	 * C2 (R3): mapa id → piedra angular, construido una vez al primer uso (inicialización perezosa y segura entre
+	 * hilos de la clase contenedora; después solo se lee). Mismo resultado que el recorrido anterior por los 20 roles:
+	 * si dos roles generaran el mismo id, gana el primero del enum.
+	 */
+	private static final class KeystoneIndex {
+		static final Map<String, KeystoneSpec> BY_ID = build();
+
+		private static Map<String, KeystoneSpec> build() {
+			Map<String, KeystoneSpec> out = new java.util.HashMap<>();
+			for (Role role : Role.values()) {
+				for (int path = 1; path <= 3; path++) {
 					KeystoneRules.Template t = KeystoneRules.template(role.key(), path);
-					return t == null ? null : new KeystoneSpec(role, path, t);
+					if (t != null) out.putIfAbsent(PathRules.nodeId(role.key(), path, PathRules.Step.S7), new KeystoneSpec(role, path, t));
 				}
 			}
+			return Collections.unmodifiableMap(out);
 		}
-		return null;
 	}
 
 	/**

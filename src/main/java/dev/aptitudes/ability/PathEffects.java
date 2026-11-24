@@ -1,6 +1,7 @@
 package dev.aptitudes.ability;
 
 import dev.aptitudes.Aptitudes;
+import dev.aptitudes.data.ModAttachments;
 import dev.aptitudes.logic.AttributeApplier;
 import dev.aptitudes.role.EvolvedTree;
 import dev.aptitudes.role.PathEffect;
@@ -17,6 +18,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -25,20 +27,33 @@ public final class PathEffects {
 	private PathEffects() {
 	}
 
-	/** Valor total de cada efecto para el jugador (rango efectivo × valor por rango, solo roles activos). */
-	public static EnumMap<PathEffect, Double> all(ServerPlayerEntity player) {
+	/**
+	 * Valor total de cada efecto para el jugador (rango efectivo × valor por rango, solo roles activos). Solo
+	 * lectura.
+	 *
+	 * <p>C2 (R1): se guarda en los datos de rol del jugador y se recalcula solo cuando cambian sus roles activos,
+	 * rangos o evolución ({@link RoleData#version()}); antes se recorrían 620 nodos en cada golpe.</p>
+	 */
+	public static Map<PathEffect, Double> all(ServerPlayerEntity player) {
+		RoleData data = player.getAttached(ModAttachments.ROLES);
+		if (data == null) return Map.of();
+		return data.pathEffectsCache().get(data.version(), data, PathEffects::compute);
+	}
+
+	/** Cálculo sin caché (depende solo de {@code data} y de tablas estáticas). */
+	private static Map<PathEffect, Double> compute(RoleData data) {
 		EnumMap<PathEffect, Double> out = new EnumMap<>(PathEffect.class);
 		for (Map.Entry<String, RoleTree.PathSpec> e : RoleTree.pathSpecs().entrySet()) {
-			int rank = RoleManager.activeRank(player, e.getKey());
+			int rank = RoleManager.activeRank(data, e.getKey());
 			// v46: perRank() incluye el multiplicador del escalón (S6 = ×1,5).
 			if (rank > 0) out.merge(e.getValue().effect(), rank * e.getValue().perRank(), Double::sum);
 		}
 		// v23: pasivas de las filas de Maestro y Definitivo (mismo efecto, más valor por rango).
 		for (EvolvedTree.Passive p : EvolvedTree.passives().values()) {
-			int rank = RoleManager.learnedRank(player, p.id());
+			int rank = RoleManager.learnedRank(data, p.id());
 			if (rank > 0) out.merge(p.effect(), rank * p.perRank(), Double::sum);
 		}
-		return out;
+		return Collections.unmodifiableMap(out);
 	}
 
 	public static double value(ServerPlayerEntity player, PathEffect effect) {
@@ -46,7 +61,7 @@ public final class PathEffects {
 	}
 
 	public static void applyAttributes(ServerPlayerEntity player) {
-		EnumMap<PathEffect, Double> values = all(player);
+		Map<PathEffect, Double> values = all(player);
 		for (PathEffect effect : PathEffect.values()) {
 			if (effect.attribute() == null) continue;
 			AttributeApplier.set(player, effect.attribute(), Aptitudes.id("path/" + effect.name().toLowerCase()),
@@ -56,7 +71,7 @@ public final class PathEffects {
 
 	/** Daño saliente del jugador: críticos, ejecución, robo de vida y efectos al golpear. */
 	public static float outgoing(ServerPlayerEntity player, LivingEntity target, boolean direct, float amount) {
-		EnumMap<PathEffect, Double> v = all(player);
+		Map<PathEffect, Double> v = all(player);
 		// v46.1 Espectro: tras esquivar, el siguiente golpe es crítico seguro (aunque no haya otros efectos de senda).
 		boolean specter = direct && Keystones.consumeSpecter(player);
 		if (v.isEmpty() && !specter) return amount;
@@ -84,7 +99,7 @@ public final class PathEffects {
 		return result;
 	}
 
-	private static void onHit(ServerPlayerEntity player, LivingEntity target, EnumMap<PathEffect, Double> v,
+	private static void onHit(ServerPlayerEntity player, LivingEntity target, Map<PathEffect, Double> v,
 							  PathEffect effect, net.minecraft.registry.entry.RegistryEntry<net.minecraft.entity.effect.StatusEffect> status) {
 		if (player.getRandom().nextDouble() < v.getOrDefault(effect, 0.0)) {
 			target.addStatusEffect(new StatusEffectInstance(status, 60, 0));
@@ -93,7 +108,7 @@ public final class PathEffects {
 
 	/** Daño entrante al jugador: reducción y espinas. */
 	public static float incoming(ServerPlayerEntity player, DamageSource source, float amount) {
-		EnumMap<PathEffect, Double> v = all(player);
+		Map<PathEffect, Double> v = all(player);
 		if (v.isEmpty()) return amount;
 		double thorns = v.getOrDefault(PathEffect.THORNS, 0.0);
 		if (thorns > 0 && source.getAttacker() instanceof LivingEntity attacker && attacker != player
@@ -119,7 +134,7 @@ public final class PathEffects {
 		int ticks = server.getTicks();
 		for (ServerPlayerEntity p : server.getPlayerManager().getPlayerList()) {
 			if (!p.isAlive()) continue;
-			EnumMap<PathEffect, Double> v = all(p);
+			Map<PathEffect, Double> v = all(p);
 			if (v.isEmpty()) continue;
 			double regen = v.getOrDefault(PathEffect.REGEN, 0.0);
 			if (regen > 0 && ticks % 60 == 0 && p.getHealth() < p.getMaxHealth()) p.heal((float) regen);

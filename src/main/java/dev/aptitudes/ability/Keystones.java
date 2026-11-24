@@ -31,6 +31,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -99,10 +100,20 @@ public final class Keystones {
 
 	// ------------------------------------------------------------ Qué piedras angulares tiene
 
-	/** Plantillas activas: la piedra angular aprendida de la senda elegida en el rol principal y en el secundario. */
+	/**
+	 * Plantillas activas: la piedra angular aprendida de la senda elegida en el rol principal y en el secundario.
+	 * Solo lectura.
+	 *
+	 * <p>C2 (R2): se guarda en los datos de rol y se recalcula solo cuando cambian ({@link RoleData#version()}).</p>
+	 */
 	public static Set<Template> active(ServerPlayerEntity player) {
-		Set<Template> out = EnumSet.noneOf(Template.class);
 		RoleData data = RoleManager.get(player);
+		return data.keystonesCache().get(data.version(), data, Keystones::compute);
+	}
+
+	/** Cálculo sin caché (depende solo de {@code data} y de tablas estáticas). */
+	private static Set<Template> compute(RoleData data) {
+		Set<Template> out = EnumSet.noneOf(Template.class);
 		for (Role role : new Role[] {data.primary(), data.secondary()}) {
 			if (role == null) continue;
 			int path = PathRules.chosenPath(data::rank, role.key());
@@ -110,7 +121,7 @@ public final class Keystones {
 			Template t = KeystoneRules.template(role.key(), path);
 			if (t != null) out.add(t);
 		}
-		return out;
+		return Collections.unmodifiableSet(out);
 	}
 
 	public static boolean has(ServerPlayerEntity player, Template template) {

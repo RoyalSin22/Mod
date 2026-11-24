@@ -5,6 +5,15 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Rendimiento
+- **C2 — Sendas y piedras angulares en caché.** Los efectos de Sendas y pasivas evolucionadas (`PathEffects.all`,
+  antes 620 nodos recorridos en cada golpe, daño recibido, esquiva y segundo) y las piedras angulares activas
+  (`Keystones.active`, unas 50 cadenas construidas por consulta) se guardan en los datos de rol del jugador y solo
+  se recalculan cuando cambian sus roles activos, rangos o evolución. La invalidación vive en los mutadores de
+  `RoleData` (contador de versión) en lugar de en eventos sueltos; morir, reiniciar el personaje o desconectarse
+  sustituye o libera el objeto con su caché. `RoleTree.keystone` usa un mapa id → piedra angular. Sin cambios de
+  balance ni de datos guardados.
+
 ### Corregido
 - **Coloso Sin Rostro.** La embestida mantiene su avance durante los ocho ticks previstos, se detiene ante
   obstáculos y cancela el impulso al invalidarse el objetivo o al aturdirse. Banco de doce pruebas en Minecraft

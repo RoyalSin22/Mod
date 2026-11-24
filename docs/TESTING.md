@@ -1,5 +1,33 @@
 # Pruebas de Aptitudes
 
+## C2 — Caché de Sendas y piedras angulares
+
+Automáticas: `logic/VersionedCacheTest` (7 pruebas: cálculo único con la misma versión, invalidación en cada
+mutación, objeto nuevo con caché vacía, `null` en caché, `invalidate`). `RoleData`, `PathEffects`, `Keystones` y
+`RoleTree` cargan registros de Minecraft y no se prueban con JUnit simple.
+
+En partida (comportamiento; cada paso debe dar el mismo resultado que antes del cambio):
+
+1. Aprende S1 de una senda y comprueba en el acto el efecto (p. ej., crítico o robo de vida); olvídala con
+   «Reiniciar» y comprueba que desaparece sin reconectar.
+2. Aprende la piedra angular (S7) y mira el indicador del HUD; cambia el rol secundario o el principal y
+   comprueba que el indicador y el efecto cambian en ≤ 0,5 s.
+3. Evoluciona un rol (Maestro): el rango efectivo de las Sendas sube (+1) sin reconectar.
+4. Muere con efectos de Senda y reaparece: siguen activos. Cambia de dimensión: siguen activos.
+5. `/roles admin …` de operador (`RoleCommand`, p. ej. cambiar la evolución) y la exclusividad de las legendarias
+   (`UniqueManager` quita el nodo al anterior dueño): el efecto se actualiza al instante.
+
+Medición con spark (mod aparte, solo en la instancia de pruebas; no es dependencia del mod):
+
+1. Mundo con 1–4 jugadores con Sendas y piedra angular; combate sostenido (oleada del Eclipse o granja de
+   criaturas con habilidades de área).
+2. `/spark profiler start --thread "Server thread" --timeout 120` y combatir esos 120 s; spark sube el informe
+   y devuelve un enlace al terminar (o `/spark profiler stop`).
+3. En el árbol, buscar `PathEffects.all`, `PathEffects.compute`, `Keystones.active` y `Keystones.compute`.
+   Esperado tras C2: `compute` casi ausente (solo al cambiar rangos o roles) y `all`/`active` en ~0 %.
+   Para comparar, repetir con el `.jar` anterior a C2. `/spark tps` y `/spark health` dan el MSPT medio.
+4. Anotar MSPT, porcentaje del hilo del servidor de las cuatro funciones y el número de jugadores.
+
 ## V84 — Osario Quebrado, Fases 0–6
 
 Referencia en `20bc230`: `.\gradlew.bat build --offline --console=plain` terminó con **BUILD SUCCESSFUL**;

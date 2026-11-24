@@ -81,10 +81,14 @@ public final class RoleManager {
 	 * (Maestro +1, Definitivo +2).
 	 */
 	public static int activeRank(ServerPlayerEntity player, String nodeId) {
-		RoleNode node = RoleTree.get(nodeId);
-		if (node == null) return 0;
 		RoleData data = player.getAttached(ModAttachments.ROLES);
-		if (data == null || !data.isActive(node.role())) return 0;
+		return data == null ? 0 : activeRank(data, nodeId);
+	}
+
+	/** {@link #activeRank(ServerPlayerEntity, String)} sobre unos datos ya obtenidos (C2: cálculo de la caché). */
+	public static int activeRank(RoleData data, String nodeId) {
+		RoleNode node = RoleTree.get(nodeId);
+		if (node == null || !data.isActive(node.role())) return 0;
 		int rank = data.rank(nodeId);
 		return rank > 0 ? rank + data.tier(node.role()) : 0;
 	}
@@ -95,10 +99,14 @@ public final class RoleManager {
 	 * duplicaría la recompensa (un nodo de Definitivo valdría ×9 en vez de ×3).
 	 */
 	public static int learnedRank(ServerPlayerEntity player, String nodeId) {
-		RoleNode node = RoleTree.get(nodeId);
-		if (node == null) return 0;
 		RoleData data = player.getAttached(ModAttachments.ROLES);
-		if (data == null || !data.isActive(node.role())) return 0;
+		return data == null ? 0 : learnedRank(data, nodeId);
+	}
+
+	/** {@link #learnedRank(ServerPlayerEntity, String)} sobre unos datos ya obtenidos (C2: cálculo de la caché). */
+	public static int learnedRank(RoleData data, String nodeId) {
+		RoleNode node = RoleTree.get(nodeId);
+		if (node == null || !data.isActive(node.role())) return 0;
 		return data.rank(nodeId);
 	}
 
