@@ -113,3 +113,17 @@ animación PAL, golpe sincronizado).
 - `PlayerAnimIds.IMPACT_TICKS` pasa a `Map.ofEntries` (superaba las 10 entradas de `Map.of`).
 - **Verificado:** compilación y 908 pruebas, incluida la carga de `assassin.json` con el cargador real de PAL.
 - **No verificado en partida:** el aspecto, el momento exacto de las partículas respecto a la mano, el rendimiento y la mezcla de sonido.
+
+## Fase 4: Herbolista (V85)
+
+Identidad de bosque: verdes y dorado, hojas, gotas y esporas. Cubre las tres activas con efecto visible; Espinas venenosas conserva el efecto genérico.
+
+| Activa | Efecto | Animación (primera persona) | Golpe |
+|---|---|---|---|
+| Bálsamo (`balm`) | Motas que suben a las manos al recoger; onda de hojas por el suelo hasta el radio y surtidor de luz; cada aliado recibe un remolino de hojas y corazones | `herbalist_balm`: recoge a la cintura y abre las palmas al frente | tick 4 |
+| Lluvia sanadora (`healing_rain`) | Nube sobre el centro, gotas, motas de curación y un círculo luminoso que gira durante los 5 s; viñeteado verde suave | `herbalist_rain`: alza los brazos al cielo, los sostiene y los baja despacio | tick 5 |
+| Nube de esporas (`spore_cloud`) | Vaina con arco desde la mano; estallido y niebla verde-violeta del tamaño del radio durante 6 s | `herbalist_spore`: tiro por debajo del hombro | tick 3 |
+
+- Tres sonidos sintetizados (`herbalist_balm`, `herbalist_rain`, `herbalist_spore`).
+- Las partículas y el sonido genéricos que las tres activas dibujaban en el servidor se sustituyen por el evento único.
+- **Verificado:** compilación y pruebas, incluida la carga de `herbalist.json` con el cargador real de PAL. **No verificado en partida:** aspecto, momento y rendimiento.

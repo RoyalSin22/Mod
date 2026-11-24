@@ -34,7 +34,7 @@ HOLD = "linear"
 # Fotograma de impacto de cada animación, en ticks (20 por segundo). Debe coincidir con PlayerAnimIds.IMPACT_TICKS.
 IMPACT_TICKS = {"berserker_rage": 4, "berserker_war_cry": 8, "berserker_slam": 3, "mage_bolt": 4, "mage_blink": 3,
                 "mage_time_warp": 6, "mage_missile_r": 3, "mage_missile_l": 3, "assassin_vanish": 3, "assassin_step": 3,
-                "assassin_fan": 4, "assassin_shuriken": 3}
+                "assassin_fan": 4, "assassin_shuriken": 3, "herbalist_balm": 4, "herbalist_rain": 5, "herbalist_spore": 3}
 
 
 def kf(vec, easing=OUT):
@@ -270,7 +270,41 @@ def build_assassin():
     return {"format_version": "1.8.0", "animations": anims}
 
 
-FILES = {"berserker.json": build_berserker, "mage.json": build_mage, "assassin.json": build_assassin}
+def build_herbalist():
+    anims = {}
+
+    # ---- Bálsamo (0,8 s): recoge con las dos manos a la altura de la cintura y las abre al frente con las palmas hacia arriba (tick 4).
+    balm_r = {0: NEUTRAL, 0.10: ([22, -10, 20], OUT), 0.20: ([-80, 8, 44], BACK), 0.32: ([-80, 8, 44], HOLD), 0.80: (NEUTRAL, SOFT)}
+    anims["herbalist_balm"] = animation(False, limbs(
+        balm_r, 0.02, 0.95,
+        torso=({0: NEUTRAL, 0.10: [12, 0, 0], 0.20: ([-4, 0, 0], BACK), 0.32: ([-4, 0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.10: [10, 0, 0], 0.20: ([-6, 0, 0], BACK), 0.32: ([-6, 0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.10: [0, -1.4, 0], 0.20: ([0, 0.5, 0], BACK), 0.32: ([0, 0.5, 0], HOLD), 0.80: (NEUTRAL, SOFT)}),
+    ))
+
+    # ---- Lluvia sanadora (1,1 s): alza los brazos al cielo (tick 5), los sostiene mientras cae la lluvia y los baja despacio.
+    rain_r = {0: NEUTRAL, 0.12: ([-120, 0, 24], OUT), 0.25: ([-168, 0, 22], BACK), 0.50: ([-164, 0, 26], HOLD), 0.80: ([-130, 0, 30], SOFT),
+              1.10: (NEUTRAL, SOFT)}
+    anims["herbalist_rain"] = animation(False, limbs(
+        rain_r, 0.02, 0.95,
+        torso=({0: NEUTRAL, 0.25: ([-10, 0, 0], BACK), 0.50: ([-10, 0, 0], HOLD), 1.10: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.25: ([-20, 0, 0], BACK), 0.50: ([-20, 0, 0], HOLD), 1.10: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.25: ([0, 0.8, 0], BACK), 0.50: ([0, 0.8, 0], HOLD), 1.10: (NEUTRAL, SOFT)}),
+    ))
+
+    # ---- Nube de esporas (0,6 s): lanza una vaina con un tiro por debajo del hombro (tick 3).
+    spore_r = {0: NEUTRAL, 0.07: ([36, -8, 14], OUT), 0.15: ([-62, 4, 6], SMASH), 0.23: ([-62, 4, 6], HOLD), 0.55: (NEUTRAL, SOFT)}
+    spore_l = {0: NEUTRAL, 0.07: ([-34, 10, -14], OUT), 0.15: ([-48, 6, -12], SOFT), 0.23: ([-48, 6, -12], HOLD), 0.55: (NEUTRAL, SOFT)}
+    anims["herbalist_spore"] = animation(False, {
+        "right_arm": bone(rot=spore_r), "left_arm": bone(rot=spore_l),
+        "torso": bone(rot={0: NEUTRAL, 0.07: [-4, -12, 0], 0.15: ([8, 10, 0], SMASH), 0.23: ([8, 10, 0], HOLD), 0.55: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.07: [-2, -6, 0], 0.15: ([4, 4, 0], BACK), 0.23: ([4, 4, 0], HOLD), 0.55: (NEUTRAL, SOFT)}),
+    })
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+FILES = {"berserker.json": build_berserker, "mage.json": build_mage, "assassin.json": build_assassin,
+         "herbalist.json": build_herbalist}
 
 
 def render(name):

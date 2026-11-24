@@ -544,6 +544,41 @@ def assassin_impact(rng):
     return fade_out(normalize(thunk + tick + metal, 0.85), 0.05)
 
 
+# ---------------------------------------------------------------- Herbolista (V85)
+
+def herbalist_balm(rng):
+    """Bálsamo: un acorde cálido y suave que florece, con un roce de hojas."""
+    t = t_axis(0.9)
+    chord = sum(np.sin(2 * np.pi * f * t) * env(t, 0.03, 0.35 + 0.1 * i) for i, f in enumerate((392.0, 494.0, 587.0, 784.0)))
+    bell = _bell(t, 1568, [(1.0, 0.4), (2.0, 0.2), (3.01, 0.1)], 0.45) * 0.25
+    leaves = _soft_air(rng, len(t), 1500, 5500) * env(t, 0.02, 0.12) * 0.15
+    return fade_out(normalize(chord * 0.5 + bell + leaves, 0.78), 0.15)
+
+
+def herbalist_rain(rng):
+    """Lluvia sanadora: un chaparrón suave que se asienta y unas gotas que tintinean."""
+    t = t_axis(1.5)
+    rain = _soft_air(rng, len(t), 700, 6500) * np.clip(t / 0.25, 0, 1) * env(t, 0.01, 0.9) * 0.55
+    drops = np.zeros(len(t))
+    for _ in range(14):
+        i = int(rng.uniform(0.05, 1.3) * RATE)
+        n = int(0.12 * RATE)
+        if i + n < len(t):
+            tt = np.arange(n) / RATE
+            drops[i:i + n] += np.sin(2 * np.pi * rng.uniform(1100, 2200) * tt) * np.exp(-tt / 0.03) * rng.uniform(0.15, 0.35)
+    hum = np.sin(2 * np.pi * 220 * t) * env(t, 0.2, 0.6) * 0.15
+    return fade_out(normalize(rain + drops + hum, 0.75), 0.2)
+
+
+def herbalist_spore(rng):
+    """Nube de esporas: un estallido sordo de vaina y un siseo largo y húmedo."""
+    t = t_axis(1.0)
+    pop = np.sin(2 * np.pi * (160 * np.exp(-t * 24) + 70) * t) * env(t, 0.002, 0.08) * 0.8
+    hiss = _soft_air(rng, len(t), 900, 4200) * env(t, 0.03, 0.3) * 0.5
+    wet = _soft_air(rng, len(t), 200, 900) * env(t, 0.05, 0.4) * 0.5
+    return fade_out(normalize(pop + hiss + wet, 0.78), 0.15)
+
+
 SOUNDS = {
     'eclipse_announce': eclipse_announce,
     'eclipse_start': eclipse_start,
@@ -590,6 +625,9 @@ SOUNDS = {
     'assassin_step': assassin_step,
     'assassin_throw': assassin_throw,
     'assassin_impact': assassin_impact,
+    'herbalist_balm': herbalist_balm,
+    'herbalist_rain': herbalist_rain,
+    'herbalist_spore': herbalist_spore,
 }
 
 

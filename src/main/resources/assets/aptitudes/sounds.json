@@ -268,5 +268,23 @@
     "sounds": [
       "aptitudes:assassin_impact"
     ]
+  },
+  "herbalist_balm": {
+    "subtitle": "subtitles.aptitudes.herbalist_balm",
+    "sounds": [
+      "aptitudes:herbalist_balm"
+    ]
+  },
+  "herbalist_rain": {
+    "subtitle": "subtitles.aptitudes.herbalist_rain",
+    "sounds": [
+      "aptitudes:herbalist_rain"
+    ]
+  },
+  "herbalist_spore": {
+    "subtitle": "subtitles.aptitudes.herbalist_spore",
+    "sounds": [
+      "aptitudes:herbalist_spore"
+    ]
   }
 }

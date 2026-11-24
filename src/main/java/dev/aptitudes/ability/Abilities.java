@@ -113,13 +113,13 @@ public final class Abilities {
 
 		// ---------------- Herbolista ----------------
 		register("balm", (p, r) -> {
-			for (PlayerEntity ally : Targeting.playersAround(p, 6)) {
+			var allies = Targeting.playersAround(p, 6);
+			for (PlayerEntity ally : allies) {
 				ally.heal(HerbalistKit.heal(p, 2 + 2 * r));
 				HerbalistKit.onHealed(p, ally);
 				effect(ally, StatusEffects.REGENERATION, 100, 0);
-				Targeting.burst(world(p), ParticleTypes.HAPPY_VILLAGER, ally, 12, 0.5);
 			}
-			sound(p, SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, 1.0f);
+			HerbalistFx.balm(p, 6, allies); // V85
 			return true;
 		});
 		register("poison_thorns", (p, r) -> {

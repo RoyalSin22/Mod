@@ -69,6 +69,10 @@ public final class FxClient {
 			case FxIds.ASSASSIN_FAN -> AssassinClientFx.fan(world, p);
 			case FxIds.ASSASSIN_KNIFE -> AssassinClientFx.knife(world, p);
 			case FxIds.ASSASSIN_SHURIKEN -> AssassinClientFx.shuriken(world, p);
+			case FxIds.HERBALIST_BALM -> HerbalistClientFx.balm(world, p);
+			case FxIds.HERBALIST_BALM_ALLY -> HerbalistClientFx.balmAlly(world, p);
+			case FxIds.HERBALIST_RAIN -> HerbalistClientFx.rain(world, p);
+			case FxIds.HERBALIST_SPORE -> HerbalistClientFx.spore(world, p);
 			default -> { }
 		}
 	}

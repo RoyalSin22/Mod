@@ -129,10 +129,8 @@ final class AbilitiesExtra {
 					ally.heal(HerbalistKit.heal(p, 1.0f + 0.5f * r));
 					HerbalistKit.onHealed(p, ally);
 				}
-				world(p).spawnParticles(ParticleTypes.FALLING_WATER, center.x, center.y + 3, center.z, 40, 3, 0.2, 3, 0);
-				ParticleFx.ring(world(p), center.add(0, 0.1, 0), 5 + r, ParticleTypes.HAPPY_VILLAGER, 24);
 			});
-			sound(p, SoundEvents.WEATHER_RAIN, 1.2f);
+			HerbalistFx.rain(p, center, 5 + r, 100); // V85
 			return true;
 		});
 		// Nube de esporas: veneno y debilidad en área durante 6 s.
@@ -144,9 +142,8 @@ final class AbilitiesExtra {
 					effect(e, StatusEffects.POISON, 60, r >= 3 ? 1 : 0);
 					effect(e, StatusEffects.WEAKNESS, 60, 0);
 				}
-				world(p).spawnParticles(ParticleTypes.SPORE_BLOSSOM_AIR, center.x, center.y + 1, center.z, 50, 2, 1, 2, 0);
 			});
-			sound(p, SoundEvents.BLOCK_AZALEA_LEAVES_BREAK, 0.6f);
+			HerbalistFx.spore(p, center, 3 + r); // V85
 			return true;
 		});
 

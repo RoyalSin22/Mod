@@ -1821,6 +1821,9 @@ subtitles.aptitudes.assassin_slash¦Uma lâmina corta o ar¦Une lame fend l'air�
 subtitles.aptitudes.assassin_step¦Alguém atravessa as sombras¦Quelqu'un traverse les ombres¦Jemand tritt durch die Schatten
 subtitles.aptitudes.assassin_throw¦Facas giram¦Des couteaux tournoient¦Messer wirbeln
 subtitles.aptitudes.assassin_impact¦Uma lâmina se crava¦Une lame se plante¦Eine Klinge schlägt ein
+subtitles.aptitudes.herbalist_balm¦Um bálsamo curativo floresce¦Un baume apaisant éclot¦Ein heilender Balsam erblüht
+subtitles.aptitudes.herbalist_rain¦Cai uma chuva curativa¦Une pluie guérisseuse tombe¦Heilender Regen fällt
+subtitles.aptitudes.herbalist_spore¦Esporos explodem¦Des spores éclatent¦Sporen platzen
 entity.aptitudes.custodio_cuatro_llaves¦O Custódio das Quatro Chaves¦Le Gardien des Quatre Clés¦Der Wächter der vier Schlüssel
 item.aptitudes.faceless_colossus_spawn_egg¦Ovo gerador do Colosso Sem Rosto¦Œuf d'apparition du Colosse sans visage¦Spawn-Ei des gesichtslosen Kolosses
 bestiary.aptitudes.faceless_colossus.tip¦Guerreiro gigante com espadão. Anuncia um golpe amplo e um golpe descendente com onda: saia do círculo marcado. Com metade da vida sua armadura racha: fica mais rápido, investe de longe e recebe mais dano.¦Guerrier géant armé d'une grande épée. Il annonce un large balayage et un coup plongeant avec onde de choc : sortez du cercle marqué. À mi-vie son armure se fissure : il va plus vite, charge de loin et subit plus de dégâts.¦Riesiger Krieger mit Zweihänder. Er kündigt einen weiten Hieb und einen Abwärtsschlag mit Schockwelle an: Verlasse den markierten Kreis. Bei halber Lebenskraft bricht seine Rüstung: Er wird schneller, stürmt aus der Ferne an und erleidet mehr Schaden.

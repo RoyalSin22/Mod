@@ -6,6 +6,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **V85 — Efectos de batalla, fase 4 (Herbolista).** Bálsamo, Lluvia sanadora y Nube de esporas tienen coreografía propia: ondas de hojas y
+  remolinos de curación sobre cada aliado, una nube con gotas y un círculo luminoso mientras llueve, y una vaina que describe un arco y
+  estalla en una niebla verde y violeta. Tres animaciones del cuerpo en primera persona (`herbalist.json`), tres sonidos sintetizados con
+  subtítulos en los 11 idiomas y los efectos sincronizados con el golpe de cada animación. Espinas venenosas conserva su efecto genérico.
+  **Sin ver en partida.**
 - **V84 — Efectos de batalla, fase 3 (Asesino).** Desaparecer, Paso de sombra, Abanico de cuchillas y Shuriken tienen coreografía propia:
   bomba de humo con jirones que suben mientras dura la invisibilidad y túnel oscuro en la cámara, estela de posimágenes y estocada al
   reaparecer, abanico de tajos con esquirlas de hierro que caen, y cuchillas y shuriken que giran con su estela y se clavan. Cuatro

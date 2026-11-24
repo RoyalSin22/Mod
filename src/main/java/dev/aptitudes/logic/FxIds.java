@@ -22,8 +22,16 @@ public final class FxIds {
 	public static final int ASSASSIN_KNIFE = 15;
 	/** Shuriken: {@code power} 1 si acierta, 0 si falla. */
 	public static final int ASSASSIN_SHURIKEN = 16;
+	/** Bálsamo: en quien lanza ({@code power} = radio). */
+	public static final int HERBALIST_BALM = 17;
+	/** Bálsamo recibido por un aliado (la entidad es el aliado). */
+	public static final int HERBALIST_BALM_ALLY = 18;
+	/** Lluvia sanadora en el punto del evento; {@code power} = radio y {@code dx} = duración en ticks. */
+	public static final int HERBALIST_RAIN = 19;
+	/** Nube de esporas: el evento sale de la mano y {@code dx,dy,dz} apunta al centro; {@code power} = radio. */
+	public static final int HERBALIST_SPORE = 20;
 	/** Mayor id válido; el cliente descarta lo desconocido. */
-	public static final int MAX = 16;
+	public static final int MAX = 20;
 
 	private FxIds() {
 	}
