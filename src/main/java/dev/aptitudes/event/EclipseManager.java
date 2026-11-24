@@ -241,6 +241,7 @@ public final class EclipseManager {
 		state.active = false;
 		state.forced = false;
 		state.heraldSpawned = false;
+		state.lastEndTick = world.getTime(); // T5: la espera del Behelit cuenta desde aquí
 		Set<UUID> fallen = new HashSet<>(state.fallen);
 		state.fallen.clear();
 		state.markDirty();
@@ -605,18 +606,27 @@ public final class EclipseManager {
 		return true;
 	}
 
-	/** T5: comprueba si se puede iniciar un Eclipse (cooldown y sin evento activo). */
-	public static boolean canStartEclipse(ServerWorld world) {
+	/** T5: ¿se puede sacrificar ahora el Behelit? Desactivado, ocupado o en espera (ver {@link BeheritRules}). */
+	public static BeheritRules.Result beheritStatus(ServerWorld world) {
 		EclipseState state = EclipseState.get(world);
-		return !state.active && !WorldEventManager.active(world.getServer());
+		AptitudesConfig cfg = Aptitudes.config();
+		boolean busy = state.active || WorldEventManager.active(world.getServer());
+		return BeheritRules.check(cfg.eclipseEnabled, busy, state.lastEndTick, world.getTime(), cfg.beheritCooldownDays);
 	}
 
-	/** T5: inicia un Eclipse desde el sacrificio del Behelit en la Hoguera. */
-	public static void startByBeherit(ServerWorld world) {
-		if (canStartEclipse(world)) {
-			EclipseState state = EclipseState.get(world);
-			MinecraftServer server = world.getServer();
-			start(server, world, state, true, EclipseRules.dayOf(world.getTimeOfDay()));
-		}
+	/** T5: horas de juego que faltan para poder volver a usar el Behelit (0 si ya se puede). */
+	public static long beheritHoursLeft(ServerWorld world) {
+		return BeheritRules.hoursLeft(EclipseState.get(world).lastEndTick, world.getTime(),
+				Aptitudes.config().beheritCooldownDays);
+	}
+
+	/**
+	 * T5: inicia un Eclipse desde el sacrificio del Behelit en la Hoguera. Devuelve {@code true} solo si empezó; quien
+	 * llama consume el objeto únicamente en ese caso. Vuelve a comprobar la regla: no confía en una comprobación previa.
+	 */
+	public static boolean startByBeherit(ServerWorld world) {
+		if (beheritStatus(world) != BeheritRules.Result.READY) return false;
+		start(world.getServer(), world, EclipseState.get(world), true, EclipseRules.dayOf(world.getTimeOfDay()));
+		return true;
 	}
 }

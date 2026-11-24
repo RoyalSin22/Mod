@@ -59,8 +59,9 @@ import java.util.UUID;
  * ({@link WorldEventRules#choose}, reproducible con la semilla del mundo). Este gestor decide qué evento toca,
  * da el aviso del día anterior y lleva los dos eventos nuevos; el Eclipse sigue en {@link EclipseManager}.
  *
- * <p>T1 de la cadena narrativa: el calendario solo programa el Eclipse. La Niebla de almas la inicia un jugador
- * hablando con el aldeano del gremio y la Lluvia de brasas, al encender un portal al Nether ({@link EventTriggerRules}).</p>
+ * <p>Histórico: este calendario desapareció (T1/T5, D-26) y {@code calendarWeights} ya no programa nada. La Niebla de
+ * almas la inicia un jugador hablando con el aldeano del gremio, la Lluvia de brasas al encender un portal al Nether
+ * ({@link EventTriggerRules}) y el Eclipse el sacrificio del Behelit ({@link BeheritRules}).</p>
  */
 public final class WorldEventManager {
 	/** Etiqueta de las criaturas de la Niebla de almas y de la Lluvia de brasas. */
@@ -197,11 +198,13 @@ public final class WorldEventManager {
 	}
 
 	/**
-	 * T1: el calendario solo programa el Eclipse (hasta que el Behelit lo sustituya). La Niebla y la Lluvia las activa el
-	 * jugador; sus pesos solo siguen valiendo para desactivarlas (0), ver {@link #weights}.
+	 * T5 (D-26): el calendario rotativo desapareció por completo. El Eclipse lo inicia el Behelit, la Niebla el aldeano del
+	 * gremio y la Lluvia un portal; ningún evento se programa ya por fecha, sea cual sea la configuración antigua
+	 * ({@code eclipseIntervalDays}, {@code eclipseFirstDay}, {@code worldEventWeightEclipse}). Los pesos de Niebla y Lluvia
+	 * solo siguen valiendo como interruptor, ver {@link #weights}.
 	 */
 	private static int[] calendarWeights(AptitudesConfig cfg) {
-		return new int[] {cfg.eclipseEnabled ? cfg.worldEventWeightEclipse : 0, 0, 0};
+		return new int[] {0, 0, 0};
 	}
 
 	/** Duración de un evento nuevo: la de la Niebla es configurable; la de la Lluvia de brasas sigue siendo medio día. */
@@ -211,7 +214,8 @@ public final class WorldEventManager {
 
 	/** Evento que toca en el número de evento {@code index} (null si no hay ninguno activado). Fija la elección. */
 	static WorldEventKind kindFor(ServerWorld world, long index) {
-		if (index < 0) return null;
+		// D-26: sin calendario no hay evento programado, aunque el mundo guarde uno elegido antes de la v84.
+		if (index < 0 || java.util.Arrays.stream(calendarWeights(Aptitudes.config())).sum() <= 0) return null;
 		WorldEventState state = WorldEventState.get(world);
 		if (index == state.lastIndex) return WorldEventKind.byId(state.lastKind);
 		if (index == state.nextIndex) return WorldEventKind.byId(state.nextKind);

@@ -196,12 +196,13 @@ public class AptitudesConfig {
 	public int eclipseMinChampionsTotality = 1;
 	/** Las élites y campeones usan humanoides con equipo completo que no se suelta al morir. */
 	public boolean eclipseGuaranteedEliteArmor = true;
-	// ---------- Eventos rotativos (v41, DEPRECATED en v67) ----------
-	// DEPRECATED: v67 remove el calendario rotativo. El Eclipse se inicia por Behelit; Niebla y Lluvia por eventos.
-	// Se mantienen por compatibilidad.
+	// ---------- Eventos del mundo (v41; el calendario rotativo desapareció en v67) ----------
+	// El calendario ya no programa nada (D-26): el Eclipse se inicia por Behelit, la Niebla por el aldeano y la Lluvia por
+	// un portal. worldEventWeightEclipse no se usa. worldEventWeightSoulFog y worldEventWeightEmberRain siguen siendo el
+	// interruptor de su evento: 0 lo desactiva (también corta uno en curso) y cualquier valor mayor lo deja activo.
 	public int worldEventWeightEclipse = 0;
-	public int worldEventWeightSoulFog = 0;
-	public int worldEventWeightEmberRain = 0;
+	public int worldEventWeightSoulFog = 1;
+	public int worldEventWeightEmberRain = 1;
 	/** v41.2: probabilidad de meteorito grande y enorme en la Lluvia de brasas (el resto, pequeños como antes). */
 	public double emberRainLargeChance = 0.25;
 	public double emberRainHugeChance = 0.05;
@@ -217,6 +218,11 @@ public class AptitudesConfig {
 	public int fogDurationTicks = 24_000;
 	/** Días de espera entre dos Lluvias de brasas provocadas por un portal. */
 	public int emberRainCooldownDays = 5;
+	/**
+	 * Días de espera por mundo entre dos usos del Behelit (Resonador del Umbral), contados desde el fin del Eclipse
+	 * anterior (D-25). 0 = sin espera.
+	 */
+	public int beheritCooldownDays = 3;
 	// ---------- Gran Osario Quebrado, jefe de la Niebla (V68) ----------
 	/** Activa la aparición del jefe al final de la Niebla de almas. */
 	public boolean osarioBossEnabled = true;
@@ -431,6 +437,8 @@ public class AptitudesConfig {
 					cfg.threatRingSize = ConfigMigration.threatRingSize(from, cfg.threatRingSize);
 					cfg.threatHealthPerRing = ConfigMigration.threatHealthPerRing(from, cfg.threatHealthPerRing);
 					cfg.threatDamagePerRing = ConfigMigration.threatDamagePerRing(from, cfg.threatDamagePerRing);
+					cfg.worldEventWeightSoulFog = ConfigMigration.eventSwitch(from, cfg.worldEventWeightSoulFog);
+					cfg.worldEventWeightEmberRain = ConfigMigration.eventSwitch(from, cfg.worldEventWeightEmberRain);
 					cfg.configRevision = ConfigMigration.CURRENT;
 				}
 			} catch (IOException | JsonParseException e) {
@@ -625,6 +633,7 @@ public class AptitudesConfig {
 		c.fogDurationTicks = clamp(c.fogDurationTicks, dev.aptitudes.event.EventTriggerRules.MIN_FOG_TICKS,
 				dev.aptitudes.event.EventTriggerRules.MAX_FOG_TICKS);
 		c.emberRainCooldownDays = clamp(c.emberRainCooldownDays, 1, 365);
+		c.beheritCooldownDays = clamp(c.beheritCooldownDays, 0, 365);
 		c.osarioBossFogPercent = clamp(c.osarioBossFogPercent, 10, 100);
 		c.osarioBossLingerTicks = clamp(c.osarioBossLingerTicks, 0, 72_000);
 		c.osarioBossMinDamagePercent = clamp(c.osarioBossMinDamagePercent, 1, 100);

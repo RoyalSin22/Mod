@@ -10,6 +10,22 @@ class EventTriggerConfigValidationTest {
 		assertEquals(10, c.fogCooldownDays);
 		assertEquals(24_000, c.fogDurationTicks);
 		assertEquals(5, c.emberRainCooldownDays);
+		// T5 (D-25): espera del Behelit y interruptores de Niebla y Lluvia activados por defecto.
+		assertEquals(3, c.beheritCooldownDays);
+		assertEquals(1, c.worldEventWeightSoulFog);
+		assertEquals(1, c.worldEventWeightEmberRain);
+	}
+
+	@Test void beheritCooldownIsClampedAndZeroMeansNoWait() {
+		AptitudesConfig c = new AptitudesConfig();
+		c.beheritCooldownDays = 0;
+		assertEquals(0, AptitudesConfig.validated(c).beheritCooldownDays);
+		c = new AptitudesConfig();
+		c.beheritCooldownDays = Integer.MAX_VALUE;
+		assertEquals(365, AptitudesConfig.validated(c).beheritCooldownDays);
+		c = new AptitudesConfig();
+		c.beheritCooldownDays = Integer.MIN_VALUE; // negativo: vuelve al valor por defecto
+		assertEquals(3, AptitudesConfig.validated(c).beheritCooldownDays);
 	}
 
 	@Test void oldConfigurationKeepsItsValuesAndGetsSafeDefaults() {

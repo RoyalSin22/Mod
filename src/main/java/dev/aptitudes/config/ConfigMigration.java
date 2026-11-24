@@ -9,7 +9,7 @@ package dev.aptitudes.config;
  */
 public final class ConfigMigration {
 	/** Revisión actual de la configuración. */
-	public static final int CURRENT = 83;
+	public static final int CURRENT = 84;
 	/** Valor por defecto anterior y nuevo del nivel máximo de rol. */
 	public static final int OLD_MAX_ROLE_LEVEL = 30;
 	public static final int NEW_MAX_ROLE_LEVEL = 50;
@@ -48,6 +48,17 @@ public final class ConfigMigration {
 
 	public static double threatDamagePerRing(int fromRevision, double value) {
 		return fromRevision < 83 && value == 0.10 ? 0.15 : value;
+	}
+
+	/**
+	 * v84 (T5): {@code worldEventWeightSoulFog} y {@code worldEventWeightEmberRain} actúan como interruptor de la Niebla
+	 * por aldeano y de la Lluvia por portal. El commit {@code 240484f} los dejó por defecto a 0, lo que las desactivaba
+	 * (y cortaba el evento al tick siguiente) en los archivos de configuración creados desde entonces. Un 0 en un
+	 * archivo anterior a la revisión 84 se vuelve a 1. Límite conocido: no se distingue un 0 puesto a mano antes de esa
+	 * fecha; quien quiera desactivar el evento debe volver a poner 0 (la revisión 84 ya no se toca).
+	 */
+	public static int eventSwitch(int fromRevision, int value) {
+		return fromRevision < 84 && value == 0 ? 1 : value;
 	}
 
 	/** v67: los puntos al evolucionar a Definitivo pasan de 5 a 10; un valor elegido a mano se respeta. */

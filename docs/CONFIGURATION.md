@@ -387,14 +387,17 @@ Los textos de las runas muestran los valores por defecto: si un servidor los cam
 - **Niebla de almas**: hablar con el aldeano del gremio (cooldown 10 días desde el inicio)
 - **Lluvia de brasas**: encender un portal al Nether en el Overworld (cooldown 5 días)
 
-Los campos `eclipseIntervalDays`, `eclipseFirstDay` y `worldEventWeight*` se mantienen **por compatibilidad** 
-con configs guardadas, pero ya no se usan. Sus valores no afectan al juego.
+El calendario rotativo **ya no existe** (D-26): ningún evento se programa por fecha. `eclipseIntervalDays`,
+`eclipseFirstDay` y `worldEventWeightEclipse` se conservan solo para no romper archivos antiguos y **no se usan**.
+`worldEventWeightSoulFog` y `worldEventWeightEmberRain` son el **interruptor** de la Niebla por aldeano y de la Lluvia por
+portal: 0 desactiva el evento (y corta uno en curso) y cualquier valor mayor lo deja activo. La revisión 84 de la
+configuración (`configRevision`) devuelve a 1 los 0 heredados del valor por defecto roto de la v83.
 
 | Campo | Defecto | Límites | Descripción |
 |---|---|---|---|
-| `worldEventWeightEclipse` | 0 | [0, 100] | **DEPRECATED**: siempre ignorado. |
-| `worldEventWeightSoulFog` | 0 | [0, 100] | **DEPRECATED**: siempre ignorado. |
-| `worldEventWeightEmberRain` | 0 | [0, 100] | **DEPRECATED**: siempre ignorado. |
+| `worldEventWeightEclipse` | 0 | [0, 100] | Sin uso: el Eclipse empieza con el Resonador del Umbral. |
+| `worldEventWeightSoulFog` | 1 | [0, 100] | Interruptor de la Niebla de almas del aldeano: 0 la desactiva. |
+| `worldEventWeightEmberRain` | 1 | [0, 100] | Interruptor de la Lluvia de brasas del portal: 0 la desactiva. |
 | `emberRainLargeChance` | 0.25 | [0, 1] | v41.2: probabilidad de meteorito grande. |
 | `emberRainHugeChance` | 0.05 | [0, 1] | v41.2: probabilidad de meteorito enorme (se comprueba antes que la de grande). Con ambas a 0, todos pequeños como antes. |
 | `emberRainMobChance` | 0.5 | [0, 1] | v41.2: probabilidad de que un impacto traiga criaturas del Nether (la mitad en los pequeños); 0 = ninguna. |
@@ -415,6 +418,7 @@ desde que el evento **empieza** (provisional) y no las consumen los comandos `/a
 | `fogCooldownDays` | 10 | [1, 365] | Días de espera entre dos Nieblas de almas. |
 | `fogDurationTicks` | 24000 | [1200, 240000] | Duración de la Niebla en ticks (24 000 = un día de Minecraft). Antes duraba 12 000 desde las 18:00. |
 | `emberRainCooldownDays` | 5 | [1, 365] | Días de espera entre dos Lluvias de brasas provocadas por un portal. |
+| `beheritCooldownDays` | 3 | [0, 365] | Días de espera, por mundo, entre dos usos del Resonador del Umbral (Behelit), contados desde el **fin** del Eclipse anterior (D-25). 0 = sin espera. Si se intenta antes, el objeto no se consume y se avisa en la barra de acción. |
 | `osarioBossEnabled` | true | — | V68: permite que el Gran Osario Quebrado se levante hacia el final de la Niebla. |
 | `osarioBossFogPercent` | 75 | [10, 100] | V68: porcentaje de la duración de la Niebla a partir del cual aparece el jefe (una vez por sesión). |
 | `osarioBossLingerTicks` | 6000 | [0, 72000] | V68: ticks que sigue vivo tras cerrarse la Niebla antes de disolverse sin botín ni XP. 6000 = 5 minutos. |

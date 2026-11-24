@@ -1878,3 +1878,9 @@ screen.aptitudes.respec.cost¦Custa %s níveis de experiência¦Coûte %s niveau
 screen.aptitudes.respec.missing¦Você precisa de %s níveis de experiência¦Il vous faut %s niveaux d’expérience¦Du brauchst %s Erfahrungsstufen
 screen.aptitudes.respec.nothing¦Não há pontos gastos nesta classe¦Aucun point dépensé dans ce rôle¦Keine Punkte in dieser Rolle ausgegeben
 """)
+
+add('eclipse.aptitudes.behelit.', """
+cooldown¦O Ressonador do Limiar permanece em silêncio. Voltará a responder em %s horas de jogo.¦Le Résonateur du Seuil reste silencieux. Il répondra de nouveau dans %s heures de jeu.¦Der Schwellenresonator schweigt. Er antwortet in %s Spielstunden wieder.
+busy¦O céu já está se agitando. Espere o evento atual terminar.¦Le ciel s’agite déjà. Attendez la fin de l’événement en cours.¦Der Himmel regt sich bereits. Warte, bis das laufende Ereignis endet.
+disabled¦O Eclipse está desativado neste servidor.¦L’Éclipse est désactivée sur ce serveur.¦Die Sonnenfinsternis ist auf diesem Server deaktiviert.
+""")

@@ -25,6 +25,11 @@ public final class EclipseState extends PersistentState {
 	long startTick;
 	/** Día del último eclipse empezado (evita repetirlo el mismo día tras detenerlo). */
 	long lastDay = -1;
+	/**
+	 * Tick ({@code World#getTime}) en que terminó el último Eclipse, o -1 si nunca ha terminado uno. Lo usa la espera
+	 * del Behelit ({@link BeheritRules}); se anota con cualquier final (completo, detenido o por comando).
+	 */
+	long lastEndTick = EventTriggerRules.NEVER;
 	/** Día cuyo aviso ya se dio. */
 	long announcedDay = -1;
 	boolean heraldSpawned;
@@ -41,6 +46,7 @@ public final class EclipseState extends PersistentState {
 		nbt.putBoolean("forced", forced);
 		nbt.putLong("start", startTick);
 		nbt.putLong("last_day", lastDay);
+		nbt.putLong("last_end", lastEndTick);
 		nbt.putLong("announced_day", announcedDay);
 		nbt.putBoolean("herald", heraldSpawned);
 		NbtList list = new NbtList();
@@ -55,6 +61,7 @@ public final class EclipseState extends PersistentState {
 		s.forced = nbt.getBoolean("forced");
 		s.startTick = nbt.getLong("start");
 		s.lastDay = nbt.contains("last_day") ? nbt.getLong("last_day") : -1;
+		s.lastEndTick = nbt.contains("last_end") ? nbt.getLong("last_end") : EventTriggerRules.NEVER;
 		s.announcedDay = nbt.contains("announced_day") ? nbt.getLong("announced_day") : -1;
 		s.heraldSpawned = nbt.getBoolean("herald");
 		NbtList list = nbt.getList("fallen", NbtElement.STRING_TYPE);
