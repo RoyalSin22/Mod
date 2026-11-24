@@ -5,6 +5,9 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+> **Pendientes consolidados:** `docs/PENDIENTES.md` (revisión del 2026-11-24). Estado de C5 en `docs/C5_PENDIENTES.md`; de la
+> cadena narrativa T1–T7, en `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` («Estado real»); de C1–C7, en `docs/PLAN_CLAUDE.md`.
+
 ### v84 — Osario Quebrado (por fases)
 
 - **Fases 0–2 aprobadas:** geometría de 169 cubos sobre los 30 huesos

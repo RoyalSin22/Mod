@@ -1,6 +1,6 @@
 # 10 · Plan de implementación de la cadena (por tandas)
 
-**Estado: T1, T2 y T3 implementadas (2026-11-14), pendientes de prueba en partida; T4 en adelante, sin autorizar.** Convierte el diseño de `09_CADENA_DE_PROGRESION.md` en
+**Estado (revisado el 2026-11-24 contra el código y `git log`): T1–T4, T6, T7a y T7b están implementadas; T5 está implementada con una carencia (la espera de 3 días del Behelit no existe en el código, ver «Estado real»). Ninguna tanda está validada en partida.** Convierte el diseño de `09_CADENA_DE_PROGRESION.md` en
 trabajo de código, arte y Grimorio. Los puntos de enganche se leyeron en el código el 2026-11-14; lo marcado
 «a verificar» se comprueba con Context7 o el jar antes de escribir una línea (`AGENTS.md` §9).
 
@@ -31,11 +31,51 @@ Tamaños relativos (S < M < L < XL); no son horas.
 | **T2** (implementada, pendiente de prueba en partida) | Botín del Osario, objeto de acceso y su receta, objetos nuevos y sus texturas | E3 | M | T0 |
 | **T3** (implementada, pendiente de prueba en partida) | Templo nuevo: estructura, Autómata interno, puzle, puerta del Custodio que consume el objeto | E4 | XL | T2 |
 | **T4** (implementada, pendiente de prueba en partida) | Custodio con 4 llaves (cobre, hierro, oro, diamante) en una tirada y 4 cámaras de recompensa | E5 | L | T3 |
-| **T5** | Behelit, sacrificio en la Hoguera, Eclipse con espera de 3 días por mundo, fin del calendario rotativo | E6, E10 | L | T4 (T1 para la parte de calendario) |
-| **T6** | Retirada de los 3 sellos de invocación, con migración | E8 | M | T3 |
-| **T7a** | Grimorio, infraestructura: estado de lectura por jugador, desbloqueos, entrada de bestiario del Custodio | E9 | L | T1, T4, T5 |
-| **T7b** | Grimorio, interfaz: tarjetas de bestiario, páginas de lore | E9 | XL | A, T7a |
+| **T5** (implementada **con carencias**: sin espera de 3 días ni migración de configuración; ver «Estado real») | Behelit, sacrificio en la Hoguera, Eclipse con espera de 3 días por mundo, fin del calendario rotativo | E6, E10 | L | T4 (T1 para la parte de calendario) |
+| **T6** (implementada **sin migración**, contra D-25/D-26; ver «Estado real») | Retirada de los 3 sellos de invocación, con migración | E8 | M | T3 |
+| **T7a** (implementada) | Grimorio, infraestructura: estado de lectura por jugador, desbloqueos, entrada de bestiario del Custodio | E9 | L | T1, T4, T5 |
+| **T7b** (implementada como V71) | Grimorio, interfaz: tarjetas de bestiario, páginas de lore | E9 | XL | A, T7a |
 | **A** | Pista de arte, en paralelo | — | L | T0 |
+
+### Estado real (2026-11-24)
+
+Comprobado leyendo el código y `git log`; la columna «Prueba en partida» es **pendiente** en todas salvo que se
+indique (el autor confirmó las pruebas de la numeración antigua T4–T6 de `PLAN_CODEX`, que no son estas tandas).
+
+| Tanda | Estado | Evidencia | Pendiente |
+|---|---|---|---|
+| T1 | Implementada | `01ed9ff`; `event/EventTriggerRules`, `WorldEventManager.talkToGuildmaster`, `watchPortalLighting` | Partida; D-23 (¿10 días desde el inicio o el fin?) y D-30 siguen provisionales |
+| T2 | Implementada | `61e29d1`; `NUCLEO_OSARIO`, `ANCLA_DEL_VELO` | Partida |
+| T3 | Implementada | `989f967`…`d0a27c2`; `temple/CustodianTempleLayout`, `world/CustodianTempleFeature`; ampliada por V70 (templo hondo) y V77 (`locate`/`place`) | Partida y ajuste de balance |
+| T4 | Implementada | `958d1e4`, `353d310`; frecuencia 1/120 (`5c0f3a5`, D-35) | Partida |
+| **T5** | **Parcial** | Behelit = `resonador_del_umbral` (`item/BeheritItem`, `ModItems.RESONADOR_DEL_UMBRAL`), en `chests/custodian_diamond.json`; el sacrificio ocurre en la Hoguera (`BonfireBlock` deja pasar el ítem) y llama a `EclipseManager.startByBeherit` (`EclipseManager.java:614`); desbloqueo de lore en `EclipseManager:235` (`09f6a58`). Calendario: `eclipseIntervalDays`, `eclipseFirstDay` y `worldEventWeight*` marcados DEPRECATED y los pesos por defecto bajados de 1 a 0 (`240484f`) | Ver abajo |
+| T6 | Implementada, desviada | `fe4f766` borra registro, recetas, modelos, texturas y claves de los tres sellos de los 11 idiomas | Ver abajo |
+| T7a | Implementada | `75906c6`; `guide/LoreRules`, `LoreManager`, attachment `aptitudes:lore` | Partida |
+| T7b | Implementada (V71) | `b512c10`, `325b8f7`; `guide/LoreCatalog` (18 entradas), pestaña «Crónicas» en `GuideScreen` | Partida; arte propio de la pestaña |
+
+**T5, qué falta o es dudoso**
+
+1. **No existe la espera de 3 días por mundo** (D-20, D-25). `EclipseManager.canStartEclipse` solo comprueba
+   `!state.active && !WorldEventManager.active(...)`, aunque su Javadoc y el mensaje de `09f6a58` hablan de «cooldown».
+   `EclipseState` no guarda el fin del último Eclipse. Hoy se puede encadenar un Behelit tras otro.
+2. **Sin migración de configuración.** El plan pedía migrar en `config/ConfigMigration`; no se hizo. Un `config`
+   antiguo con `worldEventWeightEclipse > 0` sigue programando Eclipses por calendario (`WorldEventManager.calendarWeights`).
+   Además `240484f` cambió el valor por defecto de los pesos de 1 a 0 sin que conste la decisión del autor (regla de balance).
+3. **Decisión nº 6 de §4 sin registrar:** qué ocurre si hay un Eclipse activo (hoy, el Behelit no se consume y no avisa).
+4. `BeheritItem` usa `useOnBlock` sobre la Hoguera; el plan proponía el patrón de `onUseWithItem` de la ofrenda. Funcional, pero distinto.
+5. Sin pruebas JUnit de la regla de espera (no hay una clase pura que la contenga).
+
+**T6, qué es dudoso**
+
+- D-25 y D-26 dicen «los sellos se retirarán **con migración**, sin eliminarlos». El commit `fe4f766` los eliminó **sin
+  alias de registro ni conversión**: en un mundo guardado con alguno de los tres objetos, Minecraft descarta el
+  objeto desconocido al cargar. `docs/PLAN_AVANCE.md` §1 dice que «no hay mundos de jugadores que preservar», pero
+  D-25/D-26 son posteriores y piden migración: hace falta que el autor confirme cuál manda.
+- Quedan menciones en `docs/PLAN_AVANCE.md`, `docs/lore/09_CADENA_DE_PROGRESION.md`, `docs/PROMPT_ARTE_ARMAS.md`,
+  `tools/textures/gen_items.py` (que aún regenera los PNG; `AGENTS.md` §2 manda borrar tres PNG tras cada ejecución) y
+  la entrada «v65 — Ruinas de batalla» del CHANGELOG («al invocar al Coloso con el sello»).
+- `ModItems.java:183-185` conserva las tres líneas comentadas con un texto que dice que «los ítems se mantienen
+  para compatibilidad»; es falso desde `fe4f766`.
 
 ### Orden y paralelismo
 

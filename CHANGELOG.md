@@ -17,6 +17,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   Se registra la confirmación del autor sobre las pruebas previas y su aparición en la Niebla.
 
 ### Documentación
+- **Puesta al día del estado (2026-11-24, solo documentación).** `docs/C5_PENDIENTES.md` reescrito: Y1–Y5 están aplicadas
+  (`Targeting.java:46`, `PartyManager.java:131`, `ElementFusions.java:79`, `Combos.java:173`) y solo queda validarlas en
+  partida. `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` y `docs/PLAN_CLAUDE.md` con el estado real y su evidencia. Hallazgos
+  que no cambian código y quedan como decisión del autor: la espera de 3 días del Behelit no está implementada, los sellos se
+  retiraron sin migración, el Astrolabio del Ocaso no tiene textura ni logro y C1, C2 y C7 no se han hecho. Nuevo
+  `docs/PENDIENTES.md` con la lista consolidada. Sin cambios de código ni de balance.
 - **v84 — Osario Quebrado, Fases 0–5.** Verificación del encargo y las referencias, respaldos históricos y
   calibración de ejes. Bloqueo y rig aprobados; geometría detallada de 169 cubos sobre los mismos 30 huesos:
   cráneo fracturado, mandíbula hueca, costillas separadas, falanges y masa funeraria articulada. Altura 29,783 u,
