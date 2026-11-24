@@ -132,8 +132,9 @@ Flujo práctico con la app de Codex y worktrees: `docs/FLUJO_GIT.md`.
 - **Si `git commit` o `git push` fallan, no improvises**: no reintentes con otros comandos, no cambies la
   configuración de Git ni amplíes permisos. Copia el error exacto, deja los cambios preparados (`git add`)
   y avisa al autor, que hará el commit desde su terminal.
-- **Atribución**: el trailer de sesión (`Claude-Session: …`) es lo único que se añade a los commits. No se
-  incluye ningún nombre o identificador de modelo en commits, PRs, código ni documentación del repositorio.
+- **Atribución** (decisión del autor, 2026-11-24: «tú ayudas a la creación»): los commits de Claude llevan
+  `Co-Authored-By: Claude <noreply@anthropic.com>` y el trailer de sesión (`Claude-Session: …`). **Sin nombre ni versión de
+  modelo** en commits, PRs, código ni documentación. Los commits anteriores no se reescriben.
 - **Una versión por tarea y por rama.** No mezcles en el mismo directorio cambios de dos versiones.
 - **Formato**: respeta `.editorconfig` y `.gitattributes` (LF; Java con tabulación; idiomas JSON con
   2 espacios). **No reformatees archivos existentes**: un cambio de sangría convierte 17 claves nuevas en

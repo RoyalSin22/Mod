@@ -5,6 +5,17 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Cambiado
+- **La Niebla de almas se convoca desde el tablón de contratos (D-36).** Nuevo tipo de contrato `SOUL_FOG` («Convocar la Niebla de
+  almas»), añadido al final del enum para no mover los guardados: entre las 3 ofertas del día puede salir una a partir de
+  dificultad Normal. Al aceptarla empieza el evento para todo el mundo (respeta la espera de `fogCooldownDays`, que no haya otro
+  evento ni el interruptor `worldEventWeightSoulFog = 0`; si no puede empezar, no se acepta y se avisa) y el contrato se completa al
+  sobrevivirlo. El aldeano del gremio **ya no** inicia la Niebla (solo comercia). `WorldEventManager.fogReply` y
+  `startFogByContract` sustituyen a `talkToGuildmaster`. Pruebas: `SoulFogContractRulesTest`.
+- **Sellos de invocación: decisión de no recuperarlos (D-37).** El Coloso Sin Rostro será el jefe final de un dungeon nuevo y el
+  Guardián Desmontado su subjefe, dormidos al generarse y una sola vez por estructura. Aún sin implementar (pendiente de diseño).
+- **S3 Parada y contraataque se queda activada por defecto** (confirmado por el autor).
+
 ### Añadido
 - **C7 · S6 Ecos de muerte.** Al morir un jugador, un **eco** (su cabeza, con su skin y brillante) aparece donde cayó y **repite sus
   últimos 5 segundos** en bucle mientras haya otro jugador a menos de 24 bloques; sin público no cuesta nada. Dura 120 s y

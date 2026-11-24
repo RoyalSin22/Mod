@@ -384,19 +384,19 @@ Los textos de las runas muestran los valores por defecto: si un servidor los cam
 
 **v67**: El calendario rotativo desapareció. Los eventos ahora se activan **solo por jugadores**:
 - **Eclipse**: sacrificio del Behelit en la Hoguera (cooldown 3 días por mundo desde el fin)
-- **Niebla de almas**: hablar con el aldeano del gremio (cooldown 10 días desde el inicio)
+- **Niebla de almas**: aceptar la oferta «Convocar la Niebla de almas» del tablón de contratos (cooldown 10 días desde el inicio)
 - **Lluvia de brasas**: encender un portal al Nether en el Overworld (cooldown 5 días)
 
 El calendario rotativo **ya no existe** (D-26): ningún evento se programa por fecha. `eclipseIntervalDays`,
 `eclipseFirstDay` y `worldEventWeightEclipse` se conservan solo para no romper archivos antiguos y **no se usan**.
-`worldEventWeightSoulFog` y `worldEventWeightEmberRain` son el **interruptor** de la Niebla por aldeano y de la Lluvia por
+`worldEventWeightSoulFog` y `worldEventWeightEmberRain` son el **interruptor** de la Niebla por contrato y de la Lluvia por
 portal: 0 desactiva el evento (y corta uno en curso) y cualquier valor mayor lo deja activo. La revisión 84 de la
 configuración (`configRevision`) devuelve a 1 los 0 heredados del valor por defecto roto de la v83.
 
 | Campo | Defecto | Límites | Descripción |
 |---|---|---|---|
 | `worldEventWeightEclipse` | 0 | [0, 100] | Sin uso: el Eclipse empieza con el Resonador del Umbral. |
-| `worldEventWeightSoulFog` | 1 | [0, 100] | Interruptor de la Niebla de almas del aldeano: 0 la desactiva. |
+| `worldEventWeightSoulFog` | 1 | [0, 100] | Interruptor de la Niebla de almas del tablón: 0 la desactiva (la oferta no se puede aceptar). |
 | `worldEventWeightEmberRain` | 1 | [0, 100] | Interruptor de la Lluvia de brasas del portal: 0 la desactiva. |
 | `emberRainLargeChance` | 0.25 | [0, 1] | v41.2: probabilidad de meteorito grande. |
 | `emberRainHugeChance` | 0.05 | [0, 1] | v41.2: probabilidad de meteorito enorme (se comprueba antes que la de grande). Con ambas a 0, todos pequeños como antes. |
@@ -407,9 +407,10 @@ como tope por jugador.
 
 ### Eventos por activación (T1 de la cadena narrativa)
 
-La **Niebla de almas** la inicia un jugador con **Mayús + clic derecho** sobre el aldeano del gremio (sin Mayús se
-abre el comercio de siempre): empieza para todo el mundo y dura `fogDurationTicks`. Si está en espera, el aldeano
-responde «los muertos se han ido, pero volverán». La **Lluvia de brasas** empieza cuando un jugador enciende un
+La **Niebla de almas** la inicia un jugador **aceptando la oferta «Convocar la Niebla de almas»** del tablón de contratos
+(puede salir entre las 3 ofertas diarias de dificultad Normal o superior): al aceptarla empieza para todo el mundo y dura
+`fogDurationTicks`; el contrato se completa al sobrevivirla. Si está en espera o hay otro evento, no se puede aceptar y se
+avisa («los muertos se han ido, pero volverán»). El aldeano del gremio ya **no** la inicia: solo comercia. La **Lluvia de brasas** empieza cuando un jugador enciende un
 portal al Nether en el Overworld (yesca y pedernal o carga de fuego sobre obsidiana). Las esperas se cuentan
 desde que el evento **empieza** (provisional) y no las consumen los comandos `/aptitudes event`.
 

@@ -1917,3 +1917,8 @@ removed¦Mensagem removida.¦Message retiré.¦Nachricht entfernt.
 none_nearby¦Não há nenhuma mensagem sua a menos de 6 blocos.¦Aucun de vos messages à moins de 6 blocs.¦Keine deiner Nachrichten im Umkreis von 6 Blöcken.
 list_header¦Frases disponíveis:¦Phrases disponibles :¦Verfügbare Phrasen:
 """)
+
+add('contract.aptitudes.', """
+kind.soul_fog¦Convocar a Névoa das Almas¦Convoquer la Brume des âmes¦Seelennebel herbeirufen
+fog_disabled¦A Névoa das Almas está desativada neste servidor.¦La Brume des âmes est désactivée sur ce serveur.¦Der Seelennebel ist auf diesem Server deaktiviert.
+""")

@@ -1895,13 +1895,14 @@ Desde T3d los chunks **nuevos** generan este templo solos (los ya generados cons
 
 # T1 — eventos por activación (verificación manual)
 
-1. Habla con el aldeano del gremio **sin** Mayús: se abre el comercio de siempre y no pasa nada más.
-2. Con Mayús + clic derecho: mensaje del aldeano y arranca la Niebla de almas para todos los jugadores del mundo.
-   Con `/time` a mediodía también debe empezar (no depende de la hora). Dura 24 000 ticks y termina con «La niebla se disipa».
-3. Vuelve a hablar con Mayús durante la Niebla: «Ahora no puedo hablar de eso…» y no se reinicia.
-4. Tras terminar, habla de nuevo: «Los muertos se han ido, pero volverán». Tras 10 días (`/time add 240000`): empieza otra.
+1. (Cambiado) El aldeano del gremio **ya no** inicia la Niebla: con Mayús + clic derecho solo se abre el comercio.
+2. Abre el tablón de contratos hasta que una de las 3 ofertas del día sea «Convocar la Niebla de almas» (con rol en Normal o más;
+   cambia de día con `/time add 24000` o usa otra cuenta). Acéptala: aparece «Contrato aceptado» y arranca la Niebla para todos los
+   jugadores. Dura 24 000 ticks y termina con «La niebla se disipa»; al sobrevivirla el contrato queda listo para cobrar.
+3. Con la Niebla en curso, intenta aceptar otra oferta de Niebla: «No puedo hablar de eso ahora…» y **no** se acepta ni se reinicia.
+4. Tras terminar, intenta aceptarla otra vez: «Los muertos se han ido, pero volverán». Tras 10 días (`/time add 240000`): se puede.
 5. Apaga y enciende el servidor con la Niebla en espera: la espera se conserva (`last_fog_start` en `aptitudes_world_events`).
-6. Con `worldEventWeightSoulFog = 0`: el aldeano solo comercia.
+6. Con `worldEventWeightSoulFog = 0`: la oferta sale pero no se acepta y avisa de que está desactivada.
 7. Construye un marco de obsidiana en el Overworld y enciéndelo con yesca: empieza la Lluvia de brasas. Enciéndelo
    otra vez o abre otro portal antes de 5 días: no empieza. Un portal ya abierto que vuelves a encender no cuenta.
 8. Enciende un marco en el Nether o en el End, o con lava o una flecha incendiaria: no cuenta. Spamear el encendido no genera
