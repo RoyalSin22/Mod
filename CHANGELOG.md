@@ -6,6 +6,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Corregido
+- **Revisión C1 (auditoría transversal de v42–v58).** `SynergyRules` tragaba en silencio cualquier excepción de Y2, Y3 y
+  Y4 y la sinergia dejaba de aplicarse sin rastro: ahora se registra una vez por lugar. `Elites.BLINK_READY` (indexado por
+  el UUID de cada élite) crecía sin tope: se retira al descargarse la entidad. Informe, alcance y observaciones sin
+  cambiar en `docs/C1_REVISION.md`.
 - **Rendimiento R1–R3 (C2).** `PathEffects.all` (420+ especificaciones por llamada, en cada golpe y cada segundo por
   jugador) y `Keystones.active` (en cada golpe, esquiva, muerte y daño) usan ahora una caché por jugador
   (`role/VersionedCache`) que se invalida sola: `RoleData` lleva un contador de versión que suben `setRank`, `clearRanks`,

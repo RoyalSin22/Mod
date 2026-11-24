@@ -107,11 +107,15 @@ public final class Elites {
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
 			if (entity instanceof MobEntity mob && isElite(mob)) onDeath(mob, source);
 		});
+		// C1: BLINK_READY está indexado por el UUID de cada élite (no por jugador) y nunca se vaciaba: crecía sin tope en
+		// servidores largos. Se retira la entrada cuando la entidad muere o se descarga (perder la espera es inocuo).
+		ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> BLINK_READY.remove(entity.getUuid()));
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			if (server.getTicks() % 20 == 0) tick(server);
 		});
 		ServerLifecycleEvents.SERVER_STOPPED.register(server -> {
 			BARS.clear();
+			BLINK_READY.clear();
 			BOSS_HUD_VIEWERS.clear();
 		});
 		ElitePosture.register();
