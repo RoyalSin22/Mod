@@ -1,59 +1,75 @@
-# V86 · Dungeon del Coloso Sin Rostro (diseño propuesto)
+# V86 · Las Tres Torres Señoriales (diseño)
 
-**Estado: PROPUESTA. No hay código.** Decisiones ya tomadas por el autor (2026-11-24, `DECISIONES_PENDIENTES` D-37): los sellos de
-invocación **no vuelven**; el **Coloso Sin Rostro** es el **jefe final** de un dungeon nuevo y el **Guardián Desmontado** su **subjefe**;
-estructura **propia** (distinta del Templo del Custodio); ambos aparecen **dormidos al generarse** y **una sola vez por estructura**.
+**Estado: DISEÑO con las decisiones del autor del 2026-11-24 (D-37 y D-38). No hay código todavía.** El encargo ejecutable, pensado para
+que lo tome Claude o Codex, está en [`PROMPT_DUNGEON_TRES_TORRES.md`](PROMPT_DUNGEON_TRES_TORRES.md). (El nombre del archivo es el de la
+primera propuesta, «Dungeon del Coloso»; se conserva para no romper enlaces.)
 
-## 1. Lo que ya existe y se reutiliza
+## 1. Decisiones del autor
 
-| Necesidad | Pieza existente |
+| Tema | Decisión |
 |---|---|
-| Distribución en una cuadrícula de celdas, pura y con JUnit | patrón de `temple/CustodianTempleLayout` (`Cell`, `Result`, `buildDeep`) |
-| Traducir celdas a bloques y colocar cofres | `world/StructureBuilder` y el patrón de `world/CustodianTempleFeature` (radio máximo seguro 15) |
-| Anillo de Amenaza, paleta por anillo | `TempleFeature.ring(...)`, `TempleFeature.Palette` |
-| Registrar y repartir la estructura | `ModWorldGen`, JSON `worldgen/configured_feature` y `placed_feature`, `RegionGridPlacement` (una por región) |
-| `/aptitudes locate` y `place` | `world/StructureIndex.record(...)`, `StructureSearch`, `StructureLocateRules` |
-| Jefes dormidos que aparecen tras la generación (nunca durante) | `Temples.spawnAutomaton` y el bloque controlador `TempleSealBlockEntity` |
-| Arena con niebla temporal | `world/BossArenas`, `TemporaryBlocks` |
-| Jefes, fases, ataques y animaciones | `boss/FacelessColossusEntity`, `GuardianEntity` (ya jugables, GeckoLib) |
-| Botín por anillo | `data/aptitudes/loot_table/chests/*` y el patrón de `chestLoot(cell)` |
+| Nombre | **Las Tres Torres Señoriales** |
+| Jefes | **Coloso Sin Rostro** = jefe final (el Señor corrompido en su armadura). **Guardián Desmontado** = subjefe (un vasallo). Sin sellos de invocación; dormidos al generarse; **una sola vez por estructura** |
+| Lore | Al caer el Primer Eclipse, el líder de la casa vio corrompida su alma y esta se infundió en su armadura: ahora es un ente corrompido. Sus vasallos, también |
+| Forma | **Tres torres** sobre la superficie (referencias en el brief), no un templo subterráneo |
+| Recompensa | **Un logro y una Plantilla de ascensión** (objeto que ya existe desde V80) |
+| Rareza | **Más rara que el Templo del Custodio** (hoy 1 de cada 120 chunks) |
+| Dificultad | **Alta**, también los enemigos (por encima del anillo de Amenaza del lugar) |
 
-## 2. Propuesta de estructura (a confirmar)
+## 2. Cómo encaja con lo que ya existe
 
-Subterráneo, como el Templo del Custodio hondo, pero **más largo que ancho** para dar espacio al Coloso (3,8 bloques de alto, ojos a 3,4):
-
-| Nivel | Contenido |
+| Pieza | Papel |
 |---|---|
-| Acceso | Foso con rampa desde la superficie (reutiliza la solución del Custodio) |
-| Piso 1 · Sala de guardias | Criaturas por anillo de Amenaza (oleada única). Sin puzle |
-| Piso 2 · Cámara del Guardián | **Subjefe** dormido en el centro; al entrar se levanta la niebla de arena y se cierran las salidas; al vencerlo se abre la escalera |
-| Piso 3 · Sala del Coloso | **Jefe final** dormido; techo de al menos 7 bloques; ruinas-columnas rotas (ya existen en `BossArenas`) |
-| Cámara del tesoro | Cofres por anillo tras vencer al Coloso; el trofeo del jefe (ver §4) |
+| `boss/FacelessColossusEntity` | El Señor corrompido: «sin rostro» = el yelmo vacío. Jefe final |
+| `boss/GuardianEntity` (Guardián Desmontado) | Vasallo corrompido: subjefe de cada torre vasalla |
+| `item/AscendedTemplateItem` | Plantilla de ascensión: recompensa garantizada |
+| Patrón de `temple/CustodianTempleLayout` + `world/CustodianTempleFeature` + controlador | Layout puro con pruebas, `Feature` que lo traduce a bloques, bloque controlador que despierta a los jefes tras la generación |
+| `world/RegionGridPlacement`, `StructureIndex` | Rareza por región y `/aptitudes locate|place` |
+| `world/BossArenas` | Niebla de arena y ruinas del Coloso |
+| `achievement/Achievement` + `tools/advancements/gen_advancements.py` | El logro (los JSON se generan, no se editan) |
+| `guide/LoreCatalog`, `LoreRules`, `LoreManager` | Entradas de las Crónicas |
 
-Todo dentro del radio 15 de un `Feature`, como el Custodio. El controlador (un bloque con entidad de bloque) guarda el estado
-`DORMIDO → GUARDIÁN_VIVO → GUARDIÁN_VENCIDO → COLOSO_VIVO → VENCIDO` y **nunca vuelve atrás**: eso implementa «una sola vez por estructura».
+## 3. Estructura propuesta (a confirmar)
 
-## 3. Fases (cada una termina con `./gradlew build` en verde y su commit)
+Tres torres de piedra musgosa en triángulo dentro del radio 15 del `Feature`, unidas por un patio y escalinatas:
 
-1. **Layout puro** (`dungeon/ColossusDungeonLayout` + pruebas): celdas, conectividad, alturas mínimas y cabida de los dos jefes.
-2. **Feature y datos de mundo:** `ColossusDungeonFeature`, configured/placed feature, `RegionGridPlacement`, `StructureIndex.record`, `/aptitudes locate|place colossus_dungeon`.
-3. **Controlador y jefes:** bloque controlador, despertar del Guardián y del Coloso, arenas, estado persistente, anillo de Amenaza.
-4. **Botín, bestiario y lore:** tablas de botín, carta del Coloso en el bestiario (hoy falta), entradas de las Crónicas, textos en 5 idiomas, `CONFIGURATION.md`.
-5. **Limpieza:** borrar los restos de los sellos (`boss/SummonSealItem`, `SummonRules`/`SummonState` si nada más los usa, filas de `gen_items.py`) y actualizar `docs/`.
-
-## 4. Preguntas abiertas para el autor
-
-| # | Pregunta | Mi recomendación |
+| Torre | Altura | Contenido |
 |---|---|---|
-| 1 | **Nombre** del dungeon (y su papel en el lore: D-07 sigue abierta, el Coloso no tiene papel fijado) | Un nombre provisional neutral («Ciudadela del Coloso») hasta decidir el lore |
-| 2 | **Recompensa del Coloso:** trofeo propio (como el Cráneo del Gran Osario), Corazones de campeón, plantillas de ascensión, runas... | Tabla por anillo + un trofeo narrativo; sin poder nuevo hasta probar el balance |
-| 3 | **Dificultad:** ¿escala con el anillo de Amenaza del lugar (como el Custodio) o es fija? | Escala con el anillo, con tope en el V |
-| 4 | **Frecuencia:** ¿más rara que el Templo del Custodio (1 de cada 120 chunks)? | Más rara: una región por cada 2–3 del Custodio |
-| 5 | **Acceso:** ¿abierto, o con una llave/objeto de la cadena (p. ej. el Ancla del Velo)? | Abierto, para no alargar la cadena actual sin probarla |
-| 6 | ¿Se conserva el **ciclo de espera de 20 min** (`SummonRules`) para algo, o se borra con los sellos? | Borrarlo en la fase 5 |
+| Vasalla Oeste | ≈ 26 | Pisos de combate (vasallos corrompidos) y, arriba, un **Guardián** dormido. Al vencerlo se abre la puerta del Señor |
+| Vasalla Este | ≈ 26 | Igual, con otro Guardián (variante de fase avanzada) |
+| **Torre del Señor** | ≈ 40 | Cerrada hasta vencer a los dos Guardianes. Piso alto con la sala del **Coloso** y la cámara con la Plantilla de ascensión |
 
-## 5. Riesgos
+Remates de las torres con **gárgolas/empuñaduras de espada gigantes** (guiño a la tercera referencia: tres espadas hincadas). El estado del
+controlador es `DORMIDO → VASALLOS (0/2, 1/2) → SEÑOR_ABIERTO → COLOSO_VIVO → VENCIDO` y **nunca retrocede**.
 
-- **Generación de mundo:** no se puede probar sin cargar un mundo; el único control automático es el layout puro. Se prueba con `/aptitudes place` y mundos nuevos y antiguos.
-- **Tamaño de los jefes:** el Coloso (hitbox 1,6×3,8) y sus ataques de área piden una sala amplia; si el radio 15 no basta, habría que partir la sala en dos `Feature`s.
-- **Sin validar en partida** el combate del Coloso dentro de una estructura cerrada (las pruebas actuales son en terreno abierto).
+## 4. Lo que hay que vigilar
+
+- **Exclusión de `AGENTS.md` §3 (linajes, razas, pactos, herencias).** «Casa», «Señor» y «vasallos» son **solo ambientación**. Ninguna mecánica
+  puede depender de ascendencia ni de linaje, ni darse por pertenecer a una casa. Que el alma quede *infundida en una armadura* no es un pacto
+  del jugador: no se ofrece ningún pacto.
+- **Cronología:** el «Primer Eclipse» es siempre el hecho histórico de la Primera Era (`lore/02_CRONOLOGIA.md`, período 8); nunca el Eclipse
+  que invoca el jugador.
+- **Referencias:** las tres imágenes son construcciones de otros autores (una lleva firma). Se usan **como inspiración de siluetas y
+  proporciones**, no se copian bloque a bloque ni se suben al repositorio.
+- **Generación de mundo:** sin un mundo cargado solo se prueba el layout puro. Una torre de 40 bloques exige comprobar la altura del mundo y
+  el terreno (`StructureBuilder.suitable`).
+
+## 5. Fases
+
+1. **Layout puro** (`dungeon/TowersLayout` + pruebas: conectividad, alturas, cabida de los jefes, que ningún bloque salga del radio 15).
+2. **Feature y datos de mundo:** `ThreeTowersFeature`, JSON de configured/placed feature, `RegionGridPlacement` más raro, `StructureIndex`, `locate|place`.
+3. **Controlador y jefes:** vasallos, despertar de Guardianes y Coloso, arenas, estado persistente, dificultad alta.
+4. **Recompensa y narrativa:** Plantilla de ascensión, logro, cartas de bestiario (el Coloso y el Guardián), Crónicas, textos en 5 idiomas, `CONFIGURATION.md`.
+5. **Limpieza** de los restos de los sellos (`boss/SummonSealItem`, `SummonRules`, `SummonState`, filas de `gen_items.py`) y documentación.
+
+## 6. Preguntas que siguen abiertas
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | **Nombre de la casa y del Señor** (hoy «tal casa») | Dejar el nombre de la casa sin fijar en el código; solo claves de idioma para poder cambiarlo |
+| 2 | ¿Las dos torres vasallas deben vencerse **antes** de abrir la del Señor? | Sí: da el recorrido de «tres torres» y justifica el subjefe |
+| 3 | **Cuánto más rara:** frecuencia concreta | Región de 64×64 chunks-grid (≈4 veces más rara que el Custodio) |
+| 4 | **Cuánto más difícil:** ¿anillo del lugar +2, o mínimo fijo III? | Mínimo fijo III y +1 sobre el anillo del lugar, con tope V |
+| 5 | **Acceso:** ¿abierto o con objeto de la cadena? | Abierto |
+| 6 | ¿Además de la Plantilla, una pequeña tabla de botín por anillo? | Sí, sin poder nuevo |
+| 7 | **Quién lo ejecuta:** Claude (en código, con el brief) o Codex | Claude el código (layout, `Feature`, controlador, pruebas); Codex puede encargarse de los textos de lore y de las cartas del bestiario |

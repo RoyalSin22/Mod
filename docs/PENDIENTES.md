@@ -25,7 +25,7 @@ no se proponen en ningún punto.
 | ~~T5 · Migración de configuración del calendario~~ | **Hecha** (revisión 84 de `ConfigMigration`; calendario apagado en `WorldEventManager`); los campos antiguos quedan solo por compatibilidad | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` (T5), `config/ConfigMigration` |
 | T6 · Migración de los 3 sellos | Retirados sin alias ni conversión (`fe4f766`); D-25/D-26 pedían migración | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` (T6) |
 | Regeneración de templos | `temple/TempleRecurrenceRules` no está conectada al juego; se compensó subiendo la frecuencia a 1/120 chunks (D-35). Se reabre si los Behelit no bastan | `docs/lore/DECISIONES_PENDIENTES.md` (D-33, D-35) |
-| Dungeon del Coloso (jefe final) y Guardián (subjefe), una vez por estructura | Decidido (D-37); **diseño propuesto en `docs/V86_DUNGEON_COLOSO.md`, a la espera de tus respuestas** | `docs/lore/DECISIONES_PENDIENTES.md` (D-37) |
+| «Las Tres Torres Señoriales»: dungeon con Coloso (final) y Guardián (subjefe), una vez por estructura | Decidido (D-37, D-38); diseño en `docs/V86_DUNGEON_COLOSO.md` y **encargo listo en `docs/PROMPT_DUNGEON_TRES_TORRES.md`**; sin código | `docs/lore/DECISIONES_PENDIENTES.md` (D-37) |
 | Mazmorra de las Cuatro Llaves «como tal» | Solo existen las cuatro cámaras y la Cripta de la Niebla | `docs/ROADMAP_APTITUDES.md` (v65, V69) |
 | Cripta en templos antiguos | Solo los templos generados tras V69 la tienen | `docs/ROADMAP_APTITUDES.md` (V69), `docs/V69_CRIPTA_DE_LA_NIEBLA.md` |
 | Logro «Resonancia perfecta» y estadística de bonificadores | Opcional de C5 | `docs/C5_PENDIENTES.md` |
