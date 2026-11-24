@@ -179,10 +179,8 @@ public final class ModItems {
 	/** Corazón de campeón: solo lo sueltan los campeones. */
 	public static final Item CHAMPION_HEART = register("champion_heart",
 			new Item(new Item.Settings().rarity(Rarity.EPIC).fireproof()));
-	// T6 (v67): sellos de invocación retirados. Los ítems se mantienen para compatibilidad pero no hacen nada.
-	// public static final Item FACELESS_COLOSSUS_SEAL = register("faceless_colossus_seal", ...);
-	// public static final Item DISMANTLED_GUARDIAN_SEAL = register("dismantled_guardian_seal", ...);
-	// public static final Item ANCIENT_AUTOMATON_SEAL = register("ancient_automaton_seal", ...);
+	// Los sellos de invocación de los jefes se retiraron por completo (T6, y D-37 decidió que no vuelven): el Coloso y el Guardián
+	// aparecen ahora dentro de Las Tres Torres Señoriales (V86), y el Autómata en el Templo del Custodio.
 
 	public static final Item RUNE_FLAME = register("rune_flame", new dev.aptitudes.rune.RuneItem(dev.aptitudes.rune.RuneKind.FLAME, new Item.Settings().rarity(Rarity.UNCOMMON)));
 	public static final Item RUNE_LEECH = register("rune_leech", new dev.aptitudes.rune.RuneItem(dev.aptitudes.rune.RuneKind.LEECH, new Item.Settings().rarity(Rarity.RARE)));

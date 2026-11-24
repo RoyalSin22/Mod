@@ -16,6 +16,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   Guardián Desmontado su subjefe, dormidos al generarse y una sola vez por estructura. Aún sin implementar (pendiente de diseño).
 - **S3 Parada y contraataque se queda activada por defecto** (confirmado por el autor).
 
+### Eliminado
+- **V86 fase 5 · restos de los sellos de invocación.** Borrados `boss/SummonSealItem`, `SummonRules`, `SummonState` y `SummonRulesTest` (nada más los
+  usaba desde que T6 retiró los tres objetos), el gancho `AnimatedBossEntity.onDeath` que solo registraba derrotas para la reinvocación, el método
+  `restorePhase` (y su override en el Coloso, que solo llamaba el sello) y las tres filas de `tools/textures/gen_items.py` que regeneraban los PNG
+  retirados (la plantilla `seal` se conserva: la usan el Sello del gremio y la Ficha de expedición, cuyos PNG salen idénticos). Ya no hay que borrar
+  PNG a mano tras ejecutar `gen_items.py`. Los mundos antiguos conservan, inofensivo, el archivo de datos de `SummonState`. Sin cambios de balance.
+
 ### Añadido
 - **V86 fase 3 · Las Tres Torres Señoriales cobran vida.** Nuevo bloque controlador irrompible (`three_towers_controller`, en el centro del
   patio; reutiliza las texturas del sello del templo) con su entidad de bloque (`dungeon/TowersControllerBlockEntity`) y reglas puras

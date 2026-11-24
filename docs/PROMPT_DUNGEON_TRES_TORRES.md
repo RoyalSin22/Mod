@@ -72,7 +72,7 @@ Reutiliza el modificador `aptitudes:region_grid` con una región **más pequeña
 4. **Recompensa y narrativa:** plantilla de ascensión, **logro** (añadir a `achievement/Achievement` y regenerar con
    `tools/advancements/gen_advancements.py`; no editar los JSON), cartas de bestiario del **Coloso** y del **Guardián** (`guide/BestiaryRules`),
    entradas de las **Crónicas** (`guide/LoreCatalog`, `LoreRules`), textos en en_us y es_es + variantes `es_*` y `pt/fr/de` con los generadores.
-5. **Limpieza de sellos:** borrar `boss/SummonSealItem`, `SummonRules`, `SummonState` y las filas de `gen_items.py` si ya nada los usa, y
+5. **Limpieza de sellos — HECHA en la fase 5:** se borraron `boss/SummonSealItem`, `SummonRules`, `SummonState` y las filas de `gen_items.py` si ya nada los usa, y
    actualizar `AGENTS.md`, `CHANGELOG.md`, `docs/ROADMAP_APTITUDES.md`, `docs/PENDIENTES.md`, `docs/TESTING.md`.
 
 ## 7. Reglas de la casa (resumen)

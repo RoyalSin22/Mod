@@ -54,7 +54,7 @@ eliminen ahora**. Hay **dos cosas distintas** con ese nombre:
 
 | Qué | Ids | Uso actual |
 |---|---|---|
-| Sellos de invocación de jefes | `ancient_automaton_seal`, `dismantled_guardian_seal`, `faceless_colossus_seal` (`boss/SummonSealItem`) | Invocar a los jefes; con receta, textos y modelos |
+| Sellos de invocación de jefes | `ancient_automaton_seal`, `dismantled_guardian_seal`, `faceless_colossus_seal` (`boss/SummonSealItem`) | Invocar a los jefes; con receta, textos y modelos. **Retirados por completo y borrados (D-37, V86 fase 5)** |
 | Bloque Sello del templo | `temple_seal` (`temple/Temples`) | Puzle y guardián del templo actual |
 
 **No se eliminó nada.** Retirar un objeto registrado afecta a mundos y jugadores existentes (ítems perdidos,

@@ -545,7 +545,7 @@ Atlas y emisión del Coloso: `python3 tools/textures/gen_faceless_glowmask.py sr
    acabar el aviso. Sal del arco o del círculo para esquivar. Al alcanzar 2/3 de vida, comprueba la
    animación de transición, la armadura agrietada, la emisión y la embestida.
 4. Comprueba que el atlas agrietado permanece al recuperar vida, en fase 3, después de recargar el mundo
-   y al volver a seguir o reinvocar un Coloso que ya cambió de fase.
+   y al volver a seguir a un Coloso que ya cambió de fase. (Ya no hay reinvocación: los sellos se retiraron.)
 5. Verifica el giro de cabeza al caminar, la pose del casco durante acciones, el aturdimiento, el botín
    y la página «El Coloso Sin Rostro» del bestiario.
 6. Activa F3+B y comprueba la caja en reposo y en un paso de 2 × 3,5 bloques. Rodea al Coloso durante el aviso

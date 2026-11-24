@@ -41,7 +41,7 @@ no se proponen en ningún punto.
 | Astrolabio del Ocaso (C3) | (a) Solo operadores; la decisión E1 añadía al líder del grupo. (b) Mensajes fijos en inglés (`EclipseSummoningRules`), no son claves de idioma. (c) Sin textura ni modelo. (d) El logro `summon_eclipse` existe como JSON pero nadie lo concede. (e) Posible solapamiento con el Behelit | `event/EclipseSummoningRules`, `block/BonfireBlock:49`, `item/SunsetAstralabeItem`, `data/aptitudes/advancement/aptitudes_achievements/summon_eclipse.json` |
 | ~~Behelit con Eclipse activo~~ | **Resuelto**: no se consume y avisa en la barra de acción | `item/BeheritItem`, `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` §4 |
 | ~~Pesos de eventos a 0~~ | **Corregido**: dejaba la Niebla y la Lluvia inutilizables en configuraciones nuevas; el defecto vuelve a 1 con migración | `config/AptitudesConfig:202-204` |
-| Restos de los sellos retirados | `boss/SummonSealItem` ya no se usa; `tools/textures/gen_items.py` aún regenera sus PNG; comentario falso en `ModItems:183` («se mantienen para compatibilidad»); menciones en `docs/PLAN_AVANCE.md`, `docs/lore/09_CADENA_DE_PROGRESION.md`, `docs/PROMPT_ARTE_ARMAS.md` y en la entrada «v65 — Ruinas de batalla» del CHANGELOG | `fe4f766`, `item/ModItems`, `AGENTS.md` §2 |
+| ~~Restos de los sellos retirados~~ | **Limpiados (V86 fase 5):** clases, prueba, gancho, generador y comentario falso de `ModItems`. Quedan solo menciones históricas (marcadas) en `docs/PLAN_AVANCE.md`, `docs/lore/` y la entrada «v65 — Ruinas de batalla» del CHANGELOG | `fe4f766`, `item/ModItems`, `AGENTS.md` §2 |
 
 ## 3. Arte
 

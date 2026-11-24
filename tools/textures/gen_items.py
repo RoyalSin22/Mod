@@ -1043,10 +1043,6 @@ ITEMS = {
     'rebirth_offering': ('offering', {'J': '#ff9f1a', 'K': '#2b2d38', 'C': '#efe6d2', 'G': '#e0b43a', 'A': '#8e44ad'}),
     'armory_voucher': ('voucher', {'W': '#8d5a2b', 'C': '#efe6d2', 'K': '#5d4a3a', 'R': '#b0423a'}),
     'elite_essence': ('essence', {'A': '#c0392b', 'J': '#ffb199'}),
-    # Paso 3 de la reinvocación: sellos de invocación de los jefes animados.
-    'faceless_colossus_seal': ('seal', {'R': '#5d1f1f', 'G': '#e0b43a', 'J': '#ffe08a'}),
-    'dismantled_guardian_seal': ('seal', {'R': '#37474f', 'G': '#90a4ae', 'J': '#cfd8dc'}),
-    'ancient_automaton_seal': ('seal', {'R': '#5d4037', 'G': '#4dd0e1', 'J': '#b2ebf2'}),
     'expedition_token': ('seal', {'R': '#8a6d2b', 'G': '#e0b43a', 'J': '#fff3c4'}),
     'automaton_orb': ('automaton_orb', {'S': '#7d7a72', 'B': '#9e6c38', 'A': '#ffa434', 'D': '#3b3a38'}),
     'automaton_orb_deflected': ('automaton_orb', {'S': '#3d7f8a', 'B': '#4dd0e1', 'A': '#b2ebf2', 'D': '#1b3a40'}),

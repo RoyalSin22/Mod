@@ -60,7 +60,7 @@ controlador es `DORMIDO → VASALLOS (0/2, 1/2) → SEÑOR_ABIERTO → COLOSO_VI
 2. **Feature y datos de mundo — HECHA, sin probar en un mundo:** `ThreeTowersFeature`, JSON de configured/placed feature, región 64, `StructureIndex`, `locate|place three_towers`, opción `threeTowersEnabled`. El controlador es un marcador y la puerta del Señor una piedra rompible hasta la fase 3.
 3. **Controlador y jefes — HECHA, sin probar en partida:** `dungeon/TowersControllerBlockEntity`, `TowersFlowRules`, oleadas, despertar de Guardianes y Coloso, puerta del Señor, dificultad (anillo +1, mínimo III, tope V), recompensa y logro. **Sin arena con niebla** (`BossArenas`): queda como mejora si el combate lo pide.
 4. **Recompensa y narrativa:** la Plantilla y el logro ya están (fase 3); **faltan las cartas de bestiario del Coloso y del Guardián, las Crónicas y la revisión de los textos provisionales: encargo de Codex.**
-5. **Limpieza** de los restos de los sellos (`boss/SummonSealItem`, `SummonRules`, `SummonState`, filas de `gen_items.py`) y documentación.
+5. **Limpieza — HECHA:** borrados `boss/SummonSealItem`, `SummonRules`, `SummonState`, su prueba, `restorePhase`, el gancho de derrota y las filas de `gen_items.py`; `AGENTS.md` y la documentación al día.
 
 ## 6. Preguntas que siguen abiertas
 

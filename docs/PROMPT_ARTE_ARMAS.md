@@ -190,8 +190,7 @@ python3 tools/textures/gen_items.py src/main/resources/assets/aptitudes/textures
 python3 tools/models/gen_weapon_models.py src/main/resources/assets/aptitudes/models/item
 ```
 
-   (`gen_items.py` regenera además los tres sellos retirados: borra `ancient_automaton_seal.png`, `dismantled_guardian_seal.png` y
-   `faceless_colossus_seal.png` de `textures/item/` después.)
+   (Desde la fase 5 de V86 `gen_items.py` ya no regenera los tres sellos retirados: no hay nada que borrar después.)
 5. Un arma con arte externo se guarda en `tools/textures/source/weapons/<rol>_weapon_master.png`. Para volver al diseño
    provisional de una, borra su archivo de esa carpeta y regenera.
 
