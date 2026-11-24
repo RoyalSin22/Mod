@@ -111,6 +111,14 @@ public final class TowersLayout {
 
 	private TowersLayout() {}
 
+	private static Result cached;
+
+	/** Layout compartido y de solo lectura (la entidad de bloque lo consulta en cada comprobación; construirlo cuesta ~45 000 celdas). */
+	public static synchronized Result build0() {
+		if (cached == null) cached = build();
+		return cached;
+	}
+
 	public static Result build() {
 		Result r = new Result();
 		// Patio con cimiento: la Feature nivelará el terreno hasta aquí.

@@ -17,6 +17,16 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 - **S3 Parada y contraataque se queda activada por defecto** (confirmado por el autor).
 
 ### Añadido
+- **V86 fase 3 · Las Tres Torres Señoriales cobran vida.** Nuevo bloque controlador irrompible (`three_towers_controller`, en el centro del
+  patio; reutiliza las texturas del sello del templo) con su entidad de bloque (`dungeon/TowersControllerBlockEntity`) y reglas puras
+  (`TowersFlowRules`, `TowersFlowRulesTest`). Los jefes «duermen» porque **no existen** hasta que un jugador entra en su sala:
+  **oleadas únicas** de criaturas élite con armadura completa en cada planta de combate; un **Guardián Desmontado** en la cima de cada torre
+  vasalla; al vencer a los dos se **abre la puerta sellada** de la Torre del Señor, y al entrar en su sala despierta el **Coloso Sin Rostro**.
+  Al vencerlo salen **un cofre por jugador cercano (hasta 5)** con la **Plantilla de ascensión garantizada** más botín (`chests/three_towers_reward`)
+  y se concede el logro **«Fin de la Vigilia»** (`THREE_TOWERS`, hijo de `slay_boss`, generado con `gen_advancements.py`). **Dificultad alta:** anillo de
+  Amenaza = el del lugar +1 con mínimo III y tope V (vida de los jefes +25 % por anillo, la de las criaturas +15 %). Estado persistente que **nunca
+  retrocede**: una sola vez por estructura, sin sellos ni reaparición. Sin nada en dificultad Pacífica. Los textos de los avisos son
+  **provisionales** (los reescribe Codex). **Sin probar en partida.** El script de logros ahora incluye también «Sinergista» (su JSON ya existía).
 - **V86 fase 2 · Las Tres Torres Señoriales generan en el mundo.** `world/ThreeTowersFeature` traduce `TowersLayout` a bloques (piedra
   musgosa, cimiento de pizarra, patio despejado, ventanas de barrotes, antorchas de almas, escaleras y empuñaduras de pizarra) y no crea
   entidades. Rareza por región de **24×24 chunks** (el Custodio usa 32: las torres son ~1,8 veces **más frecuentes**; el Custodio **no se toca**, decisión del autor: es aún más raro que las torres), registrada en

@@ -2013,12 +2013,30 @@ Desde T3d los chunks **nuevos** generan este templo solos (los ya generados cons
    Sin errores en el registro del servidor (`aptitudes:three_towers` registrada y sus JSON cargados).
 2. Entra por la puerta sur de una torre vasalla (3×3, abierta): hay 3 plantas de combate unidas por escaleras rectas que alternan muro norte y sur,
    y una sala superior de 9×9 con 7 de alto. Comprueba que se puede subir caminando hasta arriba sin saltar y que las antorchas de almas siguen en los muros.
-3. La Torre del Señor tiene la puerta sur **sellada** (piedra sellada 3×3). **Ahora se puede romper**; la fase 3 la hará abrible solo al vencer a los Guardianes.
-   Dentro: 4 plantas de combate y una sala de 11×11 con 9 de alto. El marcador `lodestone` del centro del patio es el futuro controlador.
-4. Sin jefes ni criaturas dentro: es lo esperado hasta la fase 3.
+3. La Torre del Señor tiene la puerta sur **sellada** (piedra sellada 3×3, irrompible). Dentro: 4 plantas de combate y una sala de 11×11 con 9 de alto.
+   En el centro del patio está el bloque controlador (**Piedra de la Vigilia**), irrompible.
+4. (Actualizado en la fase 3) Hay criaturas y jefes: ver la sección de la fase 3 más abajo.
 5. `/aptitudes locate three_towers` tras generar una (o explorar): devuelve las coordenadas. En un mundo con semilla fija, mide cuántas hay en un radio de
    2000 bloques y compáralas con las del Templo del Custodio: deberían ser unas **1,8 veces más** (región 24 frente a 32).
 6. En terreno con pendiente fuerte, océano o lago: no debe generarse (`suitable`), ni dejar columnas flotando; revisa los bordes del patio y el cimiento.
 7. `threeTowersEnabled = false`: `place` falla y no se genera en chunks nuevos.
 8. Prueba en un mundo con y sin árboles altos cerca: el patio debe quedar despejado hasta 8 bloques de altura.
+
+# V86 · fase 3 — jefes, puerta, recompensa y logro de las Tres Torres (verificación manual, pendiente)
+
+Con operador, supervivencia y dificultad Normal o superior (en Pacífico no aparece nada). `/aptitudes place three_towers` y entra por el sur.
+
+1. **Oleadas:** al pisar cada planta de combate de una torre aparecen 4 puntos de criaturas élite con **armadura completa visible** (hierro con el anillo
+   mínimo, diamante en el IV, netherita en el V), una sola vez por planta. Salir y volver a entrar **no** repite la oleada. Reinicia el servidor: tampoco se repite.
+2. **Guardianes:** al entrar en la sala superior de una torre vasalla aparece su **Guardián Desmontado** (aviso «Un caballero hueco se alza…»). Mientras no entres, no existe.
+   Al vencer al primero: «Ha caído un guardián. Quedan 1.». Si sales a media pelea y vuelves a entrar, el Guardián sigue ahí (no se duplica).
+3. **Puerta del Señor:** con un solo Guardián caído la puerta sur de la Torre del Señor **sigue sellada**. Al caer el segundo se abre (sonido y aviso).
+4. **Coloso:** entra en la sala alta de la Torre del Señor: despierta el Coloso Sin Rostro (aviso y trueno). Comprueba que **cabe** (sala 11×11×9), que sus ataques
+   de área no atraviesan los muros y que el combate es jugable en un espacio cerrado (hasta ahora solo se probó al aire libre).
+5. **Recompensa:** al vencerlo aparecen cofres en la pared norte de la sala, **uno por jugador cercano** (hasta 5), cada uno con **una Plantilla de ascensión**
+   más Corazones de campeón, Fragmentos de alma y diamantes. Todos los jugadores a menos de 64 bloques reciben el logro «Fin de la Vigilia».
+6. **Una sola vez:** tras vencer al Coloso, salir y entrar no hace aparecer nada más. Reinicia el servidor: la puerta sigue abierta y no hay reaparición.
+7. **Dificultad:** compara la vida de un Guardián en una estructura cerca del spawn (anillo bajo → anillo efectivo III) y otra lejos (IV/V): debe subir.
+8. **Controlador:** la Piedra de la Vigilia del patio no se rompe en supervivencia. Con un jefe despierto, `/kill` del jefe cuenta como derrota (es lo esperado).
+9. Revisa el registro del servidor: sin excepciones al despertar jefes ni al colocar los cofres.
 

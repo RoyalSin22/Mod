@@ -35,7 +35,9 @@ public enum Achievement {
 	/** v67: descubrir todas las criaturas del bestiario (al menos una muerte de cada una). */
 	BESTIARY_COMPLETE("bestiary_complete", ROOT, Frame.GOAL, "minecraft:enchanted_book"),
 	/** v65 C5: activar las 5 sinergias en una sesión (Y1-Y5). */
-	SYNERGIST("synergist", ROOT, Frame.GOAL, "aptitudes:mastery_emblem");
+	SYNERGIST("synergist", ROOT, Frame.GOAL, "aptitudes:mastery_emblem"),
+	/** V86: venció al Coloso Sin Rostro en Las Tres Torres Señoriales. */
+	THREE_TOWERS("three_towers", SLAY_BOSS, Frame.CHALLENGE, "aptitudes:ascended_template");
 
 	/** Nombre del único criterio de cada logro (salvo la raíz, que usa {@code minecraft:tick}). */
 	public static final String CRITERION = "done";

@@ -4,6 +4,8 @@ import com.mojang.serialization.Codec;
 import dev.aptitudes.Aptitudes;
 import dev.aptitudes.dungeon.TowersLayout;
 import dev.aptitudes.dungeon.TowersLayout.Cell;
+import dev.aptitudes.dungeon.TowersBlocks;
+import dev.aptitudes.dungeon.TowersControllerBlockEntity;
 import dev.aptitudes.dungeon.TowersLayout.Tower;
 import dev.aptitudes.temple.Temples;
 import net.minecraft.block.BlockState;
@@ -70,6 +72,8 @@ public class ThreeTowersFeature extends Feature<DefaultFeatureConfig> {
 				}
 			}
 		}
+		// El controlador fija la dificultad según el anillo de Amenaza del lugar; los jefes los despierta él después, nunca aquí.
+		if (world.getBlockEntity(b.at(0, 0, 0)) instanceof TowersControllerBlockEntity controller) controller.setup(TempleFeature.ring(context, origin));
 		StructureIndex.record(world, "three_towers", origin); // V77: /aptitudes locate
 		return true;
 	}
@@ -96,7 +100,7 @@ public class ThreeTowersFeature extends Feature<DefaultFeatureConfig> {
 			case GRIP -> Blocks.POLISHED_DEEPSLATE.getDefaultState();
 			case GUARD -> Blocks.DEEPSLATE_BRICKS.getDefaultState();
 			case POMMEL -> Blocks.CHISELED_DEEPSLATE.getDefaultState();
-			case CONTROLLER -> Blocks.LODESTONE.getDefaultState(); // marcador hasta la fase 3
+			case CONTROLLER -> TowersBlocks.CONTROLLER.getDefaultState();
 		};
 	}
 

@@ -37,6 +37,8 @@ ACHIEVEMENTS = [
     ("temple_opened", "slay_boss", "goal", "aptitudes:temple_key"),
     ("life_vessel", "temple_opened", "goal", "aptitudes:life_vessel"),
     ("bestiary_complete", "root", "goal", "minecraft:enchanted_book"),
+    ("synergist", "root", "goal", "aptitudes:mastery_emblem"),
+    ("three_towers", "slay_boss", "challenge", "aptitudes:ascended_template"),
 ]
 
 

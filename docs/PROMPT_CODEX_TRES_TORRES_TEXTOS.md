@@ -14,6 +14,24 @@ toques `gen_*` ajenos. **El nombre ya está decidido (D-39): «Vigilia de las Tr
 | **Carta de bestiario del Guardián Desmontado** | Ídem |
 | **Mensajes del juego** | Aviso al despertar un Guardián, al abrirse la puerta del Señor, al despertar el Coloso, al vencerlo y el texto del logro (título y descripción; Claude añade el logro a `Achievement`) |
 
+## 1b. Claves que ya existen con texto PROVISIONAL (reescríbelas)
+
+Claude las creó en la fase 3 con una redacción de trabajo en en_us y es_es (y traducciones iniciales pt/fr/de en `tools/lang/ui_catalog.py`). Reescríbelas
+con el tono final; **no cambies las claves**:
+
+| Clave | Cuándo sale |
+|---|---|
+| `towers.aptitudes.guardian_woke` | Despierta un Guardián (barra de acción) |
+| `towers.aptitudes.guardian_down` (`%s` = los que quedan) | Cae un Guardián y falta otro |
+| `towers.aptitudes.lord_open` | Cae el segundo Guardián y se abre la puerta del Señor |
+| `towers.aptitudes.colossus_woke` | Despierta el Coloso |
+| `towers.aptitudes.colossus_down` | Cae el Coloso |
+| `advancement.aptitudes.three_towers.title` / `.description` | Logro «Fin de la Vigilia» (id `three_towers`, ya en `Achievement`) |
+| `block.aptitudes.three_towers_controller` | Nombre del bloque controlador («Piedra de la Vigilia») |
+| `aptitudes.structure.three_towers` | Nombre de la estructura en `/aptitudes locate` |
+
+El id del logro y las claves de arriba están **cerrados**. Las entradas de las Crónicas y las cartas de bestiario aún no existen: pídeme los ids que necesites.
+
 ## 2. Reglas de redacción (de `docs/lore/`)
 
 - Tono y vocabulario de los textos ya existentes (`lore_catalog.py`): sobrio, de archivo; **sin** explicar de más; sin dar por seguro lo que el lore
