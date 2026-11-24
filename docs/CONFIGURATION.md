@@ -419,6 +419,10 @@ desde que el evento **empieza** (provisional) y no las consumen los comandos `/a
 | `fogDurationTicks` | 24000 | [1200, 240000] | Duración de la Niebla en ticks (24 000 = un día de Minecraft). Antes duraba 12 000 desde las 18:00. |
 | `emberRainCooldownDays` | 5 | [1, 365] | Días de espera entre dos Lluvias de brasas provocadas por un portal. |
 | `beheritCooldownDays` | 3 | [0, 365] | Días de espera, por mundo, entre dos usos del Resonador del Umbral (Behelit), contados desde el **fin** del Eclipse anterior (D-25). 0 = sin espera. Si se intenta antes, el objeto no se consume y se avisa en la barra de acción. |
+| `groundMessagesEnabled` | true | — | C7 · S5: permite dejar y valorar notas con frases **predefinidas** (`/aptitudes message <frase>`); nunca texto libre. |
+| `groundMessagesPerPlayer` | 3 | [1, 20] | Notas que cada jugador puede tener colocadas a la vez. |
+| `groundMessageLifetimeDays` | 7 | [1, 365] | Días que dura una nota. |
+| `groundMessageCooldownSeconds` | 30 | [1, 3600] | Espera entre dos notas del mismo jugador. |
 | `parryEnabled` | true | — | C7 · S3: bloquear el golpe cuerpo a cuerpo de una criatura justo al alzar el escudo (ventana de 4 ticks, la misma «guardia perfecta» de los jefes) la aturde y abre un golpe de gracia. Nunca afecta a jugadores, jefes (del mod y de vanilla) ni campeones. |
 | `parryStunTicks` | 40 | [0, 200] | Ticks de aturdimiento de la criatura parada (Lentitud y Debilidad altas). 0 = no aturde. |
 | `parryFinisherTicks` | 60 | [10, 200] | Plazo para asestar el golpe de gracia tras la parada. |

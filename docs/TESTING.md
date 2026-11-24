@@ -1979,3 +1979,17 @@ Desde T3d los chunks **nuevos** generan este templo solos (los ya generados cons
 5. Un campeón, el Wither, el Dragón, el Warden y los jefes del mod no se aturden ni abren golpe de gracia.
 6. Otro jugador con escudo golpeado por ti: sin parada (sin PvP).
 7. `parryEnabled = false`: nada de lo anterior ocurre. Comprueba que `/aptitudes` sigue sin errores en el registro tras 10 minutos de combate.
+
+# C7 · S5 — Mensajes en el suelo (verificación manual, pendiente)
+
+1. `/aptitudes message list` muestra las 12 frases en tu idioma. `/aptitudes message danger` deja una nota con el texto «Peligro adelante
+   [+0]» **siempre de cara al lector** (gira con la cámara); suena un campanilleo.
+2. Con otro jugador: clic derecho sobre la nota → «Valorado: +1» y el texto pasa a `[+1]`. Otro clic suyo: «Ya has valorado…». Tú sobre la tuya:
+   «No puedes valorar tu propio mensaje».
+3. Cuarta nota seguida: rechaza por el límite (3). Segunda nota en menos de 30 s: avisa de la espera. Una frase inventada: «Frase desconocida».
+4. `/aptitudes message remove` junto a tu nota la retira (texto y zona de clic). Un operador puede retirar las ajenas.
+5. Reinicia el servidor: las notas y sus valoraciones siguen (`aptitudes_ground_messages`). Con la nota lejos y el chunk descargado, no hay errores.
+6. Fuerza la caducidad con `groundMessageLifetimeDays = 1` y `/time add 48000`… la nota desaparece en menos de 10 s (revisión cada 200 ticks).
+7. Borra `world/data/aptitudes_ground_messages.dat` con el servidor parado y arranca: las notas viejas desaparecen al cargar su chunk (se retiran por no
+   constar en el estado), sin errores.
+8. `groundMessagesEnabled = false`: el comando avisa de que está desactivado. Con el mod en un cliente sin la traducción, el texto se ve como la clave.

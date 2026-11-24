@@ -6,6 +6,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **C7 · S5 Mensajes en el suelo.** `/aptitudes message <frase>` deja una nota con una de **12 frases predefinidas** (nunca
+  texto libre: no hay nada que moderar); los demás la leen y la **valoran una vez** con clic derecho (el texto muestra
+  `[+N]`). Cada jugador tiene un máximo de notas (3), una espera entre notas (30 s) y las notas caducan (7 días);
+  `/aptitudes message remove` retira la propia más cercana y un operador, cualquiera. **Sin cliente ni mixins nuevos:** cada nota
+  son dos entidades de vanilla, un `text_display` de cara al lector y una `interaction` para el clic. Estado y valoraciones
+  en `message/GroundMessageState` (`aptitudes_ground_messages`); reglas puras en `message/GroundMessageRules`
+  (`GroundMessageRulesTest`); las entidades etiquetadas que el estado no conoce se retiran al cargarse. Cuatro opciones
+  (`groundMessages*`), textos en 5 idiomas y fila en `docs/CONFIGURATION.md`. **Sin probar en partida** (guion en `docs/TESTING.md`).
 - **C7 · S3 Parada y contraataque.** Bloquear con el escudo un golpe cuerpo a cuerpo de una criatura dentro de la ventana de
   la guardia perfecta (4 ticks desde que el escudo es efectivo, la misma de los jefes: `GuardRules.PERFECT_WINDOW_TICKS` y
   `GuardTracker`) la **aturde** y abre un **golpe de gracia**: el siguiente golpe directo del jugador, en un plazo de 3 s,

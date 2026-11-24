@@ -223,6 +223,15 @@ public class AptitudesConfig {
 	 * anterior (D-25). 0 = sin espera.
 	 */
 	public int beheritCooldownDays = 3;
+	// ---------- Mensajes en el suelo (C7 · S5) ----------
+	/** Permite dejar y valorar notas con frases predefinidas ({@code /aptitudes message}). */
+	public boolean groundMessagesEnabled = true;
+	/** Notas que puede tener colocadas a la vez cada jugador. */
+	public int groundMessagesPerPlayer = 3;
+	/** Días que dura una nota antes de desaparecer. */
+	public int groundMessageLifetimeDays = 7;
+	/** Segundos de espera entre dos notas del mismo jugador. */
+	public int groundMessageCooldownSeconds = 30;
 	// ---------- Parada y contraataque (C7 · S3) ----------
 	/** Bloquear un golpe cuerpo a cuerpo con el escudo recién alzado aturde a la criatura y abre un golpe de gracia. */
 	public boolean parryEnabled = true;
@@ -643,6 +652,9 @@ public class AptitudesConfig {
 				dev.aptitudes.event.EventTriggerRules.MAX_FOG_TICKS);
 		c.emberRainCooldownDays = clamp(c.emberRainCooldownDays, 1, 365);
 		c.beheritCooldownDays = clamp(c.beheritCooldownDays, 0, 365);
+		c.groundMessagesPerPlayer = clamp(c.groundMessagesPerPlayer, 1, 20);
+		c.groundMessageLifetimeDays = clamp(c.groundMessageLifetimeDays, 1, 365);
+		c.groundMessageCooldownSeconds = clamp(c.groundMessageCooldownSeconds, 1, 3600);
 		c.parryStunTicks = clamp(c.parryStunTicks, 0, dev.aptitudes.logic.ParryRules.MAX_STUN_TICKS);
 		c.parryFinisherTicks = clamp(c.parryFinisherTicks, dev.aptitudes.logic.ParryRules.MIN_FINISHER_TICKS, dev.aptitudes.logic.ParryRules.MAX_FINISHER_TICKS);
 		c.parryFinisherMultiplier = Double.isNaN(c.parryFinisherMultiplier) ? 1.5

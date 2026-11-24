@@ -1889,3 +1889,31 @@ add('parry.aptitudes.', """
 success¦Aparada!¦Parade !¦Parade!
 finisher¦Golpe de misericórdia!¦Coup de grâce !¦Gnadenstoß!
 """)
+
+add('message.aptitudes.', """
+phrase.danger¦Perigo à frente¦Danger devant¦Gefahr voraus
+phrase.treasure¦Tesouro à frente¦Trésor devant¦Schatz voraus
+phrase.rest¦Bom lugar para descansar¦Bon endroit pour se reposer¦Guter Ort zum Rasten
+phrase.hidden¦Caminho oculto¦Chemin caché¦Versteckter Weg
+phrase.boss¦Chefe à frente¦Boss devant¦Boss voraus
+phrase.ambush¦Cuidado com a emboscada¦Attention à l’embuscade¦Vorsicht, Hinterhalt
+phrase.trap¦Armadilha!¦Piège !¦Falle!
+phrase.look_up¦Tente olhar para cima¦Essayez de regarder en haut¦Schau mal nach oben
+phrase.look_down¦Tente olhar para baixo¦Essayez de regarder en bas¦Schau mal nach unten
+phrase.dead_end¦Beco sem saída¦Cul-de-sac¦Sackgasse
+phrase.need_light¦Precisa de luz¦Il faut de la lumière¦Licht nötig
+phrase.well_done¦Muito bem!¦Bien joué !¦Gut gemacht!
+format¦%s  [+%s]¦%s  [+%s]¦%s  [+%s]
+placed¦Mensagem deixada. Os outros podem lê-la e avaliá-la.¦Message laissé. Les autres peuvent le lire et l’évaluer.¦Nachricht hinterlassen. Andere können sie lesen und bewerten.
+disabled¦As mensagens no chão estão desativadas neste servidor.¦Les messages au sol sont désactivés sur ce serveur.¦Bodennachrichten sind auf diesem Server deaktiviert.
+bad_phrase¦Frase desconhecida. Use /aptitudes message list.¦Phrase inconnue. Utilisez /aptitudes message list.¦Unbekannte Phrase. Nutze /aptitudes message list.
+limit¦Você já tem %s mensagens colocadas. Remova uma com /aptitudes message remove.¦Vous avez déjà %s messages posés. Retirez-en un avec /aptitudes message remove.¦Du hast bereits %s Nachrichten platziert. Entferne eine mit /aptitudes message remove.
+cooldown¦Espere %s segundos antes de deixar outra mensagem.¦Attendez %s secondes avant de laisser un autre message.¦Warte %s Sekunden, bevor du eine weitere Nachricht hinterlässt.
+failed¦Não foi possível colocar a mensagem.¦Le message n’a pas pu être posé.¦Die Nachricht konnte nicht platziert werden.
+voted¦Avaliado: +%s¦Évalué : +%s¦Bewertet: +%s
+own¦Você não pode avaliar sua própria mensagem.¦Vous ne pouvez pas évaluer votre propre message.¦Du kannst deine eigene Nachricht nicht bewerten.
+already¦Você já avaliou esta mensagem.¦Vous avez déjà évalué ce message.¦Du hast diese Nachricht bereits bewertet.
+removed¦Mensagem removida.¦Message retiré.¦Nachricht entfernt.
+none_nearby¦Não há nenhuma mensagem sua a menos de 6 blocos.¦Aucun de vos messages à moins de 6 blocs.¦Keine deiner Nachrichten im Umkreis von 6 Blöcken.
+list_header¦Frases disponíveis:¦Phrases disponibles :¦Verfügbare Phrasen:
+""")
