@@ -21,8 +21,8 @@ no se proponen en ningún punto.
 | C2 · Rendimiento R1–R3 | Caché por jugador de `PathEffects.all` y `Keystones.active`; mapa id → piedra angular. `PathEffects.java:29` y `Keystones.java:103` recalculan en cada llamada | `docs/PLAN_CLAUDE.md`, `docs/IDEAS_v47_v55.md` (R1–R3) |
 | R4 · Medir con spark | Servidor con 5–10 jugadores y eventos activos | `docs/IDEAS_v47_v55.md` (R4) |
 | C1 · Revisión de código v42–v58 | No hay informe ni rama `fix/…` | `docs/PLAN_CLAUDE.md` |
-| T5 · Espera de 3 días del Behelit por mundo | `EclipseManager.canStartEclipse` no la comprueba; `EclipseState` no guarda el fin del Eclipse | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md`, D-20/D-25 |
-| T5 · Migración de configuración del calendario | `eclipseIntervalDays`, `eclipseFirstDay` y `worldEventWeight*` siguen en `AptitudesConfig`; un `config` antiguo con pesos > 0 aún programa Eclipses | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` (T5), `config/ConfigMigration` |
+| ~~T5 · Espera de 3 días del Behelit~~ | **Hecha** (`event/BeheritRules`, `EclipseState.lastEndTick`, `beheritCooldownDays`); sin validar en partida | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md`, D-20/D-25 |
+| ~~T5 · Migración de configuración del calendario~~ | **Hecha** (revisión 84 de `ConfigMigration`; calendario apagado en `WorldEventManager`); los campos antiguos quedan solo por compatibilidad | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` (T5), `config/ConfigMigration` |
 | T6 · Migración de los 3 sellos | Retirados sin alias ni conversión (`fe4f766`); D-25/D-26 pedían migración | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` (T6) |
 | Regeneración de templos | `temple/TempleRecurrenceRules` no está conectada al juego; se compensó subiendo la frecuencia a 1/120 chunks (D-35). Se reabre si los Behelit no bastan | `docs/lore/DECISIONES_PENDIENTES.md` (D-33, D-35) |
 | Mazmorra de las Cuatro Llaves «como tal» | Solo existen las cuatro cámaras y la Cripta de la Niebla | `docs/ROADMAP_APTITUDES.md` (v65, V69) |
@@ -38,8 +38,8 @@ no se proponen en ningún punto.
 | Punto | Carencia | Origen |
 |---|---|---|
 | Astrolabio del Ocaso (C3) | (a) Solo operadores; la decisión E1 añadía al líder del grupo. (b) Mensajes fijos en inglés (`EclipseSummoningRules`), no son claves de idioma. (c) Sin textura ni modelo. (d) El logro `summon_eclipse` existe como JSON pero nadie lo concede. (e) Posible solapamiento con el Behelit | `event/EclipseSummoningRules`, `block/BonfireBlock:49`, `item/SunsetAstralabeItem`, `data/aptitudes/advancement/aptitudes_achievements/summon_eclipse.json` |
-| Behelit con Eclipse activo | Si hay un Eclipse o evento activo, el ítem no se consume y no avisa al jugador; la decisión nº 6 de la tabla T0 sigue sin registrar | `item/BeheritItem`, `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` §4 |
-| Pesos de eventos a 0 | `240484f` bajó `worldEventWeightEclipse/SoulFog/EmberRain` de 1 a 0 sin decisión registrada del autor (regla de «no cambiar balance por defecto sin preguntar») | `config/AptitudesConfig:202-204` |
+| ~~Behelit con Eclipse activo~~ | **Resuelto**: no se consume y avisa en la barra de acción | `item/BeheritItem`, `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` §4 |
+| ~~Pesos de eventos a 0~~ | **Corregido**: dejaba la Niebla y la Lluvia inutilizables en configuraciones nuevas; el defecto vuelve a 1 con migración | `config/AptitudesConfig:202-204` |
 | Restos de los sellos retirados | `boss/SummonSealItem` ya no se usa; `tools/textures/gen_items.py` aún regenera sus PNG; comentario falso en `ModItems:183` («se mantienen para compatibilidad»); menciones en `docs/PLAN_AVANCE.md`, `docs/lore/09_CADENA_DE_PROGRESION.md`, `docs/PROMPT_ARTE_ARMAS.md` y en la entrada «v65 — Ruinas de batalla» del CHANGELOG | `fe4f766`, `item/ModItems`, `AGENTS.md` §2 |
 
 ## 3. Arte

@@ -6,6 +6,19 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Corregido
+- **Espera de 3 días del Behelit (T5, D-25).** El Resonador del Umbral solo puede sacrificarse una vez cada
+  `beheritCooldownDays` días (3 por defecto, 0 = sin espera) por mundo, **contados desde el fin del Eclipse anterior**.
+  Si se intenta antes, el objeto **no se consume** y la barra de acción indica las horas de juego que faltan; también
+  avisa si hay otro evento en curso o el Eclipse está desactivado. El último fin se guarda en `EclipseState`
+  (`last_end`). Reglas puras en `event/BeheritRules` (`BeheritRulesTest`).
+- **Niebla de almas y Lluvia de brasas no podían activarse en configuraciones nuevas.** `240484f` dejó
+  `worldEventWeightSoulFog` y `worldEventWeightEmberRain` a 0 por defecto, pero esos pesos son el interruptor de cada
+  evento: con 0 el aldeano no responde, el portal no dispara nada y un evento en curso se cerraba al tick siguiente.
+  Vuelven a 1 y la **migración de configuración (revisión 84)** restaura los 0 heredados; `docs/CONFIGURATION.md` ya no
+  los llama «ignorados». Límite: un 0 puesto a mano antes de la revisión 84 no se distingue y también se restaura.
+- **Calendario rotativo apagado de verdad (D-26).** `calendarWeights` ya no programa ningún evento y `kindFor` ignora
+  los guardados en mundos antiguos, de modo que un `config` con `worldEventWeightEclipse > 0` o un Eclipse programado
+  antes de esta versión no se dispara ya por fecha.
 - **Coloso Sin Rostro.** La embestida mantiene su avance durante los ocho ticks previstos, se detiene ante
   obstáculos y cancela el impulso al invalidarse el objetivo o al aturdirse. Banco de doce pruebas en Minecraft
   para combate, selección, colisión, navegación y persistencia, más comprobación de render con dos clientes.

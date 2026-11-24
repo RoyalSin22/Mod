@@ -48,20 +48,20 @@ indique (el autor confirmó las pruebas de la numeración antigua T4–T6 de `PL
 | T2 | Implementada | `61e29d1`; `NUCLEO_OSARIO`, `ANCLA_DEL_VELO` | Partida |
 | T3 | Implementada | `989f967`…`d0a27c2`; `temple/CustodianTempleLayout`, `world/CustodianTempleFeature`; ampliada por V70 (templo hondo) y V77 (`locate`/`place`) | Partida y ajuste de balance |
 | T4 | Implementada | `958d1e4`, `353d310`; frecuencia 1/120 (`5c0f3a5`, D-35) | Partida |
-| **T5** | **Parcial** | Behelit = `resonador_del_umbral` (`item/BeheritItem`, `ModItems.RESONADOR_DEL_UMBRAL`), en `chests/custodian_diamond.json`; el sacrificio ocurre en la Hoguera (`BonfireBlock` deja pasar el ítem) y llama a `EclipseManager.startByBeherit` (`EclipseManager.java:614`); desbloqueo de lore en `EclipseManager:235` (`09f6a58`). Calendario: `eclipseIntervalDays`, `eclipseFirstDay` y `worldEventWeight*` marcados DEPRECATED y los pesos por defecto bajados de 1 a 0 (`240484f`) | Ver abajo |
+| **T5** | Implementada (espera de 3 días y migración añadidas el 2026-11-24; sin validar) | Behelit = `resonador_del_umbral` (`item/BeheritItem`, `ModItems.RESONADOR_DEL_UMBRAL`), en `chests/custodian_diamond.json`; el sacrificio ocurre en la Hoguera (`BonfireBlock` deja pasar el ítem) y llama a `EclipseManager.startByBeherit` (`EclipseManager.java:614`); desbloqueo de lore en `EclipseManager:235` (`09f6a58`). Calendario: `eclipseIntervalDays`, `eclipseFirstDay` y `worldEventWeight*` marcados DEPRECATED y los pesos por defecto bajados de 1 a 0 (`240484f`) | Ver abajo |
 | T6 | Implementada, desviada | `fe4f766` borra registro, recetas, modelos, texturas y claves de los tres sellos de los 11 idiomas | Ver abajo |
 | T7a | Implementada | `75906c6`; `guide/LoreRules`, `LoreManager`, attachment `aptitudes:lore` | Partida |
 | T7b | Implementada (V71) | `b512c10`, `325b8f7`; `guide/LoreCatalog` (18 entradas), pestaña «Crónicas» en `GuideScreen` | Partida; arte propio de la pestaña |
 
 **T5, qué falta o es dudoso**
 
-1. **No existe la espera de 3 días por mundo** (D-20, D-25). `EclipseManager.canStartEclipse` solo comprueba
+1. ~~Resuelto 2026-11-24: `BeheritRules`, `EclipseState.lastEndTick`, `beheritCooldownDays`.~~ **No existía la espera de 3 días por mundo** (D-20, D-25). `EclipseManager.canStartEclipse` solo comprueba
    `!state.active && !WorldEventManager.active(...)`, aunque su Javadoc y el mensaje de `09f6a58` hablan de «cooldown».
    `EclipseState` no guarda el fin del último Eclipse. Hoy se puede encadenar un Behelit tras otro.
-2. **Sin migración de configuración.** El plan pedía migrar en `config/ConfigMigration`; no se hizo. Un `config`
+2. ~~Resuelto: revisión 84 de `ConfigMigration` y calendario apagado.~~ **Sin migración de configuración.** El plan pedía migrar en `config/ConfigMigration`; no se hizo. Un `config`
    antiguo con `worldEventWeightEclipse > 0` sigue programando Eclipses por calendario (`WorldEventManager.calendarWeights`).
    Además `240484f` cambió el valor por defecto de los pesos de 1 a 0 sin que conste la decisión del autor (regla de balance).
-3. **Decisión nº 6 de §4 sin registrar:** qué ocurre si hay un Eclipse activo (hoy, el Behelit no se consume y no avisa).
+3. ~~Resuelto: con un evento activo el Behelit no se consume y avisa.~~ **Decisión nº 6 de §4 sin registrar:** qué ocurre si hay un Eclipse activo (hoy, el Behelit no se consume y no avisa).
 4. `BeheritItem` usa `useOnBlock` sobre la Hoguera; el plan proponía el patrón de `onUseWithItem` de la ofrenda. Funcional, pero distinto.
 5. Sin pruebas JUnit de la regla de espera (no hay una clase pura que la contenga).
 
