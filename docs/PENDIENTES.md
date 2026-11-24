@@ -14,13 +14,13 @@ no se proponen en ningún punto.
 
 | Punto | Detalle | Origen |
 |---|---|---|
-| C7 · S3 Parada y golpe de gracia | Para jugadores. El «parry» que existe es el de los jefes (`boss/AnimatedBossEntity`, `GuardRules`) | `docs/PLAN_CLAUDE.md`, `docs/IDEAS_v47_v55.md` (S3) |
-| C7 · S5 Mensajes en el suelo | Frases predefinidas, sin texto libre | `docs/IDEAS_v47_v55.md` (S5) |
-| C7 · S6 Ecos de muerte | Silueta con los últimos segundos de otro jugador; exige red | `docs/IDEAS_v47_v55.md` (S6) |
+| ~~C7 · S3 Parada y golpe de gracia~~ | **Hecha** (`ability/Parry`, `logic/ParryRules`); falta probarla en partida y confirmar el balance (activada por defecto) | `docs/IDEAS_v47_v55.md` (S3) |
+| ~~C7 · S5 Mensajes en el suelo~~ | **Hecha** (`message/GroundMessages`); falta probarla en partida | `docs/IDEAS_v47_v55.md` (S5) |
+| ~~C7 · S6 Ecos de muerte~~ | **Hecha en versión reducida** (cabeza con la skin, `echo/DeathEchoes`), **desactivada por defecto**; falta probarla. Una silueta de cuerpo entero exigiría un renderizador de cliente | `docs/IDEAS_v47_v55.md` (S6) |
 | C7 · S4 Estamina y rodar | **Aplazado por decisión del autor** (2026-11-08) | `docs/PLAN_CLAUDE.md` |
-| C2 · Rendimiento R1–R3 | Caché por jugador de `PathEffects.all` y `Keystones.active`; mapa id → piedra angular. `PathEffects.java:29` y `Keystones.java:103` recalculan en cada llamada | `docs/PLAN_CLAUDE.md`, `docs/IDEAS_v47_v55.md` (R1–R3) |
+| ~~C2 · Rendimiento R1–R3~~ | **Hecho** (`role/VersionedCache`, `RoleData.version()`); queda R4 | `docs/IDEAS_v47_v55.md` (R1–R3) |
 | R4 · Medir con spark | Servidor con 5–10 jugadores y eventos activos | `docs/IDEAS_v47_v55.md` (R4) |
-| C1 · Revisión de código v42–v58 | No hay informe ni rama `fix/…` | `docs/PLAN_CLAUDE.md` |
+| ~~C1 · Revisión de código v42–v58~~ | **Hecha como auditoría transversal** (`docs/C1_REVISION.md`); allí se lista lo que no se revisó | `docs/PLAN_CLAUDE.md` |
 | ~~T5 · Espera de 3 días del Behelit~~ | **Hecha** (`event/BeheritRules`, `EclipseState.lastEndTick`, `beheritCooldownDays`); sin validar en partida | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md`, D-20/D-25 |
 | ~~T5 · Migración de configuración del calendario~~ | **Hecha** (revisión 84 de `ConfigMigration`; calendario apagado en `WorldEventManager`); los campos antiguos quedan solo por compatibilidad | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` (T5), `config/ConfigMigration` |
 | T6 · Migración de los 3 sellos | Retirados sin alias ni conversión (`fe4f766`); D-25/D-26 pedían migración | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` (T6) |
