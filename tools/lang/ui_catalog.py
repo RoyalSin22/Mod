@@ -689,7 +689,7 @@ gunslinger_weapon_master¦Revólver do Pistoleiro Rúnico¦Revolver du pistolero
 bard_weapon_master¦Harpa do Mestre de Capela¦Harpe du maître de chapelle¦Harfe des Kapellmeisters
 warlock_weapon_master¦Crânio do Arquibruxo¦Crâne de l'archisorcier¦Schädel des Erzhexenmeisters
 sunset_astrolabe¦Astrolábio do Crepúsculo¦Astrolabe du Crépuscule¦Astrolabium der Abenddämmerung
-sunset_astrolabe.tooltip¦Consumido na Fogueira para convocar o Eclipse (apenas operadores ou líder do grupo).¦Consommé au Feu de camp pour invoquer l'Éclipse (opérateurs ou chef de groupe uniquement).¦Wird am Lagerfeuer verbraucht, um die Finsternis zu beschwören (nur Operatoren oder Gruppenleiter).
+sunset_astrolabe.tooltip¦Consumido na Fogueira para convocar o Eclipse (apenas operadores ou líder do grupo). Compartilha a espera com o Ressonador.¦Consommé au Feu de camp pour invoquer l'Éclipse (opérateurs ou chef de groupe uniquement). Partage son délai d'attente avec le Résonateur.¦Wird am Lagerfeuer verbraucht, um die Finsternis zu beschwören (nur Operatoren oder Gruppenleiter). Teilt die Wartezeit mit dem Resonator.
 """)
 
 add('trial.aptitudes.', """
@@ -1367,6 +1367,10 @@ herald¦O Arauto do Eclipse desceu.¦Le Héraut de l'Éclipse est descendu.¦Der
 end¦O Eclipse terminou. A luz retorna.¦L'Éclipse est terminée. La lumière revient.¦Die Finsternis ist vorbei. Das Licht kehrt zurück.
 stopped¦O Eclipse foi interrompido.¦L'Éclipse a été arrêtée.¦Die Finsternis wurde beendet.
 survivor¦Você sobreviveu ao Eclipse: recebe experiência de classe e Combate.¦Vous avez survécu à l'Éclipse : vous gagnez de l'expérience de rôle et de Combat.¦Du hast die Finsternis überlebt: Du erhältst Rollen- und Nahkampf-EP.
+summon.denied¦Apenas operadores ou o líder do grupo podem convocar o Eclipse com o Astrolábio.¦Seuls les opérateurs ou le chef de groupe peuvent invoquer l'Éclipse avec l'Astrolabe.¦Nur Operatoren oder der Gruppenleiter können die Sonnenfinsternis mit dem Astrolabium beschwören.
+summon.wrong_world¦O ritual só funciona no Mundo Normal.¦Le rituel ne fonctionne que dans le Monde normal.¦Das Ritual funktioniert nur in der Oberwelt.
+summon.busy¦Já há outro evento do mundo em andamento.¦Un autre événement du monde est déjà en cours.¦Es läuft bereits ein anderes Weltereignis.
+summon.cooldown¦O céu ainda não se recuperou. Espere mais %d dia(s) de jogo.¦Le ciel ne s'est pas encore remis. Attendez encore %d jour(s) de jeu.¦Der Himmel hat sich noch nicht erholt. Warte noch %d Spieltag(e).
 phase_name.none¦sem eclipse¦aucune éclipse¦keine Finsternis
 phase_name.penumbra¦Penumbra¦Pénombre¦Halbschatten
 phase_name.totality¦Totalidade¦Totalité¦Totalität
@@ -1739,6 +1743,8 @@ advancement.aptitudes.bestiary_complete.title¦Cronista¦Chroniqueur¦Chronist
 advancement.aptitudes.bestiary_complete.description¦Descubra todas as criaturas do bestiário.¦Découvrez toutes les créatures du bestiaire.¦Entdecke alle Kreaturen des Bestiariums.
 advancement.aptitudes.synergist.title¦Sinergista¦Synergiste¦Synergetiker
 advancement.aptitudes.synergist.description¦Ative as cinco sinergias (Y1-Y5) em uma única sessão.¦Activez les cinq synergies (Y1-Y5) en une seule session.¦Aktiviere alle fünf Synergien (Y1-Y5) in einer einzigen Sitzung.
+advancement.aptitudes.eclipse_caller.title¦Quem chama a noite¦Celui qui appelle la nuit¦Wer die Nacht ruft
+advancement.aptitudes.eclipse_caller.description¦Convoque um Eclipse com o Astrolábio do Crepúsculo ou o Ressonador do Limiar.¦Invoquez une Éclipse avec l'Astrolabe du Crépuscule ou le Résonateur du Seuil.¦Beschwöre eine Sonnenfinsternis mit dem Astrolabium der Abenddämmerung oder dem Schwellenresonator.
 synergy.aptitudes.disabled¦As sinergias estão desativadas neste servidor.¦Les synergies sont désactivées sur ce serveur.¦Synergien sind auf diesem Server deaktiviert.
 synergy.aptitudes.status¦Sinergias ativadas nesta sessão: %s/%s¦Synergies activées durant cette session : %s/%s¦In dieser Sitzung aktivierte Synergien: %s/%s
 synergy.aptitudes.line¦%s · %s: %s¦%s · %s : %s¦%s · %s: %s

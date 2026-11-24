@@ -28,6 +28,8 @@ public final class EclipseState extends PersistentState {
 	/** Día cuyo aviso ya se dio. */
 	long announcedDay = -1;
 	boolean heraldSpawned;
+	/** Tiempo de juego del mundo ({@code getTime}) en que terminó el último Eclipse; -1 = nunca (espera de convocatoria, C3). */
+	long lastEndTick = EventTriggerRules.NEVER;
 	/** Jugadores que murieron durante el eclipse en curso (no reciben la recompensa de superviviente). */
 	final Set<UUID> fallen = new HashSet<>();
 
@@ -43,6 +45,7 @@ public final class EclipseState extends PersistentState {
 		nbt.putLong("last_day", lastDay);
 		nbt.putLong("announced_day", announcedDay);
 		nbt.putBoolean("herald", heraldSpawned);
+		nbt.putLong("last_end", lastEndTick);
 		NbtList list = new NbtList();
 		for (UUID id : fallen) list.add(NbtString.of(id.toString()));
 		nbt.put("fallen", list);
@@ -57,6 +60,7 @@ public final class EclipseState extends PersistentState {
 		s.lastDay = nbt.contains("last_day") ? nbt.getLong("last_day") : -1;
 		s.announcedDay = nbt.contains("announced_day") ? nbt.getLong("announced_day") : -1;
 		s.heraldSpawned = nbt.getBoolean("herald");
+		s.lastEndTick = nbt.contains("last_end") ? nbt.getLong("last_end") : EventTriggerRules.NEVER;
 		NbtList list = nbt.getList("fallen", NbtElement.STRING_TYPE);
 		for (int i = 0; i < list.size() && i < 10_000; i++) {
 			try {

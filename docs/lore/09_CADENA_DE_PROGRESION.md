@@ -15,8 +15,8 @@ documentación, no implementa nada. «Hoy» describe lo que hay en el código (v
 | 6 | Se resuelve el **puzle**, se avanza hasta la sala previa y el objeto especial abre la **puerta de la sala del Custodio** (solo ahí; no se usa para entrar al templo) | Puzle de palancas y placas por anillo de Amenaza (`TempleRules`) | PENDIENTE |
 | 7 | **El Custodio suelta 4 llaves** (cobre, hierro, oro y diamante) en **una sola tirada**. Cada llave abre una cámara de recompensas | Templo nuevo (T3/T4): suelta las cuatro llaves a la vez, cada una ligada a su templo, y solo abre la cámara de su metal. Además suelta la llave del Relicario (Vaso de vida), que se mantiene | **IMPLEMENTADO en T4**; pendiente de prueba en partida |
 | 8 | **Recompensas:** objetos vanilla (manzanas doradas encantadas, bloques de minerales…), objetos del mod y similares | Cuatro cofres con tablas `custodian_<metal>` que crecen en valor (ver `docs/BALANCE.md`); la de diamante lleva las manzanas encantadas y la netherita | **IMPLEMENTADO en T4** (contenido elegido por el redactor, provisional) |
-| 9 | **La cámara de diamante guarda el Behelit** (nombre de trabajo: *Resonador del Umbral*). Se puede tener **más de uno**, pero solo se usa **uno cada 3 días por mundo, contados desde el fin del Eclipse**. Se consigue en los templos del Custodio | No existe | PENDIENTE |
-| 10 | **Se sacrifica en la Hoguera** (se consume) y empieza el **Eclipse** | El Eclipse es de calendario (`eclipseIntervalDays = 10`) | PENDIENTE |
+| 9 | **La cámara de diamante guarda el Behelit** (nombre de trabajo: *Resonador del Umbral*). Se puede tener **más de uno**, pero solo se usa **uno cada 3 días por mundo, contados desde el fin del Eclipse**. Se consigue en los templos del Custodio | `item/BeheritItem` (`RESONADOR_DEL_UMBRAL`) y espera de 3 días por mundo desde el fin del Eclipse (C3, 2026-11-24). Sin arte | **IMPLEMENTADO** (T5a + C3); pendiente de arte y prueba en partida |
+| 10 | **Se sacrifica en la Hoguera** (se consume) y empieza el **Eclipse** | El sacrificio funciona, pero el Eclipse **sigue programado por calendario** (`eclipseIntervalDays = 10`): E10 sin hacer. Además existe una segunda vía, el **Astrolabio del Ocaso** (C3, decisión del autor 2026-11-24): operadores o líder del grupo, misma espera que el Behelit | **PARCIAL** |
 | 11 | **Lluvia de brasas:** se activa cuando un jugador **enciende un portal al Nether en el Overworld**, con una **espera de 5 días** entre activaciones | Antes de T1: evento de calendario rotativo | **IMPLEMENTADO en T1**; pendiente de prueba en partida |
 
 Esperas resultantes: **Niebla, 10 días** (y solo con el aldeano), que puede empezar en cualquier momento al hablar con él y dura un día de Minecraft (24 000 ticks); **Eclipse, 3 días
@@ -92,7 +92,7 @@ autorización del autor.
 | Id | Pregunta | Respuesta del autor | Estado |
 |---|---|---|---|
 | A-1 | Uso del objeto especial | Solo en la puerta del Custodio, y se consume | Resuelta |
-| A-2 | Espera del Behelit | 3 días, por mundo, desde el fin del Eclipse | Resuelta |
+| A-2 | Espera del Behelit | 3 días, por mundo, desde el fin del Eclipse. **El Astrolabio del Ocaso comparte esa misma espera** (decisión del 2026-11-24) | Resuelta |
 | A-3 | Sellos | Los 3 sellos de invocación, retirados con migración y sin eliminarlos ahora. El bloque «Sello del templo» queda fuera de esta decisión | Resuelta (la retirada es la tarea E8) |
 | A-4 | Lluvia de brasas | Espera de 5 días | Resuelta |
 | A-5 | Duración y momento de inicio de la Niebla | Puede comenzar en cualquier momento y dura lo que un día de Minecraft | Resuelta |

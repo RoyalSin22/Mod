@@ -72,6 +72,13 @@ public final class PartyManager {
 		return party != null && party.members.contains(second.getUuid());
 	}
 
+	/** ¿Es el líder (quien creó el grupo) de su grupo? Sin grupo, no. */
+	public static boolean isLeader(ServerPlayerEntity player) {
+		if (player.getServer() == null) return false;
+		PartyState.Party party = findParty(player.getServer(), player.getUuid());
+		return party != null && party.leader.equals(player.getUuid());
+	}
+
 	public static boolean hasParty(ServerPlayerEntity player) {
 		return player.getServer() != null && findParty(player.getServer(), player.getUuid()) != null;
 	}

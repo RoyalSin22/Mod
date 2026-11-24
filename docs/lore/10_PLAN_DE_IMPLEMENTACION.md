@@ -1,6 +1,6 @@
 # 10 · Plan de implementación de la cadena (por tandas)
 
-**Estado: T1, T2 y T3 implementadas (2026-11-14), pendientes de prueba en partida; T4 en adelante, sin autorizar.** Convierte el diseño de `09_CADENA_DE_PROGRESION.md` en
+**Estado (revisado el 2026-11-24 con el código y `git log`): T1–T4 implementadas; T5 parcial; T6 parcial y dudosa; T7a y T7b implementadas (V71). Todo pendiente de prueba en partida.** Convierte el diseño de `09_CADENA_DE_PROGRESION.md` en
 trabajo de código, arte y Grimorio. Los puntos de enganche se leyeron en el código el 2026-11-14; lo marcado
 «a verificar» se comprueba con Context7 o el jar antes de escribir una línea (`AGENTS.md` §9).
 
@@ -31,10 +31,10 @@ Tamaños relativos (S < M < L < XL); no son horas.
 | **T2** (implementada, pendiente de prueba en partida) | Botín del Osario, objeto de acceso y su receta, objetos nuevos y sus texturas | E3 | M | T0 |
 | **T3** (implementada, pendiente de prueba en partida) | Templo nuevo: estructura, Autómata interno, puzle, puerta del Custodio que consume el objeto | E4 | XL | T2 |
 | **T4** (implementada, pendiente de prueba en partida) | Custodio con 4 llaves (cobre, hierro, oro, diamante) en una tirada y 4 cámaras de recompensa | E5 | L | T3 |
-| **T5** | Behelit, sacrificio en la Hoguera, Eclipse con espera de 3 días por mundo, fin del calendario rotativo | E6, E10 | L | T4 (T1 para la parte de calendario) |
-| **T6** | Retirada de los 3 sellos de invocación, con migración | E8 | M | T3 |
-| **T7a** | Grimorio, infraestructura: estado de lectura por jugador, desbloqueos, entrada de bestiario del Custodio | E9 | L | T1, T4, T5 |
-| **T7b** | Grimorio, interfaz: tarjetas de bestiario, páginas de lore | E9 | XL | A, T7a |
+| **T5** (parcial) | Behelit, sacrificio en la Hoguera, Eclipse con espera de 3 días por mundo, fin del calendario rotativo | E6, E10 | L | T4 (T1 para la parte de calendario) |
+| **T6** (parcial, dudosa) | Retirada de los 3 sellos de invocación, con migración | E8 | M | T3 |
+| **T7a** (implementada) | Grimorio, infraestructura: estado de lectura por jugador, desbloqueos, entrada de bestiario del Custodio | E9 | L | T1, T4, T5 |
+| **T7b** (implementada, V71) | Grimorio, interfaz: tarjetas de bestiario, páginas de lore | E9 | XL | A, T7a |
 | **A** | Pista de arte, en paralelo | — | L | T0 |
 
 ### Orden y paralelismo
@@ -54,6 +54,14 @@ T1 y T2 se pueden hacer a la vez (tocan archivos distintos). T3 en adelante es u
 - **Tras T3:** los templos antiguos de mundos existentes siguen funcionando con su lógica actual; los nuevos se
   generan con la estructura nueva. Decisión del autor: ¿se mantiene o se retira el templo viejo? (§4).
 - **Tras T5:** el Eclipse deja de ser de calendario y pasa a depender del Behelit.
+
+### Estado real de T5, T6 y T7 (2026-11-24)
+
+| Tanda | Hecho (evidencia) | Falta |
+|---|---|---|
+| T5 | Objeto Behelit (`item/BeheritItem`, `ModItems.RESONADOR_DEL_UMBRAL`) y sacrificio en la Hoguera, commit `09f6a58` («T5a»); `EclipseManager.start` anota el lore (V71). **C3 (2026-11-24):** espera de 3 días **por mundo desde el fin del Eclipse** (`EclipseState.lastEndTick`, `event/EclipseSummoningRules`, opción `eclipseSummonCooldownDays`), compartida con el Astrolabio del Ocaso | **E10 sin hacer:** el calendario sigue programando Eclipses (`WorldEventManager.calendarWeights`, `kindForDay`); `eclipseFirstDay`, `eclipseIntervalDays` y `worldEventWeight*` siguen en `AptitudesConfig` solo marcados como obsoletos, sin migración en `ConfigMigration`. Sin modelo ni textura del Behelit (`models/item` y `textures/item` no tienen `resonador_del_umbral`). Sin pruebas en partida |
+| T6 | Los tres `register(...)` de los sellos están comentados en `ModItems` (líneas 183–185) | El comentario dice «se mantienen por compatibilidad», pero **ya no están registrados** y no hay alias ni migración (`grep` de `ancient_automaton_seal` solo da el comentario): los objetos de mundos viejos se perderían. `boss/SummonSealItem.java` sigue en el repositorio. Política de migración sin decidir (§4, decisión 7) |
+| T7a/T7b | `guide/LoreRules`, `LoreCatalog` (18 entradas), `LoreManager`, `LoreState`; pestaña «Crónicas» y desbloqueos cableados (commit `325b8f7`, V71) | Validar en partida; arte propio de la pestaña |
 
 ## 3. Contenido de cada tanda
 
