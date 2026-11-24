@@ -6,6 +6,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **V88 — Efectos de batalla, fase 7 (Nigromante, Druida, Mercader táctico y Monje).** Nigromante: Lanza de hueso (línea de polvo óseo
+  con astillas) y Sifón de almas (pulso que respira e hilos de alma de cada enemigo hacia el nigromante). Druida: Manada (ola de hojas y
+  anillo de luz bajo cada lobo al aparecer) y Tormenta de espinas (zarzas en espiral). Mercader táctico: Lanzamiento de moneda (estela
+  dorada y monedas que saltan) y Guardia dorada (domo de motas y monedas que giran). Monje: Patada voladora (estela de ki y onda de choque)
+  y Cien puños (un destello y un anillo de choque por golpe, el último más fuerte). Ocho animaciones del cuerpo en primera persona
+  (`necromancer.json`, `druid.json`, `merchant.json`, `monk.json`), ocho sonidos sintetizados con subtítulos en los 11 idiomas. La Lanza de
+  hueso, el Sifón, la Tormenta de espinas y la Moneda ya no dibujan nada si fallan. **Sin ver en partida.**
 - **V87 — Efectos de batalla, fase 6 (Lancero, Espadachín y Paladín).** Lancero: Salto del dragón (ráfaga de aire, estela de aliento
   de dragón y aterrizaje con escombros físicos y onda violeta) y Estocada perforante (línea recta de viento y chispas). Espadachín:
   Iaido (estela de acero con tajos) y Mil cortes (un tajo diagonal con chispas y tono distinto por golpe). Paladín: Consagración

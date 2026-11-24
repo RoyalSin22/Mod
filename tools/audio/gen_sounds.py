@@ -682,6 +682,90 @@ def paladin_hammer(rng):
     return fade_out(normalize(anvil + thud + crack + holy, 0.85), 0.15)
 
 
+# ---------------------------------------------------------------- Nigromante, Druida, Mercader y Monje (V88)
+
+def necromancer_spear(rng):
+    """Lanza de hueso: un siseo grave, un chasquido de hueso y un susurro."""
+    t = t_axis(0.55)
+    whoosh = _soft_air(rng, len(t), 200, 2200) * env(t, 0.03, 0.1) * 0.7
+    clack = _bell(t, 760, [(1.0, 0.5), (2.7, 0.4), (4.9, 0.25)], 0.06) * 0.5
+    thud = np.sin(2 * np.pi * (140 * np.exp(-t * 20) + 60) * t) * env(t, 0.002, 0.09) * 0.6
+    whisper = _soft_air(rng, len(t), 1200, 3500) * env(t, 0.1, 0.25) * 0.15
+    return fade_out(normalize(whoosh + clack + thud + whisper, 0.8), 0.1)
+
+
+def necromancer_siphon(rng):
+    """Sifón de almas: un lamento que gira y se arrastra hacia dentro."""
+    t = t_axis(0.9)
+    wail = np.sin(2 * np.pi * np.cumsum(520 - 260 * np.clip(t / 0.8, 0, 1) + 25 * np.sin(2 * np.pi * 6 * t)) / RATE) * env(t, 0.08, 0.5) * 0.5
+    hum = np.sin(2 * np.pi * 70 * t) * env(t, 0.1, 0.5) * 0.4
+    air = _soft_air(rng, len(t), 800, 3200) * env(t, 0.1, 0.3) * 0.3
+    return fade_out(normalize(wail + hum + air, 0.78), 0.2)
+
+
+def druid_howl(rng):
+    """Aullido de la manada: un tono que sube y baja con vibrato y aire."""
+    t = t_axis(1.3)
+    glide = 330 + 260 * np.sin(np.pi * np.clip(t / 1.1, 0, 1)) ** 0.8 + 8 * np.sin(2 * np.pi * 5.5 * t)
+    ph = 2 * np.pi * np.cumsum(glide) / RATE
+    tone = (np.sin(ph) + 0.35 * np.sin(2 * ph) + 0.12 * np.sin(3 * ph)) * env(t, 0.15, 0.8)
+    breath = _soft_air(rng, len(t), 600, 2800) * env(t, 0.1, 0.5) * 0.12
+    return fade_out(normalize(tone * 0.7 + breath, 0.78), 0.25)
+
+
+def druid_thorns(rng):
+    """Tormenta de espinas: un crujido de zarzas y chasquidos secos."""
+    t = t_axis(0.8)
+    rustle = _soft_air(rng, len(t), 900, 5000) * env(t, 0.03, 0.25) * 0.5
+    snaps = np.zeros(len(t))
+    for _ in range(12):
+        i = int(rng.uniform(0.02, 0.5) * RATE)
+        n = int(0.02 * RATE)
+        if i + n < len(t):
+            snaps[i:i + n] += _soft_air(rng, n, 1500, 6500) * np.exp(-np.arange(n) / (0.004 * RATE)) * rng.uniform(0.3, 0.7)
+    low = np.sin(2 * np.pi * (110 * np.exp(-t * 10) + 50) * t) * env(t, 0.004, 0.12) * 0.5
+    return fade_out(normalize(rustle + snaps * 0.6 + low, 0.8), 0.12)
+
+
+def merchant_coin(rng):
+    """Moneda lanzada: un tintineo agudo y un zumbido rápido."""
+    t = t_axis(0.45)
+    ting = _bell(t, 2400, [(1.0, 0.6), (2.3, 0.4), (3.7, 0.2)], 0.2) * 0.6
+    zip_ = _soft_air(rng, len(t), 2500, 7000) * env(t, 0.003, 0.05) * 0.4
+    hit_t = np.maximum(t - 0.09, 0)
+    hit = np.sin(2 * np.pi * (200 * np.exp(-hit_t * 28) + 90) * hit_t) * env(hit_t, 0.001, 0.06) * 0.6 * (t >= 0.09)
+    return fade_out(normalize(ting + zip_ + hit, 0.8), 0.06)
+
+
+def merchant_guard(rng):
+    """Guardia dorada: un arpegio de campanillas que sube y un brillo."""
+    t = t_axis(1.0)
+    out = np.zeros(len(t))
+    for k, f in enumerate((784.0, 988.0, 1175.0, 1568.0)):
+        tt = np.maximum(t - 0.07 * k, 0)
+        out += _bell(tt, f, [(1.0, 0.5), (2.0, 0.2)], 0.35) * (t >= 0.07 * k)
+    shimmer = _soft_air(rng, len(t), 3000, 8000) * env(t, 0.2, 0.3) * 0.08
+    return fade_out(normalize(out + shimmer, 0.78), 0.2)
+
+
+def monk_kick(rng):
+    """Patada voladora: un barrido de aire y un golpe seco con cuerpo."""
+    t, noise = _sweep_noise(rng, 0.4, 600.0, 2800.0, 900.0, 0.8)
+    amp = np.sin(np.pi * np.clip(t / 0.18, 0, 1)) ** 1.2 * (t < 0.18)
+    hit_t = np.maximum(t - 0.15, 0)
+    hit = (np.sin(2 * np.pi * (170 * np.exp(-hit_t * 22) + 65) * hit_t) * env(hit_t, 0.001, 0.1) * 1.0
+           + _soft_air(rng, len(t), 800, 4500) * env(hit_t, 0.0006, 0.04) * 0.5) * (t >= 0.15)
+    return fade_out(normalize(normalize(noise) * amp * 0.5 + hit, 0.85), 0.06)
+
+
+def monk_fist(rng):
+    """Puñetazo: un golpe corto y seco (se reproduce con distinto tono en cada golpe)."""
+    t = t_axis(0.18)
+    thud = np.sin(2 * np.pi * (220 * np.exp(-t * 30) + 95) * t) * env(t, 0.001, 0.05) * 0.9
+    slap = _soft_air(rng, len(t), 1000, 5000) * env(t, 0.0005, 0.02) * 0.5
+    return fade_out(normalize(thud + slap, 0.82), 0.03)
+
+
 SOUNDS = {
     'eclipse_announce': eclipse_announce,
     'eclipse_start': eclipse_start,
@@ -741,6 +825,14 @@ SOUNDS = {
     'swordsman_cut': swordsman_cut,
     'paladin_consecrate': paladin_consecrate,
     'paladin_hammer': paladin_hammer,
+    'necromancer_spear': necromancer_spear,
+    'necromancer_siphon': necromancer_siphon,
+    'druid_howl': druid_howl,
+    'druid_thorns': druid_thorns,
+    'merchant_coin': merchant_coin,
+    'merchant_guard': merchant_guard,
+    'monk_kick': monk_kick,
+    'monk_fist': monk_fist,
 }
 
 

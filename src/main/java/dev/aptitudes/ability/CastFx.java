@@ -47,7 +47,8 @@ public final class CastFx {
 	/** Igual que {@link #onCast(ServerPlayerEntity, Role, Kind)}, pero las activas con guion propio solo hacen el gesto. */
 	public static void onCast(ServerPlayerEntity player, Role role, Kind kind, String abilityId) {
 		if (kind == Kind.ACTIVE && (BerserkerFx.handles(abilityId) || MageFx.handles(abilityId) || AssassinFx.handles(abilityId) || HerbalistFx.handles(abilityId) || EngineerFx.handles(abilityId)
-				|| LancerFx.handles(abilityId) || SwordsmanFx.handles(abilityId) || PaladinFx.handles(abilityId))) {
+				|| LancerFx.handles(abilityId) || SwordsmanFx.handles(abilityId) || PaladinFx.handles(abilityId)
+				|| NecromancerFx.handles(abilityId) || DruidFx.handles(abilityId) || MerchantFx.handles(abilityId) || MonkFx.handles(abilityId))) {
 			player.swingHand(net.minecraft.util.Hand.MAIN_HAND, true);
 			return;
 		}

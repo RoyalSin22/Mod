@@ -36,7 +36,9 @@ IMPACT_TICKS = {"berserker_rage": 4, "berserker_war_cry": 8, "berserker_slam": 3
                 "mage_time_warp": 6, "mage_missile_r": 3, "mage_missile_l": 3, "assassin_vanish": 3, "assassin_step": 3,
                 "assassin_fan": 4, "assassin_shuriken": 3, "herbalist_balm": 4, "herbalist_rain": 5, "herbalist_spore": 3,
                 "engineer_grapple": 3, "engineer_grenade": 3,
-                "lancer_leap": 3, "lancer_slam": 2, "lancer_thrust": 3, "swordsman_iaido": 3, "swordsman_cuts": 2, "paladin_consecrate": 5, "paladin_hammer": 4}
+                "lancer_leap": 3, "lancer_slam": 2, "lancer_thrust": 3, "swordsman_iaido": 3, "swordsman_cuts": 2, "paladin_consecrate": 5, "paladin_hammer": 4,
+                "necromancer_spear": 4, "necromancer_siphon": 4, "druid_wolves": 5, "druid_thorns": 4, "merchant_coin": 3,
+                "merchant_guard": 4, "monk_kick": 3, "monk_fists": 2}
 
 
 def kf(vec, easing=OUT):
@@ -406,9 +408,102 @@ def build_paladin():
     return {"format_version": "1.8.0", "animations": anims}
 
 
+def build_necromancer():
+    anims = {}
+
+    # ---- Lanza de hueso (0,65 s): extiende la mano libre llamando al hueso y empuja con la otra al frente en el tick 4.
+    sp_r = {0: NEUTRAL, 0.10: ([-30, -14, 22], OUT), 0.20: ([-100, 6, 4], SMASH), 0.32: ([-100, 6, 4], HOLD), 0.65: (NEUTRAL, SOFT)}
+    sp_l = {0: NEUTRAL, 0.10: ([-76, 18, -26], OUT), 0.20: ([-60, 10, -18], SOFT), 0.32: ([-60, 10, -18], HOLD), 0.65: (NEUTRAL, SOFT)}
+    anims["necromancer_spear"] = animation(False, {
+        "right_arm": bone(rot=sp_r), "left_arm": bone(rot=sp_l),
+        "torso": bone(rot={0: NEUTRAL, 0.10: [6, -12, 0], 0.20: ([14, 10, 0], SMASH), 0.32: ([14, 10, 0], HOLD), 0.65: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.10: [4, -6, 0], 0.20: ([-4, 4, 0], BACK), 0.32: ([-4, 4, 0], HOLD), 0.65: (NEUTRAL, SOFT)}),
+    })
+    # ---- Sifón de almas (1,0 s): abre los brazos al frente y los cierra tirando hacia el pecho (tick 4), con un pulso.
+    sip_r = {0: NEUTRAL, 0.12: ([-92, 8, 34], OUT), 0.20: ([-96, 6, 42], BACK), 0.34: ([-68, -10, 4], SOFT), 0.55: ([-60, -8, 6], HOLD), 1.0: (NEUTRAL, SOFT)}
+    anims["necromancer_siphon"] = animation(False, limbs(
+        sip_r, 0.015, 0.95,
+        torso=({0: NEUTRAL, 0.12: [-4, 0, 0], 0.34: ([8, 0, 0], SOFT), 0.55: ([8, 0, 0], HOLD), 1.0: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.12: [-8, 0, 0], 0.34: ([6, 0, 0], SOFT), 0.55: ([6, 0, 0], HOLD), 1.0: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.12: [0, 0.4, 0], 0.34: ([0, -1.0, 0], SOFT), 0.55: ([0, -1.0, 0], HOLD), 1.0: (NEUTRAL, SOFT)}),
+    ))
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_druid():
+    anims = {}
+
+    # ---- Manada (0,9 s): cabeza atrás y brazos abiertos hacia el cielo llamando a la manada (tick 5), y recoge.
+    howl_r = {0: NEUTRAL, 0.12: ([-60, 0, 40], OUT), 0.25: ([-110, 0, 60], BACK), 0.45: ([-110, 0, 60], HOLD), 0.90: (NEUTRAL, SOFT)}
+    anims["druid_wolves"] = animation(False, limbs(
+        howl_r, 0.02, 0.95,
+        torso=({0: NEUTRAL, 0.12: [-4, 0, 0], 0.25: ([-12, 0, 0], BACK), 0.45: ([-12, 0, 0], HOLD), 0.90: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.12: [-14, 0, 0], 0.25: ([-34, 0, 0], BACK), 0.45: ([-34, 0, 0], HOLD), 0.90: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.25: ([0, 0.8, 0], BACK), 0.45: ([0, 0.8, 0], HOLD), 0.90: (NEUTRAL, SOFT)}),
+    ))
+    # ---- Tormenta de espinas (0,8 s): clava el bastón al suelo con las dos manos (tick 4) y lo mantiene mientras brotan.
+    thorn_r = {0: NEUTRAL, 0.08: ([-140, 0, 10], OUT), 0.20: ([-50, 0, 4], SMASH), 0.45: ([-50, 0, 4], HOLD), 0.80: (NEUTRAL, SOFT)}
+    anims["druid_thorns"] = animation(False, limbs(
+        thorn_r, 0.01, 0.97,
+        torso=({0: NEUTRAL, 0.08: [-8, 0, 0], 0.20: ([22, 0, 0], SMASH), 0.45: ([22, 0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.08: [-6, 0, 0], 0.20: ([10, 0, 0], BACK), 0.45: ([10, 0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.20: ([0, -2.2, 0], SMASH), 0.45: ([0, -2.2, 0], HOLD), 0.80: (NEUTRAL, SOFT)}),
+    ))
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_merchant():
+    anims = {}
+
+    # ---- Lanzamiento de moneda (0,5 s): moneda sobre el pulgar y un papirotazo al frente en el tick 3.
+    coin_r = {0: NEUTRAL, 0.07: ([-50, -8, 12], OUT), 0.15: ([-92, 4, 4], SMASH), 0.24: ([-92, 4, 4], HOLD), 0.50: (NEUTRAL, SOFT)}
+    anims["merchant_coin"] = animation(False, {
+        "right_arm": bone(rot=coin_r),
+        "left_arm": bone(rot={0: NEUTRAL, 0.07: [-20, 8, -10], 0.24: ([-16, 6, -12], SOFT), 0.50: (NEUTRAL, SOFT)}),
+        "torso": bone(rot={0: NEUTRAL, 0.07: [2, -8, 0], 0.15: ([6, 8, 0], SMASH), 0.24: ([6, 8, 0], HOLD), 0.50: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.15: ([-2, 4, 0], BACK), 0.24: ([-2, 4, 0], HOLD), 0.50: (NEUTRAL, SOFT)}),
+    })
+    # ---- Guardia dorada (0,75 s): cruza los brazos ante el pecho y los baja con firmeza (tick 4).
+    gd_r = {0: NEUTRAL, 0.10: ([-92, -30, -10], OUT), 0.20: ([-34, 4, 10], SMASH), 0.34: ([-34, 4, 10], HOLD), 0.75: (NEUTRAL, SOFT)}
+    anims["merchant_guard"] = animation(False, limbs(
+        gd_r, 0.01, 0.95,
+        torso=({0: NEUTRAL, 0.10: [10, 0, 0], 0.20: ([-4, 0, 0], BACK), 0.34: ([-4, 0, 0], HOLD), 0.75: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.10: [8, 0, 0], 0.20: ([-4, 0, 0], BACK), 0.34: ([-4, 0, 0], HOLD), 0.75: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.10: [0, -1.2, 0], 0.20: ([0, 0.4, 0], BACK), 0.34: ([0, 0.4, 0], HOLD), 0.75: (NEUTRAL, SOFT)}),
+    ))
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_monk():
+    anims = {}
+
+    # ---- Patada voladora (0,6 s): arma el cuerpo atrás y empuja con los dos puños adelante en el tick 3.
+    kick_r = {0: NEUTRAL, 0.07: ([30, -10, 20], OUT), 0.15: ([-94, 4, 6], SMASH), 0.26: ([-94, 4, 6], HOLD), 0.60: (NEUTRAL, SOFT)}
+    anims["monk_kick"] = animation(False, limbs(
+        kick_r, 0.01, 0.95,
+        torso=({0: NEUTRAL, 0.07: [-14, 0, 0], 0.15: ([30, 0, 0], SMASH), 0.26: ([30, 0, 0], HOLD), 0.60: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.07: [-6, 0, 0], 0.15: ([-10, 0, 0], BACK), 0.26: ([-10, 0, 0], HOLD), 0.60: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.07: [0, -1.0, 0], 0.15: ([0, -0.6, 0], SMASH), 0.26: ([0, -0.6, 0], HOLD), 0.60: (NEUTRAL, SOFT)}),
+    ))
+    # ---- Cien puños (1,0 s): ráfaga de puñetazos alternados, el primero en el tick 2.
+    fr = {0: NEUTRAL, 0.10: ([-92, 3, 4], SMASH), 0.20: ([-30, -8, 18], OUT), 0.30: ([-94, 3, 4], SMASH), 0.40: ([-30, -8, 18], OUT),
+          0.50: ([-94, 3, 4], SMASH), 0.60: ([-30, -8, 18], OUT), 0.70: ([-96, 3, 4], SMASH), 1.0: (NEUTRAL, SOFT)}
+    fl = {0: NEUTRAL, 0.10: ([-30, 8, -18], OUT), 0.20: ([-92, -3, -4], SMASH), 0.30: ([-30, 8, -18], OUT), 0.40: ([-92, -3, -4], SMASH),
+          0.50: ([-30, 8, -18], OUT), 0.60: ([-92, -3, -4], SMASH), 0.70: ([-30, 8, -18], OUT), 1.0: (NEUTRAL, SOFT)}
+    anims["monk_fists"] = animation(False, {
+        "right_arm": bone(rot=fr), "left_arm": bone(rot=fl),
+        "torso": bone(rot={0: NEUTRAL, 0.10: [8, -10, 0], 0.20: ([8, 10, 0], SMASH), 0.30: ([8, -10, 0], SMASH), 0.40: ([8, 10, 0], SMASH),
+                           0.50: ([8, -10, 0], SMASH), 0.60: ([8, 10, 0], SMASH), 0.70: ([10, -8, 0], SMASH), 1.0: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.10: [4, 0, 0], 0.70: ([4, 0, 0], HOLD), 1.0: (NEUTRAL, SOFT)}),
+    })
+    return {"format_version": "1.8.0", "animations": anims}
+
+
 FILES = {"berserker.json": build_berserker, "mage.json": build_mage, "assassin.json": build_assassin,
          "herbalist.json": build_herbalist, "engineer.json": build_engineer, "lancer.json": build_lancer,
-         "swordsman.json": build_swordsman, "paladin.json": build_paladin}
+         "swordsman.json": build_swordsman, "paladin.json": build_paladin, "necromancer.json": build_necromancer,
+         "druid.json": build_druid, "merchant.json": build_merchant, "monk.json": build_monk}
+
 
 
 def render(name):

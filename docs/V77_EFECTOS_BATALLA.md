@@ -155,3 +155,20 @@ Identidad de taller: naranja y cian, chispas, cable y esquirlas de hierro. Cubre
 - Siete sonidos sintetizados (`lancer_leap`, `lancer_thrust`, `lancer_slam`, `swordsman_draw`, `swordsman_cut`, `paladin_consecrate`, `paladin_hammer`).
 - Embestida (`lunge`) y las pasivas conservan su efecto genérico.
 - **No verificado en partida:** aspecto, sincronía del aterrizaje con el daño y del iaido con el desplazamiento, y rendimiento.
+
+## Fase 7: Nigromante, Druida, Mercader táctico y Monje (V88)
+
+| Rol | Activa | Efecto | Animación | Golpe |
+|---|---|---|---|---|
+| Nigromante | Lanza de hueso (`bone_spear`) | Alma y polvo óseo se forman en la mano; línea de polvo con astillas de hueso y estallido de almas; solo si acierta | `necromancer_spear` | tick 4 |
+| Nigromante | Sifón de almas (`soul_siphon`) | Pulso que se abre y vuelve hacia dentro; un hilo de alma por enemigo hasta el nigromante; solo si hay enemigos | `necromancer_siphon` | tick 4 |
+| Druida | Manada (`summon_wolves`) | Ola de hojas y motas de luz; destello y anillo de hojas bajo cada lobo | `druid_wolves` | tick 5 |
+| Druida | Tormenta de espinas (`thorn_storm`) | Zarzas en tres espirales hasta el radio, composta y temblor; solo si hay enemigos | `druid_thorns` | tick 4 |
+| Mercader | Lanzamiento de moneda (`coin_toss`) | Estela dorada-esmeralda, destello y monedas de oro que saltan con gravedad | `merchant_coin` | tick 3 |
+| Mercader | Guardia dorada (`golden_guard`) | Domo de motas doradas que se cierra, monedas que giran y viñeteado dorado | `merchant_guard` | tick 4 |
+| Monje | Patada voladora (`flying_kick`) | Estela de ki en el recorrido; explosión y anillo de choque si golpea | `monk_kick` | tick 3 |
+| Monje | Cien puños (`hundred_fists`) | Un evento por golpe: destello y anillo de choque cada vez más cerrado; el octavo sacude la cámara | `monk_fists` | tick 2 |
+
+- Ocho sonidos sintetizados (`necromancer_spear`, `necromancer_siphon`, `druid_howl`, `druid_thorns`, `merchant_coin`, `merchant_guard`, `monk_kick`, `monk_fist`).
+- Las partículas y sonidos que esas activas dibujaban en el servidor se sustituyen por los eventos nuevos.
+- **No verificado en partida:** aspecto, sincronía y rendimiento (la Manada con tres lobos y los Cien puños son lo más cargado).

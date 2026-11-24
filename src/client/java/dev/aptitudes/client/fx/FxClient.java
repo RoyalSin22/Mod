@@ -82,6 +82,16 @@ public final class FxClient {
 			case FxIds.SWORDSMAN_CUT -> SwordsmanClientFx.cut(world, p);
 			case FxIds.PALADIN_CONSECRATE -> PaladinClientFx.consecrate(world, p);
 			case FxIds.PALADIN_HAMMER -> PaladinClientFx.hammer(world, p);
+			case FxIds.NECRO_SPEAR -> NecromancerClientFx.spear(world, p);
+			case FxIds.NECRO_SIPHON -> NecromancerClientFx.siphon(world, p);
+			case FxIds.NECRO_SIPHON_LINK -> NecromancerClientFx.link(world, p);
+			case FxIds.DRUID_WOLVES -> DruidClientFx.howl(world, p);
+			case FxIds.DRUID_WOLF_SPAWN -> DruidClientFx.wolf(world, p);
+			case FxIds.DRUID_THORNS -> DruidClientFx.thorns(world, p);
+			case FxIds.MERCHANT_COIN -> MerchantClientFx.coin(world, p);
+			case FxIds.MERCHANT_GUARD -> MerchantClientFx.guard(world, p);
+			case FxIds.MONK_KICK -> MonkClientFx.kick(world, p);
+			case FxIds.MONK_FIST -> MonkClientFx.fist(world, p);
 			default -> { }
 		}
 	}

@@ -289,9 +289,9 @@ final class AbilitiesExtra {
 				effect(e, StatusEffects.WITHER, 60, 0);
 				hits++;
 			}
-			Targeting.particleLine(world(p), ParticleFx.dust(0xE0E0D0, 1.2f), start, end);
-			sound(p, SoundEvents.ENTITY_SKELETON_SHOOT, 0.6f);
-			return hits > 0;
+			if (hits == 0) return false;
+			NecromancerFx.spear(p, end); // V88
+			return true;
 		});
 		// Sifón de almas: drena a todos los enemigos cercanos y te cura la mitad.
 		Abilities.register("soul_siphon", (p, r) -> {
@@ -301,11 +301,12 @@ final class AbilitiesExtra {
 				float dmg = 2 + r;
 				e.damage(magic(p), dmg);
 				total += dmg;
-				Targeting.particleLine(world(p), ParticleTypes.SOUL, e.getEyePos(), p.getEyePos());
+				NecromancerFx.link(p, e); // V88
 			}
 			p.heal(total * 0.5f);
-			sound(p, SoundEvents.ENTITY_VEX_CHARGE, 0.6f);
-			return !targets.isEmpty();
+			if (targets.isEmpty()) return false;
+			NecromancerFx.siphon(p, 5 + r);
+			return true;
 		});
 
 		// ---------------- Druida ----------------
@@ -324,9 +325,9 @@ final class AbilitiesExtra {
 				wolf.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 800, r >= 2 ? 1 : 0, true, false));
 				AbilityState.trackSummon(wolf, p, 800); // registrar ANTES de aparecer
 				p.getWorld().spawnEntity(wolf);
-				world(p).spawnParticles(ParticleTypes.HAPPY_VILLAGER, pos.x, pos.y + 0.5, pos.z, 10, 0.3, 0.3, 0.3, 0);
+				DruidFx.wolf(p, pos); // V88
 			}
-			sound(p, SoundEvents.ENTITY_WOLF_HOWL, 1.0f);
+			DruidFx.howl(p);
 			return true;
 		});
 		// Tormenta de espinas: daño y lentitud en un radio de 6.
@@ -336,9 +337,9 @@ final class AbilitiesExtra {
 				e.damage(p.getDamageSources().cactus(), 3 + r);
 				effect(e, StatusEffects.SLOWNESS, 80, 1);
 			}
-			ParticleFx.spiral(world(p), p.getPos(), 3, 2.5, ParticleFx.dust(0x6E8B3D, 1.2f), 60, 3);
-			sound(p, SoundEvents.BLOCK_SWEET_BERRY_BUSH_BREAK, 0.7f);
-			return !targets.isEmpty();
+			if (targets.isEmpty()) return false;
+			DruidFx.thorns(p, 6); // V88
+			return true;
 		});
 
 		// ---------------- Mercader ----------------
@@ -347,9 +348,8 @@ final class AbilitiesExtra {
 			LivingEntity target = Targeting.raycastLiving(p, 20);
 			if (target == null) return false;
 			if (!p.isCreative() && !consume(p, Items.EMERALD, 1)) return false;
-			Targeting.particleLine(world(p), ParticleFx.dust(0x50E080, 1.0f), p.getEyePos(), target.getEyePos());
+			MerchantFx.coin(p, target.getEyePos()); // V88
 			target.damage(p.getDamageSources().playerAttack(p), 6 + 3 * r);
-			sound(p, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 0.6f);
 			return true;
 		});
 		// Guardia dorada: gasta 2 esmeraldas; Absorción II y Resistencia I.
@@ -357,8 +357,7 @@ final class AbilitiesExtra {
 			if (!p.isCreative() && !consume(p, Items.EMERALD, 2)) return false;
 			effect(p, StatusEffects.ABSORPTION, 200 + 40 * r, 1);
 			effect(p, StatusEffects.RESISTANCE, 100 + 20 * r, 0);
-			ParticleFx.spiral(world(p), p.getPos(), 0.9, 2.2, ParticleFx.dust(0xFFD54F, 1.2f), 40, 2);
-			sound(p, SoundEvents.ITEM_ARMOR_EQUIP_GOLD.value(), 1.0f);
+			MerchantFx.guard(p); // V88
 			return true;
 		});
 
@@ -373,9 +372,8 @@ final class AbilitiesExtra {
 			if (first != null) {
 				first.damage(p.getDamageSources().playerAttack(p), 5 + 2 * r);
 				first.takeKnockback(1.5 + 0.3 * r, -facing.x, -facing.z);
-				world(p).spawnParticles(ParticleTypes.EXPLOSION, first.getX(), first.getBodyY(0.5), first.getZ(), 1, 0, 0, 0, 0);
 			}
-			sound(p, SoundEvents.ENTITY_PLAYER_ATTACK_KNOCKBACK, 1.0f);
+			MonkFx.kick(p, facing.multiply(5), first != null); // V88
 			return true;
 		});
 		// Cien puños: 8 golpes rápidos al objetivo cercano.
@@ -386,8 +384,7 @@ final class AbilitiesExtra {
 				if (!target.isAlive()) return;
 				target.timeUntilRegen = 0;
 				target.damage(p.getDamageSources().playerAttack(p), 1.5f + 0.5f * r);
-				world(p).spawnParticles(ParticleTypes.CRIT, target.getX(), target.getBodyY(0.6), target.getZ(), 4, 0.3, 0.3, 0.3, 0.2);
-				sound(p, SoundEvents.ENTITY_PLAYER_ATTACK_WEAK, 1.0f + 0.08f * i);
+				MonkFx.fist(p, target, i); // V88
 			});
 			return true;
 		});

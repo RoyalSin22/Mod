@@ -346,5 +346,53 @@
     "sounds": [
       "aptitudes:paladin_hammer"
     ]
+  },
+  "necromancer_spear": {
+    "subtitle": "subtitles.aptitudes.necromancer_spear",
+    "sounds": [
+      "aptitudes:necromancer_spear"
+    ]
+  },
+  "necromancer_siphon": {
+    "subtitle": "subtitles.aptitudes.necromancer_siphon",
+    "sounds": [
+      "aptitudes:necromancer_siphon"
+    ]
+  },
+  "druid_howl": {
+    "subtitle": "subtitles.aptitudes.druid_howl",
+    "sounds": [
+      "aptitudes:druid_howl"
+    ]
+  },
+  "druid_thorns": {
+    "subtitle": "subtitles.aptitudes.druid_thorns",
+    "sounds": [
+      "aptitudes:druid_thorns"
+    ]
+  },
+  "merchant_coin": {
+    "subtitle": "subtitles.aptitudes.merchant_coin",
+    "sounds": [
+      "aptitudes:merchant_coin"
+    ]
+  },
+  "merchant_guard": {
+    "subtitle": "subtitles.aptitudes.merchant_guard",
+    "sounds": [
+      "aptitudes:merchant_guard"
+    ]
+  },
+  "monk_kick": {
+    "subtitle": "subtitles.aptitudes.monk_kick",
+    "sounds": [
+      "aptitudes:monk_kick"
+    ]
+  },
+  "monk_fist": {
+    "subtitle": "subtitles.aptitudes.monk_fist",
+    "sounds": [
+      "aptitudes:monk_fist"
+    ]
   }
 }

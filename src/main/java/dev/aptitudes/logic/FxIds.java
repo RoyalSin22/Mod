@@ -48,8 +48,28 @@ public final class FxIds {
 	public static final int PALADIN_CONSECRATE = 28;
 	/** Martillo de la justicia: {@code dx,dy,dz} = del ojo al final; {@code power} 1 si acertó. */
 	public static final int PALADIN_HAMMER = 29;
+	/** Lanza de hueso: {@code dx,dy,dz} = del ojo al final; {@code power} 1 si acertó. */
+	public static final int NECRO_SPEAR = 30;
+	/** Sifón de almas: en quien lo lanza; {@code power} = radio. */
+	public static final int NECRO_SIPHON = 31;
+	/** Un hilo de alma desde el punto del evento (el enemigo) hacia {@code dx,dy,dz} (el nigromante). */
+	public static final int NECRO_SIPHON_LINK = 32;
+	/** Manada: en quien lo lanza. */
+	public static final int DRUID_WOLVES = 33;
+	/** Un lobo aparece en el punto del evento. */
+	public static final int DRUID_WOLF_SPAWN = 34;
+	/** Tormenta de espinas en quien la lanza; {@code power} = radio. */
+	public static final int DRUID_THORNS = 35;
+	/** Moneda: {@code dx,dy,dz} = del ojo al objetivo. */
+	public static final int MERCHANT_COIN = 36;
+	/** Guardia dorada en quien la lanza. */
+	public static final int MERCHANT_GUARD = 37;
+	/** Patada voladora: {@code dx,dy,dz} = vector del desplazamiento; {@code power} 1 si golpeó. */
+	public static final int MONK_KICK = 38;
+	/** Un puñetazo en el punto del evento; {@code power} = índice (el 0 inicia la animación). */
+	public static final int MONK_FIST = 39;
 	/** Mayor id válido; el cliente descarta lo desconocido. */
-	public static final int MAX = 29;
+	public static final int MAX = 39;
 
 	private FxIds() {
 	}

@@ -1834,6 +1834,14 @@ subtitles.aptitudes.swordsman_draw¦Uma lâmina é sacada¦Une lame est dégain�
 subtitles.aptitudes.swordsman_cut¦Uma lâmina corta¦Une lame tranche¦Eine Klinge schneidet
 subtitles.aptitudes.paladin_consecrate¦O chão é consagrado¦Le sol est consacré¦Der Boden wird geweiht
 subtitles.aptitudes.paladin_hammer¦Um martelo sagrado golpeia¦Un marteau sacré frappe¦Ein heiliger Hammer schlägt zu
+subtitles.aptitudes.necromancer_spear¦Uma lança de osso voa¦Une lance d'os file¦Ein Knochenspeer fliegt
+subtitles.aptitudes.necromancer_siphon¦Almas são drenadas¦Des âmes sont drainées¦Seelen werden entzogen
+subtitles.aptitudes.druid_howl¦Uma matilha uiva¦Une meute hurle¦Ein Rudel heult
+subtitles.aptitudes.druid_thorns¦Espinhos chicoteiam¦Des épines fouettent¦Dornen peitschen
+subtitles.aptitudes.merchant_coin¦Uma moeda zune¦Une pièce siffle¦Eine Münze zischt
+subtitles.aptitudes.merchant_guard¦Sinos dourados soam¦Des clochettes dorées tintent¦Goldene Glocken klingen
+subtitles.aptitudes.monk_kick¦Um chute voador acerta¦Un coup de pied volant frappe¦Ein Flugtritt trifft
+subtitles.aptitudes.monk_fist¦Um punho acerta¦Un poing frappe¦Eine Faust schlägt zu
 entity.aptitudes.custodio_cuatro_llaves¦O Custódio das Quatro Chaves¦Le Gardien des Quatre Clés¦Der Wächter der vier Schlüssel
 item.aptitudes.faceless_colossus_spawn_egg¦Ovo gerador do Colosso Sem Rosto¦Œuf d'apparition du Colosse sans visage¦Spawn-Ei des gesichtslosen Kolosses
 bestiary.aptitudes.faceless_colossus.tip¦Guerreiro gigante com espadão. Anuncia um golpe amplo e um golpe descendente com onda: saia do círculo marcado. Com metade da vida sua armadura racha: fica mais rápido, investe de longe e recebe mais dano.¦Guerrier géant armé d'une grande épée. Il annonce un large balayage et un coup plongeant avec onde de choc : sortez du cercle marqué. À mi-vie son armure se fissure : il va plus vite, charge de loin et subit plus de dégâts.¦Riesiger Krieger mit Zweihänder. Er kündigt einen weiten Hieb und einen Abwärtsschlag mit Schockwelle an: Verlasse den markierten Kreis. Bei halber Lebenskraft bricht seine Rüstung: Er wird schneller, stürmt aus der Ferne an und erleidet mehr Schaden.

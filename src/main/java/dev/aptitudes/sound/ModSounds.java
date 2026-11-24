@@ -65,6 +65,14 @@ public final class ModSounds {
 	public static final SoundEvent SWORDSMAN_CUT = register("swordsman_cut");
 	public static final SoundEvent PALADIN_CONSECRATE = register("paladin_consecrate");
 	public static final SoundEvent PALADIN_HAMMER = register("paladin_hammer");
+	public static final SoundEvent NECROMANCER_SPEAR = register("necromancer_spear");
+	public static final SoundEvent NECROMANCER_SIPHON = register("necromancer_siphon");
+	public static final SoundEvent DRUID_HOWL = register("druid_howl");
+	public static final SoundEvent DRUID_THORNS = register("druid_thorns");
+	public static final SoundEvent MERCHANT_COIN = register("merchant_coin");
+	public static final SoundEvent MERCHANT_GUARD = register("merchant_guard");
+	public static final SoundEvent MONK_KICK = register("monk_kick");
+	public static final SoundEvent MONK_FIST = register("monk_fist");
 
 	private ModSounds() {
 	}
