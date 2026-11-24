@@ -8,7 +8,7 @@ primera propuesta, «Dungeon del Coloso»; se conserva para no romper enlaces.)
 
 | Tema | Decisión |
 |---|---|
-| Nombre | **Las Tres Torres Señoriales** |
+| Nombre | Dungeon: **Las Tres Torres Señoriales**. Orden: **Vigilia de las Tres Almenas** (D-39, elegido por el autor entre diez opciones, §7). Líder: el **Mariscal**, sin nombre propio |
 | Jefes | **Coloso Sin Rostro** = jefe final (el Señor corrompido en su armadura). **Guardián Desmontado** = subjefe (un vasallo). Sin sellos de invocación; dormidos al generarse; **una sola vez por estructura** |
 | Lore | Al caer el Primer Eclipse, el líder de la **orden** (nombre por elegir, ver §7; **no** una casa noble ni inspirado en Juego de Tronos) vio corrompida su alma y esta se infundió en su armadura: ahora es un ente corrompido. Sus caballeros, también |
 | Forma | **Tres torres** sobre la superficie (referencias en el brief), no un templo subterráneo |
@@ -66,7 +66,7 @@ controlador es `DORMIDO → VASALLOS (0/2, 1/2) → SEÑOR_ABIERTO → COLOSO_VI
 
 | # | Pregunta | Recomendación |
 |---|---|---|
-| 1 | **Nombre de la orden** y título de su líder (§7). El líder queda **sin nombre propio** (el Coloso es «Sin Rostro»: se borró con su rostro) | Elegir de la lluvia de ideas; en el código solo claves de idioma |
+| 1 | ~~Nombre de la orden~~ | **Decidido: «Vigilia de las Tres Almenas»**; el Mariscal queda sin nombre propio (se borró con su rostro). En el código, solo claves de idioma |
 | 2 | ¿Las dos torres vasallas deben vencerse **antes** de abrir la del Señor? | Sí: da el recorrido de «tres torres» y justifica el subjefe |
 | 3 | **Cuánto más rara:** frecuencia concreta | Región de 64×64 chunks-grid (≈4 veces más rara que el Custodio) |
 | 4 | **Cuánto más difícil:** ¿anillo del lugar +2, o mínimo fijo III? | Mínimo fijo III y +1 sobre el anillo del lugar, con tope V |
@@ -94,4 +94,4 @@ un título hereditario: **Mariscal** (recomendado) o Castellano.
 | I | **Orden del Ocaso Firme** | Eclipse y resistencia | «Ocaso» ya lo usa el Astrolabio del Ocaso |
 | J | **Centinelas de Piedra y Esencia** | Usa «Esencia», término del lore | Largo y poco memorable |
 
-**Mi orden de preferencia:** A, B, D. Los nombres del lore existente (Edran, Lysara, Vaelor) son personales; **no** se propone nombre para el líder.
+**ELEGIDA: H · Vigilia de las Tres Almenas** (autor, 2026-11-24). *(Mi orden de preferencia había sido A, B, D.)* Los nombres del lore existente (Edran, Lysara, Vaelor) son personales; **no** se propone nombre para el líder.

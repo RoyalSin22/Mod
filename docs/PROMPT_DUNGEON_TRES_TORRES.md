@@ -15,8 +15,8 @@ el **Mariscal** de la orden que guardaba estas torres vio corrompida su alma, y 
 yelmo vacío que aún se cree el jefe de la guarnición (su nombre se perdió con su rostro). Sus caballeros corrieron la misma suerte: son los
 Guardianes «Desmontados». **Reglas:** nunca llamar «Primer Eclipse» al que invoca el jugador; **no** introducir linajes, razas, pactos, herencias
 ni progresión por ascendencia (`AGENTS.md` §3); **no** hablar de «casa», «estirpe» ni «herederos», y **no** inspirarse en Juego de Tronos. Es una
-**orden** (institución, como la Orden de los Cuatro Sellos) y el líder tiene un **cargo**, no un título hereditario. El nombre de la orden
-**no está fijado** (lluvia de ideas en `V86_DUNGEON_COLOSO.md` §7): usa claves de idioma, no cadenas en el código.
+**orden** (institución, como la Orden de los Cuatro Sellos) y el líder tiene un **cargo**, no un título hereditario. La orden se llama **«Vigilia de las Tres Almenas»**
+(D-39; lluvia de ideas en `V86_DUNGEON_COLOSO.md` §7): úsalo siempre vía claves de idioma, no como cadena en el código.
 
 ## 2. Referencias visuales (solo inspiración de silueta y proporción)
 

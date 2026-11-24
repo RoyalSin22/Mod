@@ -3,8 +3,7 @@
 **Reparto acordado con el autor (2026-11-24):** Claude hace el **código** (layout, `Feature`, controlador, jefes, pruebas) y **Codex los
 textos**: lore de las Crónicas, cartas del bestiario y mensajes. Lee antes `AGENTS.md`, `docs/V86_DUNGEON_COLOSO.md` y
 `docs/PROMPT_DUNGEON_TRES_TORRES.md` (§1: lore y reglas). Responde en español. No toques código Java salvo que este encargo lo diga; no
-toques `gen_*` ajenos. **No empieces hasta que el autor haya elegido el nombre de la orden** (`V86_DUNGEON_COLOSO.md` §7); mientras tanto
-trabaja con el marcador `{ORDEN}` y no lo sustituyas en las claves.
+toques `gen_*` ajenos. **El nombre ya está decidido (D-39): «Vigilia de las Tres Almenas»**, y su líder es el **Mariscal** (sin nombre propio). Puedes empezar.
 
 ## 1. Qué entregas
 
