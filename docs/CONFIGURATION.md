@@ -419,6 +419,10 @@ desde que el evento **empieza** (provisional) y no las consumen los comandos `/a
 | `fogDurationTicks` | 24000 | [1200, 240000] | Duración de la Niebla en ticks (24 000 = un día de Minecraft). Antes duraba 12 000 desde las 18:00. |
 | `emberRainCooldownDays` | 5 | [1, 365] | Días de espera entre dos Lluvias de brasas provocadas por un portal. |
 | `beheritCooldownDays` | 3 | [0, 365] | Días de espera, por mundo, entre dos usos del Resonador del Umbral (Behelit), contados desde el **fin** del Eclipse anterior (D-25). 0 = sin espera. Si se intenta antes, el objeto no se consume y se avisa en la barra de acción. |
+| `parryEnabled` | true | — | C7 · S3: bloquear el golpe cuerpo a cuerpo de una criatura justo al alzar el escudo (ventana de 4 ticks, la misma «guardia perfecta» de los jefes) la aturde y abre un golpe de gracia. Nunca afecta a jugadores, jefes (del mod y de vanilla) ni campeones. |
+| `parryStunTicks` | 40 | [0, 200] | Ticks de aturdimiento de la criatura parada (Lentitud y Debilidad altas). 0 = no aturde. |
+| `parryFinisherTicks` | 60 | [10, 200] | Plazo para asestar el golpe de gracia tras la parada. |
+| `parryFinisherMultiplier` | 1.5 | [1, 4] | Multiplicador del daño del siguiente golpe directo del jugador a esa criatura. Se gasta en un solo golpe. |
 | `osarioBossEnabled` | true | — | V68: permite que el Gran Osario Quebrado se levante hacia el final de la Niebla. |
 | `osarioBossFogPercent` | 75 | [10, 100] | V68: porcentaje de la duración de la Niebla a partir del cual aparece el jefe (una vez por sesión). |
 | `osarioBossLingerTicks` | 6000 | [0, 72000] | V68: ticks que sigue vivo tras cerrarse la Niebla antes de disolverse sin botín ni XP. 6000 = 5 minutos. |

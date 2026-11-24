@@ -223,6 +223,15 @@ public class AptitudesConfig {
 	 * anterior (D-25). 0 = sin espera.
 	 */
 	public int beheritCooldownDays = 3;
+	// ---------- Parada y contraataque (C7 · S3) ----------
+	/** Bloquear un golpe cuerpo a cuerpo con el escudo recién alzado aturde a la criatura y abre un golpe de gracia. */
+	public boolean parryEnabled = true;
+	/** Ticks de aturdimiento de la criatura parada (0 = no aturde). */
+	public int parryStunTicks = 40;
+	/** Ticks que dura abierto el golpe de gracia tras una parada. */
+	public int parryFinisherTicks = 60;
+	/** Multiplicador de daño del golpe de gracia. */
+	public double parryFinisherMultiplier = 1.5;
 	// ---------- Gran Osario Quebrado, jefe de la Niebla (V68) ----------
 	/** Activa la aparición del jefe al final de la Niebla de almas. */
 	public boolean osarioBossEnabled = true;
@@ -634,6 +643,10 @@ public class AptitudesConfig {
 				dev.aptitudes.event.EventTriggerRules.MAX_FOG_TICKS);
 		c.emberRainCooldownDays = clamp(c.emberRainCooldownDays, 1, 365);
 		c.beheritCooldownDays = clamp(c.beheritCooldownDays, 0, 365);
+		c.parryStunTicks = clamp(c.parryStunTicks, 0, dev.aptitudes.logic.ParryRules.MAX_STUN_TICKS);
+		c.parryFinisherTicks = clamp(c.parryFinisherTicks, dev.aptitudes.logic.ParryRules.MIN_FINISHER_TICKS, dev.aptitudes.logic.ParryRules.MAX_FINISHER_TICKS);
+		c.parryFinisherMultiplier = Double.isNaN(c.parryFinisherMultiplier) ? 1.5
+				: Math.max(dev.aptitudes.logic.ParryRules.MIN_MULTIPLIER, Math.min(dev.aptitudes.logic.ParryRules.MAX_MULTIPLIER, c.parryFinisherMultiplier));
 		c.osarioBossFogPercent = clamp(c.osarioBossFogPercent, 10, 100);
 		c.osarioBossLingerTicks = clamp(c.osarioBossLingerTicks, 0, 72_000);
 		c.osarioBossMinDamagePercent = clamp(c.osarioBossMinDamagePercent, 1, 100);

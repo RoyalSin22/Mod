@@ -1945,3 +1945,37 @@ Desde T3d los chunks **nuevos** generan este templo solos (los ya generados cons
 3. Grimorio (K/tecla del libro): índice solo de texto, cabecera con título y subtítulo sin ilustración, pestañas sin cajas.
 4. Hoguera: piedras irregulares alrededor, troncos, espada con espiral y llama animada; se ve bien desde todos los lados.
 5. `/give @s aptitudes:berserker_weapon_master`: en la mano, el suelo y un marco se ve plano y limpio (sin bultos ni bordes).
+
+# T5 — Espera del Behelit y migración de eventos (verificación manual, pendiente)
+
+1. `/give @s aptitudes:resonador_del_umbral 3`. Clic derecho sobre una Hoguera en el Mundo Normal: empieza el Eclipse y se
+   consume **un** Resonador.
+2. Con el Eclipse en curso, usa otro: no se consume y la barra de acción dice que el cielo ya se agita.
+3. Termina el Eclipse (`/aptitudes eclipse stop` o espera el final) y usa el Resonador enseguida: no se consume y avisa con las horas de
+   juego que faltan (≈72). `/time add` no cambia la espera (usa el reloj del mundo).
+4. Cambia `beheritCooldownDays` a 0 en la pantalla de configuración: se puede usar de inmediato. Con `eclipseEnabled = false`: avisa y no se consume.
+5. Reinicia el servidor tras un Eclipse: la espera se conserva (se guarda en `aptitudes_eclipse`).
+6. Configuración antigua: pon `"worldEventWeightSoulFog": 0, "worldEventWeightEmberRain": 0, "configRevision": 83` en `config/aptitudes.json`
+   y arranca: ambos pasan a 1. Con `configRevision` 84 y un 0 a mano, se respeta (la Niebla por aldeano no responde).
+7. Sin Behelit ni comando, deja pasar varios días de juego: el Eclipse **no** sale por calendario aunque el `config` tenga
+   `worldEventWeightEclipse` mayor que 0.
+
+# C2 — Cachés de rendimiento (verificación manual, pendiente)
+
+1. Con un rol con senda aprendida (p. ej. +crítico), compruébalo en el árbol y golpea: el efecto sigue ahí. Gasta un punto en otro nodo de
+   la senda: el efecto cambia **sin reiniciar** (la caché se invalida con `RoleData.version()`).
+2. Cambia de rol principal con la Hoguera, haz Reiniciar del árbol y muere y reaparece: ningún efecto de senda ni piedra angular queda
+   «pegado» del estado anterior.
+3. Con spark (`/spark profiler start --thread *`) en un servidor con 5–10 jugadores peleando, compara el tiempo en `PathEffects.all` y
+   `Keystones.active` con la versión anterior (R4, aún sin medir).
+
+# C7 · S3 — Parada y contraataque (verificación manual, pendiente)
+
+1. Con un escudo, alza el escudo **justo** cuando un zombi va a golpearte: aviso «¡Parada!», partículas y sonido agudo; el zombi queda
+   inmóvil unos 2 s (Lentitud y Debilidad). Si lo alzas con antelación (más de 4 ticks antes del golpe) no hay parada.
+2. Golpéalo cuerpo a cuerpo en el plazo (3 s): aviso «¡Golpe de gracia!» y el daño es ×1,5. Un segundo golpe ya no multiplica.
+3. Espera más de 3 s tras la parada: el golpe es normal. Cambia a un arco: la flecha no gasta el golpe de gracia.
+4. Un esqueleto o una flecha (a distancia) bloqueados con el escudo **no** abren parada.
+5. Un campeón, el Wither, el Dragón, el Warden y los jefes del mod no se aturden ni abren golpe de gracia.
+6. Otro jugador con escudo golpeado por ti: sin parada (sin PvP).
+7. `parryEnabled = false`: nada de lo anterior ocurre. Comprueba que `/aptitudes` sigue sin errores en el registro tras 10 minutos de combate.

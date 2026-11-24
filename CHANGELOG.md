@@ -5,6 +5,17 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Añadido
+- **C7 · S3 Parada y contraataque.** Bloquear con el escudo un golpe cuerpo a cuerpo de una criatura dentro de la ventana de
+  la guardia perfecta (4 ticks desde que el escudo es efectivo, la misma de los jefes: `GuardRules.PERFECT_WINDOW_TICKS` y
+  `GuardTracker`) la **aturde** y abre un **golpe de gracia**: el siguiente golpe directo del jugador, en un plazo de 3 s,
+  hace ×1,5. No afecta a jugadores (sin PvP), jefes del mod ni de vanilla (Wither, Dragón, Warden) ni campeones. Sin
+  mixins ni cliente nuevo (`AFTER_DAMAGE` de Fabric). Reglas puras en `logic/ParryRules` (`ParryRulesTest`), gestor en
+  `ability/Parry`, gancho en `RolePassives.modifyOutgoingDamage`. Cuatro opciones nuevas (`parryEnabled`,
+  `parryStunTicks`, `parryFinisherTicks`, `parryFinisherMultiplier`) con límites, texto en los 5 idiomas y fila en
+  `docs/CONFIGURATION.md`. **Activada por defecto (decisión de balance: pide tu confirmación).** Sin probar en partida
+  (guion en `docs/TESTING.md`).
+
 ### Corregido
 - **Revisión C1 (auditoría transversal de v42–v58).** `SynergyRules` tragaba en silencio cualquier excepción de Y2, Y3 y
   Y4 y la sinergia dejaba de aplicarse sin rastro: ahora se registra una vez por lugar. `Elites.BLINK_READY` (indexado por

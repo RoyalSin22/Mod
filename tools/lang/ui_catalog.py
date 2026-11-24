@@ -1884,3 +1884,8 @@ cooldown¦O Ressonador do Limiar permanece em silêncio. Voltará a responder em
 busy¦O céu já está se agitando. Espere o evento atual terminar.¦Le ciel s’agite déjà. Attendez la fin de l’événement en cours.¦Der Himmel regt sich bereits. Warte, bis das laufende Ereignis endet.
 disabled¦O Eclipse está desativado neste servidor.¦L’Éclipse est désactivée sur ce serveur.¦Die Sonnenfinsternis ist auf diesem Server deaktiviert.
 """)
+
+add('parry.aptitudes.', """
+success¦Aparada!¦Parade !¦Parade!
+finisher¦Golpe de misericórdia!¦Coup de grâce !¦Gnadenstoß!
+""")
