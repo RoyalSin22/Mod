@@ -237,6 +237,12 @@ public final class TowersLayout {
 		}
 	}
 
+	/** Torre a la que pertenece la columna {@code (x, z)} (muros incluidos), o {@code null} si es patio. */
+	public static Tower towerAt(int x, int z) {
+		for (Tower t : TOWERS) if (Math.abs(x - t.cx()) <= t.half() && Math.abs(z - t.cz()) <= t.half()) return t;
+		return null;
+	}
+
 	/** Lista inmodificable de las celdas selladas, para quien solo quiera leerlas. */
 	public static List<int[]> sealedCells(Result r) {
 		return Collections.unmodifiableList(r.sealed);

@@ -2005,3 +2005,20 @@ Desde T3d los chunks **nuevos** generan este templo solos (los ya generados cons
 5. Reinicia el servidor con un eco vivo: al cargar el chunk, el eco guardado se retira (no queda ninguna cabeza fantasma). Sin errores en el registro.
 6. Desactiva la opción con un eco vivo: todos desaparecen en un tick. Con la opción apagada (por defecto) no se crea ninguna entidad al morir.
 7. Rendimiento: con 10 jugadores el coste es una copia de 4 números cada 2 ticks por jugador; con los ecos lejos de todos, cero.
+
+# V86 · fase 2 — Las Tres Torres Señoriales (verificación manual, pendiente; no se pudo arrancar un servidor al implementarla)
+
+1. En un mundo nuevo con operador: `/aptitudes place three_towers`. Debe aparecer, a 24–96 bloques, un patio con **tres torres de piedra musgosa**: dos
+   de 11×11 (techo en y+26) y una de 13×13 (techo en y+34) al norte, cada una con parapeto almenado y una **empuñadura de espada** de pizarra encima.
+   Sin errores en el registro del servidor (`aptitudes:three_towers` registrada y sus JSON cargados).
+2. Entra por la puerta sur de una torre vasalla (3×3, abierta): hay 3 plantas de combate unidas por escaleras rectas que alternan muro norte y sur,
+   y una sala superior de 9×9 con 7 de alto. Comprueba que se puede subir caminando hasta arriba sin saltar y que las antorchas de almas siguen en los muros.
+3. La Torre del Señor tiene la puerta sur **sellada** (piedra sellada 3×3). **Ahora se puede romper**; la fase 3 la hará abrible solo al vencer a los Guardianes.
+   Dentro: 4 plantas de combate y una sala de 11×11 con 9 de alto. El marcador `lodestone` del centro del patio es el futuro controlador.
+4. Sin jefes ni criaturas dentro: es lo esperado hasta la fase 3.
+5. `/aptitudes locate three_towers` tras generar una (o explorar): devuelve las coordenadas. En un mundo con semilla fija, mide cuántas hay en un radio de
+   2000 bloques y compáralas con las del Templo del Custodio: deberían ser unas **4 veces menos**.
+6. En terreno con pendiente fuerte, océano o lago: no debe generarse (`suitable`), ni dejar columnas flotando; revisa los bordes del patio y el cimiento.
+7. `threeTowersEnabled = false`: `place` falla y no se genera en chunks nuevos.
+8. Prueba en un mundo con y sin árboles altos cerca: el patio debe quedar despejado hasta 8 bloques de altura.
+

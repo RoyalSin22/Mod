@@ -223,6 +223,9 @@ public class AptitudesConfig {
 	 * anterior (D-25). 0 = sin espera.
 	 */
 	public int beheritCooldownDays = 3;
+	// ---------- Las Tres Torres Señoriales (V86) ----------
+	/** Permite que se generen las Tres Torres Señoriales en mundos nuevos o en chunks sin generar. */
+	public boolean threeTowersEnabled = true;
 	// ---------- Ecos de muerte (C7 · S6) ----------
 	/** Al morir, un eco con la cabeza del jugador repite sus últimos 5 s mientras haya alguien cerca. Desactivado por defecto: genera entidades. */
 	public boolean deathEchoesEnabled = false;

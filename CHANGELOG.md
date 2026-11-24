@@ -17,6 +17,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 - **S3 Parada y contraataque se queda activada por defecto** (confirmado por el autor).
 
 ### Añadido
+- **V86 fase 2 · Las Tres Torres Señoriales generan en el mundo.** `world/ThreeTowersFeature` traduce `TowersLayout` a bloques (piedra
+  musgosa, cimiento de pizarra, patio despejado, ventanas de barrotes, antorchas de almas, escaleras y empuñaduras de pizarra) y no crea
+  entidades. Rareza por región de **64×64 chunks** (el Custodio usa 32: unas 4 veces más rara; el Custodio **no se toca**), registrada en
+  `ModWorldGen`, `placed_feature/three_towers.json` y `StructureLocateRules` (`/aptitudes locate|place three_towers`). Opción
+  `threeTowersEnabled`. Exige terreno con desnivel ≤ 4, sin agua ni lava bajo el patio y altura libre. **Limitaciones hasta la fase 3:** el
+  controlador es un `lodestone` marcador, la puerta del Señor es una piedra sellada rompible y no hay jefes. **No se pudo probar en un
+  servidor** (ver `docs/TESTING.md`): solo están comprobados el layout y la coherencia de los JSON con el código (`ThreeTowersResourcesTest`).
 - **V86 fase 1 · Las Tres Torres Señoriales: layout puro.** `dungeon/TowersLayout` distribuye tres torres de superficie dentro del
   radio 15: dos vasallas de 11×11 (techo en y 26, 3 plantas de combate y sala del Guardián de 9×9×7) y la Torre del Señor de 13×13 (techo
   en y 34, 4 plantas y sala del Coloso de 11×11×9) con puerta sellada 3×3, escaleras rectas por planta, ventanas, faroles, parapetos con

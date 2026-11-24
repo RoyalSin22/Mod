@@ -199,4 +199,12 @@ class TowersLayoutTest {
 		assertEquals(4, LORD.combatLevels());
 		for (Role role : Role.values()) assertTrue(L.spawns.stream().anyMatch(s -> s.role() == role));
 	}
+
+	@Test void towerAtFindsTheOwnerOfAColumnAndTheCourtyardHasNone() {
+		assertSame(WEST, towerAt(WEST.cx(), WEST.cz()));
+		assertSame(EAST, towerAt(EAST.cx() + EAST.half(), EAST.cz() - EAST.half()), "el muro cuenta");
+		assertSame(LORD, towerAt(LORD.cx(), LORD.cz()));
+		assertNull(towerAt(0, 0), "el controlador está en el patio");
+		assertNull(towerAt(0, 14));
+	}
 }

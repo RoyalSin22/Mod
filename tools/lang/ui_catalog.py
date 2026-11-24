@@ -1922,3 +1922,7 @@ add('contract.aptitudes.', """
 kind.soul_fog¦Convocar a Névoa das Almas¦Convoquer la Brume des âmes¦Seelennebel herbeirufen
 fog_disabled¦A Névoa das Almas está desativada neste servidor.¦La Brume des âmes est désactivée sur ce serveur.¦Der Seelennebel ist auf diesem Server deaktiviert.
 """)
+
+add('aptitudes.structure.', """
+three_towers¦As Três Torres Senhoriais¦Les Trois Tours Seigneuriales¦Die Drei Herrenturme
+""")

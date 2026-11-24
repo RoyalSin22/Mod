@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /** V77: localizar las estructuras del mod (Features) con /aptitudes locate. */
 class StructureLocateRulesTest {
-	@Test void kindsAreTheFiveStructuresOfTheMod() {
-		assertEquals(5, StructureLocateRules.KINDS.size());
-		for (String k : new String[] {"custodian_temple", "temple", "tower", "bonfire_shrine", "camp"}) assertTrue(StructureLocateRules.isKind(k), k);
+	@Test void kindsAreTheSixStructuresOfTheMod() {
+		assertEquals(6, StructureLocateRules.KINDS.size()); // V86: + three_towers
+		for (String k : new String[] {"custodian_temple", "temple", "tower", "bonfire_shrine", "camp", "three_towers"}) assertTrue(StructureLocateRules.isKind(k), k);
 		assertFalse(StructureLocateRules.isKind("village"));
 		assertFalse(StructureLocateRules.isKind(""));
 		assertFalse(StructureLocateRules.isKind(null));

@@ -57,7 +57,7 @@ controlador es `DORMIDO → VASALLOS (0/2, 1/2) → SEÑOR_ABIERTO → COLOSO_VI
 ## 5. Fases
 
 1. **Layout puro — HECHA** (`dungeon/TowersLayout`, `TowersLayoutTest`, 12 pruebas): recorrido real por BFS con escaleras (se probó que falla si se rompe un peldaño), puerta del Señor sellada/abierta, cabida de los jefes, nada fuera del radio 15, almenas y empuñaduras.
-2. **Feature y datos de mundo:** `ThreeTowersFeature`, JSON de configured/placed feature, `RegionGridPlacement` más raro, `StructureIndex`, `locate|place`.
+2. **Feature y datos de mundo — HECHA, sin probar en un mundo:** `ThreeTowersFeature`, JSON de configured/placed feature, región 64, `StructureIndex`, `locate|place three_towers`, opción `threeTowersEnabled`. El controlador es un marcador y la puerta del Señor una piedra rompible hasta la fase 3.
 3. **Controlador y jefes:** vasallos, despertar de Guardianes y Coloso, arenas, estado persistente, dificultad alta.
 4. **Recompensa y narrativa:** Plantilla de ascensión, logro, cartas de bestiario (el Coloso y el Guardián), Crónicas, textos en 5 idiomas, `CONFIGURATION.md`.
 5. **Limpieza** de los restos de los sellos (`boss/SummonSealItem`, `SummonRules`, `SummonState`, filas de `gen_items.py`) y documentación.
