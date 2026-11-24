@@ -6,6 +6,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **V87 — Efectos de batalla, fase 6 (Lancero, Espadachín y Paladín).** Lancero: Salto del dragón (ráfaga de aire, estela de aliento
+  de dragón y aterrizaje con escombros físicos y onda violeta) y Estocada perforante (línea recta de viento y chispas). Espadachín:
+  Iaido (estela de acero con tajos) y Mil cortes (un tajo diagonal con chispas y tono distinto por golpe). Paladín: Consagración
+  (círculo dorado que se abre, pilares de luz y un pulso por segundo) y Martillo de la justicia (rayo dorado, columna de luz y anillo).
+  Siete animaciones del cuerpo en primera persona (`lancer.json`, `swordsman.json`, `paladin.json`), siete sonidos sintetizados con
+  subtítulos en los 11 idiomas. El Martillo de la justicia y la Estocada ya no dibujan nada si fallan. Embestida del Lancero no cambia.
+  **Sin ver en partida.**
 - **V86 — Efectos de batalla, fase 5 (Ingeniero).** El Garfio dispara un cable de chispas que se tensa y se clava con un estallido de
   metal (con tirón de cámara para quien lo lanza), y la Granada de pulso describe un arco, parpadea cada vez más rápido y estalla en un
   anillo eléctrico con esquirlas de hierro justo cuando el servidor aplica el daño. Dos animaciones del cuerpo en primera persona

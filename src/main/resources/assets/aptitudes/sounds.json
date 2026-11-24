@@ -304,5 +304,47 @@
     "sounds": [
       "aptitudes:engineer_blast"
     ]
+  },
+  "lancer_leap": {
+    "subtitle": "subtitles.aptitudes.lancer_leap",
+    "sounds": [
+      "aptitudes:lancer_leap"
+    ]
+  },
+  "lancer_thrust": {
+    "subtitle": "subtitles.aptitudes.lancer_thrust",
+    "sounds": [
+      "aptitudes:lancer_thrust"
+    ]
+  },
+  "lancer_slam": {
+    "subtitle": "subtitles.aptitudes.lancer_slam",
+    "sounds": [
+      "aptitudes:lancer_slam"
+    ]
+  },
+  "swordsman_draw": {
+    "subtitle": "subtitles.aptitudes.swordsman_draw",
+    "sounds": [
+      "aptitudes:swordsman_draw"
+    ]
+  },
+  "swordsman_cut": {
+    "subtitle": "subtitles.aptitudes.swordsman_cut",
+    "sounds": [
+      "aptitudes:swordsman_cut"
+    ]
+  },
+  "paladin_consecrate": {
+    "subtitle": "subtitles.aptitudes.paladin_consecrate",
+    "sounds": [
+      "aptitudes:paladin_consecrate"
+    ]
+  },
+  "paladin_hammer": {
+    "subtitle": "subtitles.aptitudes.paladin_hammer",
+    "sounds": [
+      "aptitudes:paladin_hammer"
+    ]
   }
 }

@@ -1827,6 +1827,13 @@ subtitles.aptitudes.herbalist_spore¦Esporos explodem¦Des spores éclatent¦Spo
 subtitles.aptitudes.engineer_grapple¦Um gancho é disparado¦Un grappin est tiré¦Ein Enterhaken schießt
 subtitles.aptitudes.engineer_throw¦Uma granada é lançada¦Une grenade est lancée¦Eine Granate fliegt
 subtitles.aptitudes.engineer_blast¦Uma explosão de pulso¦Une explosion pulsée¦Ein Pulsknall
+subtitles.aptitudes.lancer_leap¦Um dragão salta¦Un dragon bondit¦Ein Drache springt
+subtitles.aptitudes.lancer_thrust¦Uma lança perfura¦Une lance transperce¦Ein Speer stößt zu
+subtitles.aptitudes.lancer_slam¦O dragão aterrissa¦Le dragon atterrit¦Der Drache landet
+subtitles.aptitudes.swordsman_draw¦Uma lâmina é sacada¦Une lame est dégainée¦Eine Klinge wird gezogen
+subtitles.aptitudes.swordsman_cut¦Uma lâmina corta¦Une lame tranche¦Eine Klinge schneidet
+subtitles.aptitudes.paladin_consecrate¦O chão é consagrado¦Le sol est consacré¦Der Boden wird geweiht
+subtitles.aptitudes.paladin_hammer¦Um martelo sagrado golpeia¦Un marteau sacré frappe¦Ein heiliger Hammer schlägt zu
 entity.aptitudes.custodio_cuatro_llaves¦O Custódio das Quatro Chaves¦Le Gardien des Quatre Clés¦Der Wächter der vier Schlüssel
 item.aptitudes.faceless_colossus_spawn_egg¦Ovo gerador do Colosso Sem Rosto¦Œuf d'apparition du Colosse sans visage¦Spawn-Ei des gesichtslosen Kolosses
 bestiary.aptitudes.faceless_colossus.tip¦Guerreiro gigante com espadão. Anuncia um golpe amplo e um golpe descendente com onda: saia do círculo marcado. Com metade da vida sua armadura racha: fica mais rápido, investe de longe e recebe mais dano.¦Guerrier géant armé d'une grande épée. Il annonce un large balayage et un coup plongeant avec onde de choc : sortez du cercle marqué. À mi-vie son armure se fissure : il va plus vite, charge de loin et subit plus de dégâts.¦Riesiger Krieger mit Zweihänder. Er kündigt einen weiten Hieb und einen Abwärtsschlag mit Schockwelle an: Verlasse den markierten Kreis. Bei halber Lebenskraft bricht seine Rüstung: Er wird schneller, stürmt aus der Ferne an und erleidet mehr Schaden.

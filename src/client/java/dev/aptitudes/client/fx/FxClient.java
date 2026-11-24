@@ -75,6 +75,13 @@ public final class FxClient {
 			case FxIds.HERBALIST_SPORE -> HerbalistClientFx.spore(world, p);
 			case FxIds.ENGINEER_GRAPPLE -> EngineerClientFx.grapple(world, p);
 			case FxIds.ENGINEER_GRENADE -> EngineerClientFx.grenade(world, p);
+			case FxIds.LANCER_LEAP -> LancerClientFx.leap(world, p);
+			case FxIds.LANCER_SLAM -> LancerClientFx.slam(world, p);
+			case FxIds.LANCER_THRUST -> LancerClientFx.thrust(world, p);
+			case FxIds.SWORDSMAN_IAIDO -> SwordsmanClientFx.iaido(world, p);
+			case FxIds.SWORDSMAN_CUT -> SwordsmanClientFx.cut(world, p);
+			case FxIds.PALADIN_CONSECRATE -> PaladinClientFx.consecrate(world, p);
+			case FxIds.PALADIN_HAMMER -> PaladinClientFx.hammer(world, p);
 			default -> { }
 		}
 	}

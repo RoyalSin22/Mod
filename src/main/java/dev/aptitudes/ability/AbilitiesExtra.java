@@ -183,7 +183,7 @@ final class AbilitiesExtra {
 		// Salto del dragón: saltas muy alto y caes en picado sobre los enemigos.
 		Abilities.register("dragon_leap", (p, r) -> {
 			push(p, new Vec3d(0, 1.4, 0));
-			sound(p, SoundEvents.ENTITY_ENDER_DRAGON_FLAP, 1.2f);
+			LancerFx.leap(p, 3.5); // V87
 			AbilityState.schedule(server(p), 14, () -> {
 				if (!p.isAlive()) return;
 				push(p, Targeting.horizontalFacing(p).multiply(0.6).add(0, -2.2, 0));
@@ -195,8 +195,6 @@ final class AbilitiesExtra {
 					e.damage(p.getDamageSources().playerAttack(p), 5 + 2 * r);
 					effect(e, StatusEffects.SLOWNESS, 40, 2);
 				}
-				ParticleFx.shockwave(server(p), world(p), p.getPos(), 3.5, ParticleTypes.DRAGON_BREATH, 6);
-				sound(p, SoundEvents.ENTITY_DRAGON_FIREBALL_EXPLODE, 0.8f);
 			});
 			return true;
 		});
@@ -215,9 +213,9 @@ final class AbilitiesExtra {
 				e.takeKnockback(0.4, -dir.x, -dir.z);
 				hits++;
 			}
-			Targeting.particleLine(world(p), ParticleTypes.SWEEP_ATTACK, start, end);
-			sound(p, SoundEvents.ENTITY_PLAYER_ATTACK_STRONG, 0.8f);
-			return hits > 0;
+			if (hits == 0) return false;
+			LancerFx.thrust(p, end, true); // V87
+			return true;
 		});
 
 		// ---------------- Espadachín ----------------
@@ -227,10 +225,9 @@ final class AbilitiesExtra {
 			Box path = p.getBoundingBox().stretch(facing.multiply(6)).expand(0.6);
 			for (LivingEntity e : p.getWorld().getEntitiesByClass(LivingEntity.class, path, e -> Targeting.isHostileTo(p, e))) {
 				e.damage(p.getDamageSources().playerAttack(p), 5 + 2 * r);
-				world(p).spawnParticles(ParticleTypes.SWEEP_ATTACK, e.getX(), e.getBodyY(0.5), e.getZ(), 1, 0, 0, 0, 0);
 			}
+			SwordsmanFx.iaido(p, facing.multiply(6)); // V87
 			push(p, facing.multiply(2.0).add(0, 0.1, 0));
-			sound(p, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.6f);
 			return true;
 		});
 		// Mil cortes: 5 golpes rápidos al objetivo.
@@ -241,9 +238,7 @@ final class AbilitiesExtra {
 				if (!target.isAlive()) return;
 				target.timeUntilRegen = 0; // ignora la invulnerabilidad entre golpes
 				target.damage(p.getDamageSources().playerAttack(p), 2 + r);
-				world(p).spawnParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getBodyY(0.5), target.getZ(),
-						1, 0.2, 0.2, 0.2, 0);
-				sound(p, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.2f + 0.1f * i);
+				SwordsmanFx.cut(p, target, i); // V87
 			});
 			return true;
 		});
@@ -262,22 +257,19 @@ final class AbilitiesExtra {
 						e.damage(magic(p), (e.getType().isIn(EntityTypeTags.UNDEAD) ? 2 : 1) * (1.5f + 0.5f * r));
 					}
 				}
-				ParticleFx.runeCircle(world(p), center, radius, ParticleFx.dust(0xFFD54F, 1.0f));
 			});
-			sound(p, SoundEvents.BLOCK_BEACON_ACTIVATE, 1.4f);
+			PaladinFx.consecrate(p, center, radius, 120); // V87
 			return true;
 		});
 		// Martillo de la justicia: aturde al objetivo (3 s) y lo golpea.
 		Abilities.register("hammer_of_justice", (p, r) -> {
 			LivingEntity target = Targeting.raycastLiving(p, 16);
 			Vec3d end = target != null ? target.getEyePos() : Targeting.lookEnd(p, 16);
-			Targeting.particleLine(world(p), ParticleFx.dust(0xFFE082, 1.3f), p.getEyePos(), end);
 			if (target == null) return false;
+			PaladinFx.hammer(p, end); // V87
 			target.damage(magic(p), 6 + 2 * r);
 			effect(target, StatusEffects.SLOWNESS, 60, 6);
 			effect(target, StatusEffects.WEAKNESS, 60, 2);
-			world(p).spawnParticles(ParticleTypes.FLASH, target.getX(), target.getBodyY(0.5), target.getZ(), 1, 0, 0, 0, 0);
-			sound(p, SoundEvents.BLOCK_ANVIL_LAND, 1.2f);
 			return true;
 		});
 

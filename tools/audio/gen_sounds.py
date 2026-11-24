@@ -616,6 +616,72 @@ def engineer_blast(rng):
     return fade_out(normalize(boom + crack + sparks * 0.5 + hum, 0.85), 0.15)
 
 
+# ---------------------------------------------------------------- Lancero, Espadachín y Paladín (V87)
+
+def lancer_leap(rng):
+    """Salto del dragón: un aleteo grave y un siseo de aire que sube."""
+    t = t_axis(0.8)
+    flap = sum(_soft_air(rng, len(t), 80, 700) * np.exp(-((t - c) / 0.07) ** 2) for c in (0.08, 0.3)) * 1.0
+    air = _soft_air(rng, len(t), 400, 3500) * env(t, 0.12, 0.3) * 0.4
+    thump = np.sin(2 * np.pi * (110 * np.exp(-t * 14) + 50) * t) * env(t, 0.002, 0.1) * 0.7
+    return fade_out(normalize(flap + air + thump, 0.8), 0.12)
+
+
+def lancer_thrust(rng):
+    """Estocada: un silbido agudo y recto y un golpe seco."""
+    t = t_axis(0.4)
+    whistle = np.sin(2 * np.pi * np.cumsum(900 + 1600 * np.clip(t / 0.12, 0, 1)) / RATE) * env(t, 0.004, 0.06) * 0.35
+    air = _soft_air(rng, len(t), 1500, 6000) * env(t, 0.004, 0.07) * 0.5
+    hit_t = np.maximum(t - 0.1, 0)
+    hit = (np.sin(2 * np.pi * (200 * np.exp(-hit_t * 26) + 85) * hit_t) * env(hit_t, 0.001, 0.06) * 0.9) * (t >= 0.1)
+    return fade_out(normalize(whistle + air + hit, 0.82), 0.05)
+
+
+def lancer_slam(rng):
+    """Aterrizaje del dragón: golpe profundo, grava que salta y un eco."""
+    t = t_axis(1.0)
+    boom = np.sin(2 * np.pi * (95 * np.exp(-t * 7) + 32) * t) * env(t, 0.002, 0.22) * 1.0
+    gravel = _soft_air(rng, len(t), 300, 3000) * env(t, 0.002, 0.14) * 0.6
+    crack = _soft_air(rng, len(t), 2000, 6500) * env(t, 0.0006, 0.03) * 0.4
+    return fade_out(normalize(boom + gravel + crack, 0.88), 0.15)
+
+
+def swordsman_draw(rng):
+    """Iaido: un roce de vaina, un siseo largo de filo y un tintineo."""
+    t, noise = _sweep_noise(rng, 0.45, 1500.0, 5200.0, 2200.0, 0.8)
+    amp = np.sin(np.pi * np.clip(t / 0.4, 0, 1)) ** 1.5
+    ring = _bell(t, 3200, [(1.0, 0.5), (2.1, 0.3), (3.3, 0.15)], 0.3) * env(t, 0.08, 0.3) * 0.3
+    scrape = _soft_air(rng, len(t), 700, 2500) * env(t, 0.01, 0.06) * 0.3
+    return fade_out(normalize(normalize(noise) * amp * 0.8 + ring + scrape, 0.82), 0.08)
+
+
+def swordsman_cut(rng):
+    """Corte rápido: un chasquido de filo breve (se reproduce con distinto tono en cada tajo)."""
+    t = t_axis(0.2)
+    air = _soft_air(rng, len(t), 2500, 7000) * env(t, 0.002, 0.04) * 0.8
+    ring = _bell(t, 2900, [(1.0, 0.5), (1.9, 0.3)], 0.09) * 0.4
+    return fade_out(normalize(air + ring, 0.8), 0.03)
+
+
+def paladin_consecrate(rng):
+    """Consagración: un acorde luminoso y grave que se abre como un coro, con campanas."""
+    t = t_axis(1.4)
+    chord = sum(np.sin(2 * np.pi * f * t) * env(t, 0.25, 0.7) for f in (174.6, 220.0, 261.6, 349.2)) * 0.35
+    shimmer = _bell(t, 1046.5, [(1.0, 0.4), (1.5, 0.25), (2.0, 0.2)], 0.9) * 0.4
+    air = _soft_air(rng, len(t), 1500, 5000) * env(t, 0.2, 0.4) * 0.1
+    return fade_out(normalize(chord + shimmer + air, 0.78), 0.25)
+
+
+def paladin_hammer(rng):
+    """Martillo de la justicia: yunque pesado, campana sagrada y un trueno corto."""
+    t = t_axis(1.0)
+    anvil = _bell(t, 520.0, [(1.0, 0.8), (2.4, 0.5), (3.9, 0.3), (5.2, 0.2)], 0.5) * 0.7
+    thud = np.sin(2 * np.pi * (120 * np.exp(-t * 16) + 45) * t) * env(t, 0.001, 0.14) * 1.0
+    crack = _soft_air(rng, len(t), 1500, 6500) * env(t, 0.0006, 0.04) * 0.5
+    holy = _bell(t, 1318.5, [(1.0, 0.4), (1.5, 0.3)], 0.7) * env(t, 0.12, 0.5) * 0.25
+    return fade_out(normalize(anvil + thud + crack + holy, 0.85), 0.15)
+
+
 SOUNDS = {
     'eclipse_announce': eclipse_announce,
     'eclipse_start': eclipse_start,
@@ -668,6 +734,13 @@ SOUNDS = {
     'engineer_grapple': engineer_grapple,
     'engineer_throw': engineer_throw,
     'engineer_blast': engineer_blast,
+    'lancer_leap': lancer_leap,
+    'lancer_thrust': lancer_thrust,
+    'lancer_slam': lancer_slam,
+    'swordsman_draw': swordsman_draw,
+    'swordsman_cut': swordsman_cut,
+    'paladin_consecrate': paladin_consecrate,
+    'paladin_hammer': paladin_hammer,
 }
 
 

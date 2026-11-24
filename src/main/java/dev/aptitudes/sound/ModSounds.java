@@ -58,6 +58,13 @@ public final class ModSounds {
 	public static final SoundEvent ENGINEER_GRAPPLE = register("engineer_grapple");
 	public static final SoundEvent ENGINEER_THROW = register("engineer_throw");
 	public static final SoundEvent ENGINEER_BLAST = register("engineer_blast");
+	public static final SoundEvent LANCER_LEAP = register("lancer_leap");
+	public static final SoundEvent LANCER_THRUST = register("lancer_thrust");
+	public static final SoundEvent LANCER_SLAM = register("lancer_slam");
+	public static final SoundEvent SWORDSMAN_DRAW = register("swordsman_draw");
+	public static final SoundEvent SWORDSMAN_CUT = register("swordsman_cut");
+	public static final SoundEvent PALADIN_CONSECRATE = register("paladin_consecrate");
+	public static final SoundEvent PALADIN_HAMMER = register("paladin_hammer");
 
 	private ModSounds() {
 	}

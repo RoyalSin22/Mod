@@ -34,8 +34,22 @@ public final class FxIds {
 	public static final int ENGINEER_GRAPPLE = 21;
 	/** Granada de pulso: {@code dx,dy,dz} = del ojo al punto de explosión; {@code power} = ticks de espoleta. */
 	public static final int ENGINEER_GRENADE = 22;
+	/** Salto del dragón: {@code power} = ticks de vuelo hasta el aterrizaje. */
+	public static final int LANCER_LEAP = 23;
+	/** Aterrizaje del dragón en el punto del evento; {@code power} = radio. */
+	public static final int LANCER_SLAM = 24;
+	/** Estocada perforante: {@code dx,dy,dz} = del ojo al final; {@code power} 1 si acertó. */
+	public static final int LANCER_THRUST = 25;
+	/** Iaido: {@code dx,dy,dz} = vector del tajo desde el origen. */
+	public static final int SWORDSMAN_IAIDO = 26;
+	/** Un corte de Mil cortes en el punto del evento; {@code power} = índice (el 0 inicia la animación). */
+	public static final int SWORDSMAN_CUT = 27;
+	/** Consagración en el punto del evento; {@code power} = radio y {@code dx} = duración en ticks. */
+	public static final int PALADIN_CONSECRATE = 28;
+	/** Martillo de la justicia: {@code dx,dy,dz} = del ojo al final; {@code power} 1 si acertó. */
+	public static final int PALADIN_HAMMER = 29;
 	/** Mayor id válido; el cliente descarta lo desconocido. */
-	public static final int MAX = 22;
+	public static final int MAX = 29;
 
 	private FxIds() {
 	}

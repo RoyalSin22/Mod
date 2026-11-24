@@ -140,3 +140,18 @@ Identidad de taller: naranja y cian, chispas, cable y esquirlas de hierro. Cubre
 - Tres sonidos sintetizados (`engineer_grapple`, `engineer_throw`, `engineer_blast`). El estallido suena en el servidor al aplicar el daño.
 - Las partículas y sonidos genéricos que ambas activas dibujaban en el servidor se sustituyen por el evento único.
 - **No verificado en partida:** aspecto, sincronía del parpadeo con la explosión y rendimiento.
+
+## Fase 6: Lancero, Espadachín y Paladín (V87)
+
+| Rol | Activa | Efecto | Animación | Golpe |
+|---|---|---|---|---|
+| Lancero | Salto del dragón (`dragon_leap`) | Ráfaga de aire y escombros al despegar, estela de aliento de dragón, aterrizaje con onda violeta y escombros con física; el evento del aterrizaje se adelanta 2 ticks para que su golpe caiga con el daño | `lancer_leap` y `lancer_slam` | tick 3 y 2 |
+| Lancero | Estocada perforante (`piercing_thrust`) | Línea recta de viento con chispas y tajos hasta el final; solo si acierta | `lancer_thrust` | tick 3 |
+| Espadachín | Iaido (`iaido`) | Estela blanca de acero con tajos cada dos bloques y destello al final | `swordsman_iaido` | tick 3 |
+| Espadachín | Mil cortes (`thousand_cuts`) | Un evento por tajo: arco, chispas y destello; el quinto sacude la cámara; el tono sube con cada golpe | `swordsman_cuts` | tick 2 |
+| Paladín | Consagración (`consecration`) | Círculo dorado que se abre, ocho pilares de luz y un pulso por segundo mientras dura | `paladin_consecrate` | tick 5 |
+| Paladín | Martillo de la justicia (`hammer_of_justice`) | Rayo dorado, columna de luz, anillo y chispas sagradas; solo si acierta | `paladin_hammer` | tick 4 |
+
+- Siete sonidos sintetizados (`lancer_leap`, `lancer_thrust`, `lancer_slam`, `swordsman_draw`, `swordsman_cut`, `paladin_consecrate`, `paladin_hammer`).
+- Embestida (`lunge`) y las pasivas conservan su efecto genérico.
+- **No verificado en partida:** aspecto, sincronía del aterrizaje con el daño y del iaido con el desplazamiento, y rendimiento.
