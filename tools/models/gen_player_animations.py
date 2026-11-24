@@ -38,7 +38,9 @@ IMPACT_TICKS = {"berserker_rage": 4, "berserker_war_cry": 8, "berserker_slam": 3
                 "engineer_grapple": 3, "engineer_grenade": 3,
                 "lancer_leap": 3, "lancer_slam": 2, "lancer_thrust": 3, "swordsman_iaido": 3, "swordsman_cuts": 2, "paladin_consecrate": 5, "paladin_hammer": 4,
                 "necromancer_spear": 4, "necromancer_siphon": 4, "druid_wolves": 5, "druid_thorns": 4, "merchant_coin": 3,
-                "merchant_guard": 4, "monk_kick": 3, "monk_fists": 2}
+                "merchant_guard": 4, "monk_kick": 3, "monk_fists": 2,
+                "gunslinger_shot": 2, "gunslinger_deadeye": 4, "weapon_summon": 4, "weapon_greatsword": 4, "shapeshifter_pounce": 3,
+                "shapeshifter_howl": 5}
 
 
 def kf(vec, easing=OUT):
@@ -499,10 +501,77 @@ def build_monk():
     return {"format_version": "1.8.0", "animations": anims}
 
 
+def build_gunslinger():
+    anims = {}
+
+    # ---- Disparo (0,4 s): apunta con el brazo derecho, retroceso seco en el tick 2 y recoge.
+    shot_r = {0: NEUTRAL, 0.05: ([-84, 2, 6], OUT), 0.10: ([-96, 2, 5], SMASH), 0.18: ([-96, 2, 5], HOLD), 0.40: (NEUTRAL, SOFT)}
+    anims["gunslinger_shot"] = animation(False, {
+        "right_arm": bone(rot=shot_r),
+        "left_arm": bone(rot={0: NEUTRAL, 0.05: [-30, 8, -12], 0.18: ([-24, 6, -14], SOFT), 0.40: (NEUTRAL, SOFT)}),
+        "torso": bone(rot={0: NEUTRAL, 0.05: [2, -6, 0], 0.10: ([-4, 4, 0], SMASH), 0.18: ([-4, 4, 0], HOLD), 0.40: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.10: ([-3, 2, 0], BACK), 0.18: ([-3, 2, 0], HOLD), 0.40: (NEUTRAL, SOFT)}),
+    })
+    # ---- Ojo de halcón (0,9 s): levanta el arma y apunta con calma, dispara un instante (tick 4) y se queda mirando.
+    dead_r = {0: NEUTRAL, 0.12: ([-90, 0, 8], OUT), 0.20: ([-104, 0, 4], SMASH), 0.40: ([-104, 0, 4], HOLD), 0.90: (NEUTRAL, SOFT)}
+    anims["gunslinger_deadeye"] = animation(False, {
+        "right_arm": bone(rot=dead_r),
+        "left_arm": bone(rot={0: NEUTRAL, 0.12: [-60, 20, -24], 0.40: ([-56, 18, -22], HOLD), 0.90: (NEUTRAL, SOFT)}),
+        "torso": bone(rot={0: NEUTRAL, 0.12: [4, -8, 0], 0.20: ([-4, 4, 0], SMASH), 0.40: ([-4, 4, 0], HOLD), 0.90: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.12: [6, 0, 0], 0.40: ([6, 0, 0], HOLD), 0.90: (NEUTRAL, SOFT)}),
+    })
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_weaponsummoner():
+    anims = {}
+
+    # ---- Invocar espadas (0,8 s): alza ambos brazos y los baja señalando al frente en el tick 4 para dar la orden.
+    sum_r = {0: NEUTRAL, 0.10: ([-130, 0, 26], OUT), 0.20: ([-84, 4, 6], SMASH), 0.34: ([-84, 4, 6], HOLD), 0.80: (NEUTRAL, SOFT)}
+    anims["weapon_summon"] = animation(False, limbs(
+        sum_r, 0.015, 0.95,
+        torso=({0: NEUTRAL, 0.10: [-6, 0, 0], 0.20: ([10, 0, 0], SMASH), 0.34: ([10, 0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.10: [-6, 0, 0], 0.20: ([4, 0, 0], BACK), 0.34: ([4, 0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.10: [0, 0.6, 0], 0.20: ([0, -1.0, 0], SMASH), 0.34: ([0, -1.0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}),
+    ))
+    # ---- Espadón espectral (0,75 s): arma el golpe a dos manos sobre el hombro y lo descarga en diagonal (tick 4).
+    gs_r = {0: NEUTRAL, 0.10: ([-150, -20, 20], OUT), 0.20: ([-70, 30, 6], SMASH), 0.34: ([-70, 30, 6], HOLD), 0.75: (NEUTRAL, SOFT)}
+    anims["weapon_greatsword"] = animation(False, limbs(
+        gs_r, 0.01, 0.96,
+        torso=({0: NEUTRAL, 0.10: [-6, -20, 0], 0.20: ([22, 22, 0], SMASH), 0.34: ([22, 22, 0], HOLD), 0.75: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.10: [-4, -8, 0], 0.20: ([6, 10, 0], BACK), 0.34: ([6, 10, 0], HOLD), 0.75: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.10: [0, 0.6, 0], 0.20: ([0, -2.0, 0], SMASH), 0.34: ([0, -2.0, 0], HOLD), 0.75: (NEUTRAL, SOFT)}),
+    ))
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_shapeshifter():
+    anims = {}
+
+    # ---- Abalanzarse (0,6 s): se encoge con las garras atrás y salta con ellas al frente en el tick 3.
+    pounce_r = {0: NEUTRAL, 0.07: ([40, -12, 24], OUT), 0.15: ([-92, 6, 12], SMASH), 0.26: ([-92, 6, 12], HOLD), 0.60: (NEUTRAL, SOFT)}
+    anims["shapeshifter_pounce"] = animation(False, limbs(
+        pounce_r, 0.01, 0.95,
+        torso=({0: NEUTRAL, 0.07: [24, 0, 0], 0.15: ([34, 0, 0], SMASH), 0.26: ([34, 0, 0], HOLD), 0.60: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.07: [14, 0, 0], 0.15: ([-12, 0, 0], BACK), 0.26: ([-12, 0, 0], HOLD), 0.60: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.07: [0, -2.8, 0], 0.15: ([0, -1.2, 0], SMASH), 0.26: ([0, -1.2, 0], HOLD), 0.60: (NEUTRAL, SOFT)}),
+    ))
+    # ---- Aullido de la bestia (1,0 s): echa la cabeza atrás con los brazos abiertos y aúlla (tick 5).
+    howl_r = {0: NEUTRAL, 0.12: ([-30, 0, 30], OUT), 0.25: ([-70, 0, 62], BACK), 0.50: ([-70, 0, 62], HOLD), 1.0: (NEUTRAL, SOFT)}
+    anims["shapeshifter_howl"] = animation(False, limbs(
+        howl_r, 0.015, 0.95,
+        torso=({0: NEUTRAL, 0.12: [4, 0, 0], 0.25: ([-16, 0, 0], BACK), 0.50: ([-16, 0, 0], HOLD), 1.0: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.12: [10, 0, 0], 0.25: ([-38, 0, 0], BACK), 0.50: ([-38, 0, 0], HOLD), 1.0: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.12: [0, -1.0, 0], 0.25: ([0, 0.8, 0], BACK), 0.50: ([0, 0.8, 0], HOLD), 1.0: (NEUTRAL, SOFT)}),
+    ))
+    return {"format_version": "1.8.0", "animations": anims}
+
+
 FILES = {"berserker.json": build_berserker, "mage.json": build_mage, "assassin.json": build_assassin,
          "herbalist.json": build_herbalist, "engineer.json": build_engineer, "lancer.json": build_lancer,
          "swordsman.json": build_swordsman, "paladin.json": build_paladin, "necromancer.json": build_necromancer,
-         "druid.json": build_druid, "merchant.json": build_merchant, "monk.json": build_monk}
+         "druid.json": build_druid, "merchant.json": build_merchant, "monk.json": build_monk,
+         "gunslinger.json": build_gunslinger, "weaponsummoner.json": build_weaponsummoner, "shapeshifter.json": build_shapeshifter}
 
 
 

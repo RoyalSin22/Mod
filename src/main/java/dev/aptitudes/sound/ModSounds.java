@@ -73,6 +73,12 @@ public final class ModSounds {
 	public static final SoundEvent MERCHANT_GUARD = register("merchant_guard");
 	public static final SoundEvent MONK_KICK = register("monk_kick");
 	public static final SoundEvent MONK_FIST = register("monk_fist");
+	public static final SoundEvent GUNSLINGER_SHOT = register("gunslinger_shot");
+	public static final SoundEvent GUNSLINGER_MARK = register("gunslinger_mark");
+	public static final SoundEvent WEAPON_GREATSWORD = register("weapon_greatsword");
+	public static final SoundEvent WEAPON_PRISON = register("weapon_prison");
+	public static final SoundEvent SHAPESHIFTER_POUNCE = register("shapeshifter_pounce");
+	public static final SoundEvent SHAPESHIFTER_HOWL = register("shapeshifter_howl");
 
 	private ModSounds() {
 	}

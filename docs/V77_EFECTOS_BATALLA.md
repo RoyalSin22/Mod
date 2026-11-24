@@ -172,3 +172,22 @@ Identidad de taller: naranja y cian, chispas, cable y esquirlas de hierro. Cubre
 - Ocho sonidos sintetizados (`necromancer_spear`, `necromancer_siphon`, `druid_howl`, `druid_thorns`, `merchant_coin`, `merchant_guard`, `monk_kick`, `monk_fist`).
 - Las partículas y sonidos que esas activas dibujaban en el servidor se sustituyen por los eventos nuevos.
 - **No verificado en partida:** aspecto, sincronía y rendimiento (la Manada con tres lobos y los Cien puños son lo más cargado).
+
+## Fase 8: Mago pistolero, Invocador de armas y Cambiaformas (V89)
+
+| Rol | Activa | Efecto | Animación | Golpe |
+|---|---|---|---|---|
+| Mago pistolero | Disparo arcano (`arcane_shot`) | Fogonazo, rayo cian-blanco con destellos e impacto con chispas; solo si acierta | `gunslinger_shot` | tick 2 |
+| Mago pistolero | Disparo en abanico (`fan_the_hammer`) | Un evento por disparo, más agudo y corto; la animación solo con el primero | `gunslinger_shot` | — |
+| Mago pistolero | Rebote (`ricochet`) | Un rayo dorado por eslabón de la cadena, de objetivo en objetivo | `gunslinger_shot` | — |
+| Mago pistolero | Ojo de halcón (`deadeye`) | Mira de cuatro marcas que se cierra sobre cada objetivo, túnel dorado y campo de visión cerrado; los disparos certeros sacuden la cámara | `gunslinger_deadeye` | tick 4 |
+| Invocador | Andanada y Lluvia de espadas | Espadas espectrales con estela azul, tajo y esquirlas; en la lluvia caen desde 6 bloques | `weapon_summon` | tick 4 |
+| Invocador | Espadón espectral (`spectral_greatsword`) | Arco enorme de luz y tajos a lo largo del recorrido; solo si acierta | `weapon_greatsword` | tick 4 |
+| Invocador | Prisión de espadas (`blade_prison`) | Cinco filos en círculo que se cierran durante 30 ticks | `weapon_summon` | tick 4 |
+| Cambiaformas | Abalanzarse (`pounce`) | Estela violeta, tres zarpazos paralelos y chispas | `shapeshifter_pounce` | tick 3 |
+| Cambiaformas | Aullido de la bestia (`beast_howl`) | Tres anillos sónicos escalonados, onda y temblor | `shapeshifter_howl` | tick 5 |
+
+- Seis sonidos sintetizados (`gunslinger_shot`, `gunslinger_mark`, `weapon_greatsword`, `weapon_prison`, `shapeshifter_pounce`, `shapeshifter_howl`); las espadas sueltas reutilizan `swordsman_cut`.
+- Convención de `power` en los eventos de disparo y espada: bits 0-1 = variante, bit 4 (16) = inicia la animación (así solo anima el primero de una ráfaga).
+- `NewRoles` expone ahora `muzzle` y `orbit`, y `lineDamage` admite `particle == null` (sin trazo).
+- **No verificado en partida:** aspecto, sincronía de ráfagas y rendimiento (la Lluvia de espadas y el Espadón son lo más cargado).

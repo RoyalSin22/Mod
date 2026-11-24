@@ -766,6 +766,73 @@ def monk_fist(rng):
     return fade_out(normalize(thud + slap, 0.82), 0.03)
 
 
+# ---------------------------------------------------------------- Pistolero, Invocador de armas y Cambiaformas (V89)
+
+def gunslinger_shot(rng):
+    """Disparo arcano: un chasquido agudo con cola eléctrica."""
+    t = t_axis(0.4)
+    crack = _soft_air(rng, len(t), 1800, 7000) * env(t, 0.0006, 0.035) * 0.8
+    zap = np.sin(2 * np.pi * np.cumsum(2600 * np.exp(-t * 14) + 380) / RATE) * env(t, 0.001, 0.07) * 0.5
+    thump = np.sin(2 * np.pi * (180 * np.exp(-t * 26) + 80) * t) * env(t, 0.001, 0.06) * 0.7
+    tail = _bell(t, 1900, [(1.0, 0.3), (1.7, 0.2)], 0.12) * 0.25
+    return fade_out(normalize(crack + zap + thump + tail, 0.84), 0.05)
+
+
+def gunslinger_mark(rng):
+    """Marca de Ojo de halcón: una campanilla de cierre y un clic de mira."""
+    t = t_axis(0.6)
+    bell = _bell(t, 1480, [(1.0, 0.6), (2.0, 0.3), (3.0, 0.15)], 0.3) * 0.7
+    click = _soft_air(rng, len(t), 2500, 7000) * env(t, 0.0005, 0.012) * 0.5
+    lock = np.sin(2 * np.pi * 190 * t) * env(t, 0.003, 0.05) * 0.4
+    return fade_out(normalize(bell + click + lock, 0.78), 0.1)
+
+
+def weapon_greatsword(rng):
+    """Espadón espectral: un barrido pesado y un golpe de acero con eco."""
+    t, noise = _sweep_noise(rng, 0.7, 500.0, 2400.0, 600.0, 0.8)
+    amp = np.sin(np.pi * np.clip(t / 0.35, 0, 1)) ** 1.3 * (t < 0.35)
+    hit_t = np.maximum(t - 0.3, 0)
+    hit = (_bell(hit_t, 620, [(1.0, 0.6), (2.3, 0.4), (3.8, 0.2)], 0.35) * 0.6
+           + np.sin(2 * np.pi * (130 * np.exp(-hit_t * 14) + 50) * hit_t) * env(hit_t, 0.001, 0.12) * 0.9) * (t >= 0.3)
+    return fade_out(normalize(normalize(noise) * amp * 0.6 + hit, 0.85), 0.1)
+
+
+def weapon_prison(rng):
+    """Prisión de espadas: cadenas que se tensan y un tintineo de filos cerrándose."""
+    t = t_axis(0.8)
+    chains = np.zeros(len(t))
+    for k in range(7):
+        i = int((0.04 + 0.07 * k) * RATE)
+        n = int(0.05 * RATE)
+        if i + n < len(t):
+            chains[i:i + n] += _soft_air(rng, n, 1500, 5500) * np.exp(-np.arange(n) / (0.012 * RATE)) * 0.6
+    ring = _bell(t, 2100, [(1.0, 0.5), (1.9, 0.3), (3.1, 0.2)], 0.28) * env(t, 0.15, 0.4) * 0.4
+    low = np.sin(2 * np.pi * 85 * t) * env(t, 0.05, 0.2) * 0.4
+    return fade_out(normalize(chains + ring + low, 0.78), 0.12)
+
+
+def shapeshifter_pounce(rng):
+    """Zarpazo: un bufido corto, un gruñido que cae y el golpe de la garra."""
+    t = t_axis(0.5)
+    breath = _soft_air(rng, len(t), 500, 3000) * env(t, 0.02, 0.07) * 0.7
+    growl = np.sin(2 * np.pi * np.cumsum(240 - 110 * np.clip(t / 0.3, 0, 1)) / RATE) * (np.sin(2 * np.pi * 38 * t) > -0.3) * env(t, 0.02, 0.12) * 0.4
+    hit_t = np.maximum(t - 0.14, 0)
+    hit = (np.sin(2 * np.pi * (170 * np.exp(-hit_t * 22) + 70) * hit_t) * env(hit_t, 0.001, 0.08) * 0.9
+           + _soft_air(rng, len(t), 1800, 6000) * env(hit_t, 0.0005, 0.03) * 0.4) * (t >= 0.14)
+    return fade_out(normalize(breath + growl + hit, 0.85), 0.07)
+
+
+def shapeshifter_howl(rng):
+    """Aullido de la bestia: un rugido grave con onda sónica."""
+    t = t_axis(1.1)
+    f = 150 + 60 * np.sin(np.pi * np.clip(t / 0.9, 0, 1)) + 6 * np.sin(2 * np.pi * 7 * t)
+    ph = 2 * np.pi * np.cumsum(f) / RATE
+    saw = (np.sin(ph) + 0.5 * np.sin(2 * ph) + 0.3 * np.sin(3 * ph)) * (0.6 + 0.4 * np.sin(2 * np.pi * 30 * t)) * env(t, 0.06, 0.55)
+    boom = np.sin(2 * np.pi * (90 * np.exp(-t * 6) + 40) * t) * env(t, 0.003, 0.2) * 0.6
+    air = _soft_air(rng, len(t), 400, 2500) * env(t, 0.05, 0.3) * 0.25
+    return fade_out(normalize(saw * 0.6 + boom + air, 0.82), 0.2)
+
+
 SOUNDS = {
     'eclipse_announce': eclipse_announce,
     'eclipse_start': eclipse_start,
@@ -833,6 +900,12 @@ SOUNDS = {
     'merchant_guard': merchant_guard,
     'monk_kick': monk_kick,
     'monk_fist': monk_fist,
+    'gunslinger_shot': gunslinger_shot,
+    'gunslinger_mark': gunslinger_mark,
+    'weapon_greatsword': weapon_greatsword,
+    'weapon_prison': weapon_prison,
+    'shapeshifter_pounce': shapeshifter_pounce,
+    'shapeshifter_howl': shapeshifter_howl,
 }
 
 

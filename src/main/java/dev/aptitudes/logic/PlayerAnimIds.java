@@ -43,6 +43,12 @@ public final class PlayerAnimIds {
 	public static final String MERCHANT_GUARD = "merchant_guard";
 	public static final String MONK_KICK = "monk_kick";
 	public static final String MONK_FISTS = "monk_fists";
+	public static final String GUNSLINGER_SHOT = "gunslinger_shot";
+	public static final String GUNSLINGER_DEADEYE = "gunslinger_deadeye";
+	public static final String WEAPON_SUMMON = "weapon_summon";
+	public static final String WEAPON_GREATSWORD = "weapon_greatsword";
+	public static final String SHAPE_POUNCE = "shapeshifter_pounce";
+	public static final String SHAPE_HOWL = "shapeshifter_howl";
 
 	/**
 	 * Tick (20 por segundo) en que cada animación llega a su golpe. Los efectos de partículas, cámara y pantalla se retrasan esos ticks
@@ -55,14 +61,16 @@ public final class PlayerAnimIds {
 			Map.entry(ASSASSIN_SHURIKEN, 3), Map.entry(HERBALIST_BALM, 4), Map.entry(HERBALIST_RAIN, 5), Map.entry(HERBALIST_SPORE, 3),
 			Map.entry(ENGINEER_GRAPPLE, 3), Map.entry(ENGINEER_GRENADE, 3),
 			Map.entry(LANCER_LEAP, 3), Map.entry(LANCER_SLAM, 2), Map.entry(LANCER_THRUST, 3), Map.entry(SWORDSMAN_IAIDO, 3), Map.entry(SWORDSMAN_CUTS, 2), Map.entry(PALADIN_CONSECRATE, 5), Map.entry(PALADIN_HAMMER, 4),
-			Map.entry(NECRO_SPEAR, 4), Map.entry(NECRO_SIPHON, 4), Map.entry(DRUID_WOLVES, 5), Map.entry(DRUID_THORNS, 4), Map.entry(MERCHANT_COIN, 3), Map.entry(MERCHANT_GUARD, 4), Map.entry(MONK_KICK, 3), Map.entry(MONK_FISTS, 2));
+			Map.entry(NECRO_SPEAR, 4), Map.entry(NECRO_SIPHON, 4), Map.entry(DRUID_WOLVES, 5), Map.entry(DRUID_THORNS, 4), Map.entry(MERCHANT_COIN, 3), Map.entry(MERCHANT_GUARD, 4), Map.entry(MONK_KICK, 3), Map.entry(MONK_FISTS, 2),
+			Map.entry(GUNSLINGER_SHOT, 2), Map.entry(GUNSLINGER_DEADEYE, 4), Map.entry(WEAPON_SUMMON, 4), Map.entry(WEAPON_GREATSWORD, 4), Map.entry(SHAPE_POUNCE, 3), Map.entry(SHAPE_HOWL, 5));
 
 	public static final List<String> ALL = List.of(BERSERKER_RAGE, BERSERKER_WAR_CRY, BERSERKER_LEAP, BERSERKER_SLAM, BERSERKER_WHIRL,
 			MAGE_BOLT, MAGE_BLINK, MAGE_TIME_WARP, MAGE_MISSILE_RIGHT, MAGE_MISSILE_LEFT, ASSASSIN_VANISH, ASSASSIN_STEP, ASSASSIN_FAN, ASSASSIN_SHURIKEN,
 			HERBALIST_BALM, HERBALIST_RAIN, HERBALIST_SPORE,
 			ENGINEER_GRAPPLE, ENGINEER_GRENADE,
 			LANCER_LEAP, LANCER_SLAM, LANCER_THRUST, SWORDSMAN_IAIDO, SWORDSMAN_CUTS, PALADIN_CONSECRATE, PALADIN_HAMMER,
-			NECRO_SPEAR, NECRO_SIPHON, DRUID_WOLVES, DRUID_THORNS, MERCHANT_COIN, MERCHANT_GUARD, MONK_KICK, MONK_FISTS);
+			NECRO_SPEAR, NECRO_SIPHON, DRUID_WOLVES, DRUID_THORNS, MERCHANT_COIN, MERCHANT_GUARD, MONK_KICK, MONK_FISTS,
+			GUNSLINGER_SHOT, GUNSLINGER_DEADEYE, WEAPON_SUMMON, WEAPON_GREATSWORD, SHAPE_POUNCE, SHAPE_HOWL);
 
 	private PlayerAnimIds() {
 	}

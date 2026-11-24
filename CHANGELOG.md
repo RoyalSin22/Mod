@@ -6,6 +6,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **V89 — Efectos de batalla, fase 8 (Mago pistolero, Invocador de armas y Cambiaformas).** Mago pistolero: Disparo arcano, Disparo en
+  abanico, Rebote (rayo dorado de objetivo en objetivo) y Ojo de halcón (mira que se cierra sobre cada marca y disparos certeros).
+  Invocador de armas: Andanada y Lluvia de espadas (espadas espectrales con estela y esquirlas), Espadón espectral (arco enorme de luz) y
+  Prisión de espadas (filos que se cierran sobre el objetivo). Cambiaformas: Abalanzarse (estela violeta y tres zarpazos) y Aullido de
+  la bestia (tres anillos sónicos). Seis animaciones del cuerpo (`gunslinger.json`, `weaponsummoner.json`, `shapeshifter.json`), seis
+  sonidos sintetizados con subtítulos en los 11 idiomas. El Disparo arcano, el Espadón y la Prisión ya no dibujan nada si fallan.
+  El Elementalista no se toca: sus efectos dependen del elemento activo y ya los dibuja `ElementEffects`. **Sin ver en partida.**
 - **V88 — Efectos de batalla, fase 7 (Nigromante, Druida, Mercader táctico y Monje).** Nigromante: Lanza de hueso (línea de polvo óseo
   con astillas) y Sifón de almas (pulso que respira e hilos de alma de cada enemigo hacia el nigromante). Druida: Manada (ola de hojas y
   anillo de luz bajo cada lobo al aparecer) y Tormenta de espinas (zarzas en espiral). Mercader táctico: Lanzamiento de moneda (estela

@@ -68,8 +68,23 @@ public final class FxIds {
 	public static final int MONK_KICK = 38;
 	/** Un puñetazo en el punto del evento; {@code power} = índice (el 0 inicia la animación). */
 	public static final int MONK_FIST = 39;
+	/** Disparo del Mago pistolero desde el punto del evento (la boca del arma) hasta {@code dx,dy,dz}; {@code power}: bits 0-1 variante
+	 * (0 arcano, 1 rebote, 2 certero, 3 ráfaga) y bit 4 (16) = inicia la animación. */
+	public static final int GUNSLINGER_SHOT = 40;
+	/** Marca de Ojo de halcón sobre el punto del evento; {@code power} 16 inicia la animación. */
+	public static final int GUNSLINGER_MARK = 41;
+	/** Espada espectral que vuela desde el punto del evento hasta {@code dx,dy,dz}; {@code power}: 0 andanada, 1 lluvia; +16 inicia la animación. */
+	public static final int WEAPON_BLADE = 42;
+	/** Tajo del espadón: {@code dx,dy,dz} = del ojo al final. */
+	public static final int WEAPON_GREATSWORD = 43;
+	/** Prisión de espadas sobre el punto del evento; {@code power} 16 inicia la animación. */
+	public static final int WEAPON_PRISON = 44;
+	/** Abalanzarse: {@code dx,dy,dz} = desplazamiento hacia el objetivo. */
+	public static final int SHAPE_POUNCE = 45;
+	/** Aullido de la bestia en quien lo lanza; {@code power} = radio. */
+	public static final int SHAPE_HOWL = 46;
 	/** Mayor id válido; el cliente descarta lo desconocido. */
-	public static final int MAX = 39;
+	public static final int MAX = 46;
 
 	private FxIds() {
 	}

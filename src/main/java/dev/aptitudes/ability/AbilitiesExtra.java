@@ -425,7 +425,7 @@ final class AbilitiesExtra {
 					effect(target, StatusEffects.SLOWNESS, 40, 1);
 				}
 			});
-			sound(p, SoundEvents.ENTITY_CAT_HISS, 0.7f);
+			ShapeshifterFx.pounce(p, delta); // V89
 			return true;
 		});
 		// Aullido de la bestia: daño, debilidad y empuje a los enemigos cercanos.
@@ -436,8 +436,7 @@ final class AbilitiesExtra {
 				effect(e, StatusEffects.WEAKNESS, 100, 0);
 				e.takeKnockback(1.0, p.getX() - e.getX(), p.getZ() - e.getZ());
 			}
-			ParticleFx.shockwave(server(p), world(p), p.getPos(), 6, ParticleTypes.SONIC_BOOM, 3);
-			sound(p, SoundEvents.ENTITY_WOLF_GROWL, 0.6f);
+			ShapeshifterFx.howl(p, 6); // V89
 			return true;
 		});
 	}

@@ -92,6 +92,13 @@ public final class FxClient {
 			case FxIds.MERCHANT_GUARD -> MerchantClientFx.guard(world, p);
 			case FxIds.MONK_KICK -> MonkClientFx.kick(world, p);
 			case FxIds.MONK_FIST -> MonkClientFx.fist(world, p);
+			case FxIds.GUNSLINGER_SHOT -> GunslingerClientFx.shot(world, p);
+			case FxIds.GUNSLINGER_MARK -> GunslingerClientFx.mark(world, p);
+			case FxIds.WEAPON_BLADE -> WeaponClientFx.blade(world, p);
+			case FxIds.WEAPON_GREATSWORD -> WeaponClientFx.greatsword(world, p);
+			case FxIds.WEAPON_PRISON -> WeaponClientFx.prison(world, p);
+			case FxIds.SHAPE_POUNCE -> ShapeshifterClientFx.pounce(world, p);
+			case FxIds.SHAPE_HOWL -> ShapeshifterClientFx.howl(world, p);
 			default -> { }
 		}
 	}

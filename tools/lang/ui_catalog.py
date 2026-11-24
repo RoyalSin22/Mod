@@ -1842,6 +1842,12 @@ subtitles.aptitudes.merchant_coin¦Uma moeda zune¦Une pièce siffle¦Eine Münz
 subtitles.aptitudes.merchant_guard¦Sinos dourados soam¦Des clochettes dorées tintent¦Goldene Glocken klingen
 subtitles.aptitudes.monk_kick¦Um chute voador acerta¦Un coup de pied volant frappe¦Ein Flugtritt trifft
 subtitles.aptitudes.monk_fist¦Um punho acerta¦Un poing frappe¦Eine Faust schlägt zu
+subtitles.aptitudes.gunslinger_shot¦Um tiro arcano estala¦Un tir arcanique claque¦Ein arkaner Schuss kracht
+subtitles.aptitudes.gunslinger_mark¦Um alvo é marcado¦Une cible est marquée¦Ein Ziel wird markiert
+subtitles.aptitudes.weapon_greatsword¦Uma espada espectral golpeia¦Une épée spectrale s'abat¦Ein Geisterschwert schwingt
+subtitles.aptitudes.weapon_prison¦Lâminas se fecham¦Des lames se referment¦Klingen schließen sich
+subtitles.aptitudes.shapeshifter_pounce¦Uma fera salta¦Une bête bondit¦Eine Bestie springt
+subtitles.aptitudes.shapeshifter_howl¦Uma fera uiva¦Une bête hurle¦Eine Bestie heult
 entity.aptitudes.custodio_cuatro_llaves¦O Custódio das Quatro Chaves¦Le Gardien des Quatre Clés¦Der Wächter der vier Schlüssel
 item.aptitudes.faceless_colossus_spawn_egg¦Ovo gerador do Colosso Sem Rosto¦Œuf d'apparition du Colosse sans visage¦Spawn-Ei des gesichtslosen Kolosses
 bestiary.aptitudes.faceless_colossus.tip¦Guerreiro gigante com espadão. Anuncia um golpe amplo e um golpe descendente com onda: saia do círculo marcado. Com metade da vida sua armadura racha: fica mais rápido, investe de longe e recebe mais dano.¦Guerrier géant armé d'une grande épée. Il annonce un large balayage et un coup plongeant avec onde de choc : sortez du cercle marqué. À mi-vie son armure se fissure : il va plus vite, charge de loin et subit plus de dégâts.¦Riesiger Krieger mit Zweihänder. Er kündigt einen weiten Hieb und einen Abwärtsschlag mit Schockwelle an: Verlasse den markierten Kreis. Bei halber Lebenskraft bricht seine Rüstung: Er wird schneller, stürmt aus der Ferne an und erleidet mehr Schaden.

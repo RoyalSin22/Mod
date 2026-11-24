@@ -394,5 +394,41 @@
     "sounds": [
       "aptitudes:monk_fist"
     ]
+  },
+  "gunslinger_shot": {
+    "subtitle": "subtitles.aptitudes.gunslinger_shot",
+    "sounds": [
+      "aptitudes:gunslinger_shot"
+    ]
+  },
+  "gunslinger_mark": {
+    "subtitle": "subtitles.aptitudes.gunslinger_mark",
+    "sounds": [
+      "aptitudes:gunslinger_mark"
+    ]
+  },
+  "weapon_greatsword": {
+    "subtitle": "subtitles.aptitudes.weapon_greatsword",
+    "sounds": [
+      "aptitudes:weapon_greatsword"
+    ]
+  },
+  "weapon_prison": {
+    "subtitle": "subtitles.aptitudes.weapon_prison",
+    "sounds": [
+      "aptitudes:weapon_prison"
+    ]
+  },
+  "shapeshifter_pounce": {
+    "subtitle": "subtitles.aptitudes.shapeshifter_pounce",
+    "sounds": [
+      "aptitudes:shapeshifter_pounce"
+    ]
+  },
+  "shapeshifter_howl": {
+    "subtitle": "subtitles.aptitudes.shapeshifter_howl",
+    "sounds": [
+      "aptitudes:shapeshifter_howl"
+    ]
   }
 }
