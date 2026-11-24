@@ -127,3 +127,16 @@ Identidad de bosque: verdes y dorado, hojas, gotas y esporas. Cubre las tres act
 - Tres sonidos sintetizados (`herbalist_balm`, `herbalist_rain`, `herbalist_spore`).
 - Las partículas y el sonido genéricos que las tres activas dibujaban en el servidor se sustituyen por el evento único.
 - **Verificado:** compilación y pruebas, incluida la carga de `herbalist.json` con el cargador real de PAL. **No verificado en partida:** aspecto, momento y rendimiento.
+
+## Fase 5: Ingeniero (V86)
+
+Identidad de taller: naranja y cian, chispas, cable y esquirlas de hierro. Cubre Garfio y Granada de pulso; Propulsores y Torreta conservan el efecto genérico.
+
+| Activa | Efecto | Animación (primera persona) | Golpe |
+|---|---|---|---|
+| Garfio (`grapple`) | Chispas en la muñeca, cable de chispas hasta el anclaje y estallido de metal; el que lo lanza nota tirón de FOV y de cámara | `engineer_grapple`: encoge el brazo y lo dispara al frente y arriba | tick 3 |
+| Granada de pulso (`pulse_grenade`) | Vuelo en arco con humo y chispas, luz que parpadea cada vez más rápido y estallido eléctrico a los 20 ticks (cuando se aplica el daño) | `engineer_grenade`: tiro de revés por encima del hombro | tick 3 |
+
+- Tres sonidos sintetizados (`engineer_grapple`, `engineer_throw`, `engineer_blast`). El estallido suena en el servidor al aplicar el daño.
+- Las partículas y sonidos genéricos que ambas activas dibujaban en el servidor se sustituyen por el evento único.
+- **No verificado en partida:** aspecto, sincronía del parpadeo con la explosión y rendimiento.

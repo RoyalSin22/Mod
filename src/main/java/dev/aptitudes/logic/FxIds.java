@@ -30,8 +30,12 @@ public final class FxIds {
 	public static final int HERBALIST_RAIN = 19;
 	/** Nube de esporas: el evento sale de la mano y {@code dx,dy,dz} apunta al centro; {@code power} = radio. */
 	public static final int HERBALIST_SPORE = 20;
+	/** Garfio: {@code dx,dy,dz} = del ojo al punto de anclaje. */
+	public static final int ENGINEER_GRAPPLE = 21;
+	/** Granada de pulso: {@code dx,dy,dz} = del ojo al punto de explosión; {@code power} = ticks de espoleta. */
+	public static final int ENGINEER_GRENADE = 22;
 	/** Mayor id válido; el cliente descarta lo desconocido. */
-	public static final int MAX = 20;
+	public static final int MAX = 22;
 
 	private FxIds() {
 	}

@@ -34,7 +34,8 @@ HOLD = "linear"
 # Fotograma de impacto de cada animación, en ticks (20 por segundo). Debe coincidir con PlayerAnimIds.IMPACT_TICKS.
 IMPACT_TICKS = {"berserker_rage": 4, "berserker_war_cry": 8, "berserker_slam": 3, "mage_bolt": 4, "mage_blink": 3,
                 "mage_time_warp": 6, "mage_missile_r": 3, "mage_missile_l": 3, "assassin_vanish": 3, "assassin_step": 3,
-                "assassin_fan": 4, "assassin_shuriken": 3, "herbalist_balm": 4, "herbalist_rain": 5, "herbalist_spore": 3}
+                "assassin_fan": 4, "assassin_shuriken": 3, "herbalist_balm": 4, "herbalist_rain": 5, "herbalist_spore": 3,
+                "engineer_grapple": 3, "engineer_grenade": 3}
 
 
 def kf(vec, easing=OUT):
@@ -303,8 +304,31 @@ def build_herbalist():
     return {"format_version": "1.8.0", "animations": anims}
 
 
+def build_engineer():
+    anims = {}
+
+    # ---- Garfio (0,55 s): encoge el brazo contra el pecho para cargar el muelle y lo dispara al frente y arriba en el tick 3.
+    grap_r = {0: NEUTRAL, 0.07: ([-40, -6, 16], OUT), 0.15: ([-108, 4, 4], SMASH), 0.24: ([-108, 4, 4], HOLD), 0.55: (NEUTRAL, SOFT)}
+    anims["engineer_grapple"] = animation(False, {
+        "right_arm": bone(rot=grap_r),
+        "left_arm": bone(rot={0: NEUTRAL, 0.07: [-26, 8, -14], 0.15: ([-18, 6, -22], SOFT), 0.24: ([-18, 6, -22], HOLD), 0.55: (NEUTRAL, SOFT)}),
+        "torso": bone(rot={0: NEUTRAL, 0.07: [4, -10, 0], 0.15: ([-8, 8, 0], SMASH), 0.24: ([-8, 8, 0], HOLD), 0.55: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.07: [2, -4, 0], 0.15: ([-6, 4, 0], BACK), 0.24: ([-6, 4, 0], HOLD), 0.55: (NEUTRAL, SOFT)}),
+    })
+
+    # ---- Granada de pulso (0,65 s): echa el brazo atrás por encima del hombro y la lanza con un tiro de revés en el tick 3.
+    gren_r = {0: NEUTRAL, 0.07: ([-150, 10, 34], OUT), 0.15: ([-34, 0, 4], SMASH), 0.24: ([-34, 0, 4], HOLD), 0.60: (NEUTRAL, SOFT)}
+    anims["engineer_grenade"] = animation(False, {
+        "right_arm": bone(rot=gren_r),
+        "left_arm": bone(rot={0: NEUTRAL, 0.07: [-52, 12, -20], 0.15: ([-30, 8, -16], SOFT), 0.24: ([-30, 8, -16], HOLD), 0.60: (NEUTRAL, SOFT)}),
+        "torso": bone(rot={0: NEUTRAL, 0.07: [-8, -14, 0], 0.15: ([14, 10, 0], SMASH), 0.24: ([14, 10, 0], HOLD), 0.60: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.07: [-4, -6, 0], 0.15: ([4, 4, 0], BACK), 0.24: ([4, 4, 0], HOLD), 0.60: (NEUTRAL, SOFT)}),
+    })
+    return {"format_version": "1.8.0", "animations": anims}
+
+
 FILES = {"berserker.json": build_berserker, "mage.json": build_mage, "assassin.json": build_assassin,
-         "herbalist.json": build_herbalist}
+         "herbalist.json": build_herbalist, "engineer.json": build_engineer}
 
 
 def render(name):

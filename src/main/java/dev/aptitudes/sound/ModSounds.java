@@ -55,6 +55,9 @@ public final class ModSounds {
 	public static final SoundEvent HERBALIST_BALM = register("herbalist_balm");
 	public static final SoundEvent HERBALIST_RAIN = register("herbalist_rain");
 	public static final SoundEvent HERBALIST_SPORE = register("herbalist_spore");
+	public static final SoundEvent ENGINEER_GRAPPLE = register("engineer_grapple");
+	public static final SoundEvent ENGINEER_THROW = register("engineer_throw");
+	public static final SoundEvent ENGINEER_BLAST = register("engineer_blast");
 
 	private ModSounds() {
 	}

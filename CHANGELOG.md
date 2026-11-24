@@ -6,6 +6,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **V86 — Efectos de batalla, fase 5 (Ingeniero).** El Garfio dispara un cable de chispas que se tensa y se clava con un estallido de
+  metal (con tirón de cámara para quien lo lanza), y la Granada de pulso describe un arco, parpadea cada vez más rápido y estalla en un
+  anillo eléctrico con esquirlas de hierro justo cuando el servidor aplica el daño. Dos animaciones del cuerpo en primera persona
+  (`engineer.json`), tres sonidos sintetizados con subtítulos en los 11 idiomas. Propulsores y Torreta conservan su efecto genérico.
+  **Sin ver en partida.**
 - **V85 — Efectos de batalla, fase 4 (Herbolista).** Bálsamo, Lluvia sanadora y Nube de esporas tienen coreografía propia: ondas de hojas y
   remolinos de curación sobre cada aliado, una nube con gotas y un círculo luminoso mientras llueve, y una vaina que describe un arco y
   estalla en una niebla verde y violeta. Tres animaciones del cuerpo en primera persona (`herbalist.json`), tres sonidos sintetizados con

@@ -26,6 +26,8 @@ public final class PlayerAnimIds {
 	public static final String HERBALIST_BALM = "herbalist_balm";
 	public static final String HERBALIST_RAIN = "herbalist_rain";
 	public static final String HERBALIST_SPORE = "herbalist_spore";
+	public static final String ENGINEER_GRAPPLE = "engineer_grapple";
+	public static final String ENGINEER_GRENADE = "engineer_grenade";
 
 	/**
 	 * Tick (20 por segundo) en que cada animación llega a su golpe. Los efectos de partículas, cámara y pantalla se retrasan esos ticks
@@ -35,11 +37,13 @@ public final class PlayerAnimIds {
 			Map.entry(BERSERKER_RAGE, 4), Map.entry(BERSERKER_WAR_CRY, 8), Map.entry(BERSERKER_SLAM, 3),
 			Map.entry(MAGE_BOLT, 4), Map.entry(MAGE_BLINK, 3), Map.entry(MAGE_TIME_WARP, 6), Map.entry(MAGE_MISSILE_RIGHT, 3),
 			Map.entry(MAGE_MISSILE_LEFT, 3), Map.entry(ASSASSIN_VANISH, 3), Map.entry(ASSASSIN_STEP, 3), Map.entry(ASSASSIN_FAN, 4),
-			Map.entry(ASSASSIN_SHURIKEN, 3), Map.entry(HERBALIST_BALM, 4), Map.entry(HERBALIST_RAIN, 5), Map.entry(HERBALIST_SPORE, 3));
+			Map.entry(ASSASSIN_SHURIKEN, 3), Map.entry(HERBALIST_BALM, 4), Map.entry(HERBALIST_RAIN, 5), Map.entry(HERBALIST_SPORE, 3),
+			Map.entry(ENGINEER_GRAPPLE, 3), Map.entry(ENGINEER_GRENADE, 3));
 
 	public static final List<String> ALL = List.of(BERSERKER_RAGE, BERSERKER_WAR_CRY, BERSERKER_LEAP, BERSERKER_SLAM, BERSERKER_WHIRL,
 			MAGE_BOLT, MAGE_BLINK, MAGE_TIME_WARP, MAGE_MISSILE_RIGHT, MAGE_MISSILE_LEFT, ASSASSIN_VANISH, ASSASSIN_STEP, ASSASSIN_FAN, ASSASSIN_SHURIKEN,
-			HERBALIST_BALM, HERBALIST_RAIN, HERBALIST_SPORE);
+			HERBALIST_BALM, HERBALIST_RAIN, HERBALIST_SPORE,
+			ENGINEER_GRAPPLE, ENGINEER_GRENADE);
 
 	private PlayerAnimIds() {
 	}

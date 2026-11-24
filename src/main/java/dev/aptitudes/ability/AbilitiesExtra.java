@@ -157,17 +157,15 @@ final class AbilitiesExtra {
 			if (hit.getType() != HitResult.Type.BLOCK) return false;
 			Vec3d delta = hit.getPos().subtract(p.getPos());
 			push(p, delta.normalize().multiply(Math.min(3.0, 1.0 + delta.length() * 0.12)).add(0, 0.3, 0));
-			Targeting.particleLine(world(p), ParticleTypes.CRIT, eye, hit.getPos());
 			p.fallDistance = 0;
-			sound(p, SoundEvents.ENTITY_FISHING_BOBBER_RETRIEVE, 0.8f);
+			EngineerFx.grapple(p, hit.getPos()); // V86
 			return true;
 		});
 		// Granada de pulso: explota al segundo donde miras, sin romper bloques.
 		Abilities.register("pulse_grenade", (p, r) -> {
 			Vec3d point = Targeting.lookEnd(p, 16);
-			Targeting.particleLine(world(p), ParticleTypes.SMOKE, p.getEyePos(), point);
-			sound(p, SoundEvents.ENTITY_SNOWBALL_THROW, 0.6f);
-			AbilityState.schedule(server(p), 20, () -> {
+			EngineerFx.grenade(p, point); // V86
+			AbilityState.schedule(server(p), EngineerFx.FUSE_TICKS, () -> {
 				for (LivingEntity e : world(p).getEntitiesByClass(LivingEntity.class, new Box(point, point).expand(3.5),
 						e -> Targeting.isHostileTo(p, e))) {
 					EngineerKit.markGadgetHit(e);
@@ -176,10 +174,7 @@ final class AbilitiesExtra {
 					e.addVelocity(away.x * 0.8, 0.5, away.z * 0.8);
 					e.velocityModified = true;
 				}
-				world(p).spawnParticles(ParticleTypes.EXPLOSION_EMITTER, point.x, point.y, point.z, 1, 0, 0, 0, 0);
-				world(p).spawnParticles(ParticleTypes.ELECTRIC_SPARK, point.x, point.y + 0.5, point.z, 40, 1.5, 1, 1.5, 0.2);
-				world(p).playSound(null, point.x, point.y, point.z, SoundEvents.ENTITY_DRAGON_FIREBALL_EXPLODE,
-						SoundCategory.PLAYERS, 1.0f, 1.3f);
+				EngineerFx.blast(p, point);
 			});
 			return true;
 		});

@@ -286,5 +286,23 @@
     "sounds": [
       "aptitudes:herbalist_spore"
     ]
+  },
+  "engineer_grapple": {
+    "subtitle": "subtitles.aptitudes.engineer_grapple",
+    "sounds": [
+      "aptitudes:engineer_grapple"
+    ]
+  },
+  "engineer_throw": {
+    "subtitle": "subtitles.aptitudes.engineer_throw",
+    "sounds": [
+      "aptitudes:engineer_throw"
+    ]
+  },
+  "engineer_blast": {
+    "subtitle": "subtitles.aptitudes.engineer_blast",
+    "sounds": [
+      "aptitudes:engineer_blast"
+    ]
   }
 }

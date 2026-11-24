@@ -579,6 +579,43 @@ def herbalist_spore(rng):
     return fade_out(normalize(pop + hiss + wet, 0.78), 0.15)
 
 
+# ---------------------------------------------------------------- Ingeniero (V86)
+
+def engineer_grapple(rng):
+    """Garfio: un disparo de muelle, un zumbido de cable que se tensa y un golpe metálico al clavarse."""
+    t = t_axis(0.55)
+    shot = np.sin(2 * np.pi * (260 * np.exp(-t * 30) + 90) * t) * env(t, 0.001, 0.05) * 0.8
+    cable = np.sin(2 * np.pi * np.cumsum(500 + 1800 * np.clip(t / 0.18, 0, 1)) / RATE) * env(t, 0.004, 0.09) * 0.3 * (t < 0.2)
+    zip_ = _soft_air(rng, len(t), 2200, 6500) * env(t, 0.004, 0.08) * 0.35
+    hit_t = np.maximum(t - 0.17, 0)
+    hit = (_bell(hit_t, 1800, [(1.0, 0.5), (1.6, 0.3), (2.4, 0.2)], 0.22) * 0.45
+           + np.sin(2 * np.pi * (180 * np.exp(-hit_t * 28) + 80) * hit_t) * env(hit_t, 0.001, 0.07) * 0.8) * (t >= 0.17)
+    return fade_out(normalize(shot + cable + zip_ + hit, 0.82), 0.08)
+
+
+def engineer_throw(rng):
+    """Lanzamiento de granada: un zumbido grave y un pitido de espoleta."""
+    t = t_axis(0.35)
+    whoosh = _soft_air(rng, len(t), 300, 2400) * env(t, 0.03, 0.09) * 0.7
+    beep = np.sin(2 * np.pi * 1900 * t) * (np.sin(2 * np.pi * 18 * t) > 0) * env(t, 0.01, 0.2) * 0.2
+    return fade_out(normalize(whoosh + beep, 0.75), 0.06)
+
+
+def engineer_blast(rng):
+    """Pulso eléctrico: golpe grave, chasquido de chispas y un zumbido que se apaga."""
+    t = t_axis(1.0)
+    boom = np.sin(2 * np.pi * (130 * np.exp(-t * 9) + 40) * t) * env(t, 0.002, 0.2) * 1.0
+    crack = _soft_air(rng, len(t), 800, 6000) * env(t, 0.0008, 0.09) * 0.6
+    sparks = np.zeros(len(t))
+    for _ in range(18):
+        i = int(rng.uniform(0.02, 0.5) * RATE)
+        n = int(0.02 * RATE)
+        if i + n < len(t):
+            sparks[i:i + n] += _soft_air(rng, n, 2500, 7000) * np.exp(-np.arange(n) / (0.005 * RATE)) * rng.uniform(0.2, 0.5)
+    hum = np.sin(2 * np.pi * 120 * t) * env(t, 0.05, 0.3) * 0.25
+    return fade_out(normalize(boom + crack + sparks * 0.5 + hum, 0.85), 0.15)
+
+
 SOUNDS = {
     'eclipse_announce': eclipse_announce,
     'eclipse_start': eclipse_start,
@@ -628,6 +665,9 @@ SOUNDS = {
     'herbalist_balm': herbalist_balm,
     'herbalist_rain': herbalist_rain,
     'herbalist_spore': herbalist_spore,
+    'engineer_grapple': engineer_grapple,
+    'engineer_throw': engineer_throw,
+    'engineer_blast': engineer_blast,
 }
 
 

@@ -73,6 +73,8 @@ public final class FxClient {
 			case FxIds.HERBALIST_BALM_ALLY -> HerbalistClientFx.balmAlly(world, p);
 			case FxIds.HERBALIST_RAIN -> HerbalistClientFx.rain(world, p);
 			case FxIds.HERBALIST_SPORE -> HerbalistClientFx.spore(world, p);
+			case FxIds.ENGINEER_GRAPPLE -> EngineerClientFx.grapple(world, p);
+			case FxIds.ENGINEER_GRENADE -> EngineerClientFx.grenade(world, p);
 			default -> { }
 		}
 	}
