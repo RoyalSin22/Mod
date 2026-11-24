@@ -217,6 +217,8 @@ public class AptitudesConfig {
 	public int fogDurationTicks = 24_000;
 	/** Días de espera entre dos Lluvias de brasas provocadas por un portal. */
 	public int emberRainCooldownDays = 5;
+	/** Días de juego de espera, por mundo y desde el fin del último Eclipse, para volver a convocarlo (Astrolabio o Behelit). 0 = sin espera. */
+	public int eclipseSummonCooldownDays = 3;
 	// ---------- Gran Osario Quebrado, jefe de la Niebla (V68) ----------
 	/** Activa la aparición del jefe al final de la Niebla de almas. */
 	public boolean osarioBossEnabled = true;
@@ -625,6 +627,7 @@ public class AptitudesConfig {
 		c.fogDurationTicks = clamp(c.fogDurationTicks, dev.aptitudes.event.EventTriggerRules.MIN_FOG_TICKS,
 				dev.aptitudes.event.EventTriggerRules.MAX_FOG_TICKS);
 		c.emberRainCooldownDays = clamp(c.emberRainCooldownDays, 1, 365);
+		c.eclipseSummonCooldownDays = clamp(c.eclipseSummonCooldownDays, 0, 365);
 		c.osarioBossFogPercent = clamp(c.osarioBossFogPercent, 10, 100);
 		c.osarioBossLingerTicks = clamp(c.osarioBossLingerTicks, 0, 72_000);
 		c.osarioBossMinDamagePercent = clamp(c.osarioBossMinDamagePercent, 1, 100);

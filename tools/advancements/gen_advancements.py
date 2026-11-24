@@ -37,6 +37,8 @@ ACHIEVEMENTS = [
     ("temple_opened", "slay_boss", "goal", "aptitudes:temple_key"),
     ("life_vessel", "temple_opened", "goal", "aptitudes:life_vessel"),
     ("bestiary_complete", "root", "goal", "minecraft:enchanted_book"),
+    ("synergist", "root", "goal", "aptitudes:mastery_emblem"),
+    ("eclipse_caller", "survive_eclipse", "goal", "aptitudes:sunset_astrolabe"),
 ]
 
 

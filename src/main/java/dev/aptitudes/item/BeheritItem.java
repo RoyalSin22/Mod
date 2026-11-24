@@ -1,6 +1,7 @@
 package dev.aptitudes.item;
 
 import dev.aptitudes.event.EclipseManager;
+import dev.aptitudes.event.EclipseSummoningRules;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,7 +12,8 @@ import net.minecraft.world.World;
 
 /**
  * Behelit (Resonador del Umbral): se sacrifica en la Hoguera para iniciar el Eclipse.
- * El cooldown es de 3 días por mundo, contados desde el fin del Eclipse.
+ * La espera (3 días de juego por mundo, desde el fin del Eclipse) la comparte con el Astrolabio del Ocaso
+ * ({@link EclipseSummoningRules}).
  */
 public class BeheritItem extends Item {
 	public BeheritItem(Item.Settings settings) {
@@ -24,11 +26,14 @@ public class BeheritItem extends Item {
 		if (!world.isClient && world.getBlockState(context.getBlockPos()).getBlock() instanceof dev.aptitudes.block.BonfireBlock) {
 			PlayerEntity player = context.getPlayer();
 			if (player instanceof ServerPlayerEntity serverPlayer) {
-				if (EclipseManager.canStartEclipse(serverPlayer.getServerWorld())) {
-					EclipseManager.startByBeherit(serverPlayer.getServerWorld());
-					context.getStack().decrement(1);
-					return ActionResult.SUCCESS;
+				EclipseSummoningRules.Verdict verdict = EclipseManager.summonVerdict(serverPlayer, false);
+				if (verdict != EclipseSummoningRules.Verdict.ALLOWED) {
+					EclipseManager.sendDenied(serverPlayer, verdict);
+					return ActionResult.FAIL;
 				}
+				context.getStack().decrementUnlessCreative(1, serverPlayer);
+				EclipseManager.startBySummon(serverPlayer);
+				return ActionResult.SUCCESS;
 			}
 		}
 		return ActionResult.PASS;
