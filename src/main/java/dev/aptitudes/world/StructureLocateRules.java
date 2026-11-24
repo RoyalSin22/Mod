@@ -17,8 +17,9 @@ public final class StructureLocateRules {
 	 * chunks solo un chunk, el «designado», intenta generarla. Así se sabe dónde mirar sin generar todo el terreno. 0 = sin cuadrícula.
 	 */
 	public static int regionSize(String kind) {
-		// V86: Las Tres Torres Señoriales: región de 64×64 chunks, el doble por lado que el Custodio, es decir, unas 4 veces más rara.
-		if ("three_towers".equals(kind)) return 64;
+		// V86: Las Tres Torres Señoriales: región de 24×24 chunks, más frecuentes que el Templo del Custodio (32×32): por decisión del
+		// autor el Custodio es aún más raro que las torres.
+		if ("three_towers".equals(kind)) return 24;
 		return "custodian_temple".equals(kind) ? 32 : 0;
 	}
 

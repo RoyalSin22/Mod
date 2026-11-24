@@ -4,7 +4,7 @@
     {
       "type": "aptitudes:region_grid",
       "kind": "three_towers",
-      "region_size": 64
+      "region_size": 24
     },
     {
       "type": "minecraft:in_square"

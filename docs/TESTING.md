@@ -2017,7 +2017,7 @@ Desde T3d los chunks **nuevos** generan este templo solos (los ya generados cons
    Dentro: 4 plantas de combate y una sala de 11×11 con 9 de alto. El marcador `lodestone` del centro del patio es el futuro controlador.
 4. Sin jefes ni criaturas dentro: es lo esperado hasta la fase 3.
 5. `/aptitudes locate three_towers` tras generar una (o explorar): devuelve las coordenadas. En un mundo con semilla fija, mide cuántas hay en un radio de
-   2000 bloques y compáralas con las del Templo del Custodio: deberían ser unas **4 veces menos**.
+   2000 bloques y compáralas con las del Templo del Custodio: deberían ser unas **1,8 veces más** (región 24 frente a 32).
 6. En terreno con pendiente fuerte, océano o lago: no debe generarse (`suitable`), ni dejar columnas flotando; revisa los bordes del patio y el cimiento.
 7. `threeTowersEnabled = false`: `place` falla y no se genera en chunks nuevos.
 8. Prueba en un mundo con y sin árboles altos cerca: el patio debe quedar despejado hasta 8 bloques de altura.

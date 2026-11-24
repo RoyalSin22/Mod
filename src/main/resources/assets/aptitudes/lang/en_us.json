@@ -4417,7 +4417,7 @@
   "config.aptitudes.field.parryStunTicks": "Ticks a parried creature stays stunned. 0: no stun.",
   "config.aptitudes.field.parryFinisherTicks": "Ticks the finisher stays open after a parry.",
   "config.aptitudes.field.parryFinisherMultiplier": "Damage multiplier of the finisher: your next direct hit on the parried creature.",
-  "config.aptitudes.field.threeTowersEnabled": "Lets the Three Manorial Towers generate (surface dungeon, rarer than the Custodian’s Temple). Only affects chunks not generated yet.",
+  "config.aptitudes.field.threeTowersEnabled": "Lets the Three Manorial Towers generate (surface dungeon, more common than the Custodian’s Temple). Only affects chunks not generated yet.",
   "config.aptitudes.field.deathEchoesEnabled": "On death, an echo with the player’s head replays their last 5 seconds while someone is nearby. Off by default: it spawns entities.",
   "config.aptitudes.field.deathEchoLifetimeSeconds": "Seconds an echo lasts before it disappears.",
   "config.aptitudes.field.deathEchoMaxActive": "Echoes active at once on the server; past that, the oldest is removed.",

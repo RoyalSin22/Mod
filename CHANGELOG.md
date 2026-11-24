@@ -19,7 +19,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ### Añadido
 - **V86 fase 2 · Las Tres Torres Señoriales generan en el mundo.** `world/ThreeTowersFeature` traduce `TowersLayout` a bloques (piedra
   musgosa, cimiento de pizarra, patio despejado, ventanas de barrotes, antorchas de almas, escaleras y empuñaduras de pizarra) y no crea
-  entidades. Rareza por región de **64×64 chunks** (el Custodio usa 32: unas 4 veces más rara; el Custodio **no se toca**), registrada en
+  entidades. Rareza por región de **24×24 chunks** (el Custodio usa 32: las torres son ~1,8 veces **más frecuentes**; el Custodio **no se toca**, decisión del autor: es aún más raro que las torres), registrada en
   `ModWorldGen`, `placed_feature/three_towers.json` y `StructureLocateRules` (`/aptitudes locate|place three_towers`). Opción
   `threeTowersEnabled`. Exige terreno con desnivel ≤ 4, sin agua ni lava bajo el patio y altura libre. **Limitaciones hasta la fase 3:** el
   controlador es un `lodestone` marcador, la puerta del Señor es una piedra sellada rompible y no hay jefes. **No se pudo probar en un

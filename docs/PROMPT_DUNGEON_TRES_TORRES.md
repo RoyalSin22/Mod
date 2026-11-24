@@ -7,7 +7,7 @@ Responde en español. Una versión por tarea y rama. No cambies ids de registro 
 
 Una estructura de **superficie** formada por **tres torres señoriales** de piedra musgosa en triángulo, con un patio central. Dos son
 **torres vasallas**, cada una con un **Guardián Desmontado** (subjefe) dormido; la tercera, la **Torre del Señor**, la más alta, guarda al
-**Coloso Sin Rostro** (jefe final). Es de **alta dificultad**, **más rara que el Templo del Custodio**, y su recompensa es **un logro y una
+**Coloso Sin Rostro** (jefe final). Es de **alta dificultad**, **más frecuente que el Templo del Custodio (que es aún más raro)**, y su recompensa es **un logro y una
 Plantilla de ascensión** (`aptitudes:ascended_template`, ya existe).
 
 **Lore (ambientación, sin mecánica):** durante el **Primer Eclipse** (hecho histórico de la Primera Era, `docs/lore/02_CRONOLOGIA.md`, período 8)
@@ -60,7 +60,7 @@ Un nuevo tipo de criatura «Vasallo corrompido» **no** entra en esta tarea (exi
 
 ## 5. Rareza
 
-Reutiliza el modificador `aptitudes:region_grid` con una región **más grande que la del Custodio** (propuesta: 4 veces más rara) y un
+Reutiliza el modificador `aptitudes:region_grid` con una región **más pequeña que la del Custodio** (24 frente a 32: el Custodio es aún más raro) y un
 `placed_feature` propio. Registra con `StructureIndex.record` para que `/aptitudes locate three_towers` y `place` funcionen
 (`StructureLocateRules`, textos `aptitudes.structure.*`).
 

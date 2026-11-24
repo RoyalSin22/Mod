@@ -13,7 +13,7 @@ primera propuesta, «Dungeon del Coloso»; se conserva para no romper enlaces.)
 | Lore | Al caer el Primer Eclipse, el líder de la **orden** (nombre por elegir, ver §7; **no** una casa noble ni inspirado en Juego de Tronos) vio corrompida su alma y esta se infundió en su armadura: ahora es un ente corrompido. Sus caballeros, también |
 | Forma | **Tres torres** sobre la superficie (referencias en el brief), no un templo subterráneo |
 | Recompensa | **Un logro y una Plantilla de ascensión** (objeto que ya existe desde V80) |
-| Rareza | **Más rara que el Templo del Custodio** (hoy 1 de cada 120 chunks) |
+| Rareza | **El Templo del Custodio es aún más raro que las torres** (corregido 2026-11-24). Torres: región de 24×24 chunks; Custodio sin tocar (32×32) |
 | Dificultad | **Alta**, también los enemigos (por encima del anillo de Amenaza del lugar) |
 
 ## 2. Cómo encaja con lo que ya existe
@@ -68,7 +68,7 @@ controlador es `DORMIDO → VASALLOS (0/2, 1/2) → SEÑOR_ABIERTO → COLOSO_VI
 |---|---|---|
 | 1 | ~~Nombre de la orden~~ | **Decidido: «Vigilia de las Tres Almenas»**; el Mariscal queda sin nombre propio (se borró con su rostro). En el código, solo claves de idioma |
 | 2 | ¿Las dos torres vasallas deben vencerse **antes** de abrir la del Señor? | Sí: da el recorrido de «tres torres» y justifica el subjefe |
-| 3 | **Cuánto más rara:** frecuencia concreta | Región de 64×64 chunks-grid (≈4 veces más rara que el Custodio) |
+| 3 | ~~Cuánto más rara~~ | **Decidido: más frecuente que el Custodio**, región de 24 (~1,8×). Ver el aviso de D-35 abajo |
 | 4 | **Cuánto más difícil:** ¿anillo del lugar +2, o mínimo fijo III? | Mínimo fijo III y +1 sobre el anillo del lugar, con tope V |
 | 5 | **Acceso:** ¿abierto o con objeto de la cadena? | Abierto |
 | 6 | ¿Además de la Plantilla, una pequeña tabla de botín por anillo? | Sí, sin poder nuevo |
@@ -95,3 +95,10 @@ un título hereditario: **Mariscal** (recomendado) o Castellano.
 | J | **Centinelas de Piedra y Esencia** | Usa «Esencia», término del lore | Largo y poco memorable |
 
 **ELEGIDA: H · Vigilia de las Tres Almenas** (autor, 2026-11-24). *(Mi orden de preferencia había sido A, B, D.)* Los nombres del lore existente (Edran, Lysara, Vaelor) son personales; **no** se propone nombre para el líder.
+
+## 8. Aviso: el Custodio quedó más raro de lo decidido en D-35
+
+D-35 subió el Templo del Custodio a «1 de cada 120 chunks» para asegurar el suministro de Behelit. Al pasar a regiones en V77 (`region_size 32`) quedó en **un
+templo por 1024 chunks**, unas 8 veces más raro. No se ha cambiado (la decisión del autor es que sea aún más raro que las torres), pero conviene **medirlo en
+partida** y reabrir D-33 si los Behelits no bastan: una región de 11×11 recuperaría el 1/120 original.
+

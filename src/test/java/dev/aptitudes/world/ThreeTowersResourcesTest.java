@@ -33,21 +33,22 @@ class ThreeTowersResourcesTest {
 		for (int i = 1; i < custodian.size(); i++) assertEquals(custodian.get(i), towers.get(i));
 	}
 
-	@Test void itIsRarerThanTheCustodianTemple() {
+	@Test void theCustodianTempleIsEvenRarerThanTheTowers() {
 		int towers = StructureLocateRules.regionSize("three_towers");
 		int custodian = StructureLocateRules.regionSize("custodian_temple");
-		assertTrue(towers > custodian);
-		// Una estructura por región de lado N chunks: la frecuencia por chunk² es 1/N². Con 64 frente a 32, cuatro veces menos.
-		assertEquals(4L, ((long) towers * towers) / ((long) custodian * custodian));
+		assertTrue(custodian > towers, "decisión del autor: el Custodio es aún más raro");
+		// Una estructura por región de lado N chunks: la frecuencia por chunk² es 1/N². Con 32 frente a 24 el Custodio es ~1,78 veces más raro.
+		assertTrue((long) custodian * custodian > (long) towers * towers);
+		assertEquals(32, custodian, "el Custodio no se toca (D-35)");
 	}
 
 	@Test void itIsALocatableKindWithItsOwnDesignatedChunks() {
 		assertTrue(StructureLocateRules.isKind("three_towers"));
 		assertTrue(StructureLocateRules.searchable("three_towers"));
-		int[] d = StructureLocateRules.designatedChunk(987654321L, "three_towers", 3, -2, 64);
-		assertTrue(d[0] >= 3 * 64 && d[0] < 4 * 64 && d[1] >= -2 * 64 && d[1] < -1 * 64, "dentro de su región");
-		assertTrue(StructureLocateRules.isDesignated(987654321L, "three_towers", d[0], d[1], 64));
+		int[] d = StructureLocateRules.designatedChunk(987654321L, "three_towers", 3, -2, 24);
+		assertTrue(d[0] >= 3 * 24 && d[0] < 4 * 24 && d[1] >= -2 * 24 && d[1] < -1 * 24, "dentro de su región");
+		assertTrue(StructureLocateRules.isDesignated(987654321L, "three_towers", d[0], d[1], 24));
 		// Su chunk designado no coincide con el del Custodio en la misma región (la clave entra en la semilla).
-		assertFalse(java.util.Arrays.equals(d, StructureLocateRules.designatedChunk(987654321L, "custodian_temple", 3, -2, 64)));
+		assertFalse(java.util.Arrays.equals(d, StructureLocateRules.designatedChunk(987654321L, "custodian_temple", 3, -2, 24)));
 	}
 }
