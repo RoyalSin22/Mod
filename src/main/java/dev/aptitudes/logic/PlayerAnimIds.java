@@ -49,6 +49,18 @@ public final class PlayerAnimIds {
 	public static final String WEAPON_GREATSWORD = "weapon_greatsword";
 	public static final String SHAPE_POUNCE = "shapeshifter_pounce";
 	public static final String SHAPE_HOWL = "shapeshifter_howl";
+	public static final String HUNTER_MARK = "hunter_mark";
+	public static final String HUNTER_TRAP = "hunter_trap";
+	public static final String HUNTER_VOLLEY = "hunter_volley";
+	public static final String HUNTER_FALCON = "hunter_falcon";
+	public static final String BARD_SONG = "bard_song";
+	public static final String BARD_DISSONANCE = "bard_dissonance";
+	public static final String WARLOCK_CURSE = "warlock_curse";
+	public static final String WARLOCK_BOLT = "warlock_bolt";
+	public static final String WARLOCK_IMPS = "warlock_imps";
+	public static final String WARLOCK_DOOM = "warlock_doom";
+	public static final String TAMER_COMMAND = "tamer_command";
+	public static final String TAMER_STAMPEDE = "tamer_stampede";
 
 	/**
 	 * Tick (20 por segundo) en que cada animación llega a su golpe. Los efectos de partículas, cámara y pantalla se retrasan esos ticks
@@ -62,7 +74,8 @@ public final class PlayerAnimIds {
 			Map.entry(ENGINEER_GRAPPLE, 3), Map.entry(ENGINEER_GRENADE, 3),
 			Map.entry(LANCER_LEAP, 3), Map.entry(LANCER_SLAM, 2), Map.entry(LANCER_THRUST, 3), Map.entry(SWORDSMAN_IAIDO, 3), Map.entry(SWORDSMAN_CUTS, 2), Map.entry(PALADIN_CONSECRATE, 5), Map.entry(PALADIN_HAMMER, 4),
 			Map.entry(NECRO_SPEAR, 4), Map.entry(NECRO_SIPHON, 4), Map.entry(DRUID_WOLVES, 5), Map.entry(DRUID_THORNS, 4), Map.entry(MERCHANT_COIN, 3), Map.entry(MERCHANT_GUARD, 4), Map.entry(MONK_KICK, 3), Map.entry(MONK_FISTS, 2),
-			Map.entry(GUNSLINGER_SHOT, 2), Map.entry(GUNSLINGER_DEADEYE, 4), Map.entry(WEAPON_SUMMON, 4), Map.entry(WEAPON_GREATSWORD, 4), Map.entry(SHAPE_POUNCE, 3), Map.entry(SHAPE_HOWL, 5));
+			Map.entry(GUNSLINGER_SHOT, 2), Map.entry(GUNSLINGER_DEADEYE, 4), Map.entry(WEAPON_SUMMON, 4), Map.entry(WEAPON_GREATSWORD, 4), Map.entry(SHAPE_POUNCE, 3), Map.entry(SHAPE_HOWL, 5),
+			Map.entry(HUNTER_MARK, 3), Map.entry(HUNTER_TRAP, 3), Map.entry(HUNTER_VOLLEY, 4), Map.entry(HUNTER_FALCON, 4), Map.entry(BARD_SONG, 4), Map.entry(BARD_DISSONANCE, 3), Map.entry(WARLOCK_CURSE, 3), Map.entry(WARLOCK_BOLT, 3), Map.entry(WARLOCK_IMPS, 5), Map.entry(WARLOCK_DOOM, 4), Map.entry(TAMER_COMMAND, 4), Map.entry(TAMER_STAMPEDE, 3));
 
 	public static final List<String> ALL = List.of(BERSERKER_RAGE, BERSERKER_WAR_CRY, BERSERKER_LEAP, BERSERKER_SLAM, BERSERKER_WHIRL,
 			MAGE_BOLT, MAGE_BLINK, MAGE_TIME_WARP, MAGE_MISSILE_RIGHT, MAGE_MISSILE_LEFT, ASSASSIN_VANISH, ASSASSIN_STEP, ASSASSIN_FAN, ASSASSIN_SHURIKEN,
@@ -70,7 +83,8 @@ public final class PlayerAnimIds {
 			ENGINEER_GRAPPLE, ENGINEER_GRENADE,
 			LANCER_LEAP, LANCER_SLAM, LANCER_THRUST, SWORDSMAN_IAIDO, SWORDSMAN_CUTS, PALADIN_CONSECRATE, PALADIN_HAMMER,
 			NECRO_SPEAR, NECRO_SIPHON, DRUID_WOLVES, DRUID_THORNS, MERCHANT_COIN, MERCHANT_GUARD, MONK_KICK, MONK_FISTS,
-			GUNSLINGER_SHOT, GUNSLINGER_DEADEYE, WEAPON_SUMMON, WEAPON_GREATSWORD, SHAPE_POUNCE, SHAPE_HOWL);
+			GUNSLINGER_SHOT, GUNSLINGER_DEADEYE, WEAPON_SUMMON, WEAPON_GREATSWORD, SHAPE_POUNCE, SHAPE_HOWL,
+			HUNTER_MARK, HUNTER_TRAP, HUNTER_VOLLEY, HUNTER_FALCON, BARD_SONG, BARD_DISSONANCE, WARLOCK_CURSE, WARLOCK_BOLT, WARLOCK_IMPS, WARLOCK_DOOM, TAMER_COMMAND, TAMER_STAMPEDE);
 
 	private PlayerAnimIds() {
 	}

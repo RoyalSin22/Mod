@@ -99,6 +99,20 @@ public final class FxClient {
 			case FxIds.WEAPON_PRISON -> WeaponClientFx.prison(world, p);
 			case FxIds.SHAPE_POUNCE -> ShapeshifterClientFx.pounce(world, p);
 			case FxIds.SHAPE_HOWL -> ShapeshifterClientFx.howl(world, p);
+			case FxIds.HUNTER_MARK -> HunterClientFx.mark(world, p);
+			case FxIds.HUNTER_TRAP -> HunterClientFx.trap(world, p);
+			case FxIds.HUNTER_ARROW -> HunterClientFx.arrow(world, p);
+			case FxIds.HUNTER_FALCON -> HunterClientFx.falcon(world, p);
+			case FxIds.BARD_SONG -> BardClientFx.song(world, p);
+			case FxIds.BARD_DISSONANCE -> BardClientFx.dissonance(world, p);
+			case FxIds.WARLOCK_CURSE -> WarlockClientFx.curse(world, p);
+			case FxIds.WARLOCK_PULSE -> WarlockClientFx.pulse(world, p);
+			case FxIds.WARLOCK_BOLT -> WarlockClientFx.bolt(world, p);
+			case FxIds.WARLOCK_IMPS -> WarlockClientFx.imps(world, p);
+			case FxIds.WARLOCK_DOOM -> WarlockClientFx.doom(world, p);
+			case FxIds.TAMER_COMMAND -> TamerClientFx.command(world, p);
+			case FxIds.TAMER_PET -> TamerClientFx.pet(world, p);
+			case FxIds.TAMER_STAMPEDE -> TamerClientFx.stampede(world, p);
 			default -> { }
 		}
 	}

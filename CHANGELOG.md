@@ -6,6 +6,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **V90 — Efectos de batalla, fase 9 (Cazador, Bardo, Brujo abisal y Domador).** Cazador: Marca (sello que se cierra), Trampa de oso
+  (dientes que saltan al cerrarse), Lluvia de flechas y Golpe de halcón (picado con plumas). Bardo: Canción de valor, Balada de escudo y
+  Réquiem (espirales de notas de color distinto) y Disonancia (onda de notas rotas que sacude la cámara). Brujo abisal: Maldición de
+  agonía (hilo carmesí que late), Rayo abismal, Diablillos (anillo de azufre) y Perdición (sello de almas y sentencia). Domador: Azuzar,
+  Vínculo vital y Rugido del alfa (anillos de color, aureola en cada mascota) y Estampida (arrasa en línea con polvo y pezuñas). Doce
+  animaciones del cuerpo (`hunter.json`, `bard.json`, `warlock.json`, `tamer.json`), once sonidos sintetizados con subtítulos en los 11
+  idiomas. Con esto quedan cubiertos todos los roles salvo el Elementalista. **Sin ver en partida.**
 - **V89 — Efectos de batalla, fase 8 (Mago pistolero, Invocador de armas y Cambiaformas).** Mago pistolero: Disparo arcano, Disparo en
   abanico, Rebote (rayo dorado de objetivo en objetivo) y Ojo de halcón (mira que se cierra sobre cada marca y disparos certeros).
   Invocador de armas: Andanada y Lluvia de espadas (espadas espectrales con estela y esquirlas), Espadón espectral (arco enorme de luz) y

@@ -191,3 +191,25 @@ Identidad de taller: naranja y cian, chispas, cable y esquirlas de hierro. Cubre
 - Convención de `power` en los eventos de disparo y espada: bits 0-1 = variante, bit 4 (16) = inicia la animación (así solo anima el primero de una ráfaga).
 - `NewRoles` expone ahora `muzzle` y `orbit`, y `lineDamage` admite `particle == null` (sin trazo).
 - **No verificado en partida:** aspecto, sincronía de ráfagas y rendimiento (la Lluvia de espadas y el Espadón son lo más cargado).
+
+## Fase 9: Cazador, Bardo, Brujo abisal y Domador (V90)
+
+| Rol | Activa | Efecto | Animación | Golpe |
+|---|---|---|---|---|
+| Cazador | Marca (`hunters_mark`) | Sello verde que se cierra sobre la presa con cruz de luz | `hunter_mark` | tick 3 |
+| Cazador | Trampa de oso (`bear_trap`) | Disco de dientes con polvo al colocarla; al cerrarse, chispas, astillas y explosión | `hunter_trap` | tick 3 |
+| Cazador | Lluvia de flechas (`arrow_volley`) | Un evento por flecha que cae en diagonal desde 8 bloques; la primera anima | `hunter_volley` | tick 4 |
+| Cazador | Golpe de halcón (`falcon_strike`) | Un picado por golpe con estela de nubes, plumas y zarpazo | `hunter_falcon` | tick 4 |
+| Bardo | Valor, Escudo y Réquiem | Espirales de notas y anillo de luz: dorado, azul o violeta | `bard_song` | tick 4 |
+| Bardo | Disonancia (`dissonance`) | Onda de notas rotas con chispas rojas y estampido; solo si hay enemigos | `bard_dissonance` | tick 3 |
+| Brujo | Maldición de agonía (`curse_of_agony`) | Hilo carmesí ondulante hasta la víctima y un latido por cada golpe del veneno | `warlock_curse` | tick 3 |
+| Brujo | Rayo abismal (`abyssal_bolt`) | Línea violeta con llamas de alma y estallido; solo si acierta | `warlock_bolt` | tick 3 |
+| Brujo | Diablillos (`summon_imps`) | Anillos de azufre y llamas que se abren desde el suelo | `warlock_imps` | tick 5 |
+| Brujo | Perdición (`doom`) | Sello de almas durante 5 s y, a los 5 s, columna de almas con estampido | `warlock_doom` | tick 4 |
+| Domador | Azuzar, Vínculo vital y Rugido del alfa | Anillo de polvo rojo, verde o dorado y una aureola en cada mascota; el rugido añade estampido | `tamer_command` | tick 4 |
+| Domador | Estampida (`stampede`) | Franja de tres carriles con nubes y escombros físicos; solo si acierta | `tamer_stampede` | tick 3 |
+
+- Once sonidos sintetizados (`hunter_shot`, `hunter_trap`, `hunter_falcon`, `bard_song`, `bard_dissonance`, `warlock_curse`, `warlock_bolt`, `warlock_imps`, `warlock_doom`, `tamer_command`, `tamer_stampede`).
+- Se corrige además `PlayerAnimIds.ALL`, al que faltaban tres animaciones de V89 (`gunslinger_deadeye`, `weapon_summon`, `weapon_greatsword`).
+- **Queda sin cubrir** el Elementalista (efectos por elemento).
+- **No verificado en partida:** aspecto, sincronía y rendimiento (la Lluvia de flechas y las espirales del Bardo son lo más cargado).

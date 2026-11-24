@@ -430,5 +430,71 @@
     "sounds": [
       "aptitudes:shapeshifter_howl"
     ]
+  },
+  "hunter_shot": {
+    "subtitle": "subtitles.aptitudes.hunter_shot",
+    "sounds": [
+      "aptitudes:hunter_shot"
+    ]
+  },
+  "hunter_trap": {
+    "subtitle": "subtitles.aptitudes.hunter_trap",
+    "sounds": [
+      "aptitudes:hunter_trap"
+    ]
+  },
+  "hunter_falcon": {
+    "subtitle": "subtitles.aptitudes.hunter_falcon",
+    "sounds": [
+      "aptitudes:hunter_falcon"
+    ]
+  },
+  "bard_song": {
+    "subtitle": "subtitles.aptitudes.bard_song",
+    "sounds": [
+      "aptitudes:bard_song"
+    ]
+  },
+  "bard_dissonance": {
+    "subtitle": "subtitles.aptitudes.bard_dissonance",
+    "sounds": [
+      "aptitudes:bard_dissonance"
+    ]
+  },
+  "warlock_curse": {
+    "subtitle": "subtitles.aptitudes.warlock_curse",
+    "sounds": [
+      "aptitudes:warlock_curse"
+    ]
+  },
+  "warlock_bolt": {
+    "subtitle": "subtitles.aptitudes.warlock_bolt",
+    "sounds": [
+      "aptitudes:warlock_bolt"
+    ]
+  },
+  "warlock_imps": {
+    "subtitle": "subtitles.aptitudes.warlock_imps",
+    "sounds": [
+      "aptitudes:warlock_imps"
+    ]
+  },
+  "warlock_doom": {
+    "subtitle": "subtitles.aptitudes.warlock_doom",
+    "sounds": [
+      "aptitudes:warlock_doom"
+    ]
+  },
+  "tamer_command": {
+    "subtitle": "subtitles.aptitudes.tamer_command",
+    "sounds": [
+      "aptitudes:tamer_command"
+    ]
+  },
+  "tamer_stampede": {
+    "subtitle": "subtitles.aptitudes.tamer_stampede",
+    "sounds": [
+      "aptitudes:tamer_stampede"
+    ]
   }
 }

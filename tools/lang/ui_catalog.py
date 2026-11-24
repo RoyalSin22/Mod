@@ -1848,6 +1848,17 @@ subtitles.aptitudes.weapon_greatsword¦Uma espada espectral golpeia¦Une épée 
 subtitles.aptitudes.weapon_prison¦Lâminas se fecham¦Des lames se referment¦Klingen schließen sich
 subtitles.aptitudes.shapeshifter_pounce¦Uma fera salta¦Une bête bondit¦Eine Bestie springt
 subtitles.aptitudes.shapeshifter_howl¦Uma fera uiva¦Une bête hurle¦Eine Bestie heult
+subtitles.aptitudes.hunter_shot¦Uma flecha assobia¦Une flèche siffle¦Ein Pfeil pfeift
+subtitles.aptitudes.hunter_trap¦Uma armadilha se fecha¦Un piège claque¦Eine Falle schnappt zu
+subtitles.aptitudes.hunter_falcon¦Um falcão grita¦Un faucon crie¦Ein Falke kreischt
+subtitles.aptitudes.bard_song¦Uma canção ecoa¦Une chanson retentit¦Ein Lied erklingt
+subtitles.aptitudes.bard_dissonance¦Uma dissonância ecoa¦Une dissonance éclate¦Ein Misston dröhnt
+subtitles.aptitudes.warlock_curse¦Uma maldição sussurra¦Une malédiction murmure¦Ein Fluch flüstert
+subtitles.aptitudes.warlock_bolt¦Um raio abissal estala¦Un éclair abyssal claque¦Ein Abgrundblitz kracht
+subtitles.aptitudes.warlock_imps¦Diabretes gargalham¦Des diablotins ricanent¦Wichtel kichern
+subtitles.aptitudes.warlock_doom¦A perdição soa¦Le glas sonne¦Das Verhängnis läutet
+subtitles.aptitudes.tamer_command¦A matilha recebe uma ordem¦La meute reçoit un ordre¦Das Rudel erhält einen Befehl
+subtitles.aptitudes.tamer_stampede¦Uma debandada avança¦Une ruée charge¦Eine Stampede stürmt
 entity.aptitudes.custodio_cuatro_llaves¦O Custódio das Quatro Chaves¦Le Gardien des Quatre Clés¦Der Wächter der vier Schlüssel
 item.aptitudes.faceless_colossus_spawn_egg¦Ovo gerador do Colosso Sem Rosto¦Œuf d'apparition du Colosse sans visage¦Spawn-Ei des gesichtslosen Kolosses
 bestiary.aptitudes.faceless_colossus.tip¦Guerreiro gigante com espadão. Anuncia um golpe amplo e um golpe descendente com onda: saia do círculo marcado. Com metade da vida sua armadura racha: fica mais rápido, investe de longe e recebe mais dano.¦Guerrier géant armé d'une grande épée. Il annonce un large balayage et un coup plongeant avec onde de choc : sortez du cercle marqué. À mi-vie son armure se fissure : il va plus vite, charge de loin et subit plus de dégâts.¦Riesiger Krieger mit Zweihänder. Er kündigt einen weiten Hieb und einen Abwärtsschlag mit Schockwelle an: Verlasse den markierten Kreis. Bei halber Lebenskraft bricht seine Rüstung: Er wird schneller, stürmt aus der Ferne an und erleidet mehr Schaden.

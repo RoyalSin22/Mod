@@ -833,6 +833,124 @@ def shapeshifter_howl(rng):
     return fade_out(normalize(saw * 0.6 + boom + air, 0.82), 0.2)
 
 
+# ---------------------------------------------------------------- Cazador, Bardo, Brujo y Domador (V90)
+
+def hunter_shot(rng):
+    """Disparo de arco: cuerda que vibra, flecha que silba y un golpe seco."""
+    t = t_axis(0.5)
+    twang = np.sin(2 * np.pi * 190 * t) * env(t, 0.001, 0.07) * 0.6 + np.sin(2 * np.pi * 380 * t) * env(t, 0.001, 0.04) * 0.3
+    whistle = np.sin(2 * np.pi * np.cumsum(1700 - 900 * np.clip(t / 0.3, 0, 1)) / RATE) * env(t, 0.01, 0.1) * 0.15
+    air = _soft_air(rng, len(t), 1800, 6000) * env(t, 0.003, 0.05) * 0.35
+    hit_t = np.maximum(t - 0.22, 0)
+    hit = np.sin(2 * np.pi * (200 * np.exp(-hit_t * 28) + 85) * hit_t) * env(hit_t, 0.001, 0.05) * 0.7 * (t >= 0.22)
+    return fade_out(normalize(twang + whistle + air + hit, 0.8), 0.06)
+
+
+def hunter_trap(rng):
+    """Trampa de oso: un chasquido metálico seco con eco de resorte."""
+    t = t_axis(0.6)
+    clank = _bell(t, 480, [(1.0, 0.7), (2.9, 0.5), (4.6, 0.3), (6.3, 0.2)], 0.12) * 0.7
+    snap = _soft_air(rng, len(t), 1500, 6500) * env(t, 0.0005, 0.03) * 0.6
+    thud = np.sin(2 * np.pi * (150 * np.exp(-t * 24) + 60) * t) * env(t, 0.001, 0.08) * 0.8
+    spring = _bell(t, 1400, [(1.0, 0.3), (1.6, 0.2)], 0.3) * 0.2
+    return fade_out(normalize(clank + snap + thud + spring, 0.85), 0.08)
+
+
+def hunter_falcon(rng):
+    """Halcón: un grito agudo que baja y un aleteo."""
+    t = t_axis(0.7)
+    cry = np.sin(2 * np.pi * np.cumsum(3200 - 1400 * np.clip(t / 0.4, 0, 1) + 120 * np.sin(2 * np.pi * 18 * t)) / RATE) * env(t, 0.02, 0.18) * 0.45
+    flap = _soft_air(rng, len(t), 200, 1500) * (0.5 + 0.5 * np.sin(2 * np.pi * 14 * t)) * env(t, 0.05, 0.3) * 0.4
+    return fade_out(normalize(cry + flap, 0.75), 0.1)
+
+
+def bard_song(rng):
+    """Canción: un acorde de laúd que se abre en campanas."""
+    t = t_axis(1.2)
+    out = np.zeros(len(t))
+    for k, f in enumerate((293.7, 370.0, 440.0, 587.3)):
+        tt = np.maximum(t - 0.05 * k, 0)
+        out += np.sin(2 * np.pi * f * tt) * env(tt, 0.004, 0.5) * (t >= 0.05 * k) * 0.5
+        out += np.sin(2 * np.pi * f * 2 * tt) * env(tt, 0.004, 0.25) * (t >= 0.05 * k) * 0.2
+    bell = _bell(t, 1174.7, [(1.0, 0.4), (2.0, 0.2)], 0.6) * 0.3
+    return fade_out(normalize(out + bell, 0.78), 0.2)
+
+
+def bard_dissonance(rng):
+    """Disonancia: dos tonos chocando y un chirrido que sacude."""
+    t = t_axis(0.8)
+    a = np.sin(2 * np.pi * 440 * t) + np.sin(2 * np.pi * 466 * t) + 0.6 * np.sin(2 * np.pi * 622 * t)
+    a *= env(t, 0.005, 0.35) * 0.4
+    screech = _soft_air(rng, len(t), 2000, 6500) * env(t, 0.01, 0.12) * 0.45
+    thump = np.sin(2 * np.pi * (120 * np.exp(-t * 14) + 50) * t) * env(t, 0.002, 0.1) * 0.8
+    return fade_out(normalize(a + screech + thump, 0.8), 0.1)
+
+
+def warlock_curse(rng):
+    """Maldición: un susurro que se enrosca y baja de tono."""
+    t = t_axis(0.9)
+    whisper = _soft_air(rng, len(t), 1200, 5000) * (0.6 + 0.4 * np.sin(2 * np.pi * 9 * t)) * env(t, 0.1, 0.4) * 0.5
+    drone = np.sin(2 * np.pi * np.cumsum(180 - 70 * np.clip(t / 0.8, 0, 1)) / RATE) * env(t, 0.1, 0.5) * 0.5
+    return fade_out(normalize(whisper + drone, 0.75), 0.2)
+
+
+def warlock_bolt(rng):
+    """Rayo abismal: un chasquido grave con cola de sombra."""
+    t = t_axis(0.7)
+    boom = np.sin(2 * np.pi * (200 * np.exp(-t * 12) + 55) * t) * env(t, 0.002, 0.18) * 0.9
+    zap = np.sin(2 * np.pi * np.cumsum(1500 * np.exp(-t * 16) + 160) / RATE) * env(t, 0.001, 0.08) * 0.5
+    crack = _soft_air(rng, len(t), 1000, 5500) * env(t, 0.0008, 0.05) * 0.5
+    tail = _soft_air(rng, len(t), 150, 900) * env(t, 0.05, 0.3) * 0.35
+    return fade_out(normalize(boom + zap + crack + tail, 0.84), 0.1)
+
+
+def warlock_imps(rng):
+    """Diablillos: risitas agudas que revolotean y un estallido de azufre."""
+    t = t_axis(0.9)
+    laugh = np.zeros(len(t))
+    for k in range(5):
+        i = int((0.05 + 0.1 * k) * RATE)
+        n = int(0.09 * RATE)
+        if i + n < len(t):
+            tt = np.arange(n) / RATE
+            laugh[i:i + n] += np.sin(2 * np.pi * np.cumsum(900 + 300 * rng.random() + 500 * tt / 0.09) / RATE * np.ones(n)) * np.exp(-tt / 0.04) * 0.3
+    burst = _soft_air(rng, len(t), 400, 3500) * env(t, 0.02, 0.18) * 0.5
+    thud = np.sin(2 * np.pi * (110 * np.exp(-t * 14) + 45) * t) * env(t, 0.003, 0.1) * 0.7
+    return fade_out(normalize(laugh + burst + thud, 0.8), 0.15)
+
+
+def warlock_doom(rng):
+    """Perdición: una campanada grave y un estruendo."""
+    t = t_axis(1.4)
+    bell = _bell(t, 110.0, [(1.0, 0.9), (2.4, 0.6), (4.1, 0.4), (5.9, 0.25)], 1.2) * 1.2
+    boom = np.sin(2 * np.pi * (80 * np.exp(-t * 5) + 35) * t) * env(t, 0.004, 0.4) * 0.8
+    air = _soft_air(rng, len(t), 200, 1800) * env(t, 0.02, 0.3) * 0.25
+    return fade_out(normalize(bell + boom + air, 0.85), 0.3)
+
+
+def tamer_command(rng):
+    """Orden de la manada: un ladrido grave seguido de un gruñido."""
+    t = t_axis(0.8)
+    bark = np.sin(2 * np.pi * np.cumsum(300 * np.exp(-t * 14) + 170) / RATE) * env(t, 0.004, 0.09) * 0.8
+    growl = np.sin(2 * np.pi * np.cumsum(130 + 20 * np.sin(2 * np.pi * 30 * t)) / RATE) * (np.sin(2 * np.pi * 36 * t) > -0.2) * env(np.maximum(t - 0.2, 0), 0.05, 0.25) * 0.5 * (t >= 0.2)
+    air = _soft_air(rng, len(t), 400, 2500) * env(t, 0.005, 0.1) * 0.3
+    return fade_out(normalize(bark + growl + air, 0.8), 0.12)
+
+
+def tamer_stampede(rng):
+    """Estampida: cascos que retumban y un empujón sordo."""
+    t = t_axis(0.9)
+    hooves = np.zeros(len(t))
+    for k in range(8):
+        i = int((0.02 + 0.075 * k) * RATE)
+        n = int(0.1 * RATE)
+        if i + n < len(t):
+            tt = np.arange(n) / RATE
+            hooves[i:i + n] += np.sin(2 * np.pi * (140 * np.exp(-tt * 30) + 60) * tt) * np.exp(-tt / 0.03) * (0.5 + 0.1 * k)
+    dust = _soft_air(rng, len(t), 200, 2000) * env(t, 0.05, 0.4) * 0.35
+    return fade_out(normalize(hooves + dust, 0.84), 0.15)
+
+
 SOUNDS = {
     'eclipse_announce': eclipse_announce,
     'eclipse_start': eclipse_start,
@@ -906,6 +1024,17 @@ SOUNDS = {
     'weapon_prison': weapon_prison,
     'shapeshifter_pounce': shapeshifter_pounce,
     'shapeshifter_howl': shapeshifter_howl,
+    'hunter_shot': hunter_shot,
+    'hunter_trap': hunter_trap,
+    'hunter_falcon': hunter_falcon,
+    'bard_song': bard_song,
+    'bard_dissonance': bard_dissonance,
+    'warlock_curse': warlock_curse,
+    'warlock_bolt': warlock_bolt,
+    'warlock_imps': warlock_imps,
+    'warlock_doom': warlock_doom,
+    'tamer_command': tamer_command,
+    'tamer_stampede': tamer_stampede,
 }
 
 

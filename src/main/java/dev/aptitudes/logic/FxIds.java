@@ -83,8 +83,36 @@ public final class FxIds {
 	public static final int SHAPE_POUNCE = 45;
 	/** Aullido de la bestia en quien lo lanza; {@code power} = radio. */
 	public static final int SHAPE_HOWL = 46;
+	/** Marca del cazador sobre el punto del evento (la presa); {@code dx,dy,dz} = del ojo a la presa. */
+	public static final int HUNTER_MARK = 47;
+	/** Trampa de oso en el punto del evento; {@code power} 0 = colocada, 1 = se cierra. */
+	public static final int HUNTER_TRAP = 48;
+	/** Una flecha de la lluvia desde el punto del evento hasta {@code dx,dy,dz}; {@code power} 16 = inicia la animación. */
+	public static final int HUNTER_ARROW = 49;
+	/** Un picotazo del halcón sobre el punto del evento; {@code power} = índice (el 0 inicia la animación). */
+	public static final int HUNTER_FALCON = 50;
+	/** Canción del bardo en quien la toca; {@code power} = radio, {@code dx} = variante (0 valor, 1 escudo, 2 réquiem). */
+	public static final int BARD_SONG = 51;
+	/** Disonancia en quien la toca; {@code power} = radio. */
+	public static final int BARD_DISSONANCE = 52;
+	/** Maldición de agonía: {@code dx,dy,dz} del ojo a la víctima (punto del evento). */
+	public static final int WARLOCK_CURSE = 53;
+	/** Un latido de la maldición sobre el punto del evento. */
+	public static final int WARLOCK_PULSE = 54;
+	/** Rayo abismal: {@code dx,dy,dz} del ojo al final; {@code power} 1 si acertó. */
+	public static final int WARLOCK_BOLT = 55;
+	/** Diablillos en quien los invoca. */
+	public static final int WARLOCK_IMPS = 56;
+	/** Perdición sobre el punto del evento; {@code power} 0 = marca, 1 = sentencia. */
+	public static final int WARLOCK_DOOM = 57;
+	/** Orden del domador en quien la da; {@code power} = variante (0 acosar, 1 vínculo, 2 rugido del alfa). */
+	public static final int TAMER_COMMAND = 58;
+	/** Efecto sobre una mascota en el punto del evento; {@code power} 0 = azuzada, 1 = vinculada. */
+	public static final int TAMER_PET = 59;
+	/** Estampida: {@code dx,dy,dz} del ojo al final; {@code power} 1 si acertó. */
+	public static final int TAMER_STAMPEDE = 60;
 	/** Mayor id válido; el cliente descarta lo desconocido. */
-	public static final int MAX = 46;
+	public static final int MAX = 60;
 
 	private FxIds() {
 	}

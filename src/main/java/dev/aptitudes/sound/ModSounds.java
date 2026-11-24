@@ -79,6 +79,17 @@ public final class ModSounds {
 	public static final SoundEvent WEAPON_PRISON = register("weapon_prison");
 	public static final SoundEvent SHAPESHIFTER_POUNCE = register("shapeshifter_pounce");
 	public static final SoundEvent SHAPESHIFTER_HOWL = register("shapeshifter_howl");
+	public static final SoundEvent HUNTER_SHOT = register("hunter_shot");
+	public static final SoundEvent HUNTER_TRAP = register("hunter_trap");
+	public static final SoundEvent HUNTER_FALCON = register("hunter_falcon");
+	public static final SoundEvent BARD_SONG = register("bard_song");
+	public static final SoundEvent BARD_DISSONANCE = register("bard_dissonance");
+	public static final SoundEvent WARLOCK_CURSE = register("warlock_curse");
+	public static final SoundEvent WARLOCK_BOLT = register("warlock_bolt");
+	public static final SoundEvent WARLOCK_IMPS = register("warlock_imps");
+	public static final SoundEvent WARLOCK_DOOM = register("warlock_doom");
+	public static final SoundEvent TAMER_COMMAND = register("tamer_command");
+	public static final SoundEvent TAMER_STAMPEDE = register("tamer_stampede");
 
 	private ModSounds() {
 	}

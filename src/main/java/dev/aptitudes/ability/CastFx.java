@@ -49,7 +49,8 @@ public final class CastFx {
 		if (kind == Kind.ACTIVE && (BerserkerFx.handles(abilityId) || MageFx.handles(abilityId) || AssassinFx.handles(abilityId) || HerbalistFx.handles(abilityId) || EngineerFx.handles(abilityId)
 				|| LancerFx.handles(abilityId) || SwordsmanFx.handles(abilityId) || PaladinFx.handles(abilityId)
 				|| NecromancerFx.handles(abilityId) || DruidFx.handles(abilityId) || MerchantFx.handles(abilityId) || MonkFx.handles(abilityId)
-				|| GunslingerFx.handles(abilityId) || WeaponFx.handles(abilityId) || ShapeshifterFx.handles(abilityId))) {
+				|| GunslingerFx.handles(abilityId) || WeaponFx.handles(abilityId) || ShapeshifterFx.handles(abilityId)
+				|| HunterFx.handles(abilityId) || BardFx.handles(abilityId) || WarlockFx.handles(abilityId) || TamerFx.handles(abilityId))) {
 			player.swingHand(net.minecraft.util.Hand.MAIN_HAND, true);
 			return;
 		}
