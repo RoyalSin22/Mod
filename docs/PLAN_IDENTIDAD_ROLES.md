@@ -91,6 +91,11 @@ abrirla afecta a todas las activas a la vez, así que debe ir **detrás de una o
 | Anti-abuso | Protección tras reaparecer, límite de ráfaga de daño por segundo contra jugadores y registro de la telemetría de PvP. |
 | Feedback | Los efectos visuales ya se envían a todos los cercanos; añadir avisos funcionales (marca de ataque entrante) que no se atenúen con `fxIntensity` bajo. |
 
+**Decisiones de configuración (2026-11-25):** la opción de PvP con activas (`pvpAbilities`) nace **activada**; la protección tras reaparecer
+se aplica a **todos los jugadores**, tengan rol o no. Como nace activada sin datos previos, V100 debe incluir una **válvula de seguridad**:
+`pvpAbilityDamageScale` conservador al principio y la opción editable en caliente desde la pantalla de configuración para poder apagarla
+sin reiniciar.
+
 **Pruebas necesarias:** pares de jugadores con y sin rol, principal+secundario, con y sin Ascendida; objetivo en grupo; en creativo; en
 espectador; con escudo; con Totem; en la Niebla, la Lluvia y el Eclipse (eventos con muchos mobs y jugadores).
 
@@ -114,4 +119,4 @@ Mi recomendación provisional: **C**, con daño reducido y sin control duro cont
 1. El autor prueba en partida los 20 roles con la hoja de QA (registrar P0–P3) y responde 1, 7, 8 y 10.
 2. Yo verifico en el código la pregunta 2 y hago el inventario de recursos por rol (sin cambiar nada).
 3. Empezar por **V92** y **V93**; no abrir V96 hasta tener datos.
-4. ~~Decidir si las activas golpean a jugadores~~ **Decidido: B** (§5). Falta fijar si la opción de PvP nace activada o desactivada y a quién se aplica la protección de reaparición.
+4. ~~Decidir si las activas golpean a jugadores~~ **Decidido: B** (§5), con la opción de PvP **activada por defecto** y la protección de reaparición para **todos los jugadores** (no solo los de rol).
