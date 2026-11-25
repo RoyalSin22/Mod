@@ -1,0 +1,66 @@
+# Plan de identidad de roles (tras la auditoría de ChatGPT)
+
+Origen: auditoría conceptual de ChatGPT (`docs/PROMPT_BRAINSTORM_ROLES.md` es el encargo). **ChatGPT no vio el código**: este documento
+cruza sus propuestas con el repositorio real, separa lo que ya existe de lo que falta y lo ordena en versiones. Fecha de la revisión: 2026-11-25.
+
+## 1. Lo que dijo ChatGPT y lo que el código dice
+
+| Afirmación / propuesta | Realidad en el código | Decisión |
+|---|---|---|
+| «Dos ranuras de activas» (pregunta 3) | **4 casillas en total: 2 por rol** (`slot < 2 ? principal : secundario`, `RoleManager`). | Aclarado. El riesgo 13.1 (mecánica que obligue a equipar siempre las mismas 2 activas) es real pero está acotado a 2 por rol. |
+| Combinaciones de la misma categoría «rotas» (Bersérker + Monje, Mago + Elementalista…) | Misma categoría está **permitida y bonificada** (`SPECIALIZATION_XP_BONUS`, +XP por especialización). | Mantener. Hay que medirlas, no prohibirlas. |
+| Un «recurso único» nuevo por rol (furia, ki, almas, corrupción…) | **Muchos ya existen como nodos N1–N10** (`*Kit`): racha del Espadachín, combinaciones y Postura del tigre del Monje, Ira justa del Paladín, cadena de Concatenación y cargas de Maná cristalizado del Mago, marcas del Cazador, Ansia y Desesperación del Brujo, Presión del Mago pistolero, Armería viva del Invocador, Monedero y Crédito del Mercader, etc. Existe además la **sintonía de combate común** (`Trance`). | **No crear 20 barras nuevas.** Auditar cada rol: qué recurso tiene ya, si el HUD lo muestra y si el rol se juega distinto. Solo rellenar huecos reales. |
+| Sistema central de eventos de combate | **No existe**: hay enganches repartidos (`Combos`, `RolePassives`, `AbilityManager`, `RoleEvents`, `ExtraKits`, `XpEvents`). | **Aceptada y es la prioridad técnica** (ver V93). Con distinción directo/derivado para evitar cadenas infinitas. |
+| Telemetría | **No existe** ninguna. | Aceptada (V93), mínima y solo en servidor. |
+| Presupuesto de invocaciones | **Parcial**: `Minions.MAX_MINIONS = 4` (con `Keystones.maxMinions`), y `AbilityState.trackSummon` registra dueño y duración de cualquier invocación. Mascotas del Domador y lobos del Druida no cuentan en ese tope. | Aceptada: presupuesto por jugador sobre el registro que ya existe (V94). |
+| Accesibilidad: sliders de partículas, temblor, FOV, viñeteado, volumen | **Solo hay uno**: `fxIntensity` (0–1,5) + el ajuste de partículas de Minecraft. Cámara y pantalla se escalan juntas. | Aceptada (V92): sliders separados y distinción señal funcional / adorno. |
+| Posturas de combate y locomoción por familia | No hay: solo gestos de habilidad (capa PAL prioridad 1500). | Aceptada pero **más adelante** (V97), primero un piloto. |
+| Efectos para firmas, definitivas y piedras angulares antes que los 10 nodos extra (riesgo 13.2) | Cierto: solo las activas base tienen guion propio. | **Aceptada**, es la prioridad de contenido (V95–V96). |
+| «Recurso del Druida depende de biomas verdes» | No es el caso de partida; es un aviso útil para el diseño. | Registrar como restricción. |
+| Moneda del Mercader (pregunta 8) | Las activas gastan **esmeraldas reales** (`AbilitiesExtra.consume`; Monedero y Crédito ya amortiguan). | Decisión pendiente del autor (ver §3). |
+| Estados «en memoria» | Cierto y ya documentado: al reiniciar se pierden rachas, marcas, ventanas. | Mantener; no persistir sin necesidad. |
+| «Efectos de cámara no deben determinar impactos» | Se cumple: todo el FX es cliente; el servidor decide el daño. | Mantener como regla. |
+| Mapa de recursos por rol de §2 y matriz de especialización | Es una **hipótesis de diseño** sin datos. | Usarla como objetivo a medir, no como especificación. |
+| Nombre «Chamán» / «Elementalista» | `ElementalistKit` implementa los N1–N10 del Elementalista (llamados «Chamán» en nodos). | Sin acción; tenerlo presente al auditar. |
+
+**Propuestas descartadas o dejadas fuera por ahora:** más roles; bonificaciones individuales para las 380 parejas (se usarán etiquetas
+funcionales); minijuego de ritmo del Bardo con precisión de milisegundos (latencia); modificar la velocidad de ticks para el Mago
+(ya se hace con estados de entidad).
+
+## 2. Plan por versiones
+
+Una versión por tarea y por rama (`AGENTS.md`). Orden por dependencias: lo que mide y protege antes de lo que añade.
+
+| Versión | Contenido | Entrega | Esfuerzo |
+|---|---|---|---|
+| **V92 – Validación y accesibilidad** | (1) Pasar la **hoja de pruebas en partida** por los 20 roles (el autor) y corregir P0/P1. (2) Sliders de cliente separados: partículas, temblor, FOV, viñeteado, volumen de habilidades, efectos de otros jugadores (completos/reducidos/mínimos) y alto contraste de señales. (3) Marcar qué efectos son **señal funcional** (avisos de ataque enemigo) y no se atenúan. | Opciones en `ClientConfig` + `ConfigScreen`; sin tocar el servidor | B–M |
+| **V93 – Eventos de combate y telemetría** | Bus central en servidor: `AbilityCast`, `AbilityImpact`, `DamageDealt`, `DamageMitigated`, `EffectiveHeal`, `TargetMarked`, `CompanionCommand`, `CombatEnded`, con propietario, habilidad, objetivo y marca **directo/derivado**. Los `*Kit` se suscriben en vez de enganchar cada uno su evento. Telemetría mínima (daño efectivo/s, daño por recurso, curación efectiva y sobrecuración, activaciones derivadas, MSPT, entidades activas) con comando de operador para volcarla. | `ability/CombatEvents` (puro donde se pueda, con pruebas), migración gradual de enganches existentes, `/aptitudes telemetry` | M–A |
+| **V94 – Presupuesto de invocaciones** | Presupuesto ponderado por jugador sobre `AbilityState.trackSummon`: esbirros, lobos, mascotas, torretas, diablillos y espadas; tope configurable; política al desconectar, morir y cambiar de dimensión; validar PvP y grupo. Auditoría de rendimiento antes de fijar números. | `ability/SummonBudget` + configuración | M |
+| **V95 – Feedback compartido** | Lenguaje común de impacto: normal, pesado, crítico, bloqueo, interrupción, curación efectiva, recurso completo/insuficiente, definitiva lista. Se reutiliza en habilidades base, extras y pasivas (con confirmación breve, sin partículas constantes). | Extender `FxIds`/`FxClient` con un puñado de eventos genéricos | M |
+| **V96 – Progresión audiovisual** | Firmas, definitivas y piedras angulares con motivo propio del rol (empezando por los 5 pilotos). Luego evoluciones Maestro/Definitiva. Los 10 nodos extra de cada rol al final. | `*Fx` por rol ampliados | A |
+| **V97 – Posturas** | Piloto con 4 roles (Bersérker, Lancero, Monje, Mago) de postura de combate sobre la capa PAL; respaldo a la locomoción vanilla; precedencia muerte > reacción > habilidad > postura > locomoción. | PAL, validar versión 1.1.6 | M–A |
+| **V98 – Identidad mecánica (pilotos)** | Auditar los recursos que ya existen y diseñar solo los huecos, empezando por los 5 pilotos: **Bersérker, Elementalista, Cambiaformas, Paladín, Ingeniero** (cinco problemas arquitectónicos distintos). | Cambios en los `*Kit` y HUD | A |
+| **V99 – Equilibrio** | Pruebas por anillo de amenaza 0–V, jefes y eventos, y por parejas principal+secundario con las etiquetas funcionales (`BURST`, `SUSTAIN`, `CONTROL`, `SUMMON`, `SUPPORT`, `DEFENSE`, `MOBILITY`, `REACTION`, `RESOURCE`). | Con los datos de V93 | M |
+
+Antes de V96–V99 conviene tener los datos de V92–V93; sin ellos se equilibra a ciegas.
+
+## 3. Respuestas a las 10 preguntas de ChatGPT
+
+| # | Pregunta | Estado |
+|---|---|---|
+| 1 | Eficacia en solitario del apoyo | **Decisión del autor.** |
+| 2 | Qué puede usar el rol secundario | **Por verificar en el código** (casillas 2/2 sí; pasivas, firma y evoluciones del secundario hay que auditarlas). Es la pregunta más condicionante. |
+| 3 | Casillas | **Respondida: 2 por rol, 4 en total.** |
+| 4 | Recursos exclusivos actuales | **Parcialmente respondida** (ver §1): hay que hacer el inventario completo por rol. |
+| 5 | Firma, definitiva, evolución Definitiva y legendaria | Existen las cuatro; falta documentar la jerarquía de poder en `docs/BALANCE.md`. |
+| 6 | Armas por rol | Cada rol tiene arma de evolución propia; falta confirmar qué roles admiten armas vanilla. |
+| 7 | PvP | **Decisión del autor.** |
+| 8 | Monedas del Mercader | Hoy son esmeraldas reales. **Decisión del autor** (capital de combate propio vs economía general). |
+| 9 | Límites de entidades | `MAX_MINIONS = 4` para esbirros; el resto sin tope común. Se resuelve en V94. |
+| 10 | Combate vanilla vs activas del mod | **Decisión del autor.** |
+
+## 4. Próximos pasos concretos
+
+1. El autor prueba en partida los 20 roles con la hoja de QA (registrar P0–P3) y responde 1, 7, 8 y 10.
+2. Yo verifico en el código la pregunta 2 y hago el inventario de recursos por rol (sin cambiar nada).
+3. Empezar por **V92** y **V93**; no abrir V96 hasta tener datos.
