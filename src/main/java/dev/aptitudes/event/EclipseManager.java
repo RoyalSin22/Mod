@@ -241,7 +241,7 @@ public final class EclipseManager {
 		state.active = false;
 		state.forced = false;
 		state.heraldSpawned = false;
-		state.lastEndTick = world.getTime(); // T5: la espera del Behelit cuenta desde aquí
+		state.lastEndTick = world.getTime(); // C3: la espera de convocatoria se cuenta desde aquí
 		Set<UUID> fallen = new HashSet<>(state.fallen);
 		state.fallen.clear();
 		state.markDirty();
@@ -606,27 +606,43 @@ public final class EclipseManager {
 		return true;
 	}
 
-	/** T5: ¿se puede sacrificar ahora el Behelit? Desactivado, ocupado o en espera (ver {@link BeheritRules}). */
-	public static BeheritRules.Result beheritStatus(ServerWorld world) {
-		EclipseState state = EclipseState.get(world);
-		AptitudesConfig cfg = Aptitudes.config();
-		boolean busy = state.active || WorldEventManager.active(world.getServer());
-		return BeheritRules.check(cfg.eclipseEnabled, busy, state.lastEndTick, world.getTime(), cfg.beheritCooldownDays);
+	/** C3: ¿puede convocarse ahora el Eclipse? {@code astrolabe} pide permiso; el Behelit no. Todo se decide en el servidor. */
+	public static EclipseSummoningRules.Verdict summonVerdict(ServerPlayerEntity player, boolean astrolabe) {
+		// Con el Eclipse desactivado en la configuración, uno recién empezado se cerraría al tick siguiente y se perdería el objeto.
+		if (!Aptitudes.config().eclipseEnabled) return EclipseSummoningRules.Verdict.DISABLED;
+		ServerWorld world = player.getServerWorld();
+		MinecraftServer server = world.getServer();
+		ServerWorld overworld = server.getOverworld();
+		boolean inOverworld = world == overworld;
+		EclipseState state = EclipseState.get(overworld);
+		boolean busy = state.active || WorldEventManager.active(server);
+		int days = Aptitudes.config().eclipseSummonCooldownDays;
+		if (!astrolabe) return EclipseSummoningRules.behelit(inOverworld, busy, state.lastEndTick, overworld.getTime(), days);
+		return EclipseSummoningRules.astrolabe(player.hasPermissionLevel(2), dev.aptitudes.party.PartyManager.isLeader(player),
+				inOverworld, busy, state.lastEndTick, overworld.getTime(), days);
 	}
 
-	/** T5: horas de juego que faltan para poder volver a usar el Behelit (0 si ya se puede). */
-	public static long beheritHoursLeft(ServerWorld world) {
-		return BeheritRules.hoursLeft(EclipseState.get(world).lastEndTick, world.getTime(),
-				Aptitudes.config().beheritCooldownDays);
+	/** Mensaje de rechazo (barra de acción) de una convocatoria denegada. */
+	public static void sendDenied(ServerPlayerEntity player, EclipseSummoningRules.Verdict verdict) {
+		Text text = switch (verdict) {
+			case NOT_AUTHORIZED -> Text.translatable("eclipse.aptitudes.summon.denied");
+			case WRONG_WORLD -> Text.translatable("eclipse.aptitudes.summon.wrong_world");
+			case BUSY -> Text.translatable("eclipse.aptitudes.summon.busy");
+			case COOLDOWN -> {
+				ServerWorld overworld = player.getServer().getOverworld();
+				yield Text.translatable("eclipse.aptitudes.summon.cooldown", EclipseSummoningRules.remainingDays(
+						EclipseState.get(overworld).lastEndTick, overworld.getTime(), Aptitudes.config().eclipseSummonCooldownDays));
+			}
+			case DISABLED -> Text.translatable("eclipse.aptitudes.summon.disabled");
+			case ALLOWED -> Text.empty();
+		};
+		player.sendMessage(text.copy().formatted(Formatting.RED), true);
 	}
 
-	/**
-	 * T5: inicia un Eclipse desde el sacrificio del Behelit en la Hoguera. Devuelve {@code true} solo si empezó; quien
-	 * llama consume el objeto únicamente en ese caso. Vuelve a comprobar la regla: no confía en una comprobación previa.
-	 */
-	public static boolean startByBeherit(ServerWorld world) {
-		if (beheritStatus(world) != BeheritRules.Result.READY) return false;
-		start(world.getServer(), world, EclipseState.get(world), true, EclipseRules.dayOf(world.getTimeOfDay()));
-		return true;
+	/** C3: inicia el Eclipse convocado por un jugador (Astrolabio o Behelit). Hay que haber comprobado {@link #summonVerdict}. */
+	public static void startBySummon(ServerPlayerEntity summoner) {
+		ServerWorld overworld = summoner.getServer().getOverworld();
+		start(summoner.getServer(), overworld, EclipseState.get(overworld), true, EclipseRules.dayOf(overworld.getTimeOfDay()));
+		dev.aptitudes.achievement.Achievements.grant(summoner, dev.aptitudes.achievement.Achievement.ECLIPSE_CALLER);
 	}
 }

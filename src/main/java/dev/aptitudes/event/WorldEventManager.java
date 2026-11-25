@@ -61,7 +61,7 @@ import java.util.UUID;
  *
  * <p>Histórico: este calendario desapareció (T1/T5, D-26) y {@code calendarWeights} ya no programa nada. La Niebla de
  * almas la inicia un jugador hablando con el aldeano del gremio, la Lluvia de brasas al encender un portal al Nether
- * ({@link EventTriggerRules}) y el Eclipse el sacrificio del Behelit ({@link BeheritRules}).</p>
+ * ({@link EventTriggerRules}) y el Eclipse el sacrificio del Behelit o el Astrolabio ({@link EclipseSummoningRules}).</p>
  */
 public final class WorldEventManager {
 	/** Etiqueta de las criaturas de la Niebla de almas y de la Lluvia de brasas. */

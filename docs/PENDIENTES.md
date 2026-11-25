@@ -21,7 +21,7 @@ no se proponen en ningún punto.
 | ~~C2 · Rendimiento R1–R3~~ | **Hecho** (`role/VersionedCache`, `RoleData.version()`); queda R4 | `docs/IDEAS_v47_v55.md` (R1–R3) |
 | R4 · Medir con spark | Servidor con 5–10 jugadores y eventos activos | `docs/IDEAS_v47_v55.md` (R4) |
 | ~~C1 · Revisión de código v42–v58~~ | **Hecha como auditoría transversal** (`docs/C1_REVISION.md`); allí se lista lo que no se revisó | `docs/PLAN_CLAUDE.md` |
-| ~~T5 · Espera de 3 días del Behelit~~ | **Hecha** (`event/BeheritRules`, `EclipseState.lastEndTick`, `beheritCooldownDays`); sin validar en partida | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md`, D-20/D-25 |
+| ~~T5 · Espera de 3 días del Behelit~~ | **Hecha** como espera compartida con el Astrolabio: `event/EclipseSummoningRules`, `EclipseState.lastEndTick`, opción `eclipseSummonCooldownDays` (3). Se fusionó con la implementación paralela del otro chat y se retiró mi `BeheritRules`; sin validar en partida | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md`, D-20/D-25 |
 | ~~T5 · Migración de configuración del calendario~~ | **Hecha** (revisión 84 de `ConfigMigration`; calendario apagado en `WorldEventManager`); los campos antiguos quedan solo por compatibilidad | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` (T5), `config/ConfigMigration` |
 | T6 · Migración de los 3 sellos | Retirados sin alias ni conversión (`fe4f766`); D-25/D-26 pedían migración | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` (T6) |
 | Regeneración de templos | `temple/TempleRecurrenceRules` no está conectada al juego; se compensó subiendo la frecuencia a 1/120 chunks (D-35). Se reabre si los Behelit no bastan | `docs/lore/DECISIONES_PENDIENTES.md` (D-33, D-35) |
@@ -38,8 +38,8 @@ no se proponen en ningún punto.
 
 | Punto | Carencia | Origen |
 |---|---|---|
-| Astrolabio del Ocaso (C3) | (a) Solo operadores; la decisión E1 añadía al líder del grupo. (b) Mensajes fijos en inglés (`EclipseSummoningRules`), no son claves de idioma. (c) Sin textura ni modelo. (d) El logro `summon_eclipse` existe como JSON pero nadie lo concede. (e) Posible solapamiento con el Behelit | `event/EclipseSummoningRules`, `block/BonfireBlock:49`, `item/SunsetAstralabeItem`, `data/aptitudes/advancement/aptitudes_achievements/summon_eclipse.json` |
-| ~~Behelit con Eclipse activo~~ | **Resuelto**: no se consume y avisa en la barra de acción | `item/BeheritItem`, `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` §4 |
+| Astrolabio del Ocaso (C3) | **Resuelto en `main` (otro chat):** permiso de operador **o líder del grupo**, mensajes como claves en 11 idiomas, logro `eclipse_caller` concedido al convocar, espera y evento único compartidos con el Behelit. **Sigue abierto:** sin textura ni modelo (A1, §3) y sin aviso de 60 s antes del Eclipse (F6) | `event/EclipseSummoningRules`, `item/SunsetAstralabeItem`, `block/BonfireBlock` |
+| ~~Behelit con Eclipse activo~~ | **Resuelto**: no se consume y avisa en la barra de acción; con el Eclipse desactivado en la configuración también se rechaza (`Verdict.DISABLED`) | `item/BeheritItem`, `event/EclipseManager.summonVerdict` |
 | ~~Pesos de eventos a 0~~ | **Corregido**: dejaba la Niebla y la Lluvia inutilizables en configuraciones nuevas; el defecto vuelve a 1 con migración | `config/AptitudesConfig:202-204` |
 | ~~Restos de los sellos retirados~~ | **Limpiados (V86 fase 5):** clases, prueba, gancho, generador y comentario falso de `ModItems`. Quedan solo menciones históricas (marcadas) en `docs/PLAN_AVANCE.md`, `docs/lore/` y la entrada «v65 — Ruinas de batalla» del CHANGELOG | `fe4f766`, `item/ModItems`, `AGENTS.md` §2 |
 
@@ -50,7 +50,7 @@ no se proponen en ningún punto.
 | Iconos de las 200 habilidades nuevas F2–F7 (10 por rol) | Encargos redactados, arte sin entregar | `docs/PROMPT_ARTE_ICONOS_BERSERKER.md`, `_F3` … `_F7`; `docs/ROADMAP_APTITUDES.md` (v67) |
 | Arte del Grimorio restante | «Siguiente: el arte de los iconos y del grimorio» | `docs/ROADMAP_APTITUDES.md` (v67), `docs/PROMPT_ARTE_GRIMORIO.md` |
 | Arte propio de la pestaña «Crónicas» | Pendiente | `docs/ROADMAP_APTITUDES.md` (V71) |
-| Textura y modelo del Astrolabio del Ocaso | No existen | ver §2 |
+| Textura y modelo del **Astrolabio del Ocaso y del Resonador del Umbral (Behelit)** | No existen en `models/item` ni `textures/item` (se verá el modelo ausente); plantilla en `tools/textures/gen_items.py` | `docs/PROMPTS_REDISENO.md` |
 | Fichas de categoría, pantalla K, roles | Encargos hechos y arte integrado en v66/v67; no consta pendiente | `docs/PROMPT_ARTE_FICHAS_CATEGORIA.md`, `PROMPT_ARTE_PANTALLA_K.md` |
 | Sonidos propios por grabaciones reales | Opcional; mismos nombres de archivo | `docs/ROADMAP_APTITUDES.md` (v37) |
 | Texto desfasado: «80 piezas de armadura» | Las 20 armaduras de rol se borraron en V80 (Armadura Ascendida); corregir ese pendiente | `docs/ROADMAP_APTITUDES.md` (v23, línea ~423) |
@@ -90,9 +90,9 @@ en la Niebla, y la Fase 6 del Osario Quebrado (V84).
 | Decisión | Contexto | Origen |
 |---|---|---|
 | ¿Se acepta la retirada de los sellos sin migración? | D-25/D-26 pedían migración; `PLAN_AVANCE` §1 dice que no hay mundos que preservar | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` |
-| ¿Se implementa la espera de 3 días del Behelit y qué hace con un Eclipse activo? | Hoy se pueden encadenar | ver §1 y §2 |
+| ~~¿Espera de 3 días del Behelit y qué hace con un Eclipse activo?~~ | **Resuelto** (ver §1 y §2) | — |
 | ¿Se vuelven a subir los pesos de eventos o se migra la configuración? | Valor por defecto cambiado a 0 en `240484f` | `config/AptitudesConfig` |
-| Astrolabio del Ocaso: ¿se mantiene, se amplía al líder del grupo o se retira? | Convive con el Behelit | `docs/PLAN_CLAUDE.md` (E1) |
+| **Jugador solo y sin permisos:** no puede usar el Astrolabio (ni operador ni líder de un grupo). ¿Se permite al jugador único, o se obliga a crear grupo? ¿Debe el Behelit pedir permiso en multijugador, como el Astrolabio? Hoy no | `docs/PLAN_CLAUDE.md` (E1), `event/EclipseSummoningRules` |
 | C1 y C7: ¿se hacen, se reprograman o se descartan? | C7 reutiliza el número «v67», ya ocupado por el árbol unificado | `docs/PLAN_CLAUDE.md` |
 | `attributeScaling = SOFTCAP` por defecto | Decisión del autor tras probar | `AGENTS.md` §7 |
 | Balance de los multiplicadores de C5 (1,20 / 1,15 / 0,90 / 1,15 / 1,20 / 1,10) | Tras validar en partida | `docs/C5_PENDIENTES.md` |
@@ -125,3 +125,23 @@ en la Niebla, y la Fase 6 del Osario Quebrado (V84).
 | `AGENTS.md` §7 | «Siguiente: v42–v45» y «T4–T6 ✔» usan una numeración distinta de las tandas T1–T7 de la cadena narrativa; fácil de confundir |
 | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` | Cabecera y tabla actualizadas en esta revisión; §7 («qué se necesita para empezar») y la mención a la rama `claude/aptitudes-lore-audit-htenjq` son históricas |
 | `docs/C5_PENDIENTES.md` | Reescrito en esta revisión; la versión anterior describía C5 como no funcional |
+
+## 9. Aportado por la revisión paralela de C3 (rama `claude/fervent-hamilton-vieoz9`)
+
+El otro chat hizo su propio `docs/PENDIENTES.md` el mismo día; este archivo se fusionó con él. Lo suyo que no estaba arriba, **comprobado contra el código fusionado
+salvo lo marcado «(sin verificar)»**:
+
+| # | Qué | Origen |
+|---|---|---|
+| F6 | Aviso de 60 s con campana antes del Eclipse convocado: el diseño del Astrolabio lo pedía y hoy empieza al instante | `docs/IDEAS_v47_v55.md` §2b |
+| F8 | Gran Osario: el cliente debe conectar capas, visibilidad de núcleos y brazos, postura y clips exclusivos al estado de juego | `docs/V85_GRAN_OSARIO_MEDIDAS.md`, `client/render/BossRenderers` |
+| F10 | Armadura Ascendida: revisión de cifras y, si se quiere, modelo 3D propio (opcional) | `docs/V80_ARMADURA_ASCENDIDA.md` |
+| F11 | Texturas de Codex de los jefes (`codex/texturas-jefes`, no está en el remoto) y revisar el CI de GitHub en `main` (sin verificar) | `docs/ROADMAP_APTITUDES.md` |
+| A2–A7 | Arte pendiente: modelos 3D (hacha de Bersérker, armas Maestro y base, Hoguera, bloques funcionales, jefes con GeckoLib), ≈70 iconos de objetos que no son armas, texturas del aldeano del gremio y del mob de la Niebla, efectos de estado y partículas, limpieza del Grimorio (23 ilustraciones sin usar), pantallas sin kit (Reforja, frascos, contratos, grupo, configuración), iconos F2–F7, arte de las Crónicas y del bestiario, y procedencia/créditos del arte de IA | `docs/PROMPTS_REDISENO.md` (A1–A3, I1–I4, M1–M6, Q4–Q5), `CREDITS.md` |
+| V3 | **Validar C3:** Astrolabio como operador, como líder del grupo y como jugador normal; rechazo sin consumir; espera de 3 días tras terminar un Eclipse (y tras `/aptitudes eclipse stop`); Behelit con la misma espera | `docs/TESTING.md` |
+| V5–V8 | Asalto y persecución del Eclipse con pruebas visuales; jefes (trance, pedidos, expediciones, arena y fase 3, Guardián y Autómata, Osario V84 a 20 TPS); remates 3D y multijugador; compatibilidad con Sodium/Indium; configuración, tutorial y reforja; equilibrio con datos reales (Q2) | `docs/V47_ECLIPSE.md`, `docs/ROADMAP_APTITUDES.md`, `docs/PROMPTS_REDISENO.md` (Q2) |
+| D2 | La tabla §4 de T0 (nombre y receta del objeto de acceso, contenido de las cámaras, templos viejos, nombre del Behelit…) se implementó con valores elegidos por el redactor, sin confirmación expresa | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` |
+| D5 | **Obtención del Astrolabio:** el diseño decía botín raro o trueque (E4); la receta actual lo fabrica en la Mesa del gremio con un Fragmento de Eclipse y bloques de hierro y de cobre | `docs/IDEAS_v47_v55.md` §2b |
+| D9 | `AGENTS.md` §7 dice que activar `attributeScaling = SOFTCAP` es una decisión pendiente, pero el código ya lo trae por defecto (`config/AptitudesConfig`, commit `8e2ab95`) (sin verificar el valor actual): **actualizar `AGENTS.md`** | `AGENTS.md` §7 |
+| Límites | Criaturas del Eclipse: ven a 48 bloques y siguen el último punto visto un máximo de 6 s; una convocatoria con el Astrolabio o el Behelit solo funciona en el Mundo Normal | `README.md`, `event/EclipsePursuit` |
+

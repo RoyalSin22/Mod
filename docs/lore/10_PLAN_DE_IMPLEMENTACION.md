@@ -55,7 +55,7 @@ indique (el autor confirmó las pruebas de la numeración antigua T4–T6 de `PL
 
 **T5, qué falta o es dudoso**
 
-1. ~~Resuelto 2026-11-24: `BeheritRules`, `EclipseState.lastEndTick`, `beheritCooldownDays`.~~ **No existía la espera de 3 días por mundo** (D-20, D-25). `EclipseManager.canStartEclipse` solo comprueba
+1. ~~Resuelto 2026-11-24: `EclipseSummoningRules`, `EclipseState.lastEndTick`, `eclipseSummonCooldownDays`.~~ **No existía la espera de 3 días por mundo** (D-20, D-25). `EclipseManager.canStartEclipse` solo comprueba
    `!state.active && !WorldEventManager.active(...)`, aunque su Javadoc y el mensaje de `09f6a58` hablan de «cooldown».
    `EclipseState` no guarda el fin del último Eclipse. Hoy se puede encadenar un Behelit tras otro.
 2. ~~Resuelto: revisión 84 de `ConfigMigration` y calendario apagado.~~ **Sin migración de configuración.** El plan pedía migrar en `config/ConfigMigration`; no se hizo. Un `config`
@@ -94,6 +94,14 @@ T1 y T2 se pueden hacer a la vez (tocan archivos distintos). T3 en adelante es u
 - **Tras T3:** los templos antiguos de mundos existentes siguen funcionando con su lógica actual; los nuevos se
   generan con la estructura nueva. Decisión del autor: ¿se mantiene o se retira el templo viejo? (§4).
 - **Tras T5:** el Eclipse deja de ser de calendario y pasa a depender del Behelit.
+
+### Estado real de T5, T6 y T7 (2026-11-24)
+
+| Tanda | Hecho (evidencia) | Falta |
+|---|---|---|
+| T5 | Objeto Behelit (`item/BeheritItem`, `ModItems.RESONADOR_DEL_UMBRAL`) y sacrificio en la Hoguera, commit `09f6a58` («T5a»); `EclipseManager.start` anota el lore (V71). **C3 (2026-11-24):** espera de 3 días **por mundo desde el fin del Eclipse** (`EclipseState.lastEndTick`, `event/EclipseSummoningRules`, opción `eclipseSummonCooldownDays`), compartida con el Astrolabio del Ocaso | **E10 sin hacer:** el calendario sigue programando Eclipses (`WorldEventManager.calendarWeights`, `kindForDay`); `eclipseFirstDay`, `eclipseIntervalDays` y `worldEventWeight*` siguen en `AptitudesConfig` solo marcados como obsoletos, sin migración en `ConfigMigration`. Sin modelo ni textura del Behelit (`models/item` y `textures/item` no tienen `resonador_del_umbral`). Sin pruebas en partida |
+| T6 | Los tres `register(...)` de los sellos están comentados en `ModItems` (líneas 183–185) | El comentario dice «se mantienen por compatibilidad», pero **ya no están registrados** y no hay alias ni migración (`grep` de `ancient_automaton_seal` solo da el comentario): los objetos de mundos viejos se perderían. `boss/SummonSealItem.java` sigue en el repositorio. Política de migración sin decidir (§4, decisión 7) |
+| T7a/T7b | `guide/LoreRules`, `LoreCatalog` (18 entradas), `LoreManager`, `LoreState`; pestaña «Crónicas» y desbloqueos cableados (commit `325b8f7`, V71) | Validar en partida; arte propio de la pestaña |
 
 ## 3. Contenido de cada tanda
 
