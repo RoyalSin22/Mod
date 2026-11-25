@@ -59,7 +59,7 @@ T1 y T2 se pueden hacer a la vez (tocan archivos distintos). T3 en adelante es u
 
 | Tanda | Hecho (evidencia) | Falta |
 |---|---|---|
-| T5 | Objeto Behelit (`item/BeheritItem`, `ModItems.RESONADOR_DEL_UMBRAL`) y sacrificio en la Hoguera, commit `09f6a58` («T5a»); `EclipseManager.start` anota el lore (V71). **C3 (2026-11-24):** espera de 3 días **por mundo desde el fin del Eclipse** (`EclipseState.lastEndTick`, `event/EclipseSummoningRules`, opción `eclipseSummonCooldownDays`), compartida con el Astrolabio del Ocaso | **E10 sin hacer:** el calendario sigue programando Eclipses (`WorldEventManager.calendarWeights`, `kindForDay`); `eclipseFirstDay`, `eclipseIntervalDays` y `worldEventWeight*` siguen en `AptitudesConfig` solo marcados como obsoletos, sin migración en `ConfigMigration`. Sin modelo ni textura del Behelit (`models/item` y `textures/item` no tienen `resonador_del_umbral`). Sin pruebas en partida |
+| T5 | Objeto Behelit (`item/BeheritItem`, `ModItems.RESONADOR_DEL_UMBRAL`) y sacrificio en la Hoguera, commit `09f6a58` («T5a»); `EclipseManager.start` anota el lore (V71). **C3 (2026-11-24):** espera de 3 días **por mundo desde el fin del Eclipse** (`EclipseState.lastEndTick`, `event/EclipseSummoningRules`, opción `eclipseSummonCooldownDays`), compartida con el Astrolabio del Ocaso | **E10 sin hacer:** el calendario sigue programando Eclipses (`WorldEventManager.calendarWeights`, `kindForDay`); `eclipseFirstDay`, `eclipseIntervalDays` y `worldEventWeight*` siguen en `AptitudesConfig` solo marcados como obsoletos, sin migración en `ConfigMigration`. Arte del Behelit y del Astrolabio hecho el 2026-11-25 (plantilla provisional en `gen_items.py`). Sin pruebas en partida |
 | T6 | Los tres `register(...)` de los sellos están comentados en `ModItems` (líneas 183–185) | El comentario dice «se mantienen por compatibilidad», pero **ya no están registrados** y no hay alias ni migración (`grep` de `ancient_automaton_seal` solo da el comentario): los objetos de mundos viejos se perderían. `boss/SummonSealItem.java` sigue en el repositorio. Política de migración sin decidir (§4, decisión 7) |
 | T7a/T7b | `guide/LoreRules`, `LoreCatalog` (18 entradas), `LoreManager`, `LoreState`; pestaña «Crónicas» y desbloqueos cableados (commit `325b8f7`, V71) | Validar en partida; arte propio de la pestaña |
 
@@ -109,7 +109,7 @@ T1 y T2 se pueden hacer a la vez (tocan archivos distintos). T3 en adelante es u
 
 ### T5 · Behelit y Eclipse
 
-- Objeto Behelit (nombre de trabajo «Resonador del Umbral»). Se consume al sacrificarlo.
+- Objeto Behelit (nombre de trabajo «Embrión del Umbral»). Se consume al sacrificarlo.
 - Hoguera: ya acepta una ofrenda (`BonfireBlock.onUseWithItem` con `REBIRTH_OFFERING`); mismo patrón.
 - `EclipseManager`: arranque por sacrificio y **espera de 3 días por mundo desde el fin del Eclipse**
   (`EclipseState` persistente). Se retiran `eclipseFirstDay`, `eclipseIntervalDays` y los

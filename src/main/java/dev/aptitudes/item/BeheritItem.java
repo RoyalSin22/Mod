@@ -11,7 +11,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.world.World;
 
 /**
- * Behelit (Resonador del Umbral): se sacrifica en la Hoguera para iniciar el Eclipse.
+ * Behelit (Embrión del Umbral): se sacrifica en la Hoguera para iniciar el Eclipse.
  * La espera (3 días de juego por mundo, desde el fin del Eclipse) la comparte con el Astrolabio del Ocaso
  * ({@link EclipseSummoningRules}).
  */

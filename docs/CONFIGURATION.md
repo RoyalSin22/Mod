@@ -415,7 +415,7 @@ desde que el evento **empieza** (provisional) y no las consumen los comandos `/a
 | `fogCooldownDays` | 10 | [1, 365] | Días de espera entre dos Nieblas de almas. |
 | `fogDurationTicks` | 24000 | [1200, 240000] | Duración de la Niebla en ticks (24 000 = un día de Minecraft). Antes duraba 12 000 desde las 18:00. |
 | `emberRainCooldownDays` | 5 | [1, 365] | Días de espera entre dos Lluvias de brasas provocadas por un portal. |
-| `eclipseSummonCooldownDays` | 3 | [0, 365] | C3: días de juego de espera por mundo, desde el fin del último Eclipse, para volver a convocarlo con el Astrolabio del Ocaso o el Resonador del Umbral. 0 quita la espera. No la consumen `/aptitudes eclipse start` ni `/aptitudes event start`. |
+| `eclipseSummonCooldownDays` | 3 | [0, 365] | C3: días de juego de espera por mundo, desde el fin del último Eclipse, para volver a convocarlo con el Astrolabio del Ocaso o el Embrión del Umbral. 0 quita la espera. No la consumen `/aptitudes eclipse start` ni `/aptitudes event start`. |
 | `osarioBossEnabled` | true | — | V68: permite que el Gran Osario Quebrado se levante hacia el final de la Niebla. |
 | `osarioBossFogPercent` | 75 | [10, 100] | V68: porcentaje de la duración de la Niebla a partir del cual aparece el jefe (una vez por sesión). |
 | `osarioBossLingerTicks` | 6000 | [0, 72000] | V68: ticks que sigue vivo tras cerrarse la Niebla antes de disolverse sin botín ni XP. 6000 = 5 minutos. |

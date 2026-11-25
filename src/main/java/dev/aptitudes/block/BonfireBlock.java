@@ -39,7 +39,7 @@ public class BonfireBlock extends Block {
 		return SHAPE;
 	}
 
-	/** Con una Ofrenda de renacimiento, un Resonador del Umbral o el Astrolabio del Ocaso en la mano se hace el ritual (lo gestiona el ítem), no el descanso. */
+	/** Con una Ofrenda de renacimiento, un Embrión del Umbral o el Astrolabio del Ocaso en la mano se hace el ritual (lo gestiona el ítem), no el descanso. */
 	@Override
 	protected net.minecraft.util.ItemActionResult onUseWithItem(net.minecraft.item.ItemStack stack, BlockState state,
 			World world, BlockPos pos, PlayerEntity player, net.minecraft.util.Hand hand, BlockHitResult hit) {

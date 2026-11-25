@@ -401,7 +401,7 @@ pendientes de ajuste tras la prueba en partida.
 Sin jugadores vivos en la sala durante `cryptIdleResetSeconds` la oleada se reinicia. Las criaturas de la Cripta no sueltan
 botín propio, ni Jirón ni Núcleo, y los Errantes no dan XP: la recompensa es el cofre final (5–7 tiradas: bloque de diamante,
 manzana dorada encantada, restos de netherita, bloque de esmeralda, fragmentos de alma, Corazón de campeón, Cupón de armería,
-Emblema de maestría y frascos de XP). Sin Resonador, sin Cráneo y sin llaves: es botín y lore, no poder nuevo.
+Emblema de maestría y frascos de XP). Sin Embrión del Umbral, sin Cráneo y sin llaves: es botín y lore, no poder nuevo.
 
 # Sala de pruebas del Templo hondo (V70)
 

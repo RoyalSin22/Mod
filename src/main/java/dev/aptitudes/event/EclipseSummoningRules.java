@@ -1,7 +1,7 @@
 package dev.aptitudes.event;
 
 /**
- * C3: reglas puras para convocar el Eclipse en la Hoguera, con el Astrolabio del Ocaso o con el Behelit (Resonador
+ * C3: reglas puras para convocar el Eclipse en la Hoguera, con el Astrolabio del Ocaso o con el Behelit (Embrión
  * del Umbral). Sin clases de Minecraft: se prueban con JUnit ({@code EclipseSummoningRulesTest}).
  *
  * <p>Decisiones del autor: convocan con el Astrolabio los operadores o el líder del grupo (E1); el Behelit no pide
