@@ -15,6 +15,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   (`eclipse_caller`, hijo de «Superviviente del Eclipse»; también al usar el Behelit). El Behelit ya respeta la espera,
   avisa al jugador cuando se rechaza y no se gasta en Creativo. No toca el calendario rotativo (E10 sigue pendiente).
   El arte de ambos objetos va en la entrada siguiente.
+- **Astrolabio del Ocaso en 32×32.** Dibujo propio de mayor detalle (bronce con marcas grabadas, aro de suspensión y un sol eclipsado con la corona
+  desplazada arriba a la derecha), generado por `tools/textures/hd_items.py` y usado por `gen_items.py` antes de la plantilla de 16×16.
+  El Embrión del Umbral sigue en 16×16.
 - **Arte del Astrolabio del Ocaso y del Embrión del Umbral** (antes «Resonador del Umbral»; solo cambia el nombre visible, el id `resonador_del_umbral` no se toca). Plantillas `astrolabe` (disco de bronce con el sol eclipsado)
   y `embryo` (embrión enroscado dentro de un saco violeta, colgado de un aro de oro, sin rostro) en `tools/textures/gen_items.py`,
   texturas 16×16 y modelos de objeto. Hasta ahora ambos objetos no tenían modelo ni textura. Arte de plantilla provisional.

@@ -1140,6 +1140,7 @@ ITEMS = {
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import evolved_weapons  # noqa: E402
 import weapon_art  # noqa: E402  (V75: arte externo que sustituye al diseño por plantilla)
+import hd_items  # noqa: E402  (C3: arte de 32×32 de objetos que no son armas, p. ej. el Astrolabio del Ocaso)
 
 
 def _mix(color, other, t):
@@ -1241,7 +1242,7 @@ def main():
     preview = sys.argv[sys.argv.index('--preview') + 1] if '--preview' in sys.argv else None
     rendered = {}
     for name, (tpl, colors) in ITEMS.items():
-        art = weapon_art.override(name)
+        art = weapon_art.override(name) or hd_items.override(name)
         img = art or render(T[tpl], colors)
         if art is not None and art.size[0] > weapon_art.GUI_SIZE:
             art.save(f'{folder}/{name}_hd.png')  # textura del modelo 3D de la mano (V75: 64×64)

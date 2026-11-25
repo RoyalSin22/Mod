@@ -25,7 +25,7 @@ narrativa: `docs/lore/10_PLAN_DE_IMPLEMENTACION.md`; inventario visual: `docs/PR
 
 | # | Qué | Origen |
 |---|---|---|
-| A1 | ~~Astrolabio del Ocaso y Embrión del Umbral sin modelo ni textura~~ **Hecho (2026-11-25):** plantillas `astrolabe` y `embryo` en `tools/textures/gen_items.py`, PNG 16×16 y modelos `item/generated`. Son arte de plantilla provisional, igual que el resto de objetos (ver A3) | `item/ModItems.java:66,136`; `tools/textures/gen_items.py` |
+| A1 | ~~Astrolabio del Ocaso y Embrión del Umbral sin modelo ni textura~~ **Hecho (2026-11-25):** plantillas `astrolabe` y `embryo` en `tools/textures/gen_items.py`, PNG 16×16 y modelos `item/generated`. El Astrolabio tiene además versión de 32×32 (`tools/textures/hd_items.py`). Arte provisional, como el resto de objetos (ver A3) | `item/ModItems.java:66,136`; `tools/textures/gen_items.py` |
 | A2 | Modelos 3D: hacha de Bersérker y armas Maestro (M1), armas base (M2), Armadura Ascendida (M3), Hoguera (M4), bloques funcionales (M5), jefes y criaturas con GeckoLib (M6; «modelos definitivos K5») | `docs/PROMPTS_REDISENO.md`; `docs/V63_JEFES.md` |
 | A3 | Iconos de objetos que no son armas (≈70), texturas del aldeano del gremio y del mob de la Niebla, efectos de estado y partículas | `docs/PROMPTS_REDISENO.md` (A1–A3) |
 | A4 | Interfaz: limpieza del Grimorio (23 ilustraciones sin usar), HUD, pantallas sin kit (Reforja, frascos, contratos, grupo, configuración) | `docs/PROMPTS_REDISENO.md` (I1–I3) |
