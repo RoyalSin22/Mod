@@ -67,6 +67,7 @@ public class Aptitudes implements ModInitializer {
 		dev.aptitudes.mob.OsarioEntities.register();
 		dev.aptitudes.mob.NewMobs.register();
 		dev.aptitudes.boss.GuardTracker.register();
+		dev.aptitudes.combat.Parries.register(); // C7 (S3): parada y golpe de gracia
 		dev.aptitudes.ability.Taunts.register();
 		dev.aptitudes.boss.BossManager.register();
 		ModAttachments.init();

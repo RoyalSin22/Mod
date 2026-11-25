@@ -6,6 +6,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **Parada y golpe de gracia (C7, fase 1: S3).** Levantar el escudo justo antes de un golpe cuerpo a cuerpo de una
+  criatura (ventana de 4 ticks, la misma que contra los jefes; solo de frente y sin proyectiles) lo anula. Las
+  criaturas normales quedan aturdidas 1,5 s (con 3 s de inmunidad posterior) y los élites y campeones pierden postura.
+  El siguiente golpe cuerpo a cuerpo de quien paró, en 2 s, hace ×1,5 (dentro del tope global de daño). Los jefes
+  animados mantienen su parada propia. Reglas puras en `combat/ParryRules` (`ParryRulesTest`), estado en memoria en
+  `combat/Parries`, `ElitePosture.drain` reutilizable y cuatro opciones nuevas (`combatParryEnabled`,
+  `parryStunTicks`, `parryGraceMultiplier`, `parryGraceTicks`) con su descripción en los 11 idiomas. Valores sin
+  probar en partida.
 - **Astrolabio del Ocaso y espera común del Eclipse (C3).** El Astrolabio (clic derecho en la Hoguera) solo lo usan
   los operadores o el líder del grupo (decisión E1) y ya no se consume si se rechaza. Comparte con el Resonador del
   Umbral (Behelit) la espera de `eclipseSummonCooldownDays` (3 por defecto, 0 = sin espera) días de juego por mundo,

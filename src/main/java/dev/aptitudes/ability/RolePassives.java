@@ -276,6 +276,7 @@ public final class RolePassives {
 		if (synergyDamage > 1.0f) SynergyTracker.mark(player, 0);
 		multiplier *= synergyDamage;
 		multiplier *= Signatures.markMultiplier(target, player); // Asesino: Marca de muerte
+		if (direct) multiplier *= dev.aptitudes.combat.Parries.graceMultiplier(player, target); // C7 (S3): golpe de gracia
 		float result = PathEffects.outgoing(player, target, direct, amount * multiplier); // Sendas
 		// Tope del multiplicador combinado del mod (rol + set + mecánica + marca + críticos): evita remates
 		// de ×30 al apilar todas las fuentes. 0 = sin tope. Ver docs/BALANCE.md.

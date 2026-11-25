@@ -1,5 +1,23 @@
 # Pruebas de Aptitudes
 
+## C7 (S3) — Parada y golpe de gracia
+
+Automáticas: `combat/ParryRulesTest` (8 pruebas: ventana, criaturas normales, élites y jefes, proyectiles, espalda,
+desactivado, geometría del escudo, inmunidad y golpe de gracia) y `config/ParryConfigValidationTest` (3).
+
+En partida (pendiente):
+
+1. Zombi de frente: levanta el escudo justo cuando va a golpear. Suena el escudo agudo, chispas, sin daño y el zombi
+   queda casi quieto 1,5 s sin poder golpear. Si llevas el escudo alzado desde antes, vanilla lo bloquea sin aturdir.
+2. Golpea en menos de 2 s: chispas de crítico y ×1,5 de daño (compáralo con un golpe normal). Pasados 2 s, sin extra.
+3. Repite la parada dentro de los 3 s siguientes al aturdimiento: se anula el golpe pero no vuelve a aturdirse.
+4. De espaldas al zombi o contra una flecha de esqueleto: no hay parada.
+5. Élite o campeón: la parada le quita postura (25 de 60); tres paradas seguidas, o paradas y golpes, la rompen.
+6. Jefe animado (Coloso, Guardián, Autómata): la parada sigue funcionando como antes (B3), sin aturdimiento doble.
+7. Dos jugadores: solo quien paró recibe el golpe de gracia.
+8. `combatParryEnabled = false` en la pantalla de configuración: el escudo vuelve al comportamiento vanilla.
+
+
 ## V84 — Osario Quebrado, Fases 0–6
 
 Referencia en `20bc230`: `.\gradlew.bat build --offline --console=plain` terminó con **BUILD SUCCESSFUL**;

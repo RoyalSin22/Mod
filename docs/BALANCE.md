@@ -292,6 +292,22 @@ balance general sin validación). Para activarlo: `"attributeScaling": "SOFTCAP"
   (`pointsPerSkillLevel = 0`); solo si un servidor activa esa opción subirían en
   `maxSkillLevel × pointsPerSkillLevel`.
 
+## 4c. Parada y golpe de gracia (C7, S3)
+
+Valores propuestos por Claude y aprobados por el autor el 2026-11-25 **sin probar en partida**:
+
+| Valor | Por defecto | Dónde |
+|---|---|---|
+| Ventana de parada | 4 ticks (0,2 s) desde que el escudo cuenta como levantado | `GuardRules.PERFECT_WINDOW_TICKS` (compartida con los jefes) |
+| Aturdimiento (criatura normal) | 30 ticks (1,5 s), Lentitud V y sin golpes cuerpo a cuerpo | `parryStunTicks` |
+| Inmunidad tras aturdir | 3 s (no se encadena en grupo) | `ParryRules.STUN_IMMUNITY_TICKS` |
+| Postura (élite o campeón) | −25 de 60 | `GuardRules.PARRY_POSTURE_DAMAGE`, `ElitePosture.MAX` |
+| Golpe de gracia | ×1,5 durante 2 s, solo quien paró, se consume | `parryGraceMultiplier`, `parryGraceTicks` |
+
+El golpe de gracia multiplica dentro del tope global `maxDamageMultiplier` (×6). Riesgo conocido: alternar subir y
+bajar el escudo da varias ventanas, pero cada vez que se baja el jugador queda 5 ticks sin protección (vanilla tarda
+5 ticks en contar el escudo como levantado). Pendiente de validar en partida.
+
 ## 4b. Combos (v28)
 
 +3 % de daño por golpe de combo hasta +15 %, sumado al multiplicador del golpe directo y por tanto sujeto al

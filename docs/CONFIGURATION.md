@@ -428,6 +428,10 @@ desde que el evento **empieza** (provisional) y no las consumen los comandos `/a
 | `synergyBonusY3Damage` | 1.20 | [1.0, 2.0] | Y3: multiplicador de daño de fusión con runa del elemento activo. |
 | `synergyBonusY4Defense` | 1.10 | [1.0, 2.0] | Y4: sinergia armadura ↔ senda; el exceso sobre 1.0 se aplica como resistencia al empuje (1.10 = +0,10). |
 | `synergyY5KeystoneCooldownSeconds` | 20 | [1, 120] | Y5: espera entre disparos de piedra angular por remate de combo. |
+| `combatParryEnabled` | true | — | C7 (S3): parada con escudo contra criaturas. Un golpe cuerpo a cuerpo de frente con el escudo levantado hace como mucho 4 ticks (la ventana de los jefes) se anula: las criaturas normales quedan aturdidas y los élites y campeones pierden 25 de postura; después, golpe de gracia. Los jefes animados conservan su parada propia. |
+| `parryStunTicks` | 30 | [0, 200] | C7 (S3): ticks de aturdimiento de una criatura normal tras la parada (Lentitud V y sin poder golpear). Después, 3 s sin poder volver a aturdirse. 0 = sin aturdimiento. |
+| `parryGraceMultiplier` | 1.5 | [1.0, 3.0] | C7 (S3): multiplicador del golpe de gracia (el siguiente golpe cuerpo a cuerpo del mismo jugador contra esa criatura). Entra en el tope `maxDamageMultiplier`. |
+| `parryGraceTicks` | 40 | [0, 200] | C7 (S3): ticks para dar el golpe de gracia tras la parada. 0 = sin golpe de gracia. |
 | `cryptEnabled` | true | — | V69: los Templos del Custodio nuevos pueden generarse con la Cripta de la Niebla (si el terreno lo permite). No afecta a templos ya generados. |
 | `cryptIdleResetSeconds` | 30 | [5, 300] | V69: segundos sin jugadores vivos en la sala tras los que la oleada en curso se reinicia (la Llave del Velo no se vuelve a gastar). También rige la sala de pruebas del Piso 2 del templo hondo (V70). |
 | `cryptWaveSizePercent` | 100 | [25, 300] | V69: porcentaje del tamaño de las oleadas de la Cripta (base 5/7/9, +2 por jugador adicional, ×(1 + 0,25 × anillo)). También escala las dos oleadas de la sala de pruebas del templo hondo (V70). |

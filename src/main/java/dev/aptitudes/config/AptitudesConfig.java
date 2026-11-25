@@ -288,6 +288,16 @@ public class AptitudesConfig {
 	/** Y5 (Combos ↔ Keystones): espera entre disparos de keystone en remate (segundos). */
 	public int synergyY5KeystoneCooldownSeconds = 20;
 
+	// ---------- Combate avanzado (C7) ----------
+	/** S3: parada con escudo contra criaturas (ventana de 4 ticks, la de los jefes) y golpe de gracia. */
+	public boolean combatParryEnabled = true;
+	/** S3: ticks que una criatura normal queda aturdida tras pararla (30 = 1,5 s). 0 = sin aturdimiento. */
+	public int parryStunTicks = 30;
+	/** S3: multiplicador del golpe de gracia (siguiente golpe cuerpo a cuerpo tras la parada). */
+	public double parryGraceMultiplier = 1.5;
+	/** S3: ticks que dura la ocasión del golpe de gracia (40 = 2 s). 0 = sin golpe de gracia. */
+	public int parryGraceTicks = 40;
+
 	// ---------- Runas (v35: antes eran valores fijos) ----------
 	public int runeFlameSeconds = 3;
 	public double runeLeechAmount = 1.0;
@@ -697,6 +707,11 @@ public class AptitudesConfig {
 		c.synergyBonusY3Damage = Math.max(1.0f, Math.min(2.0f, c.synergyBonusY3Damage));
 		c.synergyBonusY4Defense = Math.max(1.0f, Math.min(2.0f, c.synergyBonusY4Defense));
 		c.synergyY5KeystoneCooldownSeconds = clamp(c.synergyY5KeystoneCooldownSeconds, 1, 120);
+		// C7 (S3): parada y golpe de gracia
+		c.parryStunTicks = clamp(c.parryStunTicks, 0, 200);
+		c.parryGraceTicks = clamp(c.parryGraceTicks, 0, 200);
+		c.parryGraceMultiplier = Double.isFinite(c.parryGraceMultiplier)
+				? Math.max(1.0, Math.min(3.0, c.parryGraceMultiplier)) : 1.5;
 		return c;
 	}
 

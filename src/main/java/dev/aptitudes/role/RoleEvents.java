@@ -60,6 +60,8 @@ public final class RoleEvents {
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> {
 			if (entity instanceof ServerPlayerEntity victim && source.getAttacker() != null
 					&& dev.aptitudes.party.PartyManager.blocksFriendlyDamage(source.getAttacker(), victim)) return false;
+			// C7 (S3): la parada con escudo va antes que el resto de defensas (esquivas, armaduras, mecánicas).
+			if (entity instanceof ServerPlayerEntity victim && !dev.aptitudes.combat.Parries.allowIncoming(victim, source)) return false;
 			if (entity instanceof ServerPlayerEntity victim && (!RolePassives.allowIncomingDamage(victim, source, amount)
 					|| !MorphManager.allowIncomingDamage(victim, source)
 					|| !UniqueEffects.allowIncomingDamage(victim, source, amount)

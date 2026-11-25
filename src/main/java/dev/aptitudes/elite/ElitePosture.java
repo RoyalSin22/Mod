@@ -46,21 +46,29 @@ public final class ElitePosture {
 			if (!(entity instanceof MobEntity mob) || !Elites.isElite(mob) || blocked || damageTaken <= 0) return;
 			if (!(source.getAttacker() instanceof PlayerEntity)) return;
 			if (!(mob.getWorld() instanceof ServerWorld world)) return;
-			Tracked previous = TRACKED.get(mob.getUuid());
-			PostureRules.Posture posture = previous == null ? PostureRules.Posture.fresh(MAX) : previous.posture();
-			boolean paused = previous != null && previous.aiPaused();
 			Set<AttackTags.Tag> tags = AttackTags.playerHit(((PlayerEntity) source.getAttacker()).getAttackCooldownProgress(0.5f), source.getSource() == source.getAttacker());
-			PostureRules.Result r = PostureRules.drain(posture, damageTaken, tags, world.getTime());
-			if (r.broke()) {
-				mob.setAiDisabled(true);
-				paused = true;
-				world.spawnParticles(ParticleTypes.CRIT, mob.getX(), mob.getBodyY(0.5), mob.getZ(), 12, 0.4, 0.4, 0.4, 0.1);
-				world.playSound(null, mob.getBlockPos(), SoundEvents.ENTITY_IRON_GOLEM_HURT, SoundCategory.HOSTILE, 1f, 0.8f);
-			}
-			TRACKED.put(mob.getUuid(), new Tracked(mob, r.state(), paused));
+			drain(mob, world, damageTaken, tags);
 		});
 		ServerTickEvents.END_SERVER_TICK.register(server -> tick());
 		ServerLifecycleEvents.SERVER_STOPPED.register(server -> TRACKED.clear());
+	}
+
+	/**
+	 * Quita postura a un élite o campeón y, si se vacía, lo aturde. Lo usan los golpes de jugador y, desde C7 (S3), la
+	 * parada con escudo ({@code combat/Parries}).
+	 */
+	public static void drain(MobEntity mob, ServerWorld world, double amount, Set<AttackTags.Tag> tags) {
+		Tracked previous = TRACKED.get(mob.getUuid());
+		PostureRules.Posture posture = previous == null ? PostureRules.Posture.fresh(MAX) : previous.posture();
+		boolean paused = previous != null && previous.aiPaused();
+		PostureRules.Result r = PostureRules.drain(posture, amount, tags, world.getTime());
+		if (r.broke()) {
+			mob.setAiDisabled(true);
+			paused = true;
+			world.spawnParticles(ParticleTypes.CRIT, mob.getX(), mob.getBodyY(0.5), mob.getZ(), 12, 0.4, 0.4, 0.4, 0.1);
+			world.playSound(null, mob.getBlockPos(), SoundEvents.ENTITY_IRON_GOLEM_HURT, SoundCategory.HOSTILE, 1f, 0.8f);
+		}
+		TRACKED.put(mob.getUuid(), new Tracked(mob, r.state(), paused));
 	}
 
 	/** Recupera postura, reanuda la IA al acabar el aturdimiento y olvida los mobs que ya no hacen falta. */

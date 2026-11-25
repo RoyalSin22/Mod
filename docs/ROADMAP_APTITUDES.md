@@ -5,6 +5,14 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+### C7 — Combate avanzado, fase 1: parada y golpe de gracia (S3) (Claude, sin validar en partida)
+
+- Parada con escudo contra criaturas normales (aturdimiento) y élites o campeones (postura), con golpe de gracia ×1,5.
+  Reutiliza `boss/GuardTracker` y `GuardRules` (ventana de 4 ticks); los jefes animados siguen con su parada de B3.
+- Código: `combat/ParryRules` (puro, `ParryRulesTest`), `combat/Parries`, gancho en `RoleEvents` (`ALLOW_DAMAGE`, antes que
+  las demás defensas) y en `RolePassives.modifyOutgoingDamage` (golpe de gracia dentro del tope).
+- Pendiente: prueba en partida (`docs/TESTING.md`), S5 (mensajes en el suelo) y S6 (ecos de muerte), cada una con su diseño.
+
 ### v84 — Osario Quebrado (por fases)
 
 - **Fases 0–2 aprobadas:** geometría de 169 cubos sobre los 30 huesos
