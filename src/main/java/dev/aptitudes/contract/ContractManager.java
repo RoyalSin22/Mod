@@ -55,11 +55,25 @@ public final class ContractManager {
 	public static void accept(ServerPlayerEntity p, int offerIndex) {
 		List<Offer> offers = offers(p);
 		if (offerIndex < 0 || offerIndex >= offers.size()) return;
-		if (data(p).accept(offerIndex, offers.get(offerIndex))) {
+		Offer offer = offers.get(offerIndex);
+		boolean fog = offer.kind() == Kind.SOUL_FOG;
+		if (fog && !canStartFog(p)) return; // aviso ya enviado: el contrato no se acepta si la Niebla no puede empezar
+		if (data(p).accept(offerIndex, offer)) {
+			if (fog) dev.aptitudes.event.WorldEventManager.startFogByContract(p.getServer());
 			p.sendMessage(Text.translatable("contract.aptitudes.accepted").formatted(Formatting.GREEN), true);
 		} else {
 			p.sendMessage(Text.translatable("contract.aptitudes.cannot_accept").formatted(Formatting.RED), true);
 		}
+	}
+
+	/** ¿Puede empezar ahora la Niebla? Si no, avisa al jugador con la razón (desactivada, en espera u otro evento). */
+	private static boolean canStartFog(ServerPlayerEntity p) {
+		var reply = dev.aptitudes.event.WorldEventManager.fogReply(p.getServer());
+		if (reply == dev.aptitudes.event.EventTriggerRules.Reply.START) return true;
+		String key = reply == null ? "contract.aptitudes.fog_disabled"
+				: "event.aptitudes.soul_fog.villager_" + reply.name().toLowerCase(java.util.Locale.ROOT);
+		p.sendMessage(Text.translatable(key).formatted(Formatting.GRAY, Formatting.ITALIC), true);
+		return false;
 	}
 
 	public static void abandon(ServerPlayerEntity p, int slot) {
@@ -163,6 +177,7 @@ public final class ContractManager {
 
 	public static void onEventSurvived(ServerPlayerEntity p, dev.aptitudes.event.WorldEventKind kind) {
 		advance(p, Kind.EVENT, kind.ordinal(), 1);
+		if (kind == dev.aptitudes.event.WorldEventKind.SOUL_FOG) advance(p, Kind.SOUL_FOG, -1, 1);
 		dev.aptitudes.event.Expeditions.onEventSurvived(p); // F5: el módulo de evento
 	}
 

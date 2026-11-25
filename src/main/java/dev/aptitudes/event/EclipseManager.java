@@ -232,7 +232,7 @@ public final class EclipseManager {
 		long eventTime = forced ? 0 : EclipseRules.timeInDay(world.getTimeOfDay());
 		syncAll(server, eventTime);
 		// V71: quienes están en el Overworld al empezar el Eclipse lo anotan en sus Crónicas.
-		for (ServerPlayerEntity p : world.getPlayers()) dev.aptitudes.guide.LoreManager.unlocksOnBeheritSacrifice(p);
+		for (ServerPlayerEntity p : world.getPlayers()) dev.aptitudes.guide.LoreManager.unlocksOnDamnorathSacrifice(p);
 	}
 
 	/** Termina el eclipse; si {@code completed}, premia a los supervivientes del Mundo Normal. */
@@ -606,8 +606,10 @@ public final class EclipseManager {
 		return true;
 	}
 
-	/** C3: ¿puede convocarse ahora el Eclipse? {@code astrolabe} pide permiso; el Behelit no. Todo se decide en el servidor. */
+	/** C3: ¿puede convocarse ahora el Eclipse? {@code astrolabe} pide permiso; el Damnorath no. Todo se decide en el servidor. */
 	public static EclipseSummoningRules.Verdict summonVerdict(ServerPlayerEntity player, boolean astrolabe) {
+		// Con el Eclipse desactivado en la configuración, uno recién empezado se cerraría al tick siguiente y se perdería el objeto.
+		if (!Aptitudes.config().eclipseEnabled) return EclipseSummoningRules.Verdict.DISABLED;
 		ServerWorld world = player.getServerWorld();
 		MinecraftServer server = world.getServer();
 		ServerWorld overworld = server.getOverworld();
@@ -615,7 +617,7 @@ public final class EclipseManager {
 		EclipseState state = EclipseState.get(overworld);
 		boolean busy = state.active || WorldEventManager.active(server);
 		int days = Aptitudes.config().eclipseSummonCooldownDays;
-		if (!astrolabe) return EclipseSummoningRules.behelit(inOverworld, busy, state.lastEndTick, overworld.getTime(), days);
+		if (!astrolabe) return EclipseSummoningRules.damnorath(inOverworld, busy, state.lastEndTick, overworld.getTime(), days);
 		return EclipseSummoningRules.astrolabe(player.hasPermissionLevel(2), dev.aptitudes.party.PartyManager.isLeader(player),
 				inOverworld, busy, state.lastEndTick, overworld.getTime(), days);
 	}
@@ -631,12 +633,13 @@ public final class EclipseManager {
 				yield Text.translatable("eclipse.aptitudes.summon.cooldown", EclipseSummoningRules.remainingDays(
 						EclipseState.get(overworld).lastEndTick, overworld.getTime(), Aptitudes.config().eclipseSummonCooldownDays));
 			}
+			case DISABLED -> Text.translatable("eclipse.aptitudes.summon.disabled");
 			case ALLOWED -> Text.empty();
 		};
 		player.sendMessage(text.copy().formatted(Formatting.RED), true);
 	}
 
-	/** C3: inicia el Eclipse convocado por un jugador (Astrolabio o Behelit). Hay que haber comprobado {@link #summonVerdict}. */
+	/** C3: inicia el Eclipse convocado por un jugador (Astrolabio o Damnorath). Hay que haber comprobado {@link #summonVerdict}. */
 	public static void startBySummon(ServerPlayerEntity summoner) {
 		ServerWorld overworld = summoner.getServer().getOverworld();
 		start(summoner.getServer(), overworld, EclipseState.get(overworld), true, EclipseRules.dayOf(overworld.getTimeOfDay()));

@@ -59,8 +59,9 @@ import java.util.UUID;
  * ({@link WorldEventRules#choose}, reproducible con la semilla del mundo). Este gestor decide qué evento toca,
  * da el aviso del día anterior y lleva los dos eventos nuevos; el Eclipse sigue en {@link EclipseManager}.
  *
- * <p>T1 de la cadena narrativa: el calendario solo programa el Eclipse. La Niebla de almas la inicia un jugador
- * hablando con el aldeano del gremio y la Lluvia de brasas, al encender un portal al Nether ({@link EventTriggerRules}).</p>
+ * <p>Histórico: este calendario desapareció (T1/T5, D-26) y {@code calendarWeights} ya no programa nada. La Niebla de
+ * almas la inicia un jugador hablando con el aldeano del gremio, la Lluvia de brasas al encender un portal al Nether
+ * ({@link EventTriggerRules}) y el Eclipse el sacrificio del Damnorath o el Astrolabio ({@link EclipseSummoningRules}).</p>
  */
 public final class WorldEventManager {
 	/** Etiqueta de las criaturas de la Niebla de almas y de la Lluvia de brasas. */
@@ -139,8 +140,7 @@ public final class WorldEventManager {
 				mob.dropStack(new ItemStack(ModItems.SOUL_SHARD, shards));
 			}
 		});
-		// T1: la Niebla la inicia el aldeano del gremio y la Lluvia de brasas, un portal encendido por un jugador.
-		UseEntityCallback.EVENT.register((player, world, hand, entity, hit) -> talkToGuildmaster(player, world, hand, entity));
+		// T1: la Niebla la inicia un contrato del tablón del gremio y la Lluvia de brasas, un portal encendido por un jugador.
 		UseBlockCallback.EVENT.register((player, world, hand, hit) -> watchPortalLighting(player, world, hand, hit));
 	}
 
@@ -197,11 +197,13 @@ public final class WorldEventManager {
 	}
 
 	/**
-	 * T1: el calendario solo programa el Eclipse (hasta que el Behelit lo sustituya). La Niebla y la Lluvia las activa el
-	 * jugador; sus pesos solo siguen valiendo para desactivarlas (0), ver {@link #weights}.
+	 * T5 (D-26): el calendario rotativo desapareció por completo. El Eclipse lo inicia el Damnorath, la Niebla el aldeano del
+	 * gremio y la Lluvia un portal; ningún evento se programa ya por fecha, sea cual sea la configuración antigua
+	 * ({@code eclipseIntervalDays}, {@code eclipseFirstDay}, {@code worldEventWeightEclipse}). Los pesos de Niebla y Lluvia
+	 * solo siguen valiendo como interruptor, ver {@link #weights}.
 	 */
 	private static int[] calendarWeights(AptitudesConfig cfg) {
-		return new int[] {cfg.eclipseEnabled ? cfg.worldEventWeightEclipse : 0, 0, 0};
+		return new int[] {0, 0, 0};
 	}
 
 	/** Duración de un evento nuevo: la de la Niebla es configurable; la de la Lluvia de brasas sigue siendo medio día. */
@@ -211,7 +213,8 @@ public final class WorldEventManager {
 
 	/** Evento que toca en el número de evento {@code index} (null si no hay ninguno activado). Fija la elección. */
 	static WorldEventKind kindFor(ServerWorld world, long index) {
-		if (index < 0) return null;
+		// D-26: sin calendario no hay evento programado, aunque el mundo guarde uno elegido antes de la v84.
+		if (index < 0 || java.util.Arrays.stream(calendarWeights(Aptitudes.config())).sum() <= 0) return null;
 		WorldEventState state = WorldEventState.get(world);
 		if (index == state.lastIndex) return WorldEventKind.byId(state.lastKind);
 		if (index == state.nextIndex) return WorldEventKind.byId(state.nextKind);
@@ -661,30 +664,23 @@ public final class WorldEventManager {
 	}
 
 	/**
-	 * Mayús + clic derecho sobre el aldeano del gremio: la Niebla de almas empieza para todo el mundo, o el aldeano
-	 * dice que está en espera. Sin Mayús se abre el comercio como siempre. Todo se decide en el servidor.
+	 * La Niebla de almas la inicia ahora el tablón de contratos del gremio (oferta «Convocar la Niebla»), no el aldeano. Este
+	 * método dice qué responde el tablón: empieza, está en espera por la espera de {@code fogCooldownDays} o hay otro evento
+	 * en curso. {@code null} si la Niebla está desactivada (peso 0).
 	 */
-	private static ActionResult talkToGuildmaster(PlayerEntity player, World world, Hand hand, Entity entity) {
-		if (world.isClient() || hand != Hand.MAIN_HAND || !player.isSneaking()) return ActionResult.PASS;
-		if (!(entity instanceof VillagerEntity villager) || !villager.isAlive()
-				|| villager.getVillagerData().getProfession() != dev.aptitudes.world.GuildVillagers.GUILDMASTER) return ActionResult.PASS;
-		if (world.getRegistryKey() != World.OVERWORLD || !(player instanceof ServerPlayerEntity speaker)) return ActionResult.PASS;
-		MinecraftServer server = speaker.getServer();
+	public static EventTriggerRules.Reply fogReply(MinecraftServer server) {
 		AptitudesConfig cfg = Aptitudes.config();
-		// Evento desactivado (peso 0): el aldeano solo comercia.
-		if (server == null || cfg.worldEventWeightSoulFog <= 0) return ActionResult.PASS;
+		if (server == null || server.getOverworld() == null || cfg.worldEventWeightSoulFog <= 0) return null;
 		ServerWorld overworld = server.getOverworld();
-		WorldEventState state = WorldEventState.get(overworld);
 		boolean busy = active(server) || EclipseState.get(overworld).active;
-		EventTriggerRules.Reply reply = EventTriggerRules.villagerReply(busy,
-				EventTriggerRules.ready(state.lastFogStart, overworld.getTime(), cfg.fogCooldownDays));
-		speaker.sendMessage(Text.translatable("event.aptitudes.soul_fog.villager_" + reply.name().toLowerCase(java.util.Locale.ROOT))
-				.formatted(Formatting.GRAY, Formatting.ITALIC), false);
-		world.playSound(null, villager.getX(), villager.getY(), villager.getZ(),
-				reply == EventTriggerRules.Reply.START ? SoundEvents.ENTITY_VILLAGER_YES : SoundEvents.ENTITY_VILLAGER_NO,
-				SoundCategory.NEUTRAL, 1.0f, 1.0f);
-		if (reply == EventTriggerRules.Reply.START) startByPlayer(server, overworld, WorldEventKind.SOUL_FOG);
-		return ActionResult.SUCCESS;
+		return EventTriggerRules.villagerReply(busy,
+				EventTriggerRules.ready(WorldEventState.get(overworld).lastFogStart, overworld.getTime(), cfg.fogCooldownDays));
+	}
+
+	/** Inicia la Niebla por un contrato aceptado. Vuelve a comprobar {@link #fogReply}; {@code true} solo si empezó. */
+	public static boolean startFogByContract(MinecraftServer server) {
+		if (fogReply(server) != EventTriggerRules.Reply.START) return false;
+		return startByPlayer(server, server.getOverworld(), WorldEventKind.SOUL_FOG);
 	}
 
 	/**

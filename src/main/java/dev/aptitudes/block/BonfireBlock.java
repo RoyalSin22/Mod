@@ -39,14 +39,14 @@ public class BonfireBlock extends Block {
 		return SHAPE;
 	}
 
-	/** Con una Ofrenda de renacimiento, un Embrión del Umbral o el Astrolabio del Ocaso en la mano se hace el ritual (lo gestiona el ítem), no el descanso. */
+	/** Con una Ofrenda de renacimiento, un Damnorath o el Astrolabio del Ocaso en la mano se hace el ritual (lo gestiona el ítem), no el descanso. */
 	@Override
 	protected net.minecraft.util.ItemActionResult onUseWithItem(net.minecraft.item.ItemStack stack, BlockState state,
 			World world, BlockPos pos, PlayerEntity player, net.minecraft.util.Hand hand, BlockHitResult hit) {
-		if (stack.isOf(ModItems.REBIRTH_OFFERING) || stack.isOf(ModItems.RESONADOR_DEL_UMBRAL)) {
+		if (stack.isOf(ModItems.REBIRTH_OFFERING) || stack.isOf(ModItems.DAMNORATH)) {
 			return net.minecraft.util.ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
 		}
-		// C3: Astrolabio del Ocaso. Operadores o líder del grupo; misma espera que el Behelit. Todo se decide en el servidor.
+		// C3: Astrolabio del Ocaso. Operadores o líder del grupo; misma espera que el Damnorath. Todo se decide en el servidor.
 		if (stack.isOf(ModItems.SUNSET_ASTROLABE)) {
 			if (!world.isClient() && player instanceof ServerPlayerEntity serverPlayer) {
 				EclipseSummoningRules.Verdict verdict = EclipseManager.summonVerdict(serverPlayer, true);

@@ -1,83 +1,147 @@
-# Pendientes consolidados
+# Pendientes consolidados de Aptitudes
 
-**Revisado el 2026-11-24** contra el código y `git log` (rama `claude/fervent-hamilton-vieoz9`, 165 commits). Es un índice:
-cada punto remite al documento o archivo donde se explica. Lo que no pude comprobar en el código lo marco **(sin
-verificar)**. Estado de las tareas de Claude: `docs/PLAN_CLAUDE.md`; sinergias: `docs/C5_PENDIENTES.md`; cadena
-narrativa: `docs/lore/10_PLAN_DE_IMPLEMENTACION.md`; inventario visual: `docs/PROMPTS_REDISENO.md`.
+**Revisado el 2026-11-24** (rama `claude/practical-feynman-id8op1`, 165 commits). Reúne en un solo lugar lo que sigue abierto y dice
+de qué archivo sale cada punto. Se elaboró leyendo el código y `git log`, no solo la documentación: donde un documento
+decía una cosa y el código otra, se anota. **No es un plan aprobado:** ordenar o descartar puntos es decisión del autor.
 
-## 1. Funciones sin hacer o a medias
+Convenciones: **Hecho** = existe y compila; **Parcial** = existe con carencias descritas; **Sin hacer** = no hay código.
+«Sin validar» = el autor aún no lo ha probado en partida. Las exclusiones de `AGENTS.md` §3 (linajes, razas, pactos)
+no se proponen en ningún punto.
 
-| # | Qué | Estado | Origen |
-|---|---|---|---|
-| F1 | **E10 / T5: retirar el calendario rotativo.** El Eclipse sigue programándose por calendario (`WorldEventManager.calendarWeights`, `kindForDay`). `eclipseFirstDay`, `eclipseIntervalDays` y `worldEventWeight*` siguen en la configuración como obsoletos, sin migración | Sin hacer | `docs/lore/09_CADENA_DE_PROGRESION.md` (A-6, E10); `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` (T5); `config/AptitudesConfig.java:161,200`; `config/ConfigMigration` |
-| F2 | **T6: migración de los 3 sellos de invocación.** Sus `register(...)` están comentados en `ModItems` (183–185), sin alias ni conversión; los objetos de mundos viejos se perderían. `boss/SummonSealItem.java` sigue ahí | Parcial; política sin decidir | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` (T6, §4.7); `item/ModItems.java:183` |
-| F3 | **C2 Rendimiento:** caché por jugador de `PathEffects.all` y `Keystones.active`, mapa id → piedra angular, medir con spark | Sin hacer | `docs/PLAN_CLAUDE.md` (C2); `ability/PathEffects.java:29`, `ability/Keystones.java:103` |
-| F4 | **C7 Combate avanzado:** S3 parada y golpe de gracia, S5 mensajes en el suelo, S6 ecos de muerte (S4 estamina y rodar: aplazado por el autor) | Sin empezar | `docs/PLAN_CLAUDE.md` (C7) |
-| F5 | **C1 Revisión de código de v42–v58:** no hay informe en el repositorio | Sin informe | `docs/PLAN_CLAUDE.md` (C1); solo existe `docs/REVISION_MIXINS.md` |
-| F6 | Aviso de 60 s con campana antes del Eclipse convocado (el diseño del Astrolabio lo pedía; hoy empieza al instante) | Sin hacer | `docs/IDEAS_v47_v55.md` §2b |
-| F7 | `TempleRecurrenceRules` (regeneración de templos) no está conectada al juego | Sin hacer | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` (T3, D-33); `temple/TempleRecurrenceRules.java` |
-| F8 | Gran Osario: el cliente debe conectar capas, visibilidad de núcleos y brazos, postura y clips exclusivos al estado de juego | Parcial | `docs/V85_GRAN_OSARIO_MEDIDAS.md`; `client/render/BossRenderers` |
-| F9 | Logro «Resonancia perfecta», estadística de bonificadores, sinergias en el tutorial, partículas al activarse una sinergia | Opcional | `docs/C5_PENDIENTES.md` |
-| F10 | Armadura Ascendida: revisión de cifras y, si se quiere, modelo 3D propio | Opcional | `docs/V80_ARMADURA_ASCENDIDA.md` (Pendiente) |
-| F11 | Texturas de Codex de los jefes (`codex/texturas-jefes`, no está en el remoto) y revisar el CI de GitHub en `main` | Sin verificar | `docs/ROADMAP_APTITUDES.md:86` |
+---
 
-## 2. Arte
+## 1. Funciones sin hacer
 
-| # | Qué | Origen |
+| Punto | Detalle | Origen |
 |---|---|---|
-| A1 | ~~Astrolabio del Ocaso y Embrión del Umbral sin modelo ni textura~~ **Hecho (2026-11-25):** plantillas `astrolabe` y `embryo` en `tools/textures/gen_items.py`, PNG 16×16 y modelos `item/generated`. El Astrolabio tiene además versión de 32×32 (`tools/textures/hd_items.py`). Arte provisional, como el resto de objetos (ver A3) | `item/ModItems.java:66,136`; `tools/textures/gen_items.py` |
-| A2 | Modelos 3D: hacha de Bersérker y armas Maestro (M1), armas base (M2), Armadura Ascendida (M3), Hoguera (M4), bloques funcionales (M5), jefes y criaturas con GeckoLib (M6; «modelos definitivos K5») | `docs/PROMPTS_REDISENO.md`; `docs/V63_JEFES.md` |
-| A3 | Iconos de objetos que no son armas (≈70), texturas del aldeano del gremio y del mob de la Niebla, efectos de estado y partículas | `docs/PROMPTS_REDISENO.md` (A1–A3) |
-| A4 | Interfaz: limpieza del Grimorio (23 ilustraciones sin usar), HUD, pantallas sin kit (Reforja, frascos, contratos, grupo, configuración) | `docs/PROMPTS_REDISENO.md` (I1–I3) |
-| A5 | Iconos de las habilidades nuevas F2–F7 (provisionales) | `docs/PROMPT_ARTE_ICONOS_BERSERKER.md`, `…_F3` a `…_F7`; `docs/PROMPTS_REDISENO.md` (I4) |
-| A6 | Arte propio de la pestaña «Crónicas» y arte del bestiario (`docs/PROMPT_ARTE_BESTIARIO.md` era una propuesta, no existe) | `docs/ROADMAP_APTITUDES.md:68`; `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` §5 |
-| A7 | Sonidos propios generados por síntesis (sustituibles por grabaciones) y procedencia/créditos del arte de IA | `docs/PROMPTS_REDISENO.md` (Q4, Q5); `docs/ROADMAP_APTITUDES.md:495`; `CREDITS.md` |
+| ~~C7 · S3 Parada y golpe de gracia~~ | **Hecha** (`ability/Parry`, `logic/ParryRules`); falta probarla en partida y confirmar el balance (activada por defecto) | `docs/IDEAS_v47_v55.md` (S3) |
+| ~~C7 · S5 Mensajes en el suelo~~ | **Hecha** (`message/GroundMessages`); falta probarla en partida | `docs/IDEAS_v47_v55.md` (S5) |
+| ~~C7 · S6 Ecos de muerte~~ | **Hecha en versión reducida** (cabeza con la skin, `echo/DeathEchoes`), **desactivada por defecto**; falta probarla. Una silueta de cuerpo entero exigiría un renderizador de cliente | `docs/IDEAS_v47_v55.md` (S6) |
+| C7 · S4 Estamina y rodar | **Aplazado por decisión del autor** (2026-11-08) | `docs/PLAN_CLAUDE.md` |
+| ~~C2 · Rendimiento R1–R3~~ | **Hecho** (`role/VersionedCache`, `RoleData.version()`); queda R4 | `docs/IDEAS_v47_v55.md` (R1–R3) |
+| R4 · Medir con spark | Servidor con 5–10 jugadores y eventos activos | `docs/IDEAS_v47_v55.md` (R4) |
+| ~~C1 · Revisión de código v42–v58~~ | **Hecha como auditoría transversal** (`docs/C1_REVISION.md`); allí se lista lo que no se revisó | `docs/PLAN_CLAUDE.md` |
+| ~~T5 · Espera de 3 días del Damnorath~~ | **Hecha** como espera compartida con el Astrolabio: `event/EclipseSummoningRules`, `EclipseState.lastEndTick`, opción `eclipseSummonCooldownDays` (3). Se fusionó con la implementación paralela del otro chat y se retiró mi `BeheritRules`; sin validar en partida | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md`, D-20/D-25 |
+| ~~T5 · Migración de configuración del calendario~~ | **Hecha** (revisión 84 de `ConfigMigration`; calendario apagado en `WorldEventManager`); los campos antiguos quedan solo por compatibilidad | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` (T5), `config/ConfigMigration` |
+| T6 · Migración de los 3 sellos | Retirados sin alias ni conversión (`fe4f766`); D-25/D-26 pedían migración | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` (T6) |
+| Regeneración de templos | `temple/TempleRecurrenceRules` no está conectada al juego; se compensó subiendo la frecuencia a 1/120 chunks (D-35). Se reabre si los Damnorath no bastan | `docs/lore/DECISIONES_PENDIENTES.md` (D-33, D-35) |
+| «Las Tres Torres Señoriales»: dungeon con Coloso (final) y Guardián (subjefe), una vez por estructura | Decidido (D-37, D-38); diseño en `docs/V86_DUNGEON_COLOSO.md`, encargo en `docs/PROMPT_DUNGEON_TRES_TORRES.md`; **fases 1, 2 y 3 hechas** (layout, generación y jefes; sin probar en partida); faltan la fase 5 (limpieza de sellos) y los textos de Codex | `docs/lore/DECISIONES_PENDIENTES.md` (D-37) |
+| Mazmorra de las Cuatro Llaves «como tal» | Solo existen las cuatro cámaras y la Cripta de la Niebla | `docs/ROADMAP_APTITUDES.md` (v65, V69) |
+| Cripta en templos antiguos | Solo los templos generados tras V69 la tienen | `docs/ROADMAP_APTITUDES.md` (V69), `docs/V69_CRIPTA_DE_LA_NIEBLA.md` |
+| Logro «Resonancia perfecta» y estadística de bonificadores | Opcional de C5 | `docs/C5_PENDIENTES.md` |
+| Tutorial: explicar las sinergias | Opcional de C5 | `docs/C5_PENDIENTES.md` |
+| Y4 con más bonificadores (daño, velocidad) | Hoy solo defensa; decisión de balance | `docs/C5_PENDIENTES.md` |
+| Entrada de bestiario del Custodio | D-10 sigue abierta | `docs/lore/DECISIONES_PENDIENTES.md` (D-10) |
+| Pesca: hito que acorte la picada | Descartado en v15: exigiría un mixin | `docs/ROADMAP_APTITUDES.md` (Propuestas) |
 
-## 3. Validación en partida (nada de esto se ha probado en el juego)
+## 2. Implementado con carencias (hallazgos de esta revisión)
 
-| # | Qué | Origen |
+| Punto | Carencia | Origen |
 |---|---|---|
-| V1 | Ronda general: templo hondo, cripta, Crónicas, Osario, F2–F7, armadura, armas | `docs/PROMPTS_REDISENO.md` (Q1) |
-| V2 | Cadena narrativa T1–T4: Niebla por aldeano, Lluvia por portal, materiales, templo, llaves y cámaras | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md`; `docs/TESTING.md` |
-| V3 | **C3 (este cambio):** Astrolabio como operador, como líder del grupo y como jugador normal; rechazo sin consumir; espera de 3 días tras terminar un Eclipse (y tras `/aptitudes eclipse stop`); Behelit con la misma espera; Nether/End rechazados; logro | `docs/CONFIGURATION.md` (`eclipseSummonCooldownDays`); `event/EclipseSummoningRules` |
-| V4 | Sinergias Y1–Y5 (porcentajes observables) | `docs/V65_C5_TESTING_PLAN.md` |
-| V5 | Asalto y persecución del Eclipse; Eclipse con pruebas visuales | `docs/V47_ECLIPSE.md`; `README.md` («Limitaciones conocidas») |
-| V6 | Jefes: trance, pedidos, expediciones, arena y fase 3; Guardián y Autómata (fases 3); Osario V84 a 20 TPS, rendimiento P1/P3 y navegación con desniveles | `docs/ROADMAP_APTITUDES.md:86,94`; `docs/V84_OSARIO_FASE6.md:97,229` |
-| V7 | Remates 3D y multijugador; compatibilidad con Sodium/Indium; configuración, tutorial y reforja en partida | `docs/ROADMAP_APTITUDES.md:123,175,516,541` |
-| V8 | Equilibrio con datos reales (Q2) | `docs/PROMPTS_REDISENO.md` (Q2); `docs/BALANCE.md` |
+| Astrolabio del Ocaso (C3) | **Resuelto en `main` (otro chat):** permiso de operador **o líder del grupo**, mensajes como claves en 11 idiomas, logro `eclipse_caller` concedido al convocar, espera y evento único compartidos con el Damnorath. **Sigue abierto:** sin textura ni modelo (A1, §3) y sin aviso de 60 s antes del Eclipse (F6) | `event/EclipseSummoningRules`, `item/SunsetAstralabeItem`, `block/BonfireBlock` |
+| ~~Damnorath con Eclipse activo~~ | **Resuelto**: no se consume y avisa en la barra de acción; con el Eclipse desactivado en la configuración también se rechaza (`Verdict.DISABLED`) | `item/BeheritItem`, `event/EclipseManager.summonVerdict` |
+| ~~Pesos de eventos a 0~~ | **Corregido**: dejaba la Niebla y la Lluvia inutilizables en configuraciones nuevas; el defecto vuelve a 1 con migración | `config/AptitudesConfig:202-204` |
+| ~~Restos de los sellos retirados~~ | **Limpiados (V86 fase 5):** clases, prueba, gancho, generador y comentario falso de `ModItems`. Quedan solo menciones históricas (marcadas) en `docs/PLAN_AVANCE.md`, `docs/lore/` y la entrada «v65 — Ruinas de batalla» del CHANGELOG | `fe4f766`, `item/ModItems`, `AGENTS.md` §2 |
 
-## 4. Traducciones
+## 3. Arte
 
-| # | Qué | Origen |
+| Punto | Estado | Origen |
 |---|---|---|
-| L1 | Revisión nativa de pt_br, fr_fr y de_de (cobertura completa de las claves, pero sin revisar por hablantes; incluye los textos de C3 y las 192 descripciones de configuración) | `README.md` (tabla «Limitaciones conocidas»); `docs/ROADMAP_APTITUDES.md:50,135,237` |
-| L2 | Revisión visual de las traducciones en el juego (textos largos en botones y tooltips) | `docs/ROADMAP_APTITUDES.md:237` |
-| L3 | Las seis variantes `es_*` copian es_es (decisión de diseño, no un fallo) | `AGENTS.md` §5 |
+| Iconos de las 200 habilidades nuevas F2–F7 (10 por rol) | Encargos redactados, arte sin entregar | `docs/PROMPT_ARTE_ICONOS_BERSERKER.md`, `_F3` … `_F7`; `docs/ROADMAP_APTITUDES.md` (v67) |
+| Arte del Grimorio restante | «Siguiente: el arte de los iconos y del grimorio» | `docs/ROADMAP_APTITUDES.md` (v67), `docs/PROMPT_ARTE_GRIMORIO.md` |
+| Arte propio de la pestaña «Crónicas» | Pendiente | `docs/ROADMAP_APTITUDES.md` (V71) |
+| ~~Textura y modelo del Astrolabio del Ocaso y del Damnorath~~ | **Hechos** (arte de plantilla provisional): Damnorath en 16×16 (embrión en un frasco) y Astrolabio también en 32×32 (`tools/textures/hd_items.py`); plantillas en `tools/textures/gen_items.py` | `docs/PROMPTS_REDISENO.md` |
+| Fichas de categoría, pantalla K, roles | Encargos hechos y arte integrado en v66/v67; no consta pendiente | `docs/PROMPT_ARTE_FICHAS_CATEGORIA.md`, `PROMPT_ARTE_PANTALLA_K.md` |
+| Sonidos propios por grabaciones reales | Opcional; mismos nombres de archivo | `docs/ROADMAP_APTITUDES.md` (v37) |
+| Texto desfasado: «80 piezas de armadura» | Las 20 armaduras de rol se borraron en V80 (Armadura Ascendida); corregir ese pendiente | `docs/ROADMAP_APTITUDES.md` (v23, línea ~423) |
 
-## 5. Decisiones abiertas
+## 4. Validación en partida (todo lo siguiente: sin validar)
 
-| # | Pregunta | Origen |
+Los guiones están en `docs/TESTING.md`. El autor confirmó en partida v15–v19 y v29–v41 (2026-11-03), T4–T6 de
+`PLAN_CODEX` (2026-11-06; **otra numeración que las tandas T1–T7 de la cadena narrativa**), el Errante Velado y su aparición
+en la Niebla, y la Fase 6 del Osario Quebrado (V84).
+
+| Bloque | Origen |
+|---|---|
+| Cadena narrativa T1–T7 (aldeano, portal, materiales, Templo del Custodio, llaves y cámaras, Damnorath, Crónicas) | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md`, `docs/TESTING.md` |
+| V69 Cripta, V70 Templo hondo (también balance), V71 Crónicas, V72 | `docs/ROADMAP_APTITUDES.md` (v65) |
+| V68 Gran Osario y su trofeo; equilibrio estimado a partir del Coloso y el Autómata | `docs/V68_JEFE_OSARIO.md` (línea 137), `docs/TESTING.md` |
+| C5 sinergias Y1–Y5 | `docs/V65_C5_TESTING_PLAN.md` |
+| v67 F1 árbol unificado y F2–F7 (habilidades nuevas), grimorio G1–G5, tooltips de configuración | `docs/ROADMAP_APTITUDES.md` (v67) |
+| v65: trance, pedidos, expediciones, arena y fase 3 de Guardián y Autómata; Coloso | `docs/ROADMAP_APTITUDES.md` (v65) |
+| V64 templos (placas II–V, guardián evocador), V62 con Sodium/Indium | `docs/ROADMAP_APTITUDES.md` (v64, v62) |
+| V47 Asalto del Eclipse y V52 Persecución | `docs/TESTING.md` (~927), `docs/V47_ECLIPSE.md` |
+| V54 animaciones (prueba multijugador), V50, V49, V44 tutorial (muerte, reinicio, inventario lleno), V48 Reforja | `docs/ROADMAP_APTITUDES.md` |
+| V77 efectos de batalla y V78 animaciones del cuerpo; V80 Armadura Ascendida; V83 Amenaza más dura | `docs/V77_EFECTOS_BATALLA.md`, `docs/V80_ARMADURA_ASCENDIDA.md`; **no consta confirmación del autor** |
+| Escorificador de Hierro | `docs/TESTING.md` (~495) |
+
+## 5. Traducciones
+
+| Punto | Estado | Origen |
 |---|---|---|
-| D1 | A-8: los 10 días de la Niebla, ¿desde que se inicia o desde que termina? (hoy, desde que se inicia, provisional) | `docs/lore/09_CADENA_DE_PROGRESION.md` |
-| D2 | Tabla §4 de T0 (nombre y receta del objeto de acceso, contenido de las cámaras, templos viejos, nombre del Behelit…): se implementó con valores elegidos por el redactor, sin confirmación expresa | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` §4 |
-| D3 | Política de migración de los sellos (alias, conversión o ítem inerte) | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` §4.7 |
-| D4 | **Jugador solo y sin permisos:** no puede usar el Astrolabio (no es operador ni líder de un grupo). ¿Se permite al jugador único, o se obliga a crear grupo? | `docs/PLAN_CLAUDE.md` (E1); `event/EclipseSummoningRules` |
-| D5 | **Obtención del Astrolabio:** el diseño decía botín raro o trueque (`docs/IDEAS_v47_v55.md` §2b, E4), pero la receta actual lo fabrica en la Mesa del gremio con un Fragmento de Eclipse, bloques de hierro y de cobre (`recipe/sunset_astrolabe.json`). ¿Se mantiene? | `recipe/sunset_astrolabe.json` |
-| D6 | ¿Debe el Behelit pedir permiso en multijugador, como el Astrolabio? Hoy no (cualquiera lo usa) | `docs/lore/09_CADENA_DE_PROGRESION.md` (riesgos de diseño) |
-| D7 | C1: ¿se da por hecha la revisión o se rehace? C7: ¿se retoma? Ojo con el nombre «C7», usado también en el commit `b0b1003` (Cripta, V69) | `docs/PLAN_CLAUDE.md` |
-| D8 | Balance de multiplicadores de sinergias (1,15 → ¿1,10?) | `docs/C5_PENDIENTES.md` |
-| D9 | `AGENTS.md` §7 dice que activar `attributeScaling = SOFTCAP` es una decisión pendiente, pero el código ya lo trae por defecto (`config/AptitudesConfig.java:326`, commit `8e2ab95`). Actualizar `AGENTS.md` | `AGENTS.md` §7 |
+| pt_br / fr_fr / de_de | Cubren las 3512 claves por generadores; **revisión visual y con hablantes nativos pendiente**; no se presentan como revisadas | `README.md` (Limitaciones), `docs/ROADMAP_APTITUDES.md` (v45, v61, v67), `docs/TESTING.md` (~1018, ~1077) |
+| Variantes `es_*` | Copias idénticas de `es_es`; sin adaptación regional | `AGENTS.md` §5, `README.md` |
+| Textos fijos fuera de los JSON | `EclipseSummoningRules` (inglés) | ver §2 |
+| Tooltips de configuración (192 opciones) en pt/fr/de | Revisión nativa pendiente | `tools/lang/config_catalog.py` |
+| Traducciones nativas | **Aplazadas por decisión del autor** (no hay hablantes) | `docs/PLAN_AVANCE.md` |
 
-## 6. Limitaciones conocidas (del `README.md`)
+## 6. Decisiones abiertas (las toma el autor)
+
+| Decisión | Contexto | Origen |
+|---|---|---|
+| ¿Se acepta la retirada de los sellos sin migración? | D-25/D-26 pedían migración; `PLAN_AVANCE` §1 dice que no hay mundos que preservar | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` |
+| ~~¿Espera de 3 días del Damnorath y qué hace con un Eclipse activo?~~ | **Resuelto** (ver §1 y §2) | — |
+| ¿Se vuelven a subir los pesos de eventos o se migra la configuración? | Valor por defecto cambiado a 0 en `240484f` | `config/AptitudesConfig` |
+| **Jugador solo y sin permisos:** no puede usar el Astrolabio (ni operador ni líder de un grupo). ¿Se permite al jugador único, o se obliga a crear grupo? ¿Debe el Damnorath pedir permiso en multijugador, como el Astrolabio? Hoy no | `docs/PLAN_CLAUDE.md` (E1), `event/EclipseSummoningRules` |
+| C1 y C7: ¿se hacen, se reprograman o se descartan? | C7 reutiliza el número «v67», ya ocupado por el árbol unificado | `docs/PLAN_CLAUDE.md` |
+| `attributeScaling = SOFTCAP` por defecto | Decisión del autor tras probar | `AGENTS.md` §7 |
+| Balance de los multiplicadores de C5 (1,20 / 1,15 / 0,90 / 1,15 / 1,20 / 1,10) | Tras validar en partida | `docs/C5_PENDIENTES.md` |
+| D-07 papel del Coloso · D-08 Sellos y llaves · D-09 Eclipses posteriores · D-11 nombre del Damnorath | Abiertas en el lore | `docs/lore/DECISIONES_PENDIENTES.md` |
+| D-13, D-15, D-16 quién recibe los desbloqueos de lore; dónde viven las crónicas; definiciones de «primer encuentro» | Abiertas | `docs/lore/DECISIONES_PENDIENTES.md` |
+| D-23 (10 días de la Niebla ¿desde el inicio o el fin?) y D-30 | Provisionales | `docs/lore/DECISIONES_PENDIENTES.md` |
+| D-24, D-27, D-29 | Figuran como abiertas pero parecen cerradas por trabajo posterior (referencia del bestiario, T0/T1 autorizadas); confirmar y cerrar | `docs/lore/DECISIONES_PENDIENTES.md` |
+
+## 7. Limitaciones conocidas
 
 | Limitación | Origen |
 |---|---|
-| El mod se necesita en cliente y servidor | `README.md` («Limitaciones conocidas») |
-| Mobs con IA Brain (piglins, hoglins, warden): el filtro de objetivos actúa cada 5 ticks | `README.md`; `ability/AbilityState.shouldBlockTarget` |
-| Rangos con evolución y potenciación: activas combinadas limitadas a rango 6; reducción combinada de esperas limitada al 60 % | `README.md` |
+| El mod se necesita en cliente y servidor | `README.md` |
+| El filtro para mobs con IA Brain actúa cada 5 ticks (el warden puede llegar a golpear) | `README.md`, `AGENTS.md` §7 |
+| Rangos de evolución y potenciación: activas combinadas limitadas a rango 6 y reducción de esperas al 60 % | `README.md` |
 | Fuego del Averno y explosiones del Creeper modifican bloques (`uniqueGriefing`) | `README.md` |
-| Quietud Eterna usa `NoAI` (puede afectar a otros mods) | `README.md` |
-| La Amenaza se fija al aparecer la criatura (no se recalcula) | `README.md`; `logic/ThreatRules` |
-| El destilado mejorado depende de un Herbolista elegible cerca | `README.md`; `alchemy/` |
-| Criaturas del Eclipse: ven a 48 bloques y siguen el último punto visto un máximo de 6 s | `README.md`; `event/EclipsePursuit` |
-| Una convocatoria con el Astrolabio o el Behelit solo funciona en el Mundo Normal; el calendario rotativo sigue activo hasta F1 | `event/EclipseSummoningRules`; F1 |
+| Quietud Eterna usa `NoAI` | `README.md` |
+| La Amenaza se fija al aparecer la criatura; no se recalcula | `README.md` |
+| El destilado mejorado exige un Herbolista elegible cerca | `README.md` |
+| La transformación solo la ven los clientes que tienen el mod (el `README.md` aún dice que la caja de colisión es la del jugador, lo que contradice v26: revisar) | `README.md` (línea ~466), `docs/ROADMAP_APTITUDES.md` (v26) |
+| Solo los templos nuevos tienen cripta; los antiguos (`layout = 0`) siguen con la lógica vieja | `docs/V69_CRIPTA_DE_LA_NIEBLA.md` |
+
+## 8. Documentación desfasada o contradictoria detectada
+
+| Dónde | Problema |
+|---|---|
+| `docs/CONTEXTO_CODEX.md` §4 frente a `AGENTS.md` §4 | CONTEXTO exige autorización por cada commit; AGENTS permite commit y push a la rama de trabajo sin pedirla. Manda `AGENTS.md`, pero el otro no está actualizado |
+| `docs/CONTEXTO_CODEX.md` §6, §8 | Describe 8 activas por rol con 3 bits (`LoadoutCodec` va a 4 bits, hasta 16), «armaduras de rol» (sustituidas en V80) y una lista de pruebas muy anterior a las 133 clases actuales |
+| `AGENTS.md` §4 | Nombra la rama `claude/v63d-correcciones`; la rama de esta sesión es otra. Conviene actualizarlo cuando el autor decida |
+| `AGENTS.md` §7 | «Siguiente: v42–v45» y «T4–T6 ✔» usan una numeración distinta de las tandas T1–T7 de la cadena narrativa; fácil de confundir |
+| `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` | Cabecera y tabla actualizadas en esta revisión; §7 («qué se necesita para empezar») y la mención a la rama `claude/aptitudes-lore-audit-htenjq` son históricas |
+| `docs/C5_PENDIENTES.md` | Reescrito en esta revisión; la versión anterior describía C5 como no funcional |
+
+## 9. Aportado por la revisión paralela de C3 (rama `claude/fervent-hamilton-vieoz9`)
+
+El otro chat hizo su propio `docs/PENDIENTES.md` el mismo día; este archivo se fusionó con él. Lo suyo que no estaba arriba, **comprobado contra el código fusionado
+salvo lo marcado «(sin verificar)»**:
+
+| # | Qué | Origen |
+|---|---|---|
+| F6 | Aviso de 60 s con campana antes del Eclipse convocado: el diseño del Astrolabio lo pedía y hoy empieza al instante | `docs/IDEAS_v47_v55.md` §2b |
+| F8 | Gran Osario: el cliente debe conectar capas, visibilidad de núcleos y brazos, postura y clips exclusivos al estado de juego | `docs/V85_GRAN_OSARIO_MEDIDAS.md`, `client/render/BossRenderers` |
+| F10 | Armadura Ascendida: revisión de cifras y, si se quiere, modelo 3D propio (opcional) | `docs/V80_ARMADURA_ASCENDIDA.md` |
+| F11 | Texturas de Codex de los jefes (`codex/texturas-jefes`, no está en el remoto) y revisar el CI de GitHub en `main` (sin verificar) | `docs/ROADMAP_APTITUDES.md` |
+| A2–A7 | Arte pendiente: modelos 3D (hacha de Bersérker, armas Maestro y base, Hoguera, bloques funcionales, jefes con GeckoLib), ≈70 iconos de objetos que no son armas, texturas del aldeano del gremio y del mob de la Niebla, efectos de estado y partículas, limpieza del Grimorio (23 ilustraciones sin usar), pantallas sin kit (Reforja, frascos, contratos, grupo, configuración), iconos F2–F7, arte de las Crónicas y del bestiario, y procedencia/créditos del arte de IA | `docs/PROMPTS_REDISENO.md` (A1–A3, I1–I4, M1–M6, Q4–Q5), `CREDITS.md` |
+| V3 | **Validar C3:** Astrolabio como operador, como líder del grupo y como jugador normal; rechazo sin consumir; espera de 3 días tras terminar un Eclipse (y tras `/aptitudes eclipse stop`); Damnorath con la misma espera | `docs/TESTING.md` |
+| V5–V8 | Asalto y persecución del Eclipse con pruebas visuales; jefes (trance, pedidos, expediciones, arena y fase 3, Guardián y Autómata, Osario V84 a 20 TPS); remates 3D y multijugador; compatibilidad con Sodium/Indium; configuración, tutorial y reforja; equilibrio con datos reales (Q2) | `docs/V47_ECLIPSE.md`, `docs/ROADMAP_APTITUDES.md`, `docs/PROMPTS_REDISENO.md` (Q2) |
+| D2 | La tabla §4 de T0 (nombre y receta del objeto de acceso, contenido de las cámaras, templos viejos, nombre del Damnorath…) se implementó con valores elegidos por el redactor, sin confirmación expresa | `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` |
+| D5 | **Obtención del Astrolabio:** el diseño decía botín raro o trueque (E4); la receta actual lo fabrica en la Mesa del gremio con un Fragmento de Eclipse y bloques de hierro y de cobre | `docs/IDEAS_v47_v55.md` §2b |
+| D9 | `AGENTS.md` §7 dice que activar `attributeScaling = SOFTCAP` es una decisión pendiente, pero el código ya lo trae por defecto (`config/AptitudesConfig`, commit `8e2ab95`) (sin verificar el valor actual): **actualizar `AGENTS.md`** | `AGENTS.md` §7 |
+| Límites | Criaturas del Eclipse: ven a 48 bloques y siguen el último punto visto un máximo de 6 s; una convocatoria con el Astrolabio o el Damnorath solo funciona en el Mundo Normal | `README.md`, `event/EclipsePursuit` |
+

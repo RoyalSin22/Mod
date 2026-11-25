@@ -85,6 +85,8 @@ public final class Keystones {
 	}
 
 	private static void forget(UUID id) {
+		ACTIVE.forget(id);
+		PathEffects.forget(id);
 		OVERLOAD.remove(id);
 		BULWARK_READY.remove(id);
 		SPECTER_UNTIL.remove(id);
@@ -99,10 +101,20 @@ public final class Keystones {
 
 	// ------------------------------------------------------------ Qué piedras angulares tiene
 
-	/** Plantillas activas: la piedra angular aprendida de la senda elegida en el rol principal y en el secundario. */
+	/**
+	 * Plantillas activas: la piedra angular aprendida de la senda elegida en el rol principal y en el secundario. El
+	 * conjunto está en caché y se comparte: <b>no lo modifiques</b>.
+	 */
 	public static Set<Template> active(ServerPlayerEntity player) {
-		Set<Template> out = EnumSet.noneOf(Template.class);
+		// C2 (R2): se consulta en cada golpe, esquiva, muerte y daño; depende solo de RoleData (ver su versión).
 		RoleData data = RoleManager.get(player);
+		return ACTIVE.get(player.getUuid(), data, data.version(), () -> compute(data));
+	}
+
+	private static final dev.aptitudes.role.VersionedCache<Set<Template>> ACTIVE = new dev.aptitudes.role.VersionedCache<>();
+
+	private static Set<Template> compute(RoleData data) {
+		Set<Template> out = EnumSet.noneOf(Template.class);
 		for (Role role : new Role[] {data.primary(), data.secondary()}) {
 			if (role == null) continue;
 			int path = PathRules.chosenPath(data::rank, role.key());

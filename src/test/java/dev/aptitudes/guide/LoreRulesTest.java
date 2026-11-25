@@ -23,7 +23,7 @@ class LoreRulesTest {
 		assertTrue(LoreRules.isValidLoreId(LoreRules.LORE_SOUL_FOG_TRIGGER));
 		assertTrue(LoreRules.isValidLoreId(LoreRules.LORE_EMBER_RAIN_TRIGGER));
 		assertTrue(LoreRules.isValidLoreId(LoreRules.LORE_CUSTODIAN_DEFEATED));
-		assertTrue(LoreRules.isValidLoreId(LoreRules.LORE_BEHELIT_FOUND));
+		assertTrue(LoreRules.isValidLoreId(LoreRules.LORE_ARTIFACT_FOUND));
 		assertTrue(LoreRules.isValidLoreId(LoreRules.LORE_ECLIPSE_SACRIFICE));
 		assertTrue(LoreRules.isValidLoreId(LoreRules.LORE_ECLIPSE_AFTERMATH));
 		assertFalse(LoreRules.isValidLoreId("invalid_lore_id"));
@@ -43,12 +43,12 @@ class LoreRulesTest {
 
 	@Test
 	void unlocksOnDiamondChamberComplete() {
-		assertEquals(Set.of(LoreRules.LORE_BEHELIT_FOUND), LoreRules.unlocksOnDiamondChamberComplete());
+		assertEquals(Set.of(LoreRules.LORE_ARTIFACT_FOUND), LoreRules.unlocksOnDiamondChamberComplete());
 	}
 
 	@Test
-	void unlocksOnBeheritSacrifice() {
-		assertEquals(Set.of(LoreRules.LORE_ECLIPSE_SACRIFICE), LoreRules.unlocksOnBeheritSacrifice());
+	void unlocksOnDamnorathSacrifice() {
+		assertEquals(Set.of(LoreRules.LORE_ECLIPSE_SACRIFICE), LoreRules.unlocksOnDamnorathSacrifice());
 	}
 
 	@Test

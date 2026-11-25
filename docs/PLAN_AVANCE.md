@@ -111,7 +111,7 @@ tooltip en los 11 idiomas. Pendiente: validar todo en partida.
   lo fija el proyecto: provisional, 4 Fragmentos de alma y 1 Corazón de campeón (Coloso), 1 Esencia de élite (Guardián y
   Autómata). Cableado en curso, en pasos. **Paso 1 hecho** (sin commit): `boss/SummonState` (estado persistente por
   mundo con la última derrota, la fase y la instancia viva de cada jefe) y `AnimatedBossEntity.onDeath`, que lo
-  registra. **Paso 2 hecho** (sin commit): `boss/SummonSealItem` y tres objetos (`faceless_colossus_seal`,
+  registra. *(Histórico: los sellos se retiraron por completo y su código se borró en la fase 5 de V86; D-37.)* **Paso 2 hecho** (sin commit): `boss/SummonSealItem` y tres objetos (`faceless_colossus_seal`,
   `dismantled_guardian_seal`, `ancient_automaton_seal`). Usar un sello comprueba `SummonRules`, cobra 4 Fragmentos de
   alma y el material propio, invoca al jefe junto al jugador y lo deja en la fase guardada. Compila, 383 pruebas.
   Limitaciones: la instancia viva solo se busca en el mundo donde se usó el sello; un jefe que nunca se derrotó
