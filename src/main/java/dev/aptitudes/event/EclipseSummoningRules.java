@@ -1,10 +1,10 @@
 package dev.aptitudes.event;
 
 /**
- * C3: reglas puras para convocar el Eclipse en la Hoguera, con el Astrolabio del Ocaso o con el Behelit (Embrión
+ * C3: reglas puras para convocar el Eclipse en la Hoguera, con el Astrolabio del Ocaso o con el Damnorath (Resonador
  * del Umbral). Sin clases de Minecraft: se prueban con JUnit ({@code EclipseSummoningRulesTest}).
  *
- * <p>Decisiones del autor: convocan con el Astrolabio los operadores o el líder del grupo (E1); el Behelit no pide
+ * <p>Decisiones del autor: convocan con el Astrolabio los operadores o el líder del grupo (E1); el Damnorath no pide
  * permiso (basta con tenerlo). Ambos comparten la espera de {@code eclipseSummonCooldownDays} días de juego por mundo,
  * contados desde el <b>fin</b> del último Eclipse (A-2), y la regla de «un evento a la vez». Solo en el Mundo Normal
  * (E6). Los tiempos son ticks del reloj del mundo ({@code World#getTime}).</p>
@@ -22,7 +22,9 @@ public final class EclipseSummoningRules {
 		/** Ya hay un Eclipse u otro evento del mundo en curso. */
 		BUSY,
 		/** Aún no han pasado los días de espera desde el fin del último Eclipse. */
-		COOLDOWN
+		COOLDOWN,
+		/** El Eclipse está desactivado en la configuración ({@code eclipseEnabled = false}); lo decide quien llama, no estas reglas. */
+		DISABLED
 	}
 
 	/** ¿Puede este jugador usar el Astrolabio? Operadores (nivel 2+) o el líder de su grupo. */
@@ -34,11 +36,11 @@ public final class EclipseSummoningRules {
 	public static Verdict astrolabe(boolean operator, boolean partyLeader, boolean inOverworld, boolean eventActive,
 			long lastEndTick, long now, int cooldownDays) {
 		if (!authorized(operator, partyLeader)) return Verdict.NOT_AUTHORIZED;
-		return behelit(inOverworld, eventActive, lastEndTick, now, cooldownDays);
+		return damnorath(inOverworld, eventActive, lastEndTick, now, cooldownDays);
 	}
 
-	/** Behelit: igual que el Astrolabio pero sin permisos. */
-	public static Verdict behelit(boolean inOverworld, boolean eventActive, long lastEndTick, long now, int cooldownDays) {
+	/** Damnorath: igual que el Astrolabio pero sin permisos. */
+	public static Verdict damnorath(boolean inOverworld, boolean eventActive, long lastEndTick, long now, int cooldownDays) {
 		if (!inOverworld) return Verdict.WRONG_WORLD;
 		if (eventActive) return Verdict.BUSY;
 		if (!EventTriggerRules.ready(lastEndTick, now, cooldownDays)) return Verdict.COOLDOWN;

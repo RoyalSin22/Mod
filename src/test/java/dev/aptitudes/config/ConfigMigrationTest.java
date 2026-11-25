@@ -44,4 +44,17 @@ public class ConfigMigrationTest {
 		assertEquals(0.2, ConfigMigration.threatHealthPerRing(0, 0.2), 1e-9);
 		assertEquals(0.0, ConfigMigration.threatDamagePerRing(0, 0.0), 1e-9);
 	}
+
+	/** v84 (T5): un 0 heredado del valor por defecto roto de 240484f se vuelve a 1; un 0 posterior se respeta. */
+	@Test public void eventSwitchesBrokenByTheOldDefaultAreRestoredOnce() {
+		assertEquals(1, ConfigMigration.eventSwitch(0, 0));
+		assertEquals(1, ConfigMigration.eventSwitch(83, 0));
+		assertEquals(1, ConfigMigration.eventSwitch(83, 1));
+		assertEquals(5, ConfigMigration.eventSwitch(40, 5));
+		assertEquals(0, ConfigMigration.eventSwitch(ConfigMigration.CURRENT, 0));
+	}
+
+	@Test public void currentRevisionIsAtLeastTheEventSwitchMigration() {
+		assertEquals(true, ConfigMigration.CURRENT >= 84);
+	}
 }

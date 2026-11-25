@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "aptitudes:block/three_towers_controller"
+    }
+  }
+}

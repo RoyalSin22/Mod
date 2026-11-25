@@ -73,12 +73,6 @@ public class FacelessColossusEntity extends AnimatedBossEntity {
 	}
 
 	@Override
-	public void restorePhase(int restored) {
-		super.restorePhase(restored);
-		syncArmorPhase();
-	}
-
-	@Override
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
 		syncArmorPhase();

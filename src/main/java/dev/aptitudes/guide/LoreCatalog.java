@@ -43,7 +43,7 @@ public final class LoreCatalog {
 			new Entry("cosmology.veil_frontier", Kind.LORE, LoreRules.LORE_CRYPT_CLEARED),
 			new Entry("faction.permanence", Kind.LORE, LoreRules.LORE_CRYPT_CLEARED),
 			new Entry("chronology.first_answer", Kind.LORE, LoreRules.LORE_CUSTODIAN_DEFEATED),
-			new Entry("artifact.sealed_artifact", Kind.LORE, LoreRules.LORE_BEHELIT_FOUND),
+			new Entry("artifact.sealed_artifact", Kind.LORE, LoreRules.LORE_ARTIFACT_FOUND),
 			new Entry("event.first_eclipse", Kind.LORE, LoreRules.LORE_ECLIPSE_SACRIFICE),
 			new Entry("temple.last_mandate", Kind.LORE, LoreRules.LORE_CUSTODIAN_DEFEATED),
 			new Entry("event.current_eclipse", Kind.LORE, LoreRules.LORE_ECLIPSE_SACRIFICE),

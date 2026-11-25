@@ -54,7 +54,7 @@ No se reemplazan templos, llaves, jefes ni estructuras.
 
 | Elemento | Propuesta |
 |---|---|
-| Nombre de trabajo | **Embrión del Umbral** (alternativas: «Aguja del Silencio», «Ancla de Eclipse») |
+| Nombre | **Damnorath, «Embrión de la ruina»** (D-40; nombre de trabajo anterior: «Resonador del Umbral»; alternativas descartadas: «Aguja del Silencio», «Ancla de Eclipse») |
 | Función narrativa | Artefacto de comunicación del Período 7; la conexión externa que la Conciencia necesitaba |
 | Apariencia | Disco de metal pálido con un anillo de luz hueco en el centro; no un ojo, no una cara ni un huevo |
 | Simbolismo | El anillo vacío evoca al eclipse; **no** reproduce el diseño ni el simbolismo de ninguna obra protegida |

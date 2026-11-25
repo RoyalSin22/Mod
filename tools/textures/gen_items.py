@@ -1022,23 +1022,24 @@ T['astrolabe'] = [
     ".....ZZZZZZ....."
 ]
 
-# C3: Embrión del Umbral (Behelit): embrión enroscado dentro de un saco violeta, colgado de un aro de oro. Sin rostro.
+# Damnorath («Embrión de la ruina», D-40): un embrión enroscado dentro de un frasco de cristal con líquido violeta, tapón y aro de oro.
+# Sin rostro. En el grimorio el lore puede llamarlo «Embrión del Umbral».
 T['embryo'] = [
     "......ZZZZ......",
     "......Z..Z......",
-    ".......ZZ.......",
-    ".....DDDDDD.....",
-    "....DAAAAAAD....",
-    "...DAJJJJAAAD...",
-    "..DAJJ*JJJAAAD..",
-    "..DAJJJJJJJAAD..",
-    "..DAAJJJJJJJAD..",
-    "..DAAAAAJJJJAD..",
-    "..DAAAAAAJJJAD..",
-    "..DAJJAAAJJAAD..",
-    "...DAJJJJJAAD...",
-    "....DAAJJAAD....",
-    ".....DDDDDD.....",
+    "....ZZZZZZZZ....",
+    ".....FFFFFF.....",
+    "....FAAAAAAF....",
+    "...FAAJJJAAAF...",
+    "..FAAJJJJJAAAF..",
+    "..FAAJJ*JJAAAF..",
+    "..FAAAJJJJAAAF..",
+    "..FAAJJJAAAAAF..",
+    "..FAAAJJJJAAAF..",
+    "..FAAAAJJAAAAF..",
+    "...FAAAAAAAAF...",
+    "....FAAAAAAF....",
+    ".....FFFFFF.....",
     "................"
 ]
 
@@ -1082,10 +1083,6 @@ ITEMS = {
     'rebirth_offering': ('offering', {'J': '#ff9f1a', 'K': '#2b2d38', 'C': '#efe6d2', 'G': '#e0b43a', 'A': '#8e44ad'}),
     'armory_voucher': ('voucher', {'W': '#8d5a2b', 'C': '#efe6d2', 'K': '#5d4a3a', 'R': '#b0423a'}),
     'elite_essence': ('essence', {'A': '#c0392b', 'J': '#ffb199'}),
-    # Paso 3 de la reinvocación: sellos de invocación de los jefes animados.
-    'faceless_colossus_seal': ('seal', {'R': '#5d1f1f', 'G': '#e0b43a', 'J': '#ffe08a'}),
-    'dismantled_guardian_seal': ('seal', {'R': '#37474f', 'G': '#90a4ae', 'J': '#cfd8dc'}),
-    'ancient_automaton_seal': ('seal', {'R': '#5d4037', 'G': '#4dd0e1', 'J': '#b2ebf2'}),
     'expedition_token': ('seal', {'R': '#8a6d2b', 'G': '#e0b43a', 'J': '#fff3c4'}),
     'automaton_orb': ('automaton_orb', {'S': '#7d7a72', 'B': '#9e6c38', 'A': '#ffa434', 'D': '#3b3a38'}),
     'automaton_orb_deflected': ('automaton_orb', {'S': '#3d7f8a', 'B': '#4dd0e1', 'A': '#b2ebf2', 'D': '#1b3a40'}),
@@ -1132,7 +1129,7 @@ ITEMS = {
     'custodian_key_diamond': ('temple_key', {'G': '#2fb6ee', 'J': '#c4f1ff'}),
     # C3: Astrolabio del Ocaso y Embrión del Umbral (Behelit)
     'sunset_astrolabe': ('astrolabe', {'Z': '#a8651c', 'D': '#120d18', 'J': '#e0520f'}),
-    'resonador_del_umbral': ('embryo', {'D': '#2a1c36', 'A': '#5a3470', 'Z': '#c8962a', 'J': '#b8142c'}),
+    'resonador_del_umbral': ('embryo', {'F': '#cfe0e8', 'A': '#5a3470', 'Z': '#c8962a', 'J': '#e8a89a'}),
     'life_vessel': ('vessel', {'F': '#e9eef2', 'A': '#c2185b', 'J': '#ff8fab', 'G': '#e0b43a'}),
 }
 

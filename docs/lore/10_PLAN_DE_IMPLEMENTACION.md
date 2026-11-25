@@ -1,6 +1,6 @@
 # 10 · Plan de implementación de la cadena (por tandas)
 
-**Estado (revisado el 2026-11-24 con el código y `git log`): T1–T4 implementadas; T5 parcial; T6 parcial y dudosa; T7a y T7b implementadas (V71). Todo pendiente de prueba en partida.** Convierte el diseño de `09_CADENA_DE_PROGRESION.md` en
+**Estado (revisado el 2026-11-24 contra el código y `git log`): T1–T4, T6, T7a y T7b están implementadas; T5 está implementada con una carencia (la espera de 3 días del Damnorath no existe en el código, ver «Estado real»). Ninguna tanda está validada en partida.** Convierte el diseño de `09_CADENA_DE_PROGRESION.md` en
 trabajo de código, arte y Grimorio. Los puntos de enganche se leyeron en el código el 2026-11-14; lo marcado
 «a verificar» se comprueba con Context7 o el jar antes de escribir una línea (`AGENTS.md` §9).
 
@@ -15,7 +15,7 @@ Lo que sí se puede hacer es **ordenar las tandas para entregar en tres versione
 | Entrega | Tandas | Qué puede probar el autor |
 |---|---|---|
 | **R1** | T1 + T2 | La Niebla por aldeano, la Lluvia por portal y los materiales |
-| **R2** | T3 + T4 + T5 | El templo nuevo, las 4 llaves, el Behelit y el Eclipse por sacrificio (la cadena cerrada) |
+| **R2** | T3 + T4 + T5 | El templo nuevo, las 4 llaves, el Damnorath y el Eclipse por sacrificio (la cadena cerrada) |
 | **R3** | T6 + T7 | Retirada de los sellos y el Grimorio rediseñado |
 
 El **arte** (pista A) corre en paralelo desde el principio y no bloquea el código.
@@ -31,11 +31,51 @@ Tamaños relativos (S < M < L < XL); no son horas.
 | **T2** (implementada, pendiente de prueba en partida) | Botín del Osario, objeto de acceso y su receta, objetos nuevos y sus texturas | E3 | M | T0 |
 | **T3** (implementada, pendiente de prueba en partida) | Templo nuevo: estructura, Autómata interno, puzle, puerta del Custodio que consume el objeto | E4 | XL | T2 |
 | **T4** (implementada, pendiente de prueba en partida) | Custodio con 4 llaves (cobre, hierro, oro, diamante) en una tirada y 4 cámaras de recompensa | E5 | L | T3 |
-| **T5** (parcial) | Behelit, sacrificio en la Hoguera, Eclipse con espera de 3 días por mundo, fin del calendario rotativo | E6, E10 | L | T4 (T1 para la parte de calendario) |
-| **T6** (parcial, dudosa) | Retirada de los 3 sellos de invocación, con migración | E8 | M | T3 |
+| **T5** (implementada **con carencias**: sin espera de 3 días ni migración de configuración; ver «Estado real») | Damnorath, sacrificio en la Hoguera, Eclipse con espera de 3 días por mundo, fin del calendario rotativo | E6, E10 | L | T4 (T1 para la parte de calendario) |
+| **T6** (implementada **sin migración**, contra D-25/D-26; ver «Estado real») | Retirada de los 3 sellos de invocación, con migración | E8 | M | T3 |
 | **T7a** (implementada) | Grimorio, infraestructura: estado de lectura por jugador, desbloqueos, entrada de bestiario del Custodio | E9 | L | T1, T4, T5 |
-| **T7b** (implementada, V71) | Grimorio, interfaz: tarjetas de bestiario, páginas de lore | E9 | XL | A, T7a |
+| **T7b** (implementada como V71) | Grimorio, interfaz: tarjetas de bestiario, páginas de lore | E9 | XL | A, T7a |
 | **A** | Pista de arte, en paralelo | — | L | T0 |
+
+### Estado real (2026-11-24)
+
+Comprobado leyendo el código y `git log`; la columna «Prueba en partida» es **pendiente** en todas salvo que se
+indique (el autor confirmó las pruebas de la numeración antigua T4–T6 de `PLAN_CODEX`, que no son estas tandas).
+
+| Tanda | Estado | Evidencia | Pendiente |
+|---|---|---|---|
+| T1 | Implementada | `01ed9ff`; `event/EventTriggerRules`, `WorldEventManager.talkToGuildmaster`, `watchPortalLighting` | Partida; D-23 (¿10 días desde el inicio o el fin?) y D-30 siguen provisionales |
+| T2 | Implementada | `61e29d1`; `NUCLEO_OSARIO`, `ANCLA_DEL_VELO` | Partida |
+| T3 | Implementada | `989f967`…`d0a27c2`; `temple/CustodianTempleLayout`, `world/CustodianTempleFeature`; ampliada por V70 (templo hondo) y V77 (`locate`/`place`) | Partida y ajuste de balance |
+| T4 | Implementada | `958d1e4`, `353d310`; frecuencia 1/120 (`5c0f3a5`, D-35) | Partida |
+| **T5** | Implementada (espera de 3 días y migración añadidas el 2026-11-24; sin validar) | Damnorath = `resonador_del_umbral` (`item/BeheritItem`, `ModItems.RESONADOR_DEL_UMBRAL`), en `chests/custodian_diamond.json`; el sacrificio ocurre en la Hoguera (`BonfireBlock` deja pasar el ítem) y llama a `EclipseManager.startByBeherit` (`EclipseManager.java:614`); desbloqueo de lore en `EclipseManager:235` (`09f6a58`). Calendario: `eclipseIntervalDays`, `eclipseFirstDay` y `worldEventWeight*` marcados DEPRECATED y los pesos por defecto bajados de 1 a 0 (`240484f`) | Ver abajo |
+| T6 | Implementada, desviada | `fe4f766` borra registro, recetas, modelos, texturas y claves de los tres sellos de los 11 idiomas | Ver abajo |
+| T7a | Implementada | `75906c6`; `guide/LoreRules`, `LoreManager`, attachment `aptitudes:lore` | Partida |
+| T7b | Implementada (V71) | `b512c10`, `325b8f7`; `guide/LoreCatalog` (18 entradas), pestaña «Crónicas» en `GuideScreen` | Partida; arte propio de la pestaña |
+
+**T5, qué falta o es dudoso**
+
+1. ~~Resuelto 2026-11-24: `EclipseSummoningRules`, `EclipseState.lastEndTick`, `eclipseSummonCooldownDays`.~~ **No existía la espera de 3 días por mundo** (D-20, D-25). `EclipseManager.canStartEclipse` solo comprueba
+   `!state.active && !WorldEventManager.active(...)`, aunque su Javadoc y el mensaje de `09f6a58` hablan de «cooldown».
+   `EclipseState` no guarda el fin del último Eclipse. Hoy se puede encadenar un Damnorath tras otro.
+2. ~~Resuelto: revisión 84 de `ConfigMigration` y calendario apagado.~~ **Sin migración de configuración.** El plan pedía migrar en `config/ConfigMigration`; no se hizo. Un `config`
+   antiguo con `worldEventWeightEclipse > 0` sigue programando Eclipses por calendario (`WorldEventManager.calendarWeights`).
+   Además `240484f` cambió el valor por defecto de los pesos de 1 a 0 sin que conste la decisión del autor (regla de balance).
+3. ~~Resuelto: con un evento activo el Damnorath no se consume y avisa.~~ **Decisión nº 6 de §4 sin registrar:** qué ocurre si hay un Eclipse activo (hoy, el Damnorath no se consume y no avisa).
+4. `BeheritItem` usa `useOnBlock` sobre la Hoguera; el plan proponía el patrón de `onUseWithItem` de la ofrenda. Funcional, pero distinto.
+5. Sin pruebas JUnit de la regla de espera (no hay una clase pura que la contenga).
+
+**T6, qué es dudoso**
+
+- D-25 y D-26 dicen «los sellos se retirarán **con migración**, sin eliminarlos». El commit `fe4f766` los eliminó **sin
+  alias de registro ni conversión**: en un mundo guardado con alguno de los tres objetos, Minecraft descarta el
+  objeto desconocido al cargar. `docs/PLAN_AVANCE.md` §1 dice que «no hay mundos de jugadores que preservar», pero
+  D-25/D-26 son posteriores y piden migración: hace falta que el autor confirme cuál manda.
+- Quedan menciones en `docs/PLAN_AVANCE.md`, `docs/lore/09_CADENA_DE_PROGRESION.md`, `docs/PROMPT_ARTE_ARMAS.md`,
+  `tools/textures/gen_items.py` (que aún regenera los PNG; `AGENTS.md` §2 manda borrar tres PNG tras cada ejecución) y
+  la entrada «v65 — Ruinas de batalla» del CHANGELOG («al invocar al Coloso con el sello»).
+- `ModItems.java:183-185` conserva las tres líneas comentadas con un texto que dice que «los ítems se mantienen
+  para compatibilidad»; es falso desde `fe4f766`.
 
 ### Orden y paralelismo
 
@@ -53,13 +93,13 @@ T1 y T2 se pueden hacer a la vez (tocan archivos distintos). T3 en adelante es u
 - **Tras T1:** el calendario solo programa el **Eclipse** (como hoy). Niebla y Lluvia ya no salen por calendario.
 - **Tras T3:** los templos antiguos de mundos existentes siguen funcionando con su lógica actual; los nuevos se
   generan con la estructura nueva. Decisión del autor: ¿se mantiene o se retira el templo viejo? (§4).
-- **Tras T5:** el Eclipse deja de ser de calendario y pasa a depender del Behelit.
+- **Tras T5:** el Eclipse deja de ser de calendario y pasa a depender del Damnorath.
 
 ### Estado real de T5, T6 y T7 (2026-11-24)
 
 | Tanda | Hecho (evidencia) | Falta |
 |---|---|---|
-| T5 | Objeto Behelit (`item/BeheritItem`, `ModItems.RESONADOR_DEL_UMBRAL`) y sacrificio en la Hoguera, commit `09f6a58` («T5a»); `EclipseManager.start` anota el lore (V71). **C3 (2026-11-24):** espera de 3 días **por mundo desde el fin del Eclipse** (`EclipseState.lastEndTick`, `event/EclipseSummoningRules`, opción `eclipseSummonCooldownDays`), compartida con el Astrolabio del Ocaso | **E10 sin hacer:** el calendario sigue programando Eclipses (`WorldEventManager.calendarWeights`, `kindForDay`); `eclipseFirstDay`, `eclipseIntervalDays` y `worldEventWeight*` siguen en `AptitudesConfig` solo marcados como obsoletos, sin migración en `ConfigMigration`. Arte del Behelit y del Astrolabio hecho el 2026-11-25 (plantilla provisional en `gen_items.py`). Sin pruebas en partida |
+| T5 | Objeto Damnorath (`item/BeheritItem`, `ModItems.RESONADOR_DEL_UMBRAL`) y sacrificio en la Hoguera, commit `09f6a58` («T5a»); `EclipseManager.start` anota el lore (V71). **C3 (2026-11-24):** espera de 3 días **por mundo desde el fin del Eclipse** (`EclipseState.lastEndTick`, `event/EclipseSummoningRules`, opción `eclipseSummonCooldownDays`), compartida con el Astrolabio del Ocaso | **E10 sin hacer:** el calendario sigue programando Eclipses (`WorldEventManager.calendarWeights`, `kindForDay`); `eclipseFirstDay`, `eclipseIntervalDays` y `worldEventWeight*` siguen en `AptitudesConfig` solo marcados como obsoletos, sin migración en `ConfigMigration`. Sin modelo ni textura del Damnorath (`models/item` y `textures/item` no tienen `resonador_del_umbral`). Sin pruebas en partida |
 | T6 | Los tres `register(...)` de los sellos están comentados en `ModItems` (líneas 183–185) | El comentario dice «se mantienen por compatibilidad», pero **ya no están registrados** y no hay alias ni migración (`grep` de `ancient_automaton_seal` solo da el comentario): los objetos de mundos viejos se perderían. `boss/SummonSealItem.java` sigue en el repositorio. Política de migración sin decidir (§4, decisión 7) |
 | T7a/T7b | `guide/LoreRules`, `LoreCatalog` (18 entradas), `LoreManager`, `LoreState`; pestaña «Crónicas» y desbloqueos cableados (commit `325b8f7`, V71) | Validar en partida; arte propio de la pestaña |
 
@@ -101,15 +141,15 @@ T1 y T2 se pueden hacer a la vez (tocan archivos distintos). T3 en adelante es u
 ### T4 · Llaves y cámaras
 
 - Cuatro objetos llave, una **sola tirada** del Custodio. Cada una abre una cámara; la de diamante contiene el
-  Behelit (T5).
+  Damnorath (T5).
 - Recompensas (objetos vanilla, manzanas doradas encantadas, bloques de minerales y objetos del mod): tabla de
   botín por cámara, por definir en T0.
 - En multijugador, el Relicario ya guarda qué jugadores reclamaron (`claimed`); T4 debe repetir ese patrón en cada cámara.
 - Migración de templos con la `temple_key` y el Relicario actuales: decisión pendiente (§4).
 
-### T5 · Behelit y Eclipse
+### T5 · Damnorath y Eclipse
 
-- Objeto Behelit (nombre de trabajo «Embrión del Umbral»). Se consume al sacrificarlo.
+- Objeto Damnorath (nombre de trabajo «Damnorath»). Se consume al sacrificarlo.
 - Hoguera: ya acepta una ofrenda (`BonfireBlock.onUseWithItem` con `REBIRTH_OFFERING`); mismo patrón.
 - `EclipseManager`: arranque por sacrificio y **espera de 3 días por mundo desde el fin del Eclipse**
   (`EclipseState` persistente). Se retiran `eclipseFirstDay`, `eclipseIntervalDays` y los
@@ -143,7 +183,7 @@ T1 y T2 se pueden hacer a la vez (tocan archivos distintos). T3 en adelante es u
 | 3 | Proporciones de aparición de la Niebla (cuánto Errante, cuánto Osario) | T1 |
 | 4 | Contenido de las 4 cámaras y de la tirada del Custodio | T4 |
 | 5 | Qué pasa con los templos viejos de mundos existentes (mantener o migrar) y con la `temple_key` y el Relicario | T3, T4 |
-| 6 | Nombre definitivo del Behelit y qué ocurre si hay un Eclipse activo | T5 |
+| 6 | Nombre definitivo del Damnorath y qué ocurre si hay un Eclipse activo | T5 |
 | 7 | Política de migración de los sellos | T6 |
 | 8 | Alcance del rediseño del Grimorio y destino de las imágenes de referencia | T7 |
 

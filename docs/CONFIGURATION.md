@@ -383,18 +383,21 @@ Los textos de las runas muestran los valores por defecto: si un servidor los cam
 ## Eventos rotativos (v41, DEPRECATED en v67)
 
 **v67**: El calendario rotativo desapareció. Los eventos ahora se activan **solo por jugadores**:
-- **Eclipse**: sacrificio del Behelit en la Hoguera (cooldown 3 días por mundo desde el fin)
-- **Niebla de almas**: hablar con el aldeano del gremio (cooldown 10 días desde el inicio)
+- **Eclipse**: sacrificio del Damnorath en la Hoguera (cooldown 3 días por mundo desde el fin)
+- **Niebla de almas**: aceptar la oferta «Convocar la Niebla de almas» del tablón de contratos (cooldown 10 días desde el inicio)
 - **Lluvia de brasas**: encender un portal al Nether en el Overworld (cooldown 5 días)
 
-Los campos `eclipseIntervalDays`, `eclipseFirstDay` y `worldEventWeight*` se mantienen **por compatibilidad** 
-con configs guardadas, pero ya no se usan. Sus valores no afectan al juego.
+El calendario rotativo **ya no existe** (D-26): ningún evento se programa por fecha. `eclipseIntervalDays`,
+`eclipseFirstDay` y `worldEventWeightEclipse` se conservan solo para no romper archivos antiguos y **no se usan**.
+`worldEventWeightSoulFog` y `worldEventWeightEmberRain` son el **interruptor** de la Niebla por contrato y de la Lluvia por
+portal: 0 desactiva el evento (y corta uno en curso) y cualquier valor mayor lo deja activo. La revisión 84 de la
+configuración (`configRevision`) devuelve a 1 los 0 heredados del valor por defecto roto de la v83.
 
 | Campo | Defecto | Límites | Descripción |
 |---|---|---|---|
-| `worldEventWeightEclipse` | 0 | [0, 100] | **DEPRECATED**: siempre ignorado. |
-| `worldEventWeightSoulFog` | 0 | [0, 100] | **DEPRECATED**: siempre ignorado. |
-| `worldEventWeightEmberRain` | 0 | [0, 100] | **DEPRECATED**: siempre ignorado. |
+| `worldEventWeightEclipse` | 0 | [0, 100] | Sin uso: el Eclipse empieza con el Damnorath. |
+| `worldEventWeightSoulFog` | 1 | [0, 100] | Interruptor de la Niebla de almas del tablón: 0 la desactiva (la oferta no se puede aceptar). |
+| `worldEventWeightEmberRain` | 1 | [0, 100] | Interruptor de la Lluvia de brasas del portal: 0 la desactiva. |
 | `emberRainLargeChance` | 0.25 | [0, 1] | v41.2: probabilidad de meteorito grande. |
 | `emberRainHugeChance` | 0.05 | [0, 1] | v41.2: probabilidad de meteorito enorme (se comprueba antes que la de grande). Con ambas a 0, todos pequeños como antes. |
 | `emberRainMobChance` | 0.5 | [0, 1] | v41.2: probabilidad de que un impacto traiga criaturas del Nether (la mitad en los pequeños); 0 = ninguna. |
@@ -404,9 +407,10 @@ como tope por jugador.
 
 ### Eventos por activación (T1 de la cadena narrativa)
 
-La **Niebla de almas** la inicia un jugador con **Mayús + clic derecho** sobre el aldeano del gremio (sin Mayús se
-abre el comercio de siempre): empieza para todo el mundo y dura `fogDurationTicks`. Si está en espera, el aldeano
-responde «los muertos se han ido, pero volverán». La **Lluvia de brasas** empieza cuando un jugador enciende un
+La **Niebla de almas** la inicia un jugador **aceptando la oferta «Convocar la Niebla de almas»** del tablón de contratos
+(puede salir entre las 3 ofertas diarias de dificultad Normal o superior): al aceptarla empieza para todo el mundo y dura
+`fogDurationTicks`; el contrato se completa al sobrevivirla. Si está en espera o hay otro evento, no se puede aceptar y se
+avisa («los muertos se han ido, pero volverán»). El aldeano del gremio ya **no** la inicia: solo comercia. La **Lluvia de brasas** empieza cuando un jugador enciende un
 portal al Nether en el Overworld (yesca y pedernal o carga de fuego sobre obsidiana). Las esperas se cuentan
 desde que el evento **empieza** (provisional) y no las consumen los comandos `/aptitudes event`.
 
@@ -415,7 +419,19 @@ desde que el evento **empieza** (provisional) y no las consumen los comandos `/a
 | `fogCooldownDays` | 10 | [1, 365] | Días de espera entre dos Nieblas de almas. |
 | `fogDurationTicks` | 24000 | [1200, 240000] | Duración de la Niebla en ticks (24 000 = un día de Minecraft). Antes duraba 12 000 desde las 18:00. |
 | `emberRainCooldownDays` | 5 | [1, 365] | Días de espera entre dos Lluvias de brasas provocadas por un portal. |
-| `eclipseSummonCooldownDays` | 3 | [0, 365] | C3: días de juego de espera por mundo, desde el fin del último Eclipse, para volver a convocarlo con el Astrolabio del Ocaso o el Embrión del Umbral. 0 quita la espera. No la consumen `/aptitudes eclipse start` ni `/aptitudes event start`. |
+| `eclipseSummonCooldownDays` | 3 | [0, 365] | C3: días de juego de espera por mundo, desde el fin del último Eclipse, para volver a convocarlo con el Astrolabio del Ocaso o el Damnorath. 0 quita la espera. No la consumen `/aptitudes eclipse start` ni `/aptitudes event start`. |
+| `threeTowersEnabled` | true | — | V86: permite que se generen **Las Tres Torres Señoriales** (dungeon de superficie con región de 24×24 chunks: **más frecuente** que el Templo del Custodio, de 32×32, por decisión del autor). Solo afecta a chunks sin generar. Hasta la fase 3 el controlador es un marcador y no hay jefes. |
+| `deathEchoesEnabled` | **false** | — | C7 · S6: al morir un jugador, un eco con su cabeza (brillante) repite sus últimos 5 s mientras haya otro jugador a menos de 24 bloques. **Desactivado por defecto** porque genera entidades y no está probado en partida. |
+| `deathEchoLifetimeSeconds` | 120 | [10, 1800] | Segundos que dura un eco. |
+| `deathEchoMaxActive` | 6 | [1, 50] | Ecos vivos a la vez en el servidor; al pasarse se retira el más antiguo. |
+| `groundMessagesEnabled` | true | — | C7 · S5: permite dejar y valorar notas con frases **predefinidas** (`/aptitudes message <frase>`); nunca texto libre. |
+| `groundMessagesPerPlayer` | 3 | [1, 20] | Notas que cada jugador puede tener colocadas a la vez. |
+| `groundMessageLifetimeDays` | 7 | [1, 365] | Días que dura una nota. |
+| `groundMessageCooldownSeconds` | 30 | [1, 3600] | Espera entre dos notas del mismo jugador. |
+| `parryEnabled` | true | — | C7 · S3: bloquear el golpe cuerpo a cuerpo de una criatura justo al alzar el escudo (ventana de 4 ticks, la misma «guardia perfecta» de los jefes) la aturde y abre un golpe de gracia. Nunca afecta a jugadores, jefes (del mod y de vanilla) ni campeones. |
+| `parryStunTicks` | 40 | [0, 200] | Ticks de aturdimiento de la criatura parada (Lentitud y Debilidad altas). 0 = no aturde. |
+| `parryFinisherTicks` | 60 | [10, 200] | Plazo para asestar el golpe de gracia tras la parada. |
+| `parryFinisherMultiplier` | 1.5 | [1, 4] | Multiplicador del daño del siguiente golpe directo del jugador a esa criatura. Se gasta en un solo golpe. |
 | `osarioBossEnabled` | true | — | V68: permite que el Gran Osario Quebrado se levante hacia el final de la Niebla. |
 | `osarioBossFogPercent` | 75 | [10, 100] | V68: porcentaje de la duración de la Niebla a partir del cual aparece el jefe (una vez por sesión). |
 | `osarioBossLingerTicks` | 6000 | [0, 72000] | V68: ticks que sigue vivo tras cerrarse la Niebla antes de disolverse sin botín ni XP. 6000 = 5 minutos. |

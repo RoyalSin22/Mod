@@ -31,11 +31,16 @@ public final class ModWorldGen {
 	public static final Feature<DefaultFeatureConfig> CUSTODIAN_TEMPLE = Registry.register(Registries.FEATURE,
 			Aptitudes.id("custodian_temple"), new CustodianTempleFeature(DefaultFeatureConfig.CODEC));
 
+	/** V86: Las Tres Torres Señoriales (superficie, tres torres; ver {@code dungeon/TowersLayout}). */
+	public static final Feature<DefaultFeatureConfig> THREE_TOWERS = Registry.register(Registries.FEATURE,
+			Aptitudes.id("three_towers"), new ThreeTowersFeature(DefaultFeatureConfig.CODEC));
+
 	private ModWorldGen() {
 	}
 
 	public static void init() {
 		Registry.register(Registries.PLACEMENT_MODIFIER_TYPE, Aptitudes.id("region_grid"), RegionGridPlacement.TYPE);
+		dev.aptitudes.dungeon.TowersBlocks.register(); // V86 fase 3: bloque controlador y muerte de los jefes
 		StructureSearch.init(); // V77: búsqueda activa de /aptitudes locate, repartida entre ticks
 		// V77: vuelca el índice de estructuras (/aptitudes locate) desde el hilo del servidor.
 		net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.END_SERVER_TICK.register(server -> {
@@ -43,7 +48,7 @@ public final class ModWorldGen {
 		});
 		// T3d: en chunks nuevos el Templo del Custodio sustituye al templo sellado antiguo (v64), cuyo feature y datos siguen
 		// registrados para que los templos ya generados en mundos existentes sigan funcionando.
-		for (String id : new String[]{"tower", "bonfire_shrine", "camp", "custodian_temple"}) {
+		for (String id : new String[]{"tower", "bonfire_shrine", "camp", "custodian_temple", "three_towers"}) {
 			BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.SURFACE_STRUCTURES,
 					RegistryKey.of(RegistryKeys.PLACED_FEATURE, Aptitudes.id(id)));
 		}

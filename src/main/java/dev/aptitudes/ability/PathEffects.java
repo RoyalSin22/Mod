@@ -25,8 +25,25 @@ public final class PathEffects {
 	private PathEffects() {
 	}
 
-	/** Valor total de cada efecto para el jugador (rango efectivo × valor por rango, solo roles activos). */
+	/**
+	 * Valor total de cada efecto para el jugador (rango efectivo × valor por rango, solo roles activos). El mapa está en
+	 * caché y se comparte: <b>no lo modifiques</b>.
+	 */
 	public static EnumMap<PathEffect, Double> all(ServerPlayerEntity player) {
+		// C2 (R1): recorrer las 420+ especificaciones en cada golpe y cada segundo era lo más caro del bucle de combate.
+		// El resultado solo depende de los rangos, los roles activos y la evolución (RoleData.version()).
+		RoleData data = RoleManager.get(player);
+		return CACHE.get(player.getUuid(), data, data.version(), () -> compute(player));
+	}
+
+	/** Caché por jugador; la vacía {@link Keystones} al desconectarse. Los mapas devueltos son de solo lectura. */
+	private static final dev.aptitudes.role.VersionedCache<EnumMap<PathEffect, Double>> CACHE = new dev.aptitudes.role.VersionedCache<>();
+
+	static void forget(java.util.UUID id) {
+		CACHE.forget(id);
+	}
+
+	private static EnumMap<PathEffect, Double> compute(ServerPlayerEntity player) {
 		EnumMap<PathEffect, Double> out = new EnumMap<>(PathEffect.class);
 		for (Map.Entry<String, RoleTree.PathSpec> e : RoleTree.pathSpecs().entrySet()) {
 			int rank = RoleManager.activeRank(player, e.getKey());

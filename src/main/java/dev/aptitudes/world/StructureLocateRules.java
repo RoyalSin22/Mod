@@ -9,13 +9,17 @@ public final class StructureLocateRules {
 	}
 
 	/** Tipos de estructura del mod, con el id que usan los comandos y el índice. */
-	public static final List<String> KINDS = List.of("custodian_temple", "temple", "tower", "bonfire_shrine", "camp");
+	public static final List<String> KINDS = List.of("custodian_temple", "temple", "tower", "bonfire_shrine", "camp",
+			"three_towers");
 
 	/**
 	 * Estructuras con colocación por cuadrícula de regiones (en lugar de «un chunk de cada N»): en cada región de {@code size}×{@code size}
 	 * chunks solo un chunk, el «designado», intenta generarla. Así se sabe dónde mirar sin generar todo el terreno. 0 = sin cuadrícula.
 	 */
 	public static int regionSize(String kind) {
+		// V86: Las Tres Torres Señoriales: región de 24×24 chunks, más frecuentes que el Templo del Custodio (32×32): por decisión del
+		// autor el Custodio es aún más raro que las torres.
+		if ("three_towers".equals(kind)) return 24;
 		return "custodian_temple".equals(kind) ? 32 : 0;
 	}
 
