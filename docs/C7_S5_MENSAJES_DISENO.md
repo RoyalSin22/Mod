@@ -1,7 +1,7 @@
 # C7 (S5) — Mensajes en el suelo: diseño
 
-Estado: **propuesta de Claude (2026-11-25), pendiente de aprobación del autor.** No hay código. Las decisiones
-abiertas van marcadas con ❓ y se resumen en §10.
+Estado: **propuesta de Claude (2026-11-25), con decisiones del autor del mismo día (§10).** No hay código. Lo que
+sigue abierto va marcado con ❓.
 
 Origen: `docs/IDEAS_v47_v55.md` (S5: «notas cortas de frases predefinidas, sin texto libre, que otros jugadores leen
 y valoran»), dentro de C7 en `docs/PLAN_CLAUDE.md`.
@@ -18,10 +18,10 @@ y valoran»), dentro de C7 en `docs/PLAN_CLAUDE.md`.
 
 ## 2. Experiencia de juego
 
-1. **Escribir.** Con la **Tiza de ceniza** (objeto nuevo, ❓ receta en §10) en la mano, clic derecho sobre la cara
+1. **Escribir.** Con la **Tiza de ceniza** (objeto nuevo, receta en §10) en la mano, clic derecho sobre la cara
    superior de un bloque sólido. Se abre una pantalla pequeña (≤ 426×240): lista de plantillas a la izquierda y
    palabras por categoría a la derecha, con la vista previa en el idioma del jugador. Al confirmar, el servidor valida y
-   coloca la nota. La tiza se gasta (❓ usos).
+   coloca la nota. Se gasta una tiza.
 2. **Ver.** Cada nota es un **glifo de ceniza tenue** en el suelo, dibujado por el cliente (no es un bloque ni una
    entidad). Brilla un poco más cuanto más valorada esté.
 3. **Leer.** Si miras un glifo a ≤ 4 bloques, aparece una línea en el HUD con la frase traducida, el autor ❓ y las
@@ -107,13 +107,22 @@ textos de las palabras mantengan el artículo (como arriba) o que la plantilla l
 - Lectura: raycast del cliente contra las notas cercanas (≤ 4 bloques) y línea del HUD.
 - Configuración del cliente: `ClientConfig.showGroundMessages` (true) para ocultarlas solo para ti.
 
-## 7. Valoraciones y recompensa ❓
+## 7. Valoraciones y recompensa
 
-Opciones para el autor cuando alguien valora su nota (decisión de balance del autor):
+Decisión del autor: **opción B** (recompensa material al autor). Cifras propuestas ❓, pendientes de aprobar:
 
-- **A (recomendada):** ninguna recompensa material. Solo un aviso («Alguien encontró útil tu nota») y un logro
-  «Cronista de la ceniza» al acumular 10 valoraciones. Evita granjas de valoraciones con cuentas secundarias.
-- **B:** una pequeña curación o XP de Combate al autor si está conectado. Más motivador, pero se puede explotar.
+- Cuando alguien valora tu nota y estás conectado y vivo: **+2 de vida** (un corazón) y **+5 XP de Combate**
+  (pasa por el rendimiento decreciente normal, `XpDiminishing`).
+- **Freno contra granjas** (cuentas secundarias o amigos que se valoran entre sí):
+  - Como mucho **5 valoraciones con recompensa por autor y día de juego** (`groundMessageRewardsPerDay`). Las
+    siguientes cuentan para el contador, pero no dan nada.
+  - Una misma persona que valora te da recompensa **una vez por día de juego**, aunque valore varias notas tuyas.
+  - Sin recompensa si quien valora está en tu grupo (`PartyManager`) o si la nota tiene menos de 1 minuto.
+- Si no estás conectado, la valoración se guarda pero la recompensa se pierde (no se acumula).
+- Logro «Cronista de la ceniza» al acumular 10 valoraciones (con o sin recompensa).
+
+Opciones nuevas: `groundMessageRewardHeal` (2,0; [0, 20]), `groundMessageRewardXp` (5; [0, 100]),
+`groundMessageRewardsPerDay` (5; [0, 50]; 0 = sin recompensa).
 
 ## 8. Comandos y administración
 
@@ -133,14 +142,18 @@ Opciones para el autor cuando alguien valora su nota (decisión de balance del a
 
 Estimación: tarea mediana (del orden de C3). Sin mixins ni dependencias nuevas.
 
-## 10. Decisiones pendientes del autor
+## 10. Decisiones
 
-1. **Representación**: glifo dibujado por el cliente con los datos en el servidor (recomendado: no se puede romper ni
-   duplicar, ni llena el mundo de entidades) frente a un bloque nuevo (más sencillo de dibujar, pero se rompe, se
-   empuja con pistones y cuenta como bloque colocado).
-2. **Tiza de ceniza**: receta (propuesta: Mesa del gremio, 1 carbón vegetal + 1 polvo de hueso + 1 fragmento de alma,
-   da 4) y usos (propuesta: 1 nota por tiza).
-3. **Recompensa por valoración**: A (solo aviso y logro) o B (curación o XP).
-4. **Autor visible**: mostrar el nombre del autor (propuesta: sí; opción de servidor para ocultarlo).
-5. **Notas del mundo** en estructuras: ahora, más adelante o nunca.
-6. **Catálogo**: ¿te vale el borrador de §3 como base, o prefieres dar tú las plantillas?
+Tomadas por el autor (2026-11-25):
+
+1. **Representación**: glifo dibujado por el cliente, con los datos en el servidor.
+2. **Tiza de ceniza**: receta barata en la Mesa del gremio (1 carbón vegetal + 1 polvo de hueso + 1 fragmento de
+   alma = 4 tizas); cada nota gasta una.
+3. **Recompensa por valoración**: opción B, con las cifras y frenos de §7 pendientes de aprobar.
+4. **Notas del mundo** en estructuras: más adelante, en una fase posterior que reutilice este sistema.
+
+Abiertas ❓:
+
+5. Cifras de §7 (curación, XP, tope diario y exclusión del grupo).
+6. **Autor visible**: mostrar su nombre (propuesta: sí, con una opción de servidor para ocultarlo).
+7. **Catálogo**: ¿vale el borrador de §3 como base, o prefieres dar tú las plantillas?
