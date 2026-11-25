@@ -6,6 +6,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **V93 — Bus de eventos de combate y telemetría (primera entrega).** Un único punto del servidor (`ability/CombatEvents`) detecta los
+  lanzamientos aceptados, el daño que causan los jugadores y sus bajas, y los reparte a oyentes. Cada activa se ejecuta en un «alcance»
+  que sobrevive a las tareas diferidas (`AbilityState.schedule`), de modo que el daño se atribuye a la habilidad que lo causó; el daño que
+  provocan los oyentes llega marcado como **derivado** y con su profundidad (tope `MAX_DEPTH` = 3) para cortar cadenas de pasivas.
+  `CombatTelemetry` acumula en memoria el daño por origen (habilidad, derivado, vanilla), el gasto de energía, las bajas y el tiempo medio
+  hasta derrotar, por jugador, escenario y rol principal; los jugadores sin rol forman el grupo `VANILLA`, la **línea base** del combate
+  normal. Comando `/aptitudes telemetry` (`me` para todos; `roles`, `label <escenario>` y `reset` para operadores, con MSPT). No cambia
+  ningún valor de juego. Pendiente: curación efectiva, esmeraldas consumidas y migrar los `*Kit` al bus.
 - **V91 — Efectos de batalla, fase 10 (Elementalista).** El Proyectil, el Estallido, la Ráfaga y el Aura elementales dibujan ahora con un
   estilo propio por cada uno de los 14 elementos (llamas y lava, copos y esquirlas de hielo, rayos en zigzag con cadena, escombros de
   tierra, espirales de viento, burbujas, hojas, sombras, vacío, destellos de luz, baba, cristales de amatista y notas). Dos animaciones del

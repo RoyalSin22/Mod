@@ -187,6 +187,7 @@ public final class AbilityManager {
 
 		// v65: Establecer contexto de sinergia ANTES de invocar la habilidad.
 		setSynergyContext(player, synergy);
+		CombatEvents.Scope combatScope = CombatEvents.enter(player, cooldownKey); // V93
 		try {
 			if (action == null || !action.test(player, empowered ? 1 : 0)) {
 				fail(player, Text.translatable("aptitudes.ability.no_effect"));
@@ -195,6 +196,7 @@ public final class AbilityManager {
 		} finally {
 			// Limpiar contexto DESPUÉS de ejecutar la habilidad.
 			setSynergyContext(player, AbilitySynergyContext.NONE);
+			CombatEvents.restore(combatScope);
 		}
 
 		if (!free) {
@@ -206,6 +208,7 @@ public final class AbilityManager {
 						player.getX(), player.getBodyY(0.5), player.getZ(), 20, 0.3, 0.5, 0.3, 0);
 			}
 		}
+		CombatEvents.castAccepted(player, cooldownKey, free ? 0 : payableEnergy - missingEnergy); // V93
 		CastFx.onCast(player, role, slot == ULTIMATE_SLOT ? Kind.ULTIMATE
 				: slot == SIGNATURE_SLOT ? Kind.SIGNATURE : Kind.ACTIVE, cooldownKey);
 		if (empowered) RoleResources.consumeEmpower(player, role);

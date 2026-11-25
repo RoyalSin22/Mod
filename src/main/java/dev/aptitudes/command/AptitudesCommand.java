@@ -106,6 +106,7 @@ public final class AptitudesCommand {
 								.executes(ctx -> placeStructure(ctx, getString(ctx, "structure")))))
 				.then(TutorialCommand.branch())
 				.then(SynergyCommand.branch())
+				.then(TelemetryCommand.branch()) // V93
 				// v34: el Eclipse. Consultar es libre; iniciar y detener exige permiso de administrador.
 				.then(literal("eclipse")
 						.executes(AptitudesCommand::eclipseStatus)

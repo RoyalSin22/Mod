@@ -92,6 +92,8 @@ public class Aptitudes implements ModInitializer {
 		dev.aptitudes.achievement.Achievements.register();
 		dev.aptitudes.ability.Keystones.register();
 		dev.aptitudes.ability.SynergyTracker.register(); // v65 C5
+		dev.aptitudes.ability.CombatEvents.register(); // V93
+		dev.aptitudes.ability.CombatTelemetry.register(); // V93
 		dev.aptitudes.config.ConfigSync.register();
 		dev.aptitudes.tutorial.TutorialManager.register();
 		dev.aptitudes.guide.GrimoireManager.register();

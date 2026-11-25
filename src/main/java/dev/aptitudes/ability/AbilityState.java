@@ -162,8 +162,9 @@ public final class AbilityState {
 
 	public static void schedule(MinecraftServer server, int delayTicks, Runnable task) {
 		// v65 C5 Y1: los golpes diferidos conservan el bonus de sinergia de la habilidad que los programó.
+		// V93: y también la habilidad a la que se atribuye el daño (telemetría y eventos de combate).
 		SCHEDULED.add(new Scheduled(server.getTicks() + Math.max(1, delayTicks),
-				AbilityManager.withSynergy(AbilityManager.synergySnapshot(), task)));
+				CombatEvents.wrap(CombatEvents.current(), AbilityManager.withSynergy(AbilityManager.synergySnapshot(), task))));
 	}
 
 	/** Ejecuta {@code body(i)} {@code times} veces, cada {@code interval} ticks, empezando ya. */
