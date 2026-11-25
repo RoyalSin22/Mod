@@ -1,6 +1,12 @@
 # C7 (S5) — Mensajes en el suelo: diseño
 
-Estado: **diseño aprobado por el autor (2026-11-25, §10).** No hay código todavía.
+Estado: **diseño aprobado por el autor (2026-11-25, §10) e implementado el mismo día** (sin probar en partida).
+Diferencias con el diseño, decididas al implementar:
+
+- Borrar no tiene paquete propio: Mayús + clic derecho con la tiza llega al servidor como uso del objeto, que ya
+  identifica al jugador y el bloque. Quedan tres paquetes (sincronización, escribir y valorar).
+- Las notas por jugador (`groundMessagesPerPlayer`) cuentan por dimensión.
+- La entrada del grimorio queda pendiente.
 
 Origen: `docs/IDEAS_v47_v55.md` (S5: «notas cortas de frases predefinidas, sin texto libre, que otros jugadores leen
 y valoran»), dentro de C7 en `docs/PLAN_CLAUDE.md`.

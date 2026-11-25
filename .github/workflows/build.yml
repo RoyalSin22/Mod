@@ -57,6 +57,7 @@ jobs:
           python3 tools/lang/gen_lore_lang.py --check
           python3 tools/models/gen_bonfire_model.py src/main/resources/assets/aptitudes/models/block --check
           python3 tools/textures/gen_ascended_armor.py src/main/resources/assets/aptitudes/textures --check
+          python3 tools/textures/gen_ground_glyph.py src/main/resources/assets/aptitudes/textures/misc --check
 
       - name: Compilar y probar
         run: ./gradlew build --no-daemon --stacktrace

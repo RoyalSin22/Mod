@@ -41,6 +41,8 @@ public final class ClientConfig {
 	public boolean eclipseSkyEffects = true;
 	/** Recordatorio del tutorial. Boolean permite recuperar de forma segura un null escrito a mano. */
 	public Boolean showTutorial = true;
+	/** C7 (S5): muestra las notas en el suelo (glifo y línea del HUD). Solo para este jugador. */
+	public Boolean showGroundMessages = true;
 	/** Reduce avisos y adornos secundarios sin cambiar los interruptores individuales. */
 	public Boolean hudMinimal = false;
 	public Boolean hudAnimations = true;
@@ -78,6 +80,7 @@ public final class ClientConfig {
 		if (config == null) config = new ClientConfig();
 		// Su dominio es booleano; un null explícito conserva el valor seguro por defecto.
 		if (config.showTutorial == null) config.showTutorial = true;
+		if (config.showGroundMessages == null) config.showGroundMessages = true; // C7 (S5)
 		if (config.castAnimations == null) config.castAnimations = true;
 		if (config.playerAnimations == null) config.playerAnimations = true;
 		if (config.hudMinimal == null) config.hudMinimal = false;

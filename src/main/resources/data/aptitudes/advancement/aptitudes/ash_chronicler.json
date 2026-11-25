@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "aptitudes:ash_chalk"
+    },
+    "title": {
+      "translate": "advancement.aptitudes.ash_chronicler.title"
+    },
+    "description": {
+      "translate": "advancement.aptitudes.ash_chronicler.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "aptitudes:aptitudes/join_party",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ]
+}

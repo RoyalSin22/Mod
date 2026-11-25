@@ -72,6 +72,7 @@ public class Aptitudes implements ModInitializer {
 		dev.aptitudes.boss.BossManager.register();
 		ModAttachments.init();
 		ModNetworking.registerCommon();
+		dev.aptitudes.social.GroundMessages.register(); // C7 (S5): notas en el suelo (tras registrar los paquetes)
 		dev.aptitudes.logic.PlacementTracker.register();
 		dev.aptitudes.world.TemporaryBlocks.register();
 		dev.aptitudes.world.BossArenas.register();

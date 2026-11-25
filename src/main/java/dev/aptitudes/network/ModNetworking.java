@@ -70,6 +70,9 @@ public final class ModNetworking {
 		PayloadTypeRegistry.playC2S().register(ForgeActionPayload.ID, ForgeActionPayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(GrimoirePayload.ID, GrimoirePayload.CODEC); // v61
 		PayloadTypeRegistry.playC2S().register(GrimoireRequestPayload.ID, GrimoireRequestPayload.CODEC);
+		PayloadTypeRegistry.playS2C().register(GroundMessageSyncPayload.ID, GroundMessageSyncPayload.CODEC); // C7 (S5)
+		PayloadTypeRegistry.playC2S().register(GroundMessageWritePayload.ID, GroundMessageWritePayload.CODEC);
+		PayloadTypeRegistry.playC2S().register(GroundMessageRatePayload.ID, GroundMessageRatePayload.CODEC);
 		PayloadTypeRegistry.playS2C().register(LorePayload.ID, LorePayload.CODEC); // v67 (T7a)
 		ServerPlayNetworking.registerGlobalReceiver(ForgeActionPayload.ID, (payload, context) -> {
 			var player = context.player();

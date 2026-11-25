@@ -113,7 +113,7 @@ public final class XpEvents {
 	}
 
 	/** XP reducida si la misma fuente se repite demasiado en la ventana (ver {@link XpDiminishing}). */
-	static int diminished(ServerPlayerEntity player, String sourceKey, int amount) {
+	public static int diminished(ServerPlayerEntity player, String sourceKey, int amount) {
 		AptitudesConfig cfg = Aptitudes.config();
 		if (!cfg.xpDiminishingEnabled || amount <= 0) return amount;
 		long now = player.getServer() != null ? player.getServer().getTicks() : 0L;

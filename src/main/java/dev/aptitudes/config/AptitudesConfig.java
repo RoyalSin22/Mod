@@ -297,6 +297,24 @@ public class AptitudesConfig {
 	public double parryGraceMultiplier = 1.5;
 	/** S3: ticks que dura la ocasión del golpe de gracia (40 = 2 s). 0 = sin golpe de gracia. */
 	public int parryGraceTicks = 40;
+	/** S5: notas en el suelo con la Tiza de ceniza. */
+	public boolean groundMessagesEnabled = true;
+	/** S5: notas vivas por jugador; al pasar el tope se borra la más antigua. */
+	public int groundMessagesPerPlayer = 10;
+	/** S5: notas como máximo en un mismo chunk. */
+	public int groundMessagesPerChunk = 4;
+	/** S5: días de juego hasta que una nota caduca (0 = nunca). */
+	public int groundMessageLifetimeDays = 30;
+	/** S5: distancia mínima entre dos notas, en bloques. */
+	public int groundMessageMinSpacing = 2;
+	/** S5: muestra el nombre del autor de cada nota. */
+	public boolean groundMessageShowAuthor = true;
+	/** S5: vida que recupera el autor cuando valoran su nota (con recompensa). */
+	public double groundMessageRewardHeal = 2.0;
+	/** S5: XP de Combate que gana el autor cuando valoran su nota (con recompensa). */
+	public int groundMessageRewardXp = 5;
+	/** S5: valoraciones con recompensa por autor y día de juego (0 = sin recompensas). */
+	public int groundMessageRewardsPerDay = 5;
 
 	// ---------- Runas (v35: antes eran valores fijos) ----------
 	public int runeFlameSeconds = 3;
@@ -712,6 +730,14 @@ public class AptitudesConfig {
 		c.parryGraceTicks = clamp(c.parryGraceTicks, 0, 200);
 		c.parryGraceMultiplier = Double.isFinite(c.parryGraceMultiplier)
 				? Math.max(1.0, Math.min(3.0, c.parryGraceMultiplier)) : 1.5;
+		// C7 (S5): notas en el suelo
+		c.groundMessagesPerPlayer = clamp(c.groundMessagesPerPlayer, 1, 100);
+		c.groundMessagesPerChunk = clamp(c.groundMessagesPerChunk, 1, 32);
+		c.groundMessageLifetimeDays = clamp(c.groundMessageLifetimeDays, 0, 365);
+		c.groundMessageMinSpacing = clamp(c.groundMessageMinSpacing, 0, 8);
+		c.groundMessageRewardHeal = Math.max(0.0, Math.min(20.0, c.groundMessageRewardHeal));
+		c.groundMessageRewardXp = clamp(c.groundMessageRewardXp, 0, 100);
+		c.groundMessageRewardsPerDay = clamp(c.groundMessageRewardsPerDay, 0, 50);
 		return c;
 	}
 

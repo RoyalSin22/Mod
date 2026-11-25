@@ -69,6 +69,7 @@ public class AptitudesClient implements ClientModInitializer {
 				"key.aptitudes.cycle_element", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_G, CATEGORY));
 		ClientConfig.load();
 		GuideLookup.register(CATEGORY); // v61
+		dev.aptitudes.client.social.ClientGroundMessages.register(CATEGORY); // C7 (S5): notas en el suelo
 		dev.aptitudes.client.model.HandheldModels.register(); // v62: armas 3D en la mano
 		dev.aptitudes.client.render.BossRenderers.register(); // v63: jefes animados (GeckoLib)
 		dev.aptitudes.client.render.MobRenderers.register(); // v65: Osario Quebrado

@@ -1,5 +1,32 @@
 # Pruebas de Aptitudes
 
+## C7 (S5) — Notas en el suelo
+
+Automáticas: `social/MessageCatalogTest` (4: tamaño del catálogo, piezas válidas, textos en los 11 idiomas con un único
+`%s`, ningún concepto excluido) y `social/GroundMessageRulesTest` (6: colocación, desalojo, caducidad, valorar y
+borrar, frenos de la recompensa y brillo). Arranque del servidor comprobado el 2026-11-25 (`/aptitudes messages near`
+responde; sin errores nuevos).
+
+En partida (pendiente; mejor con dos jugadores):
+
+1. Fabrica la tiza en la Mesa del gremio (salen 4). Clic derecho sobre el suelo: se abre la pantalla; elige plantilla
+   y palabra (la vista previa cambia) y pulsa Escribir. Aparece el glifo, se gasta una tiza y suena la ceniza.
+2. Prueba los límites: otra nota a menos de 2 bloques («demasiado cerca»), 5 en un chunk («demasiadas notas») y la
+   número 11 (se borra la más antigua y avisa).
+3. Mira el glifo a ≤ 4 bloques: línea en el HUD con la frase en tu idioma, autor y valoraciones. A través de una pared
+   no se lee. Cambia el idioma del juego: la nota cambia de idioma.
+4. Segundo jugador: pulsa V. Pasa a «Te resultó útil», el glifo brilla más y el autor recibe aviso. Si el autor está
+   conectado y la nota tiene más de 1 minuto: +2 de vida y XP de Combate. Repite con otra nota del mismo autor el mismo
+   día: aviso sin recompensa. En el mismo grupo: sin recompensa.
+5. Mayús + clic derecho con la tiza sobre tu nota: se borra. Sobre la de otro (sin ser operador): «no hay ninguna nota
+   tuya».
+6. Con 10 valoraciones recibidas (aunque las notas hayan caducado): logro «Cronista de la ceniza».
+7. Operador: `/aptitudes messages near 32`, `/aptitudes messages clear 16` y `/aptitudes messages clear player <nombre>`.
+8. Ajustes del HUD → «Notas del suelo» desactivado: desaparecen glifos y línea solo para ti.
+9. `groundMessageShowAuthor = false`: la línea no muestra el autor. `groundMessagesEnabled = false`: no se escriben ni
+   se ven (las guardadas vuelven al reactivarlo).
+10. Reinicia el servidor: las notas, valoraciones y el registro diario siguen.
+
 ## C7 (S3) — Parada y golpe de gracia
 
 Automáticas: `combat/ParryRulesTest` (8 pruebas: ventana, criaturas normales, élites y jefes, proyectiles, espalda,

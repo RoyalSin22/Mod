@@ -308,6 +308,15 @@ El golpe de gracia multiplica dentro del tope global `maxDamageMultiplier` (×6)
 bajar el escudo da varias ventanas, pero cada vez que se baja el jugador queda 5 ticks sin protección (vanilla tarda
 5 ticks en contar el escudo como levantado). Pendiente de validar en partida.
 
+## 4d. Recompensa de las notas en el suelo (C7, S5)
+
+Aprobada por el autor el 2026-11-25 (opción B), sin probar en partida: cuando valoran una nota y el autor está
+conectado y vivo, +2 de vida (`groundMessageRewardHeal`) y +5 XP de Combate (`groundMessageRewardXp`, pasa por
+`XpDiminishing` con la fuente `ground_message`). Frenos contra granjas, en `GroundMessageRules.rewards`: como mucho 5 por
+autor y día de juego (`groundMessageRewardsPerDay`), una por cada persona que valora y día, ninguna dentro del mismo
+grupo ni por notas de menos de 1 minuto. Un autor desconectado no acumula recompensas. Riesgo residual: varias cuentas
+fuera de grupo pueden dar hasta 5 recompensas diarias (10 de vida y 25 XP como máximo); es poco frente a otras fuentes.
+
 ## 4b. Combos (v28)
 
 +3 % de daño por golpe de combo hasta +15 %, sumado al multiplicador del golpe directo y por tanto sujeto al

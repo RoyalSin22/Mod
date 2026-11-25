@@ -39,6 +39,7 @@ ACHIEVEMENTS = [
     ("bestiary_complete", "root", "goal", "minecraft:enchanted_book"),
     ("synergist", "root", "goal", "aptitudes:mastery_emblem"),
     ("eclipse_caller", "survive_eclipse", "goal", "aptitudes:sunset_astrolabe"),
+    ("ash_chronicler", "join_party", "goal", "aptitudes:ash_chalk"),
 ]
 
 

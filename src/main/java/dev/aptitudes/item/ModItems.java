@@ -132,6 +132,9 @@ public final class ModItems {
 	public static final Item LLAVE_DEL_VELO = register("llave_del_velo",
 			new VeilKeyItem(new Item.Settings().maxCount(16).rarity(Rarity.RARE)));
 
+	/** C7 (S5): escribe notas en el suelo (receta en la Mesa del gremio; cada nota gasta una). */
+	public static final Item ASH_CHALK = register("ash_chalk", new AshChalkItem(new Item.Settings().maxCount(64)));
+
 	/** T5: se obtiene en la cámara de diamante del Custodio; se sacrifica en la Hoguera para iniciar el Eclipse (cooldown 3 días). */
 	public static final Item RESONADOR_DEL_UMBRAL = register("resonador_del_umbral",
 			new BeheritItem(new Item.Settings().maxCount(16).rarity(Rarity.EPIC).fireproof()));
@@ -256,6 +259,7 @@ public final class ModItems {
 						entries.add(CRANEO_GRAN_OSARIO);
 						entries.add(ANCLA_DEL_VELO);
 						entries.add(LLAVE_DEL_VELO);
+						entries.add(ASH_CHALK); // C7 (S5)
 						entries.add(RESONADOR_DEL_UMBRAL);
 						entries.add(dev.aptitudes.event.Expeditions.TOKEN); // F5: ficha de expedición
 						entries.add(REBIRTH_OFFERING);

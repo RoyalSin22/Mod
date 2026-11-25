@@ -11,7 +11,15 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
   Reutiliza `boss/GuardTracker` y `GuardRules` (ventana de 4 ticks); los jefes animados siguen con su parada de B3.
 - Código: `combat/ParryRules` (puro, `ParryRulesTest`), `combat/Parries`, gancho en `RoleEvents` (`ALLOW_DAMAGE`, antes que
   las demás defensas) y en `RolePassives.modifyOutgoingDamage` (golpe de gracia dentro del tope).
-- Pendiente: prueba en partida (`docs/TESTING.md`), S5 (mensajes en el suelo) y S6 (ecos de muerte), cada una con su diseño.
+- Pendiente: prueba en partida (`docs/TESTING.md`) y S6 (ecos de muerte), con su diseño.
+
+### C7 — fase 2: notas en el suelo (S5) (Claude, sin validar en partida)
+
+- Diseño aprobado en `docs/C7_S5_MENSAJES_DISENO.md`. Tiza de ceniza, catálogo de 12 plantillas y 59 palabras,
+  valoraciones con recompensa acotada, logro «Cronista de la ceniza», comando de operador e interruptor de cliente.
+- Código: `social/` (`MessageCatalog` y `GroundMessageRules` puros con pruebas, `GroundMessageState`, `GroundMessages`),
+  `item/AshChalkItem`, tres paquetes en `network/`, `command/GroundMessageCommand`; cliente en `client/social/`.
+- Pendiente: prueba en partida, entrada del grimorio y notas «del mundo» en estructuras (fase posterior).
 
 ### v84 — Osario Quebrado (por fases)
 

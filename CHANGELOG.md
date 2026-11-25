@@ -6,6 +6,15 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **Notas en el suelo (C7, fase 2: S5).** Con la Tiza de ceniza (Mesa del gremio: carbón vegetal + polvo de hueso +
+  fragmento de alma = 4) se escribe en el suelo una nota hecha con piezas de un catálogo: 12 plantillas y 59 palabras
+  del mundo del mod, sin texto libre. Cada jugador la lee en su idioma al mirarla y puede marcarla como útil con V
+  (una vez, nunca la propia). El autor, si está conectado, recupera 2 de vida y gana 5 XP de Combate, con freno contra
+  granjas: 5 recompensas por día de juego, una por persona y día, nada dentro del mismo grupo ni por notas de menos de
+  1 minuto. Logro «Cronista de la ceniza» con 10 valoraciones. Límites por jugador, por chunk, espaciado y caducidad
+  configurables; `/aptitudes messages near|clear` para operadores; interruptor de cliente en Ajustes del HUD. Datos en
+  el servidor (`social/GroundMessageState`), glifo dibujado por el cliente; reglas puras en `social/MessageCatalog` y
+  `social/GroundMessageRules` con pruebas. Textos en los 11 idiomas. Sin probar en partida.
 - **Parada y golpe de gracia (C7, fase 1: S3).** Levantar el escudo justo antes de un golpe cuerpo a cuerpo de una
   criatura (ventana de 4 ticks, la misma que contra los jefes; solo de frente y sin proyectiles) lo anula. Las
   criaturas normales quedan aturdidas 1,5 s (con 3 s de inmunidad posterior) y los élites y campeones pierden postura.

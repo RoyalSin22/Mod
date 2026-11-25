@@ -69,6 +69,9 @@ public class HudConfigScreen extends Screen {
 			toggle(panelX, y, half, "visible", () -> cfg.hudVisible, v -> cfg.hudVisible = v);
 			toggle(right, y, half, "tutorial", () -> cfg.showTutorial, v -> cfg.showTutorial = v);
 			y += ROW;
+			toggle(panelX, y, half, "ground_messages", () -> !Boolean.FALSE.equals(cfg.showGroundMessages),
+					v -> cfg.showGroundMessages = v); // C7 (S5)
+			y += ROW;
 			button(panelX, y, panelWidth, ScreenTexts.DONE, b -> close());
 			panelBottom = y + BUTTON + GAP + (kit ? 8 : 0);
 			return;

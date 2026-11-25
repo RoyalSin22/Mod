@@ -432,6 +432,15 @@ desde que el evento **empieza** (provisional) y no las consumen los comandos `/a
 | `parryStunTicks` | 30 | [0, 200] | C7 (S3): ticks de aturdimiento de una criatura normal tras la parada (Lentitud V y sin poder golpear). Después, 3 s sin poder volver a aturdirse. 0 = sin aturdimiento. |
 | `parryGraceMultiplier` | 1.5 | [1.0, 3.0] | C7 (S3): multiplicador del golpe de gracia (el siguiente golpe cuerpo a cuerpo del mismo jugador contra esa criatura). Entra en el tope `maxDamageMultiplier`. |
 | `parryGraceTicks` | 40 | [0, 200] | C7 (S3): ticks para dar el golpe de gracia tras la parada. 0 = sin golpe de gracia. |
+| `groundMessagesEnabled` | true | — | C7 (S5): notas en el suelo con la Tiza de ceniza. Desactivado, no se pueden escribir ni valorar y no se envían a los clientes (las guardadas se conservan). |
+| `groundMessagesPerPlayer` | 10 | [1, 100] | C7 (S5): notas vivas por jugador y dimensión; al escribir pasado el tope se borra la más antigua. |
+| `groundMessagesPerChunk` | 4 | [1, 32] | C7 (S5): notas como máximo en un chunk. |
+| `groundMessageLifetimeDays` | 30 | [0, 365] | C7 (S5): días de juego hasta que una nota se borra sola. 0 = no caducan. |
+| `groundMessageMinSpacing` | 2 | [0, 8] | C7 (S5): distancia mínima en bloques entre dos notas (nunca dos en el mismo bloque). |
+| `groundMessageShowAuthor` | true | — | C7 (S5): muestra el nombre del autor en el HUD; false = notas anónimas. |
+| `groundMessageRewardHeal` | 2.0 | [0, 20] | C7 (S5): vida que recupera el autor (si está conectado y vivo) por una valoración con recompensa. |
+| `groundMessageRewardXp` | 5 | [0, 100] | C7 (S5): XP de Combate del autor por una valoración con recompensa (pasa por el rendimiento decreciente). |
+| `groundMessageRewardsPerDay` | 5 | [0, 50] | C7 (S5): valoraciones con recompensa por autor y día de juego; además, una por cada persona que valora y día, ninguna entre miembros del mismo grupo ni por notas de menos de 1 minuto. 0 = sin recompensas. |
 | `cryptEnabled` | true | — | V69: los Templos del Custodio nuevos pueden generarse con la Cripta de la Niebla (si el terreno lo permite). No afecta a templos ya generados. |
 | `cryptIdleResetSeconds` | 30 | [5, 300] | V69: segundos sin jugadores vivos en la sala tras los que la oleada en curso se reinicia (la Llave del Velo no se vuelve a gastar). También rige la sala de pruebas del Piso 2 del templo hondo (V70). |
 | `cryptWaveSizePercent` | 100 | [25, 300] | V69: porcentaje del tamaño de las oleadas de la Cripta (base 5/7/9, +2 por jugador adicional, ×(1 + 0,25 × anillo)). También escala las dos oleadas de la sala de pruebas del templo hondo (V70). |

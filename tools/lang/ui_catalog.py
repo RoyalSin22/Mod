@@ -1884,3 +1884,113 @@ screen.aptitudes.respec.cost¦Custa %s níveis de experiência¦Coûte %s niveau
 screen.aptitudes.respec.missing¦Você precisa de %s níveis de experiência¦Il vous faut %s niveaux d’expérience¦Du brauchst %s Erfahrungsstufen
 screen.aptitudes.respec.nothing¦Não há pontos gastos nesta classe¦Aucun point dépensé dans ce rôle¦Keine Punkte in dieser Rolle ausgegeben
 """)
+
+# C7 (S5): notas en el suelo (tiza, pantalla, HUD, mensajes, comando, logro y catálogo de frases).
+add('', """
+item.aptitudes.ash_chalk¦Giz de cinzas¦Craie de cendre¦Aschekreide
+screen.aptitudes.hud.ground_messages¦Notas no chão¦Notes au sol¦Bodennotizen
+item.aptitudes.ash_chalk.tooltip¦Clique direito no topo de um bloco para escrever uma nota no chão. Shift + clique direito apaga uma nota sua.¦Clic droit sur le dessus d’un bloc pour écrire une note au sol. Maj + clic droit efface une de vos notes.¦Rechtsklick auf die Oberseite eines Blocks schreibt eine Notiz auf den Boden. Umschalt + Rechtsklick entfernt eine deiner Notizen.
+key.aptitudes.rate_message¦Marcar nota do chão como útil¦Marquer une note au sol comme utile¦Bodennotiz als nützlich markieren
+screen.aptitudes.ground_message.title¦Escrever uma nota¦Écrire une note¦Notiz schreiben
+screen.aptitudes.ground_message.templates¦Frases¦Phrases¦Sätze
+screen.aptitudes.ground_message.words¦Palavras¦Mots¦Wörter
+screen.aptitudes.ground_message.write¦Escrever¦Écrire¦Schreiben
+screen.aptitudes.ground_message.cancel¦Cancelar¦Annuler¦Abbrechen
+screen.aptitudes.ground_message.category.creature¦Criaturas¦Créatures¦Kreaturen
+screen.aptitudes.ground_message.category.place¦Lugares¦Lieux¦Orte
+screen.aptitudes.ground_message.category.item¦Itens¦Objets¦Gegenstände
+screen.aptitudes.ground_message.category.action¦Ações¦Actions¦Aktionen
+screen.aptitudes.ground_message.category.concept¦Conceitos¦Concepts¦Begriffe
+hud.aptitudes.ground_message.author¦Escrita por %s¦Écrite par %s¦Geschrieben von %s
+hud.aptitudes.ground_message.ratings¦Útil: %s¦Utile : %s¦Nützlich: %s
+hud.aptitudes.ground_message.rate_hint¦[%s] Marcar como útil¦[%s] Marquer comme utile¦[%s] Als nützlich markieren
+hud.aptitudes.ground_message.rated¦Você achou útil¦Vous l’avez trouvée utile¦Du fandest sie nützlich
+hud.aptitudes.ground_message.own¦Sua nota¦Votre note¦Deine Notiz
+message.aptitudes.ground.placed¦Você escreveu uma nota no chão.¦Vous avez écrit une note au sol.¦Du hast eine Notiz auf den Boden geschrieben.
+message.aptitudes.ground.removed¦Você apagou sua nota.¦Vous avez effacé votre note.¦Du hast deine Notiz entfernt.
+message.aptitudes.ground.rated¦Você marcou a nota como útil.¦Vous avez marqué la note comme utile.¦Du hast die Notiz als nützlich markiert.
+message.aptitudes.ground.author_rated¦Alguém achou sua nota útil.¦Quelqu’un a trouvé votre note utile.¦Jemand fand deine Notiz nützlich.
+message.aptitudes.ground.author_rewarded¦Alguém achou sua nota útil: você recupera vida e ganha experiência de Combate.¦Quelqu’un a trouvé votre note utile : vous récupérez de la vie et gagnez de l’expérience de Combat.¦Jemand fand deine Notiz nützlich: Du erhältst Leben zurück und Nahkampf-EP.
+message.aptitudes.ground.too_close¦Há outra nota perto demais.¦Une autre note est trop proche.¦Eine andere Notiz ist zu nah.
+message.aptitudes.ground.chunk_full¦Esta área já tem notas demais.¦Cette zone a déjà trop de notes.¦Hier gibt es schon zu viele Notizen.
+message.aptitudes.ground.invalid¦Você não pode escrever aí.¦Vous ne pouvez pas écrire ici.¦Dort kannst du nicht schreiben.
+message.aptitudes.ground.disabled¦As notas no chão estão desativadas neste servidor.¦Les notes au sol sont désactivées sur ce serveur.¦Bodennotizen sind auf diesem Server deaktiviert.
+message.aptitudes.ground.oldest_removed¦Você atingiu o limite de notas: a mais antiga foi apagada.¦Vous avez atteint la limite de notes : la plus ancienne a été effacée.¦Du hast dein Notizlimit erreicht: Die älteste wurde entfernt.
+message.aptitudes.ground.none_here¦Não há nenhuma nota sua aqui.¦Aucune de vos notes ici.¦Hier ist keine Notiz von dir.
+aptitudes.cmd.messages_near¦%s notas no chão a até %s blocos.¦%s notes au sol à %s blocs ou moins.¦%s Bodennotizen im Umkreis von %s Blöcken.
+aptitudes.cmd.messages_entry¦%s · %s · %s (útil: %s)¦%s · %s · %s (utile : %s)¦%s · %s · %s (nützlich: %s)
+aptitudes.cmd.messages_cleared¦Notas apagadas: %s¦Notes effacées : %s¦Entfernte Notizen: %s
+advancement.aptitudes.ash_chronicler.title¦Cronista das cinzas¦Chroniqueur de cendre¦Aschechronist
+advancement.aptitudes.ash_chronicler.description¦Faça suas notas no chão serem marcadas como úteis 10 vezes.¦Faites marquer vos notes au sol comme utiles 10 fois.¦Lass deine Bodennotizen 10-mal als nützlich markieren.
+message.aptitudes.ground.template.danger¦Cuidado: %s¦Attention : %s¦Vorsicht: %s
+message.aptitudes.ground.template.ahead¦Mais adiante: %s¦Plus loin : %s¦Weiter vorn: %s
+message.aptitudes.ground.template.need¦Necessário aqui: %s¦Il faut ici : %s¦Hier nötig: %s
+message.aptitudes.ground.template.try¦Tente: %s¦Essayez : %s¦Versuch: %s
+message.aptitudes.ground.template.weak_point¦Ponto fraco: %s¦Point faible : %s¦Schwachpunkt: %s
+message.aptitudes.ground.template.hidden¦Algo escondido: %s¦Quelque chose de caché : %s¦Verborgen: %s
+message.aptitudes.ground.template.keep_ready¦Tenha à mão: %s¦Gardez sous la main : %s¦Halte bereit: %s
+message.aptitudes.ground.template.turn_back¦Volte: %s¦Faites demi-tour : %s¦Kehr um: %s
+message.aptitudes.ground.template.worth_it¦Vale a pena: %s¦Ça vaut le coup : %s¦Lohnt sich: %s
+message.aptitudes.ground.template.remember¦Lembre-se: %s¦Souvenez-vous : %s¦Denk daran: %s
+message.aptitudes.ground.template.at_night¦À noite: %s¦La nuit : %s¦Nachts: %s
+message.aptitudes.ground.template.this_way¦Por aqui: %s¦Par ici : %s¦Hier entlang: %s
+message.aptitudes.ground.word.ossuary¦o Ossuário Quebrado¦l’Ossuaire brisé¦das Zerbrochene Beinhaus
+message.aptitudes.ground.word.great_ossuary¦o Grande Ossuário Quebrado¦le Grand Ossuaire brisé¦das Große Zerbrochene Beinhaus
+message.aptitudes.ground.word.wanderer¦o Andarilho Velado¦l’Errant voilé¦der Verschleierte Wanderer
+message.aptitudes.ground.word.automaton¦o Autômato Antigo¦l’Automate ancien¦der Uralte Automat
+message.aptitudes.ground.word.colossus¦o Colosso Sem Rosto¦le Colosse sans visage¦der gesichtslose Koloss
+message.aptitudes.ground.word.guardian¦o Guardião Desmontado¦le Gardien démantelé¦der Zerlegte Wächter
+message.aptitudes.ground.word.custodian¦o Custódio¦le Gardien des Quatre Clés¦der Wächter der vier Schlüssel
+message.aptitudes.ground.word.slagger¦o Escorificador de Ferro¦le Scorificateur de fer¦der Eisenschlacker
+message.aptitudes.ground.word.elite¦um elite¦un élite¦ein Elitegegner
+message.aptitudes.ground.word.champion¦um campeão¦un champion¦ein Champion
+message.aptitudes.ground.word.undead¦os mortos-vivos¦les morts-vivants¦Untote
+message.aptitudes.ground.word.creeper¦um creeper¦un creeper¦ein Creeper
+message.aptitudes.ground.word.many_enemies¦muitos inimigos¦beaucoup d’ennemis¦viele Feinde
+message.aptitudes.ground.word.bonfire¦a Fogueira¦le Feu de camp¦das Leuchtfeuer
+message.aptitudes.ground.word.temple¦o templo¦le temple¦der Tempel
+message.aptitudes.ground.word.crypt¦a cripta¦la crypte¦die Krypta
+message.aptitudes.ground.word.pit¦um fosso¦une fosse¦eine Grube
+message.aptitudes.ground.word.trap¦uma armadilha¦un piège¦eine Falle
+message.aptitudes.ground.word.chest¦um baú¦un coffre¦eine Truhe
+message.aptitudes.ground.word.door¦uma porta¦une porte¦eine Tür
+message.aptitudes.ground.word.stairs¦uma escada¦un escalier¦eine Treppe
+message.aptitudes.ground.word.water¦água¦de l’eau¦Wasser
+message.aptitudes.ground.word.lava¦lava¦de la lave¦Lava
+message.aptitudes.ground.word.shortcut¦um atalho¦un raccourci¦eine Abkürzung
+message.aptitudes.ground.word.dead_end¦um beco sem saída¦une impasse¦eine Sackgasse
+message.aptitudes.ground.word.veil_anchor¦a Âncora do Véu¦l’Ancre du voile¦der Schleieranker
+message.aptitudes.ground.word.veil_key¦a Chave do Véu¦la Clé du Voile¦der Schlüssel des Schleiers
+message.aptitudes.ground.word.flask¦um frasco¦une fiole¦eine Flasche
+message.aptitudes.ground.word.shield¦um escudo¦un bouclier¦ein Schild
+message.aptitudes.ground.word.torches¦tochas¦des torches¦Fackeln
+message.aptitudes.ground.word.bow¦um arco¦un arc¦ein Bogen
+message.aptitudes.ground.word.potion¦uma poção¦une potion¦ein Trank
+message.aptitudes.ground.word.food¦comida¦de la nourriture¦Essen
+message.aptitudes.ground.word.armor¦armadura¦une armure¦Rüstung
+message.aptitudes.ground.word.soul_shards¦fragmentos de alma¦des fragments d’âme¦Seelensplitter
+message.aptitudes.ground.word.parry¦aparar o golpe¦parer¦Parieren
+message.aptitudes.ground.word.dodge¦esquivar¦esquiver¦Ausweichen
+message.aptitudes.ground.word.retreat¦recuar¦reculer¦Rückzug
+message.aptitudes.ground.word.group¦ir em grupo¦venir en groupe¦in der Gruppe gehen
+message.aptitudes.ground.word.jump¦pular¦sauter¦Springen
+message.aptitudes.ground.word.wait¦esperar¦attendre¦Warten
+message.aptitudes.ground.word.run¦correr¦courir¦Rennen
+message.aptitudes.ground.word.sneak¦ir agachado¦avancer accroupi¦Schleichen
+message.aptitudes.ground.word.from_behind¦atacar pelas costas¦attaquer de dos¦Angriff von hinten
+message.aptitudes.ground.word.ranged¦ataque à distância¦attaquer à distance¦Fernkampf
+message.aptitudes.ground.word.light¦levar luz¦apporter de la lumière¦Licht mitnehmen
+message.aptitudes.ground.word.dig¦cavar¦creuser¦Graben
+message.aptitudes.ground.word.eclipse¦o Eclipse¦l’Éclipse¦die Finsternis
+message.aptitudes.ground.word.soul_fog¦a Névoa das Almas¦la Brume des âmes¦der Seelennebel
+message.aptitudes.ground.word.ember_rain¦a Chuva de Brasas¦la Pluie de braises¦der Glutregen
+message.aptitudes.ground.word.fire¦fogo¦le feu¦Feuer
+message.aptitudes.ground.word.poison¦veneno¦le poison¦Gift
+message.aptitudes.ground.word.darkness¦a escuridão¦l’obscurité¦Dunkelheit
+message.aptitudes.ground.word.magic¦magia¦la magie¦Magie
+message.aptitudes.ground.word.fall¦uma queda¦une chute¦ein Sturz
+message.aptitudes.ground.word.treasure¦um tesouro¦un trésor¦ein Schatz
+message.aptitudes.ground.word.danger¦perigo¦danger¦Gefahr
+message.aptitudes.ground.word.safe_spot¦um lugar seguro¦un endroit sûr¦ein sicherer Ort
+message.aptitudes.ground.word.nothing¦nada¦rien¦nichts
+""")

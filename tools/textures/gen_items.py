@@ -946,6 +946,26 @@ T['temple_key'] = [
     "................",
 ]
 
+# C7 (S5): Tiza de ceniza (barra gris en diagonal con la punta gastada y polvo de ceniza).
+T['chalk'] = [
+    "................",
+    "................",
+    "...........k....",
+    "..........kKC...",
+    ".........+CCc...",
+    "........+CCc....",
+    ".......+CCc.....",
+    "......+CCc......",
+    ".....+CCc.......",
+    "....+CCc........",
+    "....CCc.........",
+    "...KKc..........",
+    "...Kk.....k.....",
+    "........k...k...",
+    "......k....k....",
+    "................",
+]
+
 T['vessel'] = [
     "................",
     "......GGGG......",
@@ -1086,6 +1106,7 @@ ITEMS = {
     'temple_key': ('temple_key', {'G': '#5fb3b3', 'J': '#ffd166'}),
     # V69: Llave del Velo (abre la Cripta de la Niebla)
     'llave_del_velo': ('temple_key', {'G': '#7e6ab8', 'J': '#d9c8ff'}),
+    'ash_chalk': ('chalk', {'C': '#cfc9bf', 'K': '#4a4643'}),  # C7 (S5)
     # T4: llaves del Custodio (mismo dibujo que la llave del templo, un metal cada una)
     'custodian_key_copper': ('temple_key', {'G': '#a8582f', 'J': '#e39a62'}),
     'custodian_key_iron': ('temple_key', {'G': '#80888f', 'J': '#c5ccd4'}),

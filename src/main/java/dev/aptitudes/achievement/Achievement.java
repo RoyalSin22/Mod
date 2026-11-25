@@ -37,7 +37,9 @@ public enum Achievement {
 	/** v65 C5: activar las 5 sinergias en una sesión (Y1-Y5). */
 	SYNERGIST("synergist", ROOT, Frame.GOAL, "aptitudes:mastery_emblem"),
 	/** C3 (E7, «Quien llama a la noche»): convocar un Eclipse con el Astrolabio del Ocaso o el Behelit. */
-	ECLIPSE_CALLER("eclipse_caller", SURVIVE_ECLIPSE, Frame.GOAL, "aptitudes:sunset_astrolabe");
+	ECLIPSE_CALLER("eclipse_caller", SURVIVE_ECLIPSE, Frame.GOAL, "aptitudes:sunset_astrolabe"),
+	/** C7 (S5, «Cronista de la ceniza»): que valoren como útiles tus notas en el suelo 10 veces. */
+	ASH_CHRONICLER("ash_chronicler", JOIN_PARTY, Frame.GOAL, "aptitudes:ash_chalk");
 
 	/** Nombre del único criterio de cada logro (salvo la raíz, que usa {@code minecraft:tick}). */
 	public static final String CRITERION = "done";
