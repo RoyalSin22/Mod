@@ -120,3 +120,21 @@ Mi recomendación provisional: **C**, con daño reducido y sin control duro cont
 2. Yo verifico en el código la pregunta 2 y hago el inventario de recursos por rol (sin cambiar nada).
 3. Empezar por **V92** y **V93**; no abrir V96 hasta tener datos.
 4. ~~Decidir si las activas golpean a jugadores~~ **Decidido: B** (§5), con la opción de PvP **activada por defecto** y la protección de reaparición para **todos los jugadores** (no solo los de rol).
+
+## 6. Estado de V93 (2026-11-25)
+
+**Hecho:** `CombatEvents` (bus, alcance por habilidad que sobrevive a las tareas diferidas, daño derivado con profundidad), `CombatTelemetry`
+(daño por origen, energía gastada, bajas y tiempo hasta derrotar; grupo `VANILLA` = línea base), `CombatTelemetryRules` (puro, con pruebas) y
+`/aptitudes telemetry`.
+
+**Cómo usarlo para equilibrar:** `/aptitudes telemetry label osario` (operador) antes de un escenario, jugar, y `/aptitudes telemetry roles`
+para comparar dps, parte de daño de habilidad frente a vanilla, daño por energía, vida derrotada por segundo y bajas por rol, con la línea base
+de jugadores sin rol en la misma etiqueta. `reset` vacía los datos.
+
+**Limitaciones conocidas:**
+- Es en memoria: se pierde al reiniciar.
+- El daño de pasivas que no pasa por un oyente y ocurre fuera de una activa se clasifica por tipo de daño (mágico, explosión…) como derivado;
+  el golpe, el arco y el tridente cuentan como vanilla. No es una atribución perfecta.
+- El daño de esbirros, lobos, mascotas y torretas no se atribuye al dueño todavía (se resolverá con V94).
+- Falta la **curación efectiva** (no hay un punto único de curación en el código) y las **esmeraldas consumidas** del Mercader.
+- Los `*Kit` aún no usan el bus; se migrarán por roles en versiones posteriores sin cambiar su comportamiento.
