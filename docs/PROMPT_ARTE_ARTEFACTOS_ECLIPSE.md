@@ -1,3 +1,5 @@
+> **ACTUALIZACIÓN (2026-11-25):** el autor decidió que la textura del Damnorath es **un embrión dentro de un frasco** (no el aro hueco de §3, que queda como alternativa descartada) y que «Embrión del Umbral» es solo el nombre de lore. Ya existe una textura de plantilla (`gen_items.py`, `embryo`) y su modelo; el Astrolabio también. Este documento solo sirve si se quiere arte definitivo de ChatGPT.
+
 # Prompt de arte — Artefactos del Eclipse (Damnorath y Astrolabio del Ocaso)
 
 Encargo para el generador de arte (ChatGPT), en la línea de `docs/PROMPT_ARTE_ARMAS.md` (de ahí salen la dirección artística y la técnica de

@@ -1003,6 +1003,46 @@ T['anchor'] = [
     "................"
 ]
 
+T['astrolabe'] = [
+    "......ZZZZ......",
+    ".....Z....Z.....",
+    ".....Z....Z.....",
+    "......ZZZZ......",
+    ".....ZZZZZZ.....",
+    "....ZZJJJJZZ....",
+    "...ZJJJJJJJJZ...",
+    "..ZZJDDDDJJJZZ..",
+    "..ZJDDDDDDJJJZ..",
+    "..ZDDDDDDDDJJZ..",
+    "..ZDDDDDDDDJJZ..",
+    "..ZDDDDDDDDJJZ..",
+    "..ZDDDDDDDDJZZ..",
+    "...ZDDDDDDJJZ...",
+    "....ZDDDDJZZ....",
+    ".....ZZZZZZ....."
+]
+
+# Damnorath («Embrión de la ruina», D-40): un embrión enroscado dentro de un frasco de cristal con líquido violeta, tapón y aro de oro.
+# Sin rostro. En el grimorio el lore puede llamarlo «Embrión del Umbral».
+T['embryo'] = [
+    "......ZZZZ......",
+    "......Z..Z......",
+    "....ZZZZZZZZ....",
+    ".....FFFFFF.....",
+    "....FAAAAAAF....",
+    "...FAAJJJAAAF...",
+    "..FAAJJJJJAAAF..",
+    "..FAAJJ*JJAAAF..",
+    "..FAAAJJJJAAAF..",
+    "..FAAJJJAAAAAF..",
+    "..FAAAJJJJAAAF..",
+    "..FAAAAJJAAAAF..",
+    "...FAAAAAAAAF...",
+    "....FAAAAAAF....",
+    ".....FFFFFF.....",
+    "................"
+]
+
 ITEMS = {
     'herb_petals': ('petals', {'A': '#d78bb9', 'V': '#4caf50'}),
     # Armas de rol
@@ -1087,6 +1127,9 @@ ITEMS = {
     'custodian_key_iron': ('temple_key', {'G': '#80888f', 'J': '#c5ccd4'}),
     'custodian_key_gold': ('temple_key', {'G': '#e0b43a', 'J': '#fff0a0'}),
     'custodian_key_diamond': ('temple_key', {'G': '#2fb6ee', 'J': '#c4f1ff'}),
+    # C3: Astrolabio del Ocaso y Embrión del Umbral (Behelit)
+    'sunset_astrolabe': ('astrolabe', {'Z': '#a8651c', 'D': '#120d18', 'J': '#e0520f'}),
+    'resonador_del_umbral': ('embryo', {'F': '#cfe0e8', 'A': '#5a3470', 'Z': '#c8962a', 'J': '#e8a89a'}),
     'life_vessel': ('vessel', {'F': '#e9eef2', 'A': '#c2185b', 'J': '#ff8fab', 'G': '#e0b43a'}),
 }
 

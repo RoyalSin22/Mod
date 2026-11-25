@@ -12,7 +12,7 @@
 | D-14 | Colección I: A-01 a A-06 aceptadas. A-01 con matiz: el desbloqueo de LORE-013 es «inicio del Eclipse (primera vez que el jugador lo invoca)». A-02: LORE-014 se desbloquea al finalizar el Eclipse. A-03: «Vigilantes de los Sellos». A-04, A-05 y A-06 como se propusieron | tools/lang/lore_catalog.py |
 | D-17 | Colección II: A-07 a A-10 aplicadas como se propusieron | tools/lang/lore_catalog.py |
 | D-20 | Cadena de progresión aprobada (ver `09_CADENA_DE_PROGRESION.md`): aldeano del gremio inicia la Niebla (global, 1 día, cada 10 días); drops distintos por criatura; objeto de acceso crafteado; templo nuevo con Autómata interno; Custodio con 4 llaves (cobre, hierro, oro, diamante) en una tirada; Behelit en la cámara de diamante, se consume y se usa uno cada 3 días; Lluvia de brasas al encender un portal | 09 |
-| D-21 | Nombre «Resonador del Umbral» aceptado como provisional (D-11 sigue abierta para cambiarlo) | 07 |
+| D-21 | Nombre «Embrión del Umbral» aceptado como provisional (D-11 sigue abierta para cambiarlo) | 07 |
 | D-22 | LORE-010, 012 y 013 se dejan como están (punto 16) | `lore_catalog.py` |
 | D-25 | Aclaraciones de la cadena: el objeto de acceso se usa solo en la puerta del Custodio y se consume; el Behelit se espera 3 días por mundo desde el fin del Eclipse; la Niebla puede iniciarse en cualquier momento y dura un día de Minecraft; la Lluvia de brasas tiene espera; los sellos se retirarán con migración, sin eliminarlos ahora; el aldeano dice «los muertos se han ido, pero volverán» | 09 |
 | D-26 | Los 3 sellos de invocación se retirarán con migración; la Lluvia de brasas tiene espera de 5 días; el calendario rotativo desaparece por completo; la Niebla empieza al hablar con el aldeano | 09 |

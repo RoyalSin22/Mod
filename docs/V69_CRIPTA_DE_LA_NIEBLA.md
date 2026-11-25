@@ -21,7 +21,7 @@ rompen: la receta **no sustituye las cuatro llaves** ni altera los templos exist
 - **Templo del Custodio** (`layout = 1`, T3/T4): `world/CustodianTempleFeature`, plano en `temple/CustodianTempleLayout`
   (31×31, radio 15). Superficie: atrio con el Autómata y puzle. Subsuelo (y −9…−1, casco de piedra): escalera,
   antesala, Puerta del Custodio (consume el Ancla del Velo) y cámara del Custodio (x −10…10, z 6…14, suelo en y −8) con el
-  Relicario y las cuatro cámaras de recompensa (cobre, hierro, oro y diamante, la última con el Resonador del Umbral).
+  Relicario y las cuatro cámaras de recompensa (cobre, hierro, oro y diamante, la última con el Embrión del Umbral).
 - **Flujo** en `temple/TempleFlowRules`: `DORMANT → AUTOMATON → PUZZLE → DOOR_LOCKED → CUSTODIAN → CLEARED`. Se guarda como
   número en `TempleSealBlockEntity` (solo se añaden valores al final). Los templos antiguos tienen `layout = 0`.
 - **Bajo la cámara del Custodio no hay nada**: del casco (y −9) hacia abajo el volumen está libre y la profundidad no tiene
@@ -77,7 +77,7 @@ LOCKED ──Custodio cae (CLEARED)──▶ READY ──Llave del Velo (se cons
 ## 5. Recompensa (botín y lore, sin poder nuevo)
 
 **Cofre `custodian_crypt`** (cofre normal, como las cámaras de T4: en grupo se reparte lo que haya). Por encima de la cámara de
-diamante en cantidad, **sin Resonador del Umbral ni objetos nuevos**:
+diamante en cantidad, **sin Embrión del Umbral ni objetos nuevos**:
 
 | Tiradas | Contenido (peso) |
 |---|---|

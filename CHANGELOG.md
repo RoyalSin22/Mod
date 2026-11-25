@@ -29,14 +29,15 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ### Añadido
 - **Astrolabio del Ocaso y espera común del Eclipse (C3).** El Astrolabio (clic derecho en la Hoguera) solo lo usan
-  los operadores o el líder del grupo (decisión E1) y ya no se consume si se rechaza. Comparte con el Resonador del
+  los operadores o el líder del grupo (decisión E1) y ya no se consume si se rechaza. Comparte con el Embrión del
   Umbral (Behelit) la espera de `eclipseSummonCooldownDays` (3 por defecto, 0 = sin espera) días de juego por mundo,
   contados desde el fin del último Eclipse (`EclipseState.lastEndTick`, guardado con compatibilidad hacia atrás), y la
   regla de «un evento a la vez». Solo en el Mundo Normal. Reglas puras en `event/EclipseSummoningRules`
   (`EclipseSummoningRulesTest`), mensajes de rechazo en los 11 idiomas y logro «Quien llama a la noche»
   (`eclipse_caller`, hijo de «Superviviente del Eclipse»; también al usar el Behelit). El Behelit ya respeta la espera,
   avisa al jugador cuando se rechaza y no se gasta en Creativo. No toca el calendario rotativo (E10 sigue pendiente).
-  Falta el arte de ambos objetos (`docs/PENDIENTES.md`).
+  El arte de ambos objetos va en la entrada siguiente.
+- **Arte del Astrolabio del Ocaso y del Damnorath.** Plantillas `astrolabe` (disco de bronce con el sol eclipsado) y `embryo` (embrión enroscado dentro de un frasco de cristal con líquido violeta, tapón y aro de oro, sin rostro) en `tools/textures/gen_items.py`, texturas 16×16 y modelos de objeto. En el inventario el objeto se llama «Damnorath» (D-40); «Embrión del Umbral» queda como nombre de lore para el grimorio. Decisión del autor: la textura es literalmente un embrión de la ruina (anula la cautela del diseño de aro hueco). El id `resonador_del_umbral` no cambia. Arte de plantilla provisional.
 - `tools/advancements/gen_advancements.py`: la lista del generador incluye ya «Sinergista», que existía solo como JSON.
 - **V86 fase 3 · Las Tres Torres Señoriales cobran vida.** Nuevo bloque controlador irrompible (`three_towers_controller`, en el centro del
   patio; reutiliza las texturas del sello del templo) con su entidad de bloque (`dungeon/TowersControllerBlockEntity`) y reglas puras
