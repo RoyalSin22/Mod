@@ -1,4 +1,4 @@
-# 09 · Cadena de progresión: Niebla → templo → Behelit → Eclipse
+# 09 · Cadena de progresión: Niebla → templo → Damnorath → Eclipse
 
 Diseño **ESTABLECIDO por el autor**. Casi todo es **mecánica nueva o rediseñada**: este archivo es
 documentación, no implementa nada. «Hoy» describe lo que hay en el código (verificado el 2026-11-13).
@@ -15,8 +15,8 @@ documentación, no implementa nada. «Hoy» describe lo que hay en el código (v
 | 6 | Se resuelve el **puzle**, se avanza hasta la sala previa y el objeto especial abre la **puerta de la sala del Custodio** (solo ahí; no se usa para entrar al templo) | Puzle de palancas y placas por anillo de Amenaza (`TempleRules`) | PENDIENTE |
 | 7 | **El Custodio suelta 4 llaves** (cobre, hierro, oro y diamante) en **una sola tirada**. Cada llave abre una cámara de recompensas | Templo nuevo (T3/T4): suelta las cuatro llaves a la vez, cada una ligada a su templo, y solo abre la cámara de su metal. Además suelta la llave del Relicario (Vaso de vida), que se mantiene | **IMPLEMENTADO en T4**; pendiente de prueba en partida |
 | 8 | **Recompensas:** objetos vanilla (manzanas doradas encantadas, bloques de minerales…), objetos del mod y similares | Cuatro cofres con tablas `custodian_<metal>` que crecen en valor (ver `docs/BALANCE.md`); la de diamante lleva las manzanas encantadas y la netherita | **IMPLEMENTADO en T4** (contenido elegido por el redactor, provisional) |
-| 9 | **La cámara de diamante guarda el Behelit** (nombre de trabajo: *Resonador del Umbral*). Se puede tener **más de uno**, pero solo se usa **uno cada 3 días por mundo, contados desde el fin del Eclipse**. Se consigue en los templos del Custodio | `item/BeheritItem` (`RESONADOR_DEL_UMBRAL`) y espera de 3 días por mundo desde el fin del Eclipse (C3, 2026-11-24). Sin arte | **IMPLEMENTADO** (T5a + C3); pendiente de arte y prueba en partida |
-| 10 | **Se sacrifica en la Hoguera** (se consume) y empieza el **Eclipse** | El sacrificio funciona, pero el Eclipse **sigue programado por calendario** (`eclipseIntervalDays = 10`): E10 sin hacer. Además existe una segunda vía, el **Astrolabio del Ocaso** (C3, decisión del autor 2026-11-24): operadores o líder del grupo, misma espera que el Behelit | **PARCIAL** |
+| 9 | **La cámara de diamante guarda el Damnorath** (nombre de trabajo: *Damnorath*). Se puede tener **más de uno**, pero solo se usa **uno cada 3 días por mundo, contados desde el fin del Eclipse**. Se consigue en los templos del Custodio | `item/BeheritItem` (`RESONADOR_DEL_UMBRAL`) y espera de 3 días por mundo desde el fin del Eclipse (C3, 2026-11-24). Sin arte | **IMPLEMENTADO** (T5a + C3); pendiente de arte y prueba en partida |
+| 10 | **Se sacrifica en la Hoguera** (se consume) y empieza el **Eclipse** | El sacrificio funciona, pero el Eclipse **sigue programado por calendario** (`eclipseIntervalDays = 10`): E10 sin hacer. Además existe una segunda vía, el **Astrolabio del Ocaso** (C3, decisión del autor 2026-11-24): operadores o líder del grupo, misma espera que el Damnorath | **PARCIAL** |
 | 11 | **Lluvia de brasas:** se activa cuando un jugador **enciende un portal al Nether en el Overworld**, con una **espera de 5 días** entre activaciones | Antes de T1: evento de calendario rotativo | **IMPLEMENTADO en T1**; pendiente de prueba en partida |
 
 Esperas resultantes: **Niebla, 10 días** (y solo con el aldeano), que puede empezar en cualquier momento al hablar con él y dura un día de Minecraft (24 000 ticks); **Eclipse, 3 días
@@ -28,20 +28,20 @@ Niebla está en espera, el aldeano dice algo como «los muertos se han ido, pero
 | Antes | Ahora |
 |---|---|
 | D-18: objetivos para invocar el Eclipse sin definir | Los objetivos son esta cadena |
-| D-02: material del sacrificio sin definir | El Behelit, que se consume |
+| D-02: material del sacrificio sin definir | El Damnorath, que se consume |
 | D-12: ¿Niebla con aldeano? | Sí: aldeano del gremio, efecto global |
 | «Eclipse cada 10 días» (docs 02 y 06) | **3 días** entre Eclipses |
 | Niebla «cada 3 días» (borrador del contexto) | **10 días**, solo con el aldeano |
 | Cuatro llaves y cuatro cámaras: NO VERIFICADO (C-13) | Diseño aprobado, aún sin implementar |
-| «La reliquia» de LORE-013 | Corresponde al Behelit; el texto del autor se mantiene |
+| «La reliquia» de LORE-013 | Corresponde al Damnorath; el texto del autor se mantiene |
 
 ## Efecto en el lore
 
 - **LORE-010 y LORE-012** (cuatro cámaras, cuatro llaves, Custodio con las llaves): ya concuerdan con el diseño.
-- **LORE-013:** «la llama consumió la reliquia» concuerda con el sacrificio del Behelit.
+- **LORE-013:** «la llama consumió la reliquia» concuerda con el sacrificio del Damnorath.
 - **Desbloqueos plausibles (PROPUESTA, no implementados):** EVENT-001 al hablar con el aldeano o vivir la Niebla;
   BESTIARY-004 y LORE-012 al derrotar al Custodio; LORE-009 al abrir la puerta de su sala; LORE-010 al abrir la
-  cámara de diamante; LORE-013 y EVENT-003 al sacrificar el Behelit; LORE-014 al terminar el Eclipse.
+  cámara de diamante; LORE-013 y EVENT-003 al sacrificar el Damnorath; LORE-014 al terminar el Eclipse.
 
 ## Qué NO se toca en esta tarea
 
@@ -71,7 +71,7 @@ confirmar:** cuáles de los cuatro se retiran (A-3).
 | E3 Botín del Osario, receta y objeto de acceso | loot, `data/aptitudes/recipe`, `item/` |
 | E4 Templo nuevo con Autómata interno | `world/TempleFeature`, `temple/`, `boss/` |
 | E5 Custodio con 4 llaves y 4 cámaras | `temple/`, loot |
-| E6 Behelit, sacrificio en la Hoguera y Eclipse cada 3 días | `event/EclipseManager`, Hoguera, configuración |
+| E6 Damnorath, sacrificio en la Hoguera y Eclipse cada 3 días | `event/EclipseManager`, Hoguera, configuración |
 | E7 Lluvia de brasas al encender un portal | `event/WorldEventManager` |
 | E8 Retirada de los sellos | `item/`, `boss/`, recursos, idiomas |
 | E9 Grimorio: estado de lectura, entradas e interfaz | `guide/`, `client/screen/GuideScreen` |
@@ -83,7 +83,7 @@ autorización del autor.
 ## Riesgos de diseño a vigilar (PROPUESTA)
 
 - **Efecto global:** cualquier jugador con el aldeano puede iniciar un evento de un día completo para todos.
-- **Multijugador:** los Behelit y las llaves son por jugador o por grupo; hoy el reparto de botín no está definido.
+- **Multijugador:** los Damnorath y las llaves son por jugador o por grupo; hoy el reparto de botín no está definido.
 - **Lluvia por portal:** abrir y cerrar portales podría encadenar eventos; conviene un tope.
 - **Eclipse cada 3 días:** el valor actual del código es 10 (`AptitudesConfig.eclipseIntervalDays`).
 
@@ -92,7 +92,7 @@ autorización del autor.
 | Id | Pregunta | Respuesta del autor | Estado |
 |---|---|---|---|
 | A-1 | Uso del objeto especial | Solo en la puerta del Custodio, y se consume | Resuelta |
-| A-2 | Espera del Behelit | 3 días, por mundo, desde el fin del Eclipse. **El Astrolabio del Ocaso comparte esa misma espera** (decisión del 2026-11-24) | Resuelta |
+| A-2 | Espera del Damnorath | 3 días, por mundo, desde el fin del Eclipse. **El Astrolabio del Ocaso comparte esa misma espera** (decisión del 2026-11-24) | Resuelta |
 | A-3 | Sellos | Los 3 sellos de invocación, retirados con migración y sin eliminarlos ahora. El bloque «Sello del templo» queda fuera de esta decisión | Resuelta (la retirada es la tarea E8) |
 | A-4 | Lluvia de brasas | Espera de 5 días | Resuelta |
 | A-5 | Duración y momento de inicio de la Niebla | Puede comenzar en cualquier momento y dura lo que un día de Minecraft | Resuelta |

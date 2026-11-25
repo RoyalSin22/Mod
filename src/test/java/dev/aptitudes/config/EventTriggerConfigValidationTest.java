@@ -10,7 +10,7 @@ class EventTriggerConfigValidationTest {
 		assertEquals(10, c.fogCooldownDays);
 		assertEquals(24_000, c.fogDurationTicks);
 		assertEquals(5, c.emberRainCooldownDays);
-		// T5 (D-25): espera del Behelit y interruptores de Niebla y Lluvia activados por defecto.
+		// T5 (D-25): espera del Damnorath y interruptores de Niebla y Lluvia activados por defecto.
 		assertEquals(3, c.eclipseSummonCooldownDays);
 		assertEquals(1, c.worldEventWeightSoulFog);
 		assertEquals(1, c.worldEventWeightEmberRain);

@@ -72,9 +72,9 @@ public final class LoreManager {
 		unlockAll(player, LoreRules.unlocksOnDiamondChamberComplete());
 	}
 
-	/** Desbloquea lore al sacrificar el Behelit en la Hoguera. */
-	public static void unlocksOnBeheritSacrifice(ServerPlayerEntity player) {
-		unlockAll(player, LoreRules.unlocksOnBeheritSacrifice());
+	/** Desbloquea lore al sacrificar el Damnorath en la Hoguera. */
+	public static void unlocksOnDamnorathSacrifice(ServerPlayerEntity player) {
+		unlockAll(player, LoreRules.unlocksOnDamnorathSacrifice());
 	}
 
 	/** Desbloquea lore al finalizar el Eclipse (evento global). */

@@ -1947,18 +1947,18 @@ Desde T3d los chunks **nuevos** generan este templo solos (los ya generados cons
 4. Hoguera: piedras irregulares alrededor, troncos, espada con espiral y llama animada; se ve bien desde todos los lados.
 5. `/give @s aptitudes:berserker_weapon_master`: en la mano, el suelo y un marco se ve plano y limpio (sin bultos ni bordes).
 
-# T5 — Espera del Behelit y migración de eventos (verificación manual, pendiente)
+# T5 — Espera del Damnorath y migración de eventos (verificación manual, pendiente)
 
 1. `/give @s aptitudes:resonador_del_umbral 3`. Clic derecho sobre una Hoguera en el Mundo Normal: empieza el Eclipse y se
-   consume **un** Resonador.
+   consume **un** Damnorath.
 2. Con el Eclipse en curso, usa otro: no se consume y la barra de acción dice que ya hay otro evento del mundo en curso.
-3. Termina el Eclipse (`/aptitudes eclipse stop` o espera el final) y usa el Resonador enseguida: no se consume y avisa con los días de
+3. Termina el Eclipse (`/aptitudes eclipse stop` o espera el final) y usa Damnorath enseguida: no se consume y avisa con los días de
    juego que faltan (≈3). `/time add` no cambia la espera (usa el reloj del mundo).
 4. Cambia `eclipseSummonCooldownDays` a 0 en la pantalla de configuración: se puede usar de inmediato. Con `eclipseEnabled = false`: avisa y no se consume.
 5. Reinicia el servidor tras un Eclipse: la espera se conserva (se guarda en `aptitudes_eclipse`).
 6. Configuración antigua: pon `"worldEventWeightSoulFog": 0, "worldEventWeightEmberRain": 0, "configRevision": 83` en `config/aptitudes.json`
    y arranca: ambos pasan a 1. Con `configRevision` 84 y un 0 a mano, se respeta (la Niebla por aldeano no responde).
-7. Sin Behelit ni comando, deja pasar varios días de juego: el Eclipse **no** sale por calendario aunque el `config` tenga
+7. Sin Damnorath ni comando, deja pasar varios días de juego: el Eclipse **no** sale por calendario aunque el `config` tenga
    `worldEventWeightEclipse` mayor que 0.
 
 # C2 — Cachés de rendimiento (verificación manual, pendiente)

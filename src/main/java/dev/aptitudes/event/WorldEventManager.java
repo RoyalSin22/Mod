@@ -61,7 +61,7 @@ import java.util.UUID;
  *
  * <p>Histórico: este calendario desapareció (T1/T5, D-26) y {@code calendarWeights} ya no programa nada. La Niebla de
  * almas la inicia un jugador hablando con el aldeano del gremio, la Lluvia de brasas al encender un portal al Nether
- * ({@link EventTriggerRules}) y el Eclipse el sacrificio del Behelit o el Astrolabio ({@link EclipseSummoningRules}).</p>
+ * ({@link EventTriggerRules}) y el Eclipse el sacrificio del Damnorath o el Astrolabio ({@link EclipseSummoningRules}).</p>
  */
 public final class WorldEventManager {
 	/** Etiqueta de las criaturas de la Niebla de almas y de la Lluvia de brasas. */
@@ -197,7 +197,7 @@ public final class WorldEventManager {
 	}
 
 	/**
-	 * T5 (D-26): el calendario rotativo desapareció por completo. El Eclipse lo inicia el Behelit, la Niebla el aldeano del
+	 * T5 (D-26): el calendario rotativo desapareció por completo. El Eclipse lo inicia el Damnorath, la Niebla el aldeano del
 	 * gremio y la Lluvia un portal; ningún evento se programa ya por fecha, sea cual sea la configuración antigua
 	 * ({@code eclipseIntervalDays}, {@code eclipseFirstDay}, {@code worldEventWeightEclipse}). Los pesos de Niebla y Lluvia
 	 * solo siguen valiendo como interruptor, ver {@link #weights}.

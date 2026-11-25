@@ -757,7 +757,7 @@ cantidades en `data/aptitudes/recipe/ancla_del_velo.json`; no hay campos de conf
 # Cámaras del Templo del Custodio (T4 de la cadena narrativa; valores provisionales)
 
 Sin playtest. El contenido lo eligió el redactor por delegación del autor y crece con el metal. Cada cofre se puede abrir una
-vez por templo (cofre normal): en grupo se reparte lo que haya. La cámara de diamante albergará además el Behelit (T5).
+vez por templo (cofre normal): en grupo se reparte lo que haya. La cámara de diamante albergará además el Damnorath (T5).
 
 | Cámara | Tiradas | Contenido (peso) |
 |---|---|---|
@@ -773,7 +773,7 @@ regeneración conectada (D-33) el total es finito. Las tablas son datapack: se a
 
 | Elemento | Valor | Notas |
 |---|---|---|
-| `rarity_filter` del templo nuevo | 1 de cada 120 chunks | Antes 1 de cada 400 (templo antiguo). Decisión del autor (D-33, opción «subir la frecuencia») para tener más Behelits por mundo mientras la regeneración no esté conectada. Se ajusta en `data/aptitudes/worldgen/placed_feature/custodian_temple.json` |
+| `rarity_filter` del templo nuevo | 1 de cada 120 chunks | Antes 1 de cada 400 (templo antiguo). Decisión del autor (D-33, opción «subir la frecuencia») para tener más Damnoraths por mundo mientras la regeneración no esté conectada. Se ajusta en `data/aptitudes/worldgen/placed_feature/custodian_temple.json` |
 | Terreno apto | desnivel ≤ 4 en 31×31 | Descarta parte de los intentos: en la práctica aparecen menos de los que da la cifra |
 
 Pendiente de playtest: si aparecen demasiados o muy pocos, basta con cambiar `chance`. Un mundo de pruebas con `/locate` no

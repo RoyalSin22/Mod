@@ -6,7 +6,7 @@ import static dev.aptitudes.event.EclipseSummoningRules.Verdict;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Fusión de la espera del Behelit con la del Astrolabio: {@code DISABLED} (Eclipse apagado en la configuración) se añadió al final del
+ * Fusión de la espera del Damnorath con la del Astrolabio: {@code DISABLED} (Eclipse apagado en la configuración) se añadió al final del
  * enumerado y lo decide {@code EclipseManager.summonVerdict}, no las reglas puras.
  */
 class EclipseSummoningDisabledVerdictTest {
@@ -22,7 +22,7 @@ class EclipseSummoningDisabledVerdictTest {
 		for (boolean op : new boolean[] {true, false}) for (boolean leader : new boolean[] {true, false})
 			for (boolean overworld : new boolean[] {true, false}) for (boolean busy : new boolean[] {true, false}) {
 				assertNotEquals(Verdict.DISABLED, EclipseSummoningRules.astrolabe(op, leader, overworld, busy, 0, 1, 3));
-				assertNotEquals(Verdict.DISABLED, EclipseSummoningRules.behelit(overworld, busy, 0, 1, 3));
+				assertNotEquals(Verdict.DISABLED, EclipseSummoningRules.damnorath(overworld, busy, 0, 1, 3));
 			}
 	}
 }

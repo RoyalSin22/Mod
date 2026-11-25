@@ -36,7 +36,7 @@ public enum Achievement {
 	BESTIARY_COMPLETE("bestiary_complete", ROOT, Frame.GOAL, "minecraft:enchanted_book"),
 	/** v65 C5: activar las 5 sinergias en una sesión (Y1-Y5). */
 	SYNERGIST("synergist", ROOT, Frame.GOAL, "aptitudes:mastery_emblem"),
-	/** C3 (E7, «Quien llama a la noche»): convocar un Eclipse con el Astrolabio del Ocaso o el Behelit. */
+	/** C3 (E7, «Quien llama a la noche»): convocar un Eclipse con el Astrolabio del Ocaso o el Damnorath. */
 	ECLIPSE_CALLER("eclipse_caller", SURVIVE_ECLIPSE, Frame.GOAL, "aptitudes:sunset_astrolabe"),
 	/** V86: venció al Coloso Sin Rostro en Las Tres Torres Señoriales. */
 	THREE_TOWERS("three_towers", SLAY_BOSS, Frame.CHALLENGE, "aptitudes:ascended_template");

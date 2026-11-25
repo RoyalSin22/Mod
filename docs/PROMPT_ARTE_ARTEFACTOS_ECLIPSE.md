@@ -1,4 +1,4 @@
-# Prompt de arte — Artefactos del Eclipse (Resonador del Umbral y Astrolabio del Ocaso)
+# Prompt de arte — Artefactos del Eclipse (Damnorath y Astrolabio del Ocaso)
 
 Encargo para el generador de arte (ChatGPT), en la línea de `docs/PROMPT_ARTE_ARMAS.md` (de ahí salen la dirección artística y la técnica de
 píxel: léelas, aquí solo se resume). Son **los dos objetos que convocan el Eclipse desde la Hoguera** y hoy **no tienen textura ni modelo**
@@ -6,7 +6,7 @@ píxel: léelas, aquí solo se resume). Son **los dos objetos que convocan el Ec
 
 | Objeto | Id de registro (**no cambia**, es el nombre del archivo) | Nombre en el juego |
 |---|---|---|
-| Artefacto que se sacrifica en la Hoguera | `resonador_del_umbral` | «Resonador del Umbral» — **provisional, se va a cambiar** (ver §6) |
+| Artefacto que se sacrifica en la Hoguera | `resonador_del_umbral` | **«Damnorath» — «Embrión de la ruina»** (D-40; el id conserva el nombre antiguo) |
 | Disco de convocatoria | `sunset_astrolabe` | «Astrolabio del Ocaso» |
 
 ---
@@ -17,7 +17,7 @@ El Resonador cumple la función de un objeto icónico de otra obra (un artefacto
 abrirse). **Su diseño no puede parecerse a él.** Por eso el lore lo describe como *«disco de metal pálido con un anillo de luz hueco en el centro;
 no un ojo, no una cara ni un huevo»*. Antes de entregar cada imagen, haz estas tres comprobaciones; si falla alguna, se descarta:
 
-1. **Test del ojo:** ¿el centro parece una pupila, un iris o una mirada? → mal. El centro del Resonador está **vacío** (se ve el fondo), no hay «pupila».
+1. **Test del ojo:** ¿el centro parece una pupila, un iris o una mirada? → mal. El centro de Damnorath está **vacío** (se ve el fondo), no hay «pupila».
 2. **Test del rostro/huevo:** ¿hay dos puntos y una raya que sugieran una cara?, ¿la silueta es ovoide, de lágrima o de huevo con ornamentos? → mal. La silueta es un **disco redondo**.
 3. **Test de la copia:** ¿se parece a un amuleto con pinchos o rasgos orgánicos alrededor de un núcleo? → mal. Nada orgánico: es metal grabado.
 
@@ -29,7 +29,7 @@ Técnica obligatoria: **luz única arriba a la izquierda**, rampas de 4–5 tono
 píxeles agrupados sin *jaggies* ni píxeles huérfanos, **sin transparencia ni halos difuminados** (el brillo se dibuja con píxeles opacos), 8–12 detalles pequeños
 subordinados a la silueta. **La silueta debe reconocerse rellena de un solo color y reducida a 16×16.**
 
-## 3. Ficha: Resonador del Umbral
+## 3. Ficha: Damnorath («Embrión de la ruina»)
 
 - **Qué es (lore):** artefacto de comunicación de la Primera Era; la conexión externa que algo en el Velo necesitaba. Se **sacrifica** en la Hoguera para llamar al Eclipse.
 - **Silueta:** **anillo grueso** (un disco con el centro hueco), con un asa pequeña arriba para colgarlo. Que se lea como **un aro**, no como un disco macizo.
@@ -42,7 +42,7 @@ subordinados a la silueta. **La silueta debe reconocerse rellena de un solo colo
 ## 4. Ficha: Astrolabio del Ocaso
 
 - **Qué es:** un instrumento de navegación de los gremios, reconvertido para señalar el instante del eclipse. Se **rompe** al usarlo en la Hoguera.
-- **Silueta:** **disco macizo** con un **anillo de suspensión arriba** y un **brazo puntero (alidada) en diagonal** que lo cruza y asoma por un lado. (Así se distingue a 16 px del Resonador, que es un aro hueco.)
+- **Silueta:** **disco macizo** con un **anillo de suspensión arriba** y un **brazo puntero (alidada) en diagonal** que lo cruza y asoma por un lado. (Así se distingue a 16 px de Damnorath, que es un aro hueco.)
 - **Material:** **bronce ennegrecido** (marrón oscuro, verdín en las juntas, ocre en los cantos), con una pieza de hierro (el eje central) y **un fragmento de Eclipse** engastado: una esquirla roja oscura con núcleo casi blanco.
 - **Acento de luz:** el **sol eclipsado grabado**: un disco negro que tapa a medias un sol, con una **corona fina naranja-brasa** asomando por un borde. Un solo punto de luz cálida (la esquirla).
 - **Detalles:** escala de rayitas en el borde (como un reloj de sol), una **retícula calada** (*rete*) con 2–3 puntas de estrella, remaches, una muesca en el borde, el puntero ligeramente torcido.
@@ -78,17 +78,10 @@ Entrega la imagen de 1024×1024 tal cual; no la reduzcas tú. Claude escribe el 
 detecta el objeto, lo normaliza a **32×32** (inventario y mano; los iconos de armas ya usan 32) y deja la fuente en `tools/textures/source/items/`. Después de
 importarlas hay que añadir su modelo (`models/item/<id>.json`, `item/generated`) y comprobar con `/give` en inventario, mano, suelo y marco.
 
-**El nombre del Resonador se va a cambiar** (D-11, abierta; la decisión es del autor). El nombre del juego son solo claves de idioma (`item.aptitudes.resonador_del_umbral` y su
-`.tooltip`, en los 5 idiomas con los generadores), así que cambiarlo es barato. Aparte, el término interno **«Behelit»** (clase `BeheritItem`, comentarios, documentos y
-constantes de lore) debe sustituirse por uno propio. **No cambian**: el id de registro `resonador_del_umbral` ni el id de lore ya guardado por los jugadores (`behelit_lore_unlocked`, constante `LoreRules.LORE_BEHELIT_FOUND`),
-porque están en mundos y progresos existentes; solo cambian los nombres visibles y los internos de clase.
+**El nombre ya está decidido (D-40): «Damnorath», con el epíteto «Embrión de la ruina».** El nombre del juego son solo claves de idioma (`item.aptitudes.resonador_del_umbral` y su
+`.tooltip`, ya cambiadas en los 5 idiomas). **No cambian**: el id de registro `resonador_del_umbral`, el nombre del archivo de textura ni el id de lore ya guardado por los
+jugadores (`behelit_lore_unlocked`), porque están en mundos y progresos existentes.
 
-Candidatas de nombre (el diseño de §3 es un **aro con el anillo de luz abierto**, y conviene que el nombre no lo contradiga):
-
-| Nombre | Por qué | Riesgo |
-|---|---|---|
-| **Corona Quebrada** | El anillo de luz roto es una corona de eclipse partida | Suena a objeto de rey |
-| **Anillo Hueco** | Descripción literal del diseño y de la «puerta» | Sencillo, poco épico |
-| **Llamador del Velo** | Dice lo que hace (llama a lo del Velo) | «Llamador» es poco elegante |
-| **Disco de la Fractura** | Usa un término del lore (la Fractura) | Contradice el aro hueco («disco») |
-| Aguja del Silencio / Ancla de Eclipse (alternativas del lore) | Ya figuran en `07_BESTIARIO_TEMPLOS_ARTEFACTOS.md` | La aguja no es un aro; **ya existe el «Ancla del Velo»** (confusión) |
+> **⚠ Precaución para el arte: «embrión» NO es el diseño.** El epíteto sugiere un huevo o un feto, y eso es justo lo que el lore prohíbe (el objeto original que inspira la función es un huevo
+> con rasgos; el diseño de este mod es un **aro hueco con un anillo de luz abierto**, §3). El nombre es una etiqueta narrativa, no una forma. **No pidas a ChatGPT «embrión», «semilla» ni «huevo»** y descarta cualquier
+> imagen ovoide, orgánica o con un núcleo envuelto. Si el autor prefiere que el objeto *sí* se parezca a un embrión, hay que decidirlo expresamente, porque cambia el diseño y roza el parecido con la obra original.

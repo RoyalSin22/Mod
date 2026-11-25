@@ -98,7 +98,7 @@ un título hereditario: **Mariscal** (recomendado) o Castellano.
 
 ## 8. Aviso: el Custodio quedó más raro de lo decidido en D-35
 
-D-35 subió el Templo del Custodio a «1 de cada 120 chunks» para asegurar el suministro de Behelit. Al pasar a regiones en V77 (`region_size 32`) quedó en **un
+D-35 subió el Templo del Custodio a «1 de cada 120 chunks» para asegurar el suministro de Damnorath. Al pasar a regiones en V77 (`region_size 32`) quedó en **un
 templo por 1024 chunks**, unas 8 veces más raro. No se ha cambiado (la decisión del autor es que sea aún más raro que las torres), pero conviene **medirlo en
-partida** y reabrir D-33 si los Behelits no bastan: una región de 11×11 recuperaría el 1/120 original.
+partida** y reabrir D-33 si los Damnoraths no bastan: una región de 11×11 recuperaría el 1/120 original.
 

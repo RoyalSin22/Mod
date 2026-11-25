@@ -22,7 +22,7 @@ class LoreFlowTest {
 		int count = LoreCatalog.unlockedCount(state::isUnlocked);
 		assertEquals(3, count, "arranca con las tres entradas iniciales");
 		for (Set<String> hook : new Set[] {LoreRules.unlocksOnGuildmasterTalk("fog"), LoreRules.unlocksOnGuildmasterTalk("rain"),
-				LoreRules.unlocksOnCustodianEncounter(), LoreRules.unlocksOnDiamondChamberComplete(), LoreRules.unlocksOnBeheritSacrifice(),
+				LoreRules.unlocksOnCustodianEncounter(), LoreRules.unlocksOnDiamondChamberComplete(), LoreRules.unlocksOnDamnorathSacrifice(),
 				LoreRules.unlocksOnEclipseEnd(), LoreRules.unlocksOnCryptCleared()}) {
 			assertFalse(hook.isEmpty());
 			state = apply(state, hook);

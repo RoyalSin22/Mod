@@ -49,7 +49,7 @@ Atajo para no repetir: en creativo con `/kill @e[type=aptitudes:dismantled_guard
 
 ## B. Eventos y Eclipse (≈ 15 min)
 
-### B1. Eclipse: Behelit y Astrolabio (código del otro chat + mi `DISABLED`)
+### B1. Eclipse: Damnorath y Astrolabio (código del otro chat + mi `DISABLED`)
 
 ```
 /give @s aptitudes:resonador_del_umbral 3
@@ -60,8 +60,8 @@ Clic derecho sobre una **Hoguera** (`aptitudes:bonfire`) en el Mundo Normal. **L
 
 | # | Esperado |
 |---|---|
-| B1a | Behelit: empieza el Eclipse y se consume **uno** |
-| B1b | Con el Eclipse en curso, otro Behelit: **no se consume**, avisa «ya hay otro evento» |
+| B1a | Damnorath: empieza el Eclipse y se consume **uno** |
+| B1b | Con el Eclipse en curso, otro Damnorath: **no se consume**, avisa «ya hay otro evento» |
 | B1c | `/aptitudes eclipse stop`, y usa otro enseguida: **no se consume**, avisa de los **días** que faltan (≈3) |
 | B1d | Pantalla de configuración (`/aptitudes config`): `eclipseSummonCooldownDays` = 0 → se puede usar de inmediato |
 | B1e | `eclipseEnabled` = false: avisa y **no se consume** (mi veredicto `DISABLED`) |

@@ -133,8 +133,8 @@ public final class ModItems {
 			new VeilKeyItem(new Item.Settings().maxCount(16).rarity(Rarity.RARE)));
 
 	/** T5: se obtiene en la cámara de diamante del Custodio; se sacrifica en la Hoguera para iniciar el Eclipse (cooldown 3 días). */
-	public static final Item RESONADOR_DEL_UMBRAL = register("resonador_del_umbral",
-			new BeheritItem(new Item.Settings().maxCount(16).rarity(Rarity.EPIC).fireproof()));
+	public static final Item DAMNORATH = register("resonador_del_umbral",
+			new DamnorathItem(new Item.Settings().maxCount(16).rarity(Rarity.EPIC).fireproof()));
 
 	public static final Item ESTUS_FLASK = register("estus_flask",
 			new SoulFlaskItem(SoulFlaskItem.Kind.ESTUS, new Item.Settings().rarity(Rarity.RARE)));
@@ -254,7 +254,7 @@ public final class ModItems {
 						entries.add(CRANEO_GRAN_OSARIO);
 						entries.add(ANCLA_DEL_VELO);
 						entries.add(LLAVE_DEL_VELO);
-						entries.add(RESONADOR_DEL_UMBRAL);
+						entries.add(DAMNORATH);
 						entries.add(dev.aptitudes.event.Expeditions.TOKEN); // F5: ficha de expedición
 						entries.add(REBIRTH_OFFERING);
 						entries.add(ARMORY_VOUCHER);

@@ -383,7 +383,7 @@ Los textos de las runas muestran los valores por defecto: si un servidor los cam
 ## Eventos rotativos (v41, DEPRECATED en v67)
 
 **v67**: El calendario rotativo desapareció. Los eventos ahora se activan **solo por jugadores**:
-- **Eclipse**: sacrificio del Behelit en la Hoguera (cooldown 3 días por mundo desde el fin)
+- **Eclipse**: sacrificio del Damnorath en la Hoguera (cooldown 3 días por mundo desde el fin)
 - **Niebla de almas**: aceptar la oferta «Convocar la Niebla de almas» del tablón de contratos (cooldown 10 días desde el inicio)
 - **Lluvia de brasas**: encender un portal al Nether en el Overworld (cooldown 5 días)
 
@@ -395,7 +395,7 @@ configuración (`configRevision`) devuelve a 1 los 0 heredados del valor por def
 
 | Campo | Defecto | Límites | Descripción |
 |---|---|---|---|
-| `worldEventWeightEclipse` | 0 | [0, 100] | Sin uso: el Eclipse empieza con el Resonador del Umbral. |
+| `worldEventWeightEclipse` | 0 | [0, 100] | Sin uso: el Eclipse empieza con el Damnorath. |
 | `worldEventWeightSoulFog` | 1 | [0, 100] | Interruptor de la Niebla de almas del tablón: 0 la desactiva (la oferta no se puede aceptar). |
 | `worldEventWeightEmberRain` | 1 | [0, 100] | Interruptor de la Lluvia de brasas del portal: 0 la desactiva. |
 | `emberRainLargeChance` | 0.25 | [0, 1] | v41.2: probabilidad de meteorito grande. |
@@ -419,7 +419,7 @@ desde que el evento **empieza** (provisional) y no las consumen los comandos `/a
 | `fogCooldownDays` | 10 | [1, 365] | Días de espera entre dos Nieblas de almas. |
 | `fogDurationTicks` | 24000 | [1200, 240000] | Duración de la Niebla en ticks (24 000 = un día de Minecraft). Antes duraba 12 000 desde las 18:00. |
 | `emberRainCooldownDays` | 5 | [1, 365] | Días de espera entre dos Lluvias de brasas provocadas por un portal. |
-| `eclipseSummonCooldownDays` | 3 | [0, 365] | C3: días de juego de espera por mundo, desde el fin del último Eclipse, para volver a convocarlo con el Astrolabio del Ocaso o el Resonador del Umbral. 0 quita la espera. No la consumen `/aptitudes eclipse start` ni `/aptitudes event start`. |
+| `eclipseSummonCooldownDays` | 3 | [0, 365] | C3: días de juego de espera por mundo, desde el fin del último Eclipse, para volver a convocarlo con el Astrolabio del Ocaso o el Damnorath. 0 quita la espera. No la consumen `/aptitudes eclipse start` ni `/aptitudes event start`. |
 | `threeTowersEnabled` | true | — | V86: permite que se generen **Las Tres Torres Señoriales** (dungeon de superficie con región de 24×24 chunks: **más frecuente** que el Templo del Custodio, de 32×32, por decisión del autor). Solo afecta a chunks sin generar. Hasta la fase 3 el controlador es un marcador y no hay jefes. |
 | `deathEchoesEnabled` | **false** | — | C7 · S6: al morir un jugador, un eco con su cabeza (brillante) repite sus últimos 5 s mientras haya otro jugador a menos de 24 bloques. **Desactivado por defecto** porque genera entidades y no está probado en partida. |
 | `deathEchoLifetimeSeconds` | 120 | [10, 1800] | Segundos que dura un eco. |

@@ -443,8 +443,8 @@ rune.frost.desc¦Ao acertar: Lentidão %s por %s s.¦À l'impact : Lenteur %s pe
 rune.thunder.desc¦Ao acertar: %s%% de chance de uma descarga atingir %s monstros próximos (%s de dano; %s s de recarga).¦À l'impact : %s%% de chance qu'une décharge saute sur %s monstres proches (%s dégâts ; recharge de %s s).¦Bei Treffer: %s%% Chance auf eine Entladung, die auf %s nahe Monster überspringt (%s Schaden; %s s Abklingzeit).
 rune.guard.desc¦Ao acertar: +%s de absorção (máx. %s; %s s de recarga).¦À l'impact : +%s d'absorption (max %s ; recharge de %s s).¦Bei Treffer: +%s Absorption (max. %s; %s s Abklingzeit).
 herb_petals¦Pétalas de Ervas¦Pétales d'herbes¦Kräuterblütenblätter
-resonador_del_umbral¦Ressonador do Limiar¦Résonateur du Seuil¦Schwellenresonator
-resonador_del_umbral.tooltip¦Uma relíquia de poder antigo. Sua vibração invoca o próprio Eclipse.¦Une relique d'un pouvoir ancien. Sa vibration invoque l'Éclipse elle-même.¦Ein Relikt uralter Macht. Seine Schwingung ruft die Sonnenfinsternis selbst herbei.
+resonador_del_umbral¦Damnorath¦Damnorath¦Damnorath
+resonador_del_umbral.tooltip¦Embrião da ruína. Uma relíquia de poder antigo. Sua vibração invoca o próprio Eclipse.¦Embryon de la ruine. Une relique d'un pouvoir ancien. Sa vibration invoque l'Éclipse elle-même.¦Embryo des Untergangs. Ein Relikt uralter Macht. Seine Schwingung ruft die Sonnenfinsternis selbst herbei.
 """)
 
 for suffix, names in {
@@ -689,7 +689,7 @@ gunslinger_weapon_master¦Revólver do Pistoleiro Rúnico¦Revolver du pistolero
 bard_weapon_master¦Harpa do Mestre de Capela¦Harpe du maître de chapelle¦Harfe des Kapellmeisters
 warlock_weapon_master¦Crânio do Arquibruxo¦Crâne de l'archisorcier¦Schädel des Erzhexenmeisters
 sunset_astrolabe¦Astrolábio do Crepúsculo¦Astrolabe du Crépuscule¦Astrolabium der Abenddämmerung
-sunset_astrolabe.tooltip¦Consumido na Fogueira para convocar o Eclipse (apenas operadores ou líder do grupo). Compartilha a espera com o Ressonador.¦Consommé au Feu de camp pour invoquer l'Éclipse (opérateurs ou chef de groupe uniquement). Partage son délai d'attente avec le Résonateur.¦Wird am Lagerfeuer verbraucht, um die Finsternis zu beschwören (nur Operatoren oder Gruppenleiter). Teilt die Wartezeit mit dem Resonator.
+sunset_astrolabe.tooltip¦Consumido na Fogueira para convocar o Eclipse (apenas operadores ou líder do grupo). Compartilha a espera com Damnorath.¦Consommé au Feu de camp pour invoquer l'Éclipse (opérateurs ou chef de groupe uniquement). Partage son délai d'attente avec Damnorath.¦Wird am Lagerfeuer verbraucht, um die Finsternis zu beschwören (nur Operatoren oder Gruppenleiter). Teilt die Wartezeit mit Damnorath.
 """)
 
 add('trial.aptitudes.', """
@@ -1744,7 +1744,7 @@ advancement.aptitudes.bestiary_complete.description¦Descubra todas as criaturas
 advancement.aptitudes.synergist.title¦Sinergista¦Synergiste¦Synergetiker
 advancement.aptitudes.synergist.description¦Ative as cinco sinergias (Y1-Y5) em uma única sessão.¦Activez les cinq synergies (Y1-Y5) en une seule session.¦Aktiviere alle fünf Synergien (Y1-Y5) in einer einzigen Sitzung.
 advancement.aptitudes.eclipse_caller.title¦Quem chama a noite¦Celui qui appelle la nuit¦Wer die Nacht ruft
-advancement.aptitudes.eclipse_caller.description¦Convoque um Eclipse com o Astrolábio do Crepúsculo ou o Ressonador do Limiar.¦Invoquez une Éclipse avec l'Astrolabe du Crépuscule ou le Résonateur du Seuil.¦Beschwöre eine Sonnenfinsternis mit dem Astrolabium der Abenddämmerung oder dem Schwellenresonator.
+advancement.aptitudes.eclipse_caller.description¦Convoque um Eclipse com o Astrolábio do Crepúsculo ou Damnorath.¦Invoquez une Éclipse avec l'Astrolabe du Crépuscule ou Damnorath.¦Beschwöre eine Sonnenfinsternis mit dem Astrolabium der Abenddämmerung oder dem Damnorath.
 synergy.aptitudes.disabled¦As sinergias estão desativadas neste servidor.¦Les synergies sont désactivées sur ce serveur.¦Synergien sind auf diesem Server deaktiviert.
 synergy.aptitudes.status¦Sinergias ativadas nesta sessão: %s/%s¦Synergies activées durant cette session : %s/%s¦In dieser Sitzung aktivierte Synergien: %s/%s
 synergy.aptitudes.line¦%s · %s: %s¦%s · %s : %s¦%s · %s: %s

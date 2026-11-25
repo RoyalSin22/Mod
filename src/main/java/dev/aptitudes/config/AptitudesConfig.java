@@ -158,7 +158,7 @@ public class AptitudesConfig {
 	// ---------- Eclipse (v34) ----------
 	/** Evento del mundo: eclipse solar con oleadas, élites y el Heraldo del Eclipse. */
 	public boolean eclipseEnabled = true;
-	/** DEPRECATED (v67): el calendario rotativo desapareció. El Eclipse ahora se inicia solo por sacrificio del Behelit. Se mantiene por compatibilidad. */
+	/** DEPRECATED (v67): el calendario rotativo desapareció. El Eclipse ahora se inicia solo por sacrificio del Damnorath. Se mantiene por compatibilidad. */
 	public int eclipseIntervalDays = 10;
 	/** DEPRECATED (v67): solo para compatibilidad. */
 	public int eclipseFirstDay = 10;
@@ -197,7 +197,7 @@ public class AptitudesConfig {
 	/** Las élites y campeones usan humanoides con equipo completo que no se suelta al morir. */
 	public boolean eclipseGuaranteedEliteArmor = true;
 	// ---------- Eventos del mundo (v41; el calendario rotativo desapareció en v67) ----------
-	// El calendario ya no programa nada (D-26): el Eclipse se inicia por Behelit, la Niebla por el aldeano y la Lluvia por
+	// El calendario ya no programa nada (D-26): el Eclipse se inicia por Damnorath, la Niebla por el aldeano y la Lluvia por
 	// un portal. worldEventWeightEclipse no se usa. worldEventWeightSoulFog y worldEventWeightEmberRain siguen siendo el
 	// interruptor de su evento: 0 lo desactiva (también corta uno en curso) y cualquier valor mayor lo deja activo.
 	public int worldEventWeightEclipse = 0;
@@ -218,7 +218,7 @@ public class AptitudesConfig {
 	public int fogDurationTicks = 24_000;
 	/** Días de espera entre dos Lluvias de brasas provocadas por un portal. */
 	public int emberRainCooldownDays = 5;
-	/** Días de juego de espera, por mundo y desde el fin del último Eclipse, para volver a convocarlo (Astrolabio o Behelit). 0 = sin espera. */
+	/** Días de juego de espera, por mundo y desde el fin del último Eclipse, para volver a convocarlo (Astrolabio o Damnorath). 0 = sin espera. */
 	public int eclipseSummonCooldownDays = 3;
 	// ---------- Las Tres Torres Señoriales (V86) ----------
 	/** Permite que se generen las Tres Torres Señoriales en mundos nuevos o en chunks sin generar. */

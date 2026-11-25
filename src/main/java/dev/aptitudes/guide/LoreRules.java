@@ -21,10 +21,11 @@ public final class LoreRules {
 	/** Lore del Custodio desbloqueado al vencerlo o entrar en su cámara (T4). */
 	public static final String LORE_CUSTODIAN_DEFEATED = "custodian_lore_unlocked";
 
-	/** Lore desbloqueado al completar la cámara de diamante y obtener el Behelit (T4). */
-	public static final String LORE_BEHELIT_FOUND = "behelit_lore_unlocked";
+	/** Lore desbloqueado al completar la cámara de diamante y obtener el Damnorath (T4). */
+	/** El texto del id se conserva tal cual ("behelit_lore_unlocked"): ya está guardado en los progresos de los jugadores. El objeto se llama Damnorath. */
+	public static final String LORE_ARTIFACT_FOUND = "behelit_lore_unlocked";
 
-	/** Lore desbloqueado al sacrificar el Behelit en la Hoguera (T5). */
+	/** Lore desbloqueado al sacrificar el Damnorath en la Hoguera (T5). */
 	public static final String LORE_ECLIPSE_SACRIFICE = "eclipse_sacrifice_lore";
 
 	/** Lore desbloqueado al sobrevivir o presenciar el final del Eclipse (T1, T5). */
@@ -44,7 +45,7 @@ public final class LoreRules {
 			LORE_SOUL_FOG_TRIGGER,
 			LORE_EMBER_RAIN_TRIGGER,
 			LORE_CUSTODIAN_DEFEATED,
-			LORE_BEHELIT_FOUND,
+			LORE_ARTIFACT_FOUND,
 			LORE_ECLIPSE_SACRIFICE,
 			LORE_ECLIPSE_AFTERMATH,
 			LORE_CRYPT_CLEARED,
@@ -83,11 +84,11 @@ public final class LoreRules {
 
 	/** Desbloqueos al completar la cámara de diamante (T4). */
 	public static Set<String> unlocksOnDiamondChamberComplete() {
-		return Set.of(LORE_BEHELIT_FOUND);
+		return Set.of(LORE_ARTIFACT_FOUND);
 	}
 
-	/** Desbloqueos al sacrificar el Behelit en la Hoguera (T5). */
-	public static Set<String> unlocksOnBeheritSacrifice() {
+	/** Desbloqueos al sacrificar el Damnorath en la Hoguera (T5). */
+	public static Set<String> unlocksOnDamnorathSacrifice() {
 		return Set.of(LORE_ECLIPSE_SACRIFICE);
 	}
 

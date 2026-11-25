@@ -6,6 +6,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Cambiado
+- **El artefacto de la Hoguera se llama «Damnorath» («Embrión de la ruina») (D-40).** Sustituye a «Resonador del Umbral» y al término interno «Behelit» en los textos
+  visibles (5 idiomas), la clase `DamnorathItem` (antes `BeheritItem`), `ModItems.DAMNORATH`, `EclipseSummoningRules.damnorath(...)`, `LoreRules.LORE_ARTIFACT_FOUND`, las pruebas y los
+  documentos vivos. **No cambian** los ids guardados: registro `resonador_del_umbral` y lore `behelit_lore_unlocked`. Prompt de arte nuevo en
+  `docs/PROMPT_ARTE_ARTEFACTOS_ECLIPSE.md` (Damnorath y Astrolabio del Ocaso, ambos sin textura todavía).
 - **La Niebla de almas se convoca desde el tablón de contratos (D-36).** Nuevo tipo de contrato `SOUL_FOG` («Convocar la Niebla de
   almas»), añadido al final del enum para no mover los guardados: entre las 3 ofertas del día puede salir una a partir de
   dificultad Normal. Al aceptarla empieza el evento para todo el mundo (respeta la espera de `fogCooldownDays`, que no haya otro
