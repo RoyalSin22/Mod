@@ -1,7 +1,6 @@
 # C7 (S5) — Mensajes en el suelo: diseño
 
-Estado: **propuesta de Claude (2026-11-25), con decisiones del autor del mismo día (§10).** No hay código. Lo que
-sigue abierto va marcado con ❓.
+Estado: **diseño aprobado por el autor (2026-11-25, §10).** No hay código todavía.
 
 Origen: `docs/IDEAS_v47_v55.md` (S5: «notas cortas de frases predefinidas, sin texto libre, que otros jugadores leen
 y valoran»), dentro de C7 en `docs/PLAN_CLAUDE.md`.
@@ -24,9 +23,9 @@ y valoran»), dentro de C7 en `docs/PLAN_CLAUDE.md`.
    coloca la nota. Se gasta una tiza.
 2. **Ver.** Cada nota es un **glifo de ceniza tenue** en el suelo, dibujado por el cliente (no es un bloque ni una
    entidad). Brilla un poco más cuanto más valorada esté.
-3. **Leer.** Si miras un glifo a ≤ 4 bloques, aparece una línea en el HUD con la frase traducida, el autor ❓ y las
-   valoraciones. No hace falta hacer clic.
-4. **Valorar.** Mientras se muestra la línea, una tecla (por defecto **V**, ❓) la marca como «útil». Una vez por
+3. **Leer.** Si miras un glifo a ≤ 4 bloques, aparece una línea en el HUD con la frase traducida, el autor (§10) y
+   las valoraciones. No hace falta hacer clic.
+4. **Valorar.** Mientras se muestra la línea, una tecla (por defecto **V**, reasignable en Controles) la marca como «útil». Una vez por
    jugador y nota, nunca la tuya.
 5. **Borrar.** El autor la borra con Mayús + clic derecho y la tiza en la mano. Un operador puede borrar con un
    comando (§8).
@@ -64,8 +63,9 @@ persistencia de `AGENTS.md` §5), así que se pueden añadir piezas al final sin
 | Conceptos | el Eclipse, la Lluvia de brasas, el fuego, la magia, el veneno, la oscuridad |
 
 El catálogo vive en una clase pura (`social/MessageCatalog`) con prueba: claves únicas, `%s` exacto en cada
-plantilla, todas las combinaciones con texto en los 11 idiomas y ningún término excluido. ❓ ¿Prefieres que los
-textos de las palabras mantengan el artículo (como arriba) o que la plantilla lo ponga?
+plantilla, todas las combinaciones con texto en los 11 idiomas y ningún término excluido. Las palabras llevan su
+artículo (como arriba), para que cada idioma pueda concordar sin reglas de gramática. El autor aprobó el borrador como
+base: el catálogo completo se revisará en el PR antes de integrar.
 
 ## 4. Datos y persistencia
 
@@ -74,16 +74,17 @@ textos de las palabras mantengan el artículo (como arriba) o que la plantilla l
   consultar perfiles), `template`, `word`, `created` (tiempo del mundo), `raters` (conjunto de UUID, con tope).
 - **Límites**, validados en `validated(...)` y documentados en `docs/CONFIGURATION.md`:
 
-| Opción ❓ | Por defecto ❓ | Rango | Para qué |
+| Opción | Por defecto | Rango | Para qué |
 |---|---|---|---|
 | `groundMessagesEnabled` | true | — | Interruptor general |
 | `groundMessagesPerPlayer` | 10 | [1, 100] | Notas vivas por jugador; al pasar el tope se borra la más antigua |
 | `groundMessagesPerChunk` | 4 | [1, 32] | Evita llenar una zona |
 | `groundMessageLifetimeDays` | 30 | [0, 365] | Días de juego hasta que caduca (0 = no caduca) |
 | `groundMessageMinSpacing` | 2 | [0, 8] | Distancia mínima entre dos notas, en bloques |
+| `groundMessageShowAuthor` | true | — | Muestra el nombre del autor; false = notas anónimas |
 
-- **Mundo de un jugador**: sirve como apuntes propios. ❓ Opcional: notas «del mundo» escritas por el mod en
-  estructuras (pistas de templo y cripta). Darían valor sin otros jugadores, pero son trabajo aparte.
+- **Mundo de un jugador**: sirve como apuntes propios. Las notas «del mundo» escritas por el mod en estructuras
+  quedan para una fase posterior (§10).
 
 ## 5. Red y autoridad del servidor
 
@@ -109,7 +110,7 @@ textos de las palabras mantengan el artículo (como arriba) o que la plantilla l
 
 ## 7. Valoraciones y recompensa
 
-Decisión del autor: **opción B** (recompensa material al autor). Cifras propuestas ❓, pendientes de aprobar:
+Decisión del autor: **opción B** (recompensa material al autor), con estas cifras aprobadas:
 
 - Cuando alguien valora tu nota y estás conectado y vivo: **+2 de vida** (un corazón) y **+5 XP de Combate**
   (pasa por el rendimiento decreciente normal, `XpDiminishing`).
@@ -138,7 +139,8 @@ Opciones nuevas: `groundMessageRewardHeal` (2,0; [0, 20]), `groundMessageRewardX
 - Cliente: `client/social/ClientGroundMessages`, `client/screen/GroundMessageScreen`, dibujo y línea del HUD, tecla V.
 - Recursos: textos en los 11 idiomas (plantillas, palabras, pantalla, avisos, opciones), textura de la tiza
   (`gen_items.py`) y del glifo, receta, logro si se elige A.
-- Docs: `CONFIGURATION.md`, `TESTING.md`, `CHANGELOG.md`, `ROADMAP_APTITUDES.md`, capítulo del grimorio ❓.
+- Docs: `CONFIGURATION.md`, `TESTING.md`, `CHANGELOG.md`, `ROADMAP_APTITUDES.md` y una entrada del grimorio que
+  explique la tiza (sin copiar recetas: el grimorio las lee del juego).
 
 Estimación: tarea mediana (del orden de C3). Sin mixins ni dependencias nuevas.
 
@@ -149,11 +151,7 @@ Tomadas por el autor (2026-11-25):
 1. **Representación**: glifo dibujado por el cliente, con los datos en el servidor.
 2. **Tiza de ceniza**: receta barata en la Mesa del gremio (1 carbón vegetal + 1 polvo de hueso + 1 fragmento de
    alma = 4 tizas); cada nota gasta una.
-3. **Recompensa por valoración**: opción B, con las cifras y frenos de §7 pendientes de aprobar.
+3. **Recompensa por valoración**: opción B, con las cifras y frenos de §7.
 4. **Notas del mundo** en estructuras: más adelante, en una fase posterior que reutilice este sistema.
-
-Abiertas ❓:
-
-5. Cifras de §7 (curación, XP, tope diario y exclusión del grupo).
-6. **Autor visible**: mostrar su nombre (propuesta: sí, con una opción de servidor para ocultarlo).
-7. **Catálogo**: ¿vale el borrador de §3 como base, o prefieres dar tú las plantillas?
+5. **Autor visible**: sí, con la opción de servidor `groundMessageShowAuthor` para ocultarlo.
+6. **Catálogo**: el borrador de §3 como base; el catálogo completo se revisa en el PR.
