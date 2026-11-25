@@ -34,7 +34,7 @@ Una versión por tarea y por rama (`AGENTS.md`). Orden por dependencias: lo que 
 | Versión | Contenido | Entrega | Esfuerzo |
 |---|---|---|---|
 | **V92 – Validación y accesibilidad** | (1) Pasar la **hoja de pruebas en partida** por los 20 roles (el autor) y corregir P0/P1. (2) Sliders de cliente separados: partículas, temblor, FOV, viñeteado, volumen de habilidades, efectos de otros jugadores (completos/reducidos/mínimos) y alto contraste de señales. (3) Marcar qué efectos son **señal funcional** (avisos de ataque enemigo) y no se atenúan. | Opciones en `ClientConfig` + `ConfigScreen`; sin tocar el servidor | B–M |
-| **V93 – Eventos de combate y telemetría** | Bus central en servidor: `AbilityCast`, `AbilityImpact`, `DamageDealt`, `DamageMitigated`, `EffectiveHeal`, `TargetMarked`, `CompanionCommand`, `CombatEnded`, con propietario, habilidad, objetivo y marca **directo/derivado**. Los `*Kit` se suscriben en vez de enganchar cada uno su evento. Telemetría mínima (daño efectivo/s, daño por recurso, curación efectiva y sobrecuración, activaciones derivadas, MSPT, entidades activas) con comando de operador para volcarla. | `ability/CombatEvents` (puro donde se pueda, con pruebas), migración gradual de enganches existentes, `/aptitudes telemetry` | M–A |
+| **V93 – Eventos de combate y telemetría** (incluye línea base vanilla, tiempo en solitario por rol, esmeraldas consumidas y, si se decide, PvP) | Bus central en servidor: `AbilityCast`, `AbilityImpact`, `DamageDealt`, `DamageMitigated`, `EffectiveHeal`, `TargetMarked`, `CompanionCommand`, `CombatEnded`, con propietario, habilidad, objetivo y marca **directo/derivado**. Los `*Kit` se suscriben en vez de enganchar cada uno su evento. Telemetría mínima (daño efectivo/s, daño por recurso, curación efectiva y sobrecuración, activaciones derivadas, MSPT, entidades activas) con comando de operador para volcarla. | `ability/CombatEvents` (puro donde se pueda, con pruebas), migración gradual de enganches existentes, `/aptitudes telemetry` | M–A |
 | **V94 – Presupuesto de invocaciones** | Presupuesto ponderado por jugador sobre `AbilityState.trackSummon`: esbirros, lobos, mascotas, torretas, diablillos y espadas; tope configurable; política al desconectar, morir y cambiar de dimensión; validar PvP y grupo. Auditoría de rendimiento antes de fijar números. | `ability/SummonBudget` + configuración | M |
 | **V95 – Feedback compartido** | Lenguaje común de impacto: normal, pesado, crítico, bloqueo, interrupción, curación efectiva, recurso completo/insuficiente, definitiva lista. Se reutiliza en habilidades base, extras y pasivas (con confirmación breve, sin partículas constantes). | Extender `FxIds`/`FxClient` con un puñado de eventos genéricos | M |
 | **V96 – Progresión audiovisual** | Firmas, definitivas y piedras angulares con motivo propio del rol (empezando por los 5 pilotos). Luego evoluciones Maestro/Definitiva. Los 10 nodos extra de cada rol al final. | `*Fx` por rol ampliados | A |
@@ -48,19 +48,41 @@ Antes de V96–V99 conviene tener los datos de V92–V93; sin ellos se equilibra
 
 | # | Pregunta | Estado |
 |---|---|---|
-| 1 | Eficacia en solitario del apoyo | **Decisión del autor.** |
+| 1 | Eficacia en solitario del apoyo | **Decidido: todos los roles deben estar bien equilibrados en solitario** (incluidos Herbolista, Bardo, Paladín y Druida). Ver §5. |
 | 2 | Qué puede usar el rol secundario | **Por verificar en el código** (casillas 2/2 sí; pasivas, firma y evoluciones del secundario hay que auditarlas). Es la pregunta más condicionante. |
 | 3 | Casillas | **Respondida: 2 por rol, 4 en total.** |
 | 4 | Recursos exclusivos actuales | **Parcialmente respondida** (ver §1): hay que hacer el inventario completo por rol. |
 | 5 | Firma, definitiva, evolución Definitiva y legendaria | Existen las cuatro; falta documentar la jerarquía de poder en `docs/BALANCE.md`. |
 | 6 | Armas por rol | Cada rol tiene arma de evolución propia; falta confirmar qué roles admiten armas vanilla. |
-| 7 | PvP | **Decisión del autor.** |
-| 8 | Monedas del Mercader | Hoy son esmeraldas reales. **Decisión del autor** (capital de combate propio vs economía general). |
+| 7 | PvP | **Decidido: PvP siempre activo, como en Minecraft normal.** Hallazgo: hoy las activas **nunca golpean a jugadores** (`Targeting.isHostileImpactTarget` excluye `PlayerEntity`). Ver §5. |
+| 8 | Monedas del Mercader | **Decidido: las esmeraldas siguen siendo economía real.** Se descarta el «capital operativo» de ChatGPT como sustituto. Ver §5. |
 | 9 | Límites de entidades | `MAX_MINIONS = 4` para esbirros; el resto sin tope común. Se resuelve en V94. |
-| 10 | Combate vanilla vs activas del mod | **Decisión del autor.** |
+| 10 | Combate vanilla vs activas del mod | **Decidido: el combate vanilla debe seguir siendo competitivo.** Ver §5. |
+
+## 5. Decisiones del autor (2026-11-25) y consecuencias
+
+| Decisión | Consecuencias para el plan |
+|---|---|
+| **Todos los roles bien equilibrados en solitario** | Se elimina la hipótesis de «apoyo = bajo daño». Herbolista, Bardo, Paladín y Druida necesitan una vía ofensiva propia suficiente para matar y una vía de auto-sostén; sus mejoras de grupo son un extra, no su razón de ser. La matriz de especialización de ChatGPT se reinterpreta: la columna *Apoyo* sube el techo en grupo, pero no baja el suelo en solitario. Métrica de V93/V99: **tiempo para derrotar a un mismo enemigo en solitario** comparable entre roles (banda objetivo a fijar con datos), no solo DPS. |
+| **PvP siempre activo, como en Minecraft normal** | **Hallazgo: hoy las activas nunca golpean a jugadores** (`Targeting.isHostileImpactTarget` excluye `PlayerEntity`, igual que `hostilesAround`). En PvP un jugador con rol solo pelea con combate vanilla + atributos, pasivas, armadura Ascendida (+4 % cuerpo a cuerpo) y runas, contra jugadores sin rol o con otro rol. Hay que decidir (**pregunta nueva, ver abajo**) si las activas pasan a afectar a jugadores. Si lo hacen: reducción de daño y control contra jugadores, rendimientos decrecientes del control (inmovilización, ceguera, aturdimiento), sigilo del Asesino y Cambiaformas con contrajuego, esbirros y torretas con reglas de objetivo, respeto de grupo/aliados (`PartyManager.isAlly`) y anti-spawn-kill. Si no lo hacen: documentarlo en el Grimorio y asegurar que ningún efecto pasivo o buff dé ventaja desproporcionada frente a un jugador sin rol. |
+| **Las esmeraldas siguen siendo economía real** | El Mercader gasta esmeraldas de verdad (`AbilitiesExtra.consume`). Se descarta la barra «capital operativo». Reglas: (1) el coste por daño debe ser razonable frente a lo que una esmeralda vale en el comercio vanilla; (2) **ninguna habilidad puede generar esmeraldas** (ni «rendimiento táctico» ni reembolsos que den ganancia neta) para no abrir granjas; (3) Monedero y Crédito son amortiguadores, no fuentes; (4) en solitario debe ser viable con las esmeraldas que un jugador razonable obtiene (hay que medirlo: telemetría de esmeraldas consumidas por combate). |
+| **El combate vanilla debe seguir siendo competitivo** | Las activas no pueden dejar obsoleto el golpe, el arco, el escudo ni las pociones. Métrica nueva en V93: **línea base vanilla** (espada de diamante/netherita + armadura + escudo + arco/ballesta) contra los mismos escenarios, a distintos niveles de progresión. Un rol que mate mucho más rápido que la línea base en todas las condiciones sale de banda; uno que mate mucho más lento, también. Las bonificaciones del rol deben **potenciar** el combate vanilla (p. ej. críticos, bloqueos, flechas) y no solo sustituirlo; vigilar `extraSkillDamageScale` y el bonus de +10 %/+4 % de la Ascendida. |
+
+### Pregunta nueva que condiciona V98–V99
+
+**¿Las activas de los roles deben poder golpear a otros jugadores?** Hoy no. Opciones:
+
+| Opción | Ventajas | Riesgos |
+|---|---|---|
+| A. Siguen siendo solo PvE | Equilibrio de PvP sigue siendo el de vanilla; menos trabajo y menos abuso. | Un rol es casi irrelevante en PvP salvo por pasivas/atributos; el Asesino, el Mago, etc. «no existen» frente a jugadores. |
+| B. Afectan a jugadores con escalado propio | Coherencia: el rol sirve en PvP, como el resto del juego. | Mucho trabajo de equilibrio (daño, control, sigilo, invocaciones), riesgo de exploits y de dominancia de burst/control. |
+| C. Mixta | Solo algunas activas (daño directo) afectan a jugadores; el control duro y las invocaciones no. | Reglas más difíciles de explicar. |
+
+Mi recomendación provisional: **C**, con daño reducido y sin control duro contra jugadores, y decidir tras los datos de V93. Sin tu respuesta no empezaría V98.
 
 ## 4. Próximos pasos concretos
 
 1. El autor prueba en partida los 20 roles con la hoja de QA (registrar P0–P3) y responde 1, 7, 8 y 10.
 2. Yo verifico en el código la pregunta 2 y hago el inventario de recursos por rol (sin cambiar nada).
 3. Empezar por **V92** y **V93**; no abrir V96 hasta tener datos.
+4. Decidir la pregunta nueva de §5 (activas contra jugadores) antes de V98.
