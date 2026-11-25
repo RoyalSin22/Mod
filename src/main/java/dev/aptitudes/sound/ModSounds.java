@@ -90,6 +90,14 @@ public final class ModSounds {
 	public static final SoundEvent WARLOCK_DOOM = register("warlock_doom");
 	public static final SoundEvent TAMER_COMMAND = register("tamer_command");
 	public static final SoundEvent TAMER_STAMPEDE = register("tamer_stampede");
+	public static final SoundEvent ELEMENT_FIRE = register("element_fire");
+	public static final SoundEvent ELEMENT_ICE = register("element_ice");
+	public static final SoundEvent ELEMENT_LIGHTNING = register("element_lightning");
+	public static final SoundEvent ELEMENT_EARTH = register("element_earth");
+	public static final SoundEvent ELEMENT_WIND = register("element_wind");
+	public static final SoundEvent ELEMENT_WATER = register("element_water");
+	public static final SoundEvent ELEMENT_MAGIC = register("element_magic");
+	public static final SoundEvent ELEMENT_DARK = register("element_dark");
 
 	private ModSounds() {
 	}

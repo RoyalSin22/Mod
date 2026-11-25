@@ -50,8 +50,8 @@ public final class ElementEffects {
 		element = form(p, element);
 		LivingEntity target = Targeting.raycastLiving(p, 24);
 		Vec3d end = target != null ? target.getPos().add(0, target.getHeight() / 2, 0) : Targeting.lookEnd(p, 24);
-		Targeting.particleLine(p.getServerWorld(), element.particle(), p.getEyePos(), end);
 		if (target == null) return false;
+		ElementFx.bolt(p, element, end); // V91
 		float damage = 5 + r;
 		DamageSource source = p.getDamageSources().indirectMagic(p, p);
 
@@ -74,7 +74,7 @@ public final class ElementEffects {
 				Vec3d from = end;
 				for (LivingEntity next : chain) {
 					Vec3d to = next.getPos().add(0, next.getHeight() / 2, 0);
-					Targeting.particleLine(p.getServerWorld(), element.particle(), from, to);
+					ElementFx.arc(p, element, from, to); // V91
 					next.damage(source, damage * 0.6f);
 					from = to;
 				}
@@ -139,7 +139,6 @@ public final class ElementEffects {
 				effect(target, StatusEffects.SLOWNESS, 30, 2);
 			}
 		}
-		Targeting.burst(p.getServerWorld(), element.particle(), target, 10, 0.4);
 		return true;
 	}
 
@@ -152,7 +151,7 @@ public final class ElementEffects {
 		float damage = 3 + r;
 		DamageSource source = p.getDamageSources().indirectMagic(p, p);
 		List<LivingEntity> hostiles = Targeting.hostilesAround(p, radius);
-		world.spawnParticles(element.particle(), p.getX(), p.getBodyY(0.5), p.getZ(), 60, radius / 2, 0.5, radius / 2, 0.05);
+		ElementFx.burst(p, element, radius); // V91
 
 		switch (element) {
 			case FIRE -> hostiles.forEach(e -> { e.damage(source, damage); e.setOnFireFor(4); });

@@ -496,5 +496,53 @@
     "sounds": [
       "aptitudes:tamer_stampede"
     ]
+  },
+  "element_fire": {
+    "subtitle": "subtitles.aptitudes.element_fire",
+    "sounds": [
+      "aptitudes:element_fire"
+    ]
+  },
+  "element_ice": {
+    "subtitle": "subtitles.aptitudes.element_ice",
+    "sounds": [
+      "aptitudes:element_ice"
+    ]
+  },
+  "element_lightning": {
+    "subtitle": "subtitles.aptitudes.element_lightning",
+    "sounds": [
+      "aptitudes:element_lightning"
+    ]
+  },
+  "element_earth": {
+    "subtitle": "subtitles.aptitudes.element_earth",
+    "sounds": [
+      "aptitudes:element_earth"
+    ]
+  },
+  "element_wind": {
+    "subtitle": "subtitles.aptitudes.element_wind",
+    "sounds": [
+      "aptitudes:element_wind"
+    ]
+  },
+  "element_water": {
+    "subtitle": "subtitles.aptitudes.element_water",
+    "sounds": [
+      "aptitudes:element_water"
+    ]
+  },
+  "element_magic": {
+    "subtitle": "subtitles.aptitudes.element_magic",
+    "sounds": [
+      "aptitudes:element_magic"
+    ]
+  },
+  "element_dark": {
+    "subtitle": "subtitles.aptitudes.element_dark",
+    "sounds": [
+      "aptitudes:element_dark"
+    ]
   }
 }

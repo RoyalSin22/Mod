@@ -50,7 +50,8 @@ public final class CastFx {
 				|| LancerFx.handles(abilityId) || SwordsmanFx.handles(abilityId) || PaladinFx.handles(abilityId)
 				|| NecromancerFx.handles(abilityId) || DruidFx.handles(abilityId) || MerchantFx.handles(abilityId) || MonkFx.handles(abilityId)
 				|| GunslingerFx.handles(abilityId) || WeaponFx.handles(abilityId) || ShapeshifterFx.handles(abilityId)
-				|| HunterFx.handles(abilityId) || BardFx.handles(abilityId) || WarlockFx.handles(abilityId) || TamerFx.handles(abilityId))) {
+				|| HunterFx.handles(abilityId) || BardFx.handles(abilityId) || WarlockFx.handles(abilityId) || TamerFx.handles(abilityId)
+				|| ElementFx.handles(abilityId))) {
 			player.swingHand(net.minecraft.util.Hand.MAIN_HAND, true);
 			return;
 		}

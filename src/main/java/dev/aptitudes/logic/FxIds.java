@@ -111,8 +111,14 @@ public final class FxIds {
 	public static final int TAMER_PET = 59;
 	/** Estampida: {@code dx,dy,dz} del ojo al final; {@code power} 1 si acertó. */
 	public static final int TAMER_STAMPEDE = 60;
+	/** Proyectil elemental: {@code power} = ordinal del elemento; {@code dx,dy,dz} = del ojo al final. */
+	public static final int ELEMENT_BOLT = 61;
+	/** Un salto del rayo en cadena entre dos puntos; {@code power} = ordinal del elemento. */
+	public static final int ELEMENT_ARC = 62;
+	/** Estallido elemental en quien lo lanza; {@code power} = ordinal del elemento y {@code dx} = radio. */
+	public static final int ELEMENT_BURST = 63;
 	/** Mayor id válido; el cliente descarta lo desconocido. */
-	public static final int MAX = 60;
+	public static final int MAX = 63;
 
 	private FxIds() {
 	}

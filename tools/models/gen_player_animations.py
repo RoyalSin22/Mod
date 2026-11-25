@@ -41,7 +41,8 @@ IMPACT_TICKS = {"berserker_rage": 4, "berserker_war_cry": 8, "berserker_slam": 3
                 "merchant_guard": 4, "monk_kick": 3, "monk_fists": 2,
                 "gunslinger_shot": 2, "gunslinger_deadeye": 4, "weapon_summon": 4, "weapon_greatsword": 4, "shapeshifter_pounce": 3,
                 "shapeshifter_howl": 5,
-                "hunter_mark": 3, "hunter_trap": 3, "hunter_volley": 4, "hunter_falcon": 4, "bard_song": 4, "bard_dissonance": 3, "warlock_curse": 3, "warlock_bolt": 3, "warlock_imps": 5, "warlock_doom": 4, "tamer_command": 4, "tamer_stampede": 3}
+                "hunter_mark": 3, "hunter_trap": 3, "hunter_volley": 4, "hunter_falcon": 4, "bard_song": 4, "bard_dissonance": 3, "warlock_curse": 3, "warlock_bolt": 3, "warlock_imps": 5, "warlock_doom": 4, "tamer_command": 4, "tamer_stampede": 3,
+                "elementalist_bolt": 3, "elementalist_burst": 4}
 
 
 def kf(vec, easing=OUT):
@@ -686,12 +687,34 @@ def build_tamer():
     return {"format_version": "1.8.0", "animations": anims}
 
 
+def build_elementalist():
+    anims = {}
+
+    # ---- Proyectil elemental (0,55 s): reúne la energía en la palma y la empuja al frente en el tick 3.
+    bo_r = {0: NEUTRAL, 0.07: ([-50, -10, 22], OUT), 0.15: ([-96, 4, 4], SMASH), 0.26: ([-96, 4, 4], HOLD), 0.55: (NEUTRAL, SOFT)}
+    anims["elementalist_bolt"] = animation(False, limbs(
+        bo_r, 0.015, 0.95,
+        torso=({0: NEUTRAL, 0.07: [4, -10, 0], 0.15: ([12, 8, 0], SMASH), 0.26: ([12, 8, 0], HOLD), 0.55: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.15: ([-4, 4, 0], BACK), 0.26: ([-4, 4, 0], HOLD), 0.55: (NEUTRAL, SOFT)}, None),
+    ))
+    # ---- Estallido elemental (0,8 s): junta las manos al pecho y las abre con fuerza en el tick 4.
+    bu_r = {0: NEUTRAL, 0.10: ([-70, -34, -10], OUT), 0.20: ([-50, 8, 74], SMASH), 0.34: ([-50, 8, 74], HOLD), 0.80: (NEUTRAL, SOFT)}
+    anims["elementalist_burst"] = animation(False, limbs(
+        bu_r, 0.01, 0.96,
+        torso=({0: NEUTRAL, 0.10: [14, 0, 0], 0.20: ([-8, 0, 0], SMASH), 0.34: ([-8, 0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.10: [10, 0, 0], 0.20: ([-6, 0, 0], BACK), 0.34: ([-6, 0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.10: [0, -1.6, 0], 0.20: ([0, 0.6, 0], BACK), 0.34: ([0, 0.6, 0], HOLD), 0.80: (NEUTRAL, SOFT)}),
+    ))
+    return {"format_version": "1.8.0", "animations": anims}
+
+
 FILES = {"berserker.json": build_berserker, "mage.json": build_mage, "assassin.json": build_assassin,
          "herbalist.json": build_herbalist, "engineer.json": build_engineer, "lancer.json": build_lancer,
          "swordsman.json": build_swordsman, "paladin.json": build_paladin, "necromancer.json": build_necromancer,
          "druid.json": build_druid, "merchant.json": build_merchant, "monk.json": build_monk,
          "gunslinger.json": build_gunslinger, "weaponsummoner.json": build_weaponsummoner, "shapeshifter.json": build_shapeshifter,
-         "hunter.json": build_hunter, "bard.json": build_bard, "warlock.json": build_warlock, "tamer.json": build_tamer}
+         "hunter.json": build_hunter, "bard.json": build_bard, "warlock.json": build_warlock, "tamer.json": build_tamer,
+         "elementalist.json": build_elementalist}
 
 
 

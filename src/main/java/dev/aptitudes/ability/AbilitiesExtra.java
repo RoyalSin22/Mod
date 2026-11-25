@@ -397,7 +397,6 @@ final class AbilitiesExtra {
 			AbilityState.repeat(server(p), 3, 10, i -> {
 				if (p.isAlive()) ElementEffects.bolt(p, element, Math.max(1, r - 1));
 			});
-			sound(p, SoundEvents.ENTITY_EVOKER_CAST_SPELL, 1.2f);
 			return true;
 		});
 		// Aura elemental: 4 pulsos (cada 1,5 s) del estallido del elemento activo, más débiles.
@@ -407,8 +406,6 @@ final class AbilitiesExtra {
 			AbilityState.repeat(server(p), 4, 30, i -> {
 				if (p.isAlive()) ElementEffects.burst(p, element, Math.max(1, r - 2));
 			});
-			ParticleFx.spiral(world(p), p.getPos(), 1.2, 2.5, element.particle(), 50, 3);
-			sound(p, SoundEvents.BLOCK_BEACON_POWER_SELECT, 1.2f);
 			return true;
 		});
 

@@ -327,14 +327,11 @@ public final class Abilities {
 		register("elemental_bolt", (p, r) -> {
 			Element element = ElementEffects.activeElement(p);
 			if (element == null) return false;
-			boolean hit = ElementEffects.bolt(p, element, r);
-			if (hit) sound(p, SoundEvents.ENTITY_EVOKER_CAST_SPELL, 1.4f);
-			return hit;
+			return ElementEffects.bolt(p, element, r);
 		});
 		register("elemental_burst", (p, r) -> {
 			Element element = ElementEffects.activeElement(p);
 			if (element == null) return false;
-			sound(p, SoundEvents.ENTITY_ILLUSIONER_CAST_SPELL, 1.0f);
 			return ElementEffects.burst(p, element, r);
 		});
 

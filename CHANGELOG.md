@@ -6,6 +6,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 ## [Sin publicar]
 
 ### Añadido
+- **V91 — Efectos de batalla, fase 10 (Elementalista).** El Proyectil, el Estallido, la Ráfaga y el Aura elementales dibujan ahora con un
+  estilo propio por cada uno de los 14 elementos (llamas y lava, copos y esquirlas de hielo, rayos en zigzag con cadena, escombros de
+  tierra, espirales de viento, burbujas, hojas, sombras, vacío, destellos de luz, baba, cristales de amatista y notas). Dos animaciones del
+  cuerpo (`elementalist.json`) y ocho sonidos sintetizados por familia de elemento con subtítulos en los 11 idiomas. El Proyectil elemental
+  ya no dibuja nada si no hay objetivo. La Firma y la Definitiva del Elementalista reutilizan el mismo Estallido. Con esto quedan
+  cubiertos los 20 roles. **Sin ver en partida.**
 - **V90 — Efectos de batalla, fase 9 (Cazador, Bardo, Brujo abisal y Domador).** Cazador: Marca (sello que se cierra), Trampa de oso
   (dientes que saltan al cerrarse), Lluvia de flechas y Golpe de halcón (picado con plumas). Bardo: Canción de valor, Balada de escudo y
   Réquiem (espirales de notas de color distinto) y Disonancia (onda de notas rotas que sacude la cámara). Brujo abisal: Maldición de

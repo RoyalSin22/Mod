@@ -213,3 +213,26 @@ Identidad de taller: naranja y cian, chispas, cable y esquirlas de hierro. Cubre
 - Se corrige además `PlayerAnimIds.ALL`, al que faltaban tres animaciones de V89 (`gunslinger_deadeye`, `weapon_summon`, `weapon_greatsword`).
 - **Queda sin cubrir** el Elementalista (efectos por elemento).
 - **No verificado en partida:** aspecto, sincronía y rendimiento (la Lluvia de flechas y las espirales del Bardo son lo más cargado).
+
+## Fase 10: Elementalista (V91)
+
+Los efectos se enganchan en `ElementEffects.bolt` y `burst`, no en cada activa, así que el Proyectil, el Estallido, la Ráfaga (3 proyectiles),
+el Aura (4 estallidos), la Firma y la Definitiva comparten guion. El servidor manda el ordinal del elemento y el color sale de `Element.color()`.
+
+| Elemento | Estela del proyectil | Impacto |
+|---|---|---|
+| Fuego / Magma | Llama y humo / lava y llama | Explosión |
+| Hielo | Copos de nieve | Esquirlas de hielo con gravedad |
+| Rayo | Zigzag con chispas; los saltos de la cadena son eventos aparte | Destello y chispas |
+| Tierra | Escombros del suelo con física | Escombros que saltan |
+| Viento | Espiral de nubes | Tajo de aire |
+| Agua | Salpicaduras y gotas | Burbujas |
+| Planta | Hojas y brillos verdes | Compost |
+| Sombra / Vacío | Tinta y humo / portal inverso | Humo denso / estampido |
+| Luz / Cristal | Varillas de luz / brillo y amatista | Destello / esquirlas de amatista |
+| Veneno / Sonido | Baba y estornudos / notas | Gotas de baba / estampido |
+
+- Ocho sonidos por familia (`element_fire`, `ice`, `lightning`, `earth`, `wind`, `water`, `magic`, `dark`), con tono distinto para los pares.
+- **Cambio de comportamiento:** el Proyectil elemental ya no dibuja línea ni suena si no hay objetivo; las partículas genéricas del Estallido y del
+  impacto se sustituyen por el evento. La evolución de Fuego a Magma conserva su anillo de lava (`ElementEffects.evolutionFx`).
+- **No verificado en partida:** aspecto de los 14 estilos, tonos de los sonidos y rendimiento (el Estallido con la Definitiva lanza hasta tres a la vez).

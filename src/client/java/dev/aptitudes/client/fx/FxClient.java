@@ -113,6 +113,9 @@ public final class FxClient {
 			case FxIds.TAMER_COMMAND -> TamerClientFx.command(world, p);
 			case FxIds.TAMER_PET -> TamerClientFx.pet(world, p);
 			case FxIds.TAMER_STAMPEDE -> TamerClientFx.stampede(world, p);
+			case FxIds.ELEMENT_BOLT -> ElementClientFx.bolt(world, p);
+			case FxIds.ELEMENT_ARC -> ElementClientFx.arc(world, p);
+			case FxIds.ELEMENT_BURST -> ElementClientFx.burst(world, p);
 			default -> { }
 		}
 	}

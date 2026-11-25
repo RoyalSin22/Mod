@@ -951,6 +951,93 @@ def tamer_stampede(rng):
     return fade_out(normalize(hooves + dust, 0.84), 0.15)
 
 
+# ---------------------------------------------------------------- Elementalista (V91)
+
+def element_fire(rng):
+    """Fuego: un rugido de llama que crepita."""
+    t = t_axis(0.8)
+    roar = _soft_air(rng, len(t), 150, 2200) * env(t, 0.02, 0.25) * 0.8
+    crackle = np.zeros(len(t))
+    for _ in range(16):
+        i = int(rng.uniform(0.02, 0.6) * RATE)
+        n = int(0.012 * RATE)
+        if i + n < len(t):
+            crackle[i:i + n] += _soft_air(rng, n, 1500, 6000) * np.exp(-np.arange(n) / (0.003 * RATE)) * rng.uniform(0.3, 0.8)
+    low = np.sin(2 * np.pi * (100 * np.exp(-t * 8) + 45) * t) * env(t, 0.004, 0.2) * 0.6
+    return fade_out(normalize(roar + crackle * 0.6 + low, 0.82), 0.12)
+
+
+def element_ice(rng):
+    """Hielo: un tintineo de cristal que se quiebra."""
+    t = t_axis(0.8)
+    glass = _bell(t, 2300, [(1.0, 0.6), (1.7, 0.4), (2.6, 0.3), (3.9, 0.2)], 0.3) * 0.7
+    crack = _soft_air(rng, len(t), 3000, 8000) * env(t, 0.0005, 0.03) * 0.5
+    low = np.sin(2 * np.pi * (170 * np.exp(-t * 16) + 70) * t) * env(t, 0.002, 0.08) * 0.5
+    return fade_out(normalize(glass + crack + low, 0.8), 0.12)
+
+
+def element_lightning(rng):
+    """Rayo: un chasquido seco con eco de trueno."""
+    t = t_axis(0.9)
+    crack = _soft_air(rng, len(t), 2000, 8000) * env(t, 0.0003, 0.025) * 0.9
+    zap = np.sin(2 * np.pi * np.cumsum(3000 * np.exp(-t * 25) + 250) / RATE) * env(t, 0.0008, 0.06) * 0.5
+    thunder = _soft_air(rng, len(t), 40, 500) * env(t, 0.04, 0.35) * 0.9
+    return fade_out(normalize(crack + zap + thunder, 0.88), 0.15)
+
+
+def element_earth(rng):
+    """Tierra: un retumbo grave con grava."""
+    t = t_axis(0.9)
+    rumble = np.sin(2 * np.pi * (80 * np.exp(-t * 5) + 32) * t) * env(t, 0.004, 0.3) * 1.0
+    gravel = _soft_air(rng, len(t), 250, 2500) * env(t, 0.01, 0.2) * 0.7
+    crack = _soft_air(rng, len(t), 1500, 5000) * env(t, 0.0006, 0.04) * 0.4
+    return fade_out(normalize(rumble + gravel + crack, 0.86), 0.15)
+
+
+def element_wind(rng):
+    """Viento: una ráfaga que sube y se aleja."""
+    t, noise = _sweep_noise(rng, 0.9, 400.0, 2400.0, 700.0, 0.9)
+    amp = np.sin(np.pi * np.clip(t / 0.85, 0, 1)) ** 1.2
+    whistle = np.sin(2 * np.pi * np.cumsum(900 + 500 * np.sin(np.pi * np.clip(t / 0.8, 0, 1))) / RATE) * env(t, 0.1, 0.3) * 0.12
+    return fade_out(normalize(normalize(noise) * amp * 0.9 + whistle, 0.8), 0.15)
+
+
+def element_water(rng):
+    """Agua: un chapoteo con burbujas."""
+    t = t_axis(0.8)
+    splash = _soft_air(rng, len(t), 600, 5500) * env(t, 0.004, 0.12) * 0.8
+    bubbles = np.zeros(len(t))
+    for _ in range(6):
+        i = int(rng.uniform(0.05, 0.5) * RATE)
+        n = int(0.08 * RATE)
+        if i + n < len(t):
+            tt = np.arange(n) / RATE
+            bubbles[i:i + n] += np.sin(2 * np.pi * np.cumsum(500 + 1800 * tt / 0.08) / RATE * np.ones(n)) * np.exp(-tt / 0.03) * rng.uniform(0.2, 0.4)
+    low = np.sin(2 * np.pi * (120 * np.exp(-t * 14) + 50) * t) * env(t, 0.003, 0.1) * 0.6
+    return fade_out(normalize(splash + bubbles + low, 0.8), 0.12)
+
+
+def element_magic(rng):
+    """Luz y cristal: un acorde de campanas brillantes."""
+    t = t_axis(1.0)
+    out = np.zeros(len(t))
+    for k, f in enumerate((1046.5, 1318.5, 1568.0, 2093.0)):
+        tt = np.maximum(t - 0.04 * k, 0)
+        out += _bell(tt, f, [(1.0, 0.5), (2.0, 0.2)], 0.5) * (t >= 0.04 * k)
+    shimmer = _soft_air(rng, len(t), 3500, 9000) * env(t, 0.1, 0.3) * 0.1
+    thump = np.sin(2 * np.pi * (140 * np.exp(-t * 14) + 55) * t) * env(t, 0.003, 0.1) * 0.5
+    return fade_out(normalize(out + shimmer + thump, 0.78), 0.2)
+
+
+def element_dark(rng):
+    """Sombra y vacío: un latido grave que se traga el aire."""
+    t = t_axis(1.0)
+    sub = np.sin(2 * np.pi * (70 * np.exp(-t * 4) + 30) * t) * env(t, 0.02, 0.4) * 1.0
+    suck = _soft_air(rng, len(t), 200, 1800) * (1 - np.clip(t / 0.5, 0, 1)) * env(t, 0.01, 0.25) * 0.6
+    whisper = _soft_air(rng, len(t), 1500, 5000) * env(t, 0.15, 0.3) * 0.2
+    return fade_out(normalize(sub + suck + whisper, 0.82), 0.2)
+
+
 SOUNDS = {
     'eclipse_announce': eclipse_announce,
     'eclipse_start': eclipse_start,
@@ -1035,6 +1122,14 @@ SOUNDS = {
     'warlock_doom': warlock_doom,
     'tamer_command': tamer_command,
     'tamer_stampede': tamer_stampede,
+    'element_fire': element_fire,
+    'element_ice': element_ice,
+    'element_lightning': element_lightning,
+    'element_earth': element_earth,
+    'element_wind': element_wind,
+    'element_water': element_water,
+    'element_magic': element_magic,
+    'element_dark': element_dark,
 }
 
 

@@ -1859,6 +1859,14 @@ subtitles.aptitudes.warlock_imps¦Diabretes gargalham¦Des diablotins ricanent¦
 subtitles.aptitudes.warlock_doom¦A perdição soa¦Le glas sonne¦Das Verhängnis läutet
 subtitles.aptitudes.tamer_command¦A matilha recebe uma ordem¦La meute reçoit un ordre¦Das Rudel erhält einen Befehl
 subtitles.aptitudes.tamer_stampede¦Uma debandada avança¦Une ruée charge¦Eine Stampede stürmt
+subtitles.aptitudes.element_fire¦Chamas rugem¦Les flammes rugissent¦Flammen brüllen
+subtitles.aptitudes.element_ice¦O gelo se estilhaça¦La glace éclate¦Eis zerspringt
+subtitles.aptitudes.element_lightning¦Um raio estala¦La foudre claque¦Ein Blitz kracht
+subtitles.aptitudes.element_earth¦A terra ribomba¦La terre gronde¦Die Erde grollt
+subtitles.aptitudes.element_wind¦Uma rajada sopra¦Une rafale souffle¦Eine Böe weht
+subtitles.aptitudes.element_water¦A água respinga¦L'eau éclabousse¦Wasser spritzt
+subtitles.aptitudes.element_magic¦Sinos brilhantes soam¦Des carillons brillants tintent¦Helle Glocken klingen
+subtitles.aptitudes.element_dark¦A escuridão pulsa¦L'obscurité palpite¦Die Dunkelheit pulsiert
 entity.aptitudes.custodio_cuatro_llaves¦O Custódio das Quatro Chaves¦Le Gardien des Quatre Clés¦Der Wächter der vier Schlüssel
 item.aptitudes.faceless_colossus_spawn_egg¦Ovo gerador do Colosso Sem Rosto¦Œuf d'apparition du Colosse sans visage¦Spawn-Ei des gesichtslosen Kolosses
 bestiary.aptitudes.faceless_colossus.tip¦Guerreiro gigante com espadão. Anuncia um golpe amplo e um golpe descendente com onda: saia do círculo marcado. Com metade da vida sua armadura racha: fica mais rápido, investe de longe e recebe mais dano.¦Guerrier géant armé d'une grande épée. Il annonce un large balayage et un coup plongeant avec onde de choc : sortez du cercle marqué. À mi-vie son armure se fissure : il va plus vite, charge de loin et subit plus de dégâts.¦Riesiger Krieger mit Zweihänder. Er kündigt einen weiten Hieb und einen Abwärtsschlag mit Schockwelle an: Verlasse den markierten Kreis. Bei halber Lebenskraft bricht seine Rüstung: Er wird schneller, stürmt aus der Ferne an und erleidet mehr Schaden.
