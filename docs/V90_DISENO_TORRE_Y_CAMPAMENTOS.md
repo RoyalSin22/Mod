@@ -104,12 +104,16 @@ Fases: 1) propuestas con esquemas ASCII (el autor elige), 2) planos puros y prue
 6. **Sin probar en partida**, como todo lo reciente.
 7. **Exclusiones** (`AGENTS.md` §3): nada de linajes, razas ni pactos; «ritual» de los brujos es solo ambientación.
 
-## 8. Qué queda por decidir
+## 8. Decisiones cerradas (2026-11-26, segunda ronda)
 
-1. ¿Los **generadores** conservan el tipo actual por piso (zombi/esqueleto y araña/esqueleto) o cambian con el anillo?
-2. ¿La **torre redonda** y la **derrumbada** son variantes imprescindibles o bastan dos formas?
-3. **Campamentos:** ¿alguno de los **tipos nuevos** (mercaderes asaltados, desertores, cultistas del Velo, buscadores) o solo los tres actuales con más variedad?
-4. **Alarma del campamento:** ¿sí (si el capitán ve al jugador, los demás se unen) o los enemigos actúan por separado?
-5. **Contrato:** ¿«Limpiar un campamento» por tipo (cazadores, brujos, bandidos) o genérico?
-6. **Cofre oculto:** ¿pista visual (bloque distinto) y sonora, o sin pista?
-7. ¿Prefieres que el **contrato** lo haga Codex con los campamentos o lo hago yo después, en una fase aparte?
+| Tema | Decisión |
+|---|---|
+| Generadores | **Conservan el tipo actual por piso** (zombi/esqueleto en el piso 2; araña/esqueleto en el piso 3) |
+| Formas de torre | **Bastan dos**: **cuadrada con contrafuertes** y **redonda**. La ruina («derrumbada») no es una forma: es un **grado de daño** aplicable a cualquiera |
+| Tipos de campamento | **Los tres actuales y tipos nuevos** para dar variedad (catálogo en `docs/V90_DECORACION_Y_VARIANTES.md`) |
+| Comportamiento de enemigos | **Ambos**: **alarma** (si el capitán o un vigía te ve, el resto se une) **y enemigos independientes** (centinelas, durmientes y patrullas que actúan por su cuenta) |
+| Contrato | **Por tipo de campamento** |
+| Cofre oculto | **Con pista visual** |
+| Quién lo hace | **Codex**, incluido el enlace con los contratos |
+
+Detalle de decoración, paletas, encuentros por anillo y pistas: `docs/V90_DECORACION_Y_VARIANTES.md`.
