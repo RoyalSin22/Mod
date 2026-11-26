@@ -68,6 +68,11 @@ public final class PlayerAnimIds {
 	public static final String GRAND_ULTIMATE = "grand_ultimate";
 	/** V96: gesto breve de las activas de Maestro y Definitivo. */
 	public static final String EVOLVED_CAST = "evolved_cast";
+	/** V97: posturas de combate en bucle (capa propia de prioridad baja). */
+	public static final String STANCE_BERSERKER = "stance_berserker";
+	public static final String STANCE_LANCER = "stance_lancer";
+	public static final String STANCE_MONK = "stance_monk";
+	public static final String STANCE_MAGE = "stance_mage";
 
 	/**
 	 * Tick (20 por segundo) en que cada animación llega a su golpe. Los efectos de partículas, cámara y pantalla se retrasan esos ticks
@@ -95,7 +100,8 @@ public final class PlayerAnimIds {
 			GUNSLINGER_SHOT, GUNSLINGER_DEADEYE, WEAPON_SUMMON, WEAPON_GREATSWORD, SHAPE_POUNCE, SHAPE_HOWL,
 			HUNTER_MARK, HUNTER_TRAP, HUNTER_VOLLEY, HUNTER_FALCON, BARD_SONG, BARD_DISSONANCE, WARLOCK_CURSE, WARLOCK_BOLT, WARLOCK_IMPS, WARLOCK_DOOM, TAMER_COMMAND, TAMER_STAMPEDE,
 			ELEMENT_BOLT, ELEMENT_BURST,
-			GRAND_SIGNATURE, GRAND_ULTIMATE, EVOLVED_CAST);
+			GRAND_SIGNATURE, GRAND_ULTIMATE, EVOLVED_CAST,
+			STANCE_BERSERKER, STANCE_LANCER, STANCE_MONK, STANCE_MAGE);
 
 	private PlayerAnimIds() {
 	}

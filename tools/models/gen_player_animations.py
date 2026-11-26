@@ -743,13 +743,43 @@ def build_grand():
     return {"format_version": "1.8.0", "animations": anims}
 
 
+def _breathe(base, amp, length=2.0):
+    """Ciclo de respiración: la pose base sube y baja unos grados y vuelve al principio (bucle)."""
+    a = [base[0] + amp, base[1], base[2]]
+    return {0: base, length / 2: (a, SOFT), length: (base, SOFT)}
+
+
+def build_stance():
+    anims = {}
+
+    def stance(right, left, torso, head, body_y, amp):
+        bones = {
+            "right_arm": bone(rot=_breathe(right, amp)),
+            "left_arm": bone(rot=_breathe(left, -amp)),
+            "torso": bone(rot=_breathe(torso, amp * 0.5)),
+            "head": bone(rot=_breathe(head, -amp * 0.5)),
+            "body": bone(pos={0: [0, body_y, 0], 1.0: ([0, body_y + 0.25, 0], SOFT), 2.0: ([0, body_y, 0], SOFT)}),
+        }
+        return animation(True, bones)
+
+    # Bersérker: agachado y adelantado, hacha baja y mano izquierda como guardia.
+    anims["stance_berserker"] = stance([18, 10, 14], [-52, 0, -14], [16, -10, 0], [6, 8, 0], -1.4, 2.5)
+    # Lancero: de lado, lanza nivelada al frente con la mano de atrás en el asta.
+    anims["stance_lancer"] = stance([-68, 10, 8], [-58, -22, -18], [2, 24, 0], [0, -20, 0], -0.8, 1.5)
+    # Monje: puños arriba, guardia alta y cuerpo bajo.
+    anims["stance_monk"] = stance([-104, 10, 22], [-92, -10, -22], [8, 0, 0], [4, 0, 0], -1.0, 3.0)
+    # Mago: báculo erguido junto al cuerpo, mano libre abierta al frente y cuerpo ligeramente flotante.
+    anims["stance_mage"] = stance([-26, 0, 14], [-62, 0, -12], [-2, 0, 0], [-6, 0, 0], 0.4, 1.2)
+    return {"format_version": "1.8.0", "animations": anims}
+
+
 FILES = {"berserker.json": build_berserker, "mage.json": build_mage, "assassin.json": build_assassin,
          "herbalist.json": build_herbalist, "engineer.json": build_engineer, "lancer.json": build_lancer,
          "swordsman.json": build_swordsman, "paladin.json": build_paladin, "necromancer.json": build_necromancer,
          "druid.json": build_druid, "merchant.json": build_merchant, "monk.json": build_monk,
          "gunslinger.json": build_gunslinger, "weaponsummoner.json": build_weaponsummoner, "shapeshifter.json": build_shapeshifter,
          "hunter.json": build_hunter, "bard.json": build_bard, "warlock.json": build_warlock, "tamer.json": build_tamer,
-         "elementalist.json": build_elementalist, "grand.json": build_grand}
+         "elementalist.json": build_elementalist, "grand.json": build_grand, "stance.json": build_stance}
 
 
 

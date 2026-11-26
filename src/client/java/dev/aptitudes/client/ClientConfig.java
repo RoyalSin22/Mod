@@ -24,6 +24,8 @@ public final class ClientConfig {
 	public float fxIntensity = 1.0f;
 	/** V78: animaciones del cuerpo del jugador en los efectos de batalla (Player Animation Library). Boolean permite recuperar un null escrito a mano. */
 	public Boolean playerAnimations = true;
+	/** V97: posturas de combate (piloto: Bersérker, Lancero, Monje y Mago) mientras se sostiene su arma y hay combate. Requiere {@link #playerAnimations}. */
+	public Boolean combatStances = true;
 	/** V95: señales comunes de combate (golpe pesado, crítico, bloqueo, curación efectiva). Boolean permite recuperar un null escrito a mano. */
 	public Boolean impactFeedback = true;
 	/** Remates geométricos de las habilidades en el mundo. */
@@ -82,6 +84,7 @@ public final class ClientConfig {
 		if (config.showTutorial == null) config.showTutorial = true;
 		if (config.castAnimations == null) config.castAnimations = true;
 		if (config.impactFeedback == null) config.impactFeedback = true;
+		if (config.combatStances == null) config.combatStances = true;
 		if (config.playerAnimations == null) config.playerAnimations = true;
 		if (config.hudMinimal == null) config.hudMinimal = false;
 		if (config.hudAnimations == null) config.hudAnimations = true;

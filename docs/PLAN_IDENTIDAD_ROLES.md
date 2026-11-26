@@ -188,5 +188,6 @@ limita la frecuencia por atacante, víctima y jugador para que una ráfaga de go
 - Hecho (3.ª tanda): firmas y definitivas de los otros 15 roles (`GrandFx` ya cubre los 20; 15 sonidos `grand_<rol>`).
 - Hecho (4.ª tanda): activas de Maestro/Definitivo por plantilla (id 70, `EvolvedClientFx`, 10 sonidos `evolved_*`).
 - Hecho (5.ª tanda): las 100 activas de los nodos extra se asignan a las formas de la 4.ª tanda (`ExtraFxShapes`). Las 100 pasivas no tienen guion.
+- V97 (piloto de posturas) hecha el 2026-11-26: ver `docs/V77_EFECTOS_BATALLA.md` fase 12. Falta verla en partida y decidir si se extiende a más roles.
 - Pendiente de V96: revisar en partida la forma elegida para cada activa y, si hace falta, guiones propios para las más emblemáticas (N10).
 - Limitaciones: sin probar en partida; la Baliza del Ingeniero no distingue «fijar» de «teletransportar»; los sonidos solo están medidos.

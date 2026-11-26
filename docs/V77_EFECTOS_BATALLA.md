@@ -227,6 +227,17 @@ Animaciones `grand_signature` (tick 5) y `grand_ultimate` (tick 8) en `grand.jso
 | Paladín | Halo y cera dorada ascendente | Campana mayor y coro |
 | Ingeniero | Chispas eléctricas dispersas | Servo, engranaje y descarga |
 
+## Fase 12: Posturas de combate (V97, piloto)
+
+| Rol (arma) | Pose |
+|---|---|
+| Bersérker (hacha) | Agachado y adelantado, hacha baja, mano izquierda en guardia |
+| Lancero (lanza) | De lado, lanza nivelada al frente, mano de atrás en el asta |
+| Monje (vendas) | Puños arriba, guardia alta y cuerpo bajo |
+| Mago (báculo) | Báculo erguido junto al cuerpo, mano libre abierta y cuerpo ligeramente flotante |
+
+Precedencia: muerte y reacción (vanilla) > habilidad (capa 1500) > postura (capa 1100) > locomoción. Ver `StanceRules`.
+
 ### V96, 5.ª tanda: activas de los nodos extra
 
 `role/ExtraFxShapes` asigna a cada activa `<rol>_n3|n4|n6|n8|n10` una de las diez formas de la 4.ª tanda; N8 y N10 usan la intensidad del Definitivo.

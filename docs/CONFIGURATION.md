@@ -68,6 +68,7 @@ templos antiguos ya generados siguen funcionando. La frecuencia está en `data/a
 | `hudAnimations` | true | true / false | Transiciones de vida, maná, jefes y XP, entrada de avisos y pulso de nivel en la tarjeta de XP. Al desactivarlas, el HUD muestra los cambios de inmediato y sus indicadores de estado dejan de latir. `null` recupera true. Los efectos del mundo y del cielo tienen sus propios interruptores. |
 | `guideBookmarks` | `[]` | hasta 24 ids `chapter:` / `item:` / `beast:` / `role:` | Marcadores del grimorio (v61). Se guardan al pulsar ☆; los ids no válidos o repetidos se descartan al cargar. |
 | `impactFeedback` | true | true / false | V95: señales comunes de combate (golpe pesado, crítico, bloqueo con escudo y curación efectiva), en `config/aptitudes-client.json`. Se escalan con `fxIntensity` y un `null` explícito recupera true. |
+| `combatStances` | true | true / false | V97: posturas de combate (Bersérker, Lancero, Monje y Mago) mientras se sostiene su arma y hay combate; solo se ven en tercera persona y en otros jugadores. Requiere `playerAnimations`; en `config/aptitudes-client.json`. Un `null` explícito recupera true. |
 | `castAnimations` | true | true / false | Remates 3D de las habilidades, desde Mayús + O → Animaciones 3D. Un `null` explícito recupera true en `ClientConfig.validated(...)`. |
 
 ## Tutorial (v44)

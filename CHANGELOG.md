@@ -33,6 +33,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   PNG a mano tras ejecutar `gen_items.py`. Los mundos antiguos conservan, inofensivo, el archivo de datos de `SummonState`. Sin cambios de balance.
 
 ### Añadido
+- **V97 — Posturas de combate (piloto).** Bersérker, Lancero, Monje y Mago adoptan una postura en bucle mientras sostienen su arma y hay combate (golpean,
+  reciben daño o hay un hostil a menos de 10 bloques); se mantiene 3 s tras el último motivo para no parpadear. Nunca se muestra corriendo, nadando,
+  planeando, montado, durmiendo, trepando, usando un objeto ni muerto: ahí manda la locomoción vanilla. Capa propia de Player Animation Library de
+  prioridad 1100 (por debajo de los gestos de habilidad, 1500) que solo mueve brazos, torso, cabeza y cuerpo (las piernas siguen siendo vanilla). Se ve en
+  tercera persona y en los demás jugadores; en primera persona no cambia nada. Se basa en el arma, no en el rol, así que no sincroniza datos nuevos. Opción de
+  cliente `combatStances` (activada). `logic/StanceRules` (puro, `StanceRulesTest`), `client/fx/StanceClient` y `stance.json` (generado). Sin cambios de
+  balance. **Sin probar en partida**: las poses son de primera intención y hay que verlas.
 - **V96 (5.ª tanda) — Activas de los nodos extra (N1–N10).** Las 100 activas nuevas (N3, N4, N6, N8 y N10 de los 20 roles) usan ya el guion de
   batalla: cada una se asigna a una de las diez formas de V96·4 (rayo, cono, zona, vórtice, aura, escudo, curación, embestida, nova,
   invocación) en `role/ExtraFxShapes` (puro, con `ExtraFxShapesTest`), con su gesto, su sonido y su capa de partículas con el color del rol;
