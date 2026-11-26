@@ -23,6 +23,10 @@ class TempleFlowRulesTest {
 	@Test void layoutOnlyAcceptsTheTwoKnownValues() {
 		assertEquals(LAYOUT_OLD, clampLayout(0));
 		assertEquals(LAYOUT_CUSTODIAN, clampLayout(1));
+		assertEquals(LAYOUT_DESERT, clampLayout(5));
+		assertEquals(LAYOUT_DESERT_CRYPT, clampLayout(6));
+		assertTrue(isDeep(LAYOUT_DESERT));
+		assertTrue(hasCrypt(LAYOUT_DESERT_CRYPT));
 		assertEquals(LAYOUT_OLD, clampLayout(7));
 		assertEquals(LAYOUT_OLD, clampLayout(-1));
 	}

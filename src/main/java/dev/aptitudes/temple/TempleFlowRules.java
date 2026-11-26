@@ -19,6 +19,9 @@ public final class TempleFlowRules {
 	public static final int LAYOUT_DEEP = 3;
 	/** V70: Templo hondo con la Cripta de la Niebla como cuarto nivel. */
 	public static final int LAYOUT_DEEP_CRYPT = 4;
+	/** V89: templo desértico de 112×112; los valores previos permanecen intactos. */
+	public static final int LAYOUT_DESERT = 5;
+	public static final int LAYOUT_DESERT_CRYPT = 6;
 	/** V70: oleadas de la sala de pruebas del Piso 2. */
 	public static final int TRIAL_WAVES = 2;
 	/** Distancia (bloques) al umbral del atrio a la que despierta el Autómata. */
@@ -50,22 +53,22 @@ public final class TempleFlowRules {
 	}
 
 	public static int clampLayout(int layout) {
-		return layout >= LAYOUT_CUSTODIAN && layout <= LAYOUT_DEEP_CRYPT ? layout : LAYOUT_OLD;
+		return layout >= LAYOUT_CUSTODIAN && layout <= LAYOUT_DESERT_CRYPT ? layout : LAYOUT_OLD;
 	}
 
 	/** ¿Usa el flujo del Templo del Custodio (con o sin cripta)? Los templos antiguos no. */
 	public static boolean isCustodian(int layout) {
-		return layout >= LAYOUT_CUSTODIAN && layout <= LAYOUT_DEEP_CRYPT;
+		return layout >= LAYOUT_CUSTODIAN && layout <= LAYOUT_DESERT_CRYPT;
 	}
 
 	/** V70: ¿es el templo hondo (con o sin cripta)? */
 	public static boolean isDeep(int layout) {
-		return layout == LAYOUT_DEEP || layout == LAYOUT_DEEP_CRYPT;
+		return layout == LAYOUT_DEEP || layout == LAYOUT_DEEP_CRYPT || layout == LAYOUT_DESERT || layout == LAYOUT_DESERT_CRYPT;
 	}
 
 	/** ¿Tiene Cripta de la Niebla? */
 	public static boolean hasCrypt(int layout) {
-		return layout == LAYOUT_CRYPT || layout == LAYOUT_DEEP_CRYPT;
+		return layout == LAYOUT_CRYPT || layout == LAYOUT_DEEP_CRYPT || layout == LAYOUT_DESERT_CRYPT;
 	}
 
 	/** Fase guardada → fase válida (un valor desconocido vuelve al principio, nunca lanza). */

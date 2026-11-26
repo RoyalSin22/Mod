@@ -5,11 +5,13 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+### V89 — Templo del Custodio desértico
+- **Implementado, pendiente de prueba en partida:** templo nuevo de 112×112 por columnas y 49 chunks, solo desierto/badlands. Atrio, cisterna, alas, prueba, santuario, cuatro cámaras y cripta opcional; salida rápida tras el Custodio. Los layouts antiguos se conservan. [Plano y lista de comprobación](V89_REDISENO_TEMPLO.md). Pendiente: medir generación, frecuencia en varias semillas y recorrido real.
+
 ### V88 — Fortaleza de las Tres Torres
 - **Forma implementada, pendiente de prueba en partida:** fortaleza 128×128 en anillo de murallas rotas, generada por columna
   y por chunk. Dos torres de vigilancia, Torre del Mariscal, salas y cofres repartidos; el tesoro principal sigue tras el Coloso.
-  Ver [plano y recorrido](V88_REDISENO_ESTRUCTURAS.md). El Templo del Custodio conserva por ahora su diseño V70; falta la
-  preferencia del autor para su rediseño.
+  Ver [plano y recorrido](V88_REDISENO_ESTRUCTURAS.md).
 
 > **Pendientes consolidados:** `docs/PENDIENTES.md` (revisión del 2026-11-24). Estado de C5 en `docs/C5_PENDIENTES.md`; de la
 > cadena narrativa T1–T7, en `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` («Estado real»); de C1–C7, en `docs/PLAN_CLAUDE.md`.

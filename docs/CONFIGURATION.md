@@ -43,9 +43,9 @@ Las probabilidades, tamaños y presupuestos se vuelven a acotar en las reglas pu
 
 ## Templos (v64)
 
-Desde T3 los chunks nuevos generan el **Templo del Custodio** (`aptitudes:custodian_temple`, 31×31 en dos niveles) en lugar
-del templo sellado antiguo, con **1 de cada 120 chunks** (el templo antiguo era 1 de cada 400) y sin campos de configuración propios. Los
-templos antiguos ya generados siguen funcionando. La frecuencia está en `data/aptitudes/worldgen/placed_feature/`.
+V89 no añade campos: la región del Custodio sigue siendo 32×32 chunks; el nuevo plano de 112×112 solo se acepta en desierto/badlands, con desnivel ≤4, sin fluidos preexistentes y lejos de candidatos de pirámide. `cryptEnabled` conserva la cripta opcional, y `lifeVesselMax` conserva el límite de Vasos. Los templos ya generados conservan su distribución.
+
+Los chunks nuevos intentan generar el **Templo del Custodio** (`aptitudes:custodian_temple`, 112×112 y tres niveles), con un candidato por región de 32×32 chunks, sujeto a los filtros de terreno y bioma descritos arriba. La frecuencia real aún no está medida. Los templos antiguos ya generados siguen funcionando. La cuadrícula está en `data/aptitudes/worldgen/placed_feature/`.
 
 | Campo | Defecto | Dominio | Descripción |
 |---|---:|---|---|

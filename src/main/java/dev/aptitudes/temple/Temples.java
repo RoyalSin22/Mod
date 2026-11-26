@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
@@ -140,6 +141,26 @@ public final class Temples {
 	}
 
 	public static void register() {
+		ServerTickEvents.END_SERVER_TICK.register(server -> {
+			if (server.getTicks() % 10 != 0) return;
+			for (ServerWorld world : server.getWorlds()) {
+				if (world.getPlayers().isEmpty()) continue;
+				for (long packed : dev.aptitudes.world.StructureIndex.get(world).positions("custodian_temple")) {
+					BlockPos origin = BlockPos.fromLong(packed);
+					boolean near = world.getPlayers().stream().anyMatch(p -> !p.isSpectator()
+							&& Math.abs(p.getBlockX() - origin.getX()) <= 90
+							&& Math.abs(p.getBlockZ() - origin.getZ()) <= 90
+							&& Math.abs(p.getBlockY() - origin.getY()) <= 60);
+					if (!near) continue;
+					BlockPos controller = origin.add(dev.aptitudes.dungeon.DesertTempleLayout.CONTROLLER[0],
+							dev.aptitudes.dungeon.DesertTempleLayout.CONTROLLER[1], dev.aptitudes.dungeon.DesertTempleLayout.CONTROLLER[2]);
+					world.getChunk(controller.getX() >> 4, controller.getZ() >> 4);
+					if (world.getBlockEntity(controller) instanceof TempleControllerBlockEntity c
+							&& (c.layout() == TempleFlowRules.LAYOUT_DESERT || c.layout() == TempleFlowRules.LAYOUT_DESERT_CRYPT))
+						c.serverTickIfNeeded(world);
+				}
+			}
+		});
 		ItemGroupEvents.modifyEntriesEvent(RegistryKey.of(RegistryKeys.ITEM_GROUP, Aptitudes.id("items"))).register(entries -> {
 			for (TempleKeyRules.Metal metal : TempleKeyRules.Metal.values()) entries.add(keyItem(metal));
 			entries.add(LIFE_VESSEL);
@@ -261,8 +282,8 @@ public final class Temples {
 	@Nullable
 	static TempleControllerBlockEntity findController(ServerWorld world, BlockPos door) {
 		ChunkPos center = new ChunkPos(door);
-		for (int dx = -2; dx <= 2; dx++) {
-			for (int dz = -2; dz <= 2; dz++) {
+		for (int dx = -4; dx <= 4; dx++) {
+			for (int dz = -4; dz <= 4; dz++) {
 				WorldChunk chunk = world.getChunkManager().getWorldChunk(center.x + dx, center.z + dz);
 				if (chunk == null) continue;
 				for (BlockPos p : new ArrayList<>(chunk.getBlockEntityPositions())) {
@@ -306,7 +327,7 @@ public final class Temples {
 	 * mientras el original aún no ha terminado de cargarse con su chunk.
 	 */
 	static boolean automatonPresent(ServerWorld world, TempleControllerBlockEntity seal) {
-		Box area = new Box(seal.getPos()).expand(24);
+		Box area = new Box(seal.getPos()).expand(48);
 		String temple = TEMPLE_TAG + seal.templeId;
 		return !world.getEntitiesByClass(MobEntity.class, area,
 				m -> m.isAlive() && m.getCommandTags().contains(AUTOMATON_TAG) && m.getCommandTags().contains(temple)).isEmpty();

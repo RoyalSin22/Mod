@@ -1,5 +1,11 @@
 # Pruebas de Aptitudes
 
+## V89 — Templo del Custodio desértico
+
+JUnit `DesertTempleLayoutTest` comprueba cotas, puertas, espacio de aparición, botín de las cámaras y que la espiral solo llega al santuario después de abrir las dos rejas; `StructureLocateRulesTest` comprueba los 49 chunks por región y `TempleFlowRulesTest` los layouts añadidos 5 y 6. Se actualizó la expectativa de `DeepTempleLayoutTest` que antes trataba 5 como layout desconocido: ahora 5 y 6 son válidos, 7 sigue siendo desconocido. `./gradlew build` y `python tools/lang/check_lang.py` son las puertas de validación. Pruebas manuales pendientes: biomas, pirámides, rendimiento de generación, carga de chunks en distinto orden, recorrido completo, guardado/carga, cripta y salida. Detalle en [`V89_REDISENO_TEMPLO.md`](V89_REDISENO_TEMPLO.md).
+
+Verificación del 2026-11-26: `gradlew.bat build --no-daemon` terminó con **BUILD SUCCESSFUL**; `python tools/lang/check_lang.py` pasó (4499 claves por idioma adicional, orden y marcadores correctos). El wrapper reutilizó las tareas de una compilación completa ejecutada inmediatamente antes; no se hizo prueba en partida.
+
 ## V84 — Osario Quebrado, Fases 0–6
 
 Referencia en `20bc230`: `.\gradlew.bat build --offline --console=plain` terminó con **BUILD SUCCESSFUL**;

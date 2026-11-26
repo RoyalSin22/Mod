@@ -3,6 +3,10 @@
 Documento de referencia de las fórmulas de progresión. Cada cambio indica fórmula anterior, nueva,
 justificación, valores de ejemplo e impacto, como pide la política del proyecto.
 
+## Templo desértico (V89)
+
+No cambian la vida ni daño del Autómata y Custodio, las dos oleadas, el Vaso de vida ni las cuatro llaves. Antes el recorrido principal ocupaba 31×31 bloques y tres niveles; ahora ocupa 112×112 y una espiral de tres niveles. La región sigue siendo 32×32 chunks, pero el sitio requiere desierto/badlands, desnivel ≤4 y subsuelo seco, de modo que la frecuencia real baja; falta medirla en semillas reales. Se añaden dos campeones husk opcionales, sin poder nuevo, y cofres modestos/ocultos. El botín principal conserva sus tablas y condición de derrota del Custodio.
+
 ## Osario Quebrado (V84)
 
 El golpe inmediato de base 5 se sustituye por cuatro ataques con aviso. Conserva 24 de vida, velocidad 0,27

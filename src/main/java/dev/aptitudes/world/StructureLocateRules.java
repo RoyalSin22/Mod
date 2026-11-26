@@ -27,8 +27,9 @@ public final class StructureLocateRules {
 	public static int[] designatedChunk(long seed, String kind, int rx, int rz, int size) {
 		int s = Math.max(1, size);
 		java.util.SplittableRandom random = new java.util.SplittableRandom(seed * 341873128712L + rx * 132897987541L + rz * 42317861L + kind.hashCode() * 31L);
-		// La fortaleza ocupa 8×8 chunks; un margen de cuatro evita que alcance la región vecina.
+		// Las estructuras grandes reservan margen para que ninguna columna alcance la región vecina.
 		if ("three_towers".equals(kind) && s >= 12) return new int[] {rx * s + 4 + random.nextInt(s - 8), rz * s + 4 + random.nextInt(s - 8)};
+		if ("custodian_temple".equals(kind) && s >= 10) return new int[] {rx * s + 3 + random.nextInt(s - 6), rz * s + 3 + random.nextInt(s - 6)};
 		return new int[] {rx * s + random.nextInt(s), rz * s + random.nextInt(s)};
 	}
 
@@ -38,6 +39,14 @@ public final class StructureLocateRules {
 		int[] designated = designatedChunk(seed, "three_towers", regionOf(chunkX, size), regionOf(chunkZ, size), size);
 		if (chunkX < designated[0] - 4 || chunkX > designated[0] + 3
 				|| chunkZ < designated[1] - 4 || chunkZ > designated[1] + 3) return null;
+		return new int[] {designated[0] << 4, designated[1] << 4};
+	}
+
+	/** Origen del templo de 7×7 chunks que cubre este chunk. */
+	public static int[] templeOrigin(long seed, int chunkX, int chunkZ) {
+		int size = regionSize("custodian_temple");
+		int[] designated = designatedChunk(seed, "custodian_temple", regionOf(chunkX, size), regionOf(chunkZ, size), size);
+		if (Math.abs(chunkX - designated[0]) > 3 || Math.abs(chunkZ - designated[1]) > 3) return null;
 		return new int[] {designated[0] << 4, designated[1] << 4};
 	}
 

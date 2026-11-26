@@ -39,7 +39,8 @@ public class TempleControllerBlockEntity extends BlockEntity {
 	private static final int CHECK_EVERY = 10;
 	private static final double PLAYER_RANGE = 24;
 	/** El Templo del Custodio mide 31×31 y tiene un subsuelo: el radio de actividad es mayor. */
-	private static final double CUSTODIAN_RANGE = 32;
+	private static final double CUSTODIAN_RANGE = 90;
+	private long lastTickTime = Long.MIN_VALUE;
 
 	UUID templeId = new UUID(0, 0);
 	int ring;
@@ -90,13 +91,24 @@ public class TempleControllerBlockEntity extends BlockEntity {
 	private int trialRemaining;
 	private boolean trialLive;
 	private long trialIdleTicks;
+	// V89: salida posterior al Custodio y encuentros opcionales, guardados sin alterar las fases existentes.
+	final List<BlockPos> desertExit = new ArrayList<>();
+	BlockPos desertCatacombs = BlockPos.ORIGIN, desertChapel = BlockPos.ORIGIN;
+	int desertEncounters;
 
 	public TempleControllerBlockEntity(BlockPos pos, BlockState state) {
 		super(Temples.CONTROLLER_ENTITY, pos, state);
 	}
 
 	public static void tick(World world, BlockPos pos, BlockState state, TempleControllerBlockEntity seal) {
-		if (world instanceof ServerWorld server && server.getTime() % CHECK_EVERY == 0) seal.serverTick(server);
+		if (world instanceof ServerWorld server) seal.serverTickIfNeeded(server);
+	}
+
+	/** Evita dos actualizaciones en el mismo tick cuando también lo llama el índice de estructuras. */
+	public void serverTickIfNeeded(ServerWorld world) {
+		if (world.getTime() % CHECK_EVERY != 0 || lastTickTime == world.getTime()) return;
+		lastTickTime = world.getTime();
+		serverTick(world);
 	}
 
 	private List<ServerPlayerEntity> nearby(ServerWorld world, double range) {
@@ -189,6 +201,10 @@ public class TempleControllerBlockEntity extends BlockEntity {
 	private void serverTickCustodian(ServerWorld world) {
 		List<ServerPlayerEntity> players = nearby(world, CUSTODIAN_RANGE);
 		if (players.isEmpty()) return;
+		if (layout == TempleFlowRules.LAYOUT_DESERT || layout == TempleFlowRules.LAYOUT_DESERT_CRYPT) {
+			optionalEncounter(world, players, desertCatacombs, 1);
+			optionalEncounter(world, players, desertChapel, 2);
+		}
 		switch (flow) {
 			case DORMANT -> wakeAutomaton(world, players);
 			case AUTOMATON -> {
@@ -380,6 +396,33 @@ public class TempleControllerBlockEntity extends BlockEntity {
 		markDirty();
 	}
 
+	/** V89: conserva el flujo hondo y registra los elementos adicionales del plano desértico. */
+	public void setupDesert(boolean withCrypt, List<BlockPos> gateOne, List<BlockPos> trialSpawns,
+			BlockPos trialMin, BlockPos trialMax, List<BlockPos> exit, BlockPos catacombs, BlockPos chapel) {
+		setupDeep(withCrypt, gateOne, trialSpawns, trialMin, trialMax);
+		layout = withCrypt ? TempleFlowRules.LAYOUT_DESERT_CRYPT : TempleFlowRules.LAYOUT_DESERT;
+		desertExit.clear(); desertExit.addAll(exit);
+		desertCatacombs = catacombs; desertChapel = chapel;
+		desertEncounters = 0;
+		markDirty();
+	}
+
+	private void optionalEncounter(ServerWorld world, List<ServerPlayerEntity> players, BlockPos relative, int flag) {
+		if ((desertEncounters & flag) != 0) return;
+		BlockPos at = pos.add(relative);
+		boolean near = players.stream().anyMatch(p -> p.squaredDistanceTo(at.toCenterPos()) <= 12 * 12);
+		if (!near) return;
+		net.minecraft.entity.mob.MobEntity mob = net.minecraft.entity.EntityType.HUSK.create(world);
+		if (mob == null) return;
+		mob.refreshPositionAndAngles(at.getX() + 0.5, at.getY(), at.getZ() + 0.5, 0, 0);
+		mob.initialize(world, world.getLocalDifficulty(at), net.minecraft.entity.SpawnReason.EVENT, null);
+		dev.aptitudes.elite.Elites.makeElite(mob, true, world.random);
+		mob.setPersistent();
+		if (!world.spawnEntity(mob)) return;
+		desertEncounters |= flag;
+		markDirty();
+	}
+
 	/** ¿Esta posición absoluta es un bloque de alguna puerta (la del Custodio o la de una cámara) de este templo? */
 	public boolean ownsDoor(BlockPos absolute) {
 		return ownsInnerDoor(absolute) || chamberMetalAt(absolute) != null || ownsCryptHatch(absolute);
@@ -433,7 +476,9 @@ public class TempleControllerBlockEntity extends BlockEntity {
 
 	/** La llama la generación de un templo con cripta; todas las posiciones son relativas al sello. */
 	public void setupCrypt(List<BlockPos> hatch, List<BlockPos> spawns, BlockPos min, BlockPos max, BlockPos climax, BlockPos chest) {
-		this.layout = TempleFlowRules.isDeep(layout) ? TempleFlowRules.LAYOUT_DEEP_CRYPT : TempleFlowRules.LAYOUT_CRYPT;
+		this.layout = layout == TempleFlowRules.LAYOUT_DESERT || layout == TempleFlowRules.LAYOUT_DESERT_CRYPT
+				? TempleFlowRules.LAYOUT_DESERT_CRYPT
+				: TempleFlowRules.isDeep(layout) ? TempleFlowRules.LAYOUT_DEEP_CRYPT : TempleFlowRules.LAYOUT_CRYPT;
 		this.crypt = CryptRules.Stage.LOCKED;
 		this.cryptHatch.clear();
 		this.cryptHatch.addAll(hatch);
@@ -622,6 +667,7 @@ public class TempleControllerBlockEntity extends BlockEntity {
 		stage = Stage.CLEARED;
 		if (TempleFlowRules.isCustodian(layout)) flow = TempleFlowRules.afterCustodianDown(flow);
 		if (hasCrypt()) crypt = CryptRules.afterCustodianCleared(crypt);
+		if (world instanceof ServerWorld server) breakSealed(server, desertExit);
 		guardian = null;
 		markDirty();
 	}
@@ -685,6 +731,10 @@ public class TempleControllerBlockEntity extends BlockEntity {
 		nbt.putLong("trial_min", trialMin.asLong());
 		nbt.putLong("trial_max", trialMax.asLong());
 		nbt.putInt("trial_wave", trialWave);
+		nbt.putLongArray("desert_exit", encode(desertExit));
+		nbt.putLong("desert_catacombs", desertCatacombs.asLong());
+		nbt.putLong("desert_chapel", desertChapel.asLong());
+		nbt.putInt("desert_encounters", desertEncounters);
 	}
 
 	@Override
@@ -711,7 +761,7 @@ public class TempleControllerBlockEntity extends BlockEntity {
 		triggerCenter = BlockPos.fromLong(nbt.getLong("trigger_center"));
 		automaton = nbt.containsUuid("automaton") ? nbt.getUuid("automaton") : null;
 		// T4: un templo sin estas claves se lee sin cámaras.
-		decode(nbt.getLongArray("chamber_doors"), chamberDoors, 32);
+		decode(nbt.getLongArray("chamber_doors"), chamberDoors, 64);
 		chamberMetals.clear();
 		byte[] metals = nbt.getByteArray("chamber_metals");
 		for (int i = 0; i < metals.length && chamberMetals.size() < chamberDoors.size(); i++) {
@@ -741,5 +791,9 @@ public class TempleControllerBlockEntity extends BlockEntity {
 		trialMobs.clear();
 		trialLive = false;
 		trialIdleTicks = 0;
+		decode(nbt.getLongArray("desert_exit"), desertExit, 32);
+		desertCatacombs = BlockPos.fromLong(nbt.getLong("desert_catacombs"));
+		desertChapel = BlockPos.fromLong(nbt.getLong("desert_chapel"));
+		desertEncounters = nbt.getInt("desert_encounters") & 3;
 	}
 }

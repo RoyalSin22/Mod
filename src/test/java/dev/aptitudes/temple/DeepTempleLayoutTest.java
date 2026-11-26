@@ -39,7 +39,9 @@ class DeepTempleLayoutTest {
 		for (int l = 1; l <= 4; l++) assertTrue(TempleFlowRules.isCustodian(l), "layout " + l);
 		assertEquals(3, TempleFlowRules.clampLayout(3));
 		assertEquals(4, TempleFlowRules.clampLayout(4));
-		assertEquals(0, TempleFlowRules.clampLayout(5));
+		assertEquals(5, TempleFlowRules.clampLayout(5)); // V89 añade los layouts 5 y 6 sin mover 0–4.
+		assertEquals(6, TempleFlowRules.clampLayout(6));
+		assertEquals(0, TempleFlowRules.clampLayout(7));
 		assertTrue(TempleFlowRules.hasCrypt(4) && TempleFlowRules.hasCrypt(2));
 		assertFalse(TempleFlowRules.hasCrypt(3));
 	}

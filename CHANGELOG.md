@@ -5,6 +5,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Cambiado (V89)
+- El Templo del Custodio nuevo es una ruina subterránea desértica de 112×112, con cisterna central, tres niveles, cripta opcional, recorrido en espiral y salida posterior al jefe. Solo intenta generarse en desierto y badlands, sin solaparse con candidatos de pirámide vanilla. Conserva Autómata, prueba, Custodio, Relicario, cámaras, llaves y cripta. Plano y comprobaciones manuales en `docs/V89_REDISENO_TEMPLO.md`.
+
 ### Cambiado (V88)
 - **Las Tres Torres Señoriales son ahora una fortaleza gótica en ruinas de 128×128 bloques.** Un plano puro por columna
   (`FortressLayout`) construye 64 chunks desde el origen de cada región. Conserva los dos Guardianes, el Coloso, el logro y la

@@ -23,9 +23,9 @@ public final class ModWorldGen {
 			Aptitudes.id("bonfire_shrine"), new BonfireShrineFeature(DefaultFeatureConfig.CODEC));
 	public static final Feature<DefaultFeatureConfig> CAMP = Registry.register(Registries.FEATURE,
 			Aptitudes.id("camp"), new CampFeature(DefaultFeatureConfig.CODEC));
-	/** T3: Templo del Custodio (31×31, dos niveles). Sustituye al templo antiguo en la generación nueva (T3d). */
+	/** V89: Templo del Custodio desértico de 112×112, generado por columnas en 49 chunks. */
 	public static final Feature<DefaultFeatureConfig> CUSTODIAN_TEMPLE = Registry.register(Registries.FEATURE,
-			Aptitudes.id("custodian_temple"), new CustodianTempleFeature(DefaultFeatureConfig.CODEC));
+			Aptitudes.id("custodian_temple"), new DesertTempleFeature(DefaultFeatureConfig.CODEC));
 
 	/** V86: Las Tres Torres Señoriales (superficie, tres torres; ver {@code dungeon/TowersLayout}). */
 	public static final Feature<DefaultFeatureConfig> THREE_TOWERS = Registry.register(Registries.FEATURE,
@@ -36,6 +36,7 @@ public final class ModWorldGen {
 
 	public static void init() {
 		ThreeTowersFeature.init();
+		DesertTempleFeature.init();
 		Registry.register(Registries.PLACEMENT_MODIFIER_TYPE, Aptitudes.id("region_grid"), RegionGridPlacement.TYPE);
 		dev.aptitudes.dungeon.TowersBlocks.register(); // V86 fase 3: bloque controlador y muerte de los jefes
 		StructureSearch.init(); // V77: búsqueda activa de /aptitudes locate, repartida entre ticks

@@ -60,6 +60,20 @@ class StructureLocateRulesTest {
 		assertEquals(1, count, "una región de 32×32 chunks, un solo chunk designado");
 	}
 
+	@Test void desertTempleUsesSevenBySevenChunksInsideOneRegion() {
+		long seed=238901L;
+		int[] d=StructureLocateRules.designatedChunk(seed,"custodian_temple",-2,3,32);
+		int count=0;
+		for(int cx=d[0]-3;cx<=d[0]+3;cx++) for(int cz=d[1]-3;cz<=d[1]+3;cz++) {
+			assertArrayEquals(new int[]{d[0]<<4,d[1]<<4},StructureLocateRules.templeOrigin(seed,cx,cz));
+			assertEquals(-2,StructureLocateRules.regionOf(cx,32));
+			assertEquals(3,StructureLocateRules.regionOf(cz,32));
+			count++;
+		}
+		assertEquals(49,count);
+		assertNull(StructureLocateRules.templeOrigin(seed,d[0]+4,d[1]));
+	}
+
 	@Test void designationVariesWithSeedRegionAndKind() {
 		int[] base = StructureLocateRules.designatedChunk(1L, "custodian_temple", 0, 0, 32);
 		int different = 0;

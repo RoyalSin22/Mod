@@ -276,21 +276,24 @@ public final class AptitudesCommand {
 		var feature = world.getRegistryManager().get(net.minecraft.registry.RegistryKeys.CONFIGURED_FEATURE).get(key);
 		if (feature == null) throw UNKNOWN_STRUCTURE.create(kind);
 		final boolean fortress = "three_towers".equals(kind);
-		final int minRadius = fortress ? 96 : 24, maxRadius = fortress ? 192 : 96;
+		final boolean desertTemple = "custodian_temple".equals(kind);
+		final boolean large = fortress || desertTemple;
+		final int minRadius = large ? 96 : 24, maxRadius = large ? 192 : 96;
 		int bx = (int) src.getPosition().x, bz = (int) src.getPosition().z;
-		for (int[] off : dev.aptitudes.world.StructureLocateRules.placementOffsets(fortress ? 12 : 60, minRadius, maxRadius, world.getTime() ^ bx * 31L ^ bz)) {
+		for (int[] off : dev.aptitudes.world.StructureLocateRules.placementOffsets(large ? 12 : 60, minRadius, maxRadius, world.getTime() ^ bx * 31L ^ bz)) {
 			int x = bx + off[0], z = bz + off[1];
-			if (!fortress) world.getChunk(x >> 4, z >> 4);
-			int y = fortress ? 0 : world.getTopY(net.minecraft.world.Heightmap.Type.WORLD_SURFACE_WG, x, z);
+			if (!large) world.getChunk(x >> 4, z >> 4);
+			int y = large ? 0 : world.getTopY(net.minecraft.world.Heightmap.Type.WORLD_SURFACE_WG, x, z);
 			net.minecraft.util.math.BlockPos origin = new net.minecraft.util.math.BlockPos(x, y, z);
-			net.minecraft.util.math.BlockPos fortressOrigin = fortress
-					? dev.aptitudes.world.ThreeTowersFeature.placeAt(world, world.getChunkManager().getChunkGenerator(), x, z) : null;
-			boolean placed = fortress ? fortressOrigin != null
+			net.minecraft.util.math.BlockPos largeOrigin = fortress
+					? dev.aptitudes.world.ThreeTowersFeature.placeAt(world, world.getChunkManager().getChunkGenerator(), x, z)
+					: desertTemple ? dev.aptitudes.world.DesertTempleFeature.placeAt(world, world.getChunkManager().getChunkGenerator(), x, z) : null;
+			boolean placed = large ? largeOrigin != null
 					: feature.generate(world, world.getChunkManager().getChunkGenerator(), world.getRandom(), origin);
 			if (placed) {
 				dev.aptitudes.world.StructureIndex.drain(src.getServer());
 				Text name = Text.translatable("aptitudes.structure." + kind);
-				net.minecraft.util.math.BlockPos placedOrigin = fortress ? fortressOrigin : origin;
+				net.minecraft.util.math.BlockPos placedOrigin = large ? largeOrigin : origin;
 				src.sendFeedback(() -> Text.translatable("aptitudes.cmd.place_ok", name, coordinates(placedOrigin)), true);
 				return 1;
 			}
