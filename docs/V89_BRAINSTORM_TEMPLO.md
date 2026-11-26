@@ -85,11 +85,10 @@ Todo sin objetos nuevos de poder; el balance no cambia sin preguntar.
 | Alas y cuartos imprescindibles | **Cisterna** (con plataformas y puentes), **catacumbas**, **sala de espejos**, **pozos** de luz, **talleres y forjas**, **barracones**, **cámara de pruebas** (la sala de pruebas actual), **cámara de sombras**, **puentes**, **capilla** y similares (archivo/biblioteca queda como opción de Codex) |
 | Mini-jefes | **Opcionales** (élites o campeones del sistema `elite/`, sin poder nuevo), en catacumbas y capilla; botín propio |
 | Cámaras de metal | **Juntas junto al Custodio**, como hoy (Nivel 3) |
-| Recorrido | **Camino largo en espiral**, con **estatuas** (sin rostro) que anticipan al Custodio y miradores al santuario. El «camino corto» y la «salida rápida» tras el Custodio **no se confirmaron**: quedan como pregunta abierta |
+| Recorrido | **Camino largo en espiral**, con **estatuas** (sin rostro) que anticipan al Custodio y miradores al santuario |
+| Salida rápida | **Sí**: tras vencer al Custodio se abre una **salida rápida a la superficie** (escalera o ascensor desde el Nivel 3). El «camino corto» de ida (atajo antes del jefe) **no se pidió** y no se hace |
 | Motor de generación | **El recomendado**: plano puro por columna, **compartido con la fortaleza** (se construye una sola vez) |
 
 Interpretaciones a confirmar: «sala de empejos» = **sala de espejos** (la «sala de los espejos o la luz» de §3) y «pozos» = **pozos de luz**.
 
-## 9. Pregunta abierta
-
-¿Quieres además un atajo (camino corto) y una salida rápida a la superficie tras vencer al Custodio, o el recorrido es solo el largo en espiral?
+Sin preguntas abiertas de diseño; quedan las de generación y rareza (§2) que mide Codex.
