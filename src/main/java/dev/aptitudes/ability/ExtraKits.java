@@ -40,6 +40,18 @@ public final class ExtraKits {
 		TamerKit.registerAll();
 	}
 
+	/** V98: recursos de los nodos de los pilotos que se muestran junto a la mecánica del rol en el HUD (solo si están activos). */
+	public static void hud(ServerPlayerEntity p, dev.aptitudes.role.Role role, java.util.List<dev.aptitudes.network.MechanicPayload.Entry> out) {
+		switch (role) {
+			case BERSERKER -> BerserkerKit.hud(p, out);
+			case PALADIN -> PaladinKit.hud(p, out);
+			case ELEMENTALIST -> ElementalistKit.hud(p, out);
+			case SHAPESHIFTER -> ShapeshifterKit.hud(p, out);
+			case ENGINEER -> EngineerKit.hud(p, out);
+			default -> { }
+		}
+	}
+
 	/** Bonificación de daño (se suma a las de {@code RoleMechanics.outgoing}). */
 	public static float outgoing(ServerPlayerEntity p, LivingEntity target, DamageSource source, boolean direct) {
 		return BerserkerKit.outgoing(p, target, direct) + MageKit.outgoing(p, target, source, direct)

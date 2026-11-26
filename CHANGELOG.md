@@ -33,6 +33,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   PNG a mano tras ejecutar `gen_items.py`. Los mundos antiguos conservan, inofensivo, el archivo de datos de `SummonState`. Sin cambios de balance.
 
 ### Añadido
+- **V98 (1.ª entrega) — Identidad mecánica de los cinco pilotos: inventario y visibilidad.** Auditoría de los recursos de Bersérker, Elementalista,
+  Cambiaformas, Paladín e Ingeniero (`docs/V98_IDENTIDAD_MECANICA.md`). Los recursos de sus nodos que no se veían en ningún sitio se muestran ahora
+  junto a la mecánica del rol, mientras valen algo: cicatrices (Bersérker), Armonía elemental (Elementalista), Presa fácil y Tercer cambio
+  (Cambiaformas), Ira justa (Paladín) y minas de proximidad (Ingeniero). Solo visibilidad: `ExtraKits.hud` + `RoleMechanics.sync`, mismo paquete y mismo
+  dibujo del HUD, sin textos nuevos. Sin cambios de balance ni mecánicas nuevas. **Sin probar en partida.**
 - **V97 — Posturas de combate (piloto).** Bersérker, Lancero, Monje y Mago adoptan una postura en bucle mientras sostienen su arma y hay combate (golpean,
   reciben daño o hay un hostil a menos de 10 bloques); se mantiene 3 s tras el último motivo para no parpadear. Nunca se muestra corriendo, nadando,
   planeando, montado, durmiendo, trepando, usando un objeto ni muerto: ahí manda la locomoción vanilla. Capa propia de Player Animation Library de

@@ -221,6 +221,15 @@ public final class ShapeshifterKit {
 		if (speed != null) speed.removeModifier(FURY_ID);
 	}
 
+	/** V98: avisos de «listo» de Presa fácil (N7) y Tercer cambio (N9). */
+	static void hud(ServerPlayerEntity p, java.util.List<dev.aptitudes.network.MechanicPayload.Entry> out) {
+		State s = STATES.get(p.getUuid());
+		if (s == null) return;
+		long now = p.getServer() == null ? 0 : p.getServer().getTicks();
+		if (windowOpen(now, s.easyPreyUntil) && RoleManager.activeRank(p, N + "7") > 0) out.add(new dev.aptitudes.network.MechanicPayload.Entry(N + "7", 1, 1, ""));
+		if (s.cheapPower && RoleManager.activeRank(p, N + "9") > 0) out.add(new dev.aptitudes.network.MechanicPayload.Entry(N + "9", 1, 1, ""));
+	}
+
 	private static State state(Entity p) {
 		return STATES.computeIfAbsent(p.getUuid(), u -> new State());
 	}
