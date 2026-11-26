@@ -1,0 +1,10 @@
+{
+  "method": "Face texel centers at 2 px/u; oriented-volume occlusion and ground contact removed",
+  "mass_surface_samples": 8756,
+  "moss_samples": 107,
+  "exposed_samples": 3856,
+  "exposed_moss_samples": 41,
+  "moss_gross_uv_pct": 1.2220191868433075,
+  "moss_exposed_sample_pct": 1.0632780082987552,
+  "limit_pct": 10
+}

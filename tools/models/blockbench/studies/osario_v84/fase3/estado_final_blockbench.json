@@ -1,0 +1,17 @@
+{
+  "project": "osario_quebrado",
+  "saved": true,
+  "cubes": 169,
+  "bones": 30,
+  "animations": 0,
+  "visible": 169,
+  "emission_helpers": 0,
+  "proposal_helpers": 0,
+  "light": [
+    [
+      1,
+      1,
+      1
+    ]
+  ]
+}

@@ -1,0 +1,50 @@
+// Banco aislado de Minecraft. Añade el mod de pruebas solo a esta invocación de Gradle.
+gradle.projectsEvaluated {
+	def host = gradle.rootProject
+	def lab = new File(host.findProperty('osarioQaRoot')?.toString() ?: new File(host.projectDir, 'tools/testing/osario_v84').path)
+	def suite = host.findProperty('osarioQaSuite')?.toString() ?: 'combat'
+	def runPath = "build/osario-v84/" + suite
+	def qa = host.sourceSets.create('osarioQa')
+	qa.java.setSrcDirs([new File(lab, 'java')])
+	qa.resources.setSrcDirs([new File(lab, 'resources')])
+	qa.compileClasspath += host.sourceSets.main.output + host.sourceSets.main.compileClasspath
+	qa.runtimeClasspath += host.sourceSets.main.runtimeClasspath
+	host.loom.mods.create('osario_validation') { sourceSet qa }
+	host.loom.runs.create('osarioQa') {
+		server()
+		source qa
+		runDir runPath
+		vmArg '-Dfabric-api.gametest'
+		vmArg "-Dfabric-api.gametest.report-file=${host.file(runPath + '/gametest.xml').absolutePath}"
+		vmArg "-Dosario.qa.suite=${suite}"
+		vmArg "-Dosario.qa.warm=${host.findProperty('osarioQaWarm') ?: '160'}"
+		vmArg "-Dosario.qa.samples=${host.findProperty('osarioQaSamples') ?: '320'}"
+		vmArg '-Xms1G'
+		vmArg '-Xmx2G'
+		programArg 'nogui'
+	}
+	if (host.hasProperty('osarioQaRender')) {
+		def renderMode = host.property('osarioQaRender').toString()
+		def clientQa = host.sourceSets.create('osarioClientQa')
+		clientQa.java.setSrcDirs([new File(lab, 'client')])
+		clientQa.compileClasspath += host.sourceSets.client.compileClasspath + host.sourceSets.main.output + qa.output
+		clientQa.runtimeClasspath += host.sourceSets.client.runtimeClasspath + qa.output
+		// Loom puede omitir los JAR anidados de PAL en desarrollo. Usa las versiones ya fijadas para pruebas.
+		clientQa.runtimeClasspath += host.configurations.testRuntimeClasspath.filter {
+			it.name.startsWith('mochafloats-') || it.name.startsWith('javassist-')
+		}
+		host.loom.mods.getByName('osario_validation').sourceSet(clientQa)
+		host.loom.runs.create('osarioRenderQa') {
+			client()
+			source clientQa
+			runDir "build/osario-v84/render-${renderMode}"
+			vmArg "-Dosario.qa.render=${renderMode}"
+			vmArg "-Dosario.qa.clientWarm=${host.findProperty('osarioQaClientWarm') ?: '60'}"
+			vmArg "-Dosario.qa.clientSamples=${host.findProperty('osarioQaClientSamples') ?: '120'}"
+			vmArg "-Dosario.qa.clientCount=${host.findProperty('osarioQaClientCount') ?: '0'}"
+			vmArg '-Xms1G'
+			vmArg '-Xmx2G'
+			programArgs '--username', 'OsarioQA', '--width', '1280', '--height', '720'
+		}
+	}
+}

@@ -1,0 +1,216 @@
+{
+  "applied_to_project": false,
+  "method": "Detached THREE meshes; core sample rays, no geometry or rig mutation",
+  "studies": [
+    {
+      "hypothesis": {
+        "name": "actual",
+        "widths": {},
+        "y": 0,
+        "z": 0
+      },
+      "visibility": [
+        {
+          "view": "frente",
+          "projected_texel_samples": {
+            "visible": 6.471101696672895,
+            "blocked": 34.66578478675024
+          },
+          "estimated_exposed_pct": 15.7306550151299,
+          "occluders": {
+            "manubrium": 20.791751078668913,
+            "sternum": 6.77590854551175,
+            "mandible_chin": 7.098125162569589
+          }
+        },
+        {
+          "view": "tres_cuartos",
+          "projected_texel_samples": {
+            "visible": 14.082300663455053,
+            "blocked": 33.25826763033433
+          },
+          "estimated_exposed_pct": 29.74679259459273,
+          "occluders": {
+            "mandible_body_right": 11.466607920279252,
+            "manubrium": 11.009679258778611,
+            "rib_right_2_front": 6.027346313508416,
+            "sternum": 2.140464765407785,
+            "rib_right_1_front": 0.6535423430900696,
+            "clavicle_medial_fragment": 1.960627029270209
+          }
+        }
+      ]
+    },
+    {
+      "hypothesis": {
+        "name": "esternon_0_5_manubrio_1",
+        "widths": {
+          "sternum": 0.3333333333333333,
+          "manubrium": 0.5
+        },
+        "y": 0,
+        "z": 0
+      },
+      "visibility": [
+        {
+          "view": "frente",
+          "projected_texel_samples": {
+            "visible": 16.1507329359233,
+            "blocked": 24.98615354749984
+          },
+          "estimated_exposed_pct": 39.260951220582854,
+          "occluders": {
+            "manubrium": 15.181059861783709,
+            "sternum": 2.7069685231465543,
+            "mandible_chin": 7.098125162569589
+          }
+        },
+        {
+          "view": "tres_cuartos",
+          "projected_texel_samples": {
+            "visible": 21.79161043646867,
+            "blocked": 25.548957857320712
+          },
+          "estimated_exposed_pct": 46.03157761274174,
+          "occluders": {
+            "mandible_body_right": 11.466607920279252,
+            "manubrium": 4.8961334551258915,
+            "rib_right_2_front": 6.027346313508416,
+            "sternum": 0.5447007960468833,
+            "rib_right_1_front": 0.6535423430900696,
+            "clavicle_medial_fragment": 1.960627029270209
+          }
+        }
+      ]
+    },
+    {
+      "hypothesis": {
+        "name": "estrechamiento_y_descenso_0_5_adelanto_0_25",
+        "widths": {
+          "sternum": 0.3333333333333333,
+          "manubrium": 0.5
+        },
+        "y": -0.5,
+        "z": -0.25
+      },
+      "visibility": [
+        {
+          "view": "frente",
+          "projected_texel_samples": {
+            "visible": 21.04987992462115,
+            "blocked": 20.087006558801995
+          },
+          "estimated_exposed_pct": 51.17032844258542,
+          "occluders": {
+            "sternum": 7.178975619379121,
+            "manubrium": 9.801071766072049,
+            "mandible_chin": 0.891006524188368,
+            "rib_left_3_front": 0.9079809994790932,
+            "rib_right_3_front": 1.3079716496833684
+          }
+        },
+        {
+          "view": "tres_cuartos",
+          "projected_texel_samples": {
+            "visible": 21.382365059031518,
+            "blocked": 25.95820323475786
+          },
+          "estimated_exposed_pct": 45.1671068381253,
+          "occluders": {
+            "mandible_body_right": 4.392164341796777,
+            "manubrium": 7.888654448320245,
+            "sternum": 4.2425911120358215,
+            "rib_right_2_front": 6.644758038774834,
+            "rib_right_3_front": 2.7900352938301953
+          }
+        }
+      ]
+    },
+    {
+      "hypothesis": {
+        "name": "estrechamiento_y_descenso_0_5_sin_adelanto",
+        "widths": {
+          "sternum": 0.3333333333333333,
+          "manubrium": 0.5
+        },
+        "y": -0.5,
+        "z": 0
+      },
+      "visibility": [
+        {
+          "view": "frente",
+          "projected_texel_samples": {
+            "visible": 17.485853827867682,
+            "blocked": 23.651032655555465
+          },
+          "estimated_exposed_pct": 42.50650771762691,
+          "occluders": {
+            "sternum": 4.505956046814016,
+            "manubrium": 15.147110911202258,
+            "mandible_chin": 1.782013048376736,
+            "rib_left_3_front": 0.9079809994790932,
+            "rib_right_3_front": 1.3079716496833684
+          }
+        },
+        {
+          "view": "tres_cuartos",
+          "projected_texel_samples": {
+            "visible": 23.615757894921995,
+            "blocked": 23.724810398867387
+          },
+          "estimated_exposed_pct": 49.88482129822711,
+          "occluders": {
+            "mandible_body_right": 5.699249027976917,
+            "manubrium": 6.184048931916157,
+            "sternum": 1.6149331787507757,
+            "rib_right_2_front": 7.298300381864904,
+            "rib_right_3_front": 2.2747365352685724,
+            "clavicle_medial_fragment": 0.6535423430900696
+          }
+        }
+      ]
+    },
+    {
+      "hypothesis": {
+        "name": "estrechamiento_y_descenso_1",
+        "widths": {
+          "sternum": 0.3333333333333333,
+          "manubrium": 0.5
+        },
+        "y": -1,
+        "z": -0.25
+      },
+      "visibility": [
+        {
+          "view": "frente",
+          "projected_texel_samples": {
+            "visible": 21.93646824447407,
+            "blocked": 19.200418238949073
+          },
+          "estimated_exposed_pct": 53.325543374104825,
+          "occluders": {
+            "sternum": 9.851995191944225,
+            "manubrium": 5.3460391451302085,
+            "rib_right_3_front": 1.312389854018814,
+            "rib_left_3_front": 2.689994047855829
+          }
+        },
+        {
+          "view": "tres_cuartos",
+          "projected_texel_samples": {
+            "visible": 19.819258859985258,
+            "blocked": 27.521309433804127
+          },
+          "estimated_exposed_pct": 41.86527448717878,
+          "occluders": {
+            "manubrium": 6.281410073400324,
+            "sternum": 7.5429605978008105,
+            "rib_right_3_front": 6.820623960244751,
+            "rib_right_2_front": 5.881881087810627,
+            "mandible_body_right": 0.9944337145476198
+          }
+        }
+      ]
+    }
+  ]
+}

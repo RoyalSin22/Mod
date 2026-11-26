@@ -1,25 +1,16 @@
 package dev.aptitudes.item;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
 
 /**
- * v60 (C3): Astrolabio del Ocaso — disco de bronce ennegrecido con sol eclipsado.
+ * Astrolabio del Ocaso (C3): disco de bronce ennegrecido con un sol eclipsado.
  *
- * <p>Consume en la Hoguera para invocar el Eclipse (solo si el jugador es operador o líder del grupo).
- * Uso: Hoguera → SoulsManager.trySummonEclipse() con verificación de autorización.</p>
- *
- * <p>TODO (C3 integración): wiring en souls/SoulsManager.onBonfireUse() o equivalente.</p>
+ * <p>Se usa sobre la Hoguera ({@code BonfireBlock#onUseWithItem}) para convocar el Eclipse. Solo lo pueden usar los
+ * operadores o el líder del grupo, y comparte con el Damnorath la espera de {@code eclipseSummonCooldownDays} días
+ * ({@code event/EclipseSummoningRules}). El objeto no tiene lógica propia: el ritual vive en la Hoguera.</p>
  */
 public final class SunsetAstralabeItem extends Item {
 	public SunsetAstralabeItem(Settings settings) {
 		super(settings);
-	}
-
-	@Override
-	public ItemStack getDefaultStack() {
-		ItemStack stack = super.getDefaultStack();
-		return stack;
 	}
 }

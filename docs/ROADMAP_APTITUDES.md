@@ -5,6 +5,24 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+> **Pendientes consolidados:** `docs/PENDIENTES.md` (revisión del 2026-11-24). Estado de C5 en `docs/C5_PENDIENTES.md`; de la
+> cadena narrativa T1–T7, en `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` («Estado real»); de C1–C7, en `docs/PLAN_CLAUDE.md`.
+
+### v84 — Osario Quebrado (por fases)
+
+- **Fases 0–2 aprobadas:** geometría de 169 cubos sobre los 30 huesos
+  aprobados; medidas, apoyos, holgura del núcleo hasta escala 1,35 y reapertura del geo comprobados.
+  Recuento y capturas en [`V84_OSARIO_FASE2.md`](V84_OSARIO_FASE2.md); copias de las fases conservadas.
+- **Fase 3 aprobada:** UV a 2 px/u, atlas 256² de 25 colores en cinco capas y máscara independiente de 84 px.
+  Ajuste autorizado del tórax aplicado. Informe y capturas en [Fase 3](V84_OSARIO_FASE3.md).
+- **Fase 4 aprobada:** diez clips, contactos y cierres medidos, secuencias y claves en [Fase 4](V84_OSARIO_FASE4.md).
+- **Fase 5 aprobada:** cuatro ataques de servidor, recursos de producción, emisión, audio y textos.
+  Build en verde con 924 pruebas.
+  [Informe de integración](V84_OSARIO_FASE5.md).
+- **Fase 6 aprobada por el autor:** combate probado en el servidor y emisión comprobada en el cliente.
+  El autor confirmó las verificaciones manuales de rendimiento, latencia y aviso del zarpazo.
+  [Informe de Fase 6](V84_OSARIO_FASE6.md).
+
 ### v67 — Árbol unificado, descripciones llanas y versión por commits
 - **F1 hecha:** Talentos, Sendas, Maestro, Definitivo y Maestría en un solo lienzo de J (`RolesScreen` +
   `logic/UnifiedTreeLayout`). Puntos de evolución 15/10 (76 a nivel 50) con migración. Se borraron `TreeScreen`,
@@ -36,6 +54,12 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 - **Siguiente:** el arte de los iconos y del grimorio. Validar F1–F7, el grimorio y los tooltips en partida.
 
 ### v65 — Errante Velado: combate, Niebla y botín
+- **Pruebas previas en partida confirmadas por el autor**, incluida la aparición durante Niebla de almas.
+  La confirmación general se conserva sin atribuirle métricas ni escenarios adicionales.
+- **Pulido implementado:** cancelación al cambiar de objetivo hasta emitir el aviso, dirección fija después,
+  pausa de navegación durante hurt y contorno cian del sector real. Clasificación vanilla de no muerto
+  para Heraldo de la Muerte y sus interacciones asociadas. Comprobaciones de regresión en
+  `tools/testing/errante/`; resultados y límites en `TESTING.md`, sección del Errante.
 - Modelo editable independiente en `tools/models/blockbench/errante_velado.bbmodel`, atlas de 256 × 256 y seis
   clips GeckoLib. El renderer conserva la escala de la entidad y el afijo Gigante.
 - Rasgado Espectral resuelto por el servidor: aviso al tick 6, barrido al 10, recuperación hasta el 20.
@@ -58,7 +82,8 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 - Afijos de élite Espinoso y Abrasador (11 en total). Fase 3 del Guardián y del Autómata.
 - Coloso Sin Rostro reconstruido a 3,4 bloques visuales, con caja de 1,6 × 3,4. Sus ataques conservan la
   dirección del aviso y esperan el fin del clip antes de volver a atacar. El autor revisó el aspecto con los
-  recursos provisionales. Queda comprobar en partida la transición, las colisiones de combate y la recarga.
+  recursos provisionales. El cierre técnico ejecuta doce GameTests de Minecraft y comprueba animaciones,
+  armadura y emisión en dos clientes LAN. Los escenarios y la recarga del mundo se registran en `docs/TESTING.md`.
 - Ruinas de batalla del Coloso: sala de 21 bloques que se levanta al invocarlo, con aviso si el terreno no deja cerrarla.
 - Opciones nuevas en `docs/CONFIGURATION.md` con los valores por defecto del código; valores provisionales en `docs/BALANCE.md`.
 - Pendiente: validar todo en partida (equilibrio del trance, pedidos, expediciones, arena y combate de fase 3); las

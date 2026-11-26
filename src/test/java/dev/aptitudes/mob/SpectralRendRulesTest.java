@@ -8,6 +8,37 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SpectralRendRulesTest {
 	@Test
+	void warningMatchesDamageSectorAtEveryScaleAndOrientation() {
+		for (double scale : new double[] {1, 1.35}) {
+			for (double yaw : new double[] {0, Math.PI / 2, Math.PI, -Math.PI / 3}) {
+				double forwardX = -Math.sin(yaw), forwardZ = Math.cos(yaw);
+				var outline = SpectralRendRules.warningOutline(forwardX, forwardZ, scale);
+				assertEquals(11, outline.size());
+				for (var point : outline) {
+					// El contorno está sobre el límite. Comprueba un punto apenas interior por redondeo.
+					assertTrue(SpectralRendRules.contains(point.x() * 0.999999, point.y(),
+							point.z() * 0.999999, forwardX, forwardZ, scale));
+				}
+				for (int edge : new int[] {0, 8}) {
+					var point = outline.get(edge);
+					assertEquals(0.5, (point.x() * forwardX + point.z() * forwardZ)
+							/ (SpectralRendRules.REACH * scale), 1e-9);
+				}
+			}
+		}
+	}
+
+	@Test
+	void validatesTargetUntilWarningAndThenCommitsDirection() {
+		var execution = new SpectralRendRules.Execution(100);
+		assertTrue(execution.preparing(105));
+		assertTrue(execution.preparing(106));
+		assertTrue(execution.warn(106));
+		assertFalse(execution.preparing(106));
+		assertFalse(execution.preparing(107));
+	}
+
+	@Test
 	void checksSectorRangeAndHeight() {
 		double sin60 = Math.sqrt(3) / 2;
 		assertTrue(SpectralRendRules.contains(sin60, 0.25, 0.5, 0, 1, 1));

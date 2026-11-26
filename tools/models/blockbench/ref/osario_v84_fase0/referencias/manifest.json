@@ -1,0 +1,61 @@
+[
+  {
+    "path": "tools/models/blockbench/ref/osario_v84_fase0/referencias/01_ortograficas.png",
+    "bytes": 2047533,
+    "sha256": "89e66fa7a7d80ae88cec4700de170693001f3756e8418c43639cfbf17a967772",
+    "size": [
+      1448,
+      1086
+    ]
+  },
+  {
+    "path": "tools/models/blockbench/ref/osario_v84_fase0/referencias/02_concepto.png",
+    "bytes": 2201066,
+    "sha256": "b5c3bb28f07732b9ee9f73345b2ba5a4d613ba04e041a3917d8755abef57de2c",
+    "size": [
+      1448,
+      1086
+    ]
+  },
+  {
+    "path": "tools/models/blockbench/ref/osario_v84_fase0/referencias/03_ficha_voxel.png",
+    "bytes": 1925048,
+    "sha256": "f48a801f79176890d1a7ebd055504e91fd725ae92fa792982422ab1ad4dfaaca",
+    "size": [
+      1536,
+      1024
+    ]
+  },
+  {
+    "path": "tools/models/blockbench/ref/osario_v84_fase0/referencias/04_maqueta.png",
+    "bytes": 2038262,
+    "sha256": "14941300ebf21a489f303a3f0f506fb32ac7befd01c13409fbfbc2ee6e1519b5",
+    "size": [
+      1448,
+      1086
+    ]
+  },
+  {
+    "path": "tools/models/blockbench/ref/osario_v84_fase0/referencias/05_pergamino.jpeg",
+    "bytes": 220239,
+    "sha256": "4562d33ab965394825c7023280df3e85d40dad432f67a3e0d14ec0cf13903d87",
+    "size": [
+      1376,
+      768
+    ]
+  },
+  {
+    "path": "tools/models/blockbench/ref/osario_v84_fase0/referencias/06_postura_secundaria.jpeg",
+    "bytes": 164767,
+    "sha256": "38700ed859c859fdd7e03d4785815b1b5fb9e05ee174ae75dff09944d16e6741",
+    "size": [
+      1376,
+      768
+    ]
+  },
+  {
+    "path": "tools/models/blockbench/ref/osario_v84_fase0/referencias/encargo_v2.md",
+    "bytes": 75814,
+    "sha256": "65ffbf88522c08315e58e3f0c747ae685467d8920018d1c7976a71935eb89594"
+  }
+]

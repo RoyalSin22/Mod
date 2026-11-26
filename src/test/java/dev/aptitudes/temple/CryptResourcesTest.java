@@ -65,7 +65,7 @@ class CryptResourcesTest {
 		assertTrue(cp.getAsJsonObject("rolls").get("max").getAsInt() > dp.getAsJsonObject("rolls").get("max").getAsInt());
 		for (JsonElement e : cp.getAsJsonArray("entries")) {
 			String name = e.getAsJsonObject().get("name").getAsString();
-			assertNotEquals("aptitudes:resonador_del_umbral", name, "sin Behelit extra");
+			assertNotEquals("aptitudes:resonador_del_umbral", name, "sin Damnorath extra");
 			assertNotEquals("aptitudes:craneo_gran_osario", name, "sin trofeos: no puede ser una fuente de llaves");
 			assertNotEquals("aptitudes:llave_del_velo", name, "sin llaves");
 		}

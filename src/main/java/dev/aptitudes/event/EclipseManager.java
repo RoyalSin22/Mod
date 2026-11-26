@@ -232,7 +232,7 @@ public final class EclipseManager {
 		long eventTime = forced ? 0 : EclipseRules.timeInDay(world.getTimeOfDay());
 		syncAll(server, eventTime);
 		// V71: quienes están en el Overworld al empezar el Eclipse lo anotan en sus Crónicas.
-		for (ServerPlayerEntity p : world.getPlayers()) dev.aptitudes.guide.LoreManager.unlocksOnBeheritSacrifice(p);
+		for (ServerPlayerEntity p : world.getPlayers()) dev.aptitudes.guide.LoreManager.unlocksOnDamnorathSacrifice(p);
 	}
 
 	/** Termina el eclipse; si {@code completed}, premia a los supervivientes del Mundo Normal. */
@@ -241,6 +241,7 @@ public final class EclipseManager {
 		state.active = false;
 		state.forced = false;
 		state.heraldSpawned = false;
+		state.lastEndTick = world.getTime(); // C3: la espera de convocatoria se cuenta desde aquí
 		Set<UUID> fallen = new HashSet<>(state.fallen);
 		state.fallen.clear();
 		state.markDirty();
@@ -605,18 +606,43 @@ public final class EclipseManager {
 		return true;
 	}
 
-	/** T5: comprueba si se puede iniciar un Eclipse (cooldown y sin evento activo). */
-	public static boolean canStartEclipse(ServerWorld world) {
-		EclipseState state = EclipseState.get(world);
-		return !state.active && !WorldEventManager.active(world.getServer());
+	/** C3: ¿puede convocarse ahora el Eclipse? {@code astrolabe} pide permiso; el Damnorath no. Todo se decide en el servidor. */
+	public static EclipseSummoningRules.Verdict summonVerdict(ServerPlayerEntity player, boolean astrolabe) {
+		// Con el Eclipse desactivado en la configuración, uno recién empezado se cerraría al tick siguiente y se perdería el objeto.
+		if (!Aptitudes.config().eclipseEnabled) return EclipseSummoningRules.Verdict.DISABLED;
+		ServerWorld world = player.getServerWorld();
+		MinecraftServer server = world.getServer();
+		ServerWorld overworld = server.getOverworld();
+		boolean inOverworld = world == overworld;
+		EclipseState state = EclipseState.get(overworld);
+		boolean busy = state.active || WorldEventManager.active(server);
+		int days = Aptitudes.config().eclipseSummonCooldownDays;
+		if (!astrolabe) return EclipseSummoningRules.damnorath(inOverworld, busy, state.lastEndTick, overworld.getTime(), days);
+		return EclipseSummoningRules.astrolabe(player.hasPermissionLevel(2), dev.aptitudes.party.PartyManager.isLeader(player),
+				inOverworld, busy, state.lastEndTick, overworld.getTime(), days);
 	}
 
-	/** T5: inicia un Eclipse desde el sacrificio del Behelit en la Hoguera. */
-	public static void startByBeherit(ServerWorld world) {
-		if (canStartEclipse(world)) {
-			EclipseState state = EclipseState.get(world);
-			MinecraftServer server = world.getServer();
-			start(server, world, state, true, EclipseRules.dayOf(world.getTimeOfDay()));
-		}
+	/** Mensaje de rechazo (barra de acción) de una convocatoria denegada. */
+	public static void sendDenied(ServerPlayerEntity player, EclipseSummoningRules.Verdict verdict) {
+		Text text = switch (verdict) {
+			case NOT_AUTHORIZED -> Text.translatable("eclipse.aptitudes.summon.denied");
+			case WRONG_WORLD -> Text.translatable("eclipse.aptitudes.summon.wrong_world");
+			case BUSY -> Text.translatable("eclipse.aptitudes.summon.busy");
+			case COOLDOWN -> {
+				ServerWorld overworld = player.getServer().getOverworld();
+				yield Text.translatable("eclipse.aptitudes.summon.cooldown", EclipseSummoningRules.remainingDays(
+						EclipseState.get(overworld).lastEndTick, overworld.getTime(), Aptitudes.config().eclipseSummonCooldownDays));
+			}
+			case DISABLED -> Text.translatable("eclipse.aptitudes.summon.disabled");
+			case ALLOWED -> Text.empty();
+		};
+		player.sendMessage(text.copy().formatted(Formatting.RED), true);
+	}
+
+	/** C3: inicia el Eclipse convocado por un jugador (Astrolabio o Damnorath). Hay que haber comprobado {@link #summonVerdict}. */
+	public static void startBySummon(ServerPlayerEntity summoner) {
+		ServerWorld overworld = summoner.getServer().getOverworld();
+		start(summoner.getServer(), overworld, EclipseState.get(overworld), true, EclipseRules.dayOf(overworld.getTimeOfDay()));
+		dev.aptitudes.achievement.Achievements.grant(summoner, dev.aptitudes.achievement.Achievement.ECLIPSE_CALLER);
 	}
 }

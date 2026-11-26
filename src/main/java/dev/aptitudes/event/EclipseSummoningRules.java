@@ -1,32 +1,56 @@
 package dev.aptitudes.event;
 
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-
 /**
- * v60 (C3): Reglas para convocar el Eclipse desde la Hoguera con el Astrolabio del Ocaso.
+ * C3: reglas puras para convocar el Eclipse en la Hoguera, con el Astrolabio del Ocaso o con el Damnorath (Resonador
+ * del Umbral). Sin clases de Minecraft: se prueban con JUnit ({@code EclipseSummoningRulesTest}).
  *
- * <p>Puro (sin Minecraft): verifica permisos y autorización.</p>
+ * <p>Decisiones del autor: convocan con el Astrolabio los operadores o el líder del grupo (E1); el Damnorath no pide
+ * permiso (basta con tenerlo). Ambos comparten la espera de {@code eclipseSummonCooldownDays} días de juego por mundo,
+ * contados desde el <b>fin</b> del último Eclipse (A-2), y la regla de «un evento a la vez». Solo en el Mundo Normal
+ * (E6). Los tiempos son ticks del reloj del mundo ({@code World#getTime}).</p>
  */
 public final class EclipseSummoningRules {
-	private EclipseSummoningRules() {
+	private EclipseSummoningRules() {}
+
+	/** Resultado de intentar convocar. Los rechazos están ordenados por prioridad. */
+	public enum Verdict {
+		ALLOWED,
+		/** No es operador ni líder del grupo (solo el Astrolabio). */
+		NOT_AUTHORIZED,
+		/** El ritual solo vale en el Mundo Normal. */
+		WRONG_WORLD,
+		/** Ya hay un Eclipse u otro evento del mundo en curso. */
+		BUSY,
+		/** Aún no han pasado los días de espera desde el fin del último Eclipse. */
+		COOLDOWN,
+		/** El Eclipse está desactivado en la configuración ({@code eclipseEnabled = false}); lo decide quien llama, no estas reglas. */
+		DISABLED
 	}
 
-	/** ¿Puede este jugador convocar el Eclipse? Solo operadores (nivel de permiso 2+). */
-	public static boolean canSummon(ServerPlayerEntity player) {
-		return player.hasPermissionLevel(2); // Operador
+	/** ¿Puede este jugador usar el Astrolabio? Operadores (nivel 2+) o el líder de su grupo. */
+	public static boolean authorized(boolean operator, boolean partyLeader) {
+		return operator || partyLeader;
 	}
 
-	/** Mensaje de rechazo si no tiene permisos. */
-	public static Text deniedMessage() {
-		return Text.literal("Only operators can summon events.")
-				.formatted(Formatting.RED);
+	/** Astrolabio del Ocaso: permiso, mundo, evento activo y espera, en ese orden. */
+	public static Verdict astrolabe(boolean operator, boolean partyLeader, boolean inOverworld, boolean eventActive,
+			long lastEndTick, long now, int cooldownDays) {
+		if (!authorized(operator, partyLeader)) return Verdict.NOT_AUTHORIZED;
+		return damnorath(inOverworld, eventActive, lastEndTick, now, cooldownDays);
 	}
 
-	/** Mensaje de confirmación al convocar. */
-	public static Text summoned() {
-		return Text.literal("The Eclipse has been summoned!")
-				.formatted(Formatting.GOLD);
+	/** Damnorath: igual que el Astrolabio pero sin permisos. */
+	public static Verdict damnorath(boolean inOverworld, boolean eventActive, long lastEndTick, long now, int cooldownDays) {
+		if (!inOverworld) return Verdict.WRONG_WORLD;
+		if (eventActive) return Verdict.BUSY;
+		if (!EventTriggerRules.ready(lastEndTick, now, cooldownDays)) return Verdict.COOLDOWN;
+		return Verdict.ALLOWED;
+	}
+
+	/** Días de juego que faltan (redondeados hacia arriba) para poder convocar; 0 si ya se puede. */
+	public static int remainingDays(long lastEndTick, long now, int cooldownDays) {
+		long ticks = EventTriggerRules.remainingTicks(lastEndTick, now, cooldownDays);
+		long days = (ticks + EventTriggerRules.TICKS_PER_DAY - 1) / EventTriggerRules.TICKS_PER_DAY;
+		return (int) Math.min(Integer.MAX_VALUE, days);
 	}
 }

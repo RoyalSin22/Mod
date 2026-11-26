@@ -1,0 +1,20 @@
+[
+  {
+    "path": "src\\main\\resources\\assets\\aptitudes\\textures\\entity\\osario_quebrado.png",
+    "pillow": "12.3.0",
+    "same_bytes": false,
+    "same_pixels": true,
+    "changed_pixels": 0,
+    "actual_bytes": 302,
+    "generated_bytes": 281
+  },
+  {
+    "path": "src\\main\\resources\\assets\\aptitudes\\textures\\entity\\custodio_cuatro_llaves.png",
+    "pillow": "12.3.0",
+    "same_bytes": false,
+    "same_pixels": true,
+    "changed_pixels": 0,
+    "actual_bytes": 400,
+    "generated_bytes": 400
+  }
+]

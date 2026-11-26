@@ -443,8 +443,8 @@ rune.frost.desc¦Ao acertar: Lentidão %s por %s s.¦À l'impact : Lenteur %s pe
 rune.thunder.desc¦Ao acertar: %s%% de chance de uma descarga atingir %s monstros próximos (%s de dano; %s s de recarga).¦À l'impact : %s%% de chance qu'une décharge saute sur %s monstres proches (%s dégâts ; recharge de %s s).¦Bei Treffer: %s%% Chance auf eine Entladung, die auf %s nahe Monster überspringt (%s Schaden; %s s Abklingzeit).
 rune.guard.desc¦Ao acertar: +%s de absorção (máx. %s; %s s de recarga).¦À l'impact : +%s d'absorption (max %s ; recharge de %s s).¦Bei Treffer: +%s Absorption (max. %s; %s s Abklingzeit).
 herb_petals¦Pétalas de Ervas¦Pétales d'herbes¦Kräuterblütenblätter
-resonador_del_umbral¦Ressonador do Limiar¦Résonateur du Seuil¦Schwellenresonator
-resonador_del_umbral.tooltip¦Uma relíquia de poder antigo. Sua vibração invoca o próprio Eclipse.¦Une relique d'un pouvoir ancien. Sa vibration invoque l'Éclipse elle-même.¦Ein Relikt uralter Macht. Seine Schwingung ruft die Sonnenfinsternis selbst herbei.
+resonador_del_umbral¦Damnorath¦Damnorath¦Damnorath
+resonador_del_umbral.tooltip¦Embrião da ruína. Uma relíquia de poder antigo. Sua vibração invoca o próprio Eclipse.¦Embryon de la ruine. Une relique d'un pouvoir ancien. Sa vibration invoque l'Éclipse elle-même.¦Embryo des Untergangs. Ein Relikt uralter Macht. Seine Schwingung ruft die Sonnenfinsternis selbst herbei.
 """)
 
 for suffix, names in {
@@ -689,7 +689,7 @@ gunslinger_weapon_master¦Revólver do Pistoleiro Rúnico¦Revolver du pistolero
 bard_weapon_master¦Harpa do Mestre de Capela¦Harpe du maître de chapelle¦Harfe des Kapellmeisters
 warlock_weapon_master¦Crânio do Arquibruxo¦Crâne de l'archisorcier¦Schädel des Erzhexenmeisters
 sunset_astrolabe¦Astrolábio do Crepúsculo¦Astrolabe du Crépuscule¦Astrolabium der Abenddämmerung
-sunset_astrolabe.tooltip¦Consumido na Fogueira para convocar o Eclipse (apenas operadores ou líder do grupo).¦Consommé au Feu de camp pour invoquer l'Éclipse (opérateurs ou chef de groupe uniquement).¦Wird am Lagerfeuer verbraucht, um die Finsternis zu beschwören (nur Operatoren oder Gruppenleiter).
+sunset_astrolabe.tooltip¦Consumido na Fogueira para convocar o Eclipse (apenas operadores ou líder do grupo). Compartilha a espera com Damnorath.¦Consommé au Feu de camp pour invoquer l'Éclipse (opérateurs ou chef de groupe uniquement). Partage son délai d'attente avec Damnorath.¦Wird am Lagerfeuer verbraucht, um die Finsternis zu beschwören (nur Operatoren oder Gruppenleiter). Teilt die Wartezeit mit Damnorath.
 """)
 
 add('trial.aptitudes.', """
@@ -1367,6 +1367,10 @@ herald¦O Arauto do Eclipse desceu.¦Le Héraut de l'Éclipse est descendu.¦Der
 end¦O Eclipse terminou. A luz retorna.¦L'Éclipse est terminée. La lumière revient.¦Die Finsternis ist vorbei. Das Licht kehrt zurück.
 stopped¦O Eclipse foi interrompido.¦L'Éclipse a été arrêtée.¦Die Finsternis wurde beendet.
 survivor¦Você sobreviveu ao Eclipse: recebe experiência de classe e Combate.¦Vous avez survécu à l'Éclipse : vous gagnez de l'expérience de rôle et de Combat.¦Du hast die Finsternis überlebt: Du erhältst Rollen- und Nahkampf-EP.
+summon.denied¦Apenas operadores ou o líder do grupo podem convocar o Eclipse com o Astrolábio.¦Seuls les opérateurs ou le chef de groupe peuvent invoquer l'Éclipse avec l'Astrolabe.¦Nur Operatoren oder der Gruppenleiter können die Sonnenfinsternis mit dem Astrolabium beschwören.
+summon.wrong_world¦O ritual só funciona no Mundo Normal.¦Le rituel ne fonctionne que dans le Monde normal.¦Das Ritual funktioniert nur in der Oberwelt.
+summon.busy¦Já há outro evento do mundo em andamento.¦Un autre événement du monde est déjà en cours.¦Es läuft bereits ein anderes Weltereignis.
+summon.cooldown¦O céu ainda não se recuperou. Espere mais %d dia(s) de jogo.¦Le ciel ne s'est pas encore remis. Attendez encore %d jour(s) de jeu.¦Der Himmel hat sich noch nicht erholt. Warte noch %d Spieltag(e).
 phase_name.none¦sem eclipse¦aucune éclipse¦keine Finsternis
 phase_name.penumbra¦Penumbra¦Pénombre¦Halbschatten
 phase_name.totality¦Totalidade¦Totalité¦Totalität
@@ -1619,7 +1623,7 @@ bestiary.aptitudes.reveal¦%s abates a mais para revelar¦%s victoires de plus p
 bestiary.aptitudes.reveal.one¦1 abate a mais para revelar¦1 victoire de plus pour révéler¦Noch 1 Sieg, um dies zu enthüllen
 bestiary.aptitudes.section.tips¦Dicas¦Conseils¦Tipps
 bestiary.aptitudes.section.lore¦Lenda¦Légende¦Legende
-bestiary.aptitudes.osario_quebrado.lore¦Ossos e terra que se recusam a descansar, reunidos por um luto antigo de que ninguém se lembra.¦Des os et de la terre qui refusent le repos, rassemblés par un vieux deuil dont nul ne se souvient.¦Knochen und Erde, die sich weigern zu ruhen, vereint durch eine alte Trauer, an die sich niemand erinnert.
+bestiary.aptitudes.osario_quebrado.lore¦Ele arrasta ossos e terra de uma sepultura inacabada. Um luto antigo ainda mantém os restos unidos.¦Il traîne les os et la terre d’une sépulture inachevée. Un vieux deuil lie encore ces restes.¦Es schleift Knochen und Erde aus einem unvollendeten Grab mit sich. Eine alte Trauer hält die Überreste noch zusammen.
 bestiary.aptitudes.errante_velado.lore¦Uma alma perdida na névoa que vaga até o amanhecer dissolvê-la.¦Une âme perdue dans la brume qui erre jusqu’à ce que l’aube la dissolve.¦Eine im Nebel verlorene Seele, die umherirrt, bis die Morgendämmerung sie auflöst.
 bestiary.aptitudes.escorificador_hierro.lore¦Escória e ferro com vontade própria pela chuva de brasas; não forja nada, só queima.¦Scories et fer dotés d’une volonté par la pluie de braises ; il ne forge rien, il ne fait que brûler.¦Schlacke und Eisen, denen der Funkenregen einen Willen gab; es schmiedet nichts, es brennt nur.
 bestiary.aptitudes.custodio.lore¦Do seu corpo de pedra pendem quatro chaves e ele ainda lembra o juramento de guardar o selo.¦Quatre clés pendent à son corps de pierre, et il se souvient encore du serment de garder le sceau.¦Vier Schlüssel hängen an seinem steinernen Körper, und er erinnert sich noch an den Eid, das Siegel zu bewachen.
@@ -1739,6 +1743,8 @@ advancement.aptitudes.bestiary_complete.title¦Cronista¦Chroniqueur¦Chronist
 advancement.aptitudes.bestiary_complete.description¦Descubra todas as criaturas do bestiário.¦Découvrez toutes les créatures du bestiaire.¦Entdecke alle Kreaturen des Bestiariums.
 advancement.aptitudes.synergist.title¦Sinergista¦Synergiste¦Synergetiker
 advancement.aptitudes.synergist.description¦Ative as cinco sinergias (Y1-Y5) em uma única sessão.¦Activez les cinq synergies (Y1-Y5) en une seule session.¦Aktiviere alle fünf Synergien (Y1-Y5) in einer einzigen Sitzung.
+advancement.aptitudes.eclipse_caller.title¦Quem chama a noite¦Celui qui appelle la nuit¦Wer die Nacht ruft
+advancement.aptitudes.eclipse_caller.description¦Convoque um Eclipse com o Astrolábio do Crepúsculo ou Damnorath.¦Invoquez une Éclipse avec l'Astrolabe du Crépuscule ou Damnorath.¦Beschwöre eine Sonnenfinsternis mit dem Astrolabium der Abenddämmerung oder dem Damnorath.
 synergy.aptitudes.disabled¦As sinergias estão desativadas neste servidor.¦Les synergies sont désactivées sur ce serveur.¦Synergien sind auf diesem Server deaktiviert.
 synergy.aptitudes.status¦Sinergias ativadas nesta sessão: %s/%s¦Synergies activées durant cette session : %s/%s¦In dieser Sitzung aktivierte Synergien: %s/%s
 synergy.aptitudes.line¦%s · %s: %s¦%s · %s : %s¦%s · %s: %s
@@ -1759,7 +1765,7 @@ add('', """
 entity.aptitudes.faceless_colossus¦O Colosso Sem Rosto¦Le Colosse sans visage¦Der gesichtslose Koloss
 entity.aptitudes.osario_quebrado¦Ossuário Quebrado¦Ossuaire brisé¦Zerbrochenes Beinhaus
 item.aptitudes.osario_quebrado_spawn_egg¦Ovo de aparição do Osario Quebrado¦Œuf d'apparition de l'Ossuaire brisé¦Erscheinungsei des Zerbrochenen Beinhauses
-bestiary.aptitudes.osario_quebrado.tip¦Osso e terra que não descansam. Arrasta um braço e avança ao te ver.¦Os et terre qui refusent le repos. Il traîne un bras et charge dès qu'il vous voit.¦Knochen und Erde, die nicht ruhen wollen. Er schleift einen Arm und stürmt los, sobald er dich sieht.
+bestiary.aptitudes.osario_quebrado.tip¦O Ossuário avisa antes de atacar. Esquive para o lado quando ele investir e recue quando erguer a carga.¦L’Ossuaire donne un signe avant de frapper. Esquivez de côté quand il charge et reculez quand il soulève sa charge.¦Das Beinhaus kündigt seine Schläge an. Weiche seitlich aus, wenn es anstürmt, und geh auf Abstand, wenn es seine Last hebt.
 contract.aptitudes.kind.nether¦Caça no Nether¦Chasse au Nether¦Jagd im Nether
 contract.aptitudes.kind.new_mob¦Criaturas novas¦Créatures nouvelles¦Neue Kreaturen
 contract.aptitudes.kind.expedition¦Expedição¦Expédition¦Expedition
@@ -1804,6 +1810,16 @@ subtitles.aptitudes.errante_rend¦O Errante rasga o ar¦Le Vagabond lacère¦Ver
 subtitles.aptitudes.errante_hurt¦O Errante Velado sofre dano¦Le Vagabond voilé est blessé¦Verhüllter Wanderer wird verletzt
 subtitles.aptitudes.errante_death¦O Errante Velado desaba¦Le Vagabond voilé s’effondre¦Verhüllter Wanderer bricht zusammen
 subtitles.aptitudes.errante_despawn¦O Errante Velado se dissipa¦Le Vagabond voilé se dissipe¦Verhüllter Wanderer verblasst
+subtitles.aptitudes.osario.ambient¦O Ossuário Quebrado chocalha¦L’Ossuaire brisé cliquette¦Zerbrochenes Beinhaus klappert
+subtitles.aptitudes.osario.alert¦O Ossuário Quebrado rosna¦L’Ossuaire brisé gronde¦Zerbrochenes Beinhaus knurrt
+subtitles.aptitudes.osario.hurt¦Os ossos do Ossuário estalam¦Les os de l’Ossuaire craquent¦Knochen des Beinhauses knacken
+subtitles.aptitudes.osario.death¦O Ossuário Quebrado desmorona¦L’Ossuaire brisé s’effondre¦Zerbrochenes Beinhaus stürzt ein
+subtitles.aptitudes.osario.claw¦O Ossuário prepara um arranhão¦L’Ossuaire prépare un coup de griffe¦Beinhaus holt zum Krallenhieb aus
+subtitles.aptitudes.osario.heavy¦O Ossuário prepara um golpe amplo¦L’Ossuaire prépare un grand balayage¦Beinhaus holt zum Rundumschlag aus
+subtitles.aptitudes.osario.slam_charge¦O Ossuário ergue sua carga¦L’Ossuaire soulève sa charge¦Beinhaus hebt seine Last
+subtitles.aptitudes.osario.slam_hit¦A carga do Ossuário atinge o chão¦La charge de l’Ossuaire heurte le sol¦Die Last des Beinhauses kracht auf den Boden
+subtitles.aptitudes.osario.lunge¦O Ossuário se prepara para investir¦L’Ossuaire se prépare à charger¦Beinhaus setzt zum Ansturm an
+subtitles.aptitudes.osario.step¦O Ossuário arrasta sua carga¦L’Ossuaire traîne sa charge¦Beinhaus schleift seine Last
 subtitles.aptitudes.berserker_roar¦O Berserker ruge¦Le Berserker rugit¦Berserker brüllt
 subtitles.aptitudes.berserker_war_cry¦Grito de guerra¦Cri de guerre¦Kriegsschrei
 subtitles.aptitudes.berserker_slam¦O chão se despedaça¦Le sol se fissure¦Der Boden zerbirst
@@ -1924,4 +1940,61 @@ screen.aptitudes.respec.confirm¦Reiniciar a árvore de %1$s devolve %2$s pontos
 screen.aptitudes.respec.cost¦Custa %s níveis de experiência¦Coûte %s niveaux d’expérience¦Kostet %s Erfahrungsstufen
 screen.aptitudes.respec.missing¦Você precisa de %s níveis de experiência¦Il vous faut %s niveaux d’expérience¦Du brauchst %s Erfahrungsstufen
 screen.aptitudes.respec.nothing¦Não há pontos gastos nesta classe¦Aucun point dépensé dans ce rôle¦Keine Punkte in dieser Rolle ausgegeben
+""")
+
+add('eclipse.aptitudes.', """
+summon.disabled¦O Eclipse está desativado neste servidor.¦L’Éclipse est désactivée sur ce serveur.¦Die Sonnenfinsternis ist auf diesem Server deaktiviert.
+""")
+
+add('parry.aptitudes.', """
+success¦Aparada!¦Parade !¦Parade!
+finisher¦Golpe de misericórdia!¦Coup de grâce !¦Gnadenstoß!
+""")
+
+add('message.aptitudes.', """
+phrase.danger¦Perigo à frente¦Danger devant¦Gefahr voraus
+phrase.treasure¦Tesouro à frente¦Trésor devant¦Schatz voraus
+phrase.rest¦Bom lugar para descansar¦Bon endroit pour se reposer¦Guter Ort zum Rasten
+phrase.hidden¦Caminho oculto¦Chemin caché¦Versteckter Weg
+phrase.boss¦Chefe à frente¦Boss devant¦Boss voraus
+phrase.ambush¦Cuidado com a emboscada¦Attention à l’embuscade¦Vorsicht, Hinterhalt
+phrase.trap¦Armadilha!¦Piège !¦Falle!
+phrase.look_up¦Tente olhar para cima¦Essayez de regarder en haut¦Schau mal nach oben
+phrase.look_down¦Tente olhar para baixo¦Essayez de regarder en bas¦Schau mal nach unten
+phrase.dead_end¦Beco sem saída¦Cul-de-sac¦Sackgasse
+phrase.need_light¦Precisa de luz¦Il faut de la lumière¦Licht nötig
+phrase.well_done¦Muito bem!¦Bien joué !¦Gut gemacht!
+format¦%s  [+%s]¦%s  [+%s]¦%s  [+%s]
+placed¦Mensagem deixada. Os outros podem lê-la e avaliá-la.¦Message laissé. Les autres peuvent le lire et l’évaluer.¦Nachricht hinterlassen. Andere können sie lesen und bewerten.
+disabled¦As mensagens no chão estão desativadas neste servidor.¦Les messages au sol sont désactivés sur ce serveur.¦Bodennachrichten sind auf diesem Server deaktiviert.
+bad_phrase¦Frase desconhecida. Use /aptitudes message list.¦Phrase inconnue. Utilisez /aptitudes message list.¦Unbekannte Phrase. Nutze /aptitudes message list.
+limit¦Você já tem %s mensagens colocadas. Remova uma com /aptitudes message remove.¦Vous avez déjà %s messages posés. Retirez-en un avec /aptitudes message remove.¦Du hast bereits %s Nachrichten platziert. Entferne eine mit /aptitudes message remove.
+cooldown¦Espere %s segundos antes de deixar outra mensagem.¦Attendez %s secondes avant de laisser un autre message.¦Warte %s Sekunden, bevor du eine weitere Nachricht hinterlässt.
+failed¦Não foi possível colocar a mensagem.¦Le message n’a pas pu être posé.¦Die Nachricht konnte nicht platziert werden.
+voted¦Avaliado: +%s¦Évalué : +%s¦Bewertet: +%s
+own¦Você não pode avaliar sua própria mensagem.¦Vous ne pouvez pas évaluer votre propre message.¦Du kannst deine eigene Nachricht nicht bewerten.
+already¦Você já avaliou esta mensagem.¦Vous avez déjà évalué ce message.¦Du hast diese Nachricht bereits bewertet.
+removed¦Mensagem removida.¦Message retiré.¦Nachricht entfernt.
+none_nearby¦Não há nenhuma mensagem sua a menos de 6 blocos.¦Aucun de vos messages à moins de 6 blocs.¦Keine deiner Nachrichten im Umkreis von 6 Blöcken.
+list_header¦Frases disponíveis:¦Phrases disponibles :¦Verfügbare Phrasen:
+""")
+
+add('contract.aptitudes.', """
+kind.soul_fog¦Convocar a Névoa das Almas¦Convoquer la Brume des âmes¦Seelennebel herbeirufen
+fog_disabled¦A Névoa das Almas está desativada neste servidor.¦La Brume des âmes est désactivée sur ce serveur.¦Der Seelennebel ist auf diesem Server deaktiviert.
+""")
+
+add('aptitudes.structure.', """
+three_towers¦As Três Torres Senhoriais¦Les Trois Tours Seigneuriales¦Die Drei Herrenturme
+""")
+
+add('', """
+block.aptitudes.three_towers_controller¦Pedra da Vigília¦Pierre de la Veille¦Stein der Wacht
+towers.aptitudes.guardian_woke¦Um cavaleiro oco se ergue de seu posto…¦Un chevalier creux se lève de son poste…¦Ein hohler Ritter erhebt sich von seinem Posten…
+towers.aptitudes.guardian_down¦Um guardião caiu. Restam %s.¦Un gardien est tombé. Il en reste %s.¦Ein Wächter ist gefallen. Noch %s übrig.
+towers.aptitudes.lord_open¦A porta selada da torre do Marechal cede.¦La porte scellée de la tour du Maréchal cède.¦Die versiegelte Tür des Marschallturms gibt nach.
+towers.aptitudes.colossus_woke¦O Marechal sem rosto desperta.¦Le Maréchal sans visage s’éveille.¦Der gesichtslose Marschall erwacht.
+towers.aptitudes.colossus_down¦A Vigília terminou.¦La Veille est terminée.¦Die Wacht ist vorbei.
+advancement.aptitudes.three_towers.title¦Fim da Vigília¦Fin de la Veille¦Das Ende der Wacht
+advancement.aptitudes.three_towers.description¦Derrote o Colosso Sem Rosto nas Três Torres Senhoriais.¦Vainquez le Colosse sans visage dans les Trois Tours Seigneuriales.¦Besiege den gesichtslosen Koloss in den Drei Herrenturmen.
 """)

@@ -76,6 +76,7 @@ public class ErranteEntity extends HostileEntity implements GeoEntity {
 	private long retireAt = -1;
 	private UUID alertedTarget;
 	private SpectralRendRules.Execution rend;
+	private UUID rendTarget;
 	private float attackYaw;
 
 	public ErranteEntity(EntityType<? extends HostileEntity> type, World world) {
@@ -108,6 +109,16 @@ public class ErranteEntity extends HostileEntity implements GeoEntity {
 	@Override
 	public boolean tryAttack(Entity target) {
 		return false;
+	}
+
+	@Override
+	public void setTarget(LivingEntity target) {
+		super.setTarget(target);
+		// Detecta incluso cambios que otro selector pueda revertir antes del siguiente mobTick.
+		if (rend != null && getWorld() instanceof ServerWorld world && rend.preparing(world.getTime())
+				&& (getTarget() == null || !getTarget().getUuid().equals(rendTarget))) {
+			cancelRend();
+		}
 	}
 
 	private Action action(long stamp) {
@@ -152,6 +163,7 @@ public class ErranteEntity extends HostileEntity implements GeoEntity {
 	private void beginRend(ServerWorld world, float yaw) {
 		long now = world.getTime();
 		rend = new SpectralRendRules.Execution(now);
+		rendTarget = getTarget().getUuid();
 		attackYaw = yaw;
 		getNavigation().stop();
 		faceRend();
@@ -166,7 +178,8 @@ public class ErranteEntity extends HostileEntity implements GeoEntity {
 	}
 
 	private void tickRend(ServerWorld world, long now, LivingEntity target) {
-		if (rend.finished(now) || (rend.preparing(now) && !validTarget(target))) {
+		if (rend.finished(now) || (rend.preparing(now)
+				&& (!validTarget(target) || !target.getUuid().equals(rendTarget)))) {
 			cancelRend();
 			return;
 		}
@@ -175,6 +188,12 @@ public class ErranteEntity extends HostileEntity implements GeoEntity {
 			Vec3d wrist = new Vec3d(10.632, 15.901, -4.275).multiply(getScale() / 16.0)
 					.rotateY((float) Math.toRadians(-attackYaw)).add(getPos());
 			world.spawnParticles(VEIL_DUST, wrist.x, wrist.y, wrist.z, 5, 0.09, 0.09, 0.09, 0);
+			// El contorno anuncia el sector real, incluso donde el brazo no pasa por el tick de impacto.
+			Vec3d forward = Vec3d.fromPolar(0, attackYaw);
+			for (var point : SpectralRendRules.warningOutline(forward.x, forward.z, getScale())) {
+				world.spawnParticles(VEIL_DUST, getX() + point.x(), getY() + point.y(), getZ() + point.z(),
+						1, 0, 0, 0, 0);
+			}
 		}
 		if (rend.strike(now)) {
 			playSpectralSound(ModSounds.ERRANTE_REND, 0.75f);
@@ -186,6 +205,7 @@ public class ErranteEntity extends HostileEntity implements GeoEntity {
 		if (rend == null) return;
 		rend.cancel();
 		rend = null;
+		rendTarget = null;
 		setAction(Action.NONE, 0);
 	}
 
@@ -229,6 +249,7 @@ public class ErranteEntity extends HostileEntity implements GeoEntity {
 		boolean hit = super.damage(source, amount);
 		if (hit && isAlive() && getWorld() instanceof ServerWorld world && !isRetiring() && rend == null) {
 			Action current = action(dataTracker.get(ACTION));
+			getNavigation().stop();
 			if (current != Action.HURT) setAction(Action.HURT, world.getTime());
 		}
 		return hit;
@@ -386,7 +407,9 @@ public class ErranteEntity extends HostileEntity implements GeoEntity {
 
 		@Override
 		public boolean canStart() {
-			return !isRetiring() && (rend != null || validTarget(getTarget()));
+			// Conserva el control de movimiento durante la reacción, aunque se pierda el objetivo.
+			return !isRetiring() && (rend != null || action(dataTracker.get(ACTION)) != Action.NONE
+					|| validTarget(getTarget()));
 		}
 
 		@Override
@@ -408,6 +431,10 @@ public class ErranteEntity extends HostileEntity implements GeoEntity {
 		@Override
 		public void tick() {
 			if (!(getWorld() instanceof ServerWorld world) || rend != null || isRetiring()) return;
+			if (action(dataTracker.get(ACTION)) != Action.NONE) {
+				getNavigation().stop();
+				return;
+			}
 			LivingEntity target = getTarget();
 			if (!validTarget(target)) return;
 			getLookControl().lookAt(target, 30, 30);

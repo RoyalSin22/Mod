@@ -3,11 +3,24 @@
 Documento de referencia de las fórmulas de progresión. Cada cambio indica fórmula anterior, nueva,
 justificación, valores de ejemplo e impacto, como pide la política del proyecto.
 
+## Osario Quebrado (V84)
+
+El golpe inmediato de base 5 se sustituye por cuatro ataques con aviso. Conserva 24 de vida, velocidad 0,27
+y seguimiento 24. Los multiplicadores sobre el daño vigente dan **4,5 / 6,5 / 8 / 5** sin afijos para
+zarpazo, barrido, impacto y embestida. El Osario común espera 200 ticks tras un impacto antes de repetirlo.
+El élite y el campeón esperan 120. El enfriamiento global de 20 ticks se cuenta al terminar la acción.
+Los sectores y el disco permiten esquivar durante el aviso. La embestida fija la dirección al arrancar y se
+detiene con el primer contacto. [Tiempos, volúmenes y escalado](V84_OSARIO_FASE5.md#combate).
+
 ## Coloso Sin Rostro
 
 El tajo conserva un alcance de 4,5 bloques y el golpe descendente conserva un radio de 5,5. La caja del objetivo
 debe cruzar la banda vertical del ataque y la trayectoria hasta él debe estar libre de bloques. La embestida
-conserva su impulso inicial y solo aplica el daño al objetivo si hay contacto durante el desplazamiento.
+mantiene una velocidad horizontal de 1,6 bloques por tick durante ocho ticks y aplica el daño al objetivo
+si hay contacto durante el desplazamiento. Antes solo fijaba la velocidad inicial y la fricción agotaba el
+avance antes de llegar a un objetivo situado a siete bloques. La corrección aumenta el recorrido efectivo
+en terreno libre. El movimiento sigue resolviendo gravedad y colisiones de Minecraft, y termina al chocar,
+golpear o perder al objetivo.
 La recuperación global tras el impacto es de 12 ticks para el tajo y 14 para el golpe descendente y la embestida.
 Vida, daño base y enfriamientos por ataque conservan sus cifras.
 
@@ -141,7 +154,21 @@ Las coordenadas no finitas producen 0; no se cuadran/restan coordenadas en enter
   No hay consumo de inventario; en grupo existe una sola tirada por criatura, con drops físicos normales.
 - Élite: `min(1, eliteChance × (1 + anillo × threatEliteChancePerRing))`, conservando el 10 % de esa
   probabilidad para campeón y el marcador persistente anterior de tirada comprobada. No añade una
+
   segunda tirada. En 0, desactivado o excluido conserva la probabilidad anterior.
+
+### V83 — dificultad más alta y tácticas por anillo
+Decisión del autor tras jugar («demasiado fácil»). Valores por defecto nuevos: anillos de 700 bloques (antes 1000), vida +25 % por anillo
+(antes 15 %), daño +15 % (antes 10 %) y `eliteChance` 0,08 (antes 0,05); los archivos con los valores antiguos se migran una vez
+(`configRevision` 83) y los valores elegidos a mano se respetan. Con `threatTactics` activo, las criaturas elegibles de Amenaza (Overworld,
+hostiles, sin jefes, invocaciones ni eventos) hacen lo siguiente (reglas puras en `logic/ThreatTactics`):
+
+| Táctica | Anillo | Efecto |
+|---|---|---|
+| Llamada de auxilio | I+ | Al ser herida por un jugador avisa a hasta 6 hostiles sin objetivo en 8 + 2×anillo bloques (espera de 3 s) |
+| Esquiva | II+ | `(anillo − 1) × threatDodgePerRing` de esquivar un proyectil de jugador (tope 25 %); humo y sonido |
+| Furia | III+ | Una vez, al bajar del 35 % de vida: Velocidad y Fuerza 5–9 s (nivel II en el anillo V) |
+| Retroceso | I+ | +8 % de resistencia al retroceso por anillo (tope 40 %) |
 
 Solo aparecen escaladas criaturas hostiles nuevas del Mundo Normal. Se excluyen Wither, Dragón,
 Warden, Guardián anciano, jefes propios, invocaciones/esbirros, Eclipse/eventos y nombres previos.
@@ -374,7 +401,7 @@ pendientes de ajuste tras la prueba en partida.
 Sin jugadores vivos en la sala durante `cryptIdleResetSeconds` la oleada se reinicia. Las criaturas de la Cripta no sueltan
 botín propio, ni Jirón ni Núcleo, y los Errantes no dan XP: la recompensa es el cofre final (5–7 tiradas: bloque de diamante,
 manzana dorada encantada, restos de netherita, bloque de esmeralda, fragmentos de alma, Corazón de campeón, Cupón de armería,
-Emblema de maestría y frascos de XP). Sin Resonador, sin Cráneo y sin llaves: es botín y lore, no poder nuevo.
+Emblema de maestría y frascos de XP). Sin Embrión del Umbral, sin Cráneo y sin llaves: es botín y lore, no poder nuevo.
 
 # Sala de pruebas del Templo hondo (V70)
 
@@ -465,8 +492,13 @@ uno de cada tres eventos de media.
 120° y 1,75 bloques de radio a escala base, independiente de la caja corporal. El barrido solo se resuelve al
 tick 10 y aplica Debilidad I durante 40 ticks si inflige daño a un objetivo que sobrevive. Una muerte válida
 atribuida a un jugador durante la sesión activa permite una tirada del 85 % para un Jirón. La retirada por cierre
-del evento se reparte entre 1 y 6 segundos y no genera experiencia ni botín. Queda por calibrar el tiempo de
-obtención cuando exista la receta de progresión.
+del evento se reparte entre 1 y 6 segundos y no genera experiencia ni botín.
+La preparación se cancela si cambia el objetivo antes de emitir el aviso del tick 6; después conserva la dirección.
+El aviso añade once partículas al contorno de 120° y radio 1,75, escalado para Gigante. La reacción al daño
+pausa la navegación durante sus nueve ticks y permite conservar el retroceso físico.
+El Errante pertenece a `minecraft:undead`: Heraldo de la Muerte bloquea su selección de objetivo.
+Hereda además Castigo, inversión de curación/daño instantáneos, inmunidad a veneno/regeneración,
+respiración bajo el agua y la selección de aliados del Wither mediante las etiquetas vanilla.
 
 # Grupos (v29)
 
@@ -725,7 +757,7 @@ cantidades en `data/aptitudes/recipe/ancla_del_velo.json`; no hay campos de conf
 # Cámaras del Templo del Custodio (T4 de la cadena narrativa; valores provisionales)
 
 Sin playtest. El contenido lo eligió el redactor por delegación del autor y crece con el metal. Cada cofre se puede abrir una
-vez por templo (cofre normal): en grupo se reparte lo que haya. La cámara de diamante albergará además el Behelit (T5).
+vez por templo (cofre normal): en grupo se reparte lo que haya. La cámara de diamante albergará además el Damnorath (T5).
 
 | Cámara | Tiradas | Contenido (peso) |
 |---|---|---|
@@ -741,7 +773,7 @@ regeneración conectada (D-33) el total es finito. Las tablas son datapack: se a
 
 | Elemento | Valor | Notas |
 |---|---|---|
-| `rarity_filter` del templo nuevo | 1 de cada 120 chunks | Antes 1 de cada 400 (templo antiguo). Decisión del autor (D-33, opción «subir la frecuencia») para tener más Behelits por mundo mientras la regeneración no esté conectada. Se ajusta en `data/aptitudes/worldgen/placed_feature/custodian_temple.json` |
+| `rarity_filter` del templo nuevo | 1 de cada 120 chunks | Antes 1 de cada 400 (templo antiguo). Decisión del autor (D-33, opción «subir la frecuencia») para tener más Damnoraths por mundo mientras la regeneración no esté conectada. Se ajusta en `data/aptitudes/worldgen/placed_feature/custodian_temple.json` |
 | Terreno apto | desnivel ≤ 4 en 31×31 | Descarta parte de los intentos: en la práctica aparecen menos de los que da la cifra |
 
 Pendiente de playtest: si aparecen demasiados o muy pocos, basta con cambiar `chance`. Un mundo de pruebas con `/locate` no

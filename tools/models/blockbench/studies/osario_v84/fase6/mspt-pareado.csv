@@ -1,0 +1,13 @@
+suite,case,count,warm_ticks,samples,wall_seconds,mean_ms,p95_ms,p99_ms,heap_bytes,min_mob_ticks,target_fraction,mob,round,damage_ticks
+bench_sprint_live_paired,sin_jugador,30,600,1200,4.586,3.5808,6.7686,11.1568,569838656,1199,0.0000,osario,1,0
+bench_sprint_live_paired,sin_jugador,30,600,1200,3.350,2.6264,5.1278,7.9970,451424664,1199,0.0000,errante,1,0
+bench_sprint_live_paired,sin_jugador,30,600,1200,3.526,2.7502,5.0738,7.0111,858579856,1199,0.0000,errante,2,0
+bench_sprint_live_paired,sin_jugador,30,600,1200,3.006,2.3587,4.5489,6.5646,615965928,1199,0.0000,osario,2,0
+bench_sprint_live_paired,sin_jugador,30,600,1200,2.722,2.1495,4.1372,6.1580,810327952,1199,0.0000,osario,3,0
+bench_sprint_live_paired,sin_jugador,30,600,1200,3.060,2.4291,4.6559,6.6229,888822648,1199,0.0000,errante,3,0
+bench_sprint_live_paired,persecucion,30,600,1200,4.200,3.3105,6.3649,8.7028,485716552,1199,1.0000,osario,1,103
+bench_sprint_live_paired,persecucion,30,600,1200,3.707,2.9521,5.8723,8.3735,514771376,1199,1.0000,errante,1,114
+bench_sprint_live_paired,persecucion,30,600,1200,3.474,2.7508,5.3687,7.4356,468447344,1199,1.0000,errante,2,115
+bench_sprint_live_paired,persecucion,30,600,1200,3.509,2.7910,5.1570,7.0488,354985376,1199,1.0000,osario,2,122
+bench_sprint_live_paired,persecucion,30,600,1200,3.564,2.8477,5.4830,7.5045,797322992,1199,1.0000,osario,3,109
+bench_sprint_live_paired,persecucion,30,600,1200,3.163,2.5326,5.1088,6.8436,514569216,1199,1.0000,errante,3,115

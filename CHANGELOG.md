@@ -5,6 +5,165 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Corregido
+- **Avance roto `aptitudes_achievements/summon_eclipse`.** Fallaba al cargar en cada arranque («No key id»: el icono
+  usaba `item` en lugar de `id`), ningún código lo concedía y lo sustituye «Quien llama a la noche» (`eclipse_caller`).
+  Se elimina; como nunca llegó a cargarse, ningún mundo tiene progreso guardado en él.
+
+### Cambiado
+- **El artefacto de la Hoguera se llama «Damnorath» («Embrión de la ruina») (D-40).** Sustituye a «Resonador del Umbral» y al término interno «Behelit» en los textos
+  visibles (5 idiomas), la clase `DamnorathItem` (antes `BeheritItem`), `ModItems.DAMNORATH`, `EclipseSummoningRules.damnorath(...)`, `LoreRules.LORE_ARTIFACT_FOUND`, las pruebas y los
+  documentos vivos. **No cambian** los ids guardados: registro `resonador_del_umbral` y lore `behelit_lore_unlocked`. Prompt de arte nuevo en
+  `docs/PROMPT_ARTE_ARTEFACTOS_ECLIPSE.md` (Damnorath y Astrolabio del Ocaso, ambos sin textura todavía).
+- **La Niebla de almas se convoca desde el tablón de contratos (D-36).** Nuevo tipo de contrato `SOUL_FOG` («Convocar la Niebla de
+  almas»), añadido al final del enum para no mover los guardados: entre las 3 ofertas del día puede salir una a partir de
+  dificultad Normal. Al aceptarla empieza el evento para todo el mundo (respeta la espera de `fogCooldownDays`, que no haya otro
+  evento ni el interruptor `worldEventWeightSoulFog = 0`; si no puede empezar, no se acepta y se avisa) y el contrato se completa al
+  sobrevivirlo. El aldeano del gremio **ya no** inicia la Niebla (solo comercia). `WorldEventManager.fogReply` y
+  `startFogByContract` sustituyen a `talkToGuildmaster`. Pruebas: `SoulFogContractRulesTest`.
+- **Sellos de invocación: decisión de no recuperarlos (D-37).** El Coloso Sin Rostro será el jefe final de un dungeon nuevo y el
+  Guardián Desmontado su subjefe, dormidos al generarse y una sola vez por estructura. Aún sin implementar (pendiente de diseño).
+- **S3 Parada y contraataque se queda activada por defecto** (confirmado por el autor).
+
+### Eliminado
+- **V86 fase 5 · restos de los sellos de invocación.** Borrados `boss/SummonSealItem`, `SummonRules`, `SummonState` y `SummonRulesTest` (nada más los
+  usaba desde que T6 retiró los tres objetos), el gancho `AnimatedBossEntity.onDeath` que solo registraba derrotas para la reinvocación, el método
+  `restorePhase` (y su override en el Coloso, que solo llamaba el sello) y las tres filas de `tools/textures/gen_items.py` que regeneraban los PNG
+  retirados (la plantilla `seal` se conserva: la usan el Sello del gremio y la Ficha de expedición, cuyos PNG salen idénticos). Ya no hay que borrar
+  PNG a mano tras ejecutar `gen_items.py`. Los mundos antiguos conservan, inofensivo, el archivo de datos de `SummonState`. Sin cambios de balance.
+
+### Añadido
+- **Astrolabio del Ocaso y espera común del Eclipse (C3).** El Astrolabio (clic derecho en la Hoguera) solo lo usan
+  los operadores o el líder del grupo (decisión E1) y ya no se consume si se rechaza. Comparte con el Embrión del
+  Umbral (Behelit) la espera de `eclipseSummonCooldownDays` (3 por defecto, 0 = sin espera) días de juego por mundo,
+  contados desde el fin del último Eclipse (`EclipseState.lastEndTick`, guardado con compatibilidad hacia atrás), y la
+  regla de «un evento a la vez». Solo en el Mundo Normal. Reglas puras en `event/EclipseSummoningRules`
+  (`EclipseSummoningRulesTest`), mensajes de rechazo en los 11 idiomas y logro «Quien llama a la noche»
+  (`eclipse_caller`, hijo de «Superviviente del Eclipse»; también al usar el Behelit). El Behelit ya respeta la espera,
+  avisa al jugador cuando se rechaza y no se gasta en Creativo. No toca el calendario rotativo (E10 sigue pendiente).
+  El arte de ambos objetos va en la entrada siguiente.
+- **Astrolabio del Ocaso en 32×32.** Dibujo propio de mayor detalle (bronce con marcas grabadas, aro de suspensión y un sol eclipsado con la corona
+  desplazada arriba a la derecha), generado por `tools/textures/hd_items.py` y usado por `gen_items.py` antes de la plantilla de 16×16.
+  El Damnorath sigue en 16×16.
+- **Arte del Astrolabio del Ocaso y del Damnorath.** Plantillas `astrolabe` (disco de bronce con el sol eclipsado) y `embryo` (embrión enroscado dentro de un frasco de cristal con líquido violeta, tapón y aro de oro, sin rostro) en `tools/textures/gen_items.py`, texturas 16×16 y modelos de objeto. En el inventario el objeto se llama «Damnorath» (D-40); «Embrión del Umbral» queda como nombre de lore para el grimorio. Decisión del autor: la textura es literalmente un embrión de la ruina (anula la cautela del diseño de aro hueco). El id `resonador_del_umbral` no cambia. Arte de plantilla provisional.
+- `tools/advancements/gen_advancements.py`: la lista del generador incluye ya «Sinergista», que existía solo como JSON.
+- **V86 fase 3 · Las Tres Torres Señoriales cobran vida.** Nuevo bloque controlador irrompible (`three_towers_controller`, en el centro del
+  patio; reutiliza las texturas del sello del templo) con su entidad de bloque (`dungeon/TowersControllerBlockEntity`) y reglas puras
+  (`TowersFlowRules`, `TowersFlowRulesTest`). Los jefes «duermen» porque **no existen** hasta que un jugador entra en su sala:
+  **oleadas únicas** de criaturas élite con armadura completa en cada planta de combate; un **Guardián Desmontado** en la cima de cada torre
+  vasalla; al vencer a los dos se **abre la puerta sellada** de la Torre del Señor, y al entrar en su sala despierta el **Coloso Sin Rostro**.
+  Al vencerlo salen **un cofre por jugador cercano (hasta 5)** con la **Plantilla de ascensión garantizada** más botín (`chests/three_towers_reward`)
+  y se concede el logro **«Fin de la Vigilia»** (`THREE_TOWERS`, hijo de `slay_boss`, generado con `gen_advancements.py`). **Dificultad alta:** anillo de
+  Amenaza = el del lugar +1 con mínimo III y tope V (vida de los jefes +25 % por anillo, la de las criaturas +15 %). Estado persistente que **nunca
+  retrocede**: una sola vez por estructura, sin sellos ni reaparición. Sin nada en dificultad Pacífica. Los textos de los avisos son
+  **provisionales** (los reescribe Codex). **Sin probar en partida.** El script de logros ahora incluye también «Sinergista» (su JSON ya existía).
+- **V86 fase 2 · Las Tres Torres Señoriales generan en el mundo.** `world/ThreeTowersFeature` traduce `TowersLayout` a bloques (piedra
+  musgosa, cimiento de pizarra, patio despejado, ventanas de barrotes, antorchas de almas, escaleras y empuñaduras de pizarra) y no crea
+  entidades. Rareza por región de **24×24 chunks** (el Custodio usa 32: las torres son ~1,8 veces **más frecuentes**; el Custodio **no se toca**, decisión del autor: es aún más raro que las torres), registrada en
+  `ModWorldGen`, `placed_feature/three_towers.json` y `StructureLocateRules` (`/aptitudes locate|place three_towers`). Opción
+  `threeTowersEnabled`. Exige terreno con desnivel ≤ 4, sin agua ni lava bajo el patio y altura libre. **Limitaciones hasta la fase 3:** el
+  controlador es un `lodestone` marcador, la puerta del Señor es una piedra sellada rompible y no hay jefes. **No se pudo probar en un
+  servidor** (ver `docs/TESTING.md`): solo están comprobados el layout y la coherencia de los JSON con el código (`ThreeTowersResourcesTest`).
+- **V86 fase 1 · Las Tres Torres Señoriales: layout puro.** `dungeon/TowersLayout` distribuye tres torres de superficie dentro del
+  radio 15: dos vasallas de 11×11 (techo en y 26, 3 plantas de combate y sala del Guardián de 9×9×7) y la Torre del Señor de 13×13 (techo
+  en y 34, 4 plantas y sala del Coloso de 11×11×9) con puerta sellada 3×3, escaleras rectas por planta, ventanas, faroles, parapetos con
+  almenas y una empuñadura de espada gigante como remate. `TowersLayoutTest` (12 pruebas) recorre el edificio con una búsqueda real que sube
+  las escaleras; se comprobó que falla si se rompe un peldaño. **Aún no genera nada en el mundo** (fase 2). Diseño y lluvia de ideas del
+  nombre de la orden en `docs/V86_DUNGEON_COLOSO.md`; encargo de textos para Codex en `docs/PROMPT_CODEX_TRES_TORRES_TEXTOS.md`.
+- **C7 · S6 Ecos de muerte.** Al morir un jugador, un **eco** (su cabeza, con su skin y brillante) aparece donde cayó y **repite sus
+  últimos 5 segundos** en bucle mientras haya otro jugador a menos de 24 bloques; sin público no cuesta nada. Dura 120 s y
+  hay un máximo de 6 a la vez (se retira el más antiguo). Sin cliente ni mixins: un `item_display` de vanilla movido desde
+  el servidor (≈10 pasos por segundo; sin interpolación en 1.21.1), y los ecos guardados en un chunk se retiran tras un
+  reinicio. Recorrido en `echo/DeathEchoRules` (`DeathEchoRulesTest`), gestor en `echo/DeathEchoes`. **Desactivado por
+  defecto** (`deathEchoesEnabled = false`) porque genera entidades y no está probado en partida; tres opciones
+  (`deathEcho*`), textos en 5 idiomas y fila en `docs/CONFIGURATION.md`. Es una versión reducida de la idea original
+  (una silueta de cuerpo entero exigiría un renderizador de cliente).
+- **C7 · S5 Mensajes en el suelo.** `/aptitudes message <frase>` deja una nota con una de **12 frases predefinidas** (nunca
+  texto libre: no hay nada que moderar); los demás la leen y la **valoran una vez** con clic derecho (el texto muestra
+  `[+N]`). Cada jugador tiene un máximo de notas (3), una espera entre notas (30 s) y las notas caducan (7 días);
+  `/aptitudes message remove` retira la propia más cercana y un operador, cualquiera. **Sin cliente ni mixins nuevos:** cada nota
+  son dos entidades de vanilla, un `text_display` de cara al lector y una `interaction` para el clic. Estado y valoraciones
+  en `message/GroundMessageState` (`aptitudes_ground_messages`); reglas puras en `message/GroundMessageRules`
+  (`GroundMessageRulesTest`); las entidades etiquetadas que el estado no conoce se retiran al cargarse. Cuatro opciones
+  (`groundMessages*`), textos en 5 idiomas y fila en `docs/CONFIGURATION.md`. **Sin probar en partida** (guion en `docs/TESTING.md`).
+- **C7 · S3 Parada y contraataque.** Bloquear con el escudo un golpe cuerpo a cuerpo de una criatura dentro de la ventana de
+  la guardia perfecta (4 ticks desde que el escudo es efectivo, la misma de los jefes: `GuardRules.PERFECT_WINDOW_TICKS` y
+  `GuardTracker`) la **aturde** y abre un **golpe de gracia**: el siguiente golpe directo del jugador, en un plazo de 3 s,
+  hace ×1,5. No afecta a jugadores (sin PvP), jefes del mod ni de vanilla (Wither, Dragón, Warden) ni campeones. Sin
+  mixins ni cliente nuevo (`AFTER_DAMAGE` de Fabric). Reglas puras en `logic/ParryRules` (`ParryRulesTest`), gestor en
+  `ability/Parry`, gancho en `RolePassives.modifyOutgoingDamage`. Cuatro opciones nuevas (`parryEnabled`,
+  `parryStunTicks`, `parryFinisherTicks`, `parryFinisherMultiplier`) con límites, texto en los 5 idiomas y fila en
+  `docs/CONFIGURATION.md`. **Activada por defecto (decisión de balance: pide tu confirmación).** Sin probar en partida
+  (guion en `docs/TESTING.md`).
+
+### Corregido
+- **Revisión C1 (auditoría transversal de v42–v58).** `SynergyRules` tragaba en silencio cualquier excepción de Y2, Y3 y
+  Y4 y la sinergia dejaba de aplicarse sin rastro: ahora se registra una vez por lugar. `Elites.BLINK_READY` (indexado por
+  el UUID de cada élite) crecía sin tope: se retira al descargarse la entidad. Informe, alcance y observaciones sin
+  cambiar en `docs/C1_REVISION.md`.
+- **Rendimiento R1–R3 (C2).** `PathEffects.all` (420+ especificaciones por llamada, en cada golpe y cada segundo por
+  jugador) y `Keystones.active` (en cada golpe, esquiva, muerte y daño) usan ahora una caché por jugador
+  (`role/VersionedCache`) que se invalida sola: `RoleData` lleva un contador de versión que suben `setRank`, `clearRanks`,
+  `setPrimary`, `setSecondary` y `setTier`, y la caché compara además la identidad del objeto (reinicio o copia al morir).
+  `RoleData.ranks()` pasa a ser de solo lectura para que nada evite la versión. `RoleTree.keystone(id)` usa un mapa
+  construido una vez. Se vacían al desconectarse. Los resultados cacheados son de solo lectura. **R4 (medir con spark en
+  un servidor con 5–10 jugadores) sigue pendiente**: no se midió la mejora.
+- **Espera de 3 días del Behelit (T5, D-25).** El Resonador del Umbral solo puede sacrificarse una vez cada
+  `eclipseSummonCooldownDays` días (3 por defecto, 0 = sin espera) por mundo, **contados desde el fin del Eclipse anterior** y **compartida con el Astrolabio del Ocaso** (se fusionó con la implementación paralela del otro chat, que es la que quedó; mi `BeheritRules` y mi `beheritCooldownDays` se retiraron).
+  Si se intenta antes, el objeto **no se consume** y la barra de acción indica las horas de juego que faltan; también
+  avisa si hay otro evento en curso o el Eclipse está desactivado. El último fin se guarda en `EclipseState`
+  (`last_end`). Reglas puras en `event/EclipseSummoningRules` (`EclipseSummoningRulesTest`). Si el Eclipse está desactivado en la configuración (`eclipseEnabled = false`) el Behelit y el Astrolabio se rechazan con un aviso en lugar de empezar un Eclipse que se cerraría al tick siguiente (`Verdict.DISABLED`).
+- **Niebla de almas y Lluvia de brasas no podían activarse en configuraciones nuevas.** `240484f` dejó
+  `worldEventWeightSoulFog` y `worldEventWeightEmberRain` a 0 por defecto, pero esos pesos son el interruptor de cada
+  evento: con 0 el aldeano no responde, el portal no dispara nada y un evento en curso se cerraba al tick siguiente.
+  Vuelven a 1 y la **migración de configuración (revisión 84)** restaura los 0 heredados; `docs/CONFIGURATION.md` ya no
+  los llama «ignorados». Límite: un 0 puesto a mano antes de la revisión 84 no se distingue y también se restaura.
+- **Calendario rotativo apagado de verdad (D-26).** `calendarWeights` ya no programa ningún evento y `kindFor` ignora
+  los guardados en mundos antiguos, de modo que un `config` con `worldEventWeightEclipse > 0` o un Eclipse programado
+  antes de esta versión no se dispara ya por fecha.
+- **Coloso Sin Rostro.** La embestida mantiene su avance durante los ocho ticks previstos, se detiene ante
+  obstáculos y cancela el impulso al invalidarse el objetivo o al aturdirse. Banco de doce pruebas en Minecraft
+  para combate, selección, colisión, navegación y persistencia, más comprobación de render con dos clientes.
+- **Errante Velado.** Cancela la preparación si cambia de objetivo antes de emitir el aviso, incluido el tick 6.
+  Tras el aviso conserva la dirección anunciada. Detiene la navegación durante la reacción al daño, también
+  sin objetivo. Once motas cian adicionales delinean el sector real de 120° y su radio, con la escala del
+  ejemplar. Se añade a la etiqueta vanilla de no muertos, por lo que Heraldo de la Muerte y las reglas
+  vanilla de Castigo, pociones, respiración y selección del Wither reconocen su naturaleza.
+  Se registra la confirmación del autor sobre las pruebas previas y su aparición en la Niebla.
+
+### Documentación
+- `docs/C5_PENDIENTES.md` reescrito (Y1–Y5 estaban ya aplicados); estado real de T5–T7 en
+  `docs/lore/10_PLAN_DE_IMPLEMENTACION.md`; evidencias de C1–C7 en `docs/PLAN_CLAUDE.md`; nuevo `docs/PENDIENTES.md`.
+- **Puesta al día del estado (2026-11-24, solo documentación).** `docs/C5_PENDIENTES.md` reescrito: Y1–Y5 están aplicadas
+  (`Targeting.java:46`, `PartyManager.java:131`, `ElementFusions.java:79`, `Combos.java:173`) y solo queda validarlas en
+  partida. `docs/lore/10_PLAN_DE_IMPLEMENTACION.md` y `docs/PLAN_CLAUDE.md` con el estado real y su evidencia. Hallazgos
+  que no cambian código y quedan como decisión del autor: la espera de 3 días del Behelit no está implementada, los sellos se
+  retiraron sin migración, el Astrolabio del Ocaso no tiene textura ni logro y C1, C2 y C7 no se han hecho. Nuevo
+  `docs/PENDIENTES.md` con la lista consolidada. Sin cambios de código ni de balance.
+- **v84 — Osario Quebrado, Fases 0–5.** Verificación del encargo y las referencias, respaldos históricos y
+  calibración de ejes. Bloqueo y rig aprobados; geometría detallada de 169 cubos sobre los mismos 30 huesos:
+  cráneo fracturado, mandíbula hueca, costillas separadas, falanges y masa funeraria articulada. Altura 29,783 u,
+  hombros 12 u y apoyos en el suelo conservados. Holgura del núcleo hasta escala 1,35 y exportación/reapertura
+  de las 169 piezas comprobadas. Fases 0–2 aprobadas. Atlas 256² a 2 px/u con 25 colores, cinco capas editables
+  y máscara independiente de 84 píxeles. Ajuste autorizado del tórax aplicado y Fase 3 aprobada.
+  Diez animaciones con poses, claves y verificación de contactos en `docs/V84_OSARIO_FASE4.md`.
+  Puerta 4 aprobada. Integración con cuatro ataques de servidor, diez clips, máscara emisiva, diez sonidos propios
+  y textos del bestiario en los 11 idiomas. Compilación y recursos comprobados. La pasada emisiva recorre
+  los huesos que transforman el núcleo y emite solo sus cinco cubos. Las pruebas de juego y las medidas
+  exploratorias se registran en `docs/V84_OSARIO_FASE6.md`.
+
+### Cambiado
+- **v83 — Criaturas más difíciles.** Valores por defecto nuevos: anillos de Amenaza de 700 bloques (antes 1000), vida +25 % por anillo
+  (antes 15 %), daño +15 % (antes 10 %) y `eliteChance` 0,08 (antes 0,05); los `config/aptitudes.json` con los valores antiguos se migran una
+  vez (`configRevision` 83) y los elegidos a mano se respetan. **Tácticas por anillo** (`threatTactics`, `logic/ThreatTactics`): llamada de auxilio
+  desde el anillo I (avisan a hasta 6 hostiles cercanos), esquiva de proyectiles desde el II (`threatDodgePerRing`, tope 25 %), furia
+  una vez al bajar del 35 % de vida desde el III (Velocidad y Fuerza) y +8 % de resistencia al retroceso por anillo. Excluye jefes,
+  invocaciones y eventos. Pruebas `ThreatTacticsTest` y migración en `ConfigMigrationTest`; `docs/BALANCE.md` y `docs/CONFIGURATION.md`.
+- **v83 — Descripciones de habilidades más claras (primera tanda).** Se reescriben las 15 más densas de los talentos activos (Relámpago en cadena,
+  Muro de espadas, Distorsión temporal, Remolino, Posturas, Respuesta, Rayo sagrado, Maldición, Marca explosiva, Moneda, Luz sagrada, Semilla,
+  Muro elemental, Hacha arrojadiza y Cicatrices) en los 5 idiomas: frases cortas, alcance y duración en una frase aparte y, al final, una sola línea
+  «Rango 1 / 2 / 3» con todas las cifras que cambian. Fuente: `tools/lang/base_desc.py` (`--apply`).
+
 ### Añadido
 - **V93 — Bus de eventos de combate y telemetría (primera entrega).** Un único punto del servidor (`ability/CombatEvents`) detecta los
   lanzamientos aceptados, el daño que causan los jugadores y sus bajas, y los reparte a oyentes. Cada activa se ejecuta en un «alcance»

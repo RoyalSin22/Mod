@@ -68,15 +68,13 @@ otro enemigo o para las marcas con partículas.
 
 ## Estado del Osario Quebrado (implementado, sin validar en partida)
 
-- Modelo, animaciones y textura de prueba: `tools/models/gen_mob_models.py` (64×64, `--check` correcto).
-- Entidad `mob/OsarioEntity` (combate cuerpo a cuerpo y animaciones de reposo y caminar), registro `mob/OsarioEntities`,
-  renderizador `client/render/MobRenderers`.
+- **V84, Fases 0–4 aprobadas. Fase 5 integrada.** Editable en `tools/models/blockbench/osario_quebrado.bbmodel`.
+  169 cubos, 30 huesos, atlas 256² a 2 px/u y máscara de 84 px. Diez clips de GeckoLib y cuatro ataques avisados.
+- Entidad `mob/OsarioEntity`, registro `mob/OsarioEntities` y renderizador con emisión en `client/render/MobRenderers`.
+  `mob/OsarioStrikeGoal` ejecuta el combate y `mob/OsarioStrikeRules` calcula contactos y tiempos.
 - Aparece en la Niebla de almas con un 10 % de las apariciones (`mob/OsarioRules`, 5 pruebas).
-- Nombre en los 11 idiomas.
-- **Hecho después:** el barrido `heavy_swipe` se dispara al atacar; huevo de aparición
-  (`osario_quebrado_spawn_egg`); entrada en el bestiario, con texto en los 11 idiomas.
-- **Hecho en v65:** partículas de ectoplasma y de tierra alrededor de los pies (`tickMovement`); huevo en la pestaña creativa.
-- **Pendiente:** probar en partida.
+- Huevo en la pestaña creativa, bestiario y subtítulos en los 11 idiomas. Diez sonidos de síntesis propia.
+- **Pendiente:** Puerta 5 y pruebas en partida. [Informe de integración](V84_OSARIO_FASE5.md).
 
 ## Estado del Errante Velado y del Custodio (implementados, sin validar en partida)
 

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "coloso_validation",
+  "version": "1.0.0",
+  "name": "Coloso validation",
+  "environment": "*",
+  "entrypoints": {
+    "client": ["dev.aptitudes.boss.ColosoClientQa"],
+    "fabric-gametest": ["dev.aptitudes.boss.ColosoGameTests"]
+  },
+  "depends": {
+    "aptitudes": "*",
+    "fabric-gametest-api-v1": "*"
+  }
+}

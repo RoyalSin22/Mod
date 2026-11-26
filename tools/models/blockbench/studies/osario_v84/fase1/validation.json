@@ -1,0 +1,427 @@
+{
+  "findings": [
+    {
+      "level": "info",
+      "type": "no_textures",
+      "message": "The model has no textures yet. Use generate_texture_template after modeling."
+    }
+  ],
+  "stats": {
+    "cubes": 74,
+    "meshes": 0,
+    "faces": 444,
+    "bones": 30,
+    "max_bone_depth": 10,
+    "locators": 0,
+    "textures": [],
+    "animations": 0,
+    "keyframes": 0
+  },
+  "ok": true,
+  "intersections": [
+    {
+      "a": "F1_shoulder_earth",
+      "b": "F1_mass_upper",
+      "bone_a": "mass_shoulder",
+      "bone_b": "dragging_upper",
+      "penetration": 2.715
+    },
+    {
+      "a": "F1_shoulder_earth",
+      "b": "F1_upper_silhouette_lump",
+      "bone_a": "mass_shoulder",
+      "bone_b": "dragging_upper",
+      "penetration": 2.352
+    },
+    {
+      "a": "F1_mass_lower",
+      "b": "F1_chip_volume",
+      "bone_a": "dragging_lower",
+      "bone_b": "debris_chips",
+      "penetration": 1.5
+    },
+    {
+      "a": "F1_mass_lower",
+      "b": "F1_mass_ground_base",
+      "bone_a": "dragging_lower",
+      "bone_b": "dragging_end",
+      "penetration": 1.365
+    },
+    {
+      "a": "F1_thoracic_spine",
+      "b": "F1_costal_spine_contact",
+      "bone_a": "spine_upper",
+      "bone_b": "chest",
+      "penetration": 1.007
+    },
+    {
+      "a": "F1_cranium_bulk",
+      "b": "F1_jaw_ramus_left",
+      "bone_a": "head",
+      "bone_b": "jaw",
+      "penetration": 1
+    },
+    {
+      "a": "F1_cranium_bulk",
+      "b": "F1_jaw_ramus_right",
+      "bone_a": "head",
+      "bone_b": "jaw",
+      "penetration": 1
+    },
+    {
+      "a": "F1_mass_middle",
+      "b": "F1_hanging_root_volume",
+      "bone_a": "dragging_middle",
+      "bone_b": "debris_roots",
+      "penetration": 1
+    },
+    {
+      "a": "F1_mass_ground_base",
+      "b": "F1_lower_structural_root",
+      "bone_a": "dragging_end",
+      "bone_b": "dragging_lower",
+      "penetration": 0.982
+    },
+    {
+      "a": "F1_femur_right",
+      "b": "F1_tibia_right",
+      "bone_a": "thigh_right",
+      "bone_b": "shin_right",
+      "penetration": 0.872
+    },
+    {
+      "a": "F1_femur_left_short",
+      "b": "F1_tibia_left",
+      "bone_a": "thigh_left",
+      "bone_b": "shin_left",
+      "penetration": 0.846
+    },
+    {
+      "a": "F1_bone_clavicle",
+      "b": "F1_humerus",
+      "bone_a": "bone_shoulder",
+      "bone_b": "bone_upper_arm",
+      "penetration": 0.794
+    },
+    {
+      "a": "F1_femur_right",
+      "b": "F1_knee_right",
+      "bone_a": "thigh_right",
+      "bone_b": "shin_right",
+      "penetration": 0.774
+    },
+    {
+      "a": "F1_femur_left_short",
+      "b": "F1_knee_left",
+      "bone_a": "thigh_left",
+      "bone_b": "shin_left",
+      "penetration": 0.732
+    },
+    {
+      "a": "F1_tibia_left",
+      "b": "F1_heel_left",
+      "bone_a": "shin_left",
+      "bone_b": "foot_left",
+      "penetration": 0.631
+    },
+    {
+      "a": "F1_sacrum",
+      "b": "F1_lumbar_volume",
+      "bone_a": "pelvis",
+      "bone_b": "body",
+      "penetration": 0.619
+    },
+    {
+      "a": "F1_tibia_right",
+      "b": "F1_heel_right",
+      "bone_a": "shin_right",
+      "bone_b": "foot_right",
+      "penetration": 0.592
+    },
+    {
+      "a": "F1_rib_left_1",
+      "b": "F1_mass_upper",
+      "bone_a": "ribs_left",
+      "bone_b": "dragging_upper",
+      "penetration": 0.5
+    },
+    {
+      "a": "F1_rib_right_1",
+      "b": "F1_bone_scapula",
+      "bone_a": "ribs_right",
+      "bone_b": "bone_shoulder",
+      "penetration": 0.5
+    },
+    {
+      "a": "F1_rib_left_2",
+      "b": "F1_mass_upper",
+      "bone_a": "ribs_left",
+      "bone_b": "dragging_upper",
+      "penetration": 0.5
+    },
+    {
+      "a": "F1_rib_left_3",
+      "b": "F1_mass_upper",
+      "bone_a": "ribs_left",
+      "bone_b": "dragging_upper",
+      "penetration": 0.5
+    },
+    {
+      "a": "F1_rib_left_4",
+      "b": "F1_mass_upper",
+      "bone_a": "ribs_left",
+      "bone_b": "dragging_upper",
+      "penetration": 0.5
+    },
+    {
+      "a": "F1_shoulder_earth",
+      "b": "F1_costal_back_bridge",
+      "bone_a": "mass_shoulder",
+      "bone_b": "chest",
+      "penetration": 0.5
+    },
+    {
+      "a": "F1_rib_left_1",
+      "b": "F1_shoulder_earth",
+      "bone_a": "ribs_left",
+      "bone_b": "mass_shoulder",
+      "penetration": 0.477
+    },
+    {
+      "a": "F1_rib_left_2",
+      "b": "F1_shoulder_earth",
+      "bone_a": "ribs_left",
+      "bone_b": "mass_shoulder",
+      "penetration": 0.477
+    },
+    {
+      "a": "F1_rib_left_5",
+      "b": "F1_mass_upper",
+      "bone_a": "ribs_left",
+      "bone_b": "dragging_upper",
+      "penetration": 0.476
+    },
+    {
+      "a": "F1_palm",
+      "b": "F1_thumb",
+      "bone_a": "bone_hand",
+      "bone_b": "bone_thumb",
+      "penetration": 0.452
+    },
+    {
+      "a": "F1_ilium_right",
+      "b": "F1_femur_right",
+      "bone_a": "pelvis",
+      "bone_b": "thigh_right",
+      "penetration": 0.435
+    },
+    {
+      "a": "F1_rib_left_3",
+      "b": "F1_shoulder_earth",
+      "bone_a": "ribs_left",
+      "bone_b": "mass_shoulder",
+      "penetration": 0.412
+    },
+    {
+      "a": "F1_pubis",
+      "b": "F1_femur_right",
+      "bone_a": "pelvis",
+      "bone_b": "thigh_right",
+      "penetration": 0.406
+    },
+    {
+      "a": "F1_pubis",
+      "b": "F1_femur_left_short",
+      "bone_a": "pelvis",
+      "bone_b": "thigh_left",
+      "penetration": 0.4
+    },
+    {
+      "a": "F1_rib_right_1",
+      "b": "F1_costal_back_bridge",
+      "bone_a": "ribs_right",
+      "bone_b": "chest",
+      "penetration": 0.4
+    },
+    {
+      "a": "F1_cervical_volume",
+      "b": "F1_cranium_bulk",
+      "bone_a": "neck",
+      "bone_b": "head",
+      "penetration": 0.396
+    },
+    {
+      "a": "F1_mass_lower",
+      "b": "F1_hanging_root_volume",
+      "bone_a": "dragging_lower",
+      "bone_b": "debris_roots",
+      "penetration": 0.386
+    },
+    {
+      "a": "F1_ilium_left",
+      "b": "F1_femur_left_short",
+      "bone_a": "pelvis",
+      "bone_b": "thigh_left",
+      "penetration": 0.375
+    },
+    {
+      "a": "F1_humerus",
+      "b": "F1_elbow_joint",
+      "bone_a": "bone_upper_arm",
+      "bone_b": "bone_forearm",
+      "penetration": 0.371
+    },
+    {
+      "a": "F1_femur_right",
+      "b": "F1_fibula_right",
+      "bone_a": "thigh_right",
+      "bone_b": "shin_right",
+      "penetration": 0.304
+    },
+    {
+      "a": "F1_femur_left_short",
+      "b": "F1_fibula_left",
+      "bone_a": "thigh_left",
+      "bone_b": "shin_left",
+      "penetration": 0.3
+    },
+    {
+      "a": "F1_tibia_left",
+      "b": "F1_toe_left_1",
+      "bone_a": "shin_left",
+      "bone_b": "foot_left",
+      "penetration": 0.236
+    },
+    {
+      "a": "F1_tibia_left",
+      "b": "F1_toe_left_2",
+      "bone_a": "shin_left",
+      "bone_b": "foot_left",
+      "penetration": 0.236
+    },
+    {
+      "a": "F1_tibia_left",
+      "b": "F1_toe_left_3",
+      "bone_a": "shin_left",
+      "bone_b": "foot_left",
+      "penetration": 0.236
+    },
+    {
+      "a": "F1_finger_index",
+      "b": "F1_thumb",
+      "bone_a": "bone_fingers",
+      "bone_b": "bone_thumb",
+      "penetration": 0.234
+    },
+    {
+      "a": "F1_tibia_right",
+      "b": "F1_toe_right_1",
+      "bone_a": "shin_right",
+      "bone_b": "foot_right",
+      "penetration": 0.225
+    },
+    {
+      "a": "F1_tibia_right",
+      "b": "F1_toe_right_2",
+      "bone_a": "shin_right",
+      "bone_b": "foot_right",
+      "penetration": 0.225
+    },
+    {
+      "a": "F1_tibia_right",
+      "b": "F1_toe_right_3",
+      "bone_a": "shin_right",
+      "bone_b": "foot_right",
+      "penetration": 0.225
+    },
+    {
+      "a": "F1_rib_left_2",
+      "b": "F1_costal_back_bridge",
+      "bone_a": "ribs_left",
+      "bone_b": "chest",
+      "penetration": 0.221
+    },
+    {
+      "a": "F1_mass_middle",
+      "b": "F1_mass_lower",
+      "bone_a": "dragging_middle",
+      "bone_b": "dragging_lower",
+      "penetration": 0.205
+    },
+    {
+      "a": "F1_lumbar_volume",
+      "b": "F1_thoracic_spine",
+      "bone_a": "body",
+      "bone_b": "spine_upper",
+      "penetration": 0.187
+    },
+    {
+      "a": "F1_mass_upper",
+      "b": "F1_mass_middle",
+      "bone_a": "dragging_upper",
+      "bone_b": "dragging_middle",
+      "penetration": 0.181
+    },
+    {
+      "a": "F1_bone_scapula",
+      "b": "F1_humerus",
+      "bone_a": "bone_shoulder",
+      "bone_b": "bone_upper_arm",
+      "penetration": 0.159
+    },
+    {
+      "a": "F1_rib_right_2",
+      "b": "F1_bone_scapula",
+      "bone_a": "ribs_right",
+      "bone_b": "bone_shoulder",
+      "penetration": 0.15
+    },
+    {
+      "a": "F1_ilium_right",
+      "b": "F1_lumbar_volume",
+      "bone_a": "pelvis",
+      "bone_b": "body",
+      "penetration": 0.117
+    },
+    {
+      "a": "F1_rib_left_6",
+      "b": "F1_mass_upper",
+      "bone_a": "ribs_left",
+      "bone_b": "dragging_upper",
+      "penetration": 0.117
+    },
+    {
+      "a": "F1_ulna",
+      "b": "F1_carpal_joint",
+      "bone_a": "bone_forearm",
+      "bone_b": "bone_hand",
+      "penetration": 0.111
+    },
+    {
+      "a": "F1_mass_upper",
+      "b": "F1_costal_back_bridge",
+      "bone_a": "dragging_upper",
+      "bone_b": "chest",
+      "penetration": 0.107
+    },
+    {
+      "a": "F1_radius",
+      "b": "F1_carpal_joint",
+      "bone_a": "bone_forearm",
+      "bone_b": "bone_hand",
+      "penetration": 0.103
+    },
+    {
+      "a": "F1_rib_right_2",
+      "b": "F1_costal_back_bridge",
+      "bone_a": "ribs_right",
+      "bone_b": "chest",
+      "penetration": 0.1
+    }
+  ],
+  "intersection_count": 57,
+  "detached": [],
+  "detached_count": 0,
+  "intersection_note": "Overlaps within the same bone are skipped by default (intentional in blocky modeling). penetration is in model units (1/16 block).",
+  "detached_note": "detached = cube/mesh not touching the main body through its own, parent, child or sibling bones; gap is the world-space [x,y,z] distance in units to the nearest such neighbour."
+}

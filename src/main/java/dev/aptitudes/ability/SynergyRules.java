@@ -19,6 +19,15 @@ import java.util.Map;
  * con JUnit.</p>
  */
 public final class SynergyRules {
+	/** Lugares ya avisados en el log: se llaman en cada muerte y un fallo repetido inundaría el registro. */
+	private static final java.util.Set<String> WARNED = new java.util.HashSet<>();
+
+	private static void logOnce(String where, RuntimeException e) {
+		if (WARNED.add(where)) {
+			dev.aptitudes.Aptitudes.LOGGER.error("[Aptitudes] La sinergia {} falló y se desactiva para esa llamada; no se repetirá este aviso", where, e);
+		}
+	}
+
 	private SynergyRules() {
 	}
 
@@ -133,8 +142,9 @@ public final class SynergyRules {
 			}
 
 			return false;
-		} catch (Exception e) {
-			// Defensivo: en caso de error, retornar false.
+		} catch (RuntimeException e) {
+			// C1: antes se tragaba en silencio y la sinergia dejaba de aplicarse sin que nadie lo supiera.
+			logOnce("Y3 (elementos y runas)", e);
 			return false;
 		}
 	}
@@ -179,8 +189,8 @@ public final class SynergyRules {
 			}
 
 			return false;
-		} catch (Exception e) {
-			// Defensivo: en caso de error (no bootstrapped, etc.), retornar false.
+		} catch (RuntimeException e) {
+			logOnce("Y2 (resonancia de grupo)", e);
 			return false;
 		}
 	}
@@ -230,7 +240,8 @@ public final class SynergyRules {
 			// Verificar si el rol tiene una senda elegida.
 			int pathNumber = getChosenPath(player, role);
 			return pathNumber > 0; // Sinergia si rol + senda + armadura coinciden.
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
+			logOnce("Y4 (armadura y senda)", e);
 			return false;
 		}
 	}
@@ -245,7 +256,8 @@ public final class SynergyRules {
 			var data = RoleManager.get(player);
 			if (data == null) return 0;
 			return PathRules.chosenPath(nodeId -> RoleManager.activeRank(player, nodeId), role.key());
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
+			logOnce("Y4 (senda elegida)", e);
 			return 0;
 		}
 	}

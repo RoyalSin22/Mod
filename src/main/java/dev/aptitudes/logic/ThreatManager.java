@@ -42,6 +42,10 @@ import java.util.UUID;
 @SuppressWarnings("UnstableApiUsage")
 public final class ThreatManager {
 	private static final Identifier HEALTH = Aptitudes.id("threat/health");
+	private static final Identifier KNOCKBACK = Aptitudes.id("threat/knockback");
+	/** Etiqueta de la furia (una sola vez por criatura). */
+	private static final String ENRAGED = Aptitudes.MOD_ID + ".threat_enraged";
+	private static final Map<UUID, Long> CALLED = new HashMap<>();
 	private static final Map<UUID, MobEntity> LOADED = new HashMap<>();
 	private static final Map<UUID, Integer> PLAYER_RINGS = new HashMap<>();
 	private static final Map<UUID, RegistryKey<LootTable>> DEATH_LOOT = new HashMap<>();
@@ -52,10 +56,11 @@ public final class ThreatManager {
 	public static void register() {
 		ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
 			LOADED.remove(entity.getUuid());
+			CALLED.remove(entity.getUuid());
 			DEATH_LOOT.remove(entity.getUuid());
 		});
 		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> PLAYER_RINGS.remove(handler.getPlayer().getUuid()));
-		ServerLifecycleEvents.SERVER_STOPPED.register(server -> { LOADED.clear(); PLAYER_RINGS.clear(); DEATH_LOOT.clear(); });
+		ServerLifecycleEvents.SERVER_STOPPED.register(server -> { LOADED.clear(); PLAYER_RINGS.clear(); DEATH_LOOT.clear(); CALLED.clear(); });
 		ServerLivingEntityEvents.ALLOW_DEATH.register((entity, source, amount) -> {
 			// MobEntity vacía su tabla personalizada al soltar el botín vanilla, antes de AFTER_DEATH.
 			// Capturarla no concede nada; si otro sistema evita la muerte, se sustituye en el siguiente intento.
@@ -63,13 +68,22 @@ public final class ThreatManager {
 				DEATH_LOOT.put(mob.getUuid(), mob.getLootTable());
 			return true;
 		});
+		// V83: tácticas. La esquiva cancela el daño de un proyectil; la llamada de auxilio aviso a las criaturas cercanas.
+		ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> !dodges(entity, source));
+		ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamage, damageTaken, blocked) -> {
+			if (entity instanceof MobEntity mob && damageTaken > 0) callForHelp(mob, source);
+		});
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
 			if (entity instanceof MobEntity mob) dropBonus(mob, source);
 		});
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			if (server.getTicks() % 20 != 0) return;
 			// Retira el atributo al desactivar Amenaza o nombrar una criatura ya cargada, sin curarla.
-			for (MobEntity mob : LOADED.values()) updateHealth(mob, mob.getAttached(ModAttachments.THREAT), false);
+			for (MobEntity mob : LOADED.values()) {
+				ThreatData data = mob.getAttached(ModAttachments.THREAT);
+				updateHealth(mob, data, false);
+				updateTactics(mob, data);
+			}
 			for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
 				int current = Aptitudes.config().threatEnabled && player.isAlive() && !player.isCreative()
 						&& !player.isSpectator() && player.getWorld().getRegistryKey() == World.OVERWORLD
@@ -97,6 +111,75 @@ public final class ThreatManager {
 		if (data == null) return; // Los monstruos antiguos ya comprobados conservan su balance.
 		LOADED.put(mob.getUuid(), mob);
 		updateHealth(mob, data, fresh);
+	}
+
+	// ------------------------------------------------------------- Tácticas (V83)
+
+	private static boolean tactical(MobEntity mob, ThreatData data) {
+		return data != null && Aptitudes.config().threatEnabled && Aptitudes.config().threatTactics && mob.isAlive()
+				&& data.ring() > 0 && eligible(mob, true);
+	}
+
+	/** Resistencia al retroceso y furia al quedar herida; se comprueba cada segundo. */
+	private static void updateTactics(MobEntity mob, ThreatData data) {
+		boolean active = tactical(mob, data);
+		var knockback = mob.getAttributeInstance(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE);
+		if (knockback != null) {
+			double value = active ? ThreatTactics.knockbackResistance(data.ring()) : 0;
+			var old = knockback.getModifier(KNOCKBACK);
+			if (!((old == null && value == 0) || (old != null && old.value() == value))) {
+				AttributeApplier.set(knockback, KNOCKBACK, value, EntityAttributeModifier.Operation.ADD_VALUE);
+			}
+		}
+		if (!active || !(mob.getWorld() instanceof ServerWorld world)) return;
+		boolean done = mob.getCommandTags().contains(ENRAGED);
+		if (!ThreatTactics.enrages(data.ring(), mob.getHealth() / Math.max(1, mob.getMaxHealth()), done)) return;
+		mob.addCommandTag(ENRAGED);
+		int ticks = ThreatTactics.enrageTicks(data.ring());
+		int amplifier = ThreatTactics.enrageAmplifier(data.ring());
+		mob.addStatusEffect(new net.minecraft.entity.effect.StatusEffectInstance(net.minecraft.entity.effect.StatusEffects.SPEED, ticks, amplifier));
+		mob.addStatusEffect(new net.minecraft.entity.effect.StatusEffectInstance(net.minecraft.entity.effect.StatusEffects.STRENGTH, ticks, amplifier));
+		world.spawnParticles(net.minecraft.particle.ParticleTypes.ANGRY_VILLAGER, mob.getX(), mob.getBodyY(0.8), mob.getZ(), 6, 0.3, 0.3, 0.3, 0);
+		world.playSound(null, mob.getBlockPos(), net.minecraft.sound.SoundEvents.ENTITY_RAVAGER_ROAR,
+				net.minecraft.sound.SoundCategory.HOSTILE, 0.8f, 1.4f);
+	}
+
+	/** Esquiva el proyectil de un jugador con la probabilidad del anillo (desde el II). */
+	private static boolean dodges(LivingEntity target, DamageSource source) {
+		if (target.getWorld().isClient() || !(target instanceof MobEntity mob)
+				|| !(source.getSource() instanceof net.minecraft.entity.projectile.ProjectileEntity)
+				|| !(source.getAttacker() instanceof ServerPlayerEntity)) return false;
+		ThreatData data = mob.getAttached(ModAttachments.THREAT);
+		if (!tactical(mob, data)) return false;
+		double chance = ThreatTactics.dodgeChance(data.ring(), Aptitudes.config().threatDodgePerRing);
+		if (chance <= 0 || mob.getWorld().random.nextDouble() >= chance) return false;
+		if (mob.getWorld() instanceof ServerWorld world) {
+			world.spawnParticles(net.minecraft.particle.ParticleTypes.CLOUD, mob.getX(), mob.getBodyY(0.5), mob.getZ(), 5, 0.25, 0.3, 0.25, 0.02);
+			world.playSound(null, mob.getBlockPos(), net.minecraft.sound.SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP,
+					net.minecraft.sound.SoundCategory.HOSTILE, 0.6f, 1.6f);
+		}
+		return true;
+	}
+
+	/** Una criatura herida por un jugador avisa a las hostiles cercanas sin objetivo. */
+	private static void callForHelp(MobEntity mob, DamageSource source) {
+		if (!(source.getAttacker() instanceof ServerPlayerEntity attacker) || attacker.isCreative() || attacker.isSpectator()
+				|| !(mob.getWorld() instanceof ServerWorld world)) return;
+		ThreatData data = mob.getAttached(ModAttachments.THREAT);
+		if (!tactical(mob, data)) return;
+		long now = world.getTime();
+		Long last = CALLED.get(mob.getUuid());
+		if (last != null && now - last < ThreatTactics.CALL_COOLDOWN_TICKS) return;
+		CALLED.put(mob.getUuid(), now);
+		int radius = ThreatTactics.callRadius(data.ring());
+		var box = mob.getBoundingBox().expand(radius);
+		var allies = world.getEntitiesByClass(MobEntity.class, box, other -> other != mob && other instanceof Monster
+				&& other.isAlive() && other.getTarget() == null && eligible(other, true) && !AbilityState.shouldBlockTarget(other, attacker));
+		int count = 0;
+		for (MobEntity ally : allies) {
+			if (count++ >= ThreatTactics.CALL_MAX_ALLIES) break;
+			ally.setTarget(attacker);
+		}
 	}
 
 	private static int ring(ServerWorld world, double x, double z) {

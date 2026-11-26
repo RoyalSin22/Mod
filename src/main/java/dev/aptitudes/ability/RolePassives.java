@@ -215,6 +215,7 @@ public final class RolePassives {
 		// F2: el trance aumenta el daño que hace el jugador.
 		if (source.getAttacker() instanceof ServerPlayerEntity attacker) {
 			amount *= Trance.damageMultiplier(attacker);
+			amount = Parry.finisher(attacker, target, source, amount); // C7 · S3: golpe de gracia tras una parada
 			amount *= dev.aptitudes.event.Expeditions.damageMultiplier(attacker, target); // F5: jefe aturdido
 		}
 		amount = dev.aptitudes.alchemy.AlchemyEffects.incoming(target, source, amount);

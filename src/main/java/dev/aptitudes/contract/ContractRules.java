@@ -15,7 +15,9 @@ import java.util.UUID;
  */
 public final class ContractRules {
 	/** Tipos de contrato. Se guardan por ordinal dentro del contrato aceptado: solo se añade al final. */
-	public enum Kind { HUNT, DELIVERY, FISHING, ENCHANTING, PROFESSION, FORGE, EVENT, BOSS, NETHER, NEW_MOB, EXPEDITION }
+	public enum Kind { HUNT, DELIVERY, FISHING, ENCHANTING, PROFESSION, FORGE, EVENT, BOSS, NETHER, NEW_MOB, EXPEDITION,
+		/** Convocar la Niebla de almas: al aceptarlo empieza el evento; se completa al sobrevivirlo (T5/D-30). */
+		SOUL_FOG }
 	/** Dificultades. Élite con el rol en Maestro y Legendario en Definitivo. Solo se añade al final. */
 	public enum Difficulty { EASY, NORMAL, HARD, ELITE, LEGENDARY }
 
@@ -56,10 +58,11 @@ public final class ContractRules {
 		return switch (difficulty) {
 			case EASY -> List.of(Kind.HUNT, Kind.DELIVERY, Kind.FISHING, Kind.PROFESSION);
 			case NORMAL -> List.of(Kind.HUNT, Kind.DELIVERY, Kind.FISHING, Kind.PROFESSION, Kind.ENCHANTING, Kind.FORGE,
-					Kind.NEW_MOB);
-			case HARD -> List.of(Kind.HUNT, Kind.DELIVERY, Kind.ENCHANTING, Kind.FORGE, Kind.EVENT, Kind.NETHER, Kind.NEW_MOB);
+					Kind.NEW_MOB, Kind.SOUL_FOG);
+			case HARD -> List.of(Kind.HUNT, Kind.DELIVERY, Kind.ENCHANTING, Kind.FORGE, Kind.EVENT, Kind.NETHER, Kind.NEW_MOB,
+					Kind.SOUL_FOG);
 			case ELITE -> List.of(Kind.HUNT, Kind.DELIVERY, Kind.ENCHANTING, Kind.FORGE, Kind.EVENT, Kind.NETHER, Kind.NEW_MOB,
-					Kind.EXPEDITION);
+					Kind.EXPEDITION, Kind.SOUL_FOG);
 			case LEGENDARY -> List.of(Kind.HUNT, Kind.EVENT, Kind.BOSS, Kind.NEW_MOB, Kind.EXPEDITION);
 		};
 	}
@@ -75,7 +78,7 @@ public final class ContractRules {
 			case ENCHANTING -> 1 + s;
 			case PROFESSION -> 150 * s;
 			case FORGE -> s >= 4 ? 2 : 1;
-			case EVENT, BOSS, EXPEDITION -> 1;
+			case EVENT, BOSS, EXPEDITION, SOUL_FOG -> 1;
 			case NETHER -> 4 + 4 * s + e;
 			case NEW_MOB -> 1 + s;
 		};

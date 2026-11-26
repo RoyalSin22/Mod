@@ -1,5 +1,71 @@
 # Pruebas de Aptitudes
 
+## V84 — Osario Quebrado, Fases 0–6
+
+Referencia en `20bc230`: `.\gradlew.bat build --offline --console=plain` terminó con **BUILD SUCCESSFUL**;
+915 pruebas Java (151 clases), sin fallos ni omisiones. Las 59 pruebas de idiomas y los `--check` de idiomas
+también pasan. `gen_mob_models.py --check` **devuelve 1** por diferencias binarias en los PNG de Osario y Custodio;
+comparados en RGBA, ambos tienen **0 píxeles distintos**. No se regeneraron los recursos.
+
+`python tools/models/archive_osario_v84.py` verifica 34 archivos previos y 13 del placeholder, sin sobrescribir
+contenido distinto. Las sondas de Blockbench confirman el error de signo X para el torso y la equivalencia
+lateral incorrecta del encargo. Informe, capturas, medidas y resultados en
+[`V84_OSARIO_QUEBRADO.md`](V84_OSARIO_QUEBRADO.md).
+
+En Fase 1 se comprobaron el editable GeckoLib nuevo y su exportación de diagnóstico: 30 huesos, 74 cubos,
+dimensiones múltiplos de 0,5 u, altura 29,783 u, hombros 12 u, suelas y base funeraria en y = 0. Las 44 cajas
+fraccionarias exportan seis caras UV no degeneradas, con coordenadas enteras al convertir a 2 px/u.
+Reabrir el geo conserva la caja global del editable. Las pruebas estáticas de mandíbula y pulgar se restauraron;
+no se crearon clips ni texturas. El validador no detecta partes separadas; los contactos entre articulaciones,
+anclajes y piezas incrustadas están documentados en [`V84_OSARIO_FASE1.md`](V84_OSARIO_FASE1.md).
+No se volvió a ejecutar Gradle en Fase 1: sus cambios están fuera de los recursos y código del juego.
+La Fase 1 fue aprobada. En Fase 2 se verificaron 169 cubos, 30 huesos con los mismos pivotes y rotaciones,
+dimensiones positivas múltiplos de 0,5 u, altura 29,783 u, hombros 12 u y los tres apoyos en y = 0.
+Las 120 cajas fraccionarias exportan 720 caras UV no degeneradas, dentro de 128² y sin islas compartidas.
+Comparadas las 169 cajas globales del editable con el geo reabierto: error máximo **0,00000646 u**.
+La medición usa la geometría de cada cubo, excluyendo contornos invisibles del editor con cachés antiguas.
+El núcleo a escala 1, 1,12 y 1,35 no penetra la estructura a tolerancia 0,01 u; prueba estática restaurada,
+sin clips. El detector de partes separadas devuelve 0; los contactos intencionales se detallan en
+[`V84_OSARIO_FASE2.md`](V84_OSARIO_FASE2.md) y sus JSON de evidencia. La Fase 1 aprobada conserva su SHA-256.
+No se ejecutó Gradle en Fase 2; tampoco cambió código o recursos activos del juego.
+
+La Fase 2 fue aprobada al autorizar la Fase 3. Se ejecutó
+`python tools/models/blockbench/studies/osario_v84/fase3/check_assets.py`: sin fallos.
+La geometría, el rig y los hashes anteriores se conservan. Se verificaron atlas físico 256² / lógico 128²,
+1014 caras a 2 px/u, márgenes de 1 px y cero solapes o píxeles transparentes dentro de caras. La composición
+de cinco capas coincide con la base embebida y el PNG. Usa exactamente 25 colores, seis píxeles `#C9FFF0`,
+162 píxeles de ectoplasma y máscara independiente de 84 píxeles (26 alfa 255, 58 alfa 160), solo en el núcleo.
+La ampliación ×8 es NEAREST exacta; no se encuentran patrones de cara idénticos en la muestra de caras
+con ancho y alto ≥ 4 px y área ≥ 24 px. El musgo ocupa aproximadamente el 1,063 % de la superficie expuesta muestreada de la masa.
+
+Las capturas detectaron una limitación de la geometría aprobada: manubrio, esternón y mandíbula ocultan
+gran parte del núcleo. Muestreo por rayos: 15,7 % frontal / 29,7 % en tres cuartos; son estimaciones de superficie,
+no porcentajes exactos de pantalla. La propuesta virtual mejora esos valores a 42,5 % / 49,9 %, sin modificar
+el modelo. Su pulso virtual a 1 / 1,12 / 1,35 no penetra la estructura más de 0,01 u. Se descartó adelantar
+el núcleo por producir penetraciones durante el pulso. No se da por aprobado el criterio artístico de legibilidad. Evidencias y límites en
+[`V84_OSARIO_FASE3.md`](V84_OSARIO_FASE3.md). La vista emisiva es una previsualización del editor;
+la capa real y la retirada de píxeles de la base por GeckoLib se comprobarán durante la integración.
+No se ejecutó Gradle en Fase 3 ni se cambiaron recursos activos del juego.
+La Puerta 3 se cerró tras aplicar el ajuste autorizado. Pasó `check_assets.py --adjusted`. El núcleo tiene
+holgura a escala 1,35, el esternón mantiene contacto con dos costillas y las 1014 caras conservan 2 px/u.
+
+En Fase 4 pasó `python tools/models/blockbench/studies/osario_v84/fase4/check_clips.py`. Se comprobaron
+10 clips y 10 042 claves en el editable, 2042 poses medidas en Blockbench, cierre de los tres bucles,
+la huella final de 1,378 × 1,370 bloques y una Y mínima de −0,00601 u. Gradle no se ejecutó para la
+autoría en el editor. La Puerta 4 fue aprobada. [Capturas y resultados de Fase 4](V84_OSARIO_FASE4.md).
+
+En Fase 5, `gradlew.bat build --offline --console=plain` dio **BUILD SUCCESSFUL** con 924 pruebas JUnit
+en 153 clases. Los cargadores reales de GeckoLib construyen 30 huesos, 169 cubos y los diez clips.
+`OsarioStrikeRulesTest` cubre ventanas y deduplicación, sectores, discos, cápsula, pesos y fichas.
+`OsarioResourcesTest` cubre los cargadores, UV, máscara, audio y subtítulos. También pasaron las 59
+pruebas de idiomas, los siete generadores de traducción y `gen_mob_models.py --check`. La Puerta 5 fue aprobada.
+[Informe de integración](V84_OSARIO_FASE5.md).
+
+La Fase 6 usa un mod de laboratorio aislado mediante `tools/testing/osario_v84/runtime.init.gradle`.
+Los GameTests ejecutan combate en Minecraft. Las series de FPS y MSPT comparan Osario V84, el Errante
+y el placeholder previo. La [validación en Minecraft](V84_OSARIO_FASE6.md) recoge las pruebas, sus
+límites y los criterios pendientes.
+
 ## V77 — Localizar estructuras
 
 `/aptitudes locate custodian_temple` (o `temple`, `tower`, `bonfire_shrine`, `camp`) da las coordenadas de la más cercana ya generada; pulsa las
@@ -479,7 +545,7 @@ Atlas y emisión del Coloso: `python3 tools/textures/gen_faceless_glowmask.py sr
    acabar el aviso. Sal del arco o del círculo para esquivar. Al alcanzar 2/3 de vida, comprueba la
    animación de transición, la armadura agrietada, la emisión y la embestida.
 4. Comprueba que el atlas agrietado permanece al recuperar vida, en fase 3, después de recargar el mundo
-   y al volver a seguir o reinvocar un Coloso que ya cambió de fase.
+   y al volver a seguir a un Coloso que ya cambió de fase. (Ya no hay reinvocación: los sellos se retiraron.)
 5. Verifica el giro de cabeza al caminar, la pose del casco durante acciones, el aturdimiento, el botín
    y la página «El Coloso Sin Rostro» del bestiario.
 6. Activa F3+B y comprueba la caja en reposo y en un paso de 2 × 3,5 bloques. Rodea al Coloso durante el aviso
@@ -489,6 +555,49 @@ Atlas y emisión del Coloso: `python3 tools/textures/gen_faceless_glowmask.py sr
    puede interrumpir el ataque aunque cambie de fase en el mismo momento.
 
 Verificado por Claude en el cliente de desarrollo: puntos 1–3 (render, barra y golpes recibidos).
+
+### Coloso Sin Rostro · Cierre técnico de 2026-11-22
+
+Ejecutadas doce pruebas en un servidor GameTest real de Minecraft 1.21.1 con GeckoLib 4.7.7.
+El informe `build/coloso-qa/server/gametest.xml` registra cero fallos. Cubren el tajo en el tick 18,
+el golpe descendente en el tick 28, la dirección y recuperación, embestida con un único impacto,
+paredes, esquiva lateral, cambio de fase durante el aturdimiento, cancelación frente a objetivos
+creativos, NBT de fase y velocidad, selección de la corona, un pasillo de 2 × 3,5 bloques y adquisición
+y persecución con la entidad registrada. El banco restringe el repertorio en los escenarios de ataques
+para comprobar cada golpe por separado. La prueba de adquisición usa la entidad registrada completa.
+
+Dos clientes reales conectados por LAN coincidieron en 15 pares de estado de animación y armadura.
+Cada cliente comprobó los ocho estados exigidos por el laboratorio. El observador capturó además el retorno
+a `walk` tras la embestida.
+Se comprobaron los siete clips, ambos atlas, la capa emisiva y la caja 1,6 × 3,4. Las capturas de ambas
+vistas, incluidas las capturas de impacto, están en `build/coloso-qa/{host,peer}/screenshots/` y los registros en
+`build/coloso-client-{host,peer}-verified.log`. El cliente de pruebas usa una GTX 1050 Ti a 960 × 540.
+
+Se reabrió desde disco el mundo guardado por `host`. La entidad conservó fase 2 y armadura agrietada,
+con registro `COLOSO DISK RELOAD PASS` en `build/coloso-client-reload.log`.
+
+La integración de la rama antigua `codex/coloso-auditoria-main` conserva la caja 1,6 × 3,4 y el controlador
+único ya integrados en `main`, con los clips y el editable vigentes. Sus propuestas anteriores de otra
+anchura, dos controladores y una embestida más larga quedan resueltas por la implementación comprobada.
+La corrección pendiente se aplica al mantenimiento del impulso durante la ventana actual de ocho ticks.
+
+Reproducción desde un worktree aislado con Java 21. Cada comando de cliente se ejecuta en su terminal.
+Arranca `host`, espera `COLOSO LAN READY` en su registro y arranca `peer`. Ambos cierran al terminar.
+La reapertura `reload` utiliza el mundo guardado por `host`.
+
+```powershell
+.\gradlew.bat -I tools/testing/coloso/runtime.init.gradle runColosoQa --offline --no-daemon --console=plain
+.\gradlew.bat -I tools/testing/coloso/runtime.init.gradle -PcolosoQaClient=host runColosoClientQa --offline --no-daemon --console=plain
+.\gradlew.bat -I tools/testing/coloso/runtime.init.gradle -PcolosoQaClient=peer runColosoClientQa -x compileJava -x compileClientJava -x compileColosoQaJava -x compileColosoClientQaJava --offline --no-daemon --console=plain
+.\gradlew.bat -I tools/testing/coloso/runtime.init.gradle -PcolosoQaClient=reload runColosoClientQa --offline --no-daemon --console=plain
+```
+
+El mod de pruebas se añade solo a la invocación con `-I`. Sus mundos y salidas se guardan bajo `build/coloso-qa/`.
+El puerto 25592 pertenece a la sesión LAN del laboratorio. Las comprobaciones de recursos se repiten con
+`gen_boss_models.py` y `gen_faceless_glowmask.py`, ambos con `--check`.
+
+Los arranques también muestran avisos previos de modelos de `sunset_astrolabe` y `resonador_del_umbral`,
+y del avance `summon_eclipse`. El diagnóstico del Coloso conserva estos mensajes en los registros de Minecraft.
 
 ## v64 — Templos sellados y Vasos de vida (K6)
 
@@ -1534,13 +1643,38 @@ Protocolo detallado, con comandos y resultados esperados para la v15–v19: [PLA
 
 # v65 — Errante Velado (verificación)
 
+El autor confirmó realizadas las pruebas previas en partida y la aparición del Errante durante Niebla de almas.
+Esta aceptación general se registra sin añadir métricas ni atribuirle capturas o mediciones no entregadas.
+
+El pulido posterior añade regresiones en `tools/testing/errante/`, con el jugador local reutilizado del
+laboratorio del Osario. Se ejecutan con Java 21 mediante
+`gradlew.bat -I tools/testing/errante/runtime.init.gradle runErranteQa --offline --console=plain`.
+El informe del servidor queda en `build/errante-qa/gametest.xml`. El mod de laboratorio se carga solo
+al usar ese script y queda fuera del JAR de producción.
+Los escenarios comprueban cambio de objetivo antes del aviso, en el tick 6 y después del aviso,
+pausa de navegación durante hurt con y sin objetivo, recuperación de la persecución y Heraldo de la Muerte.
+La prueba del límite del aviso desactiva temporalmente la IA para fijar el orden de asignación en ese tick.
+Los demás escenarios de combate dejan que el servidor avance el reloj y la IA.
+JUnit comprueba que el contorno cian pertenece al sector real en distintas orientaciones y a escala 1 y 1,35.
+La compilación final con Java 21 (`gradlew.bat build --offline --console=plain`) terminó correctamente,
+con 927 pruebas JUnit en 153 clases, cero fallos, errores u omisiones. Los seis GameTests quedaron aprobados.
+Se comprobó que el JAR contiene la etiqueta de no muertos y excluye las clases del laboratorio.
+La prueba de navegación deja actuar dos ticks
+a la física antes de solicitar una ruta, para que Minecraft registre el apoyo del ejemplar recién activado.
+La evaluación visual del contorno nuevo en cliente queda pendiente. El banco de servidor tampoco
+reproduce audio en dos clientes; la confirmación del autor cierra las pruebas previas.
+Durante el arranque se registró el error ya existente del avance
+`aptitudes:aptitudes_achievements/summon_eclipse` (`No key id` en su predicado de objeto).
+El servidor ejecutó las seis regresiones; ese recurso queda fuera del alcance de este ajuste.
+
 - `SpectralRendRulesTest`: comprueba alcance, altura, sector, reloj y deduplicación de impactos.
 - `FogErranteRulesTest`: comprueba pertenencia a la sesión, retirada y persistencia del estado del evento.
 - La validación en Minecraft 1.21.1 cubrió el ataque hasta tres blancos, las cancelaciones por muerte y por
   cierre de Niebla, los límites de oleadas y retirada, y la recuperación de la sesión tras reiniciar un
   servidor integrado. También se comprobó la limpieza al recargar un chunk descargado.
 - El cliente registró los siete sonidos y recibió el de preparación a 2 y 12 bloques. A 24 bloques quedó
-  fuera del radio. La comparación auditiva entre dos clientes queda pendiente.
+  fuera del radio. Ese registro local cubre un cliente; la confirmación general del autor no aporta
+  un registro específico de comparación auditiva entre dos clientes.
 - En un mundo de desarrollo, invoca `aptitudes:errante_velado` y pasa a supervivencia. Comprueba desde varios
   ángulos los cinco jirones, la elevación antes del barrido, las cinco motas, los sonidos y el colapso.
 - Con dos jugadores en el sector, comprueba un impacto por objetivo y Debilidad I. Repite detrás de un bloque,
@@ -1761,13 +1895,14 @@ Desde T3d los chunks **nuevos** generan este templo solos (los ya generados cons
 
 # T1 — eventos por activación (verificación manual)
 
-1. Habla con el aldeano del gremio **sin** Mayús: se abre el comercio de siempre y no pasa nada más.
-2. Con Mayús + clic derecho: mensaje del aldeano y arranca la Niebla de almas para todos los jugadores del mundo.
-   Con `/time` a mediodía también debe empezar (no depende de la hora). Dura 24 000 ticks y termina con «La niebla se disipa».
-3. Vuelve a hablar con Mayús durante la Niebla: «Ahora no puedo hablar de eso…» y no se reinicia.
-4. Tras terminar, habla de nuevo: «Los muertos se han ido, pero volverán». Tras 10 días (`/time add 240000`): empieza otra.
+1. (Cambiado) El aldeano del gremio **ya no** inicia la Niebla: con Mayús + clic derecho solo se abre el comercio.
+2. Abre el tablón de contratos hasta que una de las 3 ofertas del día sea «Convocar la Niebla de almas» (con rol en Normal o más;
+   cambia de día con `/time add 24000` o usa otra cuenta). Acéptala: aparece «Contrato aceptado» y arranca la Niebla para todos los
+   jugadores. Dura 24 000 ticks y termina con «La niebla se disipa»; al sobrevivirla el contrato queda listo para cobrar.
+3. Con la Niebla en curso, intenta aceptar otra oferta de Niebla: «No puedo hablar de eso ahora…» y **no** se acepta ni se reinicia.
+4. Tras terminar, intenta aceptarla otra vez: «Los muertos se han ido, pero volverán». Tras 10 días (`/time add 240000`): se puede.
 5. Apaga y enciende el servidor con la Niebla en espera: la espera se conserva (`last_fog_start` en `aptitudes_world_events`).
-6. Con `worldEventWeightSoulFog = 0`: el aldeano solo comercia.
+6. Con `worldEventWeightSoulFog = 0`: la oferta sale pero no se acepta y avisa de que está desactivada.
 7. Construye un marco de obsidiana en el Overworld y enciéndelo con yesca: empieza la Lluvia de brasas. Enciéndelo
    otra vez o abre otro portal antes de 5 días: no empieza. Un portal ya abierto que vuelves a encender no cuenta.
 8. Enciende un marco en el Nether o en el End, o con lava o una flecha incendiaria: no cuenta. Spamear el encendido no genera
@@ -1811,3 +1946,97 @@ Desde T3d los chunks **nuevos** generan este templo solos (los ya generados cons
 3. Grimorio (K/tecla del libro): índice solo de texto, cabecera con título y subtítulo sin ilustración, pestañas sin cajas.
 4. Hoguera: piedras irregulares alrededor, troncos, espada con espiral y llama animada; se ve bien desde todos los lados.
 5. `/give @s aptitudes:berserker_weapon_master`: en la mano, el suelo y un marco se ve plano y limpio (sin bultos ni bordes).
+
+# T5 — Espera del Damnorath y migración de eventos (verificación manual, pendiente)
+
+1. `/give @s aptitudes:resonador_del_umbral 3`. Clic derecho sobre una Hoguera en el Mundo Normal: empieza el Eclipse y se
+   consume **un** Damnorath.
+2. Con el Eclipse en curso, usa otro: no se consume y la barra de acción dice que ya hay otro evento del mundo en curso.
+3. Termina el Eclipse (`/aptitudes eclipse stop` o espera el final) y usa Damnorath enseguida: no se consume y avisa con los días de
+   juego que faltan (≈3). `/time add` no cambia la espera (usa el reloj del mundo).
+4. Cambia `eclipseSummonCooldownDays` a 0 en la pantalla de configuración: se puede usar de inmediato. Con `eclipseEnabled = false`: avisa y no se consume.
+5. Reinicia el servidor tras un Eclipse: la espera se conserva (se guarda en `aptitudes_eclipse`).
+6. Configuración antigua: pon `"worldEventWeightSoulFog": 0, "worldEventWeightEmberRain": 0, "configRevision": 83` en `config/aptitudes.json`
+   y arranca: ambos pasan a 1. Con `configRevision` 84 y un 0 a mano, se respeta (la Niebla por aldeano no responde).
+7. Sin Damnorath ni comando, deja pasar varios días de juego: el Eclipse **no** sale por calendario aunque el `config` tenga
+   `worldEventWeightEclipse` mayor que 0.
+
+# C2 — Cachés de rendimiento (verificación manual, pendiente)
+
+1. Con un rol con senda aprendida (p. ej. +crítico), compruébalo en el árbol y golpea: el efecto sigue ahí. Gasta un punto en otro nodo de
+   la senda: el efecto cambia **sin reiniciar** (la caché se invalida con `RoleData.version()`).
+2. Cambia de rol principal con la Hoguera, haz Reiniciar del árbol y muere y reaparece: ningún efecto de senda ni piedra angular queda
+   «pegado» del estado anterior.
+3. Con spark (`/spark profiler start --thread *`) en un servidor con 5–10 jugadores peleando, compara el tiempo en `PathEffects.all` y
+   `Keystones.active` con la versión anterior (R4, aún sin medir).
+
+# C7 · S3 — Parada y contraataque (verificación manual, pendiente)
+
+1. Con un escudo, alza el escudo **justo** cuando un zombi va a golpearte: aviso «¡Parada!», partículas y sonido agudo; el zombi queda
+   inmóvil unos 2 s (Lentitud y Debilidad). Si lo alzas con antelación (más de 4 ticks antes del golpe) no hay parada.
+2. Golpéalo cuerpo a cuerpo en el plazo (3 s): aviso «¡Golpe de gracia!» y el daño es ×1,5. Un segundo golpe ya no multiplica.
+3. Espera más de 3 s tras la parada: el golpe es normal. Cambia a un arco: la flecha no gasta el golpe de gracia.
+4. Un esqueleto o una flecha (a distancia) bloqueados con el escudo **no** abren parada.
+5. Un campeón, el Wither, el Dragón, el Warden y los jefes del mod no se aturden ni abren golpe de gracia.
+6. Otro jugador con escudo golpeado por ti: sin parada (sin PvP).
+7. `parryEnabled = false`: nada de lo anterior ocurre. Comprueba que `/aptitudes` sigue sin errores en el registro tras 10 minutos de combate.
+
+# C7 · S5 — Mensajes en el suelo (verificación manual, pendiente)
+
+1. `/aptitudes message list` muestra las 12 frases en tu idioma. `/aptitudes message danger` deja una nota con el texto «Peligro adelante
+   [+0]» **siempre de cara al lector** (gira con la cámara); suena un campanilleo.
+2. Con otro jugador: clic derecho sobre la nota → «Valorado: +1» y el texto pasa a `[+1]`. Otro clic suyo: «Ya has valorado…». Tú sobre la tuya:
+   «No puedes valorar tu propio mensaje».
+3. Cuarta nota seguida: rechaza por el límite (3). Segunda nota en menos de 30 s: avisa de la espera. Una frase inventada: «Frase desconocida».
+4. `/aptitudes message remove` junto a tu nota la retira (texto y zona de clic). Un operador puede retirar las ajenas.
+5. Reinicia el servidor: las notas y sus valoraciones siguen (`aptitudes_ground_messages`). Con la nota lejos y el chunk descargado, no hay errores.
+6. Fuerza la caducidad con `groundMessageLifetimeDays = 1` y `/time add 48000`… la nota desaparece en menos de 10 s (revisión cada 200 ticks).
+7. Borra `world/data/aptitudes_ground_messages.dat` con el servidor parado y arranca: las notas viejas desaparecen al cargar su chunk (se retiran por no
+   constar en el estado), sin errores.
+8. `groundMessagesEnabled = false`: el comando avisa de que está desactivado. Con el mod en un cliente sin la traducción, el texto se ve como la clave.
+
+# C7 · S6 — Ecos de muerte (verificación manual, pendiente; desactivados por defecto)
+
+1. Activa `deathEchoesEnabled` en la configuración. Con dos jugadores: el primero corre unos segundos, salta y muere (p. ej. `/kill`).
+2. En el sitio de la muerte aparece una **cabeza con su skin, brillante**. Si el segundo jugador está a menos de 24 bloques, la cabeza **repite el recorrido**
+   de los últimos 5 s (a saltos de unos 10 pasos por segundo), se detiene 2 s y vuelve a empezar. Si se aleja, deja de moverse.
+3. A los 120 s (o `deathEchoLifetimeSeconds`) desaparece. Con 7 muertes seguidas y `deathEchoMaxActive = 6`, la más antigua se retira.
+4. Un jugador que murió sin haberse movido (menos de 1 s de recorrido) no deja eco. En espectador no se anota nada.
+5. Reinicia el servidor con un eco vivo: al cargar el chunk, el eco guardado se retira (no queda ninguna cabeza fantasma). Sin errores en el registro.
+6. Desactiva la opción con un eco vivo: todos desaparecen en un tick. Con la opción apagada (por defecto) no se crea ninguna entidad al morir.
+7. Rendimiento: con 10 jugadores el coste es una copia de 4 números cada 2 ticks por jugador; con los ecos lejos de todos, cero.
+
+# V86 · fase 2 — Las Tres Torres Señoriales (verificación manual, pendiente; no se pudo arrancar un servidor al implementarla)
+
+1. En un mundo nuevo con operador: `/aptitudes place three_towers`. Debe aparecer, a 24–96 bloques, un patio con **tres torres de piedra musgosa**: dos
+   de 11×11 (techo en y+26) y una de 13×13 (techo en y+34) al norte, cada una con parapeto almenado y una **empuñadura de espada** de pizarra encima.
+   Sin errores en el registro del servidor (`aptitudes:three_towers` registrada y sus JSON cargados).
+2. Entra por la puerta sur de una torre vasalla (3×3, abierta): hay 3 plantas de combate unidas por escaleras rectas que alternan muro norte y sur,
+   y una sala superior de 9×9 con 7 de alto. Comprueba que se puede subir caminando hasta arriba sin saltar y que las antorchas de almas siguen en los muros.
+3. La Torre del Señor tiene la puerta sur **sellada** (piedra sellada 3×3, irrompible). Dentro: 4 plantas de combate y una sala de 11×11 con 9 de alto.
+   En el centro del patio está el bloque controlador (**Piedra de la Vigilia**), irrompible.
+4. (Actualizado en la fase 3) Hay criaturas y jefes: ver la sección de la fase 3 más abajo.
+5. `/aptitudes locate three_towers` tras generar una (o explorar): devuelve las coordenadas. En un mundo con semilla fija, mide cuántas hay en un radio de
+   2000 bloques y compáralas con las del Templo del Custodio: deberían ser unas **1,8 veces más** (región 24 frente a 32).
+6. En terreno con pendiente fuerte, océano o lago: no debe generarse (`suitable`), ni dejar columnas flotando; revisa los bordes del patio y el cimiento.
+7. `threeTowersEnabled = false`: `place` falla y no se genera en chunks nuevos.
+8. Prueba en un mundo con y sin árboles altos cerca: el patio debe quedar despejado hasta 8 bloques de altura.
+
+# V86 · fase 3 — jefes, puerta, recompensa y logro de las Tres Torres (verificación manual, pendiente)
+
+Con operador, supervivencia y dificultad Normal o superior (en Pacífico no aparece nada). `/aptitudes place three_towers` y entra por el sur.
+
+1. **Oleadas:** al pisar cada planta de combate de una torre aparecen 4 puntos de criaturas élite con **armadura completa visible** (hierro con el anillo
+   mínimo, diamante en el IV, netherita en el V), una sola vez por planta. Salir y volver a entrar **no** repite la oleada. Reinicia el servidor: tampoco se repite.
+2. **Guardianes:** al entrar en la sala superior de una torre vasalla aparece su **Guardián Desmontado** (aviso «Un caballero hueco se alza…»). Mientras no entres, no existe.
+   Al vencer al primero: «Ha caído un guardián. Quedan 1.». Si sales a media pelea y vuelves a entrar, el Guardián sigue ahí (no se duplica).
+3. **Puerta del Señor:** con un solo Guardián caído la puerta sur de la Torre del Señor **sigue sellada**. Al caer el segundo se abre (sonido y aviso).
+4. **Coloso:** entra en la sala alta de la Torre del Señor: despierta el Coloso Sin Rostro (aviso y trueno). Comprueba que **cabe** (sala 11×11×9), que sus ataques
+   de área no atraviesan los muros y que el combate es jugable en un espacio cerrado (hasta ahora solo se probó al aire libre).
+5. **Recompensa:** al vencerlo aparecen cofres en la pared norte de la sala, **uno por jugador cercano** (hasta 5), cada uno con **una Plantilla de ascensión**
+   más Corazones de campeón, Fragmentos de alma y diamantes. Todos los jugadores a menos de 64 bloques reciben el logro «Fin de la Vigilia».
+6. **Una sola vez:** tras vencer al Coloso, salir y entrar no hace aparecer nada más. Reinicia el servidor: la puerta sigue abierta y no hay reaparición.
+7. **Dificultad:** compara la vida de un Guardián en una estructura cerca del spawn (anillo bajo → anillo efectivo III) y otra lejos (IV/V): debe subir.
+8. **Controlador:** la Piedra de la Vigilia del patio no se rompe en supervivencia. Con un jefe despierto, `/kill` del jefe cuenta como derrota (es lo esperado).
+9. Revisa el registro del servidor: sin excepciones al despertar jefes ni al colocar los cofres.
+

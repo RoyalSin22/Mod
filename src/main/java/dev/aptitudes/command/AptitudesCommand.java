@@ -107,6 +107,7 @@ public final class AptitudesCommand {
 				.then(TutorialCommand.branch())
 				.then(SynergyCommand.branch())
 				.then(TelemetryCommand.branch()) // V93
+				.then(GroundMessageCommand.branch())
 				// v34: el Eclipse. Consultar es libre; iniciar y detener exige permiso de administrador.
 				.then(literal("eclipse")
 						.executes(AptitudesCommand::eclipseStatus)

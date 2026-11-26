@@ -16,7 +16,7 @@ class CryptLoreRulesTest {
 
 	@Test void cryptIdDoesNotCollideWithTheOtherHooks() {
 		for (Set<String> other : java.util.List.of(LoreRules.unlocksOnCustodianEncounter(),
-				LoreRules.unlocksOnDiamondChamberComplete(), LoreRules.unlocksOnBeheritSacrifice(), LoreRules.unlocksOnEclipseEnd())) {
+				LoreRules.unlocksOnDiamondChamberComplete(), LoreRules.unlocksOnDamnorathSacrifice(), LoreRules.unlocksOnEclipseEnd())) {
 			assertTrue(java.util.Collections.disjoint(other, LoreRules.unlocksOnCryptCleared()));
 		}
 	}

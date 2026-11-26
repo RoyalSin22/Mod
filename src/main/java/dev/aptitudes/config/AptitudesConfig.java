@@ -158,7 +158,7 @@ public class AptitudesConfig {
 	// ---------- Eclipse (v34) ----------
 	/** Evento del mundo: eclipse solar con oleadas, élites y el Heraldo del Eclipse. */
 	public boolean eclipseEnabled = true;
-	/** DEPRECATED (v67): el calendario rotativo desapareció. El Eclipse ahora se inicia solo por sacrificio del Behelit. Se mantiene por compatibilidad. */
+	/** DEPRECATED (v67): el calendario rotativo desapareció. El Eclipse ahora se inicia solo por sacrificio del Damnorath. Se mantiene por compatibilidad. */
 	public int eclipseIntervalDays = 10;
 	/** DEPRECATED (v67): solo para compatibilidad. */
 	public int eclipseFirstDay = 10;
@@ -196,12 +196,13 @@ public class AptitudesConfig {
 	public int eclipseMinChampionsTotality = 1;
 	/** Las élites y campeones usan humanoides con equipo completo que no se suelta al morir. */
 	public boolean eclipseGuaranteedEliteArmor = true;
-	// ---------- Eventos rotativos (v41, DEPRECATED en v67) ----------
-	// DEPRECATED: v67 remove el calendario rotativo. El Eclipse se inicia por Behelit; Niebla y Lluvia por eventos.
-	// Se mantienen por compatibilidad.
+	// ---------- Eventos del mundo (v41; el calendario rotativo desapareció en v67) ----------
+	// El calendario ya no programa nada (D-26): el Eclipse se inicia por Damnorath, la Niebla por el aldeano y la Lluvia por
+	// un portal. worldEventWeightEclipse no se usa. worldEventWeightSoulFog y worldEventWeightEmberRain siguen siendo el
+	// interruptor de su evento: 0 lo desactiva (también corta uno en curso) y cualquier valor mayor lo deja activo.
 	public int worldEventWeightEclipse = 0;
-	public int worldEventWeightSoulFog = 0;
-	public int worldEventWeightEmberRain = 0;
+	public int worldEventWeightSoulFog = 1;
+	public int worldEventWeightEmberRain = 1;
 	/** v41.2: probabilidad de meteorito grande y enorme en la Lluvia de brasas (el resto, pequeños como antes). */
 	public double emberRainLargeChance = 0.25;
 	public double emberRainHugeChance = 0.05;
@@ -217,6 +218,36 @@ public class AptitudesConfig {
 	public int fogDurationTicks = 24_000;
 	/** Días de espera entre dos Lluvias de brasas provocadas por un portal. */
 	public int emberRainCooldownDays = 5;
+	/** Días de juego de espera, por mundo y desde el fin del último Eclipse, para volver a convocarlo (Astrolabio o Damnorath). 0 = sin espera. */
+	public int eclipseSummonCooldownDays = 3;
+	// ---------- Las Tres Torres Señoriales (V86) ----------
+	/** Permite que se generen las Tres Torres Señoriales en mundos nuevos o en chunks sin generar. */
+	public boolean threeTowersEnabled = true;
+	// ---------- Ecos de muerte (C7 · S6) ----------
+	/** Al morir, un eco con la cabeza del jugador repite sus últimos 5 s mientras haya alguien cerca. Desactivado por defecto: genera entidades. */
+	public boolean deathEchoesEnabled = false;
+	/** Segundos que dura un eco antes de desaparecer. */
+	public int deathEchoLifetimeSeconds = 120;
+	/** Ecos activos a la vez en el servidor; al pasarse se retira el más antiguo. */
+	public int deathEchoMaxActive = 6;
+	// ---------- Mensajes en el suelo (C7 · S5) ----------
+	/** Permite dejar y valorar notas con frases predefinidas ({@code /aptitudes message}). */
+	public boolean groundMessagesEnabled = true;
+	/** Notas que puede tener colocadas a la vez cada jugador. */
+	public int groundMessagesPerPlayer = 3;
+	/** Días que dura una nota antes de desaparecer. */
+	public int groundMessageLifetimeDays = 7;
+	/** Segundos de espera entre dos notas del mismo jugador. */
+	public int groundMessageCooldownSeconds = 30;
+	// ---------- Parada y contraataque (C7 · S3) ----------
+	/** Bloquear un golpe cuerpo a cuerpo con el escudo recién alzado aturde a la criatura y abre un golpe de gracia. */
+	public boolean parryEnabled = true;
+	/** Ticks de aturdimiento de la criatura parada (0 = no aturde). */
+	public int parryStunTicks = 40;
+	/** Ticks que dura abierto el golpe de gracia tras una parada. */
+	public int parryFinisherTicks = 60;
+	/** Multiplicador de daño del golpe de gracia. */
+	public double parryFinisherMultiplier = 1.5;
 	// ---------- Gran Osario Quebrado, jefe de la Niebla (V68) ----------
 	/** Activa la aparición del jefe al final de la Niebla de almas. */
 	public boolean osarioBossEnabled = true;
@@ -334,7 +365,8 @@ public class AptitudesConfig {
 	 */
 	public boolean legendaryExclusive = false;
 	/** Probabilidad de que un monstruo aparezca como élite (el 10 % de esas, campeón). 0 lo desactiva. */
-	public double eliteChance = 0.05;
+	/** v83: 0,08 (antes 0,05). Los archivos anteriores con 0,05 se migran ({@link ConfigMigration}). */
+	public double eliteChance = 0.08;
 	/** Sustituir un rol ya elegido exige quemar una Ofrenda de renacimiento en una Hoguera. */
 	public boolean roleChangeRequiresRitual = true;
 	public int roleXpPerAbilityUse = 5;
@@ -400,12 +432,17 @@ public class AptitudesConfig {
 
 	// ---------- Amenaza por distancia (v43) ----------
 	public boolean threatEnabled = true;
-	public int threatRingSize = 1000;
+	/** v83: 700 (antes 1000), vida 0,25 (antes 0,15) y daño 0,15 (antes 0,10) por anillo; ver {@link ConfigMigration}. */
+	public int threatRingSize = 700;
 	public int threatMaxRing = 5;
-	public double threatHealthPerRing = 0.15;
-	public double threatDamagePerRing = 0.10;
+	public double threatHealthPerRing = 0.25;
+	public double threatDamagePerRing = 0.15;
 	public double threatLootPerRing = 0.10;
 	public double threatEliteChancePerRing = 0.25;
+	/** v83: tácticas de las criaturas por anillo (llamada de auxilio, esquiva de proyectiles, furia y retroceso). */
+	public boolean threatTactics = true;
+	/** v83: probabilidad de esquivar un proyectil por anillo desde el II (tope interno 25 %). */
+	public double threatDodgePerRing = 0.06;
 
 	public static AptitudesConfig load() {
 		Path path = path();
@@ -421,6 +458,12 @@ public class AptitudesConfig {
 					cfg.maxRoleLevel = ConfigMigration.maxRoleLevel(from, cfg.maxRoleLevel);
 					cfg.masterBonusPoints = ConfigMigration.masterBonusPoints(from, cfg.masterBonusPoints);
 					cfg.ultimateBonusPoints = ConfigMigration.ultimateBonusPoints(from, cfg.ultimateBonusPoints);
+					cfg.eliteChance = ConfigMigration.eliteChance(from, cfg.eliteChance);
+					cfg.threatRingSize = ConfigMigration.threatRingSize(from, cfg.threatRingSize);
+					cfg.threatHealthPerRing = ConfigMigration.threatHealthPerRing(from, cfg.threatHealthPerRing);
+					cfg.threatDamagePerRing = ConfigMigration.threatDamagePerRing(from, cfg.threatDamagePerRing);
+					cfg.worldEventWeightSoulFog = ConfigMigration.eventSwitch(from, cfg.worldEventWeightSoulFog);
+					cfg.worldEventWeightEmberRain = ConfigMigration.eventSwitch(from, cfg.worldEventWeightEmberRain);
 					cfg.configRevision = ConfigMigration.CURRENT;
 				}
 			} catch (IOException | JsonParseException e) {
@@ -615,6 +658,16 @@ public class AptitudesConfig {
 		c.fogDurationTicks = clamp(c.fogDurationTicks, dev.aptitudes.event.EventTriggerRules.MIN_FOG_TICKS,
 				dev.aptitudes.event.EventTriggerRules.MAX_FOG_TICKS);
 		c.emberRainCooldownDays = clamp(c.emberRainCooldownDays, 1, 365);
+		c.eclipseSummonCooldownDays = clamp(c.eclipseSummonCooldownDays, 0, 365);
+		c.deathEchoLifetimeSeconds = clamp(c.deathEchoLifetimeSeconds, 10, 1800);
+		c.deathEchoMaxActive = clamp(c.deathEchoMaxActive, 1, 50);
+		c.groundMessagesPerPlayer = clamp(c.groundMessagesPerPlayer, 1, 20);
+		c.groundMessageLifetimeDays = clamp(c.groundMessageLifetimeDays, 1, 365);
+		c.groundMessageCooldownSeconds = clamp(c.groundMessageCooldownSeconds, 1, 3600);
+		c.parryStunTicks = clamp(c.parryStunTicks, 0, dev.aptitudes.logic.ParryRules.MAX_STUN_TICKS);
+		c.parryFinisherTicks = clamp(c.parryFinisherTicks, dev.aptitudes.logic.ParryRules.MIN_FINISHER_TICKS, dev.aptitudes.logic.ParryRules.MAX_FINISHER_TICKS);
+		c.parryFinisherMultiplier = Double.isNaN(c.parryFinisherMultiplier) ? 1.5
+				: Math.max(dev.aptitudes.logic.ParryRules.MIN_MULTIPLIER, Math.min(dev.aptitudes.logic.ParryRules.MAX_MULTIPLIER, c.parryFinisherMultiplier));
 		c.osarioBossFogPercent = clamp(c.osarioBossFogPercent, 10, 100);
 		c.osarioBossLingerTicks = clamp(c.osarioBossLingerTicks, 0, 72_000);
 		c.osarioBossMinDamagePercent = clamp(c.osarioBossMinDamagePercent, 1, 100);
@@ -675,6 +728,7 @@ public class AptitudesConfig {
 		c.threatDamagePerRing = Math.min(0.2, c.threatDamagePerRing);
 		c.threatLootPerRing = Math.min(0.2, c.threatLootPerRing);
 		c.threatEliteChancePerRing = Math.min(1, c.threatEliteChancePerRing);
+		c.threatDodgePerRing = Math.min(0.15, c.threatDodgePerRing);
 		// v65 C5: Sinergias
 		c.synergyBonusY1Radius = Math.max(1.0f, Math.min(2.0f, c.synergyBonusY1Radius));
 		c.synergyBonusY1Damage = Math.max(1.0f, Math.min(2.0f, c.synergyBonusY1Damage));

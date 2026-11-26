@@ -40,6 +40,11 @@ public final class RoleData {
 			Codec.INT.optionalFieldOf("rebirths", 0).forGetter(d -> d.rebirths)
 	).apply(instance, RoleData::new));
 
+	/**
+	 * C2: contador que sube con todo cambio de lo que leen {@code PathEffects.all} y {@code Keystones.active} (rangos, roles
+	 * y evolución). No se guarda: un {@code RoleData} nuevo empieza en 0 y la caché distingue por identidad del objeto.
+	 */
+	private int version;
 	@Nullable private Role primary;
 	@Nullable private Role secondary;
 	private final EnumMap<Role, Integer> levels;
@@ -99,6 +104,7 @@ public final class RoleData {
 		this.rebirths = Math.max(0, Math.min(9, rebirths));
 	}
 
+	public int version() { return version; }
 	public int rebirths() { return rebirths; }
 	public void setRebirths(int value) { this.rebirths = Math.max(0, Math.min(9, value)); }
 
@@ -124,7 +130,7 @@ public final class RoleData {
 	}
 
 	public int tier(Role role) { return tiers.getOrDefault(role, Evolution.BASE); }
-	public void setTier(Role role, int tier) { tiers.put(role, Math.max(0, Math.min(Evolution.ULTIMATE, tier))); }
+	public void setTier(Role role, int tier) { tiers.put(role, Math.max(0, Math.min(Evolution.ULTIMATE, tier))); version++; }
 	public int trialProgress(Role role) { return trials.getOrDefault(role, 0); }
 	public void addTrialProgress(Role role, int amount) {
 		trials.merge(role, amount, (a, b) -> (int) Math.min(Integer.MAX_VALUE, (long) a + b));
@@ -134,8 +140,8 @@ public final class RoleData {
 
 	@Nullable public Role primary() { return primary; }
 	@Nullable public Role secondary() { return secondary; }
-	public void setPrimary(@Nullable Role role) { this.primary = role; }
-	public void setSecondary(@Nullable Role role) { this.secondary = role; }
+	public void setPrimary(@Nullable Role role) { this.primary = role; version++; }
+	public void setSecondary(@Nullable Role role) { this.secondary = role; version++; }
 
 	public boolean isActive(Role role) {
 		return role == primary || role == secondary;
@@ -148,10 +154,12 @@ public final class RoleData {
 
 	public int rank(String nodeId) { return ranks.getOrDefault(nodeId, 0); }
 	public void setRank(String nodeId, int rank) {
+		version++;
 		if (rank <= 0) ranks.remove(nodeId);
 		else ranks.put(nodeId, Math.min(rank, RoleTree.get(nodeId) != null ? RoleTree.get(nodeId).maxRank() : RoleNode.MAX_RANK));
 	}
-	public Map<String, Integer> ranks() { return ranks; }
+	/** Vista de solo lectura: los cambios pasan por {@link #setRank} y {@link #clearRanks} para subir {@link #version()}. */
+	public Map<String, Integer> ranks() { return Collections.unmodifiableMap(ranks); }
 
 	public int spentPoints(Role role) {
 		int sum = 0;
@@ -161,6 +169,7 @@ public final class RoleData {
 
 	/** Reinicia el árbol de un rol. En el Elementalista también libera los elementos dominados. */
 	public void clearRanks(Role role) {
+		version++;
 		for (RoleNode node : RoleTree.nodes(role)) ranks.remove(node.id());
 		if (role == Role.ELEMENTALIST) clearElements();
 	}

@@ -1003,6 +1003,46 @@ T['anchor'] = [
     "................"
 ]
 
+T['astrolabe'] = [
+    "......ZZZZ......",
+    ".....Z....Z.....",
+    ".....Z....Z.....",
+    "......ZZZZ......",
+    ".....ZZZZZZ.....",
+    "....ZZJJJJZZ....",
+    "...ZJJJJJJJJZ...",
+    "..ZZJDDDDJJJZZ..",
+    "..ZJDDDDDDJJJZ..",
+    "..ZDDDDDDDDJJZ..",
+    "..ZDDDDDDDDJJZ..",
+    "..ZDDDDDDDDJJZ..",
+    "..ZDDDDDDDDJZZ..",
+    "...ZDDDDDDJJZ...",
+    "....ZDDDDJZZ....",
+    ".....ZZZZZZ....."
+]
+
+# Damnorath («Embrión de la ruina», D-40): un embrión enroscado dentro de un frasco de cristal con líquido violeta, tapón y aro de oro.
+# Sin rostro. En el grimorio el lore puede llamarlo «Embrión del Umbral».
+T['embryo'] = [
+    "......ZZZZ......",
+    "......Z..Z......",
+    "....ZZZZZZZZ....",
+    ".....FFFFFF.....",
+    "....FAAAAAAF....",
+    "...FAAJJJAAAF...",
+    "..FAAJJJJJAAAF..",
+    "..FAAJJ*JJAAAF..",
+    "..FAAAJJJJAAAF..",
+    "..FAAJJJAAAAAF..",
+    "..FAAAJJJJAAAF..",
+    "..FAAAAJJAAAAF..",
+    "...FAAAAAAAAF...",
+    "....FAAAAAAF....",
+    ".....FFFFFF.....",
+    "................"
+]
+
 ITEMS = {
     'herb_petals': ('petals', {'A': '#d78bb9', 'V': '#4caf50'}),
     # Armas de rol
@@ -1043,10 +1083,6 @@ ITEMS = {
     'rebirth_offering': ('offering', {'J': '#ff9f1a', 'K': '#2b2d38', 'C': '#efe6d2', 'G': '#e0b43a', 'A': '#8e44ad'}),
     'armory_voucher': ('voucher', {'W': '#8d5a2b', 'C': '#efe6d2', 'K': '#5d4a3a', 'R': '#b0423a'}),
     'elite_essence': ('essence', {'A': '#c0392b', 'J': '#ffb199'}),
-    # Paso 3 de la reinvocación: sellos de invocación de los jefes animados.
-    'faceless_colossus_seal': ('seal', {'R': '#5d1f1f', 'G': '#e0b43a', 'J': '#ffe08a'}),
-    'dismantled_guardian_seal': ('seal', {'R': '#37474f', 'G': '#90a4ae', 'J': '#cfd8dc'}),
-    'ancient_automaton_seal': ('seal', {'R': '#5d4037', 'G': '#4dd0e1', 'J': '#b2ebf2'}),
     'expedition_token': ('seal', {'R': '#8a6d2b', 'G': '#e0b43a', 'J': '#fff3c4'}),
     'automaton_orb': ('automaton_orb', {'S': '#7d7a72', 'B': '#9e6c38', 'A': '#ffa434', 'D': '#3b3a38'}),
     'automaton_orb_deflected': ('automaton_orb', {'S': '#3d7f8a', 'B': '#4dd0e1', 'A': '#b2ebf2', 'D': '#1b3a40'}),
@@ -1091,6 +1127,9 @@ ITEMS = {
     'custodian_key_iron': ('temple_key', {'G': '#80888f', 'J': '#c5ccd4'}),
     'custodian_key_gold': ('temple_key', {'G': '#e0b43a', 'J': '#fff0a0'}),
     'custodian_key_diamond': ('temple_key', {'G': '#2fb6ee', 'J': '#c4f1ff'}),
+    # C3: Astrolabio del Ocaso y Embrión del Umbral (Behelit)
+    'sunset_astrolabe': ('astrolabe', {'Z': '#a8651c', 'D': '#120d18', 'J': '#e0520f'}),
+    'resonador_del_umbral': ('embryo', {'F': '#cfe0e8', 'A': '#5a3470', 'Z': '#c8962a', 'J': '#e8a89a'}),
     'life_vessel': ('vessel', {'F': '#e9eef2', 'A': '#c2185b', 'J': '#ff8fab', 'G': '#e0b43a'}),
 }
 
@@ -1098,6 +1137,7 @@ ITEMS = {
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import evolved_weapons  # noqa: E402
 import weapon_art  # noqa: E402  (V75: arte externo que sustituye al diseño por plantilla)
+import hd_items  # noqa: E402  (C3: arte de 32×32 de objetos que no son armas, p. ej. el Astrolabio del Ocaso)
 
 
 def _mix(color, other, t):
@@ -1199,7 +1239,7 @@ def main():
     preview = sys.argv[sys.argv.index('--preview') + 1] if '--preview' in sys.argv else None
     rendered = {}
     for name, (tpl, colors) in ITEMS.items():
-        art = weapon_art.override(name)
+        art = weapon_art.override(name) or hd_items.override(name)
         img = art or render(T[tpl], colors)
         if art is not None and art.size[0] > weapon_art.GUI_SIZE:
             art.save(f'{folder}/{name}_hd.png')  # textura del modelo 3D de la mano (V75: 64×64)

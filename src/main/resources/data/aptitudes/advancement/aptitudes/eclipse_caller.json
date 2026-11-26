@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "aptitudes:sunset_astrolabe"
+    },
+    "title": {
+      "translate": "advancement.aptitudes.eclipse_caller.title"
+    },
+    "description": {
+      "translate": "advancement.aptitudes.eclipse_caller.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "aptitudes:aptitudes/survive_eclipse",
+  "criteria": {
+    "done": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "done"
+    ]
+  ]
+}

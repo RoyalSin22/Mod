@@ -1,5 +1,6 @@
 package dev.aptitudes.block;
 
+import dev.aptitudes.event.EclipseManager;
 import dev.aptitudes.event.EclipseSummoningRules;
 import dev.aptitudes.event.WorldEventKind;
 import dev.aptitudes.event.WorldEventManager;
@@ -38,27 +39,23 @@ public class BonfireBlock extends Block {
 		return SHAPE;
 	}
 
-	/** Con una Ofrenda de renacimiento, un Resonador del Umbral o el Astrolabio del Ocaso en la mano se hace el ritual (lo gestiona el ítem), no el descanso. */
+	/** Con una Ofrenda de renacimiento, un Damnorath o el Astrolabio del Ocaso en la mano se hace el ritual (lo gestiona el ítem), no el descanso. */
 	@Override
 	protected net.minecraft.util.ItemActionResult onUseWithItem(net.minecraft.item.ItemStack stack, BlockState state,
 			World world, BlockPos pos, PlayerEntity player, net.minecraft.util.Hand hand, BlockHitResult hit) {
-		if (stack.isOf(ModItems.REBIRTH_OFFERING) || stack.isOf(ModItems.RESONADOR_DEL_UMBRAL)) {
+		if (stack.isOf(ModItems.REBIRTH_OFFERING) || stack.isOf(ModItems.DAMNORATH)) {
 			return net.minecraft.util.ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
 		}
-		// v60 (C3): Astrolabio del Ocaso invoca el Eclipse desde la Hoguera.
+		// C3: Astrolabio del Ocaso. Operadores o líder del grupo; misma espera que el Damnorath. Todo se decide en el servidor.
 		if (stack.isOf(ModItems.SUNSET_ASTROLABE)) {
 			if (!world.isClient() && player instanceof ServerPlayerEntity serverPlayer) {
-				if (!EclipseSummoningRules.canSummon(serverPlayer)) {
-					serverPlayer.sendMessage(EclipseSummoningRules.deniedMessage(), true);
+				EclipseSummoningRules.Verdict verdict = EclipseManager.summonVerdict(serverPlayer, true);
+				if (verdict != EclipseSummoningRules.Verdict.ALLOWED) {
+					EclipseManager.sendDenied(serverPlayer, verdict);
 					return net.minecraft.util.ItemActionResult.FAIL;
 				}
-				// Consumir el ítem.
-				stack.decrement(1);
-				// Convocar el Eclipse.
-				if (serverPlayer.getServer() != null) {
-					WorldEventManager.forceStart(serverPlayer.getServer(), WorldEventKind.ECLIPSE);
-				}
-				serverPlayer.sendMessage(EclipseSummoningRules.summoned(), true);
+				stack.decrementUnlessCreative(1, serverPlayer);
+				EclipseManager.startBySummon(serverPlayer);
 			}
 			return net.minecraft.util.ItemActionResult.SUCCESS;
 		}

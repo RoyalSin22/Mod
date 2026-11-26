@@ -1,0 +1,59 @@
+{
+  "geometry_and_rig_unchanged": false,
+  "cubes": 169,
+  "bones": 30,
+  "animations": 0,
+  "box_uv_cubes": 48,
+  "explicit_uv_cubes": 121,
+  "faces": 1014,
+  "texel_density": 2,
+  "atlas": [
+    256,
+    256
+  ],
+  "logical": [
+    128,
+    128
+  ],
+  "painted_pixels": 17172,
+  "actual_atlas_face_occupancy_pct": 26.202392578125,
+  "palette_colors": 25,
+  "highlight_pixels_C9FFF0": 6,
+  "ectoplasm_pixels": 162,
+  "ectoplasm_atlas_pct": 0.2471923828125,
+  "ectoplasm_painted_pct": 0.9433962264150944,
+  "moss_pixels": 107,
+  "moss_exposed_sample_pct": 1.0632780082987552,
+  "emissive_pixels": 84,
+  "mask_alpha_counts": {
+    "160": 58,
+    "255": 26
+  },
+  "emissive_atlas_pct": 0.128173828125,
+  "bone_cavity_palette_contrast": 5.736528095118454,
+  "editable_layers": 5,
+  "layer_painted_pixels": [
+    17010,
+    6803,
+    972,
+    107,
+    162
+  ],
+  "composite_matches_base_png": true,
+  "embedded_texture_matches_base_png": true,
+  "nearest_x8_exact": true,
+  "uv_overlaps": 0,
+  "minimum_island_gap_physical_px": 1,
+  "transparent_face_pixels": 0,
+  "large_identical_face_patterns": [],
+  "duplicate_scan_threshold": "width >= 4, height >= 4, area >= 24 pixels; same orientation and dimensions",
+  "sha256": {
+    "studies/osario_v84/fase3/ajuste/osario_texturizado_ajustado.bbmodel": "3e78aa9f3fbcd81d7f46bdeabb9455e03b866ced32662cd0a73aa2aede68fea0",
+    "studies/osario_v84/fase2/osario_geometria_fase2.bbmodel": "be471e254f11ec116d254327b3e4c337da4310f523feafbc70b0f446fba2f52d",
+    "studies/osario_v84/fase1/osario_quebrado_aprobado.bbmodel": "06105c0eb8cb265f4c5dba9e7e18af692902f2cca15ad5ffd8314103df9fd9c1",
+    "studies/osario_v84/fase3/ajuste/osario_quebrado.png": "a0c6bfd7f512967f81c082f721f38139a663a2f6a69e90ddca2018fa0a3fb040",
+    "studies/osario_v84/fase3/ajuste/osario_quebrado_glowmask.png": "9aef92629e32cac8ca3b9377351867c17ec4694df9397fdff11fd19fd72073c0"
+  },
+  "artistic_acceptance": "Authorized thorax adjustment applied",
+  "game_validation": "Not run; no active resources changed in this phase"
+}

@@ -1,0 +1,84 @@
+{
+  "revision": "20bc23030ff90660b2c50ac9e50e707a3f462ca9",
+  "files": [
+    {
+      "path": "src/client/java/dev/aptitudes/client/render/MobRenderers.java",
+      "bytes": 1835,
+      "sha256": "492b033f0ee5d4f2d00578c4a5d024a77b0c4dcde2d82d9bd431c4c3c416af0f",
+      "git_blob": "922964910b9d0fafb741b5e12b52f89e8362e067"
+    },
+    {
+      "path": "src/main/java/dev/aptitudes/mob/OsarioEntities.java",
+      "bytes": 1516,
+      "sha256": "909b889787d9ede907459ccbc93a41f886232407b26102126cfedba475d0f53f",
+      "git_blob": "fe420dbfef555a3839a5e5f077f4dda8fddfa939"
+    },
+    {
+      "path": "src/main/java/dev/aptitudes/mob/OsarioEntity.java",
+      "bytes": 4455,
+      "sha256": "6ff4d28ffcef726e5d6c81e4ab2d0271e8e2567fd6b07c18e5f0043149eddacc",
+      "git_blob": "dfd4c546795265a748ede17be21a503d1e106e12"
+    },
+    {
+      "path": "src/main/java/dev/aptitudes/mob/OsarioRules.java",
+      "bytes": 503,
+      "sha256": "f7839ddd467372aadc46bf6fd1b9f1a589fa1fce305cb5bebacfb3168a9ff159",
+      "git_blob": "1e4fd9f0e25a5d469967ce15905d95f90b65cbd6"
+    },
+    {
+      "path": "src/main/resources/assets/aptitudes/animations/entity/osario_quebrado.animation.json",
+      "bytes": 1714,
+      "sha256": "091ef51b289ab6224f2b713ec89ca077c59869670b3c5863313dad7338604ecb",
+      "git_blob": "44860ba9277f03d606283c190226b62a72a9d965"
+    },
+    {
+      "path": "src/main/resources/assets/aptitudes/geo/entity/osario_quebrado.geo.json",
+      "bytes": 2725,
+      "sha256": "947c53b76a3df8922f7cd56b74cda22b536b5fb4a8da0339017e5a70ded07045",
+      "git_blob": "425afbdf8d88b2d74388b292391f2c847521fe61"
+    },
+    {
+      "path": "src/main/resources/assets/aptitudes/models/item/nucleo_osario.json",
+      "bytes": 99,
+      "sha256": "e3b1e862d3dafb78b52454560743f3beceba416af357629c9e4d609bab43498d",
+      "git_blob": "029841134c334c8a3915efa1eccdd9705e47ea81"
+    },
+    {
+      "path": "src/main/resources/assets/aptitudes/models/item/osario_quebrado_spawn_egg.json",
+      "bytes": 52,
+      "sha256": "d2d67b22443c23da9188100f1a63ddf1f7ec4e0e4a3dcc4e6a1d04d87b2213ef",
+      "git_blob": "ddd15597643b640aff93a8b94f352937a45ae24f"
+    },
+    {
+      "path": "src/main/resources/assets/aptitudes/textures/entity/osario_quebrado.png",
+      "bytes": 302,
+      "sha256": "66aa9f973745849136c956669c22bfecfbde8ceaa36946fff999d4b464bebf4e",
+      "git_blob": "0f8122fbb2121e54f5fd6d9a3af249a39d3f99fa"
+    },
+    {
+      "path": "src/main/resources/assets/aptitudes/textures/item/nucleo_osario.png",
+      "bytes": 354,
+      "sha256": "02159c40ce77531c124f5c6b7e84d96b3c310b73cc28b97480360f4ed53a368b",
+      "git_blob": "30d17fcc49b32f2cd362033574df00086a23e9ab"
+    },
+    {
+      "path": "src/main/resources/data/aptitudes/loot_table/entities/osario_quebrado.json",
+      "bytes": 407,
+      "sha256": "ae42b39bef365e44ad921921f3102e634682b06712c7e5dc162b9dc8ef08300f",
+      "git_blob": "5b961ce4ea3b3f6ebf7f3b15dcbc735e2f959963"
+    },
+    {
+      "path": "src/test/java/dev/aptitudes/mob/OsarioRulesTest.java",
+      "bytes": 479,
+      "sha256": "81986eca4933a6b27eddd6c2f6f0000b6d7fe4d51a040a583179d3b9ce2bbb00",
+      "git_blob": "4154a2265deef048692b002777b37fbc81740b82"
+    },
+    {
+      "path": "tools/models/gen_mob_models.py",
+      "bytes": 11296,
+      "sha256": "452f84f2edb9ba0d46d0f4466f13efee36137e8058457e4a24a77bd0b273227b",
+      "git_blob": "2a77d09c2bdfcdf669bfdea83a771a0c9e06e049"
+    }
+  ],
+  "note": "Instantánea histórica; no integrar ni usar como generador de los recursos activos."
+}

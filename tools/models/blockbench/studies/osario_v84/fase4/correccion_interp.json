@@ -1,0 +1,38 @@
+{
+  "animation.osario_quebrado.walk": {
+    "maximum": 0.04547644128245088,
+    "keyframes": 187
+  },
+  "animation.osario_quebrado.chase": {
+    "maximum": 0.03309756945900178,
+    "keyframes": 137
+  },
+  "animation.osario_quebrado.alert": {
+    "maximum": 0.03548396479975336,
+    "keyframes": 94
+  },
+  "animation.osario_quebrado.claw_swipe": {
+    "maximum": 0.03585232584486931,
+    "keyframes": 121
+  },
+  "animation.osario_quebrado.heavy_swipe": {
+    "maximum": 0.05017368394867195,
+    "keyframes": 175
+  },
+  "animation.osario_quebrado.ground_slam": {
+    "maximum": 0.08600140952783586,
+    "keyframes": 172
+  },
+  "animation.osario_quebrado.lunge": {
+    "maximum": 0.05307082182676171,
+    "keyframes": 185
+  },
+  "animation.osario_quebrado.hurt": {
+    "maximum": 0.07971164456352842,
+    "keyframes": 56
+  },
+  "animation.osario_quebrado.death": {
+    "maximum": 0.08499054263286632,
+    "keyframes": 153
+  }
+}

@@ -1,0 +1,27 @@
+Fecha: 2026-11-18
+Worktree: C:/Users/Johan/Desktop/Gits/MOD/osario-quebrado-v84
+Base: 20bc23030ff90660b2c50ac9e50e707a3f462ca9
+Comando ejecutado: .\gradlew.bat build --offline --console=plain
+Código de salida: 0
+
+Extractos de la salida real (no es el registro completo):
+Fabric Loom: 1.10.5
+Could not remap PlayerAnimationLibFabric-1.1.6+mc.1.21.1-sources.jar fully!
+> Task :compileJava
+> Task :compileClientJava
+> Task :compileTestJava
+> Task :test
+> Task :validateAccessWidener
+> Task :check
+> Task :remapJar
+> Task :remapSourcesJar
+> Task :assemble
+> Task :build
+BUILD SUCCESSFUL in 1m 50s
+12 actionable tasks: 12 executed
+
+Recuento de los XML JUnit del build: 915 pruebas, 151 clases, 0 fallos, 0 errores, 0 omitidas.
+El remapeo de fuentes de PAL informó de MochaEngine no resuelto y una NullPointerException;
+la compilación del código y las pruebas sí terminaron correctamente.
+También se imprimieron avisos de APIs y funciones de Gradle deprecadas.
+Informes locales completos: build/reports/tests/test/index.html

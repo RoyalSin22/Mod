@@ -10,10 +10,12 @@ Sistema RPG con tres capas que se combinan:
 - **16 habilidades legendarias** (tecla `H`; se eligen en el árbol de talentos): la exclusividad por servidor es opcional y está desactivada por defecto.
 - **Armas, la Armadura Ascendida, accesorios, runas y cuatro pociones propias**, con recetas consultables en el grimorio.
 - **Templos sellados** con puzles, un guardián y Vasos de vida (+1 corazón permanente, hasta 5) (v64).
-- **Niebla de almas**: el Errante Velado avisa antes de su barrido, que puede debilitar a varios objetivos. Los
+- **Niebla de almas**: el Errante Velado anuncia el sector de su barrido con un contorno cian y puede debilitar
+  a varios objetivos. Heraldo de la Muerte lo reconoce como no muerto. Los
   ejemplares del evento pueden soltar un Jirón de Velo Espectral.
 - **Grimorio** con bestiario que se desbloquea al vencer a cada criatura o jefe, progreso, buscador, marcadores y sendas de cada rol (v61).
-- **Jefes animados** con ataques anunciados. El Coloso Sin Rostro muestra la armadura agrietada al entrar en su segunda fase.
+- **Jefes animados** con ataques anunciados. El Coloso Sin Rostro muestra la armadura agrietada al entrar en su segunda fase
+  y mantiene el avance de la embestida hasta contactar, chocar o completar su recorrido.
 - **GUI** rediseñada (`K` atributos/habilidades, `J` roles, `G` cambiar elemento, `U` ver un objeto en el grimorio desde un inventario), **HUD** de energía, enfriamientos y elemento activo, **comandos** y **configuración JSON**.
 
 ## Créditos y licencia
@@ -21,6 +23,9 @@ Licencia MIT. Procedencia del arte (parte generada con IA, parte dibujada por pr
 
 ## Documentación técnica
 
+- [Osario Quebrado V84](docs/V84_OSARIO_FASE5.md) integrado con cuatro ataques avisados, diez clips, máscara emisiva
+  y sonidos propios. Compilación y combate comprobados. Resultados y aprobación del autor en la
+  [validación en Minecraft](docs/V84_OSARIO_FASE6.md).
 - [docs/ROADMAP_APTITUDES.md](docs/ROADMAP_APTITUDES.md): estado real, cambios y pendientes.
 - [docs/BALANCE.md](docs/BALANCE.md): fórmulas, límites y decisiones de balance.
 - [docs/CONFIGURATION.md](docs/CONFIGURATION.md): todas las opciones y su validación.

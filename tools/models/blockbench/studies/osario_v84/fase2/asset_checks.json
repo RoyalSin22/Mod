@@ -1,0 +1,105 @@
+{
+  "passed": true,
+  "cubes": 169,
+  "bones": 30,
+  "faces": 1014,
+  "base_plan_cubes": 145,
+  "deviation": 24,
+  "counts_by_bone": {
+    "body": 3,
+    "bone_fingers": 6,
+    "bone_forearm": 3,
+    "bone_hand": 2,
+    "bone_shoulder": 3,
+    "bone_thumb": 2,
+    "bone_upper_arm": 2,
+    "chest": 4,
+    "chest_core": 5,
+    "debris_chips": 6,
+    "debris_roots": 5,
+    "dragging_end": 10,
+    "dragging_lower": 9,
+    "dragging_middle": 9,
+    "dragging_upper": 10,
+    "foot_left": 5,
+    "foot_right": 5,
+    "head": 17,
+    "jaw": 10,
+    "mass_shoulder": 6,
+    "neck": 2,
+    "pelvis": 6,
+    "ribs_left": 12,
+    "ribs_right": 12,
+    "root": 0,
+    "shin_left": 3,
+    "shin_right": 3,
+    "spine_upper": 5,
+    "thigh_left": 2,
+    "thigh_right": 2
+  },
+  "counts_by_material": {
+    "bone": 123,
+    "ecto": 5,
+    "earth": 25,
+    "root": 14,
+    "moss": 2
+  },
+  "model_aabb": {
+    "min": [
+      -8.752,
+      0,
+      -11.375
+    ],
+    "max": [
+      12.987,
+      29.783,
+      9.56
+    ],
+    "size": [
+      21.739,
+      29.783,
+      20.935
+    ],
+    "center": [
+      2.118,
+      14.892,
+      -0.908
+    ]
+  },
+  "shoulder_distance": 12.000000000000002,
+  "ground_contacts": {
+    "foot_left": 0,
+    "foot_right": 0,
+    "dragging_end": 0
+  },
+  "rig_unchanged_from_phase1": true,
+  "phase1_sha256": "06105c0eb8cb265f4c5dba9e7e18af692902f2cca15ad5ffd8314103df9fd9c1",
+  "native_sha256": "be471e254f11ec116d254327b3e4c337da4310f523feafbc70b0f446fba2f52d",
+  "geo_sha256": "9c3fae18dc484f7c035288accd7e83f30aa0ae304bfe46892fccf9213e1ceab3",
+  "fractional_cubes": 120,
+  "explicit_uv_faces": 720,
+  "uv_rows": 63.5,
+  "uv_island_overlap": false,
+  "detached_by_tool": 0,
+  "cross_bone_overlap_pairs": 114,
+  "obb_component_sizes": [
+    164,
+    4,
+    1
+  ],
+  "roundtrip": {
+    "pieces_compared": 169,
+    "max_world_box_error": 6.456291972156691e-06,
+    "tolerance": 0.001,
+    "geometry_only": true,
+    "passed": true
+  },
+  "core_scales_passed": [
+    1,
+    1.12,
+    1.35
+  ],
+  "texture_count": 0,
+  "animation_count": 0,
+  "rig_hierarchy_unchanged_from_phase1": true
+}

@@ -1,0 +1,20 @@
+{
+  "thumb_delta_x": 30,
+  "thumb_center_displacement": 0.46587428118453733,
+  "other_fingers_displacement": 0,
+  "jaw_delta_x": -22,
+  "jaw_center_before": [
+    0.40886270957022697,
+    20.876452185912964,
+    -8.57484654329996
+  ],
+  "jaw_center_after": [
+    0.46280542305474226,
+    20.622671671866744,
+    -7.759908622210886
+  ],
+  "jaw_moves_down": true,
+  "restored": true,
+  "textures": 0,
+  "animations": 0
+}

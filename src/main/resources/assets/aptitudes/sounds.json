@@ -544,5 +544,65 @@
     "sounds": [
       "aptitudes:element_dark"
     ]
+  },
+  "osario_ambient": {
+    "subtitle": "subtitles.aptitudes.osario.ambient",
+    "sounds": [
+      "aptitudes:osario_ambient"
+    ]
+  },
+  "osario_alert": {
+    "subtitle": "subtitles.aptitudes.osario.alert",
+    "sounds": [
+      "aptitudes:osario_alert"
+    ]
+  },
+  "osario_hurt": {
+    "subtitle": "subtitles.aptitudes.osario.hurt",
+    "sounds": [
+      "aptitudes:osario_hurt"
+    ]
+  },
+  "osario_death": {
+    "subtitle": "subtitles.aptitudes.osario.death",
+    "sounds": [
+      "aptitudes:osario_death"
+    ]
+  },
+  "osario_claw": {
+    "subtitle": "subtitles.aptitudes.osario.claw",
+    "sounds": [
+      "aptitudes:osario_claw"
+    ]
+  },
+  "osario_heavy": {
+    "subtitle": "subtitles.aptitudes.osario.heavy",
+    "sounds": [
+      "aptitudes:osario_heavy"
+    ]
+  },
+  "osario_slam_charge": {
+    "subtitle": "subtitles.aptitudes.osario.slam_charge",
+    "sounds": [
+      "aptitudes:osario_slam_charge"
+    ]
+  },
+  "osario_slam_hit": {
+    "subtitle": "subtitles.aptitudes.osario.slam_hit",
+    "sounds": [
+      "aptitudes:osario_slam_hit"
+    ]
+  },
+  "osario_lunge": {
+    "subtitle": "subtitles.aptitudes.osario.lunge",
+    "sounds": [
+      "aptitudes:osario_lunge"
+    ]
+  },
+  "osario_step": {
+    "subtitle": "subtitles.aptitudes.osario.step",
+    "sounds": [
+      "aptitudes:osario_step"
+    ]
   }
 }

@@ -17,7 +17,6 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -126,11 +125,6 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 		return phase;
 	}
 
-	/** Fase con la que vuelve un jefe reinvocado (paso 2 de la reinvocación). Nunca baja de la fase actual. */
-	public void restorePhase(int restored) {
-		phase = Math.max(phase, Math.max(1, Math.min(3, restored)));
-	}
-
 	@Override
 	protected void initGoals() {
 		goalSelector.add(0, new SwimGoal(this));
@@ -207,16 +201,6 @@ public abstract class AnimatedBossEntity extends HostileEntity implements GeoEnt
 		world.playSound(null, player.getBlockPos(), SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.PLAYERS, 1f, 1.2f);
 		drainPosture(world, GuardRules.PARRY_POSTURE_DAMAGE, AttackTags.of());
 		return true;
-	}
-
-	/** Registra la derrota (tick y fase) para la reinvocación (fase C, {@link SummonState}). */
-	@Override
-	public void onDeath(DamageSource source) {
-		super.onDeath(source);
-		if (getWorld() instanceof ServerWorld world && world.getServer() != null) {
-			String id = Registries.ENTITY_TYPE.getId(getType()).toString();
-			SummonState.get(world.getServer()).recordDefeat(id, world.getTime(), phase);
-		}
 	}
 
 	/** Postura vaciada: aviso sonoro y de partículas. El aturdimiento lo aplica {@link PostureRules}. */

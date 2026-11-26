@@ -73,12 +73,6 @@ public class FacelessColossusEntity extends AnimatedBossEntity {
 	}
 
 	@Override
-	public void restorePhase(int restored) {
-		super.restorePhase(restored);
-		syncArmorPhase();
-	}
-
-	@Override
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
 		syncArmorPhase();
@@ -247,7 +241,17 @@ public class FacelessColossusEntity extends AnimatedBossEntity {
 
 	@Override
 	public void tickMovement() {
-		if (getWorld() instanceof ServerWorld world && isPostureStunned(world.getTime())) finishCharge();
+		if (chargeTarget != null && getWorld() instanceof ServerWorld world) {
+			if (!isAlive() || isPostureStunned(world.getTime()) || !validAttackTarget(chargeTarget)
+					|| world.getTime() >= chargeUntil) {
+				finishCharge();
+			} else {
+				faceAttack();
+				// Mantiene el avance anunciado durante los ocho ticks, conservando gravedad y colisiones vanilla.
+				Vec3d forward = Vec3d.fromPolar(0, attackYaw).multiply(1.6);
+				setVelocity(forward.x, getVelocity().y, forward.z);
+			}
+		}
 		super.tickMovement();
 		if (chargeTarget == null || !(getWorld() instanceof ServerWorld world)) return;
 		LivingEntity target = chargeTarget;

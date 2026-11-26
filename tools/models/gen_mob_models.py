@@ -176,7 +176,7 @@ CUSTODIO = {
 
 SPECS = [OSARIO, ERRANTE, CUSTODIO, ESCORIFICADOR]
 # El editable de Blockbench es la fuente de estos recursos.
-HAND_MADE = {'escorificador_hierro', 'errante_velado'}
+HAND_MADE = {'escorificador_hierro', 'errante_velado', 'osario_quebrado'}
 
 
 def geometry(spec):
@@ -244,6 +244,22 @@ def files(assets):
     return out
 
 
+def matches(path, wanted):
+    if not path.exists():
+        return False
+    existing = path.read_bytes()
+    if existing == wanted:
+        return True
+    if path.suffix != '.png':
+        return False
+    # Pillow y zlib pueden codificar los mismos píxeles con bytes distintos.
+    try:
+        with Image.open(BytesIO(existing)) as actual, Image.open(BytesIO(wanted)) as expected:
+            return actual.size == expected.size and actual.convert('RGBA').tobytes() == expected.convert('RGBA').tobytes()
+    except OSError:
+        return False
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('assets', type=Path)
@@ -251,7 +267,7 @@ def main():
     args = parser.parse_args()
     wanted = files(args.assets)
     if args.check:
-        bad = [str(p) for p, data in wanted.items() if not p.exists() or p.read_bytes() != data]
+        bad = [str(p) for p, data in wanted.items() if not matches(p, data)]
         if bad:
             print('Distinto del generador:', *bad, sep='\n  ')
             return 1
