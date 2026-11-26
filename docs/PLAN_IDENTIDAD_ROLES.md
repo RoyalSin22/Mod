@@ -186,5 +186,6 @@ limita la frecuencia por atacante, víctima y jugador para que una ráfaga de go
   `grand.json`, 6 sonidos). Documentado en `docs/V77_EFECTOS_BATALLA.md` (fase 11).
 - Hecho (2.ª tanda): piedras angulares, guion por plantilla (10) con el id 69 (`KeystoneClientFx`), enganchado en `Keystones`.
 - Hecho (3.ª tanda): firmas y definitivas de los otros 15 roles (`GrandFx` ya cubre los 20; 15 sonidos `grand_<rol>`).
-- Pendiente de V96: evoluciones Maestro/Definitiva y los 10 nodos extra.
+- Hecho (4.ª tanda): activas de Maestro/Definitivo por plantilla (id 70, `EvolvedClientFx`, 10 sonidos `evolved_*`).
+- Pendiente de V96: los 10 nodos extra de cada rol.
 - Limitaciones: sin probar en partida; la Baliza del Ingeniero no distingue «fijar» de «teletransportar»; los sonidos solo están medidos.

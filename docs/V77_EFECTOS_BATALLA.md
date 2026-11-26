@@ -227,6 +227,23 @@ Animaciones `grand_signature` (tick 5) y `grand_ultimate` (tick 8) en `grand.jso
 | Paladín | Halo y cera dorada ascendente | Campana mayor y coro |
 | Ingeniero | Chispas eléctricas dispersas | Servo, engranaje y descarga |
 
+### V96, 4.ª tanda: activas de Maestro y Definitivo
+
+Id 70 (`FxIds.EVOLVED`), `power` = ordinal de `EvolvedTree.Template`, `dx` = nivel (0 Maestro, 1 Definitivo), `dy` = rango. Una animación común `evolved_cast` (tick 3) y un sonido por plantilla (`ModSounds.EVOLVED`).
+
+| Plantilla | Capa del cliente |
+|---|---|
+| Nova | Destello y dos anillos que se expanden; sacudida |
+| Rayo | Línea de partículas de 24 bloques desde la mano |
+| Cono | Abanico de partículas de 70° |
+| Embestida | Estela de nube y FOV hacia delante |
+| Zona | Anillo en el punto señalado y lluvia de motas |
+| Vórtice | Espiral que se cierra |
+| Aura | Anillo grande, motas que suben y viñeteado |
+| Curación | Anillo de aldeano feliz y brillos |
+| Escudo | Anillo de cera, destello y FOV hacia atrás |
+| Invocación | Llama de almas y almas que suben |
+
 ### V96, 3.ª tanda: firmas y definitivas de los otros 15 roles
 
 Mismo evento (ids 67–68) y mismos gestos; solo cambian el motivo de partículas y el sonido (`ModSounds.GRAND_BY_ROLE[ordinal del rol]`).

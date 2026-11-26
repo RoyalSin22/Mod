@@ -33,6 +33,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   PNG a mano tras ejecutar `gen_items.py`. Los mundos antiguos conservan, inofensivo, el archivo de datos de `SummonState`. Sin cambios de balance.
 
 ### Añadido
+- **V96 (4.ª tanda) — Activas de Maestro y Definitivo.** Las 80 activas de las filas de evolución comparten diez plantillas (Nova, Rayo, Cono,
+  Embestida, Zona, Vórtice, Aura, Curación, Escudo e Invocación) y ahora cada plantilla tiene su guion: gesto de cuerpo breve
+  (`evolved_cast`), sonido propio (`evolved_<plantilla>`, 10 nuevos), capa de partículas con el color del rol y cámara; el Definitivo multiplica
+  la cantidad y el movimiento de cámara. Un evento por lanzamiento (`FxIds.EVOLVED`, 70) desde `EvolvedAbilities`, dibujado por
+  `client/fx/EvolvedClientFx`. El área real sigue dibujándola el servidor y los sonidos de vanilla quedan más bajos como cuerpo del golpe. Sin
+  cambios de balance. **Sin probar en partida.** Quedan los 10 nodos extra de cada rol.
 - **V96 (3.ª tanda) — Firmas y definitivas de los otros 15 roles.** `GrandFx` cubre ya los 20 roles: cada uno tiene motivo de partículas
   propio (humo para Asesino y Brujo, notas para el Bardo, hojas para Herbolista y Druida, llama de almas para el Nigromante, etc.) y un
   sonido propio (`grand_<rol>`, 15 nuevos, sintetizados con un timbre por rol: campana, soplo, golpe, filo, bordón, madera, monedas,

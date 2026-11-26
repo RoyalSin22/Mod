@@ -129,8 +129,10 @@ public final class FxIds {
 	public static final int GRAND_ULTIMATE = 68;
 	/** Disparo de una piedra angular (V96); {@code power} = ordinal de la plantilla, {@code dx,dy,dz} = dirección al segundo objetivo o radio en {@code dx}. */
 	public static final int KEYSTONE = 69;
+	/** Activa de Maestro o Definitivo (V96); {@code power} = ordinal de la plantilla, {@code dx} = nivel (0 Maestro, 1 Definitivo), {@code dy} = rango. */
+	public static final int EVOLVED = 70;
 	/** Mayor id válido; el cliente descarta lo desconocido. */
-	public static final int MAX = 69;
+	public static final int MAX = 70;
 
 	private FxIds() {
 	}

@@ -677,6 +677,66 @@
       "aptitudes:grand_weapon_summoner"
     ]
   },
+  "evolved_nova": {
+    "subtitle": "subtitles.aptitudes.evolved_nova",
+    "sounds": [
+      "aptitudes:evolved_nova"
+    ]
+  },
+  "evolved_beam": {
+    "subtitle": "subtitles.aptitudes.evolved_beam",
+    "sounds": [
+      "aptitudes:evolved_beam"
+    ]
+  },
+  "evolved_cone": {
+    "subtitle": "subtitles.aptitudes.evolved_cone",
+    "sounds": [
+      "aptitudes:evolved_cone"
+    ]
+  },
+  "evolved_dash": {
+    "subtitle": "subtitles.aptitudes.evolved_dash",
+    "sounds": [
+      "aptitudes:evolved_dash"
+    ]
+  },
+  "evolved_zone": {
+    "subtitle": "subtitles.aptitudes.evolved_zone",
+    "sounds": [
+      "aptitudes:evolved_zone"
+    ]
+  },
+  "evolved_vortex": {
+    "subtitle": "subtitles.aptitudes.evolved_vortex",
+    "sounds": [
+      "aptitudes:evolved_vortex"
+    ]
+  },
+  "evolved_aura": {
+    "subtitle": "subtitles.aptitudes.evolved_aura",
+    "sounds": [
+      "aptitudes:evolved_aura"
+    ]
+  },
+  "evolved_heal": {
+    "subtitle": "subtitles.aptitudes.evolved_heal",
+    "sounds": [
+      "aptitudes:evolved_heal"
+    ]
+  },
+  "evolved_shield": {
+    "subtitle": "subtitles.aptitudes.evolved_shield",
+    "sounds": [
+      "aptitudes:evolved_shield"
+    ]
+  },
+  "evolved_summon": {
+    "subtitle": "subtitles.aptitudes.evolved_summon",
+    "sounds": [
+      "aptitudes:evolved_summon"
+    ]
+  },
   "grand_hunter": {
     "subtitle": "subtitles.aptitudes.grand_hunter",
     "sounds": [

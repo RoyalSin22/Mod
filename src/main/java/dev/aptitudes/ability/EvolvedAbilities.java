@@ -51,7 +51,25 @@ public final class EvolvedAbilities {
 		return base + 1.5f * rank;
 	}
 
+	/** V96: guion de batalla común (animación, sonido de la plantilla y encuadre del cliente). */
+	private static void fx(ServerPlayerEntity p, int rank, Active spec) {
+		boolean ultimate = spec.tier() >= dev.aptitudes.role.Evolution.ULTIMATE;
+		Vec3d at = switch (spec.template()) {
+			case ZONE -> Targeting.lookEnd(p, 30);
+			case VORTEX -> Targeting.lookEnd(p, 20);
+			default -> p.getPos();
+		};
+		FxEvents.onAt(p, at, dev.aptitudes.logic.FxIds.EVOLVED, spec.color(), spec.template().ordinal(),
+				new Vec3d(ultimate ? 1 : 0, rank, 0), p.getRandom().nextInt());
+		AbilityState.schedule(p.getServer(), dev.aptitudes.logic.PlayerAnimIds.IMPACT_TICKS.get(dev.aptitudes.logic.PlayerAnimIds.EVOLVED_CAST), () -> {
+			if (!p.isAlive()) return;
+			p.getWorld().playSound(null, p.getX(), p.getY(), p.getZ(), dev.aptitudes.sound.ModSounds.EVOLVED[spec.template().ordinal()],
+					SoundCategory.PLAYERS, ultimate ? 1.2f : 0.9f, (ultimate ? 0.88f : 1.0f) + (p.getRandom().nextFloat() - 0.5f) * 0.06f);
+		});
+	}
+
 	private static boolean cast(ServerPlayerEntity p, int rank, Active spec) {
+		fx(p, rank, spec);
 		return switch (spec.template()) {
 			case NOVA -> nova(p, rank, spec);
 			case BEAM -> beam(p, rank, spec);
@@ -324,6 +342,7 @@ public final class EvolvedAbilities {
 	}
 
 	private static void sound(ServerPlayerEntity p, SoundEvent sound, float volume, float pitch) {
-		p.getWorld().playSound(null, p.getX(), p.getY(), p.getZ(), sound, SoundCategory.PLAYERS, volume, pitch);
+		// V96: el sonido propio de la plantilla ya suena (fx); el de vanilla queda como cuerpo del golpe, más bajo.
+		p.getWorld().playSound(null, p.getX(), p.getY(), p.getZ(), sound, SoundCategory.PLAYERS, volume * 0.4f, pitch);
 	}
 }

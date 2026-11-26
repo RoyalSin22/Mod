@@ -1905,6 +1905,16 @@ subtitles.aptitudes.grand_merchant¦Moedas tilintam¦Des pièces tintent¦Münze
 subtitles.aptitudes.grand_monk¦Um gongo ressoa¦Un gong résonne¦Ein Gong dröhnt
 subtitles.aptitudes.grand_gunslinger¦Um tiro estala¦Un coup de feu claque¦Ein Schuss knallt
 subtitles.aptitudes.grand_weapon_summoner¦Lâminas espectrais ressoam¦Des lames spectrales résonnent¦Geisterklingen klirren
+subtitles.aptitudes.evolved_nova¦Uma onda de choque explode¦Une onde de choc éclate¦Eine Druckwelle bricht los
+subtitles.aptitudes.evolved_beam¦Um raio de poder dispara¦Un rayon de puissance jaillit¦Ein Energiestrahl schießt
+subtitles.aptitudes.evolved_cone¦Uma varredura violenta¦Un balayage violent¦Ein weiter Hieb
+subtitles.aptitudes.evolved_dash¦Uma investida arrasa¦Une charge déferle¦Ein Ansturm rast vorbei
+subtitles.aptitudes.evolved_zone¦O poder chove¦La puissance s'abat¦Macht regnet herab
+subtitles.aptitudes.evolved_vortex¦Um vórtice atrai¦Un vortex attire¦Ein Wirbel zieht an
+subtitles.aptitudes.evolved_aura¦Uma aura cresce¦Une aura s'étend¦Eine Aura schwillt an
+subtitles.aptitudes.evolved_heal¦Sinos suaves curam feridas¦Des clochettes soignent les blessures¦Sanfte Glocken heilen Wunden
+subtitles.aptitudes.evolved_shield¦Uma proteção se ergue¦Une protection se dresse¦Ein Schutz erscheint
+subtitles.aptitudes.evolved_summon¦Aliados atendem ao chamado¦Des alliés répondent à l'appel¦Verbündete folgen dem Ruf
 subtitles.aptitudes.grand_hunter¦Um falcão grita¦Un faucon crie¦Ein Falke schreit
 subtitles.aptitudes.grand_bard¦Um acorde soa¦Un accord retentit¦Ein Akkord erklingt
 subtitles.aptitudes.grand_warlock¦Um zumbido sombrio cresce¦Un bourdonnement sombre enfle¦Ein dunkles Dröhnen schwillt an

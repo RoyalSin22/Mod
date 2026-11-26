@@ -43,7 +43,7 @@ IMPACT_TICKS = {"berserker_rage": 4, "berserker_war_cry": 8, "berserker_slam": 3
                 "shapeshifter_howl": 5,
                 "hunter_mark": 3, "hunter_trap": 3, "hunter_volley": 4, "hunter_falcon": 4, "bard_song": 4, "bard_dissonance": 3, "warlock_curse": 3, "warlock_bolt": 3, "warlock_imps": 5, "warlock_doom": 4, "tamer_command": 4, "tamer_stampede": 3,
                 "elementalist_bolt": 3, "elementalist_burst": 4,
-                "grand_signature": 5, "grand_ultimate": 8}
+                "grand_signature": 5, "grand_ultimate": 8, "evolved_cast": 3}
 
 
 def kf(vec, easing=OUT):
@@ -731,6 +731,14 @@ def build_grand():
                0.98: ([10, 0, 0], HOLD), 1.50: (NEUTRAL, SOFT)}, None),
         body=(None, {0: NEUTRAL, 0.12: [0, -3.2, 0], 0.40: ([0, 1.2, 0], SMASH), 0.62: ([0, 1.2, 0], HOLD), 0.80: ([0, -2.6, 0], SMASH),
                      0.98: ([0, -2.6, 0], HOLD), 1.50: (NEUTRAL, SOFT)}),
+    ))
+    # ---- Activa evolucionada (0,55 s): brazo atrás y empuje al frente en el tick 3.
+    ev_r = {0: NEUTRAL, 0.08: ([-30, -20, 22], OUT), 0.15: ([-88, 4, 8], SMASH), 0.30: ([-88, 4, 8], HOLD), 0.55: (NEUTRAL, SOFT)}
+    anims["evolved_cast"] = animation(False, limbs(
+        ev_r, 0.01, 0.58,
+        torso=({0: NEUTRAL, 0.08: [10, 0, 0], 0.15: ([-6, 0, 0], SMASH), 0.30: ([-6, 0, 0], HOLD), 0.55: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.08: [6, 0, 0], 0.15: ([-4, 0, 0], BACK), 0.30: ([-4, 0, 0], HOLD), 0.55: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.08: [0, -1.2, 0], 0.15: ([0, 0.4, 0], BACK), 0.30: ([0, 0.4, 0], HOLD), 0.55: (NEUTRAL, SOFT)}),
     ))
     return {"format_version": "1.8.0", "animations": anims}
 

@@ -1257,6 +1257,40 @@ for _name, (_kind, _f0) in _GRAND_VOICES.items():
     globals()['grand_' + _name] = _grand_voice(_kind, _f0)
 
 
+# ---------------------------------------------------------------- Activas de Maestro y Definitivo (V96, 4.ª parte)
+
+def _evolved_voice(kind):
+    def make(rng):
+        t = t_axis(1.0)
+        n = len(t)
+        if kind == 'nova':
+            out = np.sin(2 * np.pi * (140 * np.exp(-t * 7) + 50) * t) * env(t, 0.002, 0.35) * 1.1 + _soft_air(rng, n, 300, 6000) * env(t, 0.005, 0.25) * 0.6
+        elif kind == 'beam':
+            out = np.sin(2 * np.pi * np.cumsum(500 + 1800 * np.clip(t / 0.35, 0, 1)) / RATE) * env(t, 0.02, 0.5) * 0.4 + _soft_air(rng, n, 2000, 9000) * env(t, 0.02, 0.4) * 0.3
+        elif kind == 'cone':
+            out = _soft_air(rng, n, 400, 7000) * np.sin(np.pi * np.clip(t / 0.35, 0, 1)) * env(t, 0.01, 0.4) * 1.0 + _bell(t, 90, [(1.0, 0.9)], 0.25) * 0.4
+        elif kind == 'dash':
+            out = _soft_air(rng, n, 200, 5000) * (1 - np.clip(t / 0.6, 0, 1)) * env(t, 0.01, 0.4) * 1.0 + np.sin(2 * np.pi * (70 * np.exp(-t * 9) + 40) * t) * env(t, 0.002, 0.2) * 0.6
+        elif kind == 'zone':
+            out = _bell(t, 330, [(1.0, 0.7), (2.0, 0.4), (3.0, 0.2)], 0.7) * 0.7 + np.sin(2 * np.pi * 55 * t) * env(t, 0.1, 0.5) * 0.4
+        elif kind == 'vortex':
+            out = np.sin(2 * np.pi * np.cumsum(150 + 500 * np.clip(t / 0.9, 0, 1) ** 2) / RATE) * env(t, 0.3, 0.5) * 0.5 + _soft_air(rng, n, 300, 3500) * env(t, 0.3, 0.5) * 0.45
+        elif kind == 'aura':
+            out = sum(np.sin(2 * np.pi * f * t) * env(t, 0.15, 0.6) for f in (220.0, 277.2, 329.6, 440.0)) * 0.22 + _bell(t, 880, [(1.0, 0.4)], 0.7) * 0.3
+        elif kind == 'heal':
+            out = sum(_bell(np.maximum(t - 0.07 * k, 0), f, [(1.0, 0.6), (2.0, 0.2)], 0.8) * (t >= 0.07 * k) for k, f in enumerate((784.0, 988.0, 1175.0, 1568.0))) * 0.5
+        elif kind == 'shield':
+            out = _bell(t, 260, [(1.0, 0.8), (2.3, 0.5), (3.9, 0.3)], 0.4) * 0.8 + _soft_air(rng, n, 800, 6000) * env(t, 0.002, 0.08) * 0.6
+        else:
+            out = (np.sin(2 * np.pi * 110 * t) + 0.5 * np.sin(2 * np.pi * 165.5 * t)) * env(t, 0.2, 0.6) * 0.6 + _soft_air(rng, n, 200, 3000) * env(t, 0.15, 0.5) * 0.35
+        return fade_out(normalize(out, 0.82), 0.15)
+    return make
+
+
+for _t in ['nova', 'beam', 'cone', 'dash', 'zone', 'vortex', 'aura', 'heal', 'shield', 'summon']:
+    globals()['evolved_' + _t] = _evolved_voice(_t)
+
+
 SOUNDS = {
     'eclipse_announce': eclipse_announce,
     'eclipse_start': eclipse_start,
@@ -1385,6 +1419,16 @@ SOUNDS = {
     'grand_bard': grand_bard,
     'grand_warlock': grand_warlock,
     'grand_tamer': grand_tamer,
+    'evolved_nova': evolved_nova,
+    'evolved_beam': evolved_beam,
+    'evolved_cone': evolved_cone,
+    'evolved_dash': evolved_dash,
+    'evolved_zone': evolved_zone,
+    'evolved_vortex': evolved_vortex,
+    'evolved_aura': evolved_aura,
+    'evolved_heal': evolved_heal,
+    'evolved_shield': evolved_shield,
+    'evolved_summon': evolved_summon,
 }
 
 

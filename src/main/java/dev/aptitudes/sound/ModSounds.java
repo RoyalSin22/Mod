@@ -122,6 +122,8 @@ public final class ModSounds {
 	public static final SoundEvent GRAND_RUMBLE = register("grand_rumble");
 	/** Motivo de la firma y la definitiva de cada rol, indexado por ordinal del rol (V96). */
 	public static final SoundEvent[] GRAND_BY_ROLE = grandByRole();
+	/** Sonido de cada plantilla de activa evolucionada (V96), indexado por ordinal de {@code EvolvedTree.Template}. */
+	public static final SoundEvent[] EVOLVED = evolved();
 
 	private ModSounds() {
 	}
@@ -130,6 +132,13 @@ public final class ModSounds {
 		dev.aptitudes.role.KeystoneRules.Template[] all = dev.aptitudes.role.KeystoneRules.Template.values();
 		SoundEvent[] out = new SoundEvent[all.length];
 		for (int i = 0; i < all.length; i++) out[i] = register("keystone_" + all[i].key());
+		return out;
+	}
+
+	private static SoundEvent[] evolved() {
+		dev.aptitudes.role.EvolvedTree.Template[] all = dev.aptitudes.role.EvolvedTree.Template.values();
+		SoundEvent[] out = new SoundEvent[all.length];
+		for (int i = 0; i < all.length; i++) out[i] = register("evolved_" + all[i].name().toLowerCase(java.util.Locale.ROOT));
 		return out;
 	}
 
