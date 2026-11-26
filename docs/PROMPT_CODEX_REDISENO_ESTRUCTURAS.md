@@ -15,12 +15,17 @@ Empieza solo cuando la rama de Claude esté integrada en `main`. Si no lo está,
 
 ## 1. Lo que NO gusta y lo que se quiere (el autor lo completa antes de lanzar el encargo)
 
-> **Pendiente del autor:** escribe aquí, con tus palabras, qué no te gusta de la torre y del templo (silueta, tamaño, interior,
-> material, recorrido, dificultad…) y qué te gustaría. Si lo dejas vacío, Codex **no** debe inventarlo: hará primero el §6.
+> **Pedido del autor para la torre (2026-11-26):** la estructura deja de ser «tres torres en un patio» y pasa a ser una **fortaleza medieval-gótica
+> en ruinas** (por las batallas que ha sufrido) de la que **destacan tres torres**.
 
-- Torre (Las Tres Torres Señoriales): …
-- Templo (Templo del Custodio): …
-- Referencias (imágenes, juegos): …
+- **Escala:** la **distancia entre las torres es mucho mayor** (ya no caben en 31×31; ver §4.1, que se acuerda con el autor).
+- **Torres:** la **Torre principal, la más alta**, alberga la batalla con el **jefe** (Coloso Sin Rostro). Las **otras dos** son **torres de vigilancia** con un **subjefe** cada una (Guardián Desmontado).
+- **Interior variado:** cuartos distintos repartidos por toda la fortaleza (biblioteca, baño, dormitorios, comedor, etc.), **plataformas**, puentes, patios,
+  **combates con enemigos** por el camino, y decoración **medieval y gótica** (arcos apuntados, vidrieras, contrafuertes, gárgolas, candelabros, estandartes rotos).
+- **Ruinas:** muros derrumbados, tejados hundidos, escombros y vegetación; los daños deben **verse** y a la vez dejar un recorrido jugable.
+- **Botín:** **gran botín** al vencer al jefe de la torre principal (más que el actual: hoy un cofre por jugador con Plantilla de ascensión).
+- **Pendiente del autor:** qué no te gusta del **templo** y qué quieres en él (silueta, tamaño, interior, recorrido); y referencias visuales. Si no lo escribe, Codex no lo inventa.
+- Lluvia de ideas de partida (Claude): `docs/V88_BRAINSTORM_FORTALEZA.md`.
 
 ## 2. Lo que Claude retira antes (contrato: Codex lo da por hecho)
 
@@ -59,7 +64,7 @@ dirección de arte oscura del mod).
 
 ## 4. Restricciones técnicas (no negociables)
 
-1. **Un `Feature` no puede escribir fuera de radio 15** desde su centro (31×31); si necesitas más, hay que cambiar la colocación y eso se acuerda con el autor antes.
+1. **Un `Feature` solo puede escribir en un radio de 15 desde su centro (31×31).** La fortaleza nueva **no cabe**: hay que proponer cómo generar una estructura grande (ver §3 de `docs/V88_BRAINSTORM_FORTALEZA.md`: plano puro evaluado por columna, o `Structure` propia) y **acordarlo con el autor antes de programar**. El Templo conserva el límite.
 2. La forma vive en una clase **pura** (sin Minecraft) con JUnit (`TowersLayoutTest`, `CustodianTempleLayoutTest`, `DeepTempleLayoutTest`, `CryptLayoutTest`
    o sus equivalentes). Una prueba nueva no puede llamar a métodos que no existen; no rompas las que hay: si una prueba codifica una cota que cambias a propósito, actualízala y dilo.
 3. Los **estados del controlador no retroceden** y se guardan como número: solo se añaden valores al **final** del enum.
