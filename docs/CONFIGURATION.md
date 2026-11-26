@@ -67,6 +67,8 @@ templos antiguos ya generados siguen funcionando. La frecuencia está en `data/a
 | `hudMinimal` | false | true / false | Oculta avisos de XP y tutorial, contador de combos, mecánicas de rol y números de daño. Conserva las barras, habilidades, piedras angulares, avisos de amenaza, eventos, jefes y grupo. `null` recupera false. |
 | `hudAnimations` | true | true / false | Transiciones de vida, maná, jefes y XP, entrada de avisos y pulso de nivel en la tarjeta de XP. Al desactivarlas, el HUD muestra los cambios de inmediato y sus indicadores de estado dejan de latir. `null` recupera true. Los efectos del mundo y del cielo tienen sus propios interruptores. |
 | `guideBookmarks` | `[]` | hasta 24 ids `chapter:` / `item:` / `beast:` / `role:` | Marcadores del grimorio (v61). Se guardan al pulsar ☆; los ids no válidos o repetidos se descartan al cargar. |
+| `impactFeedback` | true | true / false | V95: señales comunes de combate (golpe pesado, crítico, bloqueo con escudo y curación efectiva), en `config/aptitudes-client.json`. Se escalan con `fxIntensity` y un `null` explícito recupera true. |
+| `combatStances` | true | true / false | V97: posturas de combate (Bersérker, Lancero, Monje y Mago) mientras se sostiene su arma y hay combate; solo se ven en tercera persona y en otros jugadores. Requiere `playerAnimations`; en `config/aptitudes-client.json`. Un `null` explícito recupera true. |
 | `castAnimations` | true | true / false | Remates 3D de las habilidades, desde Mayús + O → Animaciones 3D. Un `null` explícito recupera true en `ClientConfig.validated(...)`. |
 
 ## Tutorial (v44)
@@ -419,6 +421,7 @@ desde que el evento **empieza** (provisional) y no las consumen los comandos `/a
 | `fogCooldownDays` | 10 | [1, 365] | Días de espera entre dos Nieblas de almas. |
 | `fogDurationTicks` | 24000 | [1200, 240000] | Duración de la Niebla en ticks (24 000 = un día de Minecraft). Antes duraba 12 000 desde las 18:00. |
 | `emberRainCooldownDays` | 5 | [1, 365] | Días de espera entre dos Lluvias de brasas provocadas por un portal. |
+| `summonBudget` | 16 | [0, 64] | V94: presupuesto de invocaciones por jugador. Cada invocación cuesta puntos (esbirro 2, diablillo 1, lobo 3, golem y torreta 4) y la suma de todas las activas, de cualquier rol, no puede pasar de este valor: al pasarse se retiran las más antiguas. 0 = sin límite. |
 | `eclipseSummonCooldownDays` | 3 | [0, 365] | C3: días de juego de espera por mundo, desde el fin del último Eclipse, para volver a convocarlo con el Astrolabio del Ocaso o el Damnorath. 0 quita la espera. No la consumen `/aptitudes eclipse start` ni `/aptitudes event start`. |
 | `threeTowersEnabled` | true | — | V86: permite que se generen **Las Tres Torres Señoriales** (dungeon de superficie con región de 24×24 chunks: **más frecuente** que el Templo del Custodio, de 32×32, por decisión del autor). Solo afecta a chunks sin generar. Hasta la fase 3 el controlador es un marcador y no hay jefes. |
 | `deathEchoesEnabled` | **false** | — | C7 · S6: al morir un jugador, un eco con su cabeza (brillante) repite sus últimos 5 s mientras haya otro jugador a menos de 24 bloques. **Desactivado por defecto** porque genera entidades y no está probado en partida. |

@@ -70,9 +70,50 @@ public final class AbilityState {
 
 	public static void trackSummon(Entity summon, ServerPlayerEntity owner, int lifetimeTicks) {
 		int now = AbilityManager.now(owner);
+		enforceBudget(summon, owner, dev.aptitudes.Aptitudes.config().summonBudget); // V94
 		summon.addCommandTag(SUMMON_TAG);
 		SUMMONS.put(summon.getUuid(), new Summon(summon.getWorld().getRegistryKey(), now + lifetimeTicks,
 				owner.getUuid(), now));
+	}
+
+	/**
+	 * V94: presupuesto de invocaciones por jugador. Suma el coste de las invocaciones vivas del dueño (de cualquier rol) y, si la nueva
+	 * no cabe, retira las más antiguas. La nueva siempre se acepta.
+	 */
+	private static void enforceBudget(Entity incoming, ServerPlayerEntity owner, int budget) {
+		if (budget <= 0 || owner.getServer() == null) return;
+		java.util.List<dev.aptitudes.logic.SummonBudgetRules.Entry> alive = new ArrayList<>();
+		Map<UUID, Entity> entities = new HashMap<>();
+		for (Map.Entry<UUID, Summon> e : SUMMONS.entrySet()) {
+			if (!e.getValue().owner().equals(owner.getUuid())) continue;
+			ServerWorld world = owner.getServer().getWorld(e.getValue().world());
+			Entity entity = world == null ? null : world.getEntity(e.getKey());
+			if (entity == null || !entity.isAlive()) continue;
+			entities.put(e.getKey(), entity);
+			alive.add(new dev.aptitudes.logic.SummonBudgetRules.Entry(e.getKey(), e.getValue().spawnTick(),
+					dev.aptitudes.logic.SummonBudgetRules.costOfType(net.minecraft.registry.Registries.ENTITY_TYPE.getId(entity.getType()).toString())));
+		}
+		int newCost = dev.aptitudes.logic.SummonBudgetRules.costOfType(net.minecraft.registry.Registries.ENTITY_TYPE.getId(incoming.getType()).toString());
+		for (UUID id : dev.aptitudes.logic.SummonBudgetRules.evictions(alive, newCost, budget)) {
+			Entity victim = entities.get(id);
+			if (victim != null) victim.discard();
+			SUMMONS.remove(id);
+		}
+	}
+
+	/** V94: retira todas las invocaciones de un jugador (al morir) o las que no estén en {@code keepWorld} (al cambiar de dimensión). */
+	public static void discardSummonsOf(ServerPlayerEntity owner, @Nullable RegistryKey<World> keepWorld) {
+		if (owner.getServer() == null) return;
+		Iterator<Map.Entry<UUID, Summon>> it = SUMMONS.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<UUID, Summon> e = it.next();
+			if (!e.getValue().owner().equals(owner.getUuid())) continue;
+			if (keepWorld != null && e.getValue().world().equals(keepWorld)) continue;
+			ServerWorld world = owner.getServer().getWorld(e.getValue().world());
+			Entity entity = world == null ? null : world.getEntity(e.getKey());
+			if (entity != null) entity.discard();
+			it.remove();
+		}
 	}
 
 	public static boolean isSummon(Entity entity) {
@@ -162,8 +203,9 @@ public final class AbilityState {
 
 	public static void schedule(MinecraftServer server, int delayTicks, Runnable task) {
 		// v65 C5 Y1: los golpes diferidos conservan el bonus de sinergia de la habilidad que los programó.
+		// V93: y también la habilidad a la que se atribuye el daño (telemetría y eventos de combate).
 		SCHEDULED.add(new Scheduled(server.getTicks() + Math.max(1, delayTicks),
-				AbilityManager.withSynergy(AbilityManager.synergySnapshot(), task)));
+				CombatEvents.wrap(CombatEvents.current(), AbilityManager.withSynergy(AbilityManager.synergySnapshot(), task))));
 	}
 
 	/** Ejecuta {@code body(i)} {@code times} veces, cada {@code interval} ticks, empezando ya. */

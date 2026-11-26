@@ -24,6 +24,9 @@ public final class PlayerAnims {
 	/** Prioridad de «animaciones importantes de jugabilidad» según la documentación de la librería (1500 o más). */
 	private static final int PRIORITY = 1500;
 	private static final Identifier LAYER = Aptitudes.id("body");
+	/** V97: capa de posturas de combate, por debajo de los gestos de habilidad (1500), que la tapan mientras suenan. */
+	private static final int STANCE_PRIORITY = 1100;
+	private static final Identifier STANCE_LAYER = Aptitudes.id("stance");
 	private static int failures;
 
 	private PlayerAnims() {
@@ -39,6 +42,32 @@ public final class PlayerAnims {
 			controller.setFirstPersonConfiguration(new FirstPersonConfiguration(true, true, true, true));
 			return controller;
 		});
+	}
+
+	/**
+	 * V97: registra la capa de las posturas. En primera persona no hace nada (la cámara y las manos siguen siendo las de vanilla): las
+	 * posturas se ven en tercera persona y en los demás jugadores.
+	 */
+	static void registerStance() {
+		PlayerAnimationFactory.ANIMATION_DATA_FACTORY.registerFactory(STANCE_LAYER, STANCE_PRIORITY, player -> {
+			PlayerAnimationController controller = new PlayerAnimationController(player, (c, state, setter) -> PlayState.STOP);
+			controller.setFirstPersonModeHandler(c -> FirstPersonMode.NONE);
+			return controller;
+		});
+	}
+
+	/** Pone (o cambia) la postura del jugador; {@code name} null la quita. */
+	static void setStance(AbstractClientPlayerEntity player, String name) {
+		try {
+			if (!(PlayerAnimationAccess.getPlayerAnimationLayer(player, STANCE_LAYER) instanceof PlayerAnimationController controller)) return;
+			if (name == null) {
+				controller.stopTriggeredAnimation();
+			} else {
+				controller.replaceAnimationWithFade(AbstractFadeModifier.standardFadeIn(6, EasingType.EASE_IN_OUT_SINE), Aptitudes.id(name));
+			}
+		} catch (IllegalArgumentException e) {
+			if (failures++ < 3) Aptitudes.LOGGER.warn("[Aptitudes] No se pudo cambiar la postura {}", name, e);
+		}
 	}
 
 	/** Dispara la animación en el jugador si {@code entity} lo es y el jugador no las ha desactivado. */

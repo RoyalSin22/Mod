@@ -3,7 +3,7 @@
 Generador de las animaciones del cuerpo del jugador (V78, Player Animation Library).
 
 Uso:  python3 tools/models/gen_player_animations.py <carpeta assets/aptitudes> [--check]
-Escribe <carpeta>/player_animations/berserker.json. Con --check no escribe: falla si el archivo no coincide.
+Escribe <carpeta>/player_animations/<rol>.json (berserker.json y mage.json). Con --check no escribe: falla si algún archivo no coincide.
 
 Convención de PAL (leída de su código): los ángulos están en GRADOS y se aplican tal cual a las partes del modelo vanilla
 (sin invertir signos). En el modelo vanilla, pitch NEGATIVO levanta un brazo o una pierna hacia delante, pitch positivo
@@ -32,7 +32,18 @@ SOFT = "easeinoutsine"
 HOLD = "linear"
 
 # Fotograma de impacto de cada animación, en ticks (20 por segundo). Debe coincidir con PlayerAnimIds.IMPACT_TICKS.
-IMPACT_TICKS = {"berserker_rage": 4, "berserker_war_cry": 8, "berserker_slam": 3}
+IMPACT_TICKS = {"berserker_rage": 4, "berserker_war_cry": 8, "berserker_slam": 3, "mage_bolt": 4, "mage_blink": 3,
+                "mage_time_warp": 6, "mage_missile_r": 3, "mage_missile_l": 3, "assassin_vanish": 3, "assassin_step": 3,
+                "assassin_fan": 4, "assassin_shuriken": 3, "herbalist_balm": 4, "herbalist_rain": 5, "herbalist_spore": 3,
+                "engineer_grapple": 3, "engineer_grenade": 3,
+                "lancer_leap": 3, "lancer_slam": 2, "lancer_thrust": 3, "swordsman_iaido": 3, "swordsman_cuts": 2, "paladin_consecrate": 5, "paladin_hammer": 4,
+                "necromancer_spear": 4, "necromancer_siphon": 4, "druid_wolves": 5, "druid_thorns": 4, "merchant_coin": 3,
+                "merchant_guard": 4, "monk_kick": 3, "monk_fists": 2,
+                "gunslinger_shot": 2, "gunslinger_deadeye": 4, "weapon_summon": 4, "weapon_greatsword": 4, "shapeshifter_pounce": 3,
+                "shapeshifter_howl": 5,
+                "hunter_mark": 3, "hunter_trap": 3, "hunter_volley": 4, "hunter_falcon": 4, "bard_song": 4, "bard_dissonance": 3, "warlock_curse": 3, "warlock_bolt": 3, "warlock_imps": 5, "warlock_doom": 4, "tamer_command": 4, "tamer_stampede": 3,
+                "elementalist_bolt": 3, "elementalist_burst": 4,
+                "grand_signature": 5, "grand_ultimate": 8, "evolved_cast": 3}
 
 
 def kf(vec, easing=OUT):
@@ -97,7 +108,7 @@ def limbs(right_arm, left_lag=0.04, left_roll=0.92, **others):
     return b
 
 
-def build():
+def build_berserker():
     anims = {}
 
     # ---- Furia (1,0 s): se encoge hacia atrás, EXPLOTA hacia delante con los brazos abiertos (sobrepaso), se queda congelado un
@@ -174,8 +185,606 @@ def build():
     return {"format_version": "1.8.0", "animations": anims}
 
 
-def render():
-    return json.dumps(build(), indent=2, ensure_ascii=False) + "\n"
+def build_mage():
+    anims = {}
+
+    # ---- Rayo arcano (0,6 s): lleva la mano derecha al pecho para cargar mientras la izquierda guía, lanza hacia delante con sobrepaso
+    # (tick 4), se queda un instante y recoge. Gesto preciso y contenido: menos ancho que el del Bersérker, más limpio.
+    bolt_r = {0: NEUTRAL, 0.08: ([-42, -8, 24], OUT), 0.14: ([-50, -6, 28], SOFT), 0.20: ([-98, 4, 4], BACK), 0.28: ([-98, 4, 4], HOLD),
+              0.36: ([-86, 2, 9], OUT), 0.60: (NEUTRAL, SOFT)}
+    bolt_l = {0: NEUTRAL, 0.08: ([-72, 12, -30], OUT), 0.14: ([-76, 10, -32], SOFT), 0.22: ([-62, 6, -22], BACK),
+              0.30: ([-62, 6, -22], HOLD), 0.60: (NEUTRAL, SOFT)}
+    anims["mage_bolt"] = animation(False, {
+        "right_arm": bone(rot=bolt_r),
+        "left_arm": bone(rot=bolt_l),
+        "torso": bone(rot={0: NEUTRAL, 0.08: [8, 0, -4], 0.20: ([-7, 3, 0], BACK), 0.28: ([-7, 3, 0], HOLD), 0.60: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.08: [5, 0, 0], 0.20: ([-5, 0, 0], BACK), 0.28: ([-5, 0, 0], HOLD), 0.60: (NEUTRAL, SOFT)}),
+        "body": bone(pos={0: NEUTRAL, 0.08: [0, -1, 0], 0.20: ([0, 0.4, 0], BACK), 0.28: ([0, 0.4, 0], HOLD), 0.60: (NEUTRAL, SOFT)}),
+    })
+
+    # ---- Salto arcano (0,55 s): cruza los brazos hacia dentro mientras se agacha y los abre de golpe al reaparecer (tick 3).
+    blink_r = {0: NEUTRAL, 0.08: ([-72, -32, -16], OUT), 0.15: ([-34, 10, 64], BACK), 0.23: ([-34, 10, 64], HOLD),
+               0.30: ([-30, 6, 50], OUT), 0.55: (NEUTRAL, SOFT)}
+    anims["mage_blink"] = animation(False, limbs(
+        blink_r, 0.03, 0.95,
+        torso=({0: NEUTRAL, 0.08: [16, 0, 0], 0.15: ([-12, 0, 0], BACK), 0.23: ([-12, 0, 0], HOLD), 0.55: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.08: [8, 0, 0], 0.15: ([-8, 0, 0], BACK), 0.23: ([-8, 0, 0], HOLD), 0.55: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.08: [0, -2.2, 0], 0.15: ([0, 1.2, 0], BACK), 0.23: ([0, 1.2, 0], HOLD), 0.55: (NEUTRAL, SOFT)}),
+    ))
+
+    # ---- Distorsión temporal (0,9 s): abre los brazos hacia arriba, los cierra con un golpe de palmas hacia delante (tick 6) y los
+    # mantiene un instante empujando el tiempo antes de soltar.
+    warp_r = {0: NEUTRAL, 0.14: ([-122, 0, 50], OUT), 0.24: ([-128, 0, 54], SOFT), 0.30: ([-86, -12, 6], SMASH),
+              0.38: ([-86, -12, 6], HOLD), 0.50: ([-98, -4, 12], OUT), 0.64: ([-94, -6, 10], SOFT), 0.90: (NEUTRAL, SOFT)}
+    anims["mage_time_warp"] = animation(False, limbs(
+        warp_r, 0.02, 0.95,
+        torso=({0: NEUTRAL, 0.14: [-6, 0, 0], 0.30: ([10, 0, 0], SMASH), 0.38: ([10, 0, 0], HOLD), 0.90: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.14: [-10, 0, 0], 0.30: ([6, 0, 0], SMASH), 0.38: ([6, 0, 0], HOLD), 0.90: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.14: [0, 0.6, 0], 0.30: ([0, -1.2, 0], SMASH), 0.38: ([0, -1.2, 0], HOLD), 0.90: (NEUTRAL, SOFT)}),
+    ))
+
+    # ---- Misiles arcanos: un empujón corto por misil, alternando brazo (se dispara una animación por cada misil).
+    punch_r = {0: NEUTRAL, 0.07: ([-52, -6, 20], OUT), 0.15: ([-102, 4, 6], SMASH), 0.21: ([-102, 4, 6], HOLD), 0.32: (NEUTRAL, SOFT)}
+    guide_l = {0: NEUTRAL, 0.07: ([-30, 6, -12], OUT), 0.15: ([-42, 4, -16], OUT), 0.21: ([-42, 4, -16], HOLD), 0.32: (NEUTRAL, SOFT)}
+    torso_r = {0: NEUTRAL, 0.07: [4, -5, 0], 0.15: ([-3, 5, 0], SMASH), 0.21: ([-3, 5, 0], HOLD), 0.32: (NEUTRAL, SOFT)}
+    anims["mage_missile_r"] = animation(False, {
+        "right_arm": bone(rot=punch_r), "left_arm": bone(rot=guide_l), "torso": bone(rot=torso_r)})
+    anims["mage_missile_l"] = animation(False, {
+        "left_arm": bone(rot=lagged_mirror(punch_r, 0, 1.0)), "right_arm": bone(rot=lagged_mirror(guide_l, 0, 1.0)),
+        "torso": bone(rot=lagged_mirror(torso_r, 0, 1.0))})
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_assassin():
+    anims = {}
+
+    # ---- Desaparecer (0,7 s): cruza los brazos ante el rostro mientras se encoge (preparación) y los abre de un barrido de capa
+    # en el tick 3, quedándose un instante agachado antes de erguirse.
+    vanish_r = {0: NEUTRAL, 0.07: ([-78, -34, -10], OUT), 0.15: ([-52, 26, 78], SMASH), 0.24: ([-52, 26, 78], HOLD),
+                0.36: ([-40, 12, 40], SOFT), 0.70: (NEUTRAL, SOFT)}
+    anims["assassin_vanish"] = animation(False, limbs(
+        vanish_r, 0.02, 0.95,
+        torso=({0: NEUTRAL, 0.07: [20, 0, 0], 0.15: ([6, 8, 0], SMASH), 0.24: ([6, 8, 0], HOLD), 0.70: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.07: [14, 0, 0], 0.15: ([-4, 0, 0], BACK), 0.24: ([-4, 0, 0], HOLD), 0.70: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.07: [0, -2.6, 0], 0.15: ([0, -1.8, 0], SMASH), 0.24: ([0, -1.8, 0], HOLD), 0.70: (NEUTRAL, SOFT)}),
+    ))
+
+    # ---- Paso de sombra (0,5 s): se enrosca hacia atrás con el arma baja y se lanza con una estocada al frente en el tick 3.
+    step_r = {0: NEUTRAL, 0.07: ([28, -10, 22], OUT), 0.15: ([-104, 4, 4], SMASH), 0.23: ([-104, 4, 4], HOLD), 0.50: (NEUTRAL, SOFT)}
+    anims["assassin_step"] = animation(False, limbs(
+        step_r, 0.03, 0.9,
+        torso=({0: NEUTRAL, 0.07: [-6, -14, 0], 0.15: ([22, 10, 0], SMASH), 0.23: ([22, 10, 0], HOLD), 0.50: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.07: [-4, -8, 0], 0.15: ([-8, 4, 0], BACK), 0.23: ([-8, 4, 0], HOLD), 0.50: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.07: [0, -2.0, 0], 0.15: ([0, -1.4, 0], SMASH), 0.23: ([0, -1.4, 0], HOLD), 0.50: (NEUTRAL, SOFT)}),
+    ))
+
+    # ---- Abanico de cuchillas (0,75 s): cruza los brazos sobre el pecho cargando las cuchillas y los lanza abiertos en el tick 4.
+    fan_r = {0: NEUTRAL, 0.10: ([-66, -38, -18], OUT), 0.15: ([-70, -40, -22], SOFT), 0.20: ([-84, 14, 82], SMASH),
+             0.30: ([-84, 14, 82], HOLD), 0.42: ([-70, 8, 60], SOFT), 0.75: (NEUTRAL, SOFT)}
+    anims["assassin_fan"] = animation(False, limbs(
+        fan_r, 0.015, 0.96,
+        torso=({0: NEUTRAL, 0.10: [10, 0, 0], 0.20: ([-6, 0, 0], SMASH), 0.30: ([-6, 0, 0], HOLD), 0.75: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.10: [8, 0, 0], 0.20: ([-4, 0, 0], BACK), 0.30: ([-4, 0, 0], HOLD), 0.75: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.10: [0, -1.4, 0], 0.20: ([0, 0.6, 0], BACK), 0.30: ([0, 0.6, 0], HOLD), 0.75: (NEUTRAL, SOFT)}),
+    ))
+
+    # ---- Shuriken (0,6 s): arma el brazo por encima del hombro, el otro guía al frente, y lo lanza con un latigazo en el tick 3.
+    shu_r = {0: NEUTRAL, 0.07: ([-150, 6, 38], OUT), 0.15: ([-78, -4, 6], SMASH), 0.23: ([-78, -4, 6], HOLD), 0.55: (NEUTRAL, SOFT)}
+    shu_l = {0: NEUTRAL, 0.07: ([-70, 14, -24], OUT), 0.15: ([-58, 8, -18], SOFT), 0.23: ([-58, 8, -18], HOLD), 0.55: (NEUTRAL, SOFT)}
+    anims["assassin_shuriken"] = animation(False, {
+        "right_arm": bone(rot=shu_r), "left_arm": bone(rot=shu_l),
+        "torso": bone(rot={0: NEUTRAL, 0.07: [-4, -14, 0], 0.15: ([6, 12, 0], SMASH), 0.23: ([6, 12, 0], HOLD), 0.55: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.07: [-4, -6, 0], 0.15: ([2, 4, 0], BACK), 0.23: ([2, 4, 0], HOLD), 0.55: (NEUTRAL, SOFT)}),
+    })
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_herbalist():
+    anims = {}
+
+    # ---- Bálsamo (0,8 s): recoge con las dos manos a la altura de la cintura y las abre al frente con las palmas hacia arriba (tick 4).
+    balm_r = {0: NEUTRAL, 0.10: ([22, -10, 20], OUT), 0.20: ([-80, 8, 44], BACK), 0.32: ([-80, 8, 44], HOLD), 0.80: (NEUTRAL, SOFT)}
+    anims["herbalist_balm"] = animation(False, limbs(
+        balm_r, 0.02, 0.95,
+        torso=({0: NEUTRAL, 0.10: [12, 0, 0], 0.20: ([-4, 0, 0], BACK), 0.32: ([-4, 0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.10: [10, 0, 0], 0.20: ([-6, 0, 0], BACK), 0.32: ([-6, 0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.10: [0, -1.4, 0], 0.20: ([0, 0.5, 0], BACK), 0.32: ([0, 0.5, 0], HOLD), 0.80: (NEUTRAL, SOFT)}),
+    ))
+
+    # ---- Lluvia sanadora (1,1 s): alza los brazos al cielo (tick 5), los sostiene mientras cae la lluvia y los baja despacio.
+    rain_r = {0: NEUTRAL, 0.12: ([-120, 0, 24], OUT), 0.25: ([-168, 0, 22], BACK), 0.50: ([-164, 0, 26], HOLD), 0.80: ([-130, 0, 30], SOFT),
+              1.10: (NEUTRAL, SOFT)}
+    anims["herbalist_rain"] = animation(False, limbs(
+        rain_r, 0.02, 0.95,
+        torso=({0: NEUTRAL, 0.25: ([-10, 0, 0], BACK), 0.50: ([-10, 0, 0], HOLD), 1.10: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.25: ([-20, 0, 0], BACK), 0.50: ([-20, 0, 0], HOLD), 1.10: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.25: ([0, 0.8, 0], BACK), 0.50: ([0, 0.8, 0], HOLD), 1.10: (NEUTRAL, SOFT)}),
+    ))
+
+    # ---- Nube de esporas (0,6 s): lanza una vaina con un tiro por debajo del hombro (tick 3).
+    spore_r = {0: NEUTRAL, 0.07: ([36, -8, 14], OUT), 0.15: ([-62, 4, 6], SMASH), 0.23: ([-62, 4, 6], HOLD), 0.55: (NEUTRAL, SOFT)}
+    spore_l = {0: NEUTRAL, 0.07: ([-34, 10, -14], OUT), 0.15: ([-48, 6, -12], SOFT), 0.23: ([-48, 6, -12], HOLD), 0.55: (NEUTRAL, SOFT)}
+    anims["herbalist_spore"] = animation(False, {
+        "right_arm": bone(rot=spore_r), "left_arm": bone(rot=spore_l),
+        "torso": bone(rot={0: NEUTRAL, 0.07: [-4, -12, 0], 0.15: ([8, 10, 0], SMASH), 0.23: ([8, 10, 0], HOLD), 0.55: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.07: [-2, -6, 0], 0.15: ([4, 4, 0], BACK), 0.23: ([4, 4, 0], HOLD), 0.55: (NEUTRAL, SOFT)}),
+    })
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_engineer():
+    anims = {}
+
+    # ---- Garfio (0,55 s): encoge el brazo contra el pecho para cargar el muelle y lo dispara al frente y arriba en el tick 3.
+    grap_r = {0: NEUTRAL, 0.07: ([-40, -6, 16], OUT), 0.15: ([-108, 4, 4], SMASH), 0.24: ([-108, 4, 4], HOLD), 0.55: (NEUTRAL, SOFT)}
+    anims["engineer_grapple"] = animation(False, {
+        "right_arm": bone(rot=grap_r),
+        "left_arm": bone(rot={0: NEUTRAL, 0.07: [-26, 8, -14], 0.15: ([-18, 6, -22], SOFT), 0.24: ([-18, 6, -22], HOLD), 0.55: (NEUTRAL, SOFT)}),
+        "torso": bone(rot={0: NEUTRAL, 0.07: [4, -10, 0], 0.15: ([-8, 8, 0], SMASH), 0.24: ([-8, 8, 0], HOLD), 0.55: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.07: [2, -4, 0], 0.15: ([-6, 4, 0], BACK), 0.24: ([-6, 4, 0], HOLD), 0.55: (NEUTRAL, SOFT)}),
+    })
+
+    # ---- Granada de pulso (0,65 s): echa el brazo atrás por encima del hombro y la lanza con un tiro de revés en el tick 3.
+    gren_r = {0: NEUTRAL, 0.07: ([-150, 10, 34], OUT), 0.15: ([-34, 0, 4], SMASH), 0.24: ([-34, 0, 4], HOLD), 0.60: (NEUTRAL, SOFT)}
+    anims["engineer_grenade"] = animation(False, {
+        "right_arm": bone(rot=gren_r),
+        "left_arm": bone(rot={0: NEUTRAL, 0.07: [-52, 12, -20], 0.15: ([-30, 8, -16], SOFT), 0.24: ([-30, 8, -16], HOLD), 0.60: (NEUTRAL, SOFT)}),
+        "torso": bone(rot={0: NEUTRAL, 0.07: [-8, -14, 0], 0.15: ([14, 10, 0], SMASH), 0.24: ([14, 10, 0], HOLD), 0.60: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.07: [-4, -6, 0], 0.15: ([4, 4, 0], BACK), 0.24: ([4, 4, 0], HOLD), 0.60: (NEUTRAL, SOFT)}),
+    })
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_lancer():
+    anims = {}
+
+    # ---- Salto del dragón (0,75 s): se agacha con la lanza atrás y explota hacia arriba con los brazos al cielo en el tick 3.
+    leap_r = {0: NEUTRAL, 0.08: ([32, -8, 14], OUT), 0.15: ([-172, 0, 16], SMASH), 0.30: ([-172, 0, 16], HOLD), 0.75: ([-120, 0, 20], SOFT)}
+    anims["lancer_leap"] = animation(False, limbs(
+        leap_r, 0.02, 0.95,
+        torso=({0: NEUTRAL, 0.08: [24, 0, 0], 0.15: ([-12, 0, 0], SMASH), 0.30: ([-12, 0, 0], HOLD), 0.75: ([-6, 0, 0], SOFT)}, None),
+        head=({0: NEUTRAL, 0.08: [16, 0, 0], 0.15: ([-14, 0, 0], BACK), 0.30: ([-14, 0, 0], HOLD), 0.75: ([-8, 0, 0], SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.08: [0, -3.0, 0], 0.15: ([0, 1.2, 0], SMASH), 0.30: ([0, 1.2, 0], HOLD), 0.75: ([0, 0.6, 0], SOFT)}),
+    ))
+    # ---- Aterrizaje (0,7 s): lanza sobre la cabeza y clavada hacia abajo en el tick 2.
+    slam_r = {0: NEUTRAL, 0.06: ([-168, 0, 10], OUT), 0.10: ([-38, 0, 4], SMASH), 0.22: ([-38, 0, 4], HOLD), 0.70: (NEUTRAL, SOFT)}
+    anims["lancer_slam"] = animation(False, limbs(
+        slam_r, 0.015, 0.96,
+        torso=({0: NEUTRAL, 0.06: [-8, 0, 0], 0.10: ([28, 0, 0], SMASH), 0.22: ([28, 0, 0], HOLD), 0.70: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.06: [-10, 0, 0], 0.10: ([12, 0, 0], BACK), 0.22: ([12, 0, 0], HOLD), 0.70: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.10: ([0, -3.4, 0], SMASH), 0.22: ([0, -3.4, 0], HOLD), 0.70: (NEUTRAL, SOFT)}),
+    ))
+    # ---- Estocada perforante (0,55 s): recoge la lanza y la lanza recta al frente en el tick 3.
+    thr_r = {0: NEUTRAL, 0.07: ([14, -12, 18], OUT), 0.15: ([-98, 3, 3], SMASH), 0.26: ([-98, 3, 3], HOLD), 0.55: (NEUTRAL, SOFT)}
+    anims["lancer_thrust"] = animation(False, limbs(
+        thr_r, 0.015, 0.95,
+        torso=({0: NEUTRAL, 0.07: [-4, -16, 0], 0.15: ([20, 10, 0], SMASH), 0.26: ([20, 10, 0], HOLD), 0.55: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.07: [-2, -8, 0], 0.15: ([-6, 6, 0], BACK), 0.26: ([-6, 6, 0], HOLD), 0.55: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.07: [0, -1.2, 0], 0.15: ([0, -2.0, 0], SMASH), 0.26: ([0, -2.0, 0], HOLD), 0.55: (NEUTRAL, SOFT)}),
+    ))
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_swordsman():
+    anims = {}
+
+    # ---- Iaido (0,7 s): mano a la cadera con el cuerpo torcido y desenvaina con un tajo horizontal en el tick 3.
+    iai_r = {0: NEUTRAL, 0.08: ([-28, -14, 10], OUT), 0.15: ([-88, 50, 6], SMASH), 0.30: ([-88, 50, 6], HOLD), 0.70: (NEUTRAL, SOFT)}
+    anims["swordsman_iaido"] = animation(False, {
+        "right_arm": bone(rot=iai_r),
+        "left_arm": bone(rot={0: NEUTRAL, 0.08: [-20, 16, -8], 0.15: ([-40, 30, -14], SOFT), 0.30: ([-40, 30, -14], HOLD), 0.70: (NEUTRAL, SOFT)}),
+        "torso": bone(rot={0: NEUTRAL, 0.08: [14, -24, 0], 0.15: ([6, 28, 0], SMASH), 0.30: ([6, 28, 0], HOLD), 0.70: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.08: [6, -10, 0], 0.15: ([0, 12, 0], BACK), 0.30: ([0, 12, 0], HOLD), 0.70: (NEUTRAL, SOFT)}),
+        "body": bone(pos={0: NEUTRAL, 0.08: [0, -2.4, 0], 0.15: ([0, -1.6, 0], SMASH), 0.30: ([0, -1.6, 0], HOLD), 0.70: (NEUTRAL, SOFT)}),
+    })
+    # ---- Mil cortes (0,95 s): cinco tajos diagonales alternados, el primero en el tick 2.
+    cuts_r = {0: NEUTRAL, 0.10: ([-112, 32, 10], SMASH), 0.26: ([-62, -30, 30], SMASH), 0.42: ([-112, 32, 10], SMASH),
+              0.58: ([-62, -30, 30], SMASH), 0.74: ([-124, 8, 6], SMASH), 0.95: (NEUTRAL, SOFT)}
+    anims["swordsman_cuts"] = animation(False, {
+        "right_arm": bone(rot=cuts_r),
+        "left_arm": bone(rot={0: NEUTRAL, 0.10: [-30, 14, -12], 0.74: ([-40, 12, -14], SOFT), 0.95: (NEUTRAL, SOFT)}),
+        "torso": bone(rot={0: NEUTRAL, 0.10: [10, 16, 0], 0.26: ([10, -16, 0], SMASH), 0.42: ([10, 16, 0], SMASH), 0.58: ([10, -16, 0], SMASH),
+                           0.74: ([14, 0, 0], SMASH), 0.95: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.10: [6, 6, 0], 0.74: ([8, 0, 0], SOFT), 0.95: (NEUTRAL, SOFT)}),
+    })
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_paladin():
+    anims = {}
+
+    # ---- Consagración (1,0 s): alza los brazos a la luz (tick 5), los sostiene mientras se consagra el suelo y los baja con calma.
+    con_r = {0: NEUTRAL, 0.12: ([-128, 0, 22], OUT), 0.25: ([-160, 0, 16], BACK), 0.55: ([-156, 0, 18], HOLD), 0.80: ([-110, 0, 24], SOFT),
+             1.0: (NEUTRAL, SOFT)}
+    anims["paladin_consecrate"] = animation(False, limbs(
+        con_r, 0.02, 0.95,
+        torso=({0: NEUTRAL, 0.25: ([-8, 0, 0], BACK), 0.55: ([-8, 0, 0], HOLD), 1.0: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.25: ([-16, 0, 0], BACK), 0.55: ([-16, 0, 0], HOLD), 1.0: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.25: ([0, 0.8, 0], BACK), 0.55: ([0, 0.8, 0], HOLD), 1.0: (NEUTRAL, SOFT)}),
+    ))
+    # ---- Martillo de la justicia (0,7 s): alza el martillo con las dos manos y lo descarga en el tick 4.
+    ham_r = {0: NEUTRAL, 0.10: ([-156, 0, 12], OUT), 0.20: ([-42, 0, 2], SMASH), 0.34: ([-42, 0, 2], HOLD), 0.70: (NEUTRAL, SOFT)}
+    anims["paladin_hammer"] = animation(False, limbs(
+        ham_r, 0.01, 0.96,
+        torso=({0: NEUTRAL, 0.10: [-10, 0, 0], 0.20: ([26, 0, 0], SMASH), 0.34: ([26, 0, 0], HOLD), 0.70: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.10: [-8, 0, 0], 0.20: ([10, 0, 0], BACK), 0.34: ([10, 0, 0], HOLD), 0.70: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.10: [0, 0.8, 0], 0.20: ([0, -2.6, 0], SMASH), 0.34: ([0, -2.6, 0], HOLD), 0.70: (NEUTRAL, SOFT)}),
+    ))
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_necromancer():
+    anims = {}
+
+    # ---- Lanza de hueso (0,65 s): extiende la mano libre llamando al hueso y empuja con la otra al frente en el tick 4.
+    sp_r = {0: NEUTRAL, 0.10: ([-30, -14, 22], OUT), 0.20: ([-100, 6, 4], SMASH), 0.32: ([-100, 6, 4], HOLD), 0.65: (NEUTRAL, SOFT)}
+    sp_l = {0: NEUTRAL, 0.10: ([-76, 18, -26], OUT), 0.20: ([-60, 10, -18], SOFT), 0.32: ([-60, 10, -18], HOLD), 0.65: (NEUTRAL, SOFT)}
+    anims["necromancer_spear"] = animation(False, {
+        "right_arm": bone(rot=sp_r), "left_arm": bone(rot=sp_l),
+        "torso": bone(rot={0: NEUTRAL, 0.10: [6, -12, 0], 0.20: ([14, 10, 0], SMASH), 0.32: ([14, 10, 0], HOLD), 0.65: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.10: [4, -6, 0], 0.20: ([-4, 4, 0], BACK), 0.32: ([-4, 4, 0], HOLD), 0.65: (NEUTRAL, SOFT)}),
+    })
+    # ---- Sifón de almas (1,0 s): abre los brazos al frente y los cierra tirando hacia el pecho (tick 4), con un pulso.
+    sip_r = {0: NEUTRAL, 0.12: ([-92, 8, 34], OUT), 0.20: ([-96, 6, 42], BACK), 0.34: ([-68, -10, 4], SOFT), 0.55: ([-60, -8, 6], HOLD), 1.0: (NEUTRAL, SOFT)}
+    anims["necromancer_siphon"] = animation(False, limbs(
+        sip_r, 0.015, 0.95,
+        torso=({0: NEUTRAL, 0.12: [-4, 0, 0], 0.34: ([8, 0, 0], SOFT), 0.55: ([8, 0, 0], HOLD), 1.0: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.12: [-8, 0, 0], 0.34: ([6, 0, 0], SOFT), 0.55: ([6, 0, 0], HOLD), 1.0: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.12: [0, 0.4, 0], 0.34: ([0, -1.0, 0], SOFT), 0.55: ([0, -1.0, 0], HOLD), 1.0: (NEUTRAL, SOFT)}),
+    ))
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_druid():
+    anims = {}
+
+    # ---- Manada (0,9 s): cabeza atrás y brazos abiertos hacia el cielo llamando a la manada (tick 5), y recoge.
+    howl_r = {0: NEUTRAL, 0.12: ([-60, 0, 40], OUT), 0.25: ([-110, 0, 60], BACK), 0.45: ([-110, 0, 60], HOLD), 0.90: (NEUTRAL, SOFT)}
+    anims["druid_wolves"] = animation(False, limbs(
+        howl_r, 0.02, 0.95,
+        torso=({0: NEUTRAL, 0.12: [-4, 0, 0], 0.25: ([-12, 0, 0], BACK), 0.45: ([-12, 0, 0], HOLD), 0.90: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.12: [-14, 0, 0], 0.25: ([-34, 0, 0], BACK), 0.45: ([-34, 0, 0], HOLD), 0.90: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.25: ([0, 0.8, 0], BACK), 0.45: ([0, 0.8, 0], HOLD), 0.90: (NEUTRAL, SOFT)}),
+    ))
+    # ---- Tormenta de espinas (0,8 s): clava el bastón al suelo con las dos manos (tick 4) y lo mantiene mientras brotan.
+    thorn_r = {0: NEUTRAL, 0.08: ([-140, 0, 10], OUT), 0.20: ([-50, 0, 4], SMASH), 0.45: ([-50, 0, 4], HOLD), 0.80: (NEUTRAL, SOFT)}
+    anims["druid_thorns"] = animation(False, limbs(
+        thorn_r, 0.01, 0.97,
+        torso=({0: NEUTRAL, 0.08: [-8, 0, 0], 0.20: ([22, 0, 0], SMASH), 0.45: ([22, 0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.08: [-6, 0, 0], 0.20: ([10, 0, 0], BACK), 0.45: ([10, 0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.20: ([0, -2.2, 0], SMASH), 0.45: ([0, -2.2, 0], HOLD), 0.80: (NEUTRAL, SOFT)}),
+    ))
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_merchant():
+    anims = {}
+
+    # ---- Lanzamiento de moneda (0,5 s): moneda sobre el pulgar y un papirotazo al frente en el tick 3.
+    coin_r = {0: NEUTRAL, 0.07: ([-50, -8, 12], OUT), 0.15: ([-92, 4, 4], SMASH), 0.24: ([-92, 4, 4], HOLD), 0.50: (NEUTRAL, SOFT)}
+    anims["merchant_coin"] = animation(False, {
+        "right_arm": bone(rot=coin_r),
+        "left_arm": bone(rot={0: NEUTRAL, 0.07: [-20, 8, -10], 0.24: ([-16, 6, -12], SOFT), 0.50: (NEUTRAL, SOFT)}),
+        "torso": bone(rot={0: NEUTRAL, 0.07: [2, -8, 0], 0.15: ([6, 8, 0], SMASH), 0.24: ([6, 8, 0], HOLD), 0.50: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.15: ([-2, 4, 0], BACK), 0.24: ([-2, 4, 0], HOLD), 0.50: (NEUTRAL, SOFT)}),
+    })
+    # ---- Guardia dorada (0,75 s): cruza los brazos ante el pecho y los baja con firmeza (tick 4).
+    gd_r = {0: NEUTRAL, 0.10: ([-92, -30, -10], OUT), 0.20: ([-34, 4, 10], SMASH), 0.34: ([-34, 4, 10], HOLD), 0.75: (NEUTRAL, SOFT)}
+    anims["merchant_guard"] = animation(False, limbs(
+        gd_r, 0.01, 0.95,
+        torso=({0: NEUTRAL, 0.10: [10, 0, 0], 0.20: ([-4, 0, 0], BACK), 0.34: ([-4, 0, 0], HOLD), 0.75: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.10: [8, 0, 0], 0.20: ([-4, 0, 0], BACK), 0.34: ([-4, 0, 0], HOLD), 0.75: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.10: [0, -1.2, 0], 0.20: ([0, 0.4, 0], BACK), 0.34: ([0, 0.4, 0], HOLD), 0.75: (NEUTRAL, SOFT)}),
+    ))
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_monk():
+    anims = {}
+
+    # ---- Patada voladora (0,6 s): arma el cuerpo atrás y empuja con los dos puños adelante en el tick 3.
+    kick_r = {0: NEUTRAL, 0.07: ([30, -10, 20], OUT), 0.15: ([-94, 4, 6], SMASH), 0.26: ([-94, 4, 6], HOLD), 0.60: (NEUTRAL, SOFT)}
+    anims["monk_kick"] = animation(False, limbs(
+        kick_r, 0.01, 0.95,
+        torso=({0: NEUTRAL, 0.07: [-14, 0, 0], 0.15: ([30, 0, 0], SMASH), 0.26: ([30, 0, 0], HOLD), 0.60: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.07: [-6, 0, 0], 0.15: ([-10, 0, 0], BACK), 0.26: ([-10, 0, 0], HOLD), 0.60: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.07: [0, -1.0, 0], 0.15: ([0, -0.6, 0], SMASH), 0.26: ([0, -0.6, 0], HOLD), 0.60: (NEUTRAL, SOFT)}),
+    ))
+    # ---- Cien puños (1,0 s): ráfaga de puñetazos alternados, el primero en el tick 2.
+    fr = {0: NEUTRAL, 0.10: ([-92, 3, 4], SMASH), 0.20: ([-30, -8, 18], OUT), 0.30: ([-94, 3, 4], SMASH), 0.40: ([-30, -8, 18], OUT),
+          0.50: ([-94, 3, 4], SMASH), 0.60: ([-30, -8, 18], OUT), 0.70: ([-96, 3, 4], SMASH), 1.0: (NEUTRAL, SOFT)}
+    fl = {0: NEUTRAL, 0.10: ([-30, 8, -18], OUT), 0.20: ([-92, -3, -4], SMASH), 0.30: ([-30, 8, -18], OUT), 0.40: ([-92, -3, -4], SMASH),
+          0.50: ([-30, 8, -18], OUT), 0.60: ([-92, -3, -4], SMASH), 0.70: ([-30, 8, -18], OUT), 1.0: (NEUTRAL, SOFT)}
+    anims["monk_fists"] = animation(False, {
+        "right_arm": bone(rot=fr), "left_arm": bone(rot=fl),
+        "torso": bone(rot={0: NEUTRAL, 0.10: [8, -10, 0], 0.20: ([8, 10, 0], SMASH), 0.30: ([8, -10, 0], SMASH), 0.40: ([8, 10, 0], SMASH),
+                           0.50: ([8, -10, 0], SMASH), 0.60: ([8, 10, 0], SMASH), 0.70: ([10, -8, 0], SMASH), 1.0: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.10: [4, 0, 0], 0.70: ([4, 0, 0], HOLD), 1.0: (NEUTRAL, SOFT)}),
+    })
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_gunslinger():
+    anims = {}
+
+    # ---- Disparo (0,4 s): apunta con el brazo derecho, retroceso seco en el tick 2 y recoge.
+    shot_r = {0: NEUTRAL, 0.05: ([-84, 2, 6], OUT), 0.10: ([-96, 2, 5], SMASH), 0.18: ([-96, 2, 5], HOLD), 0.40: (NEUTRAL, SOFT)}
+    anims["gunslinger_shot"] = animation(False, {
+        "right_arm": bone(rot=shot_r),
+        "left_arm": bone(rot={0: NEUTRAL, 0.05: [-30, 8, -12], 0.18: ([-24, 6, -14], SOFT), 0.40: (NEUTRAL, SOFT)}),
+        "torso": bone(rot={0: NEUTRAL, 0.05: [2, -6, 0], 0.10: ([-4, 4, 0], SMASH), 0.18: ([-4, 4, 0], HOLD), 0.40: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.10: ([-3, 2, 0], BACK), 0.18: ([-3, 2, 0], HOLD), 0.40: (NEUTRAL, SOFT)}),
+    })
+    # ---- Ojo de halcón (0,9 s): levanta el arma y apunta con calma, dispara un instante (tick 4) y se queda mirando.
+    dead_r = {0: NEUTRAL, 0.12: ([-90, 0, 8], OUT), 0.20: ([-104, 0, 4], SMASH), 0.40: ([-104, 0, 4], HOLD), 0.90: (NEUTRAL, SOFT)}
+    anims["gunslinger_deadeye"] = animation(False, {
+        "right_arm": bone(rot=dead_r),
+        "left_arm": bone(rot={0: NEUTRAL, 0.12: [-60, 20, -24], 0.40: ([-56, 18, -22], HOLD), 0.90: (NEUTRAL, SOFT)}),
+        "torso": bone(rot={0: NEUTRAL, 0.12: [4, -8, 0], 0.20: ([-4, 4, 0], SMASH), 0.40: ([-4, 4, 0], HOLD), 0.90: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.12: [6, 0, 0], 0.40: ([6, 0, 0], HOLD), 0.90: (NEUTRAL, SOFT)}),
+    })
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_weaponsummoner():
+    anims = {}
+
+    # ---- Invocar espadas (0,8 s): alza ambos brazos y los baja señalando al frente en el tick 4 para dar la orden.
+    sum_r = {0: NEUTRAL, 0.10: ([-130, 0, 26], OUT), 0.20: ([-84, 4, 6], SMASH), 0.34: ([-84, 4, 6], HOLD), 0.80: (NEUTRAL, SOFT)}
+    anims["weapon_summon"] = animation(False, limbs(
+        sum_r, 0.015, 0.95,
+        torso=({0: NEUTRAL, 0.10: [-6, 0, 0], 0.20: ([10, 0, 0], SMASH), 0.34: ([10, 0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.10: [-6, 0, 0], 0.20: ([4, 0, 0], BACK), 0.34: ([4, 0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.10: [0, 0.6, 0], 0.20: ([0, -1.0, 0], SMASH), 0.34: ([0, -1.0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}),
+    ))
+    # ---- Espadón espectral (0,75 s): arma el golpe a dos manos sobre el hombro y lo descarga en diagonal (tick 4).
+    gs_r = {0: NEUTRAL, 0.10: ([-150, -20, 20], OUT), 0.20: ([-70, 30, 6], SMASH), 0.34: ([-70, 30, 6], HOLD), 0.75: (NEUTRAL, SOFT)}
+    anims["weapon_greatsword"] = animation(False, limbs(
+        gs_r, 0.01, 0.96,
+        torso=({0: NEUTRAL, 0.10: [-6, -20, 0], 0.20: ([22, 22, 0], SMASH), 0.34: ([22, 22, 0], HOLD), 0.75: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.10: [-4, -8, 0], 0.20: ([6, 10, 0], BACK), 0.34: ([6, 10, 0], HOLD), 0.75: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.10: [0, 0.6, 0], 0.20: ([0, -2.0, 0], SMASH), 0.34: ([0, -2.0, 0], HOLD), 0.75: (NEUTRAL, SOFT)}),
+    ))
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_shapeshifter():
+    anims = {}
+
+    # ---- Abalanzarse (0,6 s): se encoge con las garras atrás y salta con ellas al frente en el tick 3.
+    pounce_r = {0: NEUTRAL, 0.07: ([40, -12, 24], OUT), 0.15: ([-92, 6, 12], SMASH), 0.26: ([-92, 6, 12], HOLD), 0.60: (NEUTRAL, SOFT)}
+    anims["shapeshifter_pounce"] = animation(False, limbs(
+        pounce_r, 0.01, 0.95,
+        torso=({0: NEUTRAL, 0.07: [24, 0, 0], 0.15: ([34, 0, 0], SMASH), 0.26: ([34, 0, 0], HOLD), 0.60: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.07: [14, 0, 0], 0.15: ([-12, 0, 0], BACK), 0.26: ([-12, 0, 0], HOLD), 0.60: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.07: [0, -2.8, 0], 0.15: ([0, -1.2, 0], SMASH), 0.26: ([0, -1.2, 0], HOLD), 0.60: (NEUTRAL, SOFT)}),
+    ))
+    # ---- Aullido de la bestia (1,0 s): echa la cabeza atrás con los brazos abiertos y aúlla (tick 5).
+    howl_r = {0: NEUTRAL, 0.12: ([-30, 0, 30], OUT), 0.25: ([-70, 0, 62], BACK), 0.50: ([-70, 0, 62], HOLD), 1.0: (NEUTRAL, SOFT)}
+    anims["shapeshifter_howl"] = animation(False, limbs(
+        howl_r, 0.015, 0.95,
+        torso=({0: NEUTRAL, 0.12: [4, 0, 0], 0.25: ([-16, 0, 0], BACK), 0.50: ([-16, 0, 0], HOLD), 1.0: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.12: [10, 0, 0], 0.25: ([-38, 0, 0], BACK), 0.50: ([-38, 0, 0], HOLD), 1.0: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.12: [0, -1.0, 0], 0.25: ([0, 0.8, 0], BACK), 0.50: ([0, 0.8, 0], HOLD), 1.0: (NEUTRAL, SOFT)}),
+    ))
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_hunter():
+    anims = {}
+
+    # ---- Marca del cazador (0,5 s): señala con el brazo derecho y cierra el puño en el tick 3.
+    mk_r = {0: NEUTRAL, 0.07: ([-70, 8, 8], OUT), 0.15: ([-92, 2, 4], SMASH), 0.26: ([-92, 2, 4], HOLD), 0.50: (NEUTRAL, SOFT)}
+    anims["hunter_mark"] = animation(False, {
+        "right_arm": bone(rot=mk_r),
+        "left_arm": bone(rot={0: NEUTRAL, 0.07: [-26, 6, -10], 0.26: ([-20, 4, -10], SOFT), 0.50: (NEUTRAL, SOFT)}),
+        "torso": bone(rot={0: NEUTRAL, 0.07: [2, -8, 0], 0.15: ([4, 6, 0], SMASH), 0.26: ([4, 6, 0], HOLD), 0.50: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.15: ([2, 4, 0], BACK), 0.26: ([2, 4, 0], HOLD), 0.50: (NEUTRAL, SOFT)}),
+    })
+    # ---- Trampa de oso (0,6 s): se agacha y planta la trampa al frente en el tick 3.
+    tr_r = {0: NEUTRAL, 0.07: ([30, -6, 14], OUT), 0.15: ([-38, 2, 4], SMASH), 0.30: ([-38, 2, 4], HOLD), 0.60: (NEUTRAL, SOFT)}
+    anims["hunter_trap"] = animation(False, limbs(
+        tr_r, 0.01, 0.95,
+        torso=({0: NEUTRAL, 0.07: [20, 0, 0], 0.15: ([36, 0, 0], SMASH), 0.30: ([36, 0, 0], HOLD), 0.60: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.15: ([-16, 0, 0], BACK), 0.30: ([-16, 0, 0], HOLD), 0.60: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.07: [0, -2.2, 0], 0.15: ([0, -3.0, 0], SMASH), 0.30: ([0, -3.0, 0], HOLD), 0.60: (NEUTRAL, SOFT)}),
+    ))
+    # ---- Lluvia de flechas (0,8 s): alza el arco al cielo y tensa la cuerda; suelta en el tick 4.
+    vo_r = {0: NEUTRAL, 0.10: ([-130, 0, 18], OUT), 0.20: ([-150, 0, 12], SMASH), 0.40: ([-150, 0, 12], HOLD), 0.80: (NEUTRAL, SOFT)}
+    anims["hunter_volley"] = animation(False, {
+        "right_arm": bone(rot=vo_r),
+        "left_arm": bone(rot={0: NEUTRAL, 0.10: [-140, 0, -14], 0.20: ([-160, 0, -10], SMASH), 0.40: ([-160, 0, -10], HOLD), 0.80: (NEUTRAL, SOFT)}),
+        "torso": bone(rot={0: NEUTRAL, 0.10: [-10, 0, 0], 0.20: ([-14, 0, 0], SMASH), 0.40: ([-14, 0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.10: [-20, 0, 0], 0.20: ([-30, 0, 0], BACK), 0.40: ([-30, 0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}),
+    })
+    # ---- Golpe de halcón (0,7 s): extiende el brazo y lo lanza al aire como un cetrero (tick 4).
+    fa_r = {0: NEUTRAL, 0.10: ([-50, 0, 30], OUT), 0.20: ([-130, 0, 20], BACK), 0.40: ([-130, 0, 20], HOLD), 0.70: (NEUTRAL, SOFT)}
+    anims["hunter_falcon"] = animation(False, limbs(
+        fa_r, 0.02, 0.9,
+        torso=({0: NEUTRAL, 0.10: [4, 0, 0], 0.20: ([-6, 0, 0], BACK), 0.40: ([-6, 0, 0], HOLD), 0.70: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.20: ([-14, 0, 0], BACK), 0.40: ([-14, 0, 0], HOLD), 0.70: (NEUTRAL, SOFT)}, None),
+    ))
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_bard():
+    anims = {}
+
+    # ---- Canción (1,0 s): rasga el laúd con un barrido amplio (tick 4) y balancea el cuerpo.
+    so_r = {0: NEUTRAL, 0.10: ([-50, -10, 20], OUT), 0.20: ([-62, 12, 10], BACK), 0.36: ([-54, -6, 14], SOFT), 0.52: ([-62, 10, 10], SOFT), 1.0: (NEUTRAL, SOFT)}
+    anims["bard_song"] = animation(False, {
+        "right_arm": bone(rot=so_r),
+        "left_arm": bone(rot={0: NEUTRAL, 0.10: [-70, 20, -26], 0.52: ([-74, 18, -26], HOLD), 1.0: (NEUTRAL, SOFT)}),
+        "torso": bone(rot={0: NEUTRAL, 0.10: [0, -8, 0], 0.20: ([0, 8, 0], BACK), 0.36: ([0, -6, 0], SOFT), 0.52: ([0, 6, 0], SOFT), 1.0: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.20: ([-6, 0, 0], BACK), 0.52: ([-4, 0, 0], HOLD), 1.0: (NEUTRAL, SOFT)}),
+    })
+    # ---- Disonancia (0,6 s): golpea las cuerdas de revés (tick 3) con un latigazo del cuerpo.
+    di_r = {0: NEUTRAL, 0.07: ([-30, -14, 28], OUT), 0.15: ([-86, 20, 6], SMASH), 0.26: ([-86, 20, 6], HOLD), 0.60: (NEUTRAL, SOFT)}
+    anims["bard_dissonance"] = animation(False, {
+        "right_arm": bone(rot=di_r),
+        "left_arm": bone(rot={0: NEUTRAL, 0.07: [-70, 18, -22], 0.26: ([-76, 18, -24], HOLD), 0.60: (NEUTRAL, SOFT)}),
+        "torso": bone(rot={0: NEUTRAL, 0.07: [-4, -14, 0], 0.15: ([14, 14, 0], SMASH), 0.26: ([14, 14, 0], HOLD), 0.60: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.15: ([6, 6, 0], BACK), 0.26: ([6, 6, 0], HOLD), 0.60: (NEUTRAL, SOFT)}),
+    })
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_warlock():
+    anims = {}
+
+    # ---- Maldición (0,6 s): señala con dos dedos y retuerce la mano (tick 3).
+    cu_r = {0: NEUTRAL, 0.07: ([-60, 4, 12], OUT), 0.15: ([-90, 2, 6], SMASH), 0.30: ([-84, 2, 8], HOLD), 0.60: (NEUTRAL, SOFT)}
+    anims["warlock_curse"] = animation(False, {
+        "right_arm": bone(rot=cu_r),
+        "left_arm": bone(rot={0: NEUTRAL, 0.07: [-20, 8, -16], 0.30: ([-16, 6, -16], HOLD), 0.60: (NEUTRAL, SOFT)}),
+        "torso": bone(rot={0: NEUTRAL, 0.07: [4, -8, 0], 0.15: ([8, 6, 0], SMASH), 0.30: ([8, 6, 0], HOLD), 0.60: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.15: ([6, 0, 0], BACK), 0.30: ([6, 0, 0], HOLD), 0.60: (NEUTRAL, SOFT)}),
+    })
+    # ---- Rayo abismal (0,55 s): junta la energía en el pecho y la empuja al frente en el tick 3.
+    bo_r = {0: NEUTRAL, 0.07: ([-46, -12, 20], OUT), 0.15: ([-96, 4, 4], SMASH), 0.26: ([-96, 4, 4], HOLD), 0.55: (NEUTRAL, SOFT)}
+    anims["warlock_bolt"] = animation(False, limbs(
+        bo_r, 0.01, 0.95,
+        torso=({0: NEUTRAL, 0.07: [-4, -12, 0], 0.15: ([14, 10, 0], SMASH), 0.26: ([14, 10, 0], HOLD), 0.55: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.15: ([-4, 4, 0], BACK), 0.26: ([-4, 4, 0], HOLD), 0.55: (NEUTRAL, SOFT)}, None),
+    ))
+    # ---- Diablillos (0,9 s): abre los brazos hacia abajo y los alza invocando desde el suelo (tick 5).
+    im_r = {0: NEUTRAL, 0.12: ([20, 0, 40], OUT), 0.25: ([-100, 0, 50], BACK), 0.45: ([-100, 0, 50], HOLD), 0.90: (NEUTRAL, SOFT)}
+    anims["warlock_imps"] = animation(False, limbs(
+        im_r, 0.015, 0.95,
+        torso=({0: NEUTRAL, 0.12: [18, 0, 0], 0.25: ([-8, 0, 0], BACK), 0.45: ([-8, 0, 0], HOLD), 0.90: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.12: [14, 0, 0], 0.25: ([-12, 0, 0], BACK), 0.45: ([-12, 0, 0], HOLD), 0.90: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.12: [0, -2.0, 0], 0.25: ([0, 0.6, 0], BACK), 0.45: ([0, 0.6, 0], HOLD), 0.90: (NEUTRAL, SOFT)}),
+    ))
+    # ---- Perdición (0,8 s): alza la mano abierta y la cierra como sentenciando (tick 4).
+    do_r = {0: NEUTRAL, 0.10: ([-120, 0, 24], OUT), 0.20: ([-100, 0, 8], SMASH), 0.40: ([-100, 0, 8], HOLD), 0.80: (NEUTRAL, SOFT)}
+    anims["warlock_doom"] = animation(False, {
+        "right_arm": bone(rot=do_r),
+        "left_arm": bone(rot={0: NEUTRAL, 0.10: [-30, 8, -18], 0.40: ([-26, 6, -18], HOLD), 0.80: (NEUTRAL, SOFT)}),
+        "torso": bone(rot={0: NEUTRAL, 0.10: [-8, 0, 0], 0.20: ([10, 0, 0], SMASH), 0.40: ([10, 0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.10: [-10, 0, 0], 0.20: ([8, 0, 0], BACK), 0.40: ([8, 0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}),
+    })
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_tamer():
+    anims = {}
+
+    # ---- Orden (0,8 s): alza el silbato y señala con el otro brazo al frente (tick 4).
+    co_r = {0: NEUTRAL, 0.10: ([-100, 0, 18], OUT), 0.20: ([-104, 0, 12], BACK), 0.36: ([-104, 0, 12], HOLD), 0.80: (NEUTRAL, SOFT)}
+    co_l = {0: NEUTRAL, 0.10: ([-40, 10, -16], OUT), 0.20: ([-92, 6, -6], SMASH), 0.36: ([-92, 6, -6], HOLD), 0.80: (NEUTRAL, SOFT)}
+    anims["tamer_command"] = animation(False, {
+        "right_arm": bone(rot=co_r), "left_arm": bone(rot=co_l),
+        "torso": bone(rot={0: NEUTRAL, 0.10: [-4, -8, 0], 0.20: ([8, 8, 0], SMASH), 0.36: ([8, 8, 0], HOLD), 0.80: (NEUTRAL, SOFT)}),
+        "head": bone(rot={0: NEUTRAL, 0.10: [-6, 0, 0], 0.20: ([2, 4, 0], BACK), 0.36: ([2, 4, 0], HOLD), 0.80: (NEUTRAL, SOFT)}),
+    })
+    # ---- Estampida (0,65 s): se agacha con los hombros por delante y embiste en el tick 3.
+    st_r = {0: NEUTRAL, 0.07: ([-30, -10, 24], OUT), 0.15: ([-80, 6, 14], SMASH), 0.28: ([-80, 6, 14], HOLD), 0.65: (NEUTRAL, SOFT)}
+    anims["tamer_stampede"] = animation(False, limbs(
+        st_r, 0.01, 0.95,
+        torso=({0: NEUTRAL, 0.07: [26, 0, 0], 0.15: ([40, 0, 0], SMASH), 0.28: ([40, 0, 0], HOLD), 0.65: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.07: [10, 0, 0], 0.15: ([-26, 0, 0], BACK), 0.28: ([-26, 0, 0], HOLD), 0.65: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.07: [0, -2.6, 0], 0.15: ([0, -1.6, 0], SMASH), 0.28: ([0, -1.6, 0], HOLD), 0.65: (NEUTRAL, SOFT)}),
+    ))
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_elementalist():
+    anims = {}
+
+    # ---- Proyectil elemental (0,55 s): reúne la energía en la palma y la empuja al frente en el tick 3.
+    bo_r = {0: NEUTRAL, 0.07: ([-50, -10, 22], OUT), 0.15: ([-96, 4, 4], SMASH), 0.26: ([-96, 4, 4], HOLD), 0.55: (NEUTRAL, SOFT)}
+    anims["elementalist_bolt"] = animation(False, limbs(
+        bo_r, 0.015, 0.95,
+        torso=({0: NEUTRAL, 0.07: [4, -10, 0], 0.15: ([12, 8, 0], SMASH), 0.26: ([12, 8, 0], HOLD), 0.55: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.15: ([-4, 4, 0], BACK), 0.26: ([-4, 4, 0], HOLD), 0.55: (NEUTRAL, SOFT)}, None),
+    ))
+    # ---- Estallido elemental (0,8 s): junta las manos al pecho y las abre con fuerza en el tick 4.
+    bu_r = {0: NEUTRAL, 0.10: ([-70, -34, -10], OUT), 0.20: ([-50, 8, 74], SMASH), 0.34: ([-50, 8, 74], HOLD), 0.80: (NEUTRAL, SOFT)}
+    anims["elementalist_burst"] = animation(False, limbs(
+        bu_r, 0.01, 0.96,
+        torso=({0: NEUTRAL, 0.10: [14, 0, 0], 0.20: ([-8, 0, 0], SMASH), 0.34: ([-8, 0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.10: [10, 0, 0], 0.20: ([-6, 0, 0], BACK), 0.34: ([-6, 0, 0], HOLD), 0.80: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.10: [0, -1.6, 0], 0.20: ([0, 0.6, 0], BACK), 0.34: ([0, 0.6, 0], HOLD), 0.80: (NEUTRAL, SOFT)}),
+    ))
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def build_grand():
+    anims = {}
+
+    # ---- Firma (0,9 s): cruza los brazos sobre el pecho reuniendo el poder y los abre de golpe en el tick 5.
+    sig_r = {0: NEUTRAL, 0.14: ([-80, -34, -14], OUT), 0.25: ([-70, 6, 78], SMASH), 0.40: ([-70, 6, 78], HOLD), 0.90: (NEUTRAL, SOFT)}
+    anims["grand_signature"] = animation(False, limbs(
+        sig_r, 0.012, 0.96,
+        torso=({0: NEUTRAL, 0.14: [16, 0, 0], 0.25: ([-10, 0, 0], SMASH), 0.40: ([-10, 0, 0], HOLD), 0.90: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.14: [12, 0, 0], 0.25: ([-8, 0, 0], BACK), 0.40: ([-8, 0, 0], HOLD), 0.90: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.14: [0, -2.0, 0], 0.25: ([0, 0.8, 0], BACK), 0.40: ([0, 0.8, 0], HOLD), 0.90: (NEUTRAL, SOFT)}),
+    ))
+    # ---- Definitiva (1,5 s): se agacha reuniendo energía, alza los brazos al cielo (tick 8) y los descarga hacia delante.
+    ult_r = {0: NEUTRAL, 0.12: ([36, -10, 24], OUT), 0.40: ([-172, 0, 18], SMASH), 0.62: ([-172, 0, 18], HOLD), 0.80: ([-46, 0, 6], SMASH),
+             0.98: ([-46, 0, 6], HOLD), 1.50: (NEUTRAL, SOFT)}
+    anims["grand_ultimate"] = animation(False, limbs(
+        ult_r, 0.015, 0.96,
+        torso=({0: NEUTRAL, 0.12: [26, 0, 0], 0.40: ([-14, 0, 0], SMASH), 0.62: ([-14, 0, 0], HOLD), 0.80: ([30, 0, 0], SMASH),
+                0.98: ([30, 0, 0], HOLD), 1.50: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.12: [18, 0, 0], 0.40: ([-24, 0, 0], BACK), 0.62: ([-24, 0, 0], HOLD), 0.80: ([10, 0, 0], BACK),
+               0.98: ([10, 0, 0], HOLD), 1.50: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.12: [0, -3.2, 0], 0.40: ([0, 1.2, 0], SMASH), 0.62: ([0, 1.2, 0], HOLD), 0.80: ([0, -2.6, 0], SMASH),
+                     0.98: ([0, -2.6, 0], HOLD), 1.50: (NEUTRAL, SOFT)}),
+    ))
+    # ---- Activa evolucionada (0,55 s): brazo atrás y empuje al frente en el tick 3.
+    ev_r = {0: NEUTRAL, 0.08: ([-30, -20, 22], OUT), 0.15: ([-88, 4, 8], SMASH), 0.30: ([-88, 4, 8], HOLD), 0.55: (NEUTRAL, SOFT)}
+    anims["evolved_cast"] = animation(False, limbs(
+        ev_r, 0.01, 0.58,
+        torso=({0: NEUTRAL, 0.08: [10, 0, 0], 0.15: ([-6, 0, 0], SMASH), 0.30: ([-6, 0, 0], HOLD), 0.55: (NEUTRAL, SOFT)}, None),
+        head=({0: NEUTRAL, 0.08: [6, 0, 0], 0.15: ([-4, 0, 0], BACK), 0.30: ([-4, 0, 0], HOLD), 0.55: (NEUTRAL, SOFT)}, None),
+        body=(None, {0: NEUTRAL, 0.08: [0, -1.2, 0], 0.15: ([0, 0.4, 0], BACK), 0.30: ([0, 0.4, 0], HOLD), 0.55: (NEUTRAL, SOFT)}),
+    ))
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+def _breathe(base, amp, length=2.0):
+    """Ciclo de respiración: la pose base sube y baja unos grados y vuelve al principio (bucle)."""
+    a = [base[0] + amp, base[1], base[2]]
+    return {0: base, length / 2: (a, SOFT), length: (base, SOFT)}
+
+
+def build_stance():
+    anims = {}
+
+    def stance(right, left, torso, head, body_y, amp):
+        bones = {
+            "right_arm": bone(rot=_breathe(right, amp)),
+            "left_arm": bone(rot=_breathe(left, -amp)),
+            "torso": bone(rot=_breathe(torso, amp * 0.5)),
+            "head": bone(rot=_breathe(head, -amp * 0.5)),
+            "body": bone(pos={0: [0, body_y, 0], 1.0: ([0, body_y + 0.25, 0], SOFT), 2.0: ([0, body_y, 0], SOFT)}),
+        }
+        return animation(True, bones)
+
+    # Bersérker: agachado y adelantado, hacha baja y mano izquierda como guardia.
+    anims["stance_berserker"] = stance([18, 10, 14], [-52, 0, -14], [16, -10, 0], [6, 8, 0], -1.4, 2.5)
+    # Lancero: de lado, lanza nivelada al frente con la mano de atrás en el asta.
+    anims["stance_lancer"] = stance([-68, 10, 8], [-58, -22, -18], [2, 24, 0], [0, -20, 0], -0.8, 1.5)
+    # Monje: puños arriba, guardia alta y cuerpo bajo.
+    anims["stance_monk"] = stance([-104, 10, 22], [-92, -10, -22], [8, 0, 0], [4, 0, 0], -1.0, 3.0)
+    # Mago: báculo erguido junto al cuerpo, mano libre abierta al frente y cuerpo ligeramente flotante.
+    anims["stance_mage"] = stance([-26, 0, 14], [-62, 0, -12], [-2, 0, 0], [-6, 0, 0], 0.4, 1.2)
+    return {"format_version": "1.8.0", "animations": anims}
+
+
+FILES = {"berserker.json": build_berserker, "mage.json": build_mage, "assassin.json": build_assassin,
+         "herbalist.json": build_herbalist, "engineer.json": build_engineer, "lancer.json": build_lancer,
+         "swordsman.json": build_swordsman, "paladin.json": build_paladin, "necromancer.json": build_necromancer,
+         "druid.json": build_druid, "merchant.json": build_merchant, "monk.json": build_monk,
+         "gunslinger.json": build_gunslinger, "weaponsummoner.json": build_weaponsummoner, "shapeshifter.json": build_shapeshifter,
+         "hunter.json": build_hunter, "bard.json": build_bard, "warlock.json": build_warlock, "tamer.json": build_tamer,
+         "elementalist.json": build_elementalist, "grand.json": build_grand, "stance.json": build_stance}
+
+
+
+def render(name):
+    return json.dumps(FILES[name](), indent=2, ensure_ascii=False) + "\n"
 
 
 def main():
@@ -184,18 +793,19 @@ def main():
     if len(args) != 1:
         print(__doc__)
         sys.exit(1)
-    path = os.path.join(args[0], "player_animations", "berserker.json")
-    text = render()
-    if check:
-        current = open(path, encoding="utf-8").read() if os.path.exists(path) else None
-        if current != text:
-            sys.exit("player_animations/berserker.json no coincide con el generador: ejecútalo sin --check")
-        print("player_animations/berserker.json correcto")
-        return
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w", encoding="utf-8", newline="\n") as f:
-        f.write(text)
-    print(path)
+    for name in FILES:
+        path = os.path.join(args[0], "player_animations", name)
+        text = render(name)
+        if check:
+            current = open(path, encoding="utf-8").read() if os.path.exists(path) else None
+            if current != text:
+                sys.exit(f"player_animations/{name} no coincide con el generador: ejecútalo sin --check")
+            print(f"player_animations/{name} correcto")
+            continue
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8", newline="\n") as f:
+            f.write(text)
+        print(path)
 
 
 if __name__ == "__main__":

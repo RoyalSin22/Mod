@@ -1826,6 +1826,99 @@ subtitles.aptitudes.berserker_slam¦O chão se despedaça¦Le sol se fissure¦De
 subtitles.aptitudes.berserker_whoosh¦Uma lâmina assobia¦Une lame siffle¦Eine Klinge zischt
 subtitles.aptitudes.berserker_heartbeat¦A fúria pulsa¦La fureur bat¦Die Wut pocht
 subtitles.aptitudes.berserker_leap¦O Berserker salta¦Le Berserker bondit¦Berserker springt
+subtitles.aptitudes.mage_charge¦A magia se concentra¦La magie se concentre¦Magie sammelt sich
+subtitles.aptitudes.mage_bolt¦Um raio arcano crepita¦Un éclair arcanique crépite¦Ein Arkanblitz knistert
+subtitles.aptitudes.mage_blink¦O mago pisca¦Le mage se téléporte¦Der Magier blinzelt
+subtitles.aptitudes.mage_time¦O tempo desacelera¦Le temps ralentit¦Die Zeit verlangsamt sich
+subtitles.aptitudes.mage_missile¦Um míssil arcano assobia¦Un missile arcanique siffle¦Ein Arkangeschoss pfeift
+subtitles.aptitudes.mage_impact¦Um cristal estoura¦Un cristal éclate¦Ein Kristall zerspringt
+subtitles.aptitudes.assassin_vanish¦Uma bomba de fumaça explode¦Une bombe fumigène éclate¦Eine Rauchbombe platzt
+subtitles.aptitudes.assassin_slash¦Uma lâmina corta o ar¦Une lame fend l'air¦Eine Klinge zischt
+subtitles.aptitudes.assassin_step¦Alguém atravessa as sombras¦Quelqu'un traverse les ombres¦Jemand tritt durch die Schatten
+subtitles.aptitudes.assassin_throw¦Facas giram¦Des couteaux tournoient¦Messer wirbeln
+subtitles.aptitudes.assassin_impact¦Uma lâmina se crava¦Une lame se plante¦Eine Klinge schlägt ein
+subtitles.aptitudes.herbalist_balm¦Um bálsamo curativo floresce¦Un baume apaisant éclot¦Ein heilender Balsam erblüht
+subtitles.aptitudes.herbalist_rain¦Cai uma chuva curativa¦Une pluie guérisseuse tombe¦Heilender Regen fällt
+subtitles.aptitudes.herbalist_spore¦Esporos explodem¦Des spores éclatent¦Sporen platzen
+subtitles.aptitudes.engineer_grapple¦Um gancho é disparado¦Un grappin est tiré¦Ein Enterhaken schießt
+subtitles.aptitudes.engineer_throw¦Uma granada é lançada¦Une grenade est lancée¦Eine Granate fliegt
+subtitles.aptitudes.engineer_blast¦Uma explosão de pulso¦Une explosion pulsée¦Ein Pulsknall
+subtitles.aptitudes.lancer_leap¦Um dragão salta¦Un dragon bondit¦Ein Drache springt
+subtitles.aptitudes.lancer_thrust¦Uma lança perfura¦Une lance transperce¦Ein Speer stößt zu
+subtitles.aptitudes.lancer_slam¦O dragão aterrissa¦Le dragon atterrit¦Der Drache landet
+subtitles.aptitudes.swordsman_draw¦Uma lâmina é sacada¦Une lame est dégainée¦Eine Klinge wird gezogen
+subtitles.aptitudes.swordsman_cut¦Uma lâmina corta¦Une lame tranche¦Eine Klinge schneidet
+subtitles.aptitudes.paladin_consecrate¦O chão é consagrado¦Le sol est consacré¦Der Boden wird geweiht
+subtitles.aptitudes.paladin_hammer¦Um martelo sagrado golpeia¦Un marteau sacré frappe¦Ein heiliger Hammer schlägt zu
+subtitles.aptitudes.necromancer_spear¦Uma lança de osso voa¦Une lance d'os file¦Ein Knochenspeer fliegt
+subtitles.aptitudes.necromancer_siphon¦Almas são drenadas¦Des âmes sont drainées¦Seelen werden entzogen
+subtitles.aptitudes.druid_howl¦Uma matilha uiva¦Une meute hurle¦Ein Rudel heult
+subtitles.aptitudes.druid_thorns¦Espinhos chicoteiam¦Des épines fouettent¦Dornen peitschen
+subtitles.aptitudes.merchant_coin¦Uma moeda zune¦Une pièce siffle¦Eine Münze zischt
+subtitles.aptitudes.merchant_guard¦Sinos dourados soam¦Des clochettes dorées tintent¦Goldene Glocken klingen
+subtitles.aptitudes.monk_kick¦Um chute voador acerta¦Un coup de pied volant frappe¦Ein Flugtritt trifft
+subtitles.aptitudes.monk_fist¦Um punho acerta¦Un poing frappe¦Eine Faust schlägt zu
+subtitles.aptitudes.gunslinger_shot¦Um tiro arcano estala¦Un tir arcanique claque¦Ein arkaner Schuss kracht
+subtitles.aptitudes.gunslinger_mark¦Um alvo é marcado¦Une cible est marquée¦Ein Ziel wird markiert
+subtitles.aptitudes.weapon_greatsword¦Uma espada espectral golpeia¦Une épée spectrale s'abat¦Ein Geisterschwert schwingt
+subtitles.aptitudes.weapon_prison¦Lâminas se fecham¦Des lames se referment¦Klingen schließen sich
+subtitles.aptitudes.shapeshifter_pounce¦Uma fera salta¦Une bête bondit¦Eine Bestie springt
+subtitles.aptitudes.shapeshifter_howl¦Uma fera uiva¦Une bête hurle¦Eine Bestie heult
+subtitles.aptitudes.hunter_shot¦Uma flecha assobia¦Une flèche siffle¦Ein Pfeil pfeift
+subtitles.aptitudes.hunter_trap¦Uma armadilha se fecha¦Un piège claque¦Eine Falle schnappt zu
+subtitles.aptitudes.hunter_falcon¦Um falcão grita¦Un faucon crie¦Ein Falke kreischt
+subtitles.aptitudes.bard_song¦Uma canção ecoa¦Une chanson retentit¦Ein Lied erklingt
+subtitles.aptitudes.bard_dissonance¦Uma dissonância ecoa¦Une dissonance éclate¦Ein Misston dröhnt
+subtitles.aptitudes.warlock_curse¦Uma maldição sussurra¦Une malédiction murmure¦Ein Fluch flüstert
+subtitles.aptitudes.warlock_bolt¦Um raio abissal estala¦Un éclair abyssal claque¦Ein Abgrundblitz kracht
+subtitles.aptitudes.warlock_imps¦Diabretes gargalham¦Des diablotins ricanent¦Wichtel kichern
+subtitles.aptitudes.warlock_doom¦A perdição soa¦Le glas sonne¦Das Verhängnis läutet
+subtitles.aptitudes.tamer_command¦A matilha recebe uma ordem¦La meute reçoit un ordre¦Das Rudel erhält einen Befehl
+subtitles.aptitudes.tamer_stampede¦Uma debandada avança¦Une ruée charge¦Eine Stampede stürmt
+subtitles.aptitudes.element_fire¦Chamas rugem¦Les flammes rugissent¦Flammen brüllen
+subtitles.aptitudes.element_ice¦O gelo se estilhaça¦La glace éclate¦Eis zerspringt
+subtitles.aptitudes.element_lightning¦Um raio estala¦La foudre claque¦Ein Blitz kracht
+subtitles.aptitudes.element_earth¦A terra ribomba¦La terre gronde¦Die Erde grollt
+subtitles.aptitudes.element_wind¦Uma rajada sopra¦Une rafale souffle¦Eine Böe weht
+subtitles.aptitudes.element_water¦A água respinga¦L'eau éclabousse¦Wasser spritzt
+subtitles.aptitudes.element_magic¦Sinos brilhantes soam¦Des carillons brillants tintent¦Helle Glocken klingen
+subtitles.aptitudes.element_dark¦A escuridão pulsa¦L'obscurité palpite¦Die Dunkelheit pulsiert
+subtitles.aptitudes.feedback_heavy¦Um golpe pesado acerta¦Un coup lourd frappe¦Ein schwerer Schlag trifft
+subtitles.aptitudes.feedback_crit¦Um golpe crítico¦Un coup critique¦Ein kritischer Treffer
+subtitles.aptitudes.feedback_block¦Um golpe é bloqueado¦Un coup est paré¦Ein Schlag wird geblockt
+subtitles.aptitudes.feedback_heal¦A cura faz efeito¦Un soin fait effet¦Eine Heilung wirkt
+subtitles.aptitudes.feedback_denied¦Falta energia¦Pas assez d'énergie¦Nicht genug Energie
+subtitles.aptitudes.grand_berserker¦O rugido de um berserker sacode o ar¦Le rugissement d'un berserker secoue l'air¦Das Brüllen eines Berserkers erschüttert die Luft
+subtitles.aptitudes.grand_elementalist¦Os elementos convergem¦Les éléments convergent¦Die Elemente vereinen sich
+subtitles.aptitudes.grand_shapeshifter¦Carne e osso se transformam¦La chair et l'os changent¦Fleisch und Knochen wandeln sich
+subtitles.aptitudes.grand_paladin¦Um sino sagrado toca¦Une cloche sacrée sonne¦Eine heilige Glocke läutet
+subtitles.aptitudes.grand_engineer¦A maquinaria ruge¦La machinerie rugit¦Die Maschinerie dröhnt
+subtitles.aptitudes.grand_rumble¦O chão ribomba¦Le sol gronde¦Der Boden grollt
+subtitles.aptitudes.grand_mage¦Um poder arcano irrompe¦Un pouvoir arcanique se déchaîne¦Arkane Macht entlädt sich
+subtitles.aptitudes.grand_assassin¦Uma sombra ataca¦Une ombre frappe¦Ein Schatten schlägt zu
+subtitles.aptitudes.grand_herbalist¦A vida floresce¦La vie éclot¦Leben erblüht
+subtitles.aptitudes.grand_lancer¦Uma estocada brutal acerta¦Une estocade puissante frappe¦Ein mächtiger Stoß trifft
+subtitles.aptitudes.grand_swordsman¦Uma lâmina canta¦Une lame chante¦Eine Klinge singt
+subtitles.aptitudes.grand_necromancer¦Os mortos se agitam¦Les morts s'agitent¦Die Toten regen sich
+subtitles.aptitudes.grand_druid¦A natureza responde¦La nature répond¦Die Natur antwortet
+subtitles.aptitudes.grand_merchant¦Moedas tilintam¦Des pièces tintent¦Münzen klingeln
+subtitles.aptitudes.grand_monk¦Um gongo ressoa¦Un gong résonne¦Ein Gong dröhnt
+subtitles.aptitudes.grand_gunslinger¦Um tiro estala¦Un coup de feu claque¦Ein Schuss knallt
+subtitles.aptitudes.grand_weapon_summoner¦Lâminas espectrais ressoam¦Des lames spectrales résonnent¦Geisterklingen klirren
+subtitles.aptitudes.evolved_nova¦Uma onda de choque explode¦Une onde de choc éclate¦Eine Druckwelle bricht los
+subtitles.aptitudes.evolved_beam¦Um raio de poder dispara¦Un rayon de puissance jaillit¦Ein Energiestrahl schießt
+subtitles.aptitudes.evolved_cone¦Uma varredura violenta¦Un balayage violent¦Ein weiter Hieb
+subtitles.aptitudes.evolved_dash¦Uma investida arrasa¦Une charge déferle¦Ein Ansturm rast vorbei
+subtitles.aptitudes.evolved_zone¦O poder chove¦La puissance s'abat¦Macht regnet herab
+subtitles.aptitudes.evolved_vortex¦Um vórtice atrai¦Un vortex attire¦Ein Wirbel zieht an
+subtitles.aptitudes.evolved_aura¦Uma aura cresce¦Une aura s'étend¦Eine Aura schwillt an
+subtitles.aptitudes.evolved_heal¦Sinos suaves curam feridas¦Des clochettes soignent les blessures¦Sanfte Glocken heilen Wunden
+subtitles.aptitudes.evolved_shield¦Uma proteção se ergue¦Une protection se dresse¦Ein Schutz erscheint
+subtitles.aptitudes.evolved_summon¦Aliados atendem ao chamado¦Des alliés répondent à l'appel¦Verbündete folgen dem Ruf
+subtitles.aptitudes.grand_hunter¦Um falcão grita¦Un faucon crie¦Ein Falke schreit
+subtitles.aptitudes.grand_bard¦Um acorde soa¦Un accord retentit¦Ein Akkord erklingt
+subtitles.aptitudes.grand_warlock¦Um zumbido sombrio cresce¦Un bourdonnement sombre enfle¦Ein dunkles Dröhnen schwillt an
+subtitles.aptitudes.grand_tamer¦Uma trompa chama a matilha¦Un cor appelle la meute¦Ein Horn ruft das Rudel
 entity.aptitudes.custodio_cuatro_llaves¦O Custódio das Quatro Chaves¦Le Gardien des Quatre Clés¦Der Wächter der vier Schlüssel
 item.aptitudes.faceless_colossus_spawn_egg¦Ovo gerador do Colosso Sem Rosto¦Œuf d'apparition du Colosse sans visage¦Spawn-Ei des gesichtslosen Kolosses
 bestiary.aptitudes.faceless_colossus.tip¦Guerreiro gigante com espadão. Anuncia um golpe amplo e um golpe descendente com onda: saia do círculo marcado. Com metade da vida sua armadura racha: fica mais rápido, investe de longe e recebe mais dano.¦Guerrier géant armé d'une grande épée. Il annonce un large balayage et un coup plongeant avec onde de choc : sortez du cercle marqué. À mi-vie son armure se fissure : il va plus vite, charge de loin et subit plus de dégâts.¦Riesiger Krieger mit Zweihänder. Er kündigt einen weiten Hieb und einen Abwärtsschlag mit Schockwelle an: Verlasse den markierten Kreis. Bei halber Lebenskraft bricht seine Rüstung: Er wird schneller, stürmt aus der Ferne an und erleidet mehr Schaden.

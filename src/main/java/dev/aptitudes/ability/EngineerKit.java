@@ -221,6 +221,14 @@ public final class EngineerKit {
 		KitSupport.sound(p, SoundEvents.ENTITY_GENERIC_EXPLODE.value(), 1.5f);
 	}
 
+	/** V98: minas de proximidad (N3) colocadas por el jugador; solo aparece si hay alguna. */
+	static void hud(ServerPlayerEntity p, java.util.List<dev.aptitudes.network.MechanicPayload.Entry> out) {
+		if (RoleManager.activeRank(p, N + "3") <= 0) return;
+		int owned = 0;
+		for (Mine m : MINES) if (m.owner().equals(p.getUuid())) owned++;
+		if (owned > 0) out.add(new dev.aptitudes.network.MechanicPayload.Entry(N + "3", Math.min(owned, MINE_MAX), MINE_MAX, ""));
+	}
+
 	public static void tick(MinecraftServer server) {
 		long now = server.getTicks();
 		if (!EXO.isEmpty()) {

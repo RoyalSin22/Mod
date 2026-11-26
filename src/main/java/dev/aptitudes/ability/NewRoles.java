@@ -88,9 +88,8 @@ public final class NewRoles {
 		Abilities.register("arcane_shot", (p, r) -> {
 			LivingEntity t = Targeting.raycastLiving(p, 32);
 			Vec3d end = t != null ? t.getEyePos() : Targeting.lookEnd(p, 32);
-			Targeting.particleLine(world(p), ParticleFx.dust(0x26C6DA, 1.1f), muzzle(p), end);
-			sound(p, SoundEvents.ENTITY_FIREWORK_ROCKET_BLAST, 1.6f);
 			if (t == null) return false;
+			GunslingerFx.shot(p, muzzle(p), end, GunslingerFx.ARCANE, true); // V89
 			t.damage(magic(p), 6 + 2 * r);
 			t.takeKnockback(0.6, p.getX() - t.getX(), p.getZ() - t.getZ());
 			return true;
@@ -101,10 +100,9 @@ public final class NewRoles {
 			AbilityState.repeat(server(p), 6, 4, i -> {
 				LivingEntity t = targets.get(i % targets.size());
 				if (!t.isAlive()) return;
-				Targeting.particleLine(world(p), ParticleFx.dust(0x26C6DA, 0.9f), muzzle(p), t.getEyePos());
+				GunslingerFx.shot(p, muzzle(p), t.getEyePos(), GunslingerFx.FAN, i == 0); // V89
 				t.timeUntilRegen = 0;
 				t.damage(magic(p), 2 + r);
-				sound(p, SoundEvents.ENTITY_FIREWORK_ROCKET_BLAST, 1.8f);
 			});
 			return true;
 		});
@@ -124,26 +122,30 @@ public final class NewRoles {
 				current = next;
 			}
 			Vec3d prev = muzzle(p);
+			boolean firstLink = true;
 			for (LivingEntity e : chain) {
-				Targeting.particleLine(world(p), ParticleTypes.ELECTRIC_SPARK, prev, e.getEyePos());
+				GunslingerFx.shot(p, prev, e.getEyePos(), GunslingerFx.RICOCHET, firstLink); // V89
+				firstLink = false;
 				prev = e.getEyePos();
 				e.damage(magic(p), 5 + r);
 			}
-			sound(p, SoundEvents.BLOCK_AMETHYST_BLOCK_HIT, 1.8f);
 			return true;
 		});
 		Abilities.register("deadeye", (p, r) -> {
 			List<LivingEntity> targets = nearest(p, 24, 4 + r);
 			if (targets.isEmpty()) return false;
-			for (LivingEntity t : targets) effect(t, StatusEffects.GLOWING, 40, 0);
-			sound(p, SoundEvents.BLOCK_BELL_USE, 1.8f);
+			boolean firstMark = true;
+			for (LivingEntity t : targets) {
+				effect(t, StatusEffects.GLOWING, 40, 0);
+				GunslingerFx.mark(p, new Vec3d(t.getX(), t.getBodyY(0.6), t.getZ()), firstMark); // V89
+				firstMark = false;
+			}
 			AbilityState.schedule(server(p), 30, () -> {
 				for (LivingEntity t : targets) {
 					if (!t.isAlive()) continue;
-					Targeting.particleLine(world(p), ParticleFx.dust(0xFFE082, 1.2f), muzzle(p), t.getEyePos());
+					GunslingerFx.shot(p, muzzle(p), t.getEyePos(), GunslingerFx.DEADEYE, false); // V89
 					t.damage(magic(p), 8 + 3 * r);
 				}
-				sound(p, SoundEvents.ENTITY_FIREWORK_ROCKET_LARGE_BLAST, 1.6f);
 			});
 			return true;
 		});
@@ -157,10 +159,9 @@ public final class NewRoles {
 			s.blades = 0;
 			AbilityState.repeat(server(p), count, 3, i -> {
 				if (!t.isAlive()) return;
-				Targeting.particleLine(world(p), ParticleTypes.ENCHANTED_HIT, p.getEyePos().add(orbit(i, 1.2)), t.getEyePos());
+				WeaponFx.blade(p, p.getEyePos().add(orbit(i, 1.2)), t.getEyePos(), WeaponFx.VOLLEY, i == 0, i); // V89
 				t.timeUntilRegen = 0;
 				t.damage(magic(p), bladeDamage(p, 4 + r));
-				sound(p, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.4f + 0.05f * i);
 			});
 			return true;
 		});
@@ -168,16 +169,16 @@ public final class NewRoles {
 			Vec3d center = Targeting.lookEnd(p, 20);
 			AbilityState.repeat(server(p), 8, 4, i -> {
 				Vec3d hit = center.add((p.getRandom().nextDouble() - 0.5) * 5, 0, (p.getRandom().nextDouble() - 0.5) * 5);
-				Targeting.particleLine(world(p), ParticleTypes.ENCHANTED_HIT, hit.add(0, 6, 0), hit);
+				WeaponFx.blade(p, hit.add(0, 6, 0), hit, WeaponFx.RAIN, i == 0, i); // V89
 				for (LivingEntity e : around(p, hit, 2.0)) e.damage(magic(p), bladeDamage(p, 3 + r));
-				world(p).playSound(null, hit.x, hit.y, hit.z, SoundEvents.ENTITY_ARROW_HIT, SoundCategory.PLAYERS, 0.8f, 1.2f);
 			});
 			return true;
 		});
 		Abilities.register("spectral_greatsword", (p, r) -> {
-			int hits = lineDamage(p, 7, 8 + 2 * r, ParticleTypes.SWEEP_ATTACK, true);
-			sound(p, SoundEvents.ENTITY_PLAYER_ATTACK_STRONG, 0.6f);
-			return hits > 0;
+			int hits = lineDamage(p, 7, 8 + 2 * r, null, true);
+			if (hits == 0) return false;
+			WeaponFx.greatsword(p, Targeting.lookEnd(p, 7)); // V89
+			return true;
 		});
 		Abilities.register("blade_prison", (p, r) -> {
 			LivingEntity t = Targeting.raycastLiving(p, 16);
@@ -185,11 +186,10 @@ public final class NewRoles {
 			effect(t, StatusEffects.SLOWNESS, 60, 6);
 			AbilityState.repeat(server(p), 6, 5, i -> {
 				if (!t.isAlive()) return;
-				ParticleFx.ring(world(p), t.getPos().add(0, 0.8, 0), 1.2, ParticleTypes.ENCHANTED_HIT, 10);
 				t.timeUntilRegen = 0;
 				t.damage(magic(p), bladeDamage(p, 2 + r));
 			});
-			sound(p, SoundEvents.BLOCK_CHAIN_PLACE, 0.8f);
+			WeaponFx.prison(p, new Vec3d(t.getX(), t.getBodyY(0.5), t.getZ())); // V89
 			return true;
 		});
 
@@ -199,8 +199,7 @@ public final class NewRoles {
 			if (t == null) return false;
 			MARKS.put(t.getUuid(), new Object[]{p.getUuid(), now(p) + 200, 5 + 10 * r});
 			effect(t, StatusEffects.GLOWING, 200, 0);
-			Targeting.particleLine(world(p), ParticleFx.dust(0x9CCC65, 1.0f), p.getEyePos(), t.getEyePos());
-			sound(p, SoundEvents.ENTITY_ARROW_HIT_PLAYER, 0.8f);
+			HunterFx.mark(p, t); // V90
 			return true;
 		});
 		Abilities.register("bear_trap", (p, r) -> {
@@ -208,30 +207,28 @@ public final class NewRoles {
 			boolean[] sprung = {false};
 			AbilityState.repeat(server(p), (int) (60 * HunterKit.trapFactor(p)), 10, i -> { // v67 F6: Trampero experto
 				if (sprung[0]) return;
-				if (i % 2 == 0) world(p).spawnParticles(ParticleFx.dust(0x8D6E63, 1.0f), spot.x, spot.y + 0.1, spot.z, 4, 0.3, 0, 0.3, 0);
+				if (i % 2 == 0) world(p).spawnParticles(ParticleFx.dust(0x8D6E63, 1.0f), spot.x, spot.y + 0.1, spot.z, 1, 0.3, 0, 0.3, 0);
 				for (LivingEntity e : around(p, spot, 1.4)) {
 					sprung[0] = true;
+					HunterFx.trap(p, spot, true); // V90
 					effect(e, StatusEffects.SLOWNESS, 60, 6);
 					e.damage(p.getDamageSources().playerAttack(p), 4 + 2 * r);
-					world(p).playSound(null, spot.x, spot.y, spot.z, SoundEvents.BLOCK_IRON_TRAPDOOR_CLOSE,
-							SoundCategory.PLAYERS, 1.0f, 0.6f);
 					break;
 				}
 			});
-			sound(p, SoundEvents.BLOCK_TRIPWIRE_ATTACH, 1.0f);
+			HunterFx.trap(p, spot, false); // V90
 			return true;
 		});
 		Abilities.register("arrow_volley", (p, r) -> {
 			Vec3d center = Targeting.lookEnd(p, 24);
 			AbilityState.repeat(server(p), 10, 2, i -> {
 				Vec3d hit = center.add((p.getRandom().nextDouble() - 0.5) * 6, 0, (p.getRandom().nextDouble() - 0.5) * 6);
-				Targeting.particleLine(world(p), ParticleTypes.CRIT, hit.add(1, 8, 0), hit);
+				HunterFx.arrow(p, hit.add(1, 8, 0), hit, i); // V90
 				for (LivingEntity e : around(p, hit, 1.6)) {
 					e.timeUntilRegen = 0;
 					e.damage(p.getDamageSources().playerAttack(p), 2 + r);
 				}
 			});
-			sound(p, SoundEvents.ENTITY_ARROW_SHOOT, 0.7f);
 			return true;
 		});
 		Abilities.register("falcon_strike", (p, r) -> {
@@ -241,11 +238,9 @@ public final class NewRoles {
 			LivingEntity target = t;
 			AbilityState.repeat(server(p), 4, 8, i -> {
 				if (!target.isAlive()) return;
-				world(p).spawnParticles(ParticleTypes.CLOUD, target.getX(), target.getBodyY(1.0), target.getZ(), 8, 0.3, 0.2, 0.3, 0.05);
+				HunterFx.falcon(p, target, i); // V90
 				target.timeUntilRegen = 0;
 				target.damage(p.getDamageSources().playerAttack(p), 3 + r);
-				world(p).playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.ENTITY_PARROT_FLY,
-						SoundCategory.PLAYERS, 1.0f, 0.6f);
 			});
 			return true;
 		});
@@ -256,8 +251,7 @@ public final class NewRoles {
 				effect(ally, StatusEffects.STRENGTH, 200, r >= 3 ? 1 : 0);
 				ally.heal(2.0f);
 			}
-			notes(p);
-			sound(p, SoundEvents.BLOCK_NOTE_BLOCK_BELL.value(), 1.2f);
+			BardFx.song(p, BardFx.VALOR, 10); // V90
 			return true;
 		});
 		Abilities.register("dissonance", (p, r) -> {
@@ -268,17 +262,16 @@ public final class NewRoles {
 				effect(e, StatusEffects.WEAKNESS, 100, 0);
 				e.takeKnockback(0.6, p.getX() - e.getX(), p.getZ() - e.getZ());
 			}
-			ParticleFx.shockwave(server(p), world(p), p.getPos(), 8, ParticleTypes.NOTE, 5);
-			sound(p, SoundEvents.BLOCK_NOTE_BLOCK_DIDGERIDOO.value(), 0.6f);
-			return !targets.isEmpty();
+			if (targets.isEmpty()) return false;
+			BardFx.dissonance(p, 8); // V90
+			return true;
 		});
 		Abilities.register("ballad_of_shielding", (p, r) -> {
 			for (PlayerEntity ally : allies(p, 10)) {
 				effect(ally, StatusEffects.ABSORPTION, 200, 1);
 				effect(ally, StatusEffects.RESISTANCE, 100, 0);
 			}
-			notes(p);
-			sound(p, SoundEvents.BLOCK_NOTE_BLOCK_CHIME.value(), 0.9f);
+			BardFx.song(p, BardFx.SHIELD, 10); // V90
 			return true;
 		});
 		Abilities.register("requiem", (p, r) -> {
@@ -287,8 +280,7 @@ public final class NewRoles {
 				effect(e, StatusEffects.WITHER, 60, 0);
 			}
 			for (PlayerEntity ally : allies(p, 10)) effect(ally, StatusEffects.SPEED, 160, 1);
-			ParticleFx.spiral(world(p), p.getPos(), 2.5, 3, ParticleTypes.NOTE, 50, 3);
-			sound(p, SoundEvents.BLOCK_NOTE_BLOCK_BASS.value(), 0.5f);
+			BardFx.song(p, BardFx.REQUIEM, 10); // V90
 			return true;
 		});
 
@@ -297,22 +289,20 @@ public final class NewRoles {
 			LivingEntity t = Targeting.raycastLiving(p, 24);
 			if (t == null) return false;
 			effect(t, StatusEffects.WEAKNESS, 160, 0);
-			Targeting.particleLine(world(p), ParticleTypes.CRIMSON_SPORE, p.getEyePos(), t.getEyePos());
+			WarlockFx.curse(p, t); // V90
 			AbilityState.repeat(server(p), 8, 20, i -> {
 				if (!t.isAlive()) return;
 				t.timeUntilRegen = 0;
 				t.damage(magic(p), 1 + 0.5f * r);
-				world(p).spawnParticles(ParticleTypes.CRIMSON_SPORE, t.getX(), t.getBodyY(0.7), t.getZ(), 8, 0.3, 0.4, 0.3, 0);
+				WarlockFx.pulse(p, t);
 			});
-			sound(p, SoundEvents.ENTITY_VEX_CHARGE, 0.6f);
 			return true;
 		});
 		Abilities.register("abyssal_bolt", (p, r) -> {
 			LivingEntity t = Targeting.raycastLiving(p, 24);
 			Vec3d end = t != null ? t.getEyePos() : Targeting.lookEnd(p, 24);
-			Targeting.particleLine(world(p), ParticleFx.dust(0x6A1B9A, 1.3f), p.getEyePos(), end);
-			sound(p, SoundEvents.ENTITY_WITHER_SHOOT, 1.2f);
 			if (t == null) return false;
+			WarlockFx.bolt(p, end); // V90
 			t.damage(magic(p), 7 + 2 * r);
 			effect(t, StatusEffects.WITHER, 60, 0);
 			return true;
@@ -320,24 +310,19 @@ public final class NewRoles {
 		Abilities.register("summon_imps", (p, r) -> {
 			int count = r >= 3 ? 3 : 2;
 			for (int i = 0; i < count; i++) Minions.spawn(p, EntityType.VEX, i);
-			world(p).spawnParticles(ParticleTypes.CRIMSON_SPORE, p.getX(), p.getBodyY(0.5), p.getZ(), 40, 1, 1, 1, 0.02);
-			sound(p, SoundEvents.ENTITY_EVOKER_PREPARE_SUMMON, 1.0f);
+			WarlockFx.imps(p); // V90
 			return true;
 		});
 		Abilities.register("doom", (p, r) -> {
 			LivingEntity t = Targeting.raycastLiving(p, 24);
 			if (t == null) return false;
 			effect(t, StatusEffects.GLOWING, 100, 0);
-			AbilityState.repeat(server(p), 5, 20, i -> {
-				if (t.isAlive()) world(p).spawnParticles(ParticleTypes.SCULK_SOUL, t.getX(), t.getBodyY(1.1), t.getZ(), 5, 0.2, 0.2, 0.2, 0.02);
-			});
+			WarlockFx.doom(p, t, false); // V90
 			AbilityState.schedule(server(p), 100, () -> {
 				if (!t.isAlive()) return;
 				t.damage(magic(p), 12 + 4 * r);
-				world(p).spawnParticles(ParticleTypes.SOUL_FIRE_FLAME, t.getX(), t.getBodyY(0.5), t.getZ(), 40, 0.4, 0.8, 0.4, 0.05);
-				world(p).playSound(null, t.getX(), t.getY(), t.getZ(), SoundEvents.ENTITY_WARDEN_SONIC_BOOM, SoundCategory.PLAYERS, 0.6f, 1.4f);
+				WarlockFx.doom(p, t, true); // V90
 			});
-			sound(p, SoundEvents.AMBIENT_CAVE.value(), 1.4f);
 			return true;
 		});
 
@@ -353,7 +338,8 @@ public final class NewRoles {
 				effect(pet, StatusEffects.STRENGTH, 200, r - 1);
 			}
 			effect(t, StatusEffects.GLOWING, 100, 0);
-			sound(p, SoundEvents.ENTITY_WOLF_GROWL, 1.2f);
+			TamerFx.command(p, TamerFx.SIC, 24); // V90
+			for (TameableEntity pet : pets) TamerFx.pet(p, pet, false);
 			return true;
 		});
 		Abilities.register("vital_bond", (p, r) -> {
@@ -362,16 +348,17 @@ public final class NewRoles {
 			for (TameableEntity pet : pets) {
 				pet.setHealth(pet.getMaxHealth());
 				effect(pet, StatusEffects.ABSORPTION, 600, 0);
-				world(p).spawnParticles(ParticleTypes.HEART, pet.getX(), pet.getBodyY(0.9), pet.getZ(), 4, 0.3, 0.3, 0.3, 0);
+				TamerFx.pet(p, pet, true); // V90
 			}
 			p.heal(Math.min(8, 2 * pets.size()));
-			sound(p, SoundEvents.ENTITY_PLAYER_LEVELUP, 1.6f);
+			TamerFx.command(p, TamerFx.BOND, 24);
 			return true;
 		});
 		Abilities.register("stampede", (p, r) -> {
-			int hits = lineDamage(p, 8, 5 + 2 * r, ParticleTypes.CLOUD, true);
-			sound(p, SoundEvents.ENTITY_GOAT_RAM_IMPACT, 0.8f);
-			return hits > 0;
+			int hits = lineDamage(p, 8, 5 + 2 * r, null, true);
+			if (hits == 0) return false;
+			TamerFx.stampede(p, Targeting.lookEnd(p, 8)); // V90
+			return true;
 		});
 		Abilities.register("alpha_roar", (p, r) -> {
 			List<TameableEntity> pets = pets(p, 24);
@@ -381,8 +368,8 @@ public final class NewRoles {
 				for (LivingEntity e : around(p, pet.getPos(), 6)) effect(e, StatusEffects.WEAKNESS, 160, 0);
 			}
 			effect(p, StatusEffects.STRENGTH, 200, 0);
-			ParticleFx.shockwave(server(p), world(p), p.getPos(), 6, ParticleTypes.ANGRY_VILLAGER, 4);
-			sound(p, SoundEvents.ENTITY_RAVAGER_ROAR, 1.2f);
+			TamerFx.command(p, TamerFx.ALPHA, 6); // V90
+			for (TameableEntity pet : pets) TamerFx.pet(p, pet, false);
 			return true;
 		});
 	}
@@ -839,12 +826,12 @@ public final class NewRoles {
 	}
 
 	/** Punto de una órbita alrededor del jugador (para las espadas flotantes). */
-	private static Vec3d orbit(int index, double radius) {
+	static Vec3d orbit(int index, double radius) {
 		double a = index * 2.1;
 		return new Vec3d(Math.cos(a) * radius, 0.3 * Math.sin(index), Math.sin(a) * radius);
 	}
 
-	private static Vec3d muzzle(ServerPlayerEntity p) {
+	static Vec3d muzzle(ServerPlayerEntity p) {
 		return p.getEyePos().add(p.getRotationVec(1.0f).multiply(0.6)).add(0, -0.2, 0);
 	}
 
@@ -875,7 +862,7 @@ public final class NewRoles {
 			}
 			hits++;
 		}
-		Targeting.particleLine(world(p), particle, start, end);
+		if (particle != null) Targeting.particleLine(world(p), particle, start, end);
 		return hits;
 	}
 

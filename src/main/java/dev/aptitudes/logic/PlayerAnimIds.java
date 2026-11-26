@@ -14,14 +14,94 @@ public final class PlayerAnimIds {
 	public static final String BERSERKER_LEAP = "berserker_leap";
 	public static final String BERSERKER_SLAM = "berserker_slam";
 	public static final String BERSERKER_WHIRL = "berserker_whirl";
+	public static final String MAGE_BOLT = "mage_bolt";
+	public static final String MAGE_BLINK = "mage_blink";
+	public static final String MAGE_TIME_WARP = "mage_time_warp";
+	public static final String MAGE_MISSILE_RIGHT = "mage_missile_r";
+	public static final String MAGE_MISSILE_LEFT = "mage_missile_l";
+	public static final String ASSASSIN_VANISH = "assassin_vanish";
+	public static final String ASSASSIN_STEP = "assassin_step";
+	public static final String ASSASSIN_FAN = "assassin_fan";
+	public static final String ASSASSIN_SHURIKEN = "assassin_shuriken";
+	public static final String HERBALIST_BALM = "herbalist_balm";
+	public static final String HERBALIST_RAIN = "herbalist_rain";
+	public static final String HERBALIST_SPORE = "herbalist_spore";
+	public static final String ENGINEER_GRAPPLE = "engineer_grapple";
+	public static final String ENGINEER_GRENADE = "engineer_grenade";
+	public static final String LANCER_LEAP = "lancer_leap";
+	public static final String LANCER_SLAM = "lancer_slam";
+	public static final String LANCER_THRUST = "lancer_thrust";
+	public static final String SWORDSMAN_IAIDO = "swordsman_iaido";
+	public static final String SWORDSMAN_CUTS = "swordsman_cuts";
+	public static final String PALADIN_CONSECRATE = "paladin_consecrate";
+	public static final String PALADIN_HAMMER = "paladin_hammer";
+	public static final String NECRO_SPEAR = "necromancer_spear";
+	public static final String NECRO_SIPHON = "necromancer_siphon";
+	public static final String DRUID_WOLVES = "druid_wolves";
+	public static final String DRUID_THORNS = "druid_thorns";
+	public static final String MERCHANT_COIN = "merchant_coin";
+	public static final String MERCHANT_GUARD = "merchant_guard";
+	public static final String MONK_KICK = "monk_kick";
+	public static final String MONK_FISTS = "monk_fists";
+	public static final String GUNSLINGER_SHOT = "gunslinger_shot";
+	public static final String GUNSLINGER_DEADEYE = "gunslinger_deadeye";
+	public static final String WEAPON_SUMMON = "weapon_summon";
+	public static final String WEAPON_GREATSWORD = "weapon_greatsword";
+	public static final String SHAPE_POUNCE = "shapeshifter_pounce";
+	public static final String SHAPE_HOWL = "shapeshifter_howl";
+	public static final String HUNTER_MARK = "hunter_mark";
+	public static final String HUNTER_TRAP = "hunter_trap";
+	public static final String HUNTER_VOLLEY = "hunter_volley";
+	public static final String HUNTER_FALCON = "hunter_falcon";
+	public static final String BARD_SONG = "bard_song";
+	public static final String BARD_DISSONANCE = "bard_dissonance";
+	public static final String WARLOCK_CURSE = "warlock_curse";
+	public static final String WARLOCK_BOLT = "warlock_bolt";
+	public static final String WARLOCK_IMPS = "warlock_imps";
+	public static final String WARLOCK_DOOM = "warlock_doom";
+	public static final String TAMER_COMMAND = "tamer_command";
+	public static final String TAMER_STAMPEDE = "tamer_stampede";
+	public static final String ELEMENT_BOLT = "elementalist_bolt";
+	public static final String ELEMENT_BURST = "elementalist_burst";
+	/** V96: gesto compartido de las firmas y de las definitivas de los roles piloto. */
+	public static final String GRAND_SIGNATURE = "grand_signature";
+	public static final String GRAND_ULTIMATE = "grand_ultimate";
+	/** V96: gesto breve de las activas de Maestro y Definitivo. */
+	public static final String EVOLVED_CAST = "evolved_cast";
+	/** V97: posturas de combate en bucle (capa propia de prioridad baja). */
+	public static final String STANCE_BERSERKER = "stance_berserker";
+	public static final String STANCE_LANCER = "stance_lancer";
+	public static final String STANCE_MONK = "stance_monk";
+	public static final String STANCE_MAGE = "stance_mage";
 
 	/**
 	 * Tick (20 por segundo) en que cada animación llega a su golpe. Los efectos de partículas, cámara y pantalla se retrasan esos ticks
 	 * para caer justo en el fotograma de impacto. Deben coincidir con {@code IMPACT_TICKS} de gen_player_animations.py.
 	 */
-	public static final Map<String, Integer> IMPACT_TICKS = Map.of(BERSERKER_RAGE, 4, BERSERKER_WAR_CRY, 8, BERSERKER_SLAM, 3);
+	public static final Map<String, Integer> IMPACT_TICKS = Map.ofEntries(
+			Map.entry(BERSERKER_RAGE, 4), Map.entry(BERSERKER_WAR_CRY, 8), Map.entry(BERSERKER_SLAM, 3),
+			Map.entry(MAGE_BOLT, 4), Map.entry(MAGE_BLINK, 3), Map.entry(MAGE_TIME_WARP, 6), Map.entry(MAGE_MISSILE_RIGHT, 3),
+			Map.entry(MAGE_MISSILE_LEFT, 3), Map.entry(ASSASSIN_VANISH, 3), Map.entry(ASSASSIN_STEP, 3), Map.entry(ASSASSIN_FAN, 4),
+			Map.entry(ASSASSIN_SHURIKEN, 3), Map.entry(HERBALIST_BALM, 4), Map.entry(HERBALIST_RAIN, 5), Map.entry(HERBALIST_SPORE, 3),
+			Map.entry(ENGINEER_GRAPPLE, 3), Map.entry(ENGINEER_GRENADE, 3),
+			Map.entry(LANCER_LEAP, 3), Map.entry(LANCER_SLAM, 2), Map.entry(LANCER_THRUST, 3), Map.entry(SWORDSMAN_IAIDO, 3), Map.entry(SWORDSMAN_CUTS, 2), Map.entry(PALADIN_CONSECRATE, 5), Map.entry(PALADIN_HAMMER, 4),
+			Map.entry(NECRO_SPEAR, 4), Map.entry(NECRO_SIPHON, 4), Map.entry(DRUID_WOLVES, 5), Map.entry(DRUID_THORNS, 4), Map.entry(MERCHANT_COIN, 3), Map.entry(MERCHANT_GUARD, 4), Map.entry(MONK_KICK, 3), Map.entry(MONK_FISTS, 2),
+			Map.entry(GUNSLINGER_SHOT, 2), Map.entry(GUNSLINGER_DEADEYE, 4), Map.entry(WEAPON_SUMMON, 4), Map.entry(WEAPON_GREATSWORD, 4), Map.entry(SHAPE_POUNCE, 3), Map.entry(SHAPE_HOWL, 5),
+			Map.entry(HUNTER_MARK, 3), Map.entry(HUNTER_TRAP, 3), Map.entry(HUNTER_VOLLEY, 4), Map.entry(HUNTER_FALCON, 4), Map.entry(BARD_SONG, 4), Map.entry(BARD_DISSONANCE, 3), Map.entry(WARLOCK_CURSE, 3), Map.entry(WARLOCK_BOLT, 3), Map.entry(WARLOCK_IMPS, 5), Map.entry(WARLOCK_DOOM, 4), Map.entry(TAMER_COMMAND, 4), Map.entry(TAMER_STAMPEDE, 3),
+			Map.entry(ELEMENT_BOLT, 3), Map.entry(ELEMENT_BURST, 4),
+			Map.entry(GRAND_SIGNATURE, 5), Map.entry(GRAND_ULTIMATE, 8), Map.entry(EVOLVED_CAST, 3));
 
-	public static final List<String> ALL = List.of(BERSERKER_RAGE, BERSERKER_WAR_CRY, BERSERKER_LEAP, BERSERKER_SLAM, BERSERKER_WHIRL);
+	public static final List<String> ALL = List.of(BERSERKER_RAGE, BERSERKER_WAR_CRY, BERSERKER_LEAP, BERSERKER_SLAM, BERSERKER_WHIRL,
+			MAGE_BOLT, MAGE_BLINK, MAGE_TIME_WARP, MAGE_MISSILE_RIGHT, MAGE_MISSILE_LEFT, ASSASSIN_VANISH, ASSASSIN_STEP, ASSASSIN_FAN, ASSASSIN_SHURIKEN,
+			HERBALIST_BALM, HERBALIST_RAIN, HERBALIST_SPORE,
+			ENGINEER_GRAPPLE, ENGINEER_GRENADE,
+			LANCER_LEAP, LANCER_SLAM, LANCER_THRUST, SWORDSMAN_IAIDO, SWORDSMAN_CUTS, PALADIN_CONSECRATE, PALADIN_HAMMER,
+			NECRO_SPEAR, NECRO_SIPHON, DRUID_WOLVES, DRUID_THORNS, MERCHANT_COIN, MERCHANT_GUARD, MONK_KICK, MONK_FISTS,
+			GUNSLINGER_SHOT, GUNSLINGER_DEADEYE, WEAPON_SUMMON, WEAPON_GREATSWORD, SHAPE_POUNCE, SHAPE_HOWL,
+			HUNTER_MARK, HUNTER_TRAP, HUNTER_VOLLEY, HUNTER_FALCON, BARD_SONG, BARD_DISSONANCE, WARLOCK_CURSE, WARLOCK_BOLT, WARLOCK_IMPS, WARLOCK_DOOM, TAMER_COMMAND, TAMER_STAMPEDE,
+			ELEMENT_BOLT, ELEMENT_BURST,
+			GRAND_SIGNATURE, GRAND_ULTIMATE, EVOLVED_CAST,
+			STANCE_BERSERKER, STANCE_LANCER, STANCE_MONK, STANCE_MAGE);
 
 	private PlayerAnimIds() {
 	}

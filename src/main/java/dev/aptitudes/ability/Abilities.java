@@ -60,8 +60,6 @@ public final class Abilities {
 		register("fireball", (p, r) -> {
 			LivingEntity target = Targeting.raycastLiving(p, 24);
 			Vec3d end = target != null ? target.getPos().add(0, target.getHeight() / 2, 0) : Targeting.lookEnd(p, 24);
-			Targeting.particleLine(world(p), ParticleFx.dust(0xB388FF, 1.2f), p.getEyePos(), end);
-			sound(p, SoundEvents.ENTITY_ILLUSIONER_CAST_SPELL, 1.3f);
 			if (target == null) return false;
 			float damage = 4 + 2 * r;
 			for (LivingEntity e : p.getWorld().getEntitiesByClass(LivingEntity.class, target.getBoundingBox().expand(2),
@@ -69,8 +67,7 @@ public final class Abilities {
 				e.damage(p.getDamageSources().indirectMagic(p, p), e == target ? damage : damage / 2);
 				if (e == target) effect(e, StatusEffects.GLOWING, 60, 0); // runa de rastreo
 			}
-			world(p).spawnParticles(ParticleTypes.WITCH, end.x, end.y, end.z, 20, 0.5, 0.5, 0.5, 0.1);
-			ParticleFx.ring(world(p), end, 1.5, ParticleTypes.ENCHANT, 16);
+			MageFx.bolt(p, end); // V83
 			return true;
 		});
 		register("blink", (p, r) -> {
@@ -80,11 +77,10 @@ public final class Abilities {
 			Vec3d feet = eyeTarget.subtract(0, p.getStandingEyeHeight(), 0);
 			Vec3d spot = Targeting.findFreeSpot(p, feet);
 			if (spot == null) return false;
-			Targeting.burst(world(p), ParticleTypes.PORTAL, p, 30, 0.5);
+			Vec3d from = p.getPos();
 			p.requestTeleport(spot.x, spot.y, spot.z);
 			p.fallDistance = 0;
-			Targeting.burst(world(p), ParticleTypes.REVERSE_PORTAL, p, 30, 0.5);
-			sound(p, SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.2f);
+			MageFx.blink(p, from, spot); // V83
 			return true;
 		});
 
@@ -98,8 +94,7 @@ public final class Abilities {
 					m -> m.getTarget() == p)) {
 				mob.setTarget(null);
 			}
-			Targeting.burst(world(p), ParticleTypes.LARGE_SMOKE, p, 25, 0.5);
-			sound(p, SoundEvents.ENTITY_ILLUSIONER_MIRROR_MOVE, 1.0f);
+			AssassinFx.vanish(p); // V84
 			return true;
 		});
 		register("shadow_step", (p, r) -> {
@@ -108,23 +103,23 @@ public final class Abilities {
 			Vec3d behind = target.getPos().subtract(Targeting.horizontalFacing(target).multiply(1.2));
 			Vec3d spot = Targeting.findFreeSpot(p, behind);
 			if (spot == null) return false;
-			Targeting.burst(world(p), ParticleTypes.LARGE_SMOKE, p, 15, 0.4);
+			Vec3d from = p.getPos();
 			// Aparece mirando en la misma dirección que el objetivo: justo a su espalda.
 			p.networkHandler.requestTeleport(spot.x, spot.y, spot.z, target.getYaw(), 10.0f);
 			p.fallDistance = 0;
-			sound(p, SoundEvents.ENTITY_ENDERMAN_TELEPORT, 0.6f);
+			AssassinFx.step(p, from, spot); // V84
 			return true;
 		});
 
 		// ---------------- Herbolista ----------------
 		register("balm", (p, r) -> {
-			for (PlayerEntity ally : Targeting.playersAround(p, 6)) {
-				ally.heal(HerbalistKit.heal(p, 2 + 2 * r));
+			var allies = Targeting.playersAround(p, 6);
+			for (PlayerEntity ally : allies) {
+				CombatEvents.heal(p, ally, HerbalistKit.heal(p, 2 + 2 * r)); // V95
 				HerbalistKit.onHealed(p, ally);
 				effect(ally, StatusEffects.REGENERATION, 100, 0);
-				Targeting.burst(world(p), ParticleTypes.HAPPY_VILLAGER, ally, 12, 0.5);
 			}
-			sound(p, SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, 1.0f);
+			HerbalistFx.balm(p, 6, allies); // V85
 			return true;
 		});
 		register("poison_thorns", (p, r) -> {
@@ -332,14 +327,11 @@ public final class Abilities {
 		register("elemental_bolt", (p, r) -> {
 			Element element = ElementEffects.activeElement(p);
 			if (element == null) return false;
-			boolean hit = ElementEffects.bolt(p, element, r);
-			if (hit) sound(p, SoundEvents.ENTITY_EVOKER_CAST_SPELL, 1.4f);
-			return hit;
+			return ElementEffects.bolt(p, element, r);
 		});
 		register("elemental_burst", (p, r) -> {
 			Element element = ElementEffects.activeElement(p);
 			if (element == null) return false;
-			sound(p, SoundEvents.ENTITY_ILLUSIONER_CAST_SPELL, 1.0f);
 			return ElementEffects.burst(p, element, r);
 		});
 

@@ -33,6 +33,60 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   PNG a mano tras ejecutar `gen_items.py`. Los mundos antiguos conservan, inofensivo, el archivo de datos de `SummonState`. Sin cambios de balance.
 
 ### Añadido
+- **V98 (1.ª entrega) — Identidad mecánica de los cinco pilotos: inventario y visibilidad.** Auditoría de los recursos de Bersérker, Elementalista,
+  Cambiaformas, Paladín e Ingeniero (`docs/V98_IDENTIDAD_MECANICA.md`). Los recursos de sus nodos que no se veían en ningún sitio se muestran ahora
+  junto a la mecánica del rol, mientras valen algo: cicatrices (Bersérker), Armonía elemental (Elementalista), Presa fácil y Tercer cambio
+  (Cambiaformas), Ira justa (Paladín) y minas de proximidad (Ingeniero). Solo visibilidad: `ExtraKits.hud` + `RoleMechanics.sync`, mismo paquete y mismo
+  dibujo del HUD, sin textos nuevos. Sin cambios de balance ni mecánicas nuevas. **Sin probar en partida.**
+- **V97 — Posturas de combate (piloto).** Bersérker, Lancero, Monje y Mago adoptan una postura en bucle mientras sostienen su arma y hay combate (golpean,
+  reciben daño o hay un hostil a menos de 10 bloques); se mantiene 3 s tras el último motivo para no parpadear. Nunca se muestra corriendo, nadando,
+  planeando, montado, durmiendo, trepando, usando un objeto ni muerto: ahí manda la locomoción vanilla. Capa propia de Player Animation Library de
+  prioridad 1100 (por debajo de los gestos de habilidad, 1500) que solo mueve brazos, torso, cabeza y cuerpo (las piernas siguen siendo vanilla). Se ve en
+  tercera persona y en los demás jugadores; en primera persona no cambia nada. Se basa en el arma, no en el rol, así que no sincroniza datos nuevos. Opción de
+  cliente `combatStances` (activada). `logic/StanceRules` (puro, `StanceRulesTest`), `client/fx/StanceClient` y `stance.json` (generado). Sin cambios de
+  balance. **Sin probar en partida**: las poses son de primera intención y hay que verlas.
+- **V96 (5.ª tanda) — Activas de los nodos extra (N1–N10).** Las 100 activas nuevas (N3, N4, N6, N8 y N10 de los 20 roles) usan ya el guion de
+  batalla: cada una se asigna a una de las diez formas de V96·4 (rayo, cono, zona, vórtice, aura, escudo, curación, embestida, nova,
+  invocación) en `role/ExtraFxShapes` (puro, con `ExtraFxShapesTest`), con su gesto, su sonido y su capa de partículas con el color del rol;
+  N8 y N10 (Ascenso) suben la intensidad. Se engancha en `CastFx.onCast`. Las pasivas (100) no tienen guion propio. Sin cambios de balance y
+  sin nuevos recursos (se reutilizan gestos y sonidos). La forma de cada nodo se eligió por su nombre: **conviene revisarla en partida**.
+- **V96 (4.ª tanda) — Activas de Maestro y Definitivo.** Las 80 activas de las filas de evolución comparten diez plantillas (Nova, Rayo, Cono,
+  Embestida, Zona, Vórtice, Aura, Curación, Escudo e Invocación) y ahora cada plantilla tiene su guion: gesto de cuerpo breve
+  (`evolved_cast`), sonido propio (`evolved_<plantilla>`, 10 nuevos), capa de partículas con el color del rol y cámara; el Definitivo multiplica
+  la cantidad y el movimiento de cámara. Un evento por lanzamiento (`FxIds.EVOLVED`, 70) desde `EvolvedAbilities`, dibujado por
+  `client/fx/EvolvedClientFx`. El área real sigue dibujándola el servidor y los sonidos de vanilla quedan más bajos como cuerpo del golpe. Sin
+  cambios de balance. **Sin probar en partida.** Quedan los 10 nodos extra de cada rol.
+- **V96 (3.ª tanda) — Firmas y definitivas de los otros 15 roles.** `GrandFx` cubre ya los 20 roles: cada uno tiene motivo de partículas
+  propio (humo para Asesino y Brujo, notas para el Bardo, hojas para Herbolista y Druida, llama de almas para el Nigromante, etc.) y un
+  sonido propio (`grand_<rol>`, 15 nuevos, sintetizados con un timbre por rol: campana, soplo, golpe, filo, bordón, madera, monedas,
+  gong, disparo, halcón, laúd, cuerno). Mismos gestos de cuerpo y cámara que los pilotos. Sin cambios de balance. **Sin probar en partida**
+  (sonidos solo medidos, no oídos).
+- **V96 (2.ª tanda) — Piedras angulares.** Las diez plantillas del escalón S7 (Matanza, Baluarte, Sobrecarga, Detonación, Contagio, Legión,
+  Espectro, Fortuna, Tempestad y Santuario) tienen guion visual propio con el color del rol, un evento por disparo (`FxIds.KEYSTONE`, 69) desde
+  `Keystones` y dibujo en `client/fx/KeystoneClientFx`. Cada guion es breve y barato porque se dispara a menudo; solo Baluarte y Detonación mueven la
+  cámara de quien los dispara. Los sonidos por plantilla ya existían. Legión no tiene disparo (es pasiva). Sin cambios de balance. **Sin probar en partida.**
+- **V96 (1.ª tanda) — Firmas y definitivas de los cinco roles piloto.** Bersérker, Elementalista, Cambiaformas, Paladín e Ingeniero tienen guion
+  propio para la firma (Z) y la definitiva (R): gesto de cuerpo nuevo (`grand_signature`, `grand_ultimate`), carga de energía, anillos de choque,
+  motivo de partículas por rol, pilar en la definitiva, cámara/FOV/viñeteado y sonido propio (`grand_*` más un retumbo común). Un único evento
+  (`FxIds.GRAND_SIGNATURE`/`GRAND_ULTIMATE`) desde `ability/GrandFx`, enganchado en `CastFx.onCast`; dibuja `client/fx/GrandClientFx`. Las partículas del
+  mundo que ya hacían las firmas y definitivas se conservan. Sin cambios de balance. **Sin probar en partida** (sonidos solo medidos, no oídos).
+  Quedan: piedras angulares, los otros 15 roles, evoluciones y nodos extra; la Baliza del Ingeniero aún no distingue colocar/teletransportar.
+- **V95 — Feedback compartido de combate.** Un lenguaje común de señales, igual para los 20 roles, en `ability/ImpactFeedback`: golpe de
+  habilidad (chispas del color del rol), **golpe pesado** (≥ 20 % de la vida de la víctima o ≥ 8 de daño: ráfaga, anillo y golpe grave),
+  **crítico** vanilla (destello y estrella con acento agudo), **bloqueo con escudo** (chispas metálicas y choque), **curación efectiva**
+  (ascenso de luz verde y nota cálida) y **recurso insuficiente** (golpecito discreto solo para quien lo intenta). Los golpes vanilla
+  normales y el daño de invocaciones no dan señal, para no saturar. La curación pasa por `CombatEvents.heal`, que distingue **curación
+  efectiva** de **sobrecuración** y las suma a la telemetría (`curación X (Y % sobra)` en `/aptitudes telemetry`); la usan Bálsamo, Lluvia
+  sanadora, Consagración y Sifón de almas. Opción de cliente `impactFeedback` (activada) para apagarlo; se escala con `fxIntensity`.
+  Cinco sonidos sintetizados con subtítulos en los 11 idiomas. **Sin ver en partida.**
+- **V94 — Presupuesto de invocaciones y daño autónomo atribuido.** Cada jugador tiene un presupuesto de puntos de invocación (opción
+  `summonBudget`, 16 por defecto, 0 = sin límite): esbirro y esqueleto 2, diablillo 1, lobo 3, golem y torreta 4. La suma de las activas
+  de **cualquier rol** no puede pasar del presupuesto: al lanzar una nueva se retiran las más antiguas hasta que quepa, y la nueva
+  nunca se rechaza. Esto limita los ejércitos que sumaban varios roles (Nigromante + Druida + Ingeniero…) sin tocar el tope propio de
+  cada rol (`Minions.MAX_MINIONS`). Política nueva: las invocaciones se retiran al morir su dueño y, al cambiar de dimensión, las que
+  quedaron en la anterior. La telemetría de V93 atribuye ahora al dueño el **daño autónomo** de invocaciones y mascotas domesticadas
+  (columna «autónomo» de `/aptitudes telemetry`). **Cambio de balance:** el presupuesto solo recorta las combinaciones que superan 16
+  puntos; ajustable o desactivable en la configuración.
 - **Astrolabio del Ocaso y espera común del Eclipse (C3).** El Astrolabio (clic derecho en la Hoguera) solo lo usan
   los operadores o el líder del grupo (decisión E1) y ya no se consume si se rechaza. Comparte con el Embrión del
   Umbral (Behelit) la espera de `eclipseSummonCooldownDays` (3 por defecto, 0 = sin espera) días de juego por mundo,
@@ -165,6 +219,69 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   «Rango 1 / 2 / 3» con todas las cifras que cambian. Fuente: `tools/lang/base_desc.py` (`--apply`).
 
 ### Añadido
+- **V93 — Bus de eventos de combate y telemetría (primera entrega).** Un único punto del servidor (`ability/CombatEvents`) detecta los
+  lanzamientos aceptados, el daño que causan los jugadores y sus bajas, y los reparte a oyentes. Cada activa se ejecuta en un «alcance»
+  que sobrevive a las tareas diferidas (`AbilityState.schedule`), de modo que el daño se atribuye a la habilidad que lo causó; el daño que
+  provocan los oyentes llega marcado como **derivado** y con su profundidad (tope `MAX_DEPTH` = 3) para cortar cadenas de pasivas.
+  `CombatTelemetry` acumula en memoria el daño por origen (habilidad, derivado, vanilla), el gasto de energía, las bajas y el tiempo medio
+  hasta derrotar, por jugador, escenario y rol principal; los jugadores sin rol forman el grupo `VANILLA`, la **línea base** del combate
+  normal. Comando `/aptitudes telemetry` (`me` para todos; `roles`, `label <escenario>` y `reset` para operadores, con MSPT). No cambia
+  ningún valor de juego. Pendiente: curación efectiva, esmeraldas consumidas y migrar los `*Kit` al bus.
+- **V91 — Efectos de batalla, fase 10 (Elementalista).** El Proyectil, el Estallido, la Ráfaga y el Aura elementales dibujan ahora con un
+  estilo propio por cada uno de los 14 elementos (llamas y lava, copos y esquirlas de hielo, rayos en zigzag con cadena, escombros de
+  tierra, espirales de viento, burbujas, hojas, sombras, vacío, destellos de luz, baba, cristales de amatista y notas). Dos animaciones del
+  cuerpo (`elementalist.json`) y ocho sonidos sintetizados por familia de elemento con subtítulos en los 11 idiomas. El Proyectil elemental
+  ya no dibuja nada si no hay objetivo. La Firma y la Definitiva del Elementalista reutilizan el mismo Estallido. Con esto quedan
+  cubiertos los 20 roles. **Sin ver en partida.**
+- **V90 — Efectos de batalla, fase 9 (Cazador, Bardo, Brujo abisal y Domador).** Cazador: Marca (sello que se cierra), Trampa de oso
+  (dientes que saltan al cerrarse), Lluvia de flechas y Golpe de halcón (picado con plumas). Bardo: Canción de valor, Balada de escudo y
+  Réquiem (espirales de notas de color distinto) y Disonancia (onda de notas rotas que sacude la cámara). Brujo abisal: Maldición de
+  agonía (hilo carmesí que late), Rayo abismal, Diablillos (anillo de azufre) y Perdición (sello de almas y sentencia). Domador: Azuzar,
+  Vínculo vital y Rugido del alfa (anillos de color, aureola en cada mascota) y Estampida (arrasa en línea con polvo y pezuñas). Doce
+  animaciones del cuerpo (`hunter.json`, `bard.json`, `warlock.json`, `tamer.json`), once sonidos sintetizados con subtítulos en los 11
+  idiomas. Con esto quedan cubiertos todos los roles salvo el Elementalista. **Sin ver en partida.**
+- **V89 — Efectos de batalla, fase 8 (Mago pistolero, Invocador de armas y Cambiaformas).** Mago pistolero: Disparo arcano, Disparo en
+  abanico, Rebote (rayo dorado de objetivo en objetivo) y Ojo de halcón (mira que se cierra sobre cada marca y disparos certeros).
+  Invocador de armas: Andanada y Lluvia de espadas (espadas espectrales con estela y esquirlas), Espadón espectral (arco enorme de luz) y
+  Prisión de espadas (filos que se cierran sobre el objetivo). Cambiaformas: Abalanzarse (estela violeta y tres zarpazos) y Aullido de
+  la bestia (tres anillos sónicos). Seis animaciones del cuerpo (`gunslinger.json`, `weaponsummoner.json`, `shapeshifter.json`), seis
+  sonidos sintetizados con subtítulos en los 11 idiomas. El Disparo arcano, el Espadón y la Prisión ya no dibujan nada si fallan.
+  El Elementalista no se toca: sus efectos dependen del elemento activo y ya los dibuja `ElementEffects`. **Sin ver en partida.**
+- **V88 — Efectos de batalla, fase 7 (Nigromante, Druida, Mercader táctico y Monje).** Nigromante: Lanza de hueso (línea de polvo óseo
+  con astillas) y Sifón de almas (pulso que respira e hilos de alma de cada enemigo hacia el nigromante). Druida: Manada (ola de hojas y
+  anillo de luz bajo cada lobo al aparecer) y Tormenta de espinas (zarzas en espiral). Mercader táctico: Lanzamiento de moneda (estela
+  dorada y monedas que saltan) y Guardia dorada (domo de motas y monedas que giran). Monje: Patada voladora (estela de ki y onda de choque)
+  y Cien puños (un destello y un anillo de choque por golpe, el último más fuerte). Ocho animaciones del cuerpo en primera persona
+  (`necromancer.json`, `druid.json`, `merchant.json`, `monk.json`), ocho sonidos sintetizados con subtítulos en los 11 idiomas. La Lanza de
+  hueso, el Sifón, la Tormenta de espinas y la Moneda ya no dibujan nada si fallan. **Sin ver en partida.**
+- **V87 — Efectos de batalla, fase 6 (Lancero, Espadachín y Paladín).** Lancero: Salto del dragón (ráfaga de aire, estela de aliento
+  de dragón y aterrizaje con escombros físicos y onda violeta) y Estocada perforante (línea recta de viento y chispas). Espadachín:
+  Iaido (estela de acero con tajos) y Mil cortes (un tajo diagonal con chispas y tono distinto por golpe). Paladín: Consagración
+  (círculo dorado que se abre, pilares de luz y un pulso por segundo) y Martillo de la justicia (rayo dorado, columna de luz y anillo).
+  Siete animaciones del cuerpo en primera persona (`lancer.json`, `swordsman.json`, `paladin.json`), siete sonidos sintetizados con
+  subtítulos en los 11 idiomas. El Martillo de la justicia y la Estocada ya no dibujan nada si fallan. Embestida del Lancero no cambia.
+  **Sin ver en partida.**
+- **V86 — Efectos de batalla, fase 5 (Ingeniero).** El Garfio dispara un cable de chispas que se tensa y se clava con un estallido de
+  metal (con tirón de cámara para quien lo lanza), y la Granada de pulso describe un arco, parpadea cada vez más rápido y estalla en un
+  anillo eléctrico con esquirlas de hierro justo cuando el servidor aplica el daño. Dos animaciones del cuerpo en primera persona
+  (`engineer.json`), tres sonidos sintetizados con subtítulos en los 11 idiomas. Propulsores y Torreta conservan su efecto genérico.
+  **Sin ver en partida.**
+- **V85 — Efectos de batalla, fase 4 (Herbolista).** Bálsamo, Lluvia sanadora y Nube de esporas tienen coreografía propia: ondas de hojas y
+  remolinos de curación sobre cada aliado, una nube con gotas y un círculo luminoso mientras llueve, y una vaina que describe un arco y
+  estalla en una niebla verde y violeta. Tres animaciones del cuerpo en primera persona (`herbalist.json`), tres sonidos sintetizados con
+  subtítulos en los 11 idiomas y los efectos sincronizados con el golpe de cada animación. Espinas venenosas conserva su efecto genérico.
+  **Sin ver en partida.**
+- **V84 — Efectos de batalla, fase 3 (Asesino).** Desaparecer, Paso de sombra, Abanico de cuchillas y Shuriken tienen coreografía propia:
+  bomba de humo con jirones que suben mientras dura la invisibilidad y túnel oscuro en la cámara, estela de posimágenes y estocada al
+  reaparecer, abanico de tajos con esquirlas de hierro que caen, y cuchillas y shuriken que giran con su estela y se clavan. Cuatro
+  animaciones del cuerpo en primera persona (`assassin.json`), cinco sonidos sintetizados con subtítulos en los 11 idiomas y los efectos
+  sincronizados con el golpe de cada animación. Desaparecer, Paso de sombra, Abanico y Shuriken ya no dibujan nada si fallan (antes la
+  línea y el sonido salían aunque no hubiera objetivo). **Sin ver en partida.**
+- **V83 — Efectos de batalla, fase 2 (Mago).** Proyectil arcano, Salto arcano, Distorsión temporal y Misiles arcanos tienen coreografía propia:
+  carga en la mano y rayo helicoidal con fragmentos de amatista que caen, estela y estallido en el salto, relojes que giran y motas congeladas
+  al frenar el tiempo, y misiles con arco. Cinco animaciones del cuerpo en primera persona (`mage.json`), seis sonidos sintetizados con
+  subtítulos y los efectos sincronizados con el golpe de cada animación. El proyectil arcano ya no dibuja nada si no hay objetivo.
+  **Sin ver en partida.**
 - **V78.1 — Animaciones visibles en primera persona y más dinámicas.** Las animaciones no se veían porque PAL las deja transparentes en
   primera persona por defecto; ahora se activa el modo `THIRD_PERSON_MODEL` mientras suenan. Las cinco animaciones del Bersérker se
   rehacen con preparación, sobrepaso, congelado en el impacto, rebote y brazos desfasados, son más cortas (Furia 1,0 s, Grito 0,8 s,

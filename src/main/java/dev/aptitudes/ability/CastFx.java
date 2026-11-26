@@ -46,7 +46,24 @@ public final class CastFx {
 
 	/** Igual que {@link #onCast(ServerPlayerEntity, Role, Kind)}, pero las activas con guion propio solo hacen el gesto. */
 	public static void onCast(ServerPlayerEntity player, Role role, Kind kind, String abilityId) {
-		if (kind == Kind.ACTIVE && BerserkerFx.handles(abilityId)) {
+		dev.aptitudes.role.ExtraFxShapes.Shape extra = kind == Kind.ACTIVE ? dev.aptitudes.role.ExtraFxShapes.shapeOf(abilityId) : null;
+		if (extra != null) {
+			// V96 (5.ª tanda): las activas de los nodos extra usan la forma de su guion (gesto, sonido y partículas de V96·4).
+			player.swingHand(net.minecraft.util.Hand.MAIN_HAND, true);
+			EvolvedAbilities.play(player, 1, dev.aptitudes.role.EvolvedTree.Template.valueOf(extra.name()),
+					dev.aptitudes.role.ExtraFxShapes.big(abilityId), colorOf(player, role));
+			return;
+		}
+		if (kind == Kind.ACTIVE && abilityId != null && dev.aptitudes.role.EvolvedTree.actives().containsKey(abilityId)) {
+			player.swingHand(net.minecraft.util.Hand.MAIN_HAND, true); // V96: la activa evolucionada trae su propio guion (EvolvedAbilities)
+			return;
+		}
+		if (kind == Kind.ACTIVE && (BerserkerFx.handles(abilityId) || MageFx.handles(abilityId) || AssassinFx.handles(abilityId) || HerbalistFx.handles(abilityId) || EngineerFx.handles(abilityId)
+				|| LancerFx.handles(abilityId) || SwordsmanFx.handles(abilityId) || PaladinFx.handles(abilityId)
+				|| NecromancerFx.handles(abilityId) || DruidFx.handles(abilityId) || MerchantFx.handles(abilityId) || MonkFx.handles(abilityId)
+				|| GunslingerFx.handles(abilityId) || WeaponFx.handles(abilityId) || ShapeshifterFx.handles(abilityId)
+				|| HunterFx.handles(abilityId) || BardFx.handles(abilityId) || WarlockFx.handles(abilityId) || TamerFx.handles(abilityId)
+				|| ElementFx.handles(abilityId))) {
 			player.swingHand(net.minecraft.util.Hand.MAIN_HAND, true);
 			return;
 		}
@@ -54,6 +71,13 @@ public final class CastFx {
 	}
 
 	public static void onCast(ServerPlayerEntity player, Role role, Kind kind) {
+		// V96: firma y definitiva de los roles piloto con guion propio (sustituye al efecto genérico).
+		if ((kind == Kind.SIGNATURE || kind == Kind.ULTIMATE) && GrandFx.handles(role, kind == Kind.ULTIMATE)) {
+			player.swingHand(net.minecraft.util.Hand.MAIN_HAND, true);
+			if (kind == Kind.ULTIMATE) GrandFx.ultimate(player, role);
+			else GrandFx.signature(player, role);
+			return;
+		}
 		ServerWorld world = player.getServerWorld();
 		int color = colorOf(player, role);
 		DustParticleEffect dust = ParticleFx.dust(color, kind == Kind.ACTIVE ? 1.0f : 1.6f);

@@ -203,6 +203,564 @@
       "aptitudes:berserker_leap"
     ]
   },
+  "mage_charge": {
+    "subtitle": "subtitles.aptitudes.mage_charge",
+    "sounds": [
+      "aptitudes:mage_charge"
+    ]
+  },
+  "mage_bolt": {
+    "subtitle": "subtitles.aptitudes.mage_bolt",
+    "sounds": [
+      "aptitudes:mage_bolt"
+    ]
+  },
+  "mage_blink": {
+    "subtitle": "subtitles.aptitudes.mage_blink",
+    "sounds": [
+      "aptitudes:mage_blink"
+    ]
+  },
+  "mage_time": {
+    "subtitle": "subtitles.aptitudes.mage_time",
+    "sounds": [
+      "aptitudes:mage_time"
+    ]
+  },
+  "mage_missile": {
+    "subtitle": "subtitles.aptitudes.mage_missile",
+    "sounds": [
+      "aptitudes:mage_missile"
+    ]
+  },
+  "mage_impact": {
+    "subtitle": "subtitles.aptitudes.mage_impact",
+    "sounds": [
+      "aptitudes:mage_impact"
+    ]
+  },
+  "assassin_vanish": {
+    "subtitle": "subtitles.aptitudes.assassin_vanish",
+    "sounds": [
+      "aptitudes:assassin_vanish"
+    ]
+  },
+  "assassin_slash": {
+    "subtitle": "subtitles.aptitudes.assassin_slash",
+    "sounds": [
+      "aptitudes:assassin_slash"
+    ]
+  },
+  "assassin_step": {
+    "subtitle": "subtitles.aptitudes.assassin_step",
+    "sounds": [
+      "aptitudes:assassin_step"
+    ]
+  },
+  "assassin_throw": {
+    "subtitle": "subtitles.aptitudes.assassin_throw",
+    "sounds": [
+      "aptitudes:assassin_throw"
+    ]
+  },
+  "assassin_impact": {
+    "subtitle": "subtitles.aptitudes.assassin_impact",
+    "sounds": [
+      "aptitudes:assassin_impact"
+    ]
+  },
+  "herbalist_balm": {
+    "subtitle": "subtitles.aptitudes.herbalist_balm",
+    "sounds": [
+      "aptitudes:herbalist_balm"
+    ]
+  },
+  "herbalist_rain": {
+    "subtitle": "subtitles.aptitudes.herbalist_rain",
+    "sounds": [
+      "aptitudes:herbalist_rain"
+    ]
+  },
+  "herbalist_spore": {
+    "subtitle": "subtitles.aptitudes.herbalist_spore",
+    "sounds": [
+      "aptitudes:herbalist_spore"
+    ]
+  },
+  "engineer_grapple": {
+    "subtitle": "subtitles.aptitudes.engineer_grapple",
+    "sounds": [
+      "aptitudes:engineer_grapple"
+    ]
+  },
+  "engineer_throw": {
+    "subtitle": "subtitles.aptitudes.engineer_throw",
+    "sounds": [
+      "aptitudes:engineer_throw"
+    ]
+  },
+  "engineer_blast": {
+    "subtitle": "subtitles.aptitudes.engineer_blast",
+    "sounds": [
+      "aptitudes:engineer_blast"
+    ]
+  },
+  "lancer_leap": {
+    "subtitle": "subtitles.aptitudes.lancer_leap",
+    "sounds": [
+      "aptitudes:lancer_leap"
+    ]
+  },
+  "lancer_thrust": {
+    "subtitle": "subtitles.aptitudes.lancer_thrust",
+    "sounds": [
+      "aptitudes:lancer_thrust"
+    ]
+  },
+  "lancer_slam": {
+    "subtitle": "subtitles.aptitudes.lancer_slam",
+    "sounds": [
+      "aptitudes:lancer_slam"
+    ]
+  },
+  "swordsman_draw": {
+    "subtitle": "subtitles.aptitudes.swordsman_draw",
+    "sounds": [
+      "aptitudes:swordsman_draw"
+    ]
+  },
+  "swordsman_cut": {
+    "subtitle": "subtitles.aptitudes.swordsman_cut",
+    "sounds": [
+      "aptitudes:swordsman_cut"
+    ]
+  },
+  "paladin_consecrate": {
+    "subtitle": "subtitles.aptitudes.paladin_consecrate",
+    "sounds": [
+      "aptitudes:paladin_consecrate"
+    ]
+  },
+  "paladin_hammer": {
+    "subtitle": "subtitles.aptitudes.paladin_hammer",
+    "sounds": [
+      "aptitudes:paladin_hammer"
+    ]
+  },
+  "necromancer_spear": {
+    "subtitle": "subtitles.aptitudes.necromancer_spear",
+    "sounds": [
+      "aptitudes:necromancer_spear"
+    ]
+  },
+  "necromancer_siphon": {
+    "subtitle": "subtitles.aptitudes.necromancer_siphon",
+    "sounds": [
+      "aptitudes:necromancer_siphon"
+    ]
+  },
+  "druid_howl": {
+    "subtitle": "subtitles.aptitudes.druid_howl",
+    "sounds": [
+      "aptitudes:druid_howl"
+    ]
+  },
+  "druid_thorns": {
+    "subtitle": "subtitles.aptitudes.druid_thorns",
+    "sounds": [
+      "aptitudes:druid_thorns"
+    ]
+  },
+  "merchant_coin": {
+    "subtitle": "subtitles.aptitudes.merchant_coin",
+    "sounds": [
+      "aptitudes:merchant_coin"
+    ]
+  },
+  "merchant_guard": {
+    "subtitle": "subtitles.aptitudes.merchant_guard",
+    "sounds": [
+      "aptitudes:merchant_guard"
+    ]
+  },
+  "monk_kick": {
+    "subtitle": "subtitles.aptitudes.monk_kick",
+    "sounds": [
+      "aptitudes:monk_kick"
+    ]
+  },
+  "monk_fist": {
+    "subtitle": "subtitles.aptitudes.monk_fist",
+    "sounds": [
+      "aptitudes:monk_fist"
+    ]
+  },
+  "gunslinger_shot": {
+    "subtitle": "subtitles.aptitudes.gunslinger_shot",
+    "sounds": [
+      "aptitudes:gunslinger_shot"
+    ]
+  },
+  "gunslinger_mark": {
+    "subtitle": "subtitles.aptitudes.gunslinger_mark",
+    "sounds": [
+      "aptitudes:gunslinger_mark"
+    ]
+  },
+  "weapon_greatsword": {
+    "subtitle": "subtitles.aptitudes.weapon_greatsword",
+    "sounds": [
+      "aptitudes:weapon_greatsword"
+    ]
+  },
+  "weapon_prison": {
+    "subtitle": "subtitles.aptitudes.weapon_prison",
+    "sounds": [
+      "aptitudes:weapon_prison"
+    ]
+  },
+  "shapeshifter_pounce": {
+    "subtitle": "subtitles.aptitudes.shapeshifter_pounce",
+    "sounds": [
+      "aptitudes:shapeshifter_pounce"
+    ]
+  },
+  "shapeshifter_howl": {
+    "subtitle": "subtitles.aptitudes.shapeshifter_howl",
+    "sounds": [
+      "aptitudes:shapeshifter_howl"
+    ]
+  },
+  "hunter_shot": {
+    "subtitle": "subtitles.aptitudes.hunter_shot",
+    "sounds": [
+      "aptitudes:hunter_shot"
+    ]
+  },
+  "hunter_trap": {
+    "subtitle": "subtitles.aptitudes.hunter_trap",
+    "sounds": [
+      "aptitudes:hunter_trap"
+    ]
+  },
+  "hunter_falcon": {
+    "subtitle": "subtitles.aptitudes.hunter_falcon",
+    "sounds": [
+      "aptitudes:hunter_falcon"
+    ]
+  },
+  "bard_song": {
+    "subtitle": "subtitles.aptitudes.bard_song",
+    "sounds": [
+      "aptitudes:bard_song"
+    ]
+  },
+  "bard_dissonance": {
+    "subtitle": "subtitles.aptitudes.bard_dissonance",
+    "sounds": [
+      "aptitudes:bard_dissonance"
+    ]
+  },
+  "warlock_curse": {
+    "subtitle": "subtitles.aptitudes.warlock_curse",
+    "sounds": [
+      "aptitudes:warlock_curse"
+    ]
+  },
+  "warlock_bolt": {
+    "subtitle": "subtitles.aptitudes.warlock_bolt",
+    "sounds": [
+      "aptitudes:warlock_bolt"
+    ]
+  },
+  "warlock_imps": {
+    "subtitle": "subtitles.aptitudes.warlock_imps",
+    "sounds": [
+      "aptitudes:warlock_imps"
+    ]
+  },
+  "warlock_doom": {
+    "subtitle": "subtitles.aptitudes.warlock_doom",
+    "sounds": [
+      "aptitudes:warlock_doom"
+    ]
+  },
+  "tamer_command": {
+    "subtitle": "subtitles.aptitudes.tamer_command",
+    "sounds": [
+      "aptitudes:tamer_command"
+    ]
+  },
+  "tamer_stampede": {
+    "subtitle": "subtitles.aptitudes.tamer_stampede",
+    "sounds": [
+      "aptitudes:tamer_stampede"
+    ]
+  },
+  "element_fire": {
+    "subtitle": "subtitles.aptitudes.element_fire",
+    "sounds": [
+      "aptitudes:element_fire"
+    ]
+  },
+  "element_ice": {
+    "subtitle": "subtitles.aptitudes.element_ice",
+    "sounds": [
+      "aptitudes:element_ice"
+    ]
+  },
+  "element_lightning": {
+    "subtitle": "subtitles.aptitudes.element_lightning",
+    "sounds": [
+      "aptitudes:element_lightning"
+    ]
+  },
+  "element_earth": {
+    "subtitle": "subtitles.aptitudes.element_earth",
+    "sounds": [
+      "aptitudes:element_earth"
+    ]
+  },
+  "element_wind": {
+    "subtitle": "subtitles.aptitudes.element_wind",
+    "sounds": [
+      "aptitudes:element_wind"
+    ]
+  },
+  "element_water": {
+    "subtitle": "subtitles.aptitudes.element_water",
+    "sounds": [
+      "aptitudes:element_water"
+    ]
+  },
+  "element_magic": {
+    "subtitle": "subtitles.aptitudes.element_magic",
+    "sounds": [
+      "aptitudes:element_magic"
+    ]
+  },
+  "element_dark": {
+    "subtitle": "subtitles.aptitudes.element_dark",
+    "sounds": [
+      "aptitudes:element_dark"
+    ]
+  },
+  "feedback_heavy": {
+    "subtitle": "subtitles.aptitudes.feedback_heavy",
+    "sounds": [
+      "aptitudes:feedback_heavy"
+    ]
+  },
+  "feedback_crit": {
+    "subtitle": "subtitles.aptitudes.feedback_crit",
+    "sounds": [
+      "aptitudes:feedback_crit"
+    ]
+  },
+  "feedback_block": {
+    "subtitle": "subtitles.aptitudes.feedback_block",
+    "sounds": [
+      "aptitudes:feedback_block"
+    ]
+  },
+  "feedback_heal": {
+    "subtitle": "subtitles.aptitudes.feedback_heal",
+    "sounds": [
+      "aptitudes:feedback_heal"
+    ]
+  },
+  "feedback_denied": {
+    "subtitle": "subtitles.aptitudes.feedback_denied",
+    "sounds": [
+      "aptitudes:feedback_denied"
+    ]
+  },
+  "grand_berserker": {
+    "subtitle": "subtitles.aptitudes.grand_berserker",
+    "sounds": [
+      "aptitudes:grand_berserker"
+    ]
+  },
+  "grand_elementalist": {
+    "subtitle": "subtitles.aptitudes.grand_elementalist",
+    "sounds": [
+      "aptitudes:grand_elementalist"
+    ]
+  },
+  "grand_shapeshifter": {
+    "subtitle": "subtitles.aptitudes.grand_shapeshifter",
+    "sounds": [
+      "aptitudes:grand_shapeshifter"
+    ]
+  },
+  "grand_paladin": {
+    "subtitle": "subtitles.aptitudes.grand_paladin",
+    "sounds": [
+      "aptitudes:grand_paladin"
+    ]
+  },
+  "grand_engineer": {
+    "subtitle": "subtitles.aptitudes.grand_engineer",
+    "sounds": [
+      "aptitudes:grand_engineer"
+    ]
+  },
+  "grand_rumble": {
+    "subtitle": "subtitles.aptitudes.grand_rumble",
+    "sounds": [
+      "aptitudes:grand_rumble"
+    ]
+  },
+  "grand_mage": {
+    "subtitle": "subtitles.aptitudes.grand_mage",
+    "sounds": [
+      "aptitudes:grand_mage"
+    ]
+  },
+  "grand_assassin": {
+    "subtitle": "subtitles.aptitudes.grand_assassin",
+    "sounds": [
+      "aptitudes:grand_assassin"
+    ]
+  },
+  "grand_herbalist": {
+    "subtitle": "subtitles.aptitudes.grand_herbalist",
+    "sounds": [
+      "aptitudes:grand_herbalist"
+    ]
+  },
+  "grand_lancer": {
+    "subtitle": "subtitles.aptitudes.grand_lancer",
+    "sounds": [
+      "aptitudes:grand_lancer"
+    ]
+  },
+  "grand_swordsman": {
+    "subtitle": "subtitles.aptitudes.grand_swordsman",
+    "sounds": [
+      "aptitudes:grand_swordsman"
+    ]
+  },
+  "grand_necromancer": {
+    "subtitle": "subtitles.aptitudes.grand_necromancer",
+    "sounds": [
+      "aptitudes:grand_necromancer"
+    ]
+  },
+  "grand_druid": {
+    "subtitle": "subtitles.aptitudes.grand_druid",
+    "sounds": [
+      "aptitudes:grand_druid"
+    ]
+  },
+  "grand_merchant": {
+    "subtitle": "subtitles.aptitudes.grand_merchant",
+    "sounds": [
+      "aptitudes:grand_merchant"
+    ]
+  },
+  "grand_monk": {
+    "subtitle": "subtitles.aptitudes.grand_monk",
+    "sounds": [
+      "aptitudes:grand_monk"
+    ]
+  },
+  "grand_gunslinger": {
+    "subtitle": "subtitles.aptitudes.grand_gunslinger",
+    "sounds": [
+      "aptitudes:grand_gunslinger"
+    ]
+  },
+  "grand_weapon_summoner": {
+    "subtitle": "subtitles.aptitudes.grand_weapon_summoner",
+    "sounds": [
+      "aptitudes:grand_weapon_summoner"
+    ]
+  },
+  "evolved_nova": {
+    "subtitle": "subtitles.aptitudes.evolved_nova",
+    "sounds": [
+      "aptitudes:evolved_nova"
+    ]
+  },
+  "evolved_beam": {
+    "subtitle": "subtitles.aptitudes.evolved_beam",
+    "sounds": [
+      "aptitudes:evolved_beam"
+    ]
+  },
+  "evolved_cone": {
+    "subtitle": "subtitles.aptitudes.evolved_cone",
+    "sounds": [
+      "aptitudes:evolved_cone"
+    ]
+  },
+  "evolved_dash": {
+    "subtitle": "subtitles.aptitudes.evolved_dash",
+    "sounds": [
+      "aptitudes:evolved_dash"
+    ]
+  },
+  "evolved_zone": {
+    "subtitle": "subtitles.aptitudes.evolved_zone",
+    "sounds": [
+      "aptitudes:evolved_zone"
+    ]
+  },
+  "evolved_vortex": {
+    "subtitle": "subtitles.aptitudes.evolved_vortex",
+    "sounds": [
+      "aptitudes:evolved_vortex"
+    ]
+  },
+  "evolved_aura": {
+    "subtitle": "subtitles.aptitudes.evolved_aura",
+    "sounds": [
+      "aptitudes:evolved_aura"
+    ]
+  },
+  "evolved_heal": {
+    "subtitle": "subtitles.aptitudes.evolved_heal",
+    "sounds": [
+      "aptitudes:evolved_heal"
+    ]
+  },
+  "evolved_shield": {
+    "subtitle": "subtitles.aptitudes.evolved_shield",
+    "sounds": [
+      "aptitudes:evolved_shield"
+    ]
+  },
+  "evolved_summon": {
+    "subtitle": "subtitles.aptitudes.evolved_summon",
+    "sounds": [
+      "aptitudes:evolved_summon"
+    ]
+  },
+  "grand_hunter": {
+    "subtitle": "subtitles.aptitudes.grand_hunter",
+    "sounds": [
+      "aptitudes:grand_hunter"
+    ]
+  },
+  "grand_bard": {
+    "subtitle": "subtitles.aptitudes.grand_bard",
+    "sounds": [
+      "aptitudes:grand_bard"
+    ]
+  },
+  "grand_warlock": {
+    "subtitle": "subtitles.aptitudes.grand_warlock",
+    "sounds": [
+      "aptitudes:grand_warlock"
+    ]
+  },
+  "grand_tamer": {
+    "subtitle": "subtitles.aptitudes.grand_tamer",
+    "sounds": [
+      "aptitudes:grand_tamer"
+    ]
+  },
   "osario_ambient": {
     "subtitle": "subtitles.aptitudes.osario.ambient",
     "sounds": [

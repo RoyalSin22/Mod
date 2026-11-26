@@ -263,6 +263,17 @@ public final class PaladinKit {
 		return out;
 	}
 
+	/** V98: carga de Ira justa (N9) en cinco tramos del máximo de su rango; solo aparece con carga. */
+	static void hud(ServerPlayerEntity p, java.util.List<dev.aptitudes.network.MechanicPayload.Entry> out) {
+		int rank = RoleManager.activeRank(p, N + "9");
+		if (rank <= 0) return;
+		State s = STATES.get(p.getUuid());
+		if (s == null || s.wrath <= 0) return;
+		double max = PaladinRules.wrathBonus(Double.MAX_VALUE, rank);
+		double bonus = PaladinRules.wrathBonus(s.wrath, rank);
+		if (max > 0 && bonus > 0) out.add(new dev.aptitudes.network.MechanicPayload.Entry(N + "9", (int) Math.ceil(bonus / max * 5), 5, ""));
+	}
+
 	private static State state(Entity p) {
 		return STATES.computeIfAbsent(p.getUuid(), u -> new State());
 	}

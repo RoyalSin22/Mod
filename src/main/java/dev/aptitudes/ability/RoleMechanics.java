@@ -137,7 +137,10 @@ public final class RoleMechanics {
 			if (role == null) continue;
 			String node = mechanicNode(role);
 			int r = rank(p, node);
-			if (r <= 0) continue;
+			if (r <= 0) {
+				ExtraKits.hud(p, role, entries); // V98: aunque no tenga la mecánica base, sus recursos activos se muestran
+				continue;
+			}
 			MechanicPayload.Entry e = switch (node) {
 				case "frenzy" -> entry(node, s.frenzy, 2 + r);
 				case "arcane_charges" -> entry(node, s.mageCharges, Math.max(2, 6 - r));
@@ -162,6 +165,7 @@ public final class RoleMechanics {
 				default -> NewRoles.mechanic(p, node, r);
 			};
 			if (e != null) entries.add(e);
+			ExtraKits.hud(p, role, entries); // V98: recursos de los nodos del rol (solo los activos)
 		}
 		List<MechanicPayload.Entry> last = LAST_SENT.get(p.getUuid());
 		if (entries.equals(last)) return;

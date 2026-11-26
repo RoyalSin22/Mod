@@ -473,6 +473,16 @@ public final class BerserkerKit {
 		return point.distanceTo(a.add(ab.multiply(t)));
 	}
 
+	/** V98: cicatrices activas (N1) en el indicador de la mecánica; solo aparece si hay alguna. */
+	static void hud(ServerPlayerEntity p, java.util.List<dev.aptitudes.network.MechanicPayload.Entry> out) {
+		int rank = RoleManager.activeRank(p, N + "1");
+		if (rank <= 0) return;
+		State s = state(p);
+		long now = now(p);
+		s.scars.removeIf(until -> !windowOpen(now, until));
+		if (!s.scars.isEmpty()) out.add(new dev.aptitudes.network.MechanicPayload.Entry(N + "1", s.scars.size(), maxScars(rank), ""));
+	}
+
 	private static State state(ServerPlayerEntity p) {
 		return STATES.computeIfAbsent(p.getUuid(), u -> new State());
 	}

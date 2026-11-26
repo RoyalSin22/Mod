@@ -51,6 +51,79 @@ public final class ModSounds {
 	public static final SoundEvent BERSERKER_WHOOSH = register("berserker_whoosh");
 	public static final SoundEvent BERSERKER_HEARTBEAT = register("berserker_heartbeat");
 	public static final SoundEvent BERSERKER_LEAP = register("berserker_leap");
+	// V83: efectos de batalla del Mago.
+	public static final SoundEvent MAGE_CHARGE = register("mage_charge");
+	public static final SoundEvent MAGE_BOLT = register("mage_bolt");
+	public static final SoundEvent MAGE_BLINK = register("mage_blink");
+	public static final SoundEvent MAGE_TIME = register("mage_time");
+	public static final SoundEvent MAGE_MISSILE = register("mage_missile");
+	public static final SoundEvent MAGE_IMPACT = register("mage_impact");
+	public static final SoundEvent ASSASSIN_VANISH = register("assassin_vanish");
+	public static final SoundEvent ASSASSIN_SLASH = register("assassin_slash");
+	public static final SoundEvent ASSASSIN_STEP = register("assassin_step");
+	public static final SoundEvent ASSASSIN_THROW = register("assassin_throw");
+	public static final SoundEvent ASSASSIN_IMPACT = register("assassin_impact");
+	public static final SoundEvent HERBALIST_BALM = register("herbalist_balm");
+	public static final SoundEvent HERBALIST_RAIN = register("herbalist_rain");
+	public static final SoundEvent HERBALIST_SPORE = register("herbalist_spore");
+	public static final SoundEvent ENGINEER_GRAPPLE = register("engineer_grapple");
+	public static final SoundEvent ENGINEER_THROW = register("engineer_throw");
+	public static final SoundEvent ENGINEER_BLAST = register("engineer_blast");
+	public static final SoundEvent LANCER_LEAP = register("lancer_leap");
+	public static final SoundEvent LANCER_THRUST = register("lancer_thrust");
+	public static final SoundEvent LANCER_SLAM = register("lancer_slam");
+	public static final SoundEvent SWORDSMAN_DRAW = register("swordsman_draw");
+	public static final SoundEvent SWORDSMAN_CUT = register("swordsman_cut");
+	public static final SoundEvent PALADIN_CONSECRATE = register("paladin_consecrate");
+	public static final SoundEvent PALADIN_HAMMER = register("paladin_hammer");
+	public static final SoundEvent NECROMANCER_SPEAR = register("necromancer_spear");
+	public static final SoundEvent NECROMANCER_SIPHON = register("necromancer_siphon");
+	public static final SoundEvent DRUID_HOWL = register("druid_howl");
+	public static final SoundEvent DRUID_THORNS = register("druid_thorns");
+	public static final SoundEvent MERCHANT_COIN = register("merchant_coin");
+	public static final SoundEvent MERCHANT_GUARD = register("merchant_guard");
+	public static final SoundEvent MONK_KICK = register("monk_kick");
+	public static final SoundEvent MONK_FIST = register("monk_fist");
+	public static final SoundEvent GUNSLINGER_SHOT = register("gunslinger_shot");
+	public static final SoundEvent GUNSLINGER_MARK = register("gunslinger_mark");
+	public static final SoundEvent WEAPON_GREATSWORD = register("weapon_greatsword");
+	public static final SoundEvent WEAPON_PRISON = register("weapon_prison");
+	public static final SoundEvent SHAPESHIFTER_POUNCE = register("shapeshifter_pounce");
+	public static final SoundEvent SHAPESHIFTER_HOWL = register("shapeshifter_howl");
+	public static final SoundEvent HUNTER_SHOT = register("hunter_shot");
+	public static final SoundEvent HUNTER_TRAP = register("hunter_trap");
+	public static final SoundEvent HUNTER_FALCON = register("hunter_falcon");
+	public static final SoundEvent BARD_SONG = register("bard_song");
+	public static final SoundEvent BARD_DISSONANCE = register("bard_dissonance");
+	public static final SoundEvent WARLOCK_CURSE = register("warlock_curse");
+	public static final SoundEvent WARLOCK_BOLT = register("warlock_bolt");
+	public static final SoundEvent WARLOCK_IMPS = register("warlock_imps");
+	public static final SoundEvent WARLOCK_DOOM = register("warlock_doom");
+	public static final SoundEvent TAMER_COMMAND = register("tamer_command");
+	public static final SoundEvent TAMER_STAMPEDE = register("tamer_stampede");
+	public static final SoundEvent ELEMENT_FIRE = register("element_fire");
+	public static final SoundEvent ELEMENT_ICE = register("element_ice");
+	public static final SoundEvent ELEMENT_LIGHTNING = register("element_lightning");
+	public static final SoundEvent ELEMENT_EARTH = register("element_earth");
+	public static final SoundEvent ELEMENT_WIND = register("element_wind");
+	public static final SoundEvent ELEMENT_WATER = register("element_water");
+	public static final SoundEvent ELEMENT_MAGIC = register("element_magic");
+	public static final SoundEvent ELEMENT_DARK = register("element_dark");
+	public static final SoundEvent FEEDBACK_HEAVY = register("feedback_heavy");
+	public static final SoundEvent FEEDBACK_CRIT = register("feedback_crit");
+	public static final SoundEvent FEEDBACK_BLOCK = register("feedback_block");
+	public static final SoundEvent FEEDBACK_HEAL = register("feedback_heal");
+	public static final SoundEvent FEEDBACK_DENIED = register("feedback_denied");
+	public static final SoundEvent GRAND_BERSERKER = register("grand_berserker");
+	public static final SoundEvent GRAND_ELEMENTALIST = register("grand_elementalist");
+	public static final SoundEvent GRAND_SHAPESHIFTER = register("grand_shapeshifter");
+	public static final SoundEvent GRAND_PALADIN = register("grand_paladin");
+	public static final SoundEvent GRAND_ENGINEER = register("grand_engineer");
+	public static final SoundEvent GRAND_RUMBLE = register("grand_rumble");
+	/** Motivo de la firma y la definitiva de cada rol, indexado por ordinal del rol (V96). */
+	public static final SoundEvent[] GRAND_BY_ROLE = grandByRole();
+	/** Sonido de cada plantilla de activa evolucionada (V96), indexado por ordinal de {@code EvolvedTree.Template}. */
+	public static final SoundEvent[] EVOLVED = evolved();
 
 	private ModSounds() {
 	}
@@ -59,6 +132,30 @@ public final class ModSounds {
 		dev.aptitudes.role.KeystoneRules.Template[] all = dev.aptitudes.role.KeystoneRules.Template.values();
 		SoundEvent[] out = new SoundEvent[all.length];
 		for (int i = 0; i < all.length; i++) out[i] = register("keystone_" + all[i].key());
+		return out;
+	}
+
+	private static SoundEvent[] evolved() {
+		dev.aptitudes.role.EvolvedTree.Template[] all = dev.aptitudes.role.EvolvedTree.Template.values();
+		SoundEvent[] out = new SoundEvent[all.length];
+		for (int i = 0; i < all.length; i++) out[i] = register("evolved_" + all[i].name().toLowerCase(java.util.Locale.ROOT));
+		return out;
+	}
+
+	private static SoundEvent[] grandByRole() {
+		dev.aptitudes.role.Role[] roles = dev.aptitudes.role.Role.values();
+		SoundEvent[] out = new SoundEvent[roles.length];
+		for (int i = 0; i < roles.length; i++) {
+			SoundEvent pilot = switch (roles[i]) {
+				case BERSERKER -> GRAND_BERSERKER;
+				case ELEMENTALIST -> GRAND_ELEMENTALIST;
+				case SHAPESHIFTER -> GRAND_SHAPESHIFTER;
+				case PALADIN -> GRAND_PALADIN;
+				case ENGINEER -> GRAND_ENGINEER;
+				default -> null;
+			};
+			out[i] = pilot != null ? pilot : register("grand_" + roles[i].key());
+		}
 		return out;
 	}
 

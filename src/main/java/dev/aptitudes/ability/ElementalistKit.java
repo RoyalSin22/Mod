@@ -304,6 +304,20 @@ public final class ElementalistKit {
 		Targeting.burst(p.getServerWorld(), element.particle(), e, 6, 0.3);
 	}
 
+	/** V98: Armonía elemental (N9): elementos distintos usados en la ventana (0–3) o, si ya se alcanzó, la ventana abierta. */
+	static void hud(ServerPlayerEntity p, java.util.List<dev.aptitudes.network.MechanicPayload.Entry> out) {
+		if (RoleManager.activeRank(p, N + "9") <= 0) return;
+		State s = STATES.get(p.getUuid());
+		if (s == null) return;
+		long now = p.getServer() == null ? 0 : p.getServer().getTicks();
+		if (windowOpen(now, s.harmonyUntil)) {
+			out.add(new dev.aptitudes.network.MechanicPayload.Entry(N + "9", 3, 3, ""));
+			return;
+		}
+		s.recent.values().removeIf(at -> now - at > HARMONY_WINDOW_TICKS);
+		if (!s.recent.isEmpty()) out.add(new dev.aptitudes.network.MechanicPayload.Entry(N + "9", Math.min(3, s.recent.size()), 3, ""));
+	}
+
 	private static State state(Entity p) {
 		return STATES.computeIfAbsent(p.getUuid(), u -> new State());
 	}
