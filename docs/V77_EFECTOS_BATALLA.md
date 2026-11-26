@@ -227,6 +227,15 @@ Animaciones `grand_signature` (tick 5) y `grand_ultimate` (tick 8) en `grand.jso
 | Paladín | Halo y cera dorada ascendente | Campana mayor y coro |
 | Ingeniero | Chispas eléctricas dispersas | Servo, engranaje y descarga |
 
+### V96, 5.ª tanda: activas de los nodos extra
+
+`role/ExtraFxShapes` asigna a cada activa `<rol>_n3|n4|n6|n8|n10` una de las diez formas de la 4.ª tanda; N8 y N10 usan la intensidad del Definitivo.
+Orden de la tabla (N3, N4, N6, N8, N10), por rol: Bersérker rayo/vórtice/cono/aura/nova; Mago rayo/escudo/zona/aura/nova; Asesino nova/embestida/rayo/aura/aura;
+Herbolista zona/curación/vórtice/curación/zona; Ingeniero zona/invocación/escudo/aura/invocación; Lancero rayo/zona/cono/rayo/zona; Espadachín cono/nova/embestida/aura/rayo;
+Paladín rayo/cono/escudo/aura/zona; Nigromante rayo/aura/zona/aura/vórtice; Druida cono/curación/nova/aura/zona; Mercader rayo/zona/invocación/aura/nova;
+Monje nova/cono/rayo/aura/vórtice; Elementalista rayo/zona/invocación/aura/vórtice; Cambiaformas embestida/aura/cono/aura/embestida; Mago pistolero rayo/zona/rayo/aura/rayo;
+Invocador de armas rayo/escudo/nova/invocación/zona; Cazador zona/rayo/cono/aura/rayo; Bardo rayo/aura/nova/aura/nova; Brujo rayo/vórtice/zona/aura/vórtice; Domador invocación/aura/escudo/aura/invocación.
+
 ### V96, 4.ª tanda: activas de Maestro y Definitivo
 
 Id 70 (`FxIds.EVOLVED`), `power` = ordinal de `EvolvedTree.Template`, `dx` = nivel (0 Maestro, 1 Definitivo), `dy` = rango. Una animación común `evolved_cast` (tick 3) y un sonido por plantilla (`ModSounds.EVOLVED`).

@@ -33,6 +33,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   PNG a mano tras ejecutar `gen_items.py`. Los mundos antiguos conservan, inofensivo, el archivo de datos de `SummonState`. Sin cambios de balance.
 
 ### Añadido
+- **V96 (5.ª tanda) — Activas de los nodos extra (N1–N10).** Las 100 activas nuevas (N3, N4, N6, N8 y N10 de los 20 roles) usan ya el guion de
+  batalla: cada una se asigna a una de las diez formas de V96·4 (rayo, cono, zona, vórtice, aura, escudo, curación, embestida, nova,
+  invocación) en `role/ExtraFxShapes` (puro, con `ExtraFxShapesTest`), con su gesto, su sonido y su capa de partículas con el color del rol;
+  N8 y N10 (Ascenso) suben la intensidad. Se engancha en `CastFx.onCast`. Las pasivas (100) no tienen guion propio. Sin cambios de balance y
+  sin nuevos recursos (se reutilizan gestos y sonidos). La forma de cada nodo se eligió por su nombre: **conviene revisarla en partida**.
 - **V96 (4.ª tanda) — Activas de Maestro y Definitivo.** Las 80 activas de las filas de evolución comparten diez plantillas (Nova, Rayo, Cono,
   Embestida, Zona, Vórtice, Aura, Curación, Escudo e Invocación) y ahora cada plantilla tiene su guion: gesto de cuerpo breve
   (`evolved_cast`), sonido propio (`evolved_<plantilla>`, 10 nuevos), capa de partículas con el color del rol y cámara; el Definitivo multiplica

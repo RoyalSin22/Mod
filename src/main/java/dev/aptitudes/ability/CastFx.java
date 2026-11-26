@@ -46,6 +46,14 @@ public final class CastFx {
 
 	/** Igual que {@link #onCast(ServerPlayerEntity, Role, Kind)}, pero las activas con guion propio solo hacen el gesto. */
 	public static void onCast(ServerPlayerEntity player, Role role, Kind kind, String abilityId) {
+		dev.aptitudes.role.ExtraFxShapes.Shape extra = kind == Kind.ACTIVE ? dev.aptitudes.role.ExtraFxShapes.shapeOf(abilityId) : null;
+		if (extra != null) {
+			// V96 (5.ª tanda): las activas de los nodos extra usan la forma de su guion (gesto, sonido y partículas de V96·4).
+			player.swingHand(net.minecraft.util.Hand.MAIN_HAND, true);
+			EvolvedAbilities.play(player, 1, dev.aptitudes.role.EvolvedTree.Template.valueOf(extra.name()),
+					dev.aptitudes.role.ExtraFxShapes.big(abilityId), colorOf(player, role));
+			return;
+		}
 		if (kind == Kind.ACTIVE && abilityId != null && dev.aptitudes.role.EvolvedTree.actives().containsKey(abilityId)) {
 			player.swingHand(net.minecraft.util.Hand.MAIN_HAND, true); // V96: la activa evolucionada trae su propio guion (EvolvedAbilities)
 			return;
