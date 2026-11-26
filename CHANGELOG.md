@@ -5,6 +5,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Corregido
+- **Avance roto `aptitudes_achievements/summon_eclipse`.** Fallaba al cargar en cada arranque («No key id»: el icono
+  usaba `item` en lugar de `id`), ningún código lo concedía y lo sustituye «Quien llama a la noche» (`eclipse_caller`).
+  Se elimina; como nunca llegó a cargarse, ningún mundo tiene progreso guardado en él.
+
 ### Cambiado
 - **El artefacto de la Hoguera se llama «Damnorath» («Embrión de la ruina») (D-40).** Sustituye a «Resonador del Umbral» y al término interno «Behelit» en los textos
   visibles (5 idiomas), la clase `DamnorathItem` (antes `BeheritItem`), `ModItems.DAMNORATH`, `EclipseSummoningRules.damnorath(...)`, `LoreRules.LORE_ARTIFACT_FOUND`, las pruebas y los

@@ -36,8 +36,8 @@ validada en partida**, salvo que se indique.
   regla de idiomas de `AGENTS.md`.
 - No existe textura ni modelo del objeto (`textures/item` y `models/item` no tienen `sunset_astrolabe`), aunque el
   mensaje de `d9bd3ac` lo daba por diferido.
-- El logro `summon_eclipse` existe como JSON (`data/aptitudes/advancement/aptitudes_achievements/`, carpeta distinta de
-  la que genera `gen_advancements.py`) pero ningún código lo concede (`grep` sin resultados en `src/main/java`).
+- El logro `summon_eclipse` (`data/aptitudes/advancement/aptitudes_achievements/`) no cargaba y nadie lo concedía:
+  eliminado el 2026-11-26 (lo sustituye `eclipse_caller`).
 - Con el Damnorath (T5) como vía normal de iniciar el Eclipse, el Astrolabio podría estar solapado; el autor debe decidir
   si se mantiene como vía de operadores, se amplía al líder del grupo o se retira.
 
