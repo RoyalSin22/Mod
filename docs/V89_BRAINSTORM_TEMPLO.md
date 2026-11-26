@@ -76,12 +76,20 @@ Todo sin objetos nuevos de poder; el balance no cambia sin preguntar.
 5. **Compatibilidad:** los templos viejos ya generados no se rediseñan; solo los nuevos.
 6. **Sin probar en partida:** el diseño hondo actual (V70) tampoco se ha jugado; los resultados de las pruebas pueden cambiar este plano.
 
-## 8. Decisiones para el autor
+## 8. Decisiones del autor (2026-11-26)
 
-1. ¿Escala: **grande ~96×96** (propuesta) o mediana ~64×64?
-2. ¿Solo en desierto estricto, o también en otros biomas áridos (badlands)?
-3. ¿Qué **alas** son imprescindibles (archivo, barracones, catacumbas, taller, sala solar, cisterna)?
-4. ¿Mini-jefe opcional en las catacumbas (élite/campeón)?
-5. ¿Las **cuatro cámaras de metal** repartidas por todo el templo o juntas junto al Custodio (como hoy)?
-6. ¿Quieres un camino corto y otro completo, con salida rápida tras el Custodio?
-7. ¿Un único motor de generación compartido con la fortaleza (recomendado)?
+| Tema | Decisión |
+|---|---|
+| Escala | **Grande** (~96×96, hasta ~45 de profundidad; rango 80–128 que concretará Codex) |
+| Biomas | **Desierto y badlands** (arenisca y arenisca roja; terracota natural de las mesas como paleta). Pendiente medir la rareza real en varias semillas |
+| Alas y cuartos imprescindibles | **Cisterna** (con plataformas y puentes), **catacumbas**, **sala de espejos**, **pozos** de luz, **talleres y forjas**, **barracones**, **cámara de pruebas** (la sala de pruebas actual), **cámara de sombras**, **puentes**, **capilla** y similares (archivo/biblioteca queda como opción de Codex) |
+| Mini-jefes | **Opcionales** (élites o campeones del sistema `elite/`, sin poder nuevo), en catacumbas y capilla; botín propio |
+| Cámaras de metal | **Juntas junto al Custodio**, como hoy (Nivel 3) |
+| Recorrido | **Camino largo en espiral**, con **estatuas** (sin rostro) que anticipan al Custodio y miradores al santuario. El «camino corto» y la «salida rápida» tras el Custodio **no se confirmaron**: quedan como pregunta abierta |
+| Motor de generación | **El recomendado**: plano puro por columna, **compartido con la fortaleza** (se construye una sola vez) |
+
+Interpretaciones a confirmar: «sala de empejos» = **sala de espejos** (la «sala de los espejos o la luz» de §3) y «pozos» = **pozos de luz**.
+
+## 9. Pregunta abierta
+
+¿Quieres además un atajo (camino corto) y una salida rápida a la superficie tras vencer al Custodio, o el recorrido es solo el largo en espiral?
