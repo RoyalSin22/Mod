@@ -27,7 +27,18 @@ public final class StructureLocateRules {
 	public static int[] designatedChunk(long seed, String kind, int rx, int rz, int size) {
 		int s = Math.max(1, size);
 		java.util.SplittableRandom random = new java.util.SplittableRandom(seed * 341873128712L + rx * 132897987541L + rz * 42317861L + kind.hashCode() * 31L);
+		// La fortaleza ocupa 8×8 chunks; un margen de cuatro evita que alcance la región vecina.
+		if ("three_towers".equals(kind) && s >= 12) return new int[] {rx * s + 4 + random.nextInt(s - 8), rz * s + 4 + random.nextInt(s - 8)};
 		return new int[] {rx * s + random.nextInt(s), rz * s + random.nextInt(s)};
+	}
+
+	/** Origen en bloques de la fortaleza que cubre el chunk, o null si no pertenece a su cuadrícula. */
+	public static int[] fortressOrigin(long seed, int chunkX, int chunkZ) {
+		int size = regionSize("three_towers");
+		int[] designated = designatedChunk(seed, "three_towers", regionOf(chunkX, size), regionOf(chunkZ, size), size);
+		if (chunkX < designated[0] - 4 || chunkX > designated[0] + 3
+				|| chunkZ < designated[1] - 4 || chunkZ > designated[1] + 3) return null;
+		return new int[] {designated[0] << 4, designated[1] << 4};
 	}
 
 	/** Región (índice) a la que pertenece un chunk. */

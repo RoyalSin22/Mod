@@ -275,17 +275,23 @@ public final class AptitudesCommand {
 		var key = net.minecraft.registry.RegistryKey.of(net.minecraft.registry.RegistryKeys.CONFIGURED_FEATURE, Aptitudes.id(kind));
 		var feature = world.getRegistryManager().get(net.minecraft.registry.RegistryKeys.CONFIGURED_FEATURE).get(key);
 		if (feature == null) throw UNKNOWN_STRUCTURE.create(kind);
-		final int minRadius = 24, maxRadius = 96;
+		final boolean fortress = "three_towers".equals(kind);
+		final int minRadius = fortress ? 96 : 24, maxRadius = fortress ? 192 : 96;
 		int bx = (int) src.getPosition().x, bz = (int) src.getPosition().z;
-		for (int[] off : dev.aptitudes.world.StructureLocateRules.placementOffsets(60, minRadius, maxRadius, world.getTime() ^ bx * 31L ^ bz)) {
+		for (int[] off : dev.aptitudes.world.StructureLocateRules.placementOffsets(fortress ? 12 : 60, minRadius, maxRadius, world.getTime() ^ bx * 31L ^ bz)) {
 			int x = bx + off[0], z = bz + off[1];
-			world.getChunk(x >> 4, z >> 4);
-			int y = world.getTopY(net.minecraft.world.Heightmap.Type.WORLD_SURFACE_WG, x, z);
+			if (!fortress) world.getChunk(x >> 4, z >> 4);
+			int y = fortress ? 0 : world.getTopY(net.minecraft.world.Heightmap.Type.WORLD_SURFACE_WG, x, z);
 			net.minecraft.util.math.BlockPos origin = new net.minecraft.util.math.BlockPos(x, y, z);
-			if (feature.generate(world, world.getChunkManager().getChunkGenerator(), world.getRandom(), origin)) {
+			net.minecraft.util.math.BlockPos fortressOrigin = fortress
+					? dev.aptitudes.world.ThreeTowersFeature.placeAt(world, world.getChunkManager().getChunkGenerator(), x, z) : null;
+			boolean placed = fortress ? fortressOrigin != null
+					: feature.generate(world, world.getChunkManager().getChunkGenerator(), world.getRandom(), origin);
+			if (placed) {
 				dev.aptitudes.world.StructureIndex.drain(src.getServer());
 				Text name = Text.translatable("aptitudes.structure." + kind);
-				src.sendFeedback(() -> Text.translatable("aptitudes.cmd.place_ok", name, coordinates(origin)), true);
+				net.minecraft.util.math.BlockPos placedOrigin = fortress ? fortressOrigin : origin;
+				src.sendFeedback(() -> Text.translatable("aptitudes.cmd.place_ok", name, coordinates(placedOrigin)), true);
 				return 1;
 			}
 		}

@@ -35,6 +35,7 @@ public final class ModWorldGen {
 	}
 
 	public static void init() {
+		ThreeTowersFeature.init();
 		Registry.register(Registries.PLACEMENT_MODIFIER_TYPE, Aptitudes.id("region_grid"), RegionGridPlacement.TYPE);
 		dev.aptitudes.dungeon.TowersBlocks.register(); // V86 fase 3: bloque controlador y muerte de los jefes
 		StructureSearch.init(); // V77: búsqueda activa de /aptitudes locate, repartida entre ticks

@@ -2,6 +2,8 @@ package dev.aptitudes.dungeon;
 
 import com.mojang.serialization.MapCodec;
 import dev.aptitudes.Aptitudes;
+import dev.aptitudes.world.StructureIndex;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -39,6 +41,22 @@ public final class TowersBlocks {
 
 	/** Fuerza la carga de la clase (y con ella el registro) y engancha la muerte de los jefes. */
 	public static void register() {
+		ServerTickEvents.END_SERVER_TICK.register(server -> {
+			if (server.getTicks() % 10 != 0) return;
+			for (ServerWorld world : server.getWorlds()) {
+				if (world.getPlayers().isEmpty()) continue;
+				for (long packed : StructureIndex.get(world).positions("three_towers")) {
+					BlockPos origin = BlockPos.fromLong(packed);
+					boolean near = world.getPlayers().stream().anyMatch(p -> !p.isSpectator()
+							&& Math.abs(p.getBlockX() - origin.getX()) <= 72
+							&& Math.abs(p.getBlockZ() - origin.getZ()) <= 72
+							&& Math.abs(p.getBlockY() - origin.getY()) <= 80);
+					if (!near) continue;
+					world.getChunk(origin.getX() >> 4, origin.getZ() >> 4);
+					if (world.getBlockEntity(origin) instanceof TowersControllerBlockEntity be && be.isFortress()) be.serverTickIfNeeded(world);
+				}
+			}
+		});
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
 			if (entity instanceof MobEntity mob && mob.getWorld() instanceof ServerWorld world) onBossDeath(world, mob);
 		});
@@ -55,7 +73,8 @@ public final class TowersBlocks {
 				// Etiqueta manipulada: se ignora.
 			}
 		}
-		if (controller == null || role == null || !world.isChunkLoaded(controller)) return;
+		if (controller == null || role == null || mob.squaredDistanceTo(controller.toCenterPos()) > 160 * 160) return;
+		if (!world.isChunkLoaded(controller)) world.getChunk(controller.getX() >> 4, controller.getZ() >> 4);
 		if (world.getBlockEntity(controller) instanceof TowersControllerBlockEntity be) be.bossDefeated(world, role);
 	}
 

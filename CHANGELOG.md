@@ -5,6 +5,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Cambiado (V88)
+- **Las Tres Torres Señoriales son ahora una fortaleza gótica en ruinas de 128×128 bloques.** Un plano puro por columna
+  (`FortressLayout`) construye 64 chunks desde el origen de cada región. Conserva los dos Guardianes, el Coloso, el logro y la
+  Plantilla de ascensión; añade barbacana, anillo de murallas rotas, monasterio con campeón opcional, estudio, dormitorios,
+  ala de alquimia y encantamientos, cofres de suministros ocultos y cámara del tesoro tras el Coloso. El controlador conserva
+  el estado de los diseños antiguos y funciona con jugadores lejos de su chunk. Plano y pruebas manuales pendientes en
+  `docs/V88_REDISENO_ESTRUCTURAS.md`.
+
 ### Eliminado (V87)
 - **Piedra sellada, Sello del templo y Llave del templo se retiran del mod** (decisión del autor). La Piedra sellada pasa a ser la **Reja de la
   Vigilia** (`vigil_gate`, interina; el rediseño de la torre y del templo lo encarga `docs/PROMPT_CODEX_REDISENO_ESTRUCTURAS.md`). El Sello es ahora un

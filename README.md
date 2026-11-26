@@ -9,7 +9,9 @@ Sistema RPG con tres capas que se combinan:
 - **Evolución de roles**: Base → **Maestro** → **Definitivo** (nivel + prueba + ítem), con títulos propios, una **habilidad característica** al llegar a Maestro (tecla `Z`) y una **definitiva** al llegar a Definitivo (tecla `R`).
 - **16 habilidades legendarias** (tecla `H`; se eligen en el árbol de talentos): la exclusividad por servidor es opcional y está desactivada por defecto.
 - **Armas, la Armadura Ascendida, accesorios, runas y cuatro pociones propias**, con recetas consultables en el grimorio.
-- **Templos sellados** con puzles, un guardián y Vasos de vida (+1 corazón permanente, hasta 5) (v64).
+- **Templo del Custodio** hondo con prueba de combate, guardián y Vasos de vida (+1 corazón permanente, hasta 5).
+- **Fortaleza de las Tres Torres**: barbacana, murallas rotas, dos torres de vigilancia y Torre del Mariscal con el Coloso;
+  botín de exploración y cámara final. Plano en [`docs/V88_REDISENO_ESTRUCTURAS.md`](docs/V88_REDISENO_ESTRUCTURAS.md).
 - **Niebla de almas**: el Errante Velado anuncia el sector de su barrido con un contorno cian y puede debilitar
   a varios objetivos. Heraldo de la Muerte lo reconoce como no muerto. Los
   ejemplares del evento pueden soltar un Jirón de Velo Espectral.

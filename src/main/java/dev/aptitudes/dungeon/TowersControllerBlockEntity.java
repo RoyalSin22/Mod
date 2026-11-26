@@ -59,6 +59,8 @@ public final class TowersControllerBlockEntity extends BlockEntity {
 	private static final RegistryKey<net.minecraft.loot.LootTable> REWARD = RegistryKey.of(RegistryKeys.LOOT_TABLE, Aptitudes.id("chests/three_towers_reward"));
 
 	private int ring = TowersFlowRules.MIN_RING;
+	private boolean fortress;
+	private long lastTickTime = -1;
 	private Boss west = Boss.ASLEEP, east = Boss.ASLEEP, lord = Boss.ASLEEP;
 	private boolean doorOpen;
 	private int waves;
@@ -75,8 +77,24 @@ public final class TowersControllerBlockEntity extends BlockEntity {
 		markDirty();
 	}
 
+	public void setupFortress(int placeRing) {
+		setup(placeRing);
+		fortress = true;
+		markDirty();
+	}
+
+	public boolean isFortress() {
+		return fortress;
+	}
+
 	public static void tick(World world, BlockPos pos, BlockState state, TowersControllerBlockEntity be) {
-		if (world instanceof ServerWorld server && server.getTime() % CHECK_EVERY == 0) be.serverTick(server);
+		if (world instanceof ServerWorld server) be.serverTickIfNeeded(server);
+	}
+
+	public void serverTickIfNeeded(ServerWorld world) {
+		if (world.getTime() % CHECK_EVERY != 0 || lastTickTime == world.getTime()) return;
+		lastTickTime = world.getTime();
+		serverTick(world);
 	}
 
 	// ------------------------------------------------------------------------------------------ Bucle
@@ -84,7 +102,9 @@ public final class TowersControllerBlockEntity extends BlockEntity {
 	private List<ServerPlayerEntity> nearby(ServerWorld world, double range) {
 		List<ServerPlayerEntity> out = new ArrayList<>();
 		for (ServerPlayerEntity p : world.getPlayers()) {
-			if (!p.isSpectator() && p.squaredDistanceTo(pos.toCenterPos()) <= range * range) out.add(p);
+			if (p.isSpectator()) continue;
+			if (fortress ? Math.abs(p.getBlockX() - pos.getX()) <= 72 && Math.abs(p.getBlockZ() - pos.getZ()) <= 72
+					&& Math.abs(p.getBlockY() - pos.getY()) <= 80 : p.squaredDistanceTo(pos.toCenterPos()) <= range * range) out.add(p);
 		}
 		return out;
 	}
@@ -99,7 +119,7 @@ public final class TowersControllerBlockEntity extends BlockEntity {
 		boolean westIn = false, eastIn = false, lordIn = false;
 		for (ServerPlayerEntity p : players) {
 			int dx = p.getBlockX() - pos.getX(), dy = p.getBlockY() - pos.getY(), dz = p.getBlockZ() - pos.getZ();
-			for (Tower t : TowersLayout.TOWERS) {
+			for (Tower t : fortress ? FortressLayout.TOWERS : TowersLayout.TOWERS) {
 				int level = TowersFlowRules.combatLevel(t, dx, dy, dz);
 				if (level >= 0 && !TowersFlowRules.waveDone(waves, t.role(), level)) spawnWave(world, t, level);
 				if (TowersFlowRules.inBossRoom(t, dx, dy, dz)) {
@@ -107,6 +127,16 @@ public final class TowersControllerBlockEntity extends BlockEntity {
 						case VASSAL_WEST -> westIn = true;
 						case VASSAL_EAST -> eastIn = true;
 						case LORD -> lordIn = true;
+					}
+				}
+			}
+			if (fortress && p.getBlockY() >= pos.getY() + 1 && p.getBlockY() <= pos.getY() + 9) {
+				int[][] rooms = {{-39, -13}, {-39, 17}, {-34, 42}, {34, 15}};
+				for (int i = 0; i < rooms.length; i++) {
+					if ((waves & (1 << (10 + i))) == 0 && Math.abs(dx - rooms[i][0]) <= 8 && Math.abs(dz - rooms[i][1]) <= 8) {
+						waves |= 1 << (10 + i);
+						spawnMinion(world, TowersFlowRules.MobKind.ZOMBIE, pos.add(rooms[i][0] + 3, 1, rooms[i][1]), i == 0);
+						markDirty();
 					}
 				}
 			}
@@ -123,7 +153,9 @@ public final class TowersControllerBlockEntity extends BlockEntity {
 	// ------------------------------------------------------------------------------------------ Despertar
 
 	private void wakeGuardian(ServerWorld world, Role role) {
-		UUID id = spawnBoss(world, BossEntities.DISMANTLED_GUARDIAN, role == Role.VASSAL_WEST ? TowersLayout.build0().guardianWest : TowersLayout.build0().guardianEast, role);
+		UUID id = spawnBoss(world, BossEntities.DISMANTLED_GUARDIAN, role == Role.VASSAL_WEST
+				? (fortress ? FortressLayout.WEST_BOSS : TowersLayout.build0().guardianWest)
+				: (fortress ? FortressLayout.EAST_BOSS : TowersLayout.build0().guardianEast), role);
 		if (id == null) return;
 		if (role == Role.VASSAL_WEST) {
 			west = TowersFlowRules.advance(west, Boss.AWAKE);
@@ -137,7 +169,7 @@ public final class TowersControllerBlockEntity extends BlockEntity {
 	}
 
 	private void wakeColossus(ServerWorld world) {
-		UUID id = spawnBoss(world, BossEntities.FACELESS_COLOSSUS, TowersLayout.build0().colossus, Role.LORD);
+		UUID id = spawnBoss(world, BossEntities.FACELESS_COLOSSUS, fortress ? FortressLayout.COLOSSUS : TowersLayout.build0().colossus, Role.LORD);
 		if (id == null) return;
 		lord = TowersFlowRules.advance(lord, Boss.AWAKE);
 		lordId = id;
@@ -159,9 +191,9 @@ public final class TowersControllerBlockEntity extends BlockEntity {
 		setMissing(slot, 0);
 		var layout = TowersLayout.build0();
 		UUID fresh = switch (role) {
-			case VASSAL_WEST -> spawnBoss(world, BossEntities.DISMANTLED_GUARDIAN, layout.guardianWest, role);
-			case VASSAL_EAST -> spawnBoss(world, BossEntities.DISMANTLED_GUARDIAN, layout.guardianEast, role);
-			case LORD -> spawnBoss(world, BossEntities.FACELESS_COLOSSUS, layout.colossus, role);
+			case VASSAL_WEST -> spawnBoss(world, BossEntities.DISMANTLED_GUARDIAN, fortress ? FortressLayout.WEST_BOSS : layout.guardianWest, role);
+			case VASSAL_EAST -> spawnBoss(world, BossEntities.DISMANTLED_GUARDIAN, fortress ? FortressLayout.EAST_BOSS : layout.guardianEast, role);
+			case LORD -> spawnBoss(world, BossEntities.FACELESS_COLOSSUS, fortress ? FortressLayout.COLOSSUS : layout.colossus, role);
 		};
 		if (fresh != null) markDirty();
 		return fresh != null ? fresh : id;
@@ -199,15 +231,23 @@ public final class TowersControllerBlockEntity extends BlockEntity {
 		waves = TowersFlowRules.withWave(waves, t.role(), level);
 		int perSpawn = TowersFlowRules.mobsPerSpawn(level, ring);
 		int index = 0;
-		for (var s : TowersLayout.build0().spawns) {
-			if (s.role() != t.role() || s.level() != level) continue;
-			for (int i = 0; i < perSpawn; i++) spawnMinion(world, TowersFlowRules.mobKind(level, index + i), pos.add(s.x(), s.y(), s.z()));
-			index++;
+		if (fortress) {
+			for (var s : FortressLayout.SPAWNS) {
+				if (s.role() != t.role() || s.level() != level) continue;
+				for (int i = 0; i < perSpawn; i++) spawnMinion(world, TowersFlowRules.mobKind(level, index + i), pos.add(s.x(), s.y(), s.z()), false);
+				index++;
+			}
+		} else {
+			for (var s : TowersLayout.build0().spawns) {
+				if (s.role() != t.role() || s.level() != level) continue;
+				for (int i = 0; i < perSpawn; i++) spawnMinion(world, TowersFlowRules.mobKind(level, index + i), pos.add(s.x(), s.y(), s.z()), false);
+				index++;
+			}
 		}
 		markDirty();
 	}
 
-	private void spawnMinion(ServerWorld world, TowersFlowRules.MobKind kind, BlockPos at) {
+	private void spawnMinion(ServerWorld world, TowersFlowRules.MobKind kind, BlockPos at, boolean champion) {
 		EntityType<? extends MobEntity> type = switch (kind) {
 			case ZOMBIE -> EntityType.ZOMBIE;
 			case SKELETON -> EntityType.SKELETON;
@@ -218,7 +258,7 @@ public final class TowersControllerBlockEntity extends BlockEntity {
 		if (mob == null) return;
 		mob.refreshPositionAndAngles(at.getX() + 0.5, at.getY(), at.getZ() + 0.5, world.random.nextFloat() * 360f, 0);
 		mob.initialize(world, world.getLocalDifficulty(at), SpawnReason.STRUCTURE, null);
-		Elites.makeElite(mob, false, world.random);
+		Elites.makeElite(mob, champion, world.random);
 		equip(mob);
 		EntityAttributeInstance health = mob.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
 		if (health != null) {
@@ -276,7 +316,8 @@ public final class TowersControllerBlockEntity extends BlockEntity {
 
 	private void openLordDoor(ServerWorld world) {
 		doorOpen = true;
-		for (int[] c : TowersLayout.build0().sealed) {
+		if (fortress) openGate(world, FortressLayout.MARSHAL.cx(), FortressLayout.MARSHAL.cz() + FortressLayout.MARSHAL.half(), 1, 3);
+		else for (int[] c : TowersLayout.build0().sealed) {
 			BlockPos p = pos.add(c[0], c[1], c[2]);
 			if (world.getBlockState(p).isOf(Temples.GATE)) world.breakBlock(p, false);
 		}
@@ -288,16 +329,25 @@ public final class TowersControllerBlockEntity extends BlockEntity {
 	private void finish(ServerWorld world) {
 		List<ServerPlayerEntity> players = nearby(world, 64.0);
 		var layout = TowersLayout.build0();
+		if (fortress) openGate(world, FortressLayout.MARSHAL.cx(), FortressLayout.MARSHAL.cz() - FortressLayout.MARSHAL.half(), 25, 27);
 		int chests = Math.max(1, Math.min(TowersFlowRules.MAX_REWARD_CHESTS, players.size()));
 		int[] offsets = {0, 1, -1, 2, -2};
 		for (int i = 0; i < chests; i++) {
-			BlockPos at = pos.add(layout.rewardChest[0] + offsets[i], layout.rewardChest[1], layout.rewardChest[2]);
+			int[] reward = fortress ? FortressLayout.REWARD : layout.rewardChest;
+			BlockPos at = pos.add(reward[0] + offsets[i], reward[1], reward[2]);
 			world.setBlockState(at, Blocks.CHEST.getDefaultState().with(ChestBlock.FACING, Direction.SOUTH));
 			if (world.getBlockEntity(at) instanceof LootableContainerBlockEntity container) container.setLootTable(REWARD, world.random.nextLong());
 		}
 		for (ServerPlayerEntity p : players) Achievements.grant(p, Achievement.THREE_TOWERS);
 		world.playSound(null, pos, SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundCategory.PLAYERS, 1.0f, 1.0f);
 		tell(players, "towers.aptitudes.colossus_down", Formatting.GOLD);
+	}
+
+	private void openGate(ServerWorld world, int x, int z, int y0, int y1) {
+		for (int dx = -1; dx <= 1; dx++) for (int y = y0; y <= y1; y++) {
+			BlockPos p = pos.add(x + dx, y, z);
+			if (world.getBlockState(p).isOf(Temples.GATE)) world.breakBlock(p, false);
+		}
 	}
 
 	private static void tell(List<ServerPlayerEntity> players, String key, Formatting color) {
@@ -310,6 +360,7 @@ public final class TowersControllerBlockEntity extends BlockEntity {
 	protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
 		super.writeNbt(nbt, registries);
 		nbt.putInt("ring", ring);
+		nbt.putBoolean("fortress", fortress);
 		nbt.putInt("west", west.ordinal());
 		nbt.putInt("east", east.ordinal());
 		nbt.putInt("lord", lord.ordinal());
@@ -324,6 +375,7 @@ public final class TowersControllerBlockEntity extends BlockEntity {
 	protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
 		super.readNbt(nbt, registries);
 		ring = nbt.contains("ring") ? Math.max(TowersFlowRules.MIN_RING, Math.min(TowersFlowRules.MAX_RING, nbt.getInt("ring"))) : TowersFlowRules.MIN_RING;
+		fortress = nbt.getBoolean("fortress");
 		west = boss(nbt.getInt("west"));
 		east = boss(nbt.getInt("east"));
 		lord = boss(nbt.getInt("lord"));

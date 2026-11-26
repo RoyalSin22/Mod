@@ -779,3 +779,13 @@ regeneración conectada (D-33) el total es finito. Las tablas son datapack: se a
 Pendiente de playtest: si aparecen demasiados o muy pocos, basta con cambiar `chance`. Un mundo de pruebas con `/locate` no
 sirve (es un feature, no una estructura): hay que explorar o usar `/place feature aptitudes:custodian_temple`.
 
+## V88 — Fortaleza de las Tres Torres
+
+La región de 24×24 chunks no cambia; la fortaleza nueva ocupa 64 chunks exactos y solo se acepta en terreno seco con desnivel
+de hasta 12 bloques en sus columnas ocupadas. Esto puede reducir mucho la frecuencia **efectiva** frente a V86; hay que medirla
+en partida antes de cambiar la región o el tope. Las dos torres de vigilancia conservan el anillo de Amenaza efectivo, los
+Guardianes y sus estados persistentes. El Mariscal conserva al Coloso y hasta cinco cofres personales con Plantilla de
+ascensión garantizada, accesibles tras vencerlo. Los cofres distribuidos usan `three_towers_supplies` (2–4 tiradas de pan,
+hierro, libros, experiencia o fragmentos de alma); no conceden equipo de evolución ni poder nuevo. El monasterio activa un
+campeón opcional con las reglas habituales de élites. El botín y la dificultad requieren revisión en partida.
+

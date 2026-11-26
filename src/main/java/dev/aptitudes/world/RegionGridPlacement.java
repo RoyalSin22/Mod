@@ -31,6 +31,7 @@ public final class RegionGridPlacement extends AbstractConditionalPlacementModif
 
 	@Override
 	protected boolean shouldPlace(FeaturePlacementContext context, Random random, BlockPos pos) {
+		if ("three_towers".equals(kind)) return StructureLocateRules.fortressOrigin(context.getWorld().getSeed(), pos.getX() >> 4, pos.getZ() >> 4) != null;
 		return StructureLocateRules.isDesignated(context.getWorld().getSeed(), kind, pos.getX() >> 4, pos.getZ() >> 4, size);
 	}
 

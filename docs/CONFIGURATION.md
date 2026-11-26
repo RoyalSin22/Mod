@@ -420,7 +420,7 @@ desde que el evento **empieza** (provisional) y no las consumen los comandos `/a
 | `fogDurationTicks` | 24000 | [1200, 240000] | Duración de la Niebla en ticks (24 000 = un día de Minecraft). Antes duraba 12 000 desde las 18:00. |
 | `emberRainCooldownDays` | 5 | [1, 365] | Días de espera entre dos Lluvias de brasas provocadas por un portal. |
 | `eclipseSummonCooldownDays` | 3 | [0, 365] | C3: días de juego de espera por mundo, desde el fin del último Eclipse, para volver a convocarlo con el Astrolabio del Ocaso o el Damnorath. 0 quita la espera. No la consumen `/aptitudes eclipse start` ni `/aptitudes event start`. |
-| `threeTowersEnabled` | true | — | V86: permite que se generen **Las Tres Torres Señoriales** (dungeon de superficie con región de 24×24 chunks: **más frecuente** que el Templo del Custodio, de 32×32, por decisión del autor). Solo afecta a chunks sin generar. Hasta la fase 3 el controlador es un marcador y no hay jefes. |
+| `threeTowersEnabled` | true | — | V88: permite que se genere la fortaleza de 128×128 por chunks (región de 24×24 chunks: **más frecuente** que el Templo del Custodio, de 32×32). Solo afecta a chunks sin generar. No se añade ningún campo de configuración nuevo. |
 | `deathEchoesEnabled` | **false** | — | C7 · S6: al morir un jugador, un eco con su cabeza (brillante) repite sus últimos 5 s mientras haya otro jugador a menos de 24 bloques. **Desactivado por defecto** porque genera entidades y no está probado en partida. |
 | `deathEchoLifetimeSeconds` | 120 | [10, 1800] | Segundos que dura un eco. |
 | `deathEchoMaxActive` | 6 | [1, 50] | Ecos vivos a la vez en el servidor; al pasarse se retira el más antiguo. |

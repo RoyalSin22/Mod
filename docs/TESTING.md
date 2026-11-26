@@ -2003,7 +2003,15 @@ Desde T3d los chunks **nuevos** generan este templo solos (los ya generados cons
 6. Desactiva la opción con un eco vivo: todos desaparecen en un tick. Con la opción apagada (por defecto) no se crea ninguna entidad al morir.
 7. Rendimiento: con 10 jugadores el coste es una copia de 4 números cada 2 ticks por jugador; con los ecos lejos de todos, cero.
 
-# V86 · fase 2 — Las Tres Torres Señoriales (verificación manual, pendiente; no se pudo arrancar un servidor al implementarla)
+# V88 — Fortaleza de las Tres Torres (verificación manual pendiente)
+
+El diseño nuevo y los riesgos de partida están en `docs/V88_REDISENO_ESTRUCTURAS.md`. `FortressLayoutTest` comprueba el
+recorrido horizontal entre barbacana, alas y vigilancias; ascenso a las tres salas de jefe; cierre de la Torre del Mariscal; volumen libre del Coloso;
+tesoro bloqueado; cofres y puntos de combate; límites de 128×128 y reparto de 64 chunks; presupuesto de columnas y bloques.
+Falta verificar en un mundo real el tiempo de generación, la continuidad entre chunks, los desniveles, las escaleras,
+la carga del controlador lejano, el combate cerrado del Coloso y el botín tras reiniciar.
+
+# V86 · fase 2 — Las Tres Torres Señoriales (diseño antiguo; solo mundos ya generados)
 
 1. En un mundo nuevo con operador: `/aptitudes place three_towers`. Debe aparecer, a 24–96 bloques, un patio con **tres torres de piedra musgosa**: dos
    de 11×11 (techo en y+26) y una de 13×13 (techo en y+34) al norte, cada una con parapeto almenado y una **empuñadura de espada** de pizarra encima.
