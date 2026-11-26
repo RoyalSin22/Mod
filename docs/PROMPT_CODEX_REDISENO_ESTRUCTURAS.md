@@ -25,6 +25,7 @@ Empieza solo cuando la rama de Claude esté integrada en `main`. Si no lo está,
 - **Ruinas:** muros derrumbados, tejados hundidos, escombros y vegetación; los daños deben **verse** y a la vez dejar un recorrido jugable.
 - **Botín:** **gran botín** al vencer al jefe de la torre principal (más que el actual: hoy un cofre por jugador con Plantilla de ascensión).
 - **Pendiente del autor:** qué no te gusta del **templo** y qué quieres en él (silueta, tamaño, interior, recorrido); y referencias visuales. Si no lo escribe, Codex no lo inventa.
+- **Decisiones ya tomadas** (tabla en `docs/V88_BRAINSTORM_FORTALEZA.md` §9): escala **grande**; imprescindibles: dormitorios, barbacana, sala de estudio, sala de botín, cofres ocultos repartidos, monasterio o lugar de rezo y ala de pociones y encantamientos; mini-jefe opcional en el monasterio (élite o campeón, sin poder nuevo); botín principal tras el Coloso y cofres repartidos por toda la estructura. **Método de generación aún sin elegir.**
 - Lluvia de ideas de partida (Claude): `docs/V88_BRAINSTORM_FORTALEZA.md`.
 
 ## 2. Lo que Claude retira antes (contrato: Codex lo da por hecho)

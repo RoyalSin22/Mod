@@ -102,10 +102,14 @@ Dificultad alta, como ya decidió el autor. **El orden de las torres de vigilanc
 7. **Lore y textos** (biblioteca con notas, carteles, diario del Mariscal): los escribe Codex, en `lore.aptitudes.*`.
 8. **Sin probar en partida:** el diseño actual de las torres tampoco se ha jugado; lo aprendido en las pruebas (escaleras, Coloso) puede cambiar este plano.
 
-## 9. Decisiones para el autor
+## 9. Decisiones del autor (2026-11-26)
 
-1. ¿Escala objetivo? (grande ~96×96 recomendado; mediana ~64×64 si prefieres algo más ligero).
-2. ¿Generación por plano puro por columna (A, recomendada) o `Structure` propia (B)?
-3. ¿Qué cuartos son **imprescindibles** y cuáles quitamos (biblioteca, baño, dormitorios y comedor ya los pediste)?
-4. ¿Hay una capilla con mini-jefe opcional o todo el combate de jefe es solo el Coloso y los dos Guardianes?
-5. ¿El «gran botín» solo tras el Coloso (como dices) o también un cofre en cada torre de vigilancia?
+| Tema | Decisión |
+|---|---|
+| Escala | **Grande** (~96×96; rango 80–128 que concretará Codex) |
+| Cuartos imprescindibles | **Dormitorios**, **barbacana**, **sala de estudio** (biblioteca), **sala de botín** (cámara del tesoro; Codex confirma si es la cámara del Coloso o una aparte), **cofres ocultos repartidos** por toda la estructura, **monasterio o lugar de rezo**, **ala de pociones y encantamientos** (alquimia y mesa de encantamiento, en línea con las habilidades Encantamiento y la alquimia v42). Los demás (baño, comedor, cocina, armería, calabozos) quedan como decoración y relleno opcionales |
+| Capilla / monasterio con mini-jefe | **Sí, opcional**, un **élite o campeón** del sistema `elite/` (armadura visible), **sin poder nuevo** y sin recompensa de poder |
+| Botín | **El principal, tras el Coloso**; además **cofres repartidos durante toda la estructura** (algunos **ocultos**) |
+| Método de generación | **Pendiente de elegir** entre plano puro por columna (A, recomendada) y estructura propia (B); explicado en §3 |
+
+Los cofres repartidos no deben dar poder nuevo ni saltarse el balance: materiales, comida, pergaminos, fragmentos de alma, frascos y piezas de botín ya existentes.
