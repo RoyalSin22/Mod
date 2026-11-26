@@ -3,15 +3,11 @@
 Lee antes `AGENTS.md` (reglas del proyecto, política de Git, exclusiones) y este documento completo. Responde al autor en **español**.
 Aquí se decide **qué se pide**; el estado real está en el código, y los datos de abajo se comprobaron contra `main` (`50f10cf`).
 
-## 0. Reparto del trabajo (para no pisarse)
+## 0. Estado de partida
 
-| Quién | Qué | Rama |
-|---|---|---|
-| **Claude (primero)** | **Retirar del mod** la *Piedra sellada*, el *Sello del templo* y la *Llave del templo* (§2) y dejar el flujo del templo en «jefe y cofre directos». Es lógica y registros: no lo toques tú. | `claude/retirar-sellos` (una versión por rama) |
-| **Codex (después)** | **Rediseñar la forma** de las Tres Torres Señoriales y del Templo del Custodio (§3–§5), sobre el código que deje Claude. | `codex/rediseno-estructuras` |
-
-Empieza solo cuando la rama de Claude esté integrada en `main`. Si no lo está, avisa al autor: las dos ramas tocan
-`CustodianTempleLayout`, `ThreeTowersFeature` y `TowersLayout`, y mezclarlas da conflictos.
+La retirada de la Piedra sellada, el Sello y la Llave del templo **ya está hecha** (V87, rama `claude/practical-feynman-id8op1`; detalle en
+`docs/V87_RETIRADA_SELLOS.md`). Trabaja sobre esa rama o sobre `main` si ya se integró, en una rama propia `codex/rediseno-estructuras`.
+No toques la lógica de jefes ni los registros salvo lo que pida tu propuesta: la forma (planos puros y `Feature`) es lo tuyo.
 
 ## 1. Lo que NO gusta y lo que se quiere (el autor lo completa antes de lanzar el encargo)
 
@@ -28,18 +24,12 @@ Empieza solo cuando la rama de Claude esté integrada en `main`. Si no lo está,
 - **Decisiones ya tomadas** (tabla en `docs/V88_BRAINSTORM_FORTALEZA.md` §9): escala **muy grande (~128×128, tope 160×160)**; imprescindibles: dormitorios, barbacana, sala de estudio, sala de botín, cofres ocultos repartidos, monasterio o lugar de rezo y ala de pociones y encantamientos; mini-jefe opcional en el monasterio (élite o campeón, sin poder nuevo); botín principal tras el Coloso y cofres repartidos por toda la estructura. **Método de generación elegido: A, plano puro por columna** (`FortressLayout` evaluado por chunk; origen por región; sin `Structure` propia). Con esta escala, mide el coste de generación y propón el reparto de chunks, el relleno del cimiento y el tope de desnivel antes de programar.
 - Lluvia de ideas de partida (Claude): `docs/V88_BRAINSTORM_FORTALEZA.md`.
 
-## 2. Lo que Claude retira antes (contrato: Codex lo da por hecho)
+## 2. Lo que ya no existe (V87)
 
-Tras la rama de Claude, **ya no existen**: el bloque `sealed_stone` (Piedra sellada), el bloque `temple_seal` con su entidad de bloque
-(Sello del templo), el objeto `temple_key` (Llave del templo) y todo lo que dependa de ellos (texturas, modelos, textos, pruebas).
-Se pueden romper los mundos de prueba: no hay compatibilidad con esos ids.
-
-Cómo queda el flujo del templo: **sin puzle y sin llave; el guardián/Custodio custodia el Relicario y, al vencerlo, se abre
-directamente** (el Vaso de vida, las llaves de cámara de metal, la cripta y el Ancla del Velo se conservan tal como estén; lo que
-cambia lo concreta Claude en su rama y lo documenta en `docs/V87_RETIRADA_SELLOS.md`). Las puertas entre fases ya no usan
-Piedra sellada: **qué usan en su lugar es parte de tu propuesta de §6** (p. ej. una reja o un portón que el controlador abre; si
-hace falta un bloque nuevo, la textura va con `tools/textures/gen_temple_blocks.py` y su nombre y estilo deben encajar con la
-dirección de arte oscura del mod).
+Ya **no existen** la Piedra sellada, el Sello del templo ni la Llave del templo. En su lugar hay: la **Reja de la Vigilia** (`Temples.GATE`, id `vigil_gate`,
+celda `Cell.GATE`; **interina**: puedes proponer algo mejor para las puertas entre fases), un **controlador oculto** (`temple_controller`, celda
+`Cell.CONTROLLER`) y un Relicario que **se abre solo al caer el guardián**. El templo es «jefe y cofre directos». Queda código muerto de los diseños 0–2
+(puzle de palancas y placas) que puedes retirar al rediseñar `CustodianTempleLayout`.
 
 ## 3. Estado actual de las dos estructuras (datos comprobados)
 
