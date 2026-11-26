@@ -77,10 +77,10 @@ class CustodianTempleLayoutTest {
 	@Test void hatchAndDoorAreThreeByThree() {
 		Result r = full();
 		assertEquals(9, r.hatch.size());
-		for (int[] p : r.hatch) assertEquals(Cell.SEALED, r.get(p[0], p[1], p[2]));
+		for (int[] p : r.hatch) assertEquals(Cell.GATE, r.get(p[0], p[1], p[2]));
 		assertEquals(9, r.custodianDoor.size());
 		for (int[] p : r.custodianDoor) assertEquals(Cell.DOOR, r.get(p[0], p[1], p[2]));
-		assertEquals(Cell.SEAL, r.get(r.seal[0], r.seal[1], r.seal[2]));
+		assertEquals(Cell.CONTROLLER, r.get(r.seal[0], r.seal[1], r.seal[2]));
 	}
 
 	@Test void lightsFollowThePatternAndCandlesMarkThePlateTurn() {
@@ -245,7 +245,7 @@ class CustodianTempleLayoutTest {
 		if (cell == null) return false;
 		return switch (cell) {
 			case AIR, PLATE, CANDLE_1, CANDLE_2, CANDLE_3, CANDLE_4, LEVER, STAIR_NORTH -> true;
-			case SEALED -> hatchOpen;
+			case GATE -> hatchOpen;
 			case DOOR -> doorOpen;
 			case CHAMBER_DOOR_COPPER, CHAMBER_DOOR_IRON, CHAMBER_DOOR_GOLD, CHAMBER_DOOR_DIAMOND -> chambersOpen;
 			default -> false;

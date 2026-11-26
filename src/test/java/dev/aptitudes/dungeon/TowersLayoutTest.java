@@ -20,7 +20,7 @@ class TowersLayoutTest {
 	// ------------------------------------------------------------------------------------------ Recorrido (BFS)
 
 	private static boolean passable(Cell c, boolean sealedOpen) {
-		return c == null || c == Cell.AIR || c == Cell.LANTERN || (sealedOpen && c == Cell.SEALED);
+		return c == null || c == Cell.AIR || c == Cell.LANTERN || (sealedOpen && c == Cell.GATE);
 	}
 
 	private static boolean solid(Cell c, boolean sealedOpen) {
@@ -176,7 +176,7 @@ class TowersLayoutTest {
 		assertEquals(9, L.sealed.size());
 		for (int[] c : L.sealed) {
 			assertEquals(LORD.cz() + LORD.half(), c[2]);
-			assertEquals(Cell.SEALED, L.get(c[0], c[1], c[2]));
+			assertEquals(Cell.GATE, L.get(c[0], c[1], c[2]));
 			assertTrue(c[1] >= 1 && c[1] <= 3 && Math.abs(c[0] - LORD.cx()) <= 1);
 		}
 		for (Tower t : new Tower[] {WEST, EAST}) {

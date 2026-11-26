@@ -26,15 +26,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-/** Bloques con entidad del templo: el Sello (puzle) y el Relicario (recompensa). Ambos son irrompibles. */
+/** Bloques con entidad del templo: el controlador oculto y el Relicario (recompensa). Ambos son irrompibles. */
 public final class TempleBlocks {
 	private TempleBlocks() {
 	}
 
-	public static class Seal extends BlockWithEntity {
-		public static final MapCodec<Seal> CODEC = createCodec(Seal::new);
+	/** Controlador oculto del templo: sin interacción; su entidad lleva el estado y vigila a los jefes. */
+	public static class Controller extends BlockWithEntity {
+		public static final MapCodec<Controller> CODEC = createCodec(Controller::new);
 
-		public Seal(Settings settings) {
+		public Controller(Settings settings) {
 			super(settings);
 		}
 
@@ -51,21 +52,13 @@ public final class TempleBlocks {
 		@Nullable
 		@Override
 		public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-			return new TempleSealBlockEntity(pos, state);
+			return new TempleControllerBlockEntity(pos, state);
 		}
 
 		@Nullable
 		@Override
 		public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-			return world.isClient ? null : validateTicker(type, Temples.SEAL_ENTITY, TempleSealBlockEntity::tick);
-		}
-
-		@Override
-		protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-			if (!world.isClient && world.getBlockEntity(pos) instanceof TempleSealBlockEntity seal) {
-				player.sendMessage(Text.translatable(seal.statusKey()).formatted(Formatting.GRAY), true);
-			}
-			return ActionResult.success(world.isClient);
+			return world.isClient ? null : validateTicker(type, Temples.CONTROLLER_ENTITY, TempleControllerBlockEntity::tick);
 		}
 	}
 
@@ -188,35 +181,19 @@ public final class TempleBlocks {
 			return new ReliquaryBlockEntity(pos, state);
 		}
 
-		/** Con la llave en la mano: abrir. Sin ella, se pasa a {@link #onUse}. */
-		@Override
-		protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player,
-												 Hand hand, BlockHitResult hit) {
-			if (!stack.isOf(Temples.TEMPLE_KEY)) return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-			if (world.isClient) return ItemActionResult.SUCCESS;
-			if (!(world.getBlockEntity(pos) instanceof ReliquaryBlockEntity reliquary) || !(player instanceof ServerPlayerEntity sp)) {
-				return ItemActionResult.CONSUME;
-			}
-			if (reliquary.unlocked) {
-				claim(sp, reliquary);
-			} else if (reliquary.templeId.equals(TempleKeyItem.templeOf(stack))) {
-				reliquary.unlocked = true;
-				reliquary.markDirty();
-				stack.decrementUnlessCreative(1, player);
-				world.playSound(null, pos, SoundEvents.BLOCK_VAULT_OPEN_SHUTTER, SoundCategory.BLOCKS, 1f, 0.9f);
-				sp.sendMessage(Text.translatable("temple.aptitudes.reliquary.opened").formatted(Formatting.GOLD), true);
-				Achievements.grant(sp, Achievement.TEMPLE_OPENED);
-				claim(sp, reliquary);
-			} else {
-				sp.sendMessage(Text.translatable("temple.aptitudes.reliquary.wrong_key").formatted(Formatting.RED), true);
-			}
-			return ItemActionResult.CONSUME;
-		}
-
+		/** Sin llave: el Relicario se abre solo cuando el guardián del templo ha caído; entonces da un vaso por jugador. */
 		@Override
 		protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
 			if (world.isClient) return ActionResult.SUCCESS;
-			if (world.getBlockEntity(pos) instanceof ReliquaryBlockEntity reliquary && player instanceof ServerPlayerEntity sp) {
+			if (world instanceof ServerWorld server && server.getBlockEntity(pos) instanceof ReliquaryBlockEntity reliquary
+					&& player instanceof ServerPlayerEntity sp) {
+				if (!reliquary.unlocked && Temples.templeCleared(server, pos, reliquary.templeId)) {
+					reliquary.unlocked = true;
+					reliquary.markDirty();
+					world.playSound(null, pos, SoundEvents.BLOCK_VAULT_OPEN_SHUTTER, SoundCategory.BLOCKS, 1f, 0.9f);
+					sp.sendMessage(Text.translatable("temple.aptitudes.reliquary.opened").formatted(Formatting.GOLD), true);
+					Achievements.grant(sp, Achievement.TEMPLE_OPENED);
+				}
 				if (reliquary.unlocked) claim(sp, reliquary);
 				else sp.sendMessage(Text.translatable("temple.aptitudes.reliquary.sealed").formatted(Formatting.GRAY), true);
 			}

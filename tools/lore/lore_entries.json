@@ -131,7 +131,7 @@
       "unlock": {
         "intent": "Hallazgo de documentos de la Primera Era",
         "verification": "plausible_hook",
-        "hook": "Cripta de la Niebla (V69): LoreManager.unlocksOnCryptCleared desde TempleSealBlockEntity.finishCrypt (id crypt_cleared_lore)."
+        "hook": "Cripta de la Niebla (V69): LoreManager.unlocksOnCryptCleared desde TempleControllerBlockEntity.finishCrypt (id crypt_cleared_lore)."
       },
       "related": {
         "docs": [
@@ -181,7 +181,7 @@
       "unlock": {
         "intent": "Documentos antiguos del templo",
         "verification": "plausible_hook",
-        "hook": "Cripta de la Niebla (V69): LoreManager.unlocksOnCryptCleared desde TempleSealBlockEntity.finishCrypt (id crypt_cleared_lore)."
+        "hook": "Cripta de la Niebla (V69): LoreManager.unlocksOnCryptCleared desde TempleControllerBlockEntity.finishCrypt (id crypt_cleared_lore)."
       },
       "related": {
         "docs": [
@@ -206,7 +206,7 @@
       "unlock": {
         "intent": "Archivos relacionados con el Primer Eclipse",
         "verification": "plausible_hook",
-        "hook": "Cripta de la Niebla (V69): LoreManager.unlocksOnCryptCleared desde TempleSealBlockEntity.finishCrypt (id crypt_cleared_lore)."
+        "hook": "Cripta de la Niebla (V69): LoreManager.unlocksOnCryptCleared desde TempleControllerBlockEntity.finishCrypt (id crypt_cleared_lore)."
       },
       "related": {
         "docs": [

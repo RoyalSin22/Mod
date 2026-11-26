@@ -29,7 +29,7 @@ public enum Achievement {
 	CONTRACT_VETERAN("contract_veteran", FIRST_CONTRACT, Frame.GOAL, "minecraft:emerald"),
 	GUILD_MASTER("guild_master", CONTRACT_VETERAN, Frame.CHALLENGE, "aptitudes:guild_seal"),
 	/** v64: abrir el relicario de un Templo sellado con su llave. */
-	TEMPLE_OPENED("temple_opened", SLAY_BOSS, Frame.GOAL, "aptitudes:temple_key"),
+	TEMPLE_OPENED("temple_opened", SLAY_BOSS, Frame.GOAL, "aptitudes:life_vessel"),
 	/** v64: usar un Vaso de vida. */
 	LIFE_VESSEL("life_vessel", TEMPLE_OPENED, Frame.GOAL, "aptitudes:life_vessel"),
 	/** v67: descubrir todas las criaturas del bestiario (al menos una muerte de cada una). */

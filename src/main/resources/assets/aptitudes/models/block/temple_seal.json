@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/cube_bottom_top",
-  "textures": {
-    "top": "aptitudes:block/temple_seal_top",
-    "side": "aptitudes:block/temple_seal_side",
-    "bottom": "aptitudes:block/temple_seal_side"
-  }
-}

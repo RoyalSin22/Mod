@@ -26,7 +26,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
- * Corazón del Templo sellado (v64): guarda el puzle (palancas y placas), la puerta sellada y el guardián.
+ * Controlador del templo (antes «Sello del templo», v64; V87: bloque oculto sin interacción): guarda el estado, las puertas y los jefes.
  * Todo se comprueba en el servidor cada medio segundo y solo con jugadores cerca; las posiciones se guardan
  * relativas al sello, así que el estado viaja con el chunk desde la generación.
  *
@@ -35,7 +35,7 @@ import java.util.function.Consumer;
  * Puerta del Custodio y Custodio. Los campos nuevos se guardan al final y un templo antiguo los lee como valores
  * por defecto.</p>
  */
-public class TempleSealBlockEntity extends BlockEntity {
+public class TempleControllerBlockEntity extends BlockEntity {
 	private static final int CHECK_EVERY = 10;
 	private static final double PLAYER_RANGE = 24;
 	/** El Templo del Custodio mide 31×31 y tiene un subsuelo: el radio de actividad es mayor. */
@@ -91,11 +91,11 @@ public class TempleSealBlockEntity extends BlockEntity {
 	private boolean trialLive;
 	private long trialIdleTicks;
 
-	public TempleSealBlockEntity(BlockPos pos, BlockState state) {
-		super(Temples.SEAL_ENTITY, pos, state);
+	public TempleControllerBlockEntity(BlockPos pos, BlockState state) {
+		super(Temples.CONTROLLER_ENTITY, pos, state);
 	}
 
-	public static void tick(World world, BlockPos pos, BlockState state, TempleSealBlockEntity seal) {
+	public static void tick(World world, BlockPos pos, BlockState state, TempleControllerBlockEntity seal) {
 		if (world instanceof ServerWorld server && server.getTime() % CHECK_EVERY == 0) seal.serverTick(server);
 	}
 
@@ -176,7 +176,7 @@ public class TempleSealBlockEntity extends BlockEntity {
 	private void awaken(ServerWorld world, List<ServerPlayerEntity> players) {
 		for (BlockPos rel : door) {
 			BlockPos p = pos.add(rel);
-			if (world.getBlockState(p).isOf(Temples.SEALED_STONE)) world.breakBlock(p, false);
+			if (world.getBlockState(p).isOf(Temples.GATE)) world.breakBlock(p, false);
 		}
 		world.playSound(null, pos, SoundEvents.BLOCK_END_PORTAL_FRAME_FILL, SoundCategory.BLOCKS, 1.2f, 0.7f);
 		stage = Stage.AWAKENED;
@@ -255,7 +255,7 @@ public class TempleSealBlockEntity extends BlockEntity {
 	private void openStairs(ServerWorld world, List<ServerPlayerEntity> players) {
 		for (BlockPos rel : door) {
 			BlockPos p = pos.add(rel);
-			if (world.getBlockState(p).isOf(Temples.SEALED_STONE)) world.breakBlock(p, false);
+			if (world.getBlockState(p).isOf(Temples.GATE)) world.breakBlock(p, false);
 		}
 		world.playSound(null, pos, SoundEvents.BLOCK_END_PORTAL_FRAME_FILL, SoundCategory.BLOCKS, 1.2f, 0.7f);
 		flow = TempleFlowRules.afterPuzzleSolved(flow);
@@ -298,7 +298,7 @@ public class TempleSealBlockEntity extends BlockEntity {
 	private void breakSealed(ServerWorld world, List<BlockPos> rels) {
 		for (BlockPos rel : rels) {
 			BlockPos p = pos.add(rel);
-			if (world.getBlockState(p).isOf(Temples.SEALED_STONE)) world.breakBlock(p, false);
+			if (world.getBlockState(p).isOf(Temples.GATE)) world.breakBlock(p, false);
 		}
 	}
 
@@ -569,6 +569,11 @@ public class TempleSealBlockEntity extends BlockEntity {
 		return layout;
 	}
 
+	/** ¿Ha caído ya el guardián (el Custodio) de este templo? */
+	public boolean isCleared() {
+		return stage == Stage.CLEARED;
+	}
+
 	public Flow flow() {
 		return flow;
 	}
@@ -576,15 +581,6 @@ public class TempleSealBlockEntity extends BlockEntity {
 	/** ¿Esta posición absoluta es un bloque de la Puerta del Custodio de este templo? */
 	public boolean ownsInnerDoor(BlockPos absolute) {
 		return TempleFlowRules.isCustodian(layout) && innerDoor.contains(absolute.subtract(pos));
-	}
-
-	/** Clave de texto del estado actual (para el mensaje del Sello). */
-	String statusKey() {
-		if (TempleFlowRules.isDeep(layout) && flow == Flow.AUTOMATON) return "temple.aptitudes.seal.flow_automaton_deep";
-		if (TempleFlowRules.isCustodian(layout) && flow != Flow.PUZZLE) {
-			return "temple.aptitudes.seal.flow_" + flow.name().toLowerCase(java.util.Locale.ROOT);
-		}
-		return "temple.aptitudes.seal." + stage.name().toLowerCase(java.util.Locale.ROOT);
 	}
 
 	/** La llama la generación del templo; todas las posiciones son relativas al sello. */

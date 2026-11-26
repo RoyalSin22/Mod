@@ -102,7 +102,6 @@ cmd.unknown_structure¦Estrutura desconhecida: %s¦Structure inconnue : %s¦Unbe
 cmd.place_ok¦%s gerado em %s.¦%s généré en %s.¦%s erzeugt bei %s.
 cmd.place_fail¦Nenhum local plano e seco encontrado em %s blocos. Vá para um terreno plano (sem água nem montanhas) e tente de novo.¦Aucun site plat et sec trouvé dans un rayon de %s blocs. Allez sur un terrain plat (ni eau ni montagnes) et réessayez.¦Kein flacher, trockener Platz im Umkreis von %s Blöcken gefunden. Geh auf flaches Gelände (kein Wasser, keine Berge) und versuche es erneut.
 structure.custodian_temple¦Templo do Custódio¦Temple du Gardien¦Tempel des Wächters
-structure.temple¦templo selado antigo¦ancien temple scellé¦alter versiegelter Tempel
 structure.tower¦torre em ruínas¦tour en ruine¦Turmruine
 structure.bonfire_shrine¦santuário da Fogueira¦sanctuaire du Feu de camp¦Lagerfeuer-Schrein
 structure.camp¦acampamento¦campement¦Lager
@@ -1673,17 +1672,14 @@ item.aptitudes.rarity.epic¦Raridade: épica¦Rareté : épique¦Seltenheit: epi
 
 # v64 (K6): Templos sellados y Vasos de vida.
 add('', """
-block.aptitudes.sealed_stone¦Pedra selada¦Pierre scellée¦Versiegelter Stein
-block.aptitudes.temple_seal¦Selo do templo¦Sceau du temple¦Tempelsiegel
+block.aptitudes.vigil_gate¦Grade da Vigília¦Grille de la Veille¦Gitter der Wache
+block.aptitudes.temple_controller¦Controlador do templo¦Contrôleur du temple¦Tempelsteuerung
 block.aptitudes.reliquary¦Relicário¦Reliquaire¦Reliquiar
 block.aptitudes.custodian_door¦Porta do Custódio¦Porte du Gardien¦Tür des Wächters
 block.aptitudes.chamber_door_copper¦Porta de câmara de cobre¦Porte de chambre en cuivre¦Kammertür aus Kupfer
 block.aptitudes.chamber_door_iron¦Porta de câmara de ferro¦Porte de chambre en fer¦Kammertür aus Eisen
 block.aptitudes.chamber_door_gold¦Porta de câmara de ouro¦Porte de chambre en or¦Kammertür aus Gold
 block.aptitudes.chamber_door_diamond¦Porta de câmara de diamante¦Porte de chambre en diamant¦Kammertür aus Diamant
-item.aptitudes.temple_key¦Chave do templo¦Clé du temple¦Tempelschlüssel
-item.aptitudes.temple_key.tooltip¦Abre o Relicário do templo cujo guardião a deixou cair.¦Ouvre le Reliquaire du temple dont le gardien l'a lâchée.¦Öffnet das Reliquiar des Tempels, dessen Wächter ihn fallen ließ.
-item.aptitudes.temple_key.blank¦Uma chave vazia: não pertence a nenhum templo.¦Une clé vide : elle n'appartient à aucun temple.¦Ein leerer Schlüssel: Er gehört zu keinem Tempel.
 item.aptitudes.custodian_key_copper¦Chave de cobre do Custódio¦Clé de cuivre du Gardien¦Kupferschlüssel des Wächters
 item.aptitudes.custodian_key_iron¦Chave de ferro do Custódio¦Clé de fer du Gardien¦Eisenschlüssel des Wächters
 item.aptitudes.custodian_key_gold¦Chave de ouro do Custódio¦Clé d'or du Gardien¦Goldschlüssel des Wächters
@@ -1696,11 +1692,7 @@ entity.aptitudes.temple_guardian¦Guardião do templo¦Gardien du temple¦Tempel
 temple.aptitudes.levers_solved¦As alavancas se encaixam no lugar.¦Les leviers s'enclenchent.¦Die Hebel rasten ein.
 temple.aptitudes.plates_reset¦O selo rejeita a ordem. Comece de novo.¦Le sceau refuse cet ordre. Recommencez.¦Das Siegel verwirft die Reihenfolge. Fang von vorn an.
 temple.aptitudes.awakened¦O selo se rompe: o guardião do templo desperta!¦Le sceau se brise : le gardien du temple s'éveille !¦Das Siegel bricht: Der Tempelwächter erwacht!
-temple.aptitudes.guardian_defeated¦O guardião cai e deixa a chave do templo.¦Le gardien tombe et laisse la clé du temple.¦Der Wächter fällt und hinterlässt den Tempelschlüssel.
-temple.aptitudes.seal.levers¦Selo: reproduza com as alavancas as luzes sobre a porta.¦Sceau : reproduisez avec les leviers les lumières au-dessus de la porte.¦Siegel: Stelle mit den Hebeln die Lichter über der Tür nach.
-temple.aptitudes.seal.plates¦Selo: pise nas placas na ordem das velas.¦Sceau : marchez sur les plaques dans l'ordre de leurs bougies.¦Siegel: Betritt die Platten in der Reihenfolge ihrer Kerzen.
-temple.aptitudes.seal.awakened¦Selo: o guardião vigia o santuário.¦Sceau : le gardien veille sur le sanctuaire.¦Siegel: Der Wächter bewacht das Heiligtum.
-temple.aptitudes.seal.cleared¦Selo: este templo está aberto.¦Sceau : ce temple est ouvert.¦Siegel: Dieser Tempel ist offen.
+temple.aptitudes.guardian_defeated¦O guardião cai. O Relicário já pode ser aberto.¦Le gardien tombe. Le Reliquaire peut maintenant être ouvert.¦Der Wächter fällt. Das Reliquiar lässt sich jetzt öffnen.
 temple.aptitudes.stairs_open¦A escada se abre: algo espera lá embaixo.¦L'escalier s'ouvre : quelque chose attend en bas.¦Die Treppe öffnet sich: Unten wartet etwas.
 temple.aptitudes.automaton.woke¦Algo antigo desperta no átrio…¦Quelque chose d'ancien s'éveille dans l'atrium…¦Im Atrium regt sich etwas Uraltes…
 temple.aptitudes.automaton.down¦O Autômato se cala. Os mecanismos do templo respondem.¦L'Automate se tait. Les mécanismes du temple répondent.¦Der Automat verstummt. Die Mechanismen des Tempels antworten.
@@ -1714,20 +1706,12 @@ temple.aptitudes.chamber.wrong_temple¦Esta chave é de outro templo.¦Cette cl�
 temple.aptitudes.chamber.wrong_metal¦A fechadura não encaixa: esta chave é de outro metal.¦La serrure ne correspond pas : cette clé est d'un autre métal.¦Das Schloss passt nicht: Dieser Schlüssel ist aus einem anderen Metall.
 temple.aptitudes.chamber.opened¦A fechadura cede e a câmara se abre.¦La serrure cède et la chambre s'ouvre.¦Das Schloss gibt nach und die Kammer öffnet sich.
 temple.aptitudes.guardian_defeated_keys¦O Custódio cai e deixa quatro chaves.¦Le Gardien tombe et laisse quatre clés.¦Der Wächter fällt und hinterlässt vier Schlüssel.
-temple.aptitudes.seal.flow_dormant¦Selo: algo antigo dorme no átrio.¦Sceau : quelque chose d'ancien dort dans l'atrium.¦Siegel: Im Atrium schläft etwas Uraltes.
-temple.aptitudes.seal.flow_automaton¦Selo: o Autômato vigia o átrio. Derrote-o antes de tocar nos mecanismos.¦Sceau : l'Automate veille sur l'atrium. Vainquez-le avant de toucher aux mécanismes.¦Siegel: Der Automat bewacht das Atrium. Besiege ihn, bevor du die Mechanismen berührst.
-temple.aptitudes.seal.flow_automaton_deep¦Selo: o Autômato vigia o átrio. Derrote-o para abrir a escada para baixo.¦Sceau : l’Automate veille sur l’atrium. Vainquez-le pour ouvrir l’escalier vers le bas.¦Siegel: Der Automat bewacht das Atrium. Besiege ihn, um die Treppe nach unten zu öffnen.
-temple.aptitudes.seal.flow_door_locked¦Selo: a porta do Custódio aguarda uma Âncora do Véu.¦Sceau : la porte du Gardien attend une Ancre du voile.¦Siegel: Die Tür des Wächters erwartet einen Schleieranker.
-temple.aptitudes.seal.flow_custodian¦Selo: o Custódio guarda a câmara.¦Sceau : le Gardien garde la chambre.¦Siegel: Der Wächter bewacht die Kammer.
-temple.aptitudes.seal.flow_cleared¦Selo: este templo está aberto.¦Sceau : ce temple est ouvert.¦Siegel: Dieser Tempel ist offen.
-temple.aptitudes.seal.flow_trial¦Selo: é preciso superar a sala de provas abaixo para abrir o caminho.¦Sceau : il faut survivre à la salle d’épreuves en contrebas pour ouvrir le chemin.¦Siegel: Die Prüfungshalle darunter muss überstanden werden, bevor der Weg nach unten sich öffnet.
 temple.aptitudes.trial.gate_open¦A escada para a sala de provas se abre.¦L’escalier vers la salle d’épreuves s’ouvre.¦Die Treppe zur Prüfungshalle öffnet sich.
 temple.aptitudes.trial.wave_1¦Primeira prova: os guardiões despertam.¦Première épreuve : les gardiens s’éveillent.¦Erste Prüfung: Die Wächter erwachen.
 temple.aptitudes.trial.wave_2¦Segunda prova: chegam mais guardiões.¦Deuxième épreuve : d’autres gardiens arrivent.¦Zweite Prüfung: Weitere Wächter erscheinen.
 temple.aptitudes.trial.next_wave¦A primeira onda cai. Prepare-se para a próxima.¦La première vague tombe. Préparez-vous à la suivante.¦Die erste Welle fällt. Macht euch auf die nächste gefasst.
 temple.aptitudes.trial.cleared¦Prova superada. O caminho para baixo se abre.¦Épreuve réussie. Le chemin vers le bas s’ouvre.¦Prüfung bestanden. Der Weg nach unten öffnet sich.
-temple.aptitudes.reliquary.sealed¦O Relicário está trancado. O guardião do templo guarda a chave.¦Le Reliquaire est verrouillé. Le gardien du temple en garde la clé.¦Das Reliquiar ist verschlossen. Der Tempelwächter trägt den Schlüssel.
-temple.aptitudes.reliquary.wrong_key¦Esta chave é de outro templo.¦Cette clé appartient à un autre temple.¦Dieser Schlüssel gehört zu einem anderen Tempel.
+temple.aptitudes.reliquary.sealed¦O Relicário está fechado. Ele se abre quando o guardião do templo cair.¦Le Reliquaire est fermé. Il s'ouvre quand le gardien du temple est tombé.¦Das Reliquiar ist geschlossen. Es öffnet sich, sobald der Tempelwächter gefallen ist.
 temple.aptitudes.reliquary.opened¦O Relicário se abre.¦Le Reliquaire s'ouvre.¦Das Reliquiar öffnet sich.
 temple.aptitudes.reliquary.vessel¦Você recebe um Vaso de vida.¦Vous recevez un Vase de vie.¦Du erhältst ein Lebensgefäß.
 temple.aptitudes.reliquary.claimed¦Você já pegou seu vaso deste Relicário.¦Vous avez déjà pris votre vase dans ce Reliquaire.¦Du hast dein Gefäß aus diesem Reliquiar schon genommen.
@@ -1736,7 +1720,7 @@ temple.aptitudes.vessel.limit¦Você já tem o máximo de vasos.¦Vous avez déj
 temple.aptitudes.vessel.duplicate¦Este vaso já foi usado.¦Ce vase a déjà été utilisé.¦Dieses Gefäß wurde bereits benutzt.
 temple.aptitudes.vessel.disabled¦Os Vasos de vida estão desativados neste servidor.¦Les Vases de vie sont désactivés sur ce serveur.¦Lebensgefäße sind auf diesem Server deaktiviert.
 advancement.aptitudes.temple_opened.title¦Sem selo¦Descellé¦Entsiegelt
-advancement.aptitudes.temple_opened.description¦Abra o Relicário de um templo com sua chave.¦Ouvrez le Reliquaire d'un temple avec sa clé.¦Öffne das Reliquiar eines Tempels mit seinem Schlüssel.
+advancement.aptitudes.temple_opened.description¦Abra o Relicário de um templo depois de vencer seu guardião.¦Ouvrez le Reliquaire d'un temple après avoir vaincu son gardien.¦Öffne das Reliquiar eines Tempels, nachdem du seinen Wächter besiegt hast.
 advancement.aptitudes.life_vessel.title¦Coração pleno¦Cœur comblé¦Volles Herz
 advancement.aptitudes.life_vessel.description¦Use um Vaso de vida.¦Utilisez un Vase de vie.¦Benutze ein Lebensgefäß.
 advancement.aptitudes.bestiary_complete.title¦Cronista¦Chroniqueur¦Chronist

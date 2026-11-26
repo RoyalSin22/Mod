@@ -75,9 +75,10 @@ public final class BestiaryRules {
 		// v65: escorificador de hierro (Nether y Lluvia de brasas).
 		out.add(new Entry("escorificador_hierro", Kind.CREATURE, Region.NETHER, "aptitudes:escorificador_hierro", null,
 				"aptitudes:escorificador_hierro_spawn_egg", List.of("aptitudes:soul_shard")));
-		// v67 (G1): Custodio de las Cuatro Llaves (guardián de los templos sellados); se añade al final.
+		// v67 (G1): Custodio de las Cuatro Llaves (guardián de los templos); se añade al final.
 		out.add(new Entry("custodio", Kind.CREATURE, Region.OVERWORLD, "aptitudes:custodio_cuatro_llaves", null,
-				"aptitudes:temple_key", List.of("aptitudes:temple_key")));
+				"aptitudes:custodian_key_diamond", List.of("aptitudes:custodian_key_copper", "aptitudes:custodian_key_iron",
+						"aptitudes:custodian_key_gold", "aptitudes:custodian_key_diamond")));
 		// V68: Gran Osario Quebrado, jefe de la Niebla; se añade al final. Con él el bestiario tiene 14 entradas.
 		out.add(new Entry("gran_osario_quebrado", Kind.BOSS, Region.OVERWORLD, "aptitudes:gran_osario_quebrado", null,
 				"aptitudes:craneo_gran_osario", List.of("aptitudes:craneo_gran_osario", "aptitudes:soul_shard")));

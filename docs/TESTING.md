@@ -604,15 +604,12 @@ y del avance `summon_eclipse`. El diagnóstico del Coloso conserva estos mensaje
 Automáticas: `temple/TempleRulesTest` y `temple/VesselRulesTest`. Texturas:
 `python3 tools/textures/gen_temple_blocks.py src/main/resources/assets/aptitudes/textures/block --check`.
 
-1. Coloca un templo con `/place feature aptitudes:temple` cerca de la aparición (anillo 0): tres palancas,
-   luces sobre la puerta sellada y el Sello en el suelo. Clic derecho en el Sello: indica la etapa.
-2. Activa las palancas según las luces: suenan, la puerta desaparece y aparece el Guardián del templo con
-   su barra. Una combinación errónea no hace nada. Los espectadores no cuentan.
-3. A 2 000 bloques o más de la aparición (anillo II+, con `threatRingSize` 1000): placas con 1–4 velas. Pisa en orden: suena un tono por paso; una
-   placa fuera de turno reinicia la secuencia con aviso.
-4. Vence al guardián: suelta la Llave del templo (no desaparece). Con otra llave el Relicario dice
-   «Esta llave es de otro templo». Con la suya se abre, da el logro «Sin sello» y un Vaso de vida; un segundo
-   intento dice que ya lo tomaste; otro jugador recibe el suyo.
+1. V87: ya no hay Sello, puzle ni Llave del templo. Coloca un Templo del Custodio con `/aptitudes place custodian_temple`
+   y baja hasta el Piso 3 (ver el guion de la V70). El controlador es un bloque oculto de aspecto de pizarra: no tiene interacción.
+2. Antes de vencer al Custodio, clic derecho en el Relicario: «El Relicario está cerrado. Se abrirá cuando caiga el guardián del templo.»
+3. Las puertas entre fases son Rejas de la Vigilia (barrotes de hierro negro, irrompibles); se abren al vencer al Autómata y la sala de pruebas.
+4. Vence al Custodio: el Relicario se abre solo al hacer clic derecho (sin llave), da el logro «Sin sello» y un Vaso de vida; un segundo
+   intento dice que ya lo tomaste; otro jugador recibe el suyo. El Custodio suelta las cuatro llaves de cámara, pero ninguna llave del templo.
 5. Usa el vaso en supervivencia: vida máxima +2 (20 → 22) y logro «Corazón colmado». Muere, desconéctate
    y vuelve: se conserva. Una copia del mismo vaso (creativo) se rechaza. Con 5 vasos, el sexto no se usa.
 6. Cambia `lifeVesselMax` a 2 y a 0: la vida extra se ajusta y 0 impide usar vasos.

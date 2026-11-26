@@ -62,7 +62,7 @@ public final class TowersLayout {
 		/** Peldaño que asciende hacia el oeste (−x). */
 		STAIR_WEST,
 		/** Puerta de la Torre del Señor: desaparece al vencer a los dos Guardianes. */
-		SEALED,
+		GATE,
 		/** Empuñadura gigante que remata cada torre. */
 		GRIP, GUARD, POMMEL,
 		/** Bloque controlador, en el centro del patio. */
@@ -203,7 +203,7 @@ public final class TowersLayout {
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int y = 1; y <= 3; y++) {
 				if (t.role() == Role.LORD) {
-					r.set(cx + dx, y, cz + h, Cell.SEALED);
+					r.set(cx + dx, y, cz + h, Cell.GATE);
 					r.sealed.add(new int[] {cx + dx, y, cz + h});
 				} else {
 					r.set(cx + dx, y, cz + h, Cell.AIR);

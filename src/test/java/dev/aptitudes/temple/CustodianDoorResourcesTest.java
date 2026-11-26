@@ -37,14 +37,14 @@ class CustodianDoorResourcesTest {
 		assertEquals(16, image.getHeight());
 	}
 
-	@Test void everyFlowHasASealMessageInEnglishAndSpanish() throws IOException {
+	@Test void theRemovedSealMessagesAreGone() throws IOException {
 		for (String locale : new String[] {"en_us", "es_es"}) {
 			JsonObject lang = json(ASSETS.resolve("lang/" + locale + ".json"));
-			for (String key : KEYS) assertTrue(lang.has(key) && !lang.get(key).getAsString().isBlank(), locale + " " + key);
 			for (TempleFlowRules.Flow flow : TempleFlowRules.Flow.values()) {
-				if (flow == TempleFlowRules.Flow.PUZZLE) continue; // el puzle usa los textos de palancas y placas
-				String key = "temple.aptitudes.seal.flow_" + flow.name().toLowerCase(java.util.Locale.ROOT);
-				assertTrue(lang.has(key), locale + " falta " + key);
+				assertFalse(lang.has("temple.aptitudes.seal.flow_" + flow.name().toLowerCase(java.util.Locale.ROOT)), locale + " " + flow);
+			}
+			for (String key : new String[] {"block.aptitudes.sealed_stone", "block.aptitudes.temple_seal", "item.aptitudes.temple_key"}) {
+				assertFalse(lang.has(key), locale + " " + key);
 			}
 		}
 	}

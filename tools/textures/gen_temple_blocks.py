@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Texturas de los bloques del Templo sellado (v64, K6): piedra sellada, Sello y Relicario; T3: Puerta del Custodio; T4: puertas de las cámaras (16×16, arte original).
+"""Texturas de los bloques del Templo sellado (v64, K6): Reja de la Vigilia y Relicario; T3: Puerta del Custodio; T4: puertas de las cámaras (16×16, arte original).
 
 Uso: python3 tools/textures/gen_temple_blocks.py src/main/resources/assets/aptitudes/textures/block [--check]
 """
@@ -31,47 +31,21 @@ def stone(seed, base=(46, 52, 60)):
     return img
 
 
-def sealed_stone():
-    img = stone('sealed')
+def vigil_gate():
+    """Reja de la Vigilia: barrotes de hierro negro sobre un fondo de sombra (opaca, para que se lea como reja)."""
+    img = Image.new('RGBA', (16, 16))
     px = img.load()
-    # Runa vertical luminosa y dos trazos.
-    for y in range(3, 13):
-        px[7, y] = TEAL + (255,)
-        px[8, y] = GLOW + (255,) if y in (5, 10) else TEAL + (255,)
-    for x in range(4, 12):
-        if x not in (7, 8):
-            px[x, 7] = TEAL + (255,)
-    for x, y in ((5, 4), (10, 4), (5, 11), (10, 11)):
-        px[x, y] = GLOW + (255,)
-    return img
-
-
-def seal_top():
-    img = stone('seal_top', (40, 46, 56))
-    px = img.load()
+    rnd = random.Random('vigil_gate')
     for y in range(16):
         for x in range(16):
-            d = math.hypot(x - 7.5, y - 7.5)
-            if 5.6 < d < 6.8:
-                px[x, y] = TEAL + (255,)
-            elif 2.6 < d < 3.4:
-                px[x, y] = GLOW + (255,)
-    for k in range(8):
-        a = k * math.tau / 8
-        x, y = round(7.5 + 4.5 * math.cos(a)), round(7.5 + 4.5 * math.sin(a))
-        px[x, y] = GLOW + (255,)
-    px[7, 7] = px[8, 8] = GOLD + (255,)
-    px[7, 8] = px[8, 7] = GOLD_DARK + (255,)
-    return img
-
-
-def seal_side():
-    img = stone('seal_side', (40, 46, 56))
-    px = img.load()
-    for x in range(16):
-        px[x, 1] = TEAL + (255,)
-        if x % 4 == 1:
-            px[x, 3] = GLOW + (255,)
+            n = rnd.randint(-5, 5)
+            bar_v = x % 5 in (1, 2)
+            bar_h = y in (2, 3, 12, 13)
+            if bar_v or bar_h:
+                tone = 74 + n + (14 if (x % 5 == 1 or y in (2, 12)) else 0)
+                px[x, y] = (tone, tone + 4, tone + 10, 255)
+            else:
+                px[x, y] = (14 + max(0, n), 16 + max(0, n), 22 + max(0, n), 255)
     return img
 
 
@@ -182,15 +156,13 @@ def crypt_hatch():
 
 def files():
     out = {
-        'sealed_stone.png': sealed_stone(),
+        'vigil_gate.png': vigil_gate(),
         'custodian_door.png': custodian_door(),
         'crypt_hatch.png': crypt_hatch(),
         'chamber_door_copper.png': chamber_door('copper'),
         'chamber_door_iron.png': chamber_door('iron'),
         'chamber_door_gold.png': chamber_door('gold'),
         'chamber_door_diamond.png': chamber_door('diamond'),
-        'temple_seal_top.png': seal_top(),
-        'temple_seal_side.png': seal_side(),
         'reliquary_top.png': reliquary('top'),
         'reliquary_side.png': reliquary('side'),
         'reliquary_bottom.png': reliquary('bottom'),

@@ -23,10 +23,6 @@ public final class ModWorldGen {
 			Aptitudes.id("bonfire_shrine"), new BonfireShrineFeature(DefaultFeatureConfig.CODEC));
 	public static final Feature<DefaultFeatureConfig> CAMP = Registry.register(Registries.FEATURE,
 			Aptitudes.id("camp"), new CampFeature(DefaultFeatureConfig.CODEC));
-	/** v64: Templo sellado (puzle, guardián y Relicario). */
-	public static final Feature<DefaultFeatureConfig> TEMPLE = Registry.register(Registries.FEATURE,
-			Aptitudes.id("temple"), new TempleFeature(DefaultFeatureConfig.CODEC));
-
 	/** T3: Templo del Custodio (31×31, dos niveles). Sustituye al templo antiguo en la generación nueva (T3d). */
 	public static final Feature<DefaultFeatureConfig> CUSTODIAN_TEMPLE = Registry.register(Registries.FEATURE,
 			Aptitudes.id("custodian_temple"), new CustodianTempleFeature(DefaultFeatureConfig.CODEC));

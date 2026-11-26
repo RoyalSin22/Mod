@@ -278,7 +278,7 @@ public final class TowersControllerBlockEntity extends BlockEntity {
 		doorOpen = true;
 		for (int[] c : TowersLayout.build0().sealed) {
 			BlockPos p = pos.add(c[0], c[1], c[2]);
-			if (world.getBlockState(p).isOf(Temples.SEALED_STONE)) world.breakBlock(p, false);
+			if (world.getBlockState(p).isOf(Temples.GATE)) world.breakBlock(p, false);
 		}
 		world.playSound(null, pos, SoundEvents.BLOCK_VAULT_OPEN_SHUTTER, SoundCategory.BLOCKS, 1.4f, 0.6f);
 		tell(nearby(world, RANGE), "towers.aptitudes.lord_open", Formatting.GOLD);

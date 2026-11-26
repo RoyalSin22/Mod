@@ -361,21 +361,21 @@ ACAMPAMENTO: caçadores, bruxos ou bandidos, com guardas e saque temático.
 
 Só são geradas em terreno novo (chunks inexplorados).
 
-Templos selados (15×15, de pedra, ardósia profunda ou pedra-negra conforme o anel de Ameaça): reproduza com as alavancas as luzes sobre a porta selada; a partir do anel II, pise também nas placas na ordem das velas. A porta se abre e o guardião do templo desperta; sua chave abre o Relicário, que dá a cada jogador um Vaso de vida (+1 coração permanente, até 5).""",
+Templo do Custódio (31×31, subterrâneo, de pedra, ardósia profunda ou pedra-negra conforme o anel de Ameaça): derrote o Autômato Antigo do átrio, supere a sala de provas e abra a Porta do Custódio com uma Âncora do Véu. O Custódio caído solta quatro chaves de câmara e o Relicário se abre sozinho: dá a cada jogador um Vaso de vida (+1 coração permanente, até 5).""",
     """TOUR EN RUINES : 4 étages avec coffres, générateurs de monstres et un champion sur le toit, près du meilleur coffre (armures de rôle, outils d'âme, accessoires).
 SANCTUAIRE DU FEU : ruines avec un feu de camp allumé et un coffre (fragments, fioles, parfois une Offrande).
 CAMP : chasseurs, sorciers ou bandits, avec gardes et butin thématique.
 
 Ces structures n'apparaissent que dans du nouveau terrain (chunks inexplorés).
 
-Temples scellés (15×15, en pierre, ardoise des abîmes ou pierre noire selon l'anneau de Menace) : reproduisez avec les leviers les lumières au-dessus de la porte scellée ; dès l'anneau II, marchez aussi sur les plaques dans l'ordre de leurs bougies. La porte s'ouvre et le gardien du temple s'éveille ; sa clé ouvre le Reliquaire, qui donne à chaque joueur un Vase de vie (+1 cœur permanent, jusqu'à 5).""",
+Temple du Gardien (31×31, souterrain, en pierre, ardoise des abîmes ou pierre noire selon l'anneau de Menace) : vainquez l'Automate antique de l'atrium, surmontez la salle d'épreuves et ouvrez la Porte du Gardien avec une Ancre du voile. Le Gardien vaincu lâche quatre clés de chambre et le Reliquaire s'ouvre alors tout seul : il donne à chaque joueur un Vase de vie (+1 cœur permanent, jusqu'à 5).""",
     """TURMRUINE: 4 Stockwerke mit Truhen, Monsterspawnern und einem Champion auf dem Dach beim besten Schatz (Rollenrüstung, Seelenwerkzeuge, Accessoires).
 LEUCHTFEUERSCHREIN: Ruinen mit einem entzündeten Leuchtfeuer und einer Truhe (Splitter, Flakons, manchmal eine Opfergabe).
 LAGER: Jäger, Hexenmeister oder Banditen mit Wachen und passender Beute.
 
 Sie entstehen nur in neuem Gelände (unerforschten Chunks).
 
-Versiegelte Tempel (15×15, aus Stein, Tiefenschiefer oder Schwarzstein je nach Bedrohungsring): Stelle mit den Hebeln die Lichter über der versiegelten Tür nach; ab Ring II betrittst du außerdem die Platten in der Reihenfolge ihrer Kerzen. Die Tür öffnet sich und der Tempelwächter erwacht; sein Schlüssel öffnet das Reliquiar, das jedem Spieler ein Lebensgefäß gibt (+1 dauerhaftes Herz, bis zu 5)."""))
+Tempel des Wächters (31×31, unterirdisch, aus Stein, Tiefenschiefer oder Schwarzstein je nach Bedrohungsring): Besiege den Uralten Automaten im Atrium, bestehe den Prüfungsraum und öffne die Tür des Wächters mit einem Schleieranker. Der gefallene Wächter lässt vier Kammerschlüssel fallen und das Reliquiar öffnet sich dann von selbst: Es gibt jedem Spieler ein Lebensgefäß (+1 dauerhaftes Herz, bis zu 5)."""))
 
 chapter('guild', ('Aldeão da guilda', 'Villageois de guilde', 'Gildendorfbewohner'), (
     """Coloque uma Mesa da Guilda perto de um aldeão sem profissão para torná-lo Mestre da Guilda. Consulte a receita real no grimório.

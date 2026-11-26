@@ -2,12 +2,14 @@ package dev.aptitudes.world;
 
 import com.mojang.serialization.Codec;
 import dev.aptitudes.Aptitudes;
+import dev.aptitudes.config.AptitudesConfig;
+import dev.aptitudes.logic.ThreatRules;
 import dev.aptitudes.temple.CustodianTempleLayout;
 import dev.aptitudes.temple.CustodianTempleLayout.Cell;
 import dev.aptitudes.temple.ReliquaryBlockEntity;
 import dev.aptitudes.temple.TempleKeyRules;
 import dev.aptitudes.temple.TempleRules;
-import dev.aptitudes.temple.TempleSealBlockEntity;
+import dev.aptitudes.temple.TempleControllerBlockEntity;
 import dev.aptitudes.temple.Temples;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -60,8 +62,8 @@ public class CustodianTempleFeature extends Feature<DefaultFeatureConfig> {
 		}
 
 		StructureBuilder b = new StructureBuilder(world, origin, context.getRandom());
-		int ring = TempleRules.clampRing(TempleFeature.ring(context, origin));
-		TempleFeature.Palette palette = TempleFeature.Palette.of(ring);
+		int ring = TempleRules.clampRing(ring(context, origin));
+		Palette palette = Palette.of(ring);
 
 		// V69: la Cripta de la Niebla es el cuarto nivel; si su volumen toca agua o lava, el templo se genera sin ella.
 		boolean withCrypt = Aptitudes.config().cryptEnabled && cryptSiteOk(world, origin);
@@ -86,7 +88,7 @@ public class CustodianTempleFeature extends Feature<DefaultFeatureConfig> {
 		// Controlador y Relicario: todas las posiciones del sello son relativas a él.
 		BlockPos seal = b.at(layout.seal[0], layout.seal[1], layout.seal[2]);
 		UUID temple = new UUID(b.random.nextLong(), b.random.nextLong());
-		if (world.getBlockEntity(seal) instanceof TempleSealBlockEntity entity) {
+		if (world.getBlockEntity(seal) instanceof TempleControllerBlockEntity entity) {
 			// Sin puzle: ni palancas ni placas. La piedra sellada del Piso 2 (layout.hatch) la abre la prueba de combate.
 			entity.setupCustodian(temple, ring, List.of(), new boolean[0], List.of(),
 					relative(b, seal, layout.hatch), rel(b, seal, layout.custodianSpawn), relative(b, seal, layout.custodianDoor),
@@ -153,15 +155,38 @@ public class CustodianTempleFeature extends Feature<DefaultFeatureConfig> {
 		return out;
 	}
 
+	/** Anillo de Amenaza del lugar (también lo usa {@link ThreeTowersFeature}). */
+	static int ring(FeatureContext<DefaultFeatureConfig> context, BlockPos origin) {
+		AptitudesConfig c = Aptitudes.config();
+		BlockPos spawn = context.getWorld().toServerWorld().getSpawnPos();
+		return ThreatRules.ring(origin.getX(), origin.getZ(), spawn.getX(), spawn.getZ(), c.threatRingSize, c.threatMaxRing);
+	}
+
+	/** Materiales por anillo: piedra (0–I), pizarra profunda (II–III) y piedra negra (IV–V). */
+	record Palette(BlockState main, BlockState cracked, BlockState accent) {
+		static Palette of(int ring) {
+			if (ring >= 4) return new Palette(Blocks.POLISHED_BLACKSTONE_BRICKS.getDefaultState(),
+					Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS.getDefaultState(), Blocks.GILDED_BLACKSTONE.getDefaultState());
+			if (ring >= 2) return new Palette(Blocks.DEEPSLATE_BRICKS.getDefaultState(),
+					Blocks.CRACKED_DEEPSLATE_BRICKS.getDefaultState(), Blocks.DEEPSLATE_TILES.getDefaultState());
+			return new Palette(Blocks.STONE_BRICKS.getDefaultState(), Blocks.MOSSY_STONE_BRICKS.getDefaultState(),
+					Blocks.CHISELED_STONE_BRICKS.getDefaultState());
+		}
+
+		BlockState brick(StructureBuilder b) {
+			return b.random.nextFloat() < 0.8f ? main : cracked;
+		}
+	}
+
 	/** Bloque real de cada celda de la distribución. */
-	private static BlockState state(Cell cell, TempleFeature.Palette palette, int ring, StructureBuilder b) {
+	private static BlockState state(Cell cell, Palette palette, int ring, StructureBuilder b) {
 		return switch (cell) {
 			case AIR -> Blocks.AIR.getDefaultState();
 			case HULL, WALL -> palette.brick(b);
 			case FLOOR, ROOF -> palette.main();
 			case ACCENT, PILLAR -> palette.accent();
 			case STAIR_NORTH -> stairs(ring).with(StairsBlock.FACING, Direction.NORTH);
-			case SEALED -> Temples.SEALED_STONE.getDefaultState();
+			case GATE -> Temples.GATE.getDefaultState();
 			case DOOR -> Temples.CUSTODIAN_DOOR.getDefaultState();
 			case LEVER -> Blocks.LEVER.getDefaultState().with(LeverBlock.FACE, BlockFace.WALL).with(LeverBlock.FACING, Direction.SOUTH);
 			case LIGHT_ON -> Blocks.SEA_LANTERN.getDefaultState();
@@ -171,7 +196,7 @@ public class CustodianTempleFeature extends Feature<DefaultFeatureConfig> {
 			case CANDLE_2 -> candle(2);
 			case CANDLE_3 -> candle(3);
 			case CANDLE_4 -> candle(4);
-			case SEAL -> Temples.TEMPLE_SEAL.getDefaultState();
+			case CONTROLLER -> Temples.TEMPLE_CONTROLLER.getDefaultState();
 			case RELIQUARY -> Temples.RELIQUARY.getDefaultState();
 			case LANTERN -> Blocks.SOUL_LANTERN.getDefaultState();
 			case CHAMBER_DOOR_COPPER -> Temples.CHAMBER_DOOR_COPPER.getDefaultState();

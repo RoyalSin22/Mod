@@ -5,6 +5,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Eliminado (V87)
+- **Piedra sellada, Sello del templo y Llave del templo se retiran del mod** (decisión del autor). La Piedra sellada pasa a ser la **Reja de la
+  Vigilia** (`vigil_gate`, interina; el rediseño de la torre y del templo lo encarga `docs/PROMPT_CODEX_REDISENO_ESTRUCTURAS.md`). El Sello es ahora un
+  **controlador oculto** (`temple_controller`, sin interacción ni objeto; `TempleControllerBlockEntity`) y el Relicario **se abre solo cuando cae el
+  guardián**, sin llave. Se borra el templo antiguo de puzle (`world/TempleFeature` y su configuración) y su tipo `temple` de `/aptitudes locate`.
+  Los avances, el bestiario (el Custodio suelta las cuatro llaves de cámara) y los 11 idiomas se actualizan. Se rompen los mundos de prueba que ya
+  tuvieran esos bloques. Detalle en `docs/V87_RETIRADA_SELLOS.md`.
+
 ### Corregido
 - **Avance roto `aptitudes_achievements/summon_eclipse`.** Fallaba al cargar en cada arranque («No key id»: el icono
   usaba `item` en lugar de `id`), ningún código lo concedía y lo sustituye «Quien llama a la noche» (`eclipse_caller`).

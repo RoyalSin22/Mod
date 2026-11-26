@@ -21,7 +21,7 @@ class TowersResourcesTest {
 	@Test void controllerBlockHasItsBlockstateAndModelAndNames() throws IOException {
 		assertTrue(read("assets/aptitudes/blockstates/three_towers_controller.json").contains("aptitudes:block/three_towers_controller"));
 		JsonObject model = JsonParser.parseString(read("assets/aptitudes/models/block/three_towers_controller.json")).getAsJsonObject();
-		assertTrue(model.getAsJsonObject("textures").has("side"));
+		assertTrue(model.getAsJsonObject("textures").has("all"));
 		for (String lang : new String[] {"en_us", "es_es", "pt_br", "fr_fr", "de_de"}) {
 			String text = read("assets/aptitudes/lang/" + lang + ".json");
 			for (String key : new String[] {"block.aptitudes.three_towers_controller", "towers.aptitudes.guardian_woke", "towers.aptitudes.guardian_down",

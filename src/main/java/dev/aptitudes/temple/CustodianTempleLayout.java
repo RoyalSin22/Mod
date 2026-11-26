@@ -62,11 +62,11 @@ public final class CustodianTempleLayout {
 		/** Escalón que asciende hacia el norte (se baja hacia el sur). */
 		STAIR_NORTH,
 		/** Piedra sellada de la trampilla: desaparece al resolver el puzle. */
-		SEALED,
+		GATE,
 		/** Puerta del Custodio: solo cede al Ancla del Velo. */
 		DOOR,
 		LEVER, LIGHT_ON, LIGHT_OFF, PLATE, CANDLE_1, CANDLE_2, CANDLE_3, CANDLE_4,
-		SEAL, RELIQUARY, LANTERN,
+		CONTROLLER, RELIQUARY, LANTERN,
 		/** T4: puertas de las cuatro cámaras de recompensa (1 de ancho × 2 de alto), una por metal. */
 		CHAMBER_DOOR_COPPER, CHAMBER_DOOR_IRON, CHAMBER_DOOR_GOLD, CHAMBER_DOOR_DIAMOND,
 		/** T4: cofre de cada cámara, con la tabla de botín de su metal. */
@@ -239,11 +239,11 @@ public final class CustodianTempleLayout {
 		}
 		for (int x = -1; x <= 1; x++) {
 			for (int z = -7; z <= -5; z++) {
-				r.set(x, FLOOR_Y, z, Cell.SEALED);
+				r.set(x, FLOOR_Y, z, Cell.GATE);
 				r.hatch.add(new int[] {x, FLOOR_Y, z});
 			}
 		}
-		r.set(r.seal[0], r.seal[1], r.seal[2], Cell.SEAL);
+		r.set(r.seal[0], r.seal[1], r.seal[2], Cell.CONTROLLER);
 
 		buildUnderground(r, 0);
 		if (crypt) buildCrypt(r, 0);
@@ -304,12 +304,12 @@ public final class CustodianTempleLayout {
 		}
 		for (int x = 11; x <= 13; x++) {
 			for (int z = -7; z <= -5; z++) {
-				r.set(x, f1, z, Cell.SEALED);
+				r.set(x, f1, z, Cell.GATE);
 				r.gateOne.add(new int[] {x, f1, z});
 			}
 		}
 		System.arraycopy(new int[] {3, f1 + 1, -4}, 0, r.seal, 0, 3);
-		r.set(r.seal[0], r.seal[1], r.seal[2], Cell.SEAL);
+		r.set(r.seal[0], r.seal[1], r.seal[2], Cell.CONTROLLER);
 		System.arraycopy(new int[] {0, f1 + 1, -9}, 0, r.automatonSpawn, 0, 3);
 		System.arraycopy(new int[] {0, f1 + 1, -9}, 0, r.triggerCenter, 0, 3);
 
@@ -337,7 +337,7 @@ public final class CustodianTempleLayout {
 		// Escalera sellada al Piso 3 (centro): su tramo hacia el sur sigue el subsuelo del templo antiguo, 17 más abajo.
 		for (int x = -1; x <= 1; x++) {
 			for (int z = -7; z <= -5; z++) {
-				r.set(x, f2, z, Cell.SEALED);
+				r.set(x, f2, z, Cell.GATE);
 				r.hatch.add(new int[] {x, f2, z});
 			}
 		}

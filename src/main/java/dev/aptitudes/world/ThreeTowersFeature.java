@@ -73,7 +73,7 @@ public class ThreeTowersFeature extends Feature<DefaultFeatureConfig> {
 			}
 		}
 		// El controlador fija la dificultad según el anillo de Amenaza del lugar; los jefes los despierta él después, nunca aquí.
-		if (world.getBlockEntity(b.at(0, 0, 0)) instanceof TowersControllerBlockEntity controller) controller.setup(TempleFeature.ring(context, origin));
+		if (world.getBlockEntity(b.at(0, 0, 0)) instanceof TowersControllerBlockEntity controller) controller.setup(CustodianTempleFeature.ring(context, origin));
 		StructureIndex.record(world, "three_towers", origin); // V77: /aptitudes locate
 		return true;
 	}
@@ -96,7 +96,7 @@ public class ThreeTowersFeature extends Feature<DefaultFeatureConfig> {
 			}
 			case STAIR_EAST -> Blocks.STONE_BRICK_STAIRS.getDefaultState().with(StairsBlock.FACING, Direction.EAST);
 			case STAIR_WEST -> Blocks.STONE_BRICK_STAIRS.getDefaultState().with(StairsBlock.FACING, Direction.WEST);
-			case SEALED -> Temples.SEALED_STONE.getDefaultState();
+			case GATE -> Temples.GATE.getDefaultState();
 			case GRIP -> Blocks.POLISHED_DEEPSLATE.getDefaultState();
 			case GUARD -> Blocks.DEEPSLATE_BRICKS.getDefaultState();
 			case POMMEL -> Blocks.CHISELED_DEEPSLATE.getDefaultState();

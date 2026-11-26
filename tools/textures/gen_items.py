@@ -1119,7 +1119,6 @@ ITEMS = {
     'amulet_of_the_grove': ('amulet', {'G': '#a1887f', 'J': '#66bb6a'}),
     'hunters_trophy': ('trophy', {'L': '#6d4c2a', 'B': '#efe6d2'}),
     # v64: Templos sellados
-    'temple_key': ('temple_key', {'G': '#5fb3b3', 'J': '#ffd166'}),
     # V69: Llave del Velo (abre la Cripta de la Niebla)
     'llave_del_velo': ('temple_key', {'G': '#7e6ab8', 'J': '#d9c8ff'}),
     # T4: llaves del Custodio (mismo dibujo que la llave del templo, un metal cada una)

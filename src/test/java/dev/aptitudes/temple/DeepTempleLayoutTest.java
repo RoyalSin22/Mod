@@ -108,9 +108,9 @@ class DeepTempleLayoutTest {
 		Result r = deep();
 		assertEquals(9, r.gateOne.size());
 		assertEquals(9, r.hatch.size());
-		for (int[] p : r.gateOne) assertEquals(Cell.SEALED, r.get(p[0], p[1], p[2]));
-		for (int[] p : r.hatch) assertEquals(Cell.SEALED, r.get(p[0], p[1], p[2]));
-		assertEquals(Cell.SEAL, r.get(r.seal[0], r.seal[1], r.seal[2]));
+		for (int[] p : r.gateOne) assertEquals(Cell.GATE, r.get(p[0], p[1], p[2]));
+		for (int[] p : r.hatch) assertEquals(Cell.GATE, r.get(p[0], p[1], p[2]));
+		assertEquals(Cell.CONTROLLER, r.get(r.seal[0], r.seal[1], r.seal[2]));
 		assertEquals(9, r.custodianDoor.size());
 		for (int[] p : r.custodianDoor) assertEquals(Cell.DOOR, r.get(p[0], p[1], p[2]));
 		assertEquals(8, r.chamberDoors.size(), "cuatro puertas de dos bloques");
@@ -152,7 +152,7 @@ class DeepTempleLayoutTest {
 
 	private static boolean passable(Cell c, Set<Cell> open) {
 		return c != null && (c == Cell.AIR || c == Cell.LADDER_EAST || c == Cell.LANTERN || c == Cell.BRAZIER
-				|| c == Cell.STAIR_NORTH || c == Cell.STAIR_SOUTH || c == Cell.SEAL || open.contains(c));
+				|| c == Cell.STAIR_NORTH || c == Cell.STAIR_SOUTH || c == Cell.CONTROLLER || open.contains(c));
 	}
 
 	/** Alcanzable a pie desde {@code start}: los escalones y los huecos cuentan como transitables (el plano no modela medios bloques). */
@@ -182,8 +182,8 @@ class DeepTempleLayoutTest {
 		assertFalse(start.contains(key(r.trialSpawns.get(0))), "la sala de pruebas está sellada");
 		assertFalse(start.contains(key(r.custodianSpawn)));
 
-		Set<String> afterAutomaton = reach(r, SURFACE_RAMP_TOP, Set.of(Cell.SEALED));
-		// Con SEALED abierto todo cae a la vez: se comprueba por pasos con una copia que solo abre la primera escalera.
+		Set<String> afterAutomaton = reach(r, SURFACE_RAMP_TOP, Set.of(Cell.GATE));
+		// Con GATE abierto todo cae a la vez: se comprueba por pasos con una copia que solo abre la primera escalera.
 		assertTrue(afterAutomaton.contains(key(r.trialSpawns.get(0))));
 	}
 

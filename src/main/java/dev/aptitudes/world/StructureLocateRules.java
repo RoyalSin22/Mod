@@ -9,7 +9,7 @@ public final class StructureLocateRules {
 	}
 
 	/** Tipos de estructura del mod, con el id que usan los comandos y el índice. */
-	public static final List<String> KINDS = List.of("custodian_temple", "temple", "tower", "bonfire_shrine", "camp",
+	public static final List<String> KINDS = List.of("custodian_temple", "tower", "bonfire_shrine", "camp",
 			"three_towers");
 
 	/**
@@ -41,9 +41,9 @@ public final class StructureLocateRules {
 		return d[0] == chunkX && d[1] == chunkZ;
 	}
 
-	/** El templo sellado antiguo ya no se genera en chunks nuevos (lo sustituye el del Custodio): no tiene sentido buscarlo explorando. */
+	/** Todas las estructuras del mod se pueden buscar explorando. */
 	public static boolean searchable(String kind) {
-		return isKind(kind) && !kind.equals("temple");
+		return isKind(kind);
 	}
 
 	public static boolean isKind(String kind) {

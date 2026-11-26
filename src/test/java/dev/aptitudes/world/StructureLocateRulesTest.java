@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /** V77: localizar las estructuras del mod (Features) con /aptitudes locate. */
 class StructureLocateRulesTest {
-	@Test void kindsAreTheSixStructuresOfTheMod() {
-		assertEquals(6, StructureLocateRules.KINDS.size()); // V86: + three_towers
-		for (String k : new String[] {"custodian_temple", "temple", "tower", "bonfire_shrine", "camp", "three_towers"}) assertTrue(StructureLocateRules.isKind(k), k);
+	@Test void kindsAreTheFiveStructuresOfTheMod() {
+		assertEquals(5, StructureLocateRules.KINDS.size()); // V86: + three_towers; V87: sin el templo sellado antiguo
+		for (String k : new String[] {"custodian_temple", "tower", "bonfire_shrine", "camp", "three_towers"}) assertTrue(StructureLocateRules.isKind(k), k);
 		assertFalse(StructureLocateRules.isKind("village"));
 		assertFalse(StructureLocateRules.isKind(""));
 		assertFalse(StructureLocateRules.isKind(null));
@@ -36,7 +36,7 @@ class StructureLocateRulesTest {
 		assertTrue(StructureLocateRules.shouldSearch(java.util.Optional.empty(), 600));
 	}
 
-	@Test void theOldTempleIsNotSearchedBecauseItNoLongerGenerates() {
+	@Test void theRemovedSealedTempleIsNoLongerAKind() {
 		assertFalse(StructureLocateRules.searchable("temple"));
 		assertTrue(StructureLocateRules.searchable("custodian_temple"));
 		assertFalse(StructureLocateRules.searchable("village"));
@@ -73,7 +73,7 @@ class StructureLocateRulesTest {
 
 	@Test void onlyTheCustodianTempleUsesTheRegionGrid() {
 		assertEquals(32, StructureLocateRules.regionSize("custodian_temple"));
-		for (String k : new String[] {"temple", "tower", "bonfire_shrine", "camp", "village"}) assertEquals(0, StructureLocateRules.regionSize(k), k);
+		for (String k : new String[] {"tower", "bonfire_shrine", "camp", "village"}) assertEquals(0, StructureLocateRules.regionSize(k), k);
 		assertEquals(-1, StructureLocateRules.regionOf(-1, 32));
 		assertEquals(0, StructureLocateRules.regionOf(31, 32));
 		assertEquals(1, StructureLocateRules.regionOf(32, 32));
