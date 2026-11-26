@@ -117,3 +117,5 @@ Fases: 1) propuestas con esquemas ASCII (el autor elige), 2) planos puros y prue
 | Quién lo hace | **Codex**, incluido el enlace con los contratos |
 
 Detalle de decoración, paletas, encuentros por anillo y pistas: `docs/V90_DECORACION_Y_VARIANTES.md`.
+
+Tercera ronda (2026-11-26): los 7 tipos de campamento se quedan, los números de encuentros de partida valen y el cofre oculto es **un bloque de lana o llamativo en el suelo con el cofre debajo**. Ver `docs/V90_DECORACION_Y_VARIANTES.md` §10.

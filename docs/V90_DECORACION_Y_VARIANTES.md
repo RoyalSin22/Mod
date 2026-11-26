@@ -121,8 +121,12 @@ La pista cambia por tipo (cazadores: huesos y pieles; brujos: velas y setas; ban
 6. Contratos por tipo (§8), textos en los 5 idiomas, `CHANGELOG.md` y `docs/TESTING.md` actualizados.
 7. **Sin probar en partida**: lo avisa el informe final.
 
-## 10. Para elegir antes del prompt
+## 10. Decisiones cerradas (2026-11-26, tercera ronda)
 
-1. De los **tipos nuevos**, ¿cuáles dejamos? (mercaderes asaltados, desertores, cultistas del Velo, buscadores de reliquias).
-2. ¿Te sirven los **números de encuentros** de §5 como punto de partida?
-3. ¿Qué pistas del **cofre oculto** prefieres (tierra suelta, doble pared de lona, barril marcado) o las tres según el tipo?
+| Tema | Decisión |
+|---|---|
+| Tipos de campamento | **Todos**: cazadores, brujos, bandidos, mercaderes asaltados, desertores, cultistas del Velo y buscadores de reliquias (7 tipos, y por tanto 7 contratos) |
+| Encuentros por anillo | Los números de §5 sirven como **punto de partida** (Codex los afina y se revisan en partida) |
+| Cofre oculto | **Un bloque de lana o un bloque llamativo en el suelo y, debajo, el cofre.** Sustituye a las pistas de §7 (tierra suelta, doble pared, barril marcado) y al muro agrietado de la torre: en las dos estructuras la pista es ese bloque, que **cambia por tipo o paleta** (p. ej. lana del color del tipo, bloque de oro, de cobre o de hueso) y se rompe con cualquier herramienta |
+
+Sin preguntas abiertas de diseño. Lo que queda lo propone y mide Codex (frecuencia real, coste de generación, escaleras y accesos).
