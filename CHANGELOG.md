@@ -33,6 +33,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   PNG a mano tras ejecutar `gen_items.py`. Los mundos antiguos conservan, inofensivo, el archivo de datos de `SummonState`. Sin cambios de balance.
 
 ### Añadido
+- **V96 (3.ª tanda) — Firmas y definitivas de los otros 15 roles.** `GrandFx` cubre ya los 20 roles: cada uno tiene motivo de partículas
+  propio (humo para Asesino y Brujo, notas para el Bardo, hojas para Herbolista y Druida, llama de almas para el Nigromante, etc.) y un
+  sonido propio (`grand_<rol>`, 15 nuevos, sintetizados con un timbre por rol: campana, soplo, golpe, filo, bordón, madera, monedas,
+  gong, disparo, halcón, laúd, cuerno). Mismos gestos de cuerpo y cámara que los pilotos. Sin cambios de balance. **Sin probar en partida**
+  (sonidos solo medidos, no oídos).
 - **V96 (2.ª tanda) — Piedras angulares.** Las diez plantillas del escalón S7 (Matanza, Baluarte, Sobrecarga, Detonación, Contagio, Legión,
   Espectro, Fortuna, Tempestad y Santuario) tienen guion visual propio con el color del rol, un evento por disparo (`FxIds.KEYSTONE`, 69) desde
   `Keystones` y dibujo en `client/fx/KeystoneClientFx`. Cada guion es breve y barato porque se dispara a menudo; solo Baluarte y Detonación mueven la

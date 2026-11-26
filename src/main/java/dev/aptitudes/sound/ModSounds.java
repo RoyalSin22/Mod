@@ -120,6 +120,8 @@ public final class ModSounds {
 	public static final SoundEvent GRAND_PALADIN = register("grand_paladin");
 	public static final SoundEvent GRAND_ENGINEER = register("grand_engineer");
 	public static final SoundEvent GRAND_RUMBLE = register("grand_rumble");
+	/** Motivo de la firma y la definitiva de cada rol, indexado por ordinal del rol (V96). */
+	public static final SoundEvent[] GRAND_BY_ROLE = grandByRole();
 
 	private ModSounds() {
 	}
@@ -128,6 +130,23 @@ public final class ModSounds {
 		dev.aptitudes.role.KeystoneRules.Template[] all = dev.aptitudes.role.KeystoneRules.Template.values();
 		SoundEvent[] out = new SoundEvent[all.length];
 		for (int i = 0; i < all.length; i++) out[i] = register("keystone_" + all[i].key());
+		return out;
+	}
+
+	private static SoundEvent[] grandByRole() {
+		dev.aptitudes.role.Role[] roles = dev.aptitudes.role.Role.values();
+		SoundEvent[] out = new SoundEvent[roles.length];
+		for (int i = 0; i < roles.length; i++) {
+			SoundEvent pilot = switch (roles[i]) {
+				case BERSERKER -> GRAND_BERSERKER;
+				case ELEMENTALIST -> GRAND_ELEMENTALIST;
+				case SHAPESHIFTER -> GRAND_SHAPESHIFTER;
+				case PALADIN -> GRAND_PALADIN;
+				case ENGINEER -> GRAND_ENGINEER;
+				default -> null;
+			};
+			out[i] = pilot != null ? pilot : register("grand_" + roles[i].key());
+		}
 		return out;
 	}
 

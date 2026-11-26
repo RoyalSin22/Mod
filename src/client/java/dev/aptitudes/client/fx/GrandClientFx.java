@@ -61,9 +61,18 @@ final class GrandClientFx {
 	private static ParticleEffect motif(Role role) {
 		return switch (role) {
 			case BERSERKER -> ParticleTypes.LAVA;
-			case ELEMENTALIST -> ParticleTypes.END_ROD;
+			case ELEMENTALIST, MAGE -> ParticleTypes.END_ROD;
 			case SHAPESHIFTER -> ParticleTypes.SPORE_BLOSSOM_AIR;
-			case PALADIN -> ParticleTypes.WAX_ON;
+			case PALADIN, MONK -> ParticleTypes.WAX_ON;
+			case ASSASSIN, WARLOCK -> ParticleTypes.SMOKE;
+			case HERBALIST, DRUID -> ParticleTypes.HAPPY_VILLAGER;
+			case LANCER, TAMER -> ParticleTypes.CLOUD;
+			case SWORDSMAN, WEAPON_SUMMONER -> ParticleTypes.SWEEP_ATTACK;
+			case NECROMANCER -> ParticleTypes.SOUL_FIRE_FLAME;
+			case MERCHANT -> ParticleTypes.GLOW;
+			case GUNSLINGER -> ParticleTypes.CRIT;
+			case HUNTER -> ParticleTypes.FIREWORK;
+			case BARD -> ParticleTypes.NOTE;
 			default -> ParticleTypes.ELECTRIC_SPARK;
 		};
 	}
@@ -101,7 +110,14 @@ final class GrandClientFx {
 				case ELEMENTALIST -> FxClient.spawn(motif, x, base.y + 4.5 - rng.nextDouble(), z, 0, -0.18 - rng.nextDouble() * 0.12, 0);
 				case SHAPESHIFTER -> FxClient.spawn(motif, base.x + (rng.nextDouble() - 0.5) * 1.6, base.y + rng.nextDouble() * 1.9,
 						base.z + (rng.nextDouble() - 0.5) * 1.6, (rng.nextDouble() - 0.5) * 0.2, 0.04, (rng.nextDouble() - 0.5) * 0.2);
-				case PALADIN -> FxClient.spawn(motif, x, base.y + 0.1, z, 0, 0.1 + rng.nextDouble() * 0.1, 0);
+				case PALADIN, MONK, HERBALIST, DRUID, MERCHANT, BARD -> FxClient.spawn(motif, x, base.y + 0.1, z, 0, 0.1 + rng.nextDouble() * 0.1, 0);
+				case MAGE, WEAPON_SUMMONER, HUNTER -> FxClient.spawn(motif, x, base.y + 4.0 - rng.nextDouble(), z, 0, -0.16 - rng.nextDouble() * 0.1, 0);
+				case ASSASSIN, WARLOCK, NECROMANCER -> FxClient.spawn(motif, base.x + (rng.nextDouble() - 0.5) * 3.0, base.y + rng.nextDouble() * 0.6,
+						base.z + (rng.nextDouble() - 0.5) * 3.0, (rng.nextDouble() - 0.5) * 0.05, 0.06 + rng.nextDouble() * 0.06, (rng.nextDouble() - 0.5) * 0.05);
+				case LANCER, SWORDSMAN, GUNSLINGER, TAMER -> {
+					double a2 = rng.nextDouble() * Math.PI * 2;
+					FxClient.spawn(motif, base.x, base.y + 0.9, base.z, Math.cos(a2) * (0.25 + rng.nextDouble() * 0.3), (rng.nextDouble() - 0.4) * 0.1, Math.sin(a2) * (0.25 + rng.nextDouble() * 0.3));
+				}
 				default -> {
 					FxClient.spawn(motif, x, base.y + rng.nextDouble() * 2.5, z, (rng.nextDouble() - 0.5) * 0.4, rng.nextDouble() * 0.2, (rng.nextDouble() - 0.5) * 0.4);
 				}

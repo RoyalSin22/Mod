@@ -1894,6 +1894,21 @@ subtitles.aptitudes.grand_shapeshifter¦Carne e osso se transformam¦La chair et
 subtitles.aptitudes.grand_paladin¦Um sino sagrado toca¦Une cloche sacrée sonne¦Eine heilige Glocke läutet
 subtitles.aptitudes.grand_engineer¦A maquinaria ruge¦La machinerie rugit¦Die Maschinerie dröhnt
 subtitles.aptitudes.grand_rumble¦O chão ribomba¦Le sol gronde¦Der Boden grollt
+subtitles.aptitudes.grand_mage¦Um poder arcano irrompe¦Un pouvoir arcanique se déchaîne¦Arkane Macht entlädt sich
+subtitles.aptitudes.grand_assassin¦Uma sombra ataca¦Une ombre frappe¦Ein Schatten schlägt zu
+subtitles.aptitudes.grand_herbalist¦A vida floresce¦La vie éclot¦Leben erblüht
+subtitles.aptitudes.grand_lancer¦Uma estocada brutal acerta¦Une estocade puissante frappe¦Ein mächtiger Stoß trifft
+subtitles.aptitudes.grand_swordsman¦Uma lâmina canta¦Une lame chante¦Eine Klinge singt
+subtitles.aptitudes.grand_necromancer¦Os mortos se agitam¦Les morts s'agitent¦Die Toten regen sich
+subtitles.aptitudes.grand_druid¦A natureza responde¦La nature répond¦Die Natur antwortet
+subtitles.aptitudes.grand_merchant¦Moedas tilintam¦Des pièces tintent¦Münzen klingeln
+subtitles.aptitudes.grand_monk¦Um gongo ressoa¦Un gong résonne¦Ein Gong dröhnt
+subtitles.aptitudes.grand_gunslinger¦Um tiro estala¦Un coup de feu claque¦Ein Schuss knallt
+subtitles.aptitudes.grand_weapon_summoner¦Lâminas espectrais ressoam¦Des lames spectrales résonnent¦Geisterklingen klirren
+subtitles.aptitudes.grand_hunter¦Um falcão grita¦Un faucon crie¦Ein Falke schreit
+subtitles.aptitudes.grand_bard¦Um acorde soa¦Un accord retentit¦Ein Akkord erklingt
+subtitles.aptitudes.grand_warlock¦Um zumbido sombrio cresce¦Un bourdonnement sombre enfle¦Ein dunkles Dröhnen schwillt an
+subtitles.aptitudes.grand_tamer¦Uma trompa chama a matilha¦Un cor appelle la meute¦Ein Horn ruft das Rudel
 entity.aptitudes.custodio_cuatro_llaves¦O Custódio das Quatro Chaves¦Le Gardien des Quatre Clés¦Der Wächter der vier Schlüssel
 item.aptitudes.faceless_colossus_spawn_egg¦Ovo gerador do Colosso Sem Rosto¦Œuf d'apparition du Colosse sans visage¦Spawn-Ei des gesichtslosen Kolosses
 bestiary.aptitudes.faceless_colossus.tip¦Guerreiro gigante com espadão. Anuncia um golpe amplo e um golpe descendente com onda: saia do círculo marcado. Com metade da vida sua armadura racha: fica mais rápido, investe de longe e recebe mais dano.¦Guerrier géant armé d'une grande épée. Il annonce un large balayage et un coup plongeant avec onde de choc : sortez du cercle marqué. À mi-vie son armure se fissure : il va plus vite, charge de loin et subit plus de dégâts.¦Riesiger Krieger mit Zweihänder. Er kündigt einen weiten Hieb und einen Abwärtsschlag mit Schockwelle an: Verlasse den markierten Kreis. Bei halber Lebenskraft bricht seine Rüstung: Er wird schneller, stürmt aus der Ferne an und erleidet mehr Schaden.

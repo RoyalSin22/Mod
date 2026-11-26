@@ -227,6 +227,28 @@ Animaciones `grand_signature` (tick 5) y `grand_ultimate` (tick 8) en `grand.jso
 | Paladín | Halo y cera dorada ascendente | Campana mayor y coro |
 | Ingeniero | Chispas eléctricas dispersas | Servo, engranaje y descarga |
 
+### V96, 3.ª tanda: firmas y definitivas de los otros 15 roles
+
+Mismo evento (ids 67–68) y mismos gestos; solo cambian el motivo de partículas y el sonido (`ModSounds.GRAND_BY_ROLE[ordinal del rol]`).
+
+| Rol | Sonido (timbre) | Partícula |
+|---|---|---|
+| Mago | Campana y barrido | Varilla del End que cae |
+| Asesino | Soplo y golpe grave | Humo a ras de suelo |
+| Herbolista | Campanillas | Aldeano feliz que sube |
+| Lancero | Golpe seco | Nube radial |
+| Espadachín | Filo (shing) | Barrido |
+| Nigromante | Bordón grave | Llama de almas |
+| Druida | Madera y hojas | Aldeano feliz que sube |
+| Mercader táctico | Monedas | Brillo |
+| Monje | Gong | Cera que sube |
+| Mago pistolero | Disparo | Crítico radial |
+| Invocador de armas | Espadas en cascada | Barrido que cae |
+| Cazador | Grito de halcón | Cohete que cae |
+| Bardo | Laúd | Notas |
+| Brujo abisal | Bordón oscuro | Humo |
+| Domador | Cuerno | Nube radial |
+
 ### V96, 2.ª tanda: piedras angulares
 
 Id 69 (`FxIds.KEYSTONE`), `power` = ordinal de `KeystoneRules.Template`. Se dibuja por plantilla, no por rol, y el color es el del rol principal.

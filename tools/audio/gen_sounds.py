@@ -1210,6 +1210,53 @@ def grand_rumble(rng):
     return fade_out(normalize(sub + air, 0.8), 0.4)
 
 
+# ---------------------------------------------------------------- Firmas y definitivas de los otros 15 roles (V96, 2.ª parte)
+
+def _grand_voice(kind, f0):
+    """Motivo de un rol según su timbre: campana, soplo, golpe, filo, bordón, madera, monedas, gong, disparo, cuernos."""
+    def make(rng):
+        t = t_axis(1.4)
+        n = len(t)
+        if kind == 'bell':
+            out = sum(_bell(t, f0 * m, [(1.0, 0.5), (2.0, 0.25)], 0.9) * a for m, a in ((1, 1.0), (1.5, 0.6), (2, 0.5)))
+            out = out + np.sin(2 * np.pi * np.cumsum(200 + 1500 * np.clip(t / 0.8, 0, 1) ** 2) / RATE) * env(t, 0.1, 0.4) * 0.15
+        elif kind == 'whoosh':
+            out = _soft_air(rng, n, 300, 4500) * (1 - np.clip(t / 0.9, 0, 1)) * env(t, 0.05, 0.5) * 0.9 + _bell(t, 70, [(1.0, 0.9)], 0.4) * 0.5
+        elif kind == 'chime':
+            out = sum(_bell(np.maximum(t - 0.07 * k, 0), f0 * m, [(1.0, 0.5), (2.0, 0.2)], 0.9) * (t >= 0.07 * k) for k, m in enumerate((1, 1.25, 1.5, 2)))
+            out = out + _soft_air(rng, n, 1500, 6000) * env(t, 0.2, 0.5) * 0.12
+        elif kind == 'thud':
+            out = np.sin(2 * np.pi * (f0 * 1.6 * np.exp(-t * 8) + f0 * 0.5) * t) * env(t, 0.002, 0.3) * 1.2 + _soft_air(rng, n, 200, 2500) * env(t, 0.02, 0.2) * 0.5
+        elif kind == 'shing':
+            out = _bell(t, f0, [(1.0, 0.6), (1.7, 0.4), (2.9, 0.3)], 0.5) * 0.6 + _highpass(_soft_air(rng, n, 100, 9000), 3000) * env(t, 0.003, 0.18) * 1.0
+        elif kind == 'drone':
+            out = (np.sin(2 * np.pi * f0 * t) + 0.6 * np.sin(2 * np.pi * f0 * 1.51 * t) + 0.4 * np.sin(2 * np.pi * f0 * 2.02 * t)) * env(t, 0.3, 0.8) * 0.7 + _soft_air(rng, n, 80, 900) * env(t, 0.3, 0.6) * 0.4
+        elif kind == 'wood':
+            out = _bell(t, f0, [(1.0, 0.8), (2.5, 0.5), (4.1, 0.3)], 0.35) * 0.9 + _soft_air(rng, n, 1500, 6000) * (0.5 + 0.5 * np.sin(2 * np.pi * 7 * t)) * env(t, 0.1, 0.6) * 0.25
+        elif kind == 'coins':
+            out = sum(_bell(np.maximum(t - 0.05 * k, 0), f0 * (1 + 0.13 * (k % 3)), [(1.0, 0.7), (2.4, 0.4)], 0.18) * (t >= 0.05 * k) for k in range(8)) * 0.4
+            out = out + _bell(t, 110, [(1.0, 0.9)], 0.5) * 0.4
+        elif kind == 'gong':
+            out = _bell(t, f0, [(1.0, 0.9), (1.6, 0.6), (2.3, 0.5), (3.7, 0.3)], 1.3)
+        elif kind == 'crack':
+            out = _soft_air(rng, n, 500, 9000) * env(t, 0.001, 0.06) * 1.2 + _bell(t, f0, [(1.0, 0.7), (2.0, 0.3)], 0.7) * 0.5
+        elif kind == 'blades':
+            out = sum(_bell(np.maximum(t - 0.06 * k, 0), f0 * (1 + 0.21 * k), [(1.0, 0.6), (2.76, 0.4)], 0.35) * (t >= 0.06 * k) for k in range(5)) * 0.5
+        elif kind == 'hawk':
+            out = np.sin(2 * np.pi * np.cumsum(f0 + 1400 * np.clip(t / 0.5, 0, 1) - 900 * np.clip((t - 0.5) / 0.6, 0, 1)) / RATE) * env(t, 0.05, 0.4) * 0.5 + _soft_air(rng, n, 1200, 7000) * env(t, 0.05, 0.4) * 0.25
+        elif kind == 'lute':
+            out = sum(_bell(np.maximum(t - 0.1 * k, 0), f0 * m, [(1.0, 0.7), (2.0, 0.4), (3.0, 0.2)], 0.5) * (t >= 0.1 * k) for k, m in enumerate((1, 1.25, 1.5, 2)))
+        else:  # horn
+            out = (np.sin(2 * np.pi * f0 * t) + 0.5 * np.sin(2 * np.pi * f0 * 2 * t) + 0.3 * np.sin(2 * np.pi * f0 * 3 * t)) * env(t, 0.15, 0.7) * 0.8 + _soft_air(rng, n, 100, 1200) * env(t, 0.1, 0.5) * 0.25
+        return fade_out(normalize(out, 0.82), 0.25)
+    return make
+
+
+_GRAND_VOICES = {'mage': ('bell', 659.3), 'assassin': ('whoosh', 900), 'herbalist': ('chime', 523.3), 'lancer': ('thud', 95), 'swordsman': ('shing', 2400), 'necromancer': ('drone', 62), 'druid': ('wood', 146.8), 'merchant': ('coins', 1760), 'monk': ('gong', 196), 'gunslinger': ('crack', 420), 'weapon_summoner': ('blades', 880), 'hunter': ('hawk', 1400), 'bard': ('lute', 392), 'warlock': ('drone', 83), 'tamer': ('horn', 155.6)}
+for _name, (_kind, _f0) in _GRAND_VOICES.items():
+    globals()['grand_' + _name] = _grand_voice(_kind, _f0)
+
+
 SOUNDS = {
     'eclipse_announce': eclipse_announce,
     'eclipse_start': eclipse_start,
@@ -1323,6 +1370,21 @@ SOUNDS = {
     'grand_paladin': grand_paladin,
     'grand_engineer': grand_engineer,
     'grand_rumble': grand_rumble,
+    'grand_mage': grand_mage,
+    'grand_assassin': grand_assassin,
+    'grand_herbalist': grand_herbalist,
+    'grand_lancer': grand_lancer,
+    'grand_swordsman': grand_swordsman,
+    'grand_necromancer': grand_necromancer,
+    'grand_druid': grand_druid,
+    'grand_merchant': grand_merchant,
+    'grand_monk': grand_monk,
+    'grand_gunslinger': grand_gunslinger,
+    'grand_weapon_summoner': grand_weapon_summoner,
+    'grand_hunter': grand_hunter,
+    'grand_bard': grand_bard,
+    'grand_warlock': grand_warlock,
+    'grand_tamer': grand_tamer,
 }
 
 

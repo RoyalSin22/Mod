@@ -611,6 +611,96 @@
       "aptitudes:grand_rumble"
     ]
   },
+  "grand_mage": {
+    "subtitle": "subtitles.aptitudes.grand_mage",
+    "sounds": [
+      "aptitudes:grand_mage"
+    ]
+  },
+  "grand_assassin": {
+    "subtitle": "subtitles.aptitudes.grand_assassin",
+    "sounds": [
+      "aptitudes:grand_assassin"
+    ]
+  },
+  "grand_herbalist": {
+    "subtitle": "subtitles.aptitudes.grand_herbalist",
+    "sounds": [
+      "aptitudes:grand_herbalist"
+    ]
+  },
+  "grand_lancer": {
+    "subtitle": "subtitles.aptitudes.grand_lancer",
+    "sounds": [
+      "aptitudes:grand_lancer"
+    ]
+  },
+  "grand_swordsman": {
+    "subtitle": "subtitles.aptitudes.grand_swordsman",
+    "sounds": [
+      "aptitudes:grand_swordsman"
+    ]
+  },
+  "grand_necromancer": {
+    "subtitle": "subtitles.aptitudes.grand_necromancer",
+    "sounds": [
+      "aptitudes:grand_necromancer"
+    ]
+  },
+  "grand_druid": {
+    "subtitle": "subtitles.aptitudes.grand_druid",
+    "sounds": [
+      "aptitudes:grand_druid"
+    ]
+  },
+  "grand_merchant": {
+    "subtitle": "subtitles.aptitudes.grand_merchant",
+    "sounds": [
+      "aptitudes:grand_merchant"
+    ]
+  },
+  "grand_monk": {
+    "subtitle": "subtitles.aptitudes.grand_monk",
+    "sounds": [
+      "aptitudes:grand_monk"
+    ]
+  },
+  "grand_gunslinger": {
+    "subtitle": "subtitles.aptitudes.grand_gunslinger",
+    "sounds": [
+      "aptitudes:grand_gunslinger"
+    ]
+  },
+  "grand_weapon_summoner": {
+    "subtitle": "subtitles.aptitudes.grand_weapon_summoner",
+    "sounds": [
+      "aptitudes:grand_weapon_summoner"
+    ]
+  },
+  "grand_hunter": {
+    "subtitle": "subtitles.aptitudes.grand_hunter",
+    "sounds": [
+      "aptitudes:grand_hunter"
+    ]
+  },
+  "grand_bard": {
+    "subtitle": "subtitles.aptitudes.grand_bard",
+    "sounds": [
+      "aptitudes:grand_bard"
+    ]
+  },
+  "grand_warlock": {
+    "subtitle": "subtitles.aptitudes.grand_warlock",
+    "sounds": [
+      "aptitudes:grand_warlock"
+    ]
+  },
+  "grand_tamer": {
+    "subtitle": "subtitles.aptitudes.grand_tamer",
+    "sounds": [
+      "aptitudes:grand_tamer"
+    ]
+  },
   "osario_ambient": {
     "subtitle": "subtitles.aptitudes.osario.ambient",
     "sounds": [

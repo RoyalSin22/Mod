@@ -13,13 +13,13 @@ import net.minecraft.util.math.Vec3d;
 import java.util.Set;
 
 /**
- * V96 (primera tanda): guion de batalla de la firma (Z) y la definitiva (R) de los cinco roles piloto: Bersérker, Elementalista,
+ * V96 (primera tanda): guion de batalla de la firma (Z) y la definitiva (R) de los 20 roles (cinco pilotos y quince más): Bersérker, Elementalista,
  * Cambiaformas, Paladín e Ingeniero. Un solo evento por lanzamiento; el cliente ({@code client/fx/GrandClientFx}) dibuja el
  * encuadre (aura, anillos, pilar, cámara) y el sonido cae en el tick de impacto del gesto. Las partículas del mundo que ya hacía
  * cada firma o definitiva se conservan: este guion solo sustituye al efecto genérico de {@link CastFx}.
  */
 public final class GrandFx {
-	private static final Set<Role> PILOTS = Set.of(Role.BERSERKER, Role.ELEMENTALIST, Role.SHAPESHIFTER, Role.PALADIN, Role.ENGINEER);
+	private static final Set<Role> PILOTS = Set.of(Role.values());
 
 	private GrandFx() {
 	}
@@ -40,13 +40,7 @@ public final class GrandFx {
 	}
 
 	private static SoundEvent motif(Role role) {
-		return switch (role) {
-			case BERSERKER -> ModSounds.GRAND_BERSERKER;
-			case ELEMENTALIST -> ModSounds.GRAND_ELEMENTALIST;
-			case SHAPESHIFTER -> ModSounds.GRAND_SHAPESHIFTER;
-			case PALADIN -> ModSounds.GRAND_PALADIN;
-			default -> ModSounds.GRAND_ENGINEER;
-		};
+		return ModSounds.GRAND_BY_ROLE[role.ordinal()];
 	}
 
 	private static void sound(ServerPlayerEntity p, SoundEvent s, float volume, float pitch) {
