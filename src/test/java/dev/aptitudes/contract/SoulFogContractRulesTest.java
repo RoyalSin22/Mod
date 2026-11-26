@@ -8,11 +8,11 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/** La Niebla de almas se convoca desde el tablón (oferta SOUL_FOG). Se añadió al final del enum para no romper los guardados. */
+/** La Niebla de almas conserva su ordinal guardado aunque se añadan tipos al final. */
 class SoulFogContractRulesTest {
 	@Test void kindIsAppendedAtTheEndSoSavedContractsKeepTheirOrdinals() {
 		Kind[] kinds = Kind.values();
-		assertEquals(Kind.SOUL_FOG, kinds[kinds.length - 1]);
+		assertEquals(Kind.CAMP_CLEAR, kinds[kinds.length - 1]);
 		assertEquals(10, Kind.EXPEDITION.ordinal(), "los anteriores no se mueven");
 		assertEquals(11, Kind.SOUL_FOG.ordinal());
 	}

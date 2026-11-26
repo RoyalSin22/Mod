@@ -64,4 +64,21 @@ public class ContractRulesTest {
 		assertFalse(ContractRules.canDeliver(15, 16));
 		assertFalse(ContractRules.canDeliver(5, 0));
 	}
+
+	@Test public void campContractsAppendStableKindAndSevenTargets() {
+		assertEquals(ContractRules.Kind.values().length - 1, ContractRules.Kind.CAMP_CLEAR.ordinal());
+		assertEquals(7, ContractRules.CAMP_TARGETS);
+		assertEquals(7, dev.aptitudes.dungeon.CampLayout.Kind.values().length);
+		assertEquals("HUNTER", dev.aptitudes.dungeon.CampLayout.Kind.values()[0].name());
+		assertEquals("RELIC_SEEKER", dev.aptitudes.dungeon.CampLayout.Kind.values()[6].name());
+		for (ContractRules.Difficulty difficulty : ContractRules.Difficulty.values()) {
+			assertEquals(1, ContractRules.goal(ContractRules.Kind.CAMP_CLEAR, difficulty, 2));
+			assertEquals(difficulty.ordinal() >= ContractRules.Difficulty.HARD.ordinal(),
+					ContractRules.kindsFor(difficulty).contains(ContractRules.Kind.CAMP_CLEAR));
+		}
+		for (int i = 0; i < 7; i++) {
+			assertTrue(ContractRules.advances(ContractRules.Kind.CAMP_CLEAR, i, ContractRules.Kind.CAMP_CLEAR, i));
+			assertFalse(ContractRules.advances(ContractRules.Kind.CAMP_CLEAR, i, ContractRules.Kind.CAMP_CLEAR, (i + 1) % 7));
+		}
+	}
 }

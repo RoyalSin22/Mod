@@ -161,6 +161,13 @@ public final class ContractManager {
 		for (ServerPlayerEntity member : PartyManager.onlineMembers(killer)) advance(member, Kind.HUNT, target, 1);
 	}
 
+	/** V90: solo el capitán etiquetado completa el contrato del tipo correspondiente. */
+	public static void onCampCaptainKilled(ServerPlayerEntity killer, net.minecraft.entity.mob.MobEntity victim) {
+		int target = dev.aptitudes.world.CampEncounters.kindIndex(victim);
+		if (target < 0) return;
+		for (ServerPlayerEntity member : PartyManager.onlineMembers(killer)) advance(member, Kind.CAMP_CLEAR, target, 1);
+	}
+
 	/** Oficio: XP real de una habilidad (no la de comandos de administrador). */
 	public static void skillXp(ServerPlayerEntity p, Skill skill, int amount) {
 		advance(p, Kind.PROFESSION, skill.ordinal(), amount);

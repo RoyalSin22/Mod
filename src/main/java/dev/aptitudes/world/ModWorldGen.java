@@ -35,6 +35,7 @@ public final class ModWorldGen {
 	}
 
 	public static void init() {
+		CampEncounters.init();
 		ThreeTowersFeature.init();
 		DesertTempleFeature.init();
 		Registry.register(Registries.PLACEMENT_MODIFIER_TYPE, Aptitudes.id("region_grid"), RegionGridPlacement.TYPE);

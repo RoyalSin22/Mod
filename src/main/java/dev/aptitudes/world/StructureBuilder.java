@@ -86,31 +86,44 @@ final class StructureBuilder {
 	}
 
 	/** Campeón (élite con barra de jefe) en la posición relativa. */
-	void champion(EntityType<? extends MobEntity> type, int x, int y, int z) {
+	MobEntity champion(EntityType<? extends MobEntity> type, int x, int y, int z) {
 		MobEntity mob = type.create(world.toServerWorld());
-		if (mob == null) return;
+		if (mob == null) return null;
 		BlockPos p = at(x, y, z);
 		mob.refreshPositionAndAngles(p.getX() + 0.5, p.getY(), p.getZ() + 0.5, random.nextFloat() * 360f, 0);
 		mob.initialize(world, world.getLocalDifficulty(p), SpawnReason.STRUCTURE, null);
 		dev.aptitudes.elite.Elites.makeElite(mob, true, random);
 		world.spawnEntityAndPassengers(mob);
+		return mob;
+	}
+
+	MobEntity elite(EntityType<? extends MobEntity> type, int x, int y, int z) {
+		MobEntity mob = type.create(world.toServerWorld());
+		if (mob == null) return null;
+		BlockPos p = at(x, y, z);
+		mob.refreshPositionAndAngles(p.getX() + 0.5, p.getY(), p.getZ() + 0.5, random.nextFloat() * 360f, 0);
+		mob.initialize(world, world.getLocalDifficulty(p), SpawnReason.STRUCTURE, null);
+		dev.aptitudes.elite.Elites.makeElite(mob, false, random);
+		world.spawnEntityAndPassengers(mob);
+		return mob;
 	}
 
 	/** Jefe propio del mod generado dentro de una estructura existente. */
-	void boss(EntityType<? extends MobEntity> type, int x, int y, int z, dev.aptitudes.boss.BossKind kind) {
-		BlockPos center = kind == dev.aptitudes.boss.BossKind.TOWER_SENTINEL ? at(0, y, 0) : origin;
-		dev.aptitudes.boss.BossManager.spawn(world, type, at(x, y, z), kind, random, mob -> BossArenas.mark(mob, center));
+	MobEntity boss(EntityType<? extends MobEntity> type, int x, int y, int z, dev.aptitudes.boss.BossKind kind) {
+		BlockPos center = kind == dev.aptitudes.boss.BossKind.TOWER_SENTINEL ? at(x, y, z) : origin;
+		return dev.aptitudes.boss.BossManager.spawn(world, type, at(x, y, z), kind, random, mob -> BossArenas.mark(mob, center));
 	}
 
 	/** Aparece un monstruo persistente (no desaparece) en la posición relativa. */
-	void mob(EntityType<? extends MobEntity> type, int x, int y, int z) {
+	MobEntity mob(EntityType<? extends MobEntity> type, int x, int y, int z) {
 		MobEntity mob = type.create(world.toServerWorld());
-		if (mob == null) return;
+		if (mob == null) return null;
 		BlockPos p = at(x, y, z);
 		mob.refreshPositionAndAngles(p.getX() + 0.5, p.getY(), p.getZ() + 0.5, random.nextFloat() * 360f, 0);
 		mob.initialize(world, world.getLocalDifficulty(p), SpawnReason.STRUCTURE, null);
 		mob.setPersistent();
 		world.spawnEntityAndPassengers(mob);
+		return mob;
 	}
 
 	/**

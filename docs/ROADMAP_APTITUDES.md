@@ -5,6 +5,12 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+### V90 — Torre menor y campamentos
+- **Forma implementada, pendiente de prueba en partida:** planos puros `TowerCompoundLayout` y `CampLayout`,
+  traducción de bloques en las `Feature` existentes, siete contratos de limpieza y alarma local.
+  Las pruebas puras comprueban variantes y rutas; falta revisar generación, encuentros y botín en un mundo real.
+  [Plano y lista de comprobación](V90_REDISENO_TORRE_CAMPAMENTOS.md).
+
 ### V89 — Templo del Custodio desértico
 - **Implementado, pendiente de prueba en partida:** templo nuevo de 112×112 por columnas y 49 chunks, solo desierto/badlands. Atrio, cisterna, alas, prueba, santuario, cuatro cámaras y cripta opcional; salida rápida tras el Custodio. Los layouts antiguos se conservan. [Plano y lista de comprobación](V89_REDISENO_TEMPLO.md). Pendiente: medir generación, frecuencia en varias semillas y recorrido real.
 
@@ -459,7 +465,7 @@ registro en memoria con tope de 100 000 posiciones por mundo (FIFO).
 - Prueba pura: `rune/RuneRulesTest`. Build y pruebas pendientes.
 
 ### v33 — Jefes propios (implementado en rama local)
-- Tres arquetipos de jefe aparecen en las estructuras existentes: Centinela de la Torre (torre), Oráculo del Santuario (santuario) y Campeón del Campamento (variantes de cacería, brujos y bandidos).
+- Tres arquetipos de jefe aparecen en las estructuras existentes: Centinela de la Torre (torre), Oráculo del Santuario (santuario) y Campeón del Campamento (siete variantes temáticas desde V90).
 - Cada uno usa tres fases persistentes por umbrales de salud, avisos de transición y ataques de área en fase final. Reutiliza la entidad base y barra de campeón vanilla/élite; no registra entidades nuevas.
 - Cada jefe suelta un núcleo distinto. En la Mesa del gremio, cada material se aplica una vez a un arma de evolución y suma +0,5 daño; máximo +1,5 con los tres.
 

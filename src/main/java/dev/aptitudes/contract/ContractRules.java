@@ -17,7 +17,9 @@ public final class ContractRules {
 	/** Tipos de contrato. Se guardan por ordinal dentro del contrato aceptado: solo se añade al final. */
 	public enum Kind { HUNT, DELIVERY, FISHING, ENCHANTING, PROFESSION, FORGE, EVENT, BOSS, NETHER, NEW_MOB, EXPEDITION,
 		/** Convocar la Niebla de almas: al aceptarlo empieza el evento; se completa al sobrevivirlo (T5/D-30). */
-		SOUL_FOG }
+		SOUL_FOG,
+		/** V90: un contrato por tipo de campamento, con objetivo numérico estable. */
+		CAMP_CLEAR }
 	/** Dificultades. Élite con el rol en Maestro y Legendario en Definitivo. Solo se añade al final. */
 	public enum Difficulty { EASY, NORMAL, HARD, ELITE, LEGENDARY }
 
@@ -30,6 +32,7 @@ public final class ContractRules {
 	public static final int PROFESSION_TARGETS = 10;
 	public static final int EVENT_TARGETS = 3;
 	public static final int BOSS_TARGETS = 4;
+	public static final int CAMP_TARGETS = 7;
 	public static final int OFFERS_PER_DAY = 3;
 	public static final int MAX_ACTIVE = 3;
 
@@ -60,10 +63,10 @@ public final class ContractRules {
 			case NORMAL -> List.of(Kind.HUNT, Kind.DELIVERY, Kind.FISHING, Kind.PROFESSION, Kind.ENCHANTING, Kind.FORGE,
 					Kind.NEW_MOB, Kind.SOUL_FOG);
 			case HARD -> List.of(Kind.HUNT, Kind.DELIVERY, Kind.ENCHANTING, Kind.FORGE, Kind.EVENT, Kind.NETHER, Kind.NEW_MOB,
-					Kind.SOUL_FOG);
+					Kind.SOUL_FOG, Kind.CAMP_CLEAR);
 			case ELITE -> List.of(Kind.HUNT, Kind.DELIVERY, Kind.ENCHANTING, Kind.FORGE, Kind.EVENT, Kind.NETHER, Kind.NEW_MOB,
-					Kind.EXPEDITION, Kind.SOUL_FOG);
-			case LEGENDARY -> List.of(Kind.HUNT, Kind.EVENT, Kind.BOSS, Kind.NEW_MOB, Kind.EXPEDITION);
+					Kind.EXPEDITION, Kind.SOUL_FOG, Kind.CAMP_CLEAR);
+			case LEGENDARY -> List.of(Kind.HUNT, Kind.EVENT, Kind.BOSS, Kind.NEW_MOB, Kind.EXPEDITION, Kind.CAMP_CLEAR);
 		};
 	}
 
@@ -78,7 +81,7 @@ public final class ContractRules {
 			case ENCHANTING -> 1 + s;
 			case PROFESSION -> 150 * s;
 			case FORGE -> s >= 4 ? 2 : 1;
-			case EVENT, BOSS, EXPEDITION, SOUL_FOG -> 1;
+			case EVENT, BOSS, EXPEDITION, SOUL_FOG, CAMP_CLEAR -> 1;
 			case NETHER -> 4 + 4 * s + e;
 			case NEW_MOB -> 1 + s;
 		};
@@ -101,6 +104,7 @@ public final class ContractRules {
 			case PROFESSION -> random.nextInt(PROFESSION_TARGETS);
 			case EVENT -> random.nextInt(EVENT_TARGETS);
 			case BOSS -> random.nextInt(BOSS_TARGETS);
+			case CAMP_CLEAR -> random.nextInt(CAMP_TARGETS);
 			default -> -1;
 		};
 	}

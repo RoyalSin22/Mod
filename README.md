@@ -12,6 +12,8 @@ Sistema RPG con tres capas que se combinan:
 - **Templo del Custodio** subterráneo en desierto y badlands: cisterna, alas en espiral, prueba de combate, guardián, cámaras de metal y Vasos de vida (+1 corazón permanente, hasta 5). Plano en [`docs/V89_REDISENO_TEMPLO.md`](docs/V89_REDISENO_TEMPLO.md).
 - **Fortaleza de las Tres Torres**: barbacana, murallas rotas, dos torres de vigilancia y Torre del Mariscal con el Coloso;
   botín de exploración y cámara final. Plano en [`docs/V88_REDISENO_ESTRUCTURAS.md`](docs/V88_REDISENO_ESTRUCTURAS.md).
+- **Torre en ruinas y campamentos**: torre de cinco pisos con patio roto; campamentos de cuatro formas y siete tipos,
+  con contratos para eliminar a sus capitanes. Plano en [`docs/V90_REDISENO_TORRE_CAMPAMENTOS.md`](docs/V90_REDISENO_TORRE_CAMPAMENTOS.md).
 - **Niebla de almas**: el Errante Velado anuncia el sector de su barrido con un contorno cian y puede debilitar
   a varios objetivos. Heraldo de la Muerte lo reconoce como no muerto. Los
   ejemplares del evento pueden soltar un Jirón de Velo Espectral.
@@ -559,9 +561,9 @@ Si tienes las dos, cuenta la del rol principal.
 ### Estructuras (Overworld)
 | Estructura | Rareza (1 de cada N chunks) | Contenido |
 |---|---|---|
-| Torre en ruinas | 240 | 4 pisos, cofre por piso, generadores (zombi/esqueleto/araña), cofre de azotea con Plantillas de ascensión y herramientas de alma |
+| Torre en ruinas | 240 | Patio roto, sótano, 5 pisos y Centinela; generadores zombi/esqueleto y araña/esqueleto en los pisos 2 y 3; cofre oculto y botín de azotea |
 | Santuario de Hoguera | 150 | Hoguera encendida, cofre con fragmentos, frascos y a veces una Ofrenda |
-| Campamento | 200 | Cazadores (pillagers), brujos (brujas) o bandidos (vindicadores); botín temático |
+| Campamento | 200 | Cuatro formas y siete tipos: cazadores, brujos, bandidos, mercaderes asaltados, desertores, cultistas del Velo y buscadores de reliquias; alarma y botín temático |
 
 Las tablas de botín están en `data/aptitudes/loot_table/chests/` y la rareza en
 `data/aptitudes/worldgen/placed_feature/` (editables con un datapack).

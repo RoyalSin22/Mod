@@ -187,6 +187,8 @@ public final class ContractBoardScreen extends HandledScreen<ContractBoardScreen
 		Text d = Text.translatable("contract.aptitudes.difficulty." + difficulty.name().toLowerCase(Locale.ROOT));
 		Text k = Text.translatable("contract.aptitudes.kind." + kind.name().toLowerCase(Locale.ROOT));
 		Text target = ContractTargets.name(kind, row.target());
+		if (kind == ContractRules.Kind.CAMP_CLEAR)
+			return Text.translatable("contract.aptitudes.line_camp_clear", d, target, row.goal());
 		return target.getString().isEmpty()
 				? Text.translatable("contract.aptitudes.line_simple", d, k, row.goal())
 				: Text.translatable("contract.aptitudes.line", d, k, target, row.goal());

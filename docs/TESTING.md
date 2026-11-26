@@ -1,5 +1,18 @@
 # Pruebas de Aptitudes
 
+## V90 — Torre menor y campamentos
+
+`TowerCompoundLayoutTest` recorre las dos formas de torre con tres grados de daño y verifica entrada, sótano,
+cofres de los cinco pisos, cofre oculto, caseta y Centinela. `CampLayoutTest` recorre las 28 combinaciones de
+forma y temática; comprueba capitán, cofres, pista del cofre oculto y puesto de vigía. `ContractRulesTest`
+verifica que `CAMP_CLEAR` se añadió al final, que hay siete objetivos y que solo avanza el tipo correcto.
+La lista manual está en [`V90_REDISENO_TORRE_CAMPAMENTOS.md`](V90_REDISENO_TORRE_CAMPAMENTOS.md).
+
+Verificación del 2026-11-26: `gradlew.bat build` terminó con **BUILD SUCCESSFUL** (1028 pruebas Java
+ejecutadas); `python tools/lang/check_lang.py`, `gen_interface_lang.py --check` y
+`gen_guide_lang.py --check` pasaron. Los cuatro JSON de botín nuevos se parsearon. No se hizo
+prueba en partida.
+
 ## V89 — Templo del Custodio desértico
 
 JUnit `DesertTempleLayoutTest` comprueba cotas, puertas, espacio de aparición, botín de las cámaras y que la espiral solo llega al santuario después de abrir las dos rejas; `StructureLocateRulesTest` comprueba los 49 chunks por región y `TempleFlowRulesTest` los layouts añadidos 5 y 6. Se actualizó la expectativa de `DeepTempleLayoutTest` que antes trataba 5 como layout desconocido: ahora 5 y 6 son válidos, 7 sigue siendo desconocido. `./gradlew build` y `python tools/lang/check_lang.py` son las puertas de validación. Pruebas manuales pendientes: biomas, pirámides, rendimiento de generación, carga de chunks en distinto orden, recorrido completo, guardado/carga, cripta y salida. Detalle en [`V89_REDISENO_TEMPLO.md`](V89_REDISENO_TEMPLO.md).

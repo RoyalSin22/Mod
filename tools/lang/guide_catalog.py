@@ -355,23 +355,23 @@ Einige Elitegegner sind CHAMPIONS (3 Modifikatoren, vierfaches Leben und Bosslei
 Sie lassen Seelensplitter und Eliteessenz fallen; Champions außerdem ein Championsherz und ein Rollenrüstungsteil."""))
 
 chapter('structures', ('Estruturas', 'Structures', 'Bauwerke'), (
-    """TORRE EM RUÍNAS: 4 andares com baús, geradores de monstros e um campeão no topo, perto do melhor baú (armaduras de classe, ferramentas de alma, acessórios).
+    """TORRE EM RUÍNAS: pátio murado, porão e cinco andares com baús; geradores no segundo e terceiro andar, Sentinela no topo e baú escondido sob lã azul.
 SANTUÁRIO DA FOGUEIRA: ruínas com uma Fogueira acesa e um baú (fragmentos, frascos e, às vezes, uma Oferenda).
-ACAMPAMENTO: caçadores, bruxos ou bandidos, com guardas e saque temático.
+ACAMPAMENTO: quatro formas e sete tipos — caçadores, bruxos, bandidos, mercadores assaltados, desertores, cultistas do Véu e caçadores de relíquias. Derrote o capitão para cumprir o contrato do tipo.
 
 Só são geradas em terreno novo (chunks inexplorados).
 
 Templo do Custódio (31×31, subterrâneo, de pedra, ardósia profunda ou pedra-negra conforme o anel de Ameaça): derrote o Autômato Antigo do átrio, supere a sala de provas e abra a Porta do Custódio com uma Âncora do Véu. O Custódio caído solta quatro chaves de câmara e o Relicário se abre sozinho: dá a cada jogador um Vaso de vida (+1 coração permanente, até 5).""",
-    """TOUR EN RUINES : 4 étages avec coffres, générateurs de monstres et un champion sur le toit, près du meilleur coffre (armures de rôle, outils d'âme, accessoires).
+    """TOUR EN RUINES : cour murée, sous-sol et cinq étages avec coffres ; générateurs aux étages 2 et 3, Sentinelle sur le toit et coffre caché sous une dalle de laine bleue.
 SANCTUAIRE DU FEU : ruines avec un feu de camp allumé et un coffre (fragments, fioles, parfois une Offrande).
-CAMP : chasseurs, sorciers ou bandits, avec gardes et butin thématique.
+CAMP : quatre formes et sept types — chasseurs, sorciers, bandits, marchands pillés, déserteurs, adeptes du Voile et chercheurs de reliques. Vainquez le capitaine pour remplir le contrat du type.
 
 Ces structures n'apparaissent que dans du nouveau terrain (chunks inexplorés).
 
 Temple du Gardien (31×31, souterrain, en pierre, ardoise des abîmes ou pierre noire selon l'anneau de Menace) : vainquez l'Automate antique de l'atrium, surmontez la salle d'épreuves et ouvrez la Porte du Gardien avec une Ancre du voile. Le Gardien vaincu lâche quatre clés de chambre et le Reliquaire s'ouvre alors tout seul : il donne à chaque joueur un Vase de vie (+1 cœur permanent, jusqu'à 5).""",
-    """TURMRUINE: 4 Stockwerke mit Truhen, Monsterspawnern und einem Champion auf dem Dach beim besten Schatz (Rollenrüstung, Seelenwerkzeuge, Accessoires).
+    """TURMRUINE: ummauerter Hof, Keller und fünf Stockwerke mit Truhen; Spawner in Stockwerk 2 und 3, Wächter auf dem Dach und eine Truhe unter blauer Wolle.
 LEUCHTFEUERSCHREIN: Ruinen mit einem entzündeten Leuchtfeuer und einer Truhe (Splitter, Flakons, manchmal eine Opfergabe).
-LAGER: Jäger, Hexenmeister oder Banditen mit Wachen und passender Beute.
+LAGER: vier Formen und sieben Arten — Jäger, Hexenmeister, Banditen, überfallene Händler, Deserteure, Schleierkultisten und Reliquiensucher. Besiege den Hauptmann für den passenden Auftrag.
 
 Sie entstehen nur in neuem Gelände (unerforschten Chunks).
 

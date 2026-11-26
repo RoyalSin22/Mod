@@ -5,6 +5,15 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Cambiado (V90)
+- Torre menor de 21×21 con patio amurallado roto, dos contornos (cuadrado y redondo), tres grados de ruina, sótano,
+  cinco pisos y Centinela en la azotea. Conserva los generadores de los pisos 2 y 3, los botines `tower_*` y la
+  tirada de 1/240 chunks. Los élites visibles y la paleta siguen el anillo de Amenaza y el bioma.
+- Campamentos de hasta 29×29 con cuatro formas y siete temáticas. Cada capitán conserva `CAMP_CHAMPION`; centinelas,
+  patrullas, durmientes y guardias participan en una alarma local. Los cuatro tipos nuevos tienen botín modesto y
+  cada temática tiene un contrato propio. La tirada sigue siendo 1/200 chunks. Véase
+  `docs/V90_REDISENO_TORRE_CAMPAMENTOS.md`.
+
 ### Cambiado (V89)
 - El Templo del Custodio nuevo es una ruina subterránea desértica de 112×112, con cisterna central, tres niveles, cripta opcional, recorrido en espiral y salida posterior al jefe. Solo intenta generarse en desierto y badlands, sin solaparse con candidatos de pirámide vanilla. Conserva Autómata, prueba, Custodio, Relicario, cámaras, llaves y cripta. Plano y comprobaciones manuales en `docs/V89_REDISENO_TEMPLO.md`.
 

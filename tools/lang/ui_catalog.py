@@ -1908,6 +1908,15 @@ list_header¦Frases disponíveis:¦Phrases disponibles :¦Verfügbare Phrasen:
 
 add('contract.aptitudes.', """
 kind.soul_fog¦Convocar a Névoa das Almas¦Convoquer la Brume des âmes¦Seelennebel herbeirufen
+kind.camp_clear¦Limpe um acampamento de¦Nettoyez un camp de¦Säubere ein Lager von
+line_camp_clear¦[%s] Limpe um acampamento de %s ×%s¦[%s] Nettoyez un camp de %s ×%s¦[%s] Säubere ein Lager von %s ×%s
+camp_type.hunter¦caçadores¦chasseurs¦Jägern
+camp_type.warlock¦bruxos¦sorciers¦Hexern
+camp_type.bandit¦bandidos¦bandits¦Banditen
+camp_type.raided_merchant¦mercadores assaltados¦marchands pillés¦überfallenen Händlern
+camp_type.deserter¦desertores¦déserteurs¦Deserteuren
+camp_type.veil_cultist¦cultistas do Véu¦adeptes du Voile¦Schleierkultisten
+camp_type.relic_seeker¦caçadores de relíquias¦chercheurs de reliques¦Reliquiensuchern
 fog_disabled¦A Névoa das Almas está desativada neste servidor.¦La Brume des âmes est désactivée sur ce serveur.¦Der Seelennebel ist auf diesem Server deaktiviert.
 """)
 

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": { "type": "minecraft:uniform", "min": 2, "max": 4 },
+      "entries": [
+        { "type": "minecraft:item", "name": "minecraft:crying_obsidian", "weight": 8 },
+        { "type": "minecraft:item", "name": "minecraft:amethyst_shard", "weight": 6 },
+        { "type": "minecraft:item", "name": "minecraft:candle", "weight": 3 },
+        { "type": "minecraft:item", "name": "aptitudes:soul_shard", "weight": 5 }
+      ]
+    }
+  ]
+}

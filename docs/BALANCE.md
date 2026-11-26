@@ -3,6 +3,21 @@
 Documento de referencia de las fórmulas de progresión. Cada cambio indica fórmula anterior, nueva,
 justificación, valores de ejemplo e impacto, como pide la política del proyecto.
 
+## Torre menor y campamentos (V90)
+
+Las tiradas siguen siendo 1/240 chunks para `tower` y 1/200 para `camp`; no cambian vida, daño ni
+recompensas del Centinela y del Campeón. Antes, la torre generaba un Centinela, dos generadores y cofres
+en cuatro pisos; ahora añade sótano y quinto piso, manteniendo los dos generadores en P2 y P3. Por
+anillo 0–I / II–III / IV–V, aparecen respectivamente 1 / 1 / 2 élites por piso; el patio tiene 2 / 3 / 4
+guardias y un campeón adicional desde II. El botín nuevo de exploración usa las tablas `tower_*`
+existentes. El mayor tamaño y el rechazo de fluidos y desniveles pueden bajar la frecuencia efectiva.
+
+Antes el campamento tenía 1 capitán y 1–2 guardias en tres temáticas. Ahora tiene 1 capitán más
+4 / 6 / 8 miembros en los mismos tramos de anillo; 0 / 1 / 2 de ellos son élites visibles. Los
+contratos de limpieza exigen un capitán del tipo correspondiente y usan la fórmula común de recompensa
+del gremio, sin nuevos valores de configuración ni objetos de poder. Falta medir frecuencia y dificultad
+real en partida antes de ajustar cualquier cifra por defecto.
+
 ## Templo desértico (V89)
 
 No cambian la vida ni daño del Autómata y Custodio, las dos oleadas, el Vaso de vida ni las cuatro llaves. Antes el recorrido principal ocupaba 31×31 bloques y tres niveles; ahora ocupa 112×112 y una espiral de tres niveles. La región sigue siendo 32×32 chunks, pero el sitio requiere desierto/badlands, desnivel ≤4 y subsuelo seco, de modo que la frecuencia real baja; falta medirla en semillas reales. Se añaden dos campeones husk opcionales, sin poder nuevo, y cofres modestos/ocultos. El botín principal conserva sus tablas y condición de derrota del Custodio.

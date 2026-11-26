@@ -1,84 +1,109 @@
 package dev.aptitudes.world;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
+import dev.aptitudes.dungeon.TowerCompoundLayout;
+import dev.aptitudes.dungeon.TowerCompoundLayout.Cell;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.LadderBlock;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.Heightmap;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.util.FeatureContext;
 
-/**
- * Torre en ruinas de 4 pisos (7×7, octogonal). Cada piso tiene un cofre con botín
- * del mod; los pisos 2 y 3 tienen un generador de monstruos; en la azotea, entre
- * almenas, el cofre con mejor botín (armaduras de rol, herramientas de alma…).
- */
+/** Torre menor V90: patio roto, sótano, cinco plantas y Centinela en la azotea. */
 public class TowerFeature extends Feature<DefaultFeatureConfig> {
-	private static final int FLOORS = 4;
-	private static final int FLOOR_H = 5;
+	public TowerFeature(Codec<DefaultFeatureConfig> codec) { super(codec); }
 
-	public TowerFeature(Codec<DefaultFeatureConfig> codec) {
-		super(codec);
-	}
-
-	@Override
-	public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
+	@Override public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
 		BlockPos origin = context.getOrigin();
-		if (!StructureBuilder.suitable(context.getWorld(), origin, 3, 3)) return false;
-		StructureBuilder b = new StructureBuilder(context.getWorld(), origin, context.getRandom());
-		int top = FLOORS * FLOOR_H;
-
-		for (int x = -3; x <= 3; x++) {
-			for (int z = -3; z <= 3; z++) {
-				boolean corner = Math.abs(x) == 3 && Math.abs(z) == 3;
-				if (corner) continue;
-				boolean wall = Math.abs(x) == 3 || Math.abs(z) == 3;
-				b.foundation(x, z, Blocks.COBBLESTONE.getDefaultState());
-				for (int y = 0; y <= top; y++) {
-					if (wall) {
-						b.set(x, y, z, b.bricks());
-					} else if (y % FLOOR_H == 0) {
-						b.set(x, y, z, Blocks.SPRUCE_PLANKS.getDefaultState()); // suelo de cada piso
-					} else {
-						b.air(x, y, z);
-					}
-				}
-				// Almenas en la azotea
-				if (wall && (x + z) % 2 == 0) b.set(x, top + 1, z, b.bricks());
-				else if (wall) b.air(x, top + 1, z);
-				else b.air(x, top + 1, z);
+		var world = context.getWorld();
+		if (!StructureBuilder.suitable(world, origin, TowerCompoundLayout.R, 3)
+				|| origin.getY() + TowerCompoundLayout.TOP >= world.getTopY() - 1
+				|| origin.getY() + TowerCompoundLayout.BOTTOM <= world.getBottomY() + 2) return false;
+		long seed = context.getRandom().nextLong();
+		TowerCompoundLayout layout = new TowerCompoundLayout(context.getRandom().nextBoolean()
+				? TowerCompoundLayout.Shape.SQUARE : TowerCompoundLayout.Shape.ROUND,
+				context.getRandom().nextInt(3), seed);
+		for (int x = -TowerCompoundLayout.R; x <= TowerCompoundLayout.R; x++) {
+			for (int z = -TowerCompoundLayout.R; z <= TowerCompoundLayout.R; z++) {
+				if (layout.cell(x, -1, z) == null) continue;
+				int surface = world.getTopY(Heightmap.Type.WORLD_SURFACE_WG, origin.getX() + x, origin.getZ() + z);
+				if (Math.abs(surface - origin.getY()) > 3) return false;
+				for (int y = TowerCompoundLayout.BOTTOM; y <= 0; y++)
+					if (layout.cell(x, y, z) != null && !world.getFluidState(origin.add(x, y, z)).isEmpty()) return false;
 			}
 		}
-		// Puerta y ventanas (barrotes) en el centro de cada pared
-		b.air(0, 1, -3);
-		b.air(0, 2, -3);
-		for (int floor = 0; floor < FLOORS; floor++) {
-			int y = floor * FLOOR_H + 3;
-			b.set(3, y, 0, Blocks.IRON_BARS.getDefaultState());
-			b.set(-3, y, 0, Blocks.IRON_BARS.getDefaultState());
-			if (floor > 0) b.set(0, y, -3, Blocks.IRON_BARS.getDefaultState());
-			b.set(0, y, 3, Blocks.IRON_BARS.getDefaultState());
+		StructureBuilder b = new StructureBuilder(world, origin, context.getRandom());
+		int ring = Math.min(5, CustodianTempleFeature.ring(context, origin));
+		MinorStructurePalette p = MinorStructurePalette.of(world, origin, ring);
+		for (int x = -TowerCompoundLayout.R; x <= TowerCompoundLayout.R; x++) {
+			for (int z = -TowerCompoundLayout.R; z <= TowerCompoundLayout.R; z++) {
+				if (layout.cell(x, -1, z) != null) b.foundation(x, z, p.stone());
+				for (int y = TowerCompoundLayout.BOTTOM; y <= TowerCompoundLayout.TOP; y++) {
+					Cell c = layout.cell(x, y, z);
+					if (c == null) continue;
+					switch (c) {
+						case AIR, DOOR -> b.air(x, y, z);
+						case WINDOW, BARS -> b.set(x, y, z, Blocks.IRON_BARS.getDefaultState());
+						case STONE -> b.set(x, y, z, p.stone());
+						case FLOOR -> b.set(x, y, z, y >= 0 && x >= TowerCompoundLayout.CX - 4 && x <= TowerCompoundLayout.CX + 4
+								&& z >= TowerCompoundLayout.CZ - 4 && z <= TowerCompoundLayout.CZ + 4 ? p.wood() : p.ground());
+						case WOOD -> b.set(x, y, z, p.wood());
+						case RAMPART -> b.set(x, y, z, p.accent());
+						case RUBBLE -> b.set(x, y, z, y > 2 ? Blocks.AIR.getDefaultState() : p.cracked());
+						case STAIR_EAST -> b.set(x, y, z, Blocks.STONE_BRICK_STAIRS.getDefaultState().with(StairsBlock.FACING, Direction.EAST));
+						case STAIR_WEST -> b.set(x, y, z, Blocks.STONE_BRICK_STAIRS.getDefaultState().with(StairsBlock.FACING, Direction.WEST));
+						case LADDER -> b.set(x, y, z, Blocks.LADDER.getDefaultState().with(LadderBlock.FACING, Direction.WEST));
+						case LANTERN -> b.set(x, y, z, p.light());
+						case BED -> b.set(x, y, z, Blocks.RED_WOOL.getDefaultState());
+						case BOOKSHELF -> b.set(x, y, z, Blocks.BOOKSHELF.getDefaultState());
+						case ARMORY -> b.set(x, y, z, Blocks.SMITHING_TABLE.getDefaultState());
+						case WORKBENCH -> b.set(x, y, z, Blocks.CRAFTING_TABLE.getDefaultState());
+						case CLUE -> b.set(x, y, z, Blocks.BLUE_WOOL.getDefaultState());
+						case HIDDEN_CHEST, CHEST -> b.chest(x, y, z, "tower_floor");
+						case UPPER_CHEST -> b.chest(x, y, z, "tower_upper");
+						case TOP_CHEST -> b.chest(x, y, z, "tower_top");
+						case SPAWNER -> b.spawner(x, y, z, y == 11
+								? (context.getRandom().nextBoolean() ? EntityType.ZOMBIE : EntityType.SKELETON)
+								: (context.getRandom().nextBoolean() ? EntityType.SPIDER : EntityType.SKELETON));
+						case BOSS -> { /* Se crea al terminar los bloques. */ }
+					}
+				}
+			}
 		}
-		// Escalera de mano en la esquina (2, 2), pegada a la pared sur; huecos en los suelos.
-		BlockState ladder = Blocks.LADDER.getDefaultState().with(LadderBlock.FACING, Direction.NORTH);
-		for (int y = 1; y <= top; y++) b.set(2, y, 2, ladder);
-		// Contenido de cada piso
-		for (int floor = 0; floor < FLOORS; floor++) {
-			int y = floor * FLOOR_H + 1;
-			b.chest(-2, y, -2, floor == FLOORS - 1 ? "tower_upper" : "tower_floor");
-			b.set(-2, y, 2, Blocks.LANTERN.getDefaultState());
-			if (floor == 1) b.spawner(0, y, 0, b.random.nextBoolean() ? EntityType.ZOMBIE : EntityType.SKELETON);
-			if (floor == 2) b.spawner(0, y, 0, b.random.nextBoolean() ? EntityType.SPIDER : EntityType.SKELETON);
-			if (floor >= 1 && b.random.nextFloat() < 0.5f) b.set(2, y, -2, Blocks.COBWEB.getDefaultState());
+		int perFloor = ring >= 4 ? 2 : 1;
+		for (int floor = 0; floor < 5; floor++) {
+			for (int n = 0; n < perFloor; n++) {
+				MobEntity elite = b.elite(n == 0 ? EntityType.SKELETON : EntityType.ZOMBIE,
+						TowerCompoundLayout.CX + (n == 0 ? -1 : 1), floor * 5 + 1,
+						TowerCompoundLayout.CZ + (n == 0 ? 1 : 2));
+				armor(elite, ring);
+			}
 		}
-		// Azotea: el mejor cofre
-		b.chest(0, top + 1, 0, "tower_top");
-		// Centinela de la torre: jefe de tres fases en la azotea.
-		b.boss(EntityType.WITHER_SKELETON, 1, top + 1, 1, dev.aptitudes.boss.BossKind.TOWER_SENTINEL);
-		StructureIndex.record(context.getWorld(), "tower", origin); // V77: /aptitudes locate
+		if (ring >= 2) armor(b.champion(EntityType.ZOMBIE, 3, 0, -4), ring);
+		for (int i = 0; i < (ring >= 4 ? 4 : ring >= 2 ? 3 : 2); i++)
+			b.mob(EntityType.SKELETON, 4 + i % 2, 0, 2 + i / 2);
+		b.boss(EntityType.WITHER_SKELETON, TowerCompoundLayout.CX + 1, 26, TowerCompoundLayout.CZ,
+				dev.aptitudes.boss.BossKind.TOWER_SENTINEL);
+		StructureIndex.record(world, "tower", origin);
 		return true;
+	}
+
+	static void armor(MobEntity mob, int ring) {
+		if (mob == null) return;
+		var helmet = ring >= 4 ? Items.DIAMOND_HELMET : ring >= 2 ? Items.IRON_HELMET : Items.CHAINMAIL_HELMET;
+		var chest = ring >= 4 ? Items.DIAMOND_CHESTPLATE : ring >= 2 ? Items.IRON_CHESTPLATE : Items.CHAINMAIL_CHESTPLATE;
+		mob.equipStack(EquipmentSlot.HEAD, new ItemStack(helmet));
+		mob.equipStack(EquipmentSlot.CHEST, new ItemStack(chest));
+		mob.setEquipmentDropChance(EquipmentSlot.HEAD, 0);
+		mob.setEquipmentDropChance(EquipmentSlot.CHEST, 0);
 	}
 }

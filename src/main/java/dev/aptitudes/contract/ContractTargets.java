@@ -16,6 +16,9 @@ import java.util.List;
  * y su nombre para mostrarlo. El orden de las listas se guarda en los contratos: solo se añade al final.
  */
 public final class ContractTargets {
+	/** Guardado como número en la oferta: no reordenar. */
+	public static final List<String> CAMP = List.of("hunter", "warlock", "bandit", "raided_merchant",
+			"deserter", "veil_cultist", "relic_seeker");
 	public static final List<EntityType<?>> HUNT = List.of(EntityType.ZOMBIE, EntityType.SKELETON, EntityType.CREEPER,
 			EntityType.SPIDER, EntityType.ENDERMAN);
 	public static final List<Item> DELIVERY = List.of(Items.IRON_INGOT, Items.WHEAT, Items.CARROT, Items.COD,
@@ -51,6 +54,8 @@ public final class ContractTargets {
 					? Text.translatable("event.aptitudes." + WorldEventKind.values()[target].id() + ".name") : Text.empty();
 			case BOSS -> target >= 0 && target < BossKind.values().length
 					? Text.translatable(BossKind.values()[target].nameKey()) : Text.empty();
+			case CAMP_CLEAR -> target >= 0 && target < CAMP.size()
+					? Text.translatable("contract.aptitudes.camp_type." + CAMP.get(target)) : Text.empty();
 			default -> Text.empty();
 		};
 	}
