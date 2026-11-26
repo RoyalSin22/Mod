@@ -4481,6 +4481,7 @@
   "config.aptitudes.field.fogCooldownDays": "Dias de espera entre duas Névoas das Almas.",
   "config.aptitudes.field.fogDurationTicks": "Duração da Névoa das Almas em ticks (24000 é um dia de Minecraft).",
   "config.aptitudes.field.emberRainCooldownDays": "Dias de espera entre duas Chuvas de Brasas provocadas por um portal.",
+  "config.aptitudes.field.summonBudget": "Orçamento de invocações por jogador: cada uma custa pontos (lacaio 2, diabrete 1, lobo 3, golem 4); saem as mais antigas. 0 = sem limite.",
   "config.aptitudes.field.eclipseSummonCooldownDays": "Dias de jogo de espera por mundo após o fim de um Eclipse para convocar outro com o Astrolábio ou Damnorath. 0: sem espera.",
   "config.aptitudes.field.parryEnabled": "Bloquear o golpe corpo a corpo de uma criatura assim que levanta o escudo a atordoa e abre um golpe de misericórdia. Nunca afeta jogadores nem chefes.",
   "config.aptitudes.field.parryStunTicks": "Ticks que uma criatura aparada fica atordoada. 0: não atordoa.",

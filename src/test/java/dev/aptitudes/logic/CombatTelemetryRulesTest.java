@@ -76,6 +76,20 @@ class CombatTelemetryRulesTest {
 	}
 
 	@Test
+	void autonomousDamageIsCountedSeparately() {
+		Sample s = new Sample();
+		s.addDamage(Kind.VANILLA, 10, false, 0);
+		s.addDamage(Kind.SUMMON, 30, false, 10);
+		assertEquals(40, s.totalDamage(), 1e-9);
+		assertEquals(0.75, s.summonShare(), 1e-9);
+		assertEquals(0, s.abilityShare(), 1e-9); // el daño autónomo no cuenta como habilidad
+		Sample other = new Sample();
+		other.addDamage(Kind.SUMMON, 10, false, 0);
+		s.merge(other);
+		assertEquals(40, s.summonDamage, 1e-9);
+	}
+
+	@Test
 	void mergeAddsEverything() {
 		Sample a = new Sample();
 		a.addDamage(Kind.ABILITY, 10, false, 0);

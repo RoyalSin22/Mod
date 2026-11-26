@@ -4481,6 +4481,7 @@
   "config.aptitudes.field.fogCooldownDays": "Jours d’attente entre deux Brumes des âmes.",
   "config.aptitudes.field.fogDurationTicks": "Durée de la Brume des âmes en ticks (24000 correspond à un jour Minecraft).",
   "config.aptitudes.field.emberRainCooldownDays": "Jours d’attente entre deux Pluies de braises provoquées par un portail.",
+  "config.aptitudes.field.summonBudget": "Budget d’invocations par joueur : chacune coûte des points (serviteur 2, diablotin 1, loup 3, golem 4) ; les plus anciennes partent. 0 = sans limite.",
   "config.aptitudes.field.eclipseSummonCooldownDays": "Jours de jeu d’attente par monde après la fin d’une Éclipse avant d’en invoquer une autre avec l’Astrolabe ou Damnorath. 0 : aucune attente.",
   "config.aptitudes.field.parryEnabled": "Bloquer le coup au corps à corps d’une créature dès que vous levez le bouclier l’étourdit et ouvre un coup de grâce. N’affecte jamais les joueurs ni les boss.",
   "config.aptitudes.field.parryStunTicks": "Ticks pendant lesquels une créature parée reste étourdie. 0 : pas d’étourdissement.",

@@ -4481,6 +4481,7 @@
   "config.aptitudes.field.fogCooldownDays": "Días de espera entre dos Nieblas de almas.",
   "config.aptitudes.field.fogDurationTicks": "Duración de la Niebla de almas en ticks (24000 es un día de Minecraft).",
   "config.aptitudes.field.emberRainCooldownDays": "Días de espera entre dos Lluvias de brasas provocadas por un portal.",
+  "config.aptitudes.field.summonBudget": "Presupuesto de invocaciones por jugador: cada una cuesta puntos (esbirro 2, diablillo 1, lobo 3, golem 4); salen las más antiguas. 0 = sin límite.",
   "config.aptitudes.field.eclipseSummonCooldownDays": "Días de juego de espera por mundo tras terminar un Eclipse para convocar otro con el Astrolabio o Damnorath. 0: sin espera.",
   "config.aptitudes.field.parryEnabled": "Bloquear el golpe cuerpo a cuerpo de una criatura justo al alzar el escudo la aturde y abre un golpe de gracia. Nunca afecta a jugadores ni a jefes.",
   "config.aptitudes.field.parryStunTicks": "Ticks que queda aturdida una criatura parada. 0: no la aturde.",

@@ -4481,6 +4481,7 @@
   "config.aptitudes.field.fogCooldownDays": "Days of waiting between two Soul Fogs.",
   "config.aptitudes.field.fogDurationTicks": "Duration of the Soul Fog in ticks (24000 is one Minecraft day).",
   "config.aptitudes.field.emberRainCooldownDays": "Days of waiting between two Ember Rains triggered by a portal.",
+  "config.aptitudes.field.summonBudget": "Summon budget per player: each summon costs points (minion 2, imp 1, wolf 3, golem 4); the oldest go first. 0 = no limit.",
   "config.aptitudes.field.eclipseSummonCooldownDays": "Game days to wait, per world, after an Eclipse ends before summoning another with the Astrolabe or Damnorath. 0: no wait.",
   "config.aptitudes.field.parryEnabled": "Blocking a creature's melee hit right as you raise the shield stuns it and opens a finisher. Never affects players or bosses.",
   "config.aptitudes.field.parryStunTicks": "Ticks a parried creature stays stunned. 0: no stun.",

@@ -33,6 +33,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   PNG a mano tras ejecutar `gen_items.py`. Los mundos antiguos conservan, inofensivo, el archivo de datos de `SummonState`. Sin cambios de balance.
 
 ### Añadido
+- **V94 — Presupuesto de invocaciones y daño autónomo atribuido.** Cada jugador tiene un presupuesto de puntos de invocación (opción
+  `summonBudget`, 16 por defecto, 0 = sin límite): esbirro y esqueleto 2, diablillo 1, lobo 3, golem y torreta 4. La suma de las activas
+  de **cualquier rol** no puede pasar del presupuesto: al lanzar una nueva se retiran las más antiguas hasta que quepa, y la nueva
+  nunca se rechaza. Esto limita los ejércitos que sumaban varios roles (Nigromante + Druida + Ingeniero…) sin tocar el tope propio de
+  cada rol (`Minions.MAX_MINIONS`). Política nueva: las invocaciones se retiran al morir su dueño y, al cambiar de dimensión, las que
+  quedaron en la anterior. La telemetría de V93 atribuye ahora al dueño el **daño autónomo** de invocaciones y mascotas domesticadas
+  (columna «autónomo» de `/aptitudes telemetry`). **Cambio de balance:** el presupuesto solo recorta las combinaciones que superan 16
+  puntos; ajustable o desactivable en la configuración.
 - **Astrolabio del Ocaso y espera común del Eclipse (C3).** El Astrolabio (clic derecho en la Hoguera) solo lo usan
   los operadores o el líder del grupo (decisión E1) y ya no se consume si se rechaza. Comparte con el Embrión del
   Umbral (Behelit) la espera de `eclipseSummonCooldownDays` (3 por defecto, 0 = sin espera) días de juego por mundo,

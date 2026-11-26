@@ -39,8 +39,7 @@ El plan completo, con hallazgos y decisiones, está en `docs/PLAN_IDENTIDAD_ROLE
    las opciones de cliente (partículas, temblor, FOV, viñeteado, volumen, efectos de otros jugadores, alto contraste) y distinguir
    señales funcionales de adorno. Hoy solo existe `fxIntensity`.
 2. **V93 (resto):** curación efectiva y esmeraldas consumidas en la telemetría; migrar los `*Kit` al bus; persistir si hace falta.
-3. **V94 – Presupuesto de invocaciones** por jugador sobre `AbilityState.trackSummon` (hoy solo `Minions.MAX_MINIONS = 4`); atribuir al
-   dueño el daño de esbirros, lobos, mascotas y torretas.
+3. ~~**V94 – Presupuesto de invocaciones**~~ **Hecha el 2026-11-26** (ver `PLAN_IDENTIDAD_ROLES.md` §7): `summonBudget` y daño autónomo atribuido.
 4. **V95 – Feedback compartido** (impacto normal/pesado/crítico, bloqueo, curación efectiva, recurso completo/insuficiente, definitiva lista).
 5. **V96 – Efectos para firmas, definitivas y piedras angulares**, y luego evoluciones y los 10 nodos extra. Hoy solo las activas base tienen
    guion propio; el resto usa el efecto genérico (`CastFx`).

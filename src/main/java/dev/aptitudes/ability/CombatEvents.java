@@ -33,8 +33,11 @@ public final class CombatEvents {
 	public record Scope(UUID owner, String abilityId, boolean derived, int depth) {
 	}
 
+	/**
+	 * {@code autonomous}: el golpe lo dio una invocación o una mascota del jugador ({@code attacker} es su dueño), no el propio jugador.
+	 */
 	public record DamageEvent(ServerPlayerEntity attacker, LivingEntity victim, float amount, String abilityId, boolean derived,
-							  int depth, boolean pvp, boolean vanillaSource, int tick) {
+							  int depth, boolean pvp, boolean vanillaSource, boolean autonomous, int tick) {
 	}
 
 	public interface Listener {
@@ -104,19 +107,28 @@ public final class CombatEvents {
 
 	public static void register() {
 		ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamage, damageTaken, blocked) -> {
-			if (damageTaken <= 0 || !(source.getAttacker() instanceof ServerPlayerEntity attacker)) return;
-			if (entity == attacker || entity.getServer() == null) return;
-			Scope scope = current != null && attacker.getUuid().equals(current.owner()) ? current : null;
-			boolean vanilla = isVanillaSource(source);
-			boolean derived = scope != null ? scope.derived() : !vanilla;
+			if (damageTaken <= 0) return;
+			ServerPlayerEntity attacker = ownerOf(source.getAttacker());
+			if (attacker == null || entity == attacker || entity.getServer() == null) return;
+			boolean autonomous = source.getAttacker() != attacker;
+			Scope scope = !autonomous && current != null && attacker.getUuid().equals(current.owner()) ? current : null;
+			boolean vanilla = !autonomous && isVanillaSource(source);
+			boolean derived = !autonomous && (scope != null ? scope.derived() : !vanilla);
 			String ability = scope != null ? scope.abilityId() : null;
 			int depth = scope != null ? scope.depth() : 0;
 			DamageEvent event = new DamageEvent(attacker, entity, damageTaken, ability, derived, depth,
-					entity instanceof PlayerEntity, vanilla && scope == null, entity.getServer().getTicks());
+					entity instanceof PlayerEntity, vanilla && scope == null, autonomous, entity.getServer().getTicks());
 			dispatchDamage(event, scope);
 		});
+		// V94: política de invocaciones. Si el dueño muere, sus invocaciones se retiran; si cambia de dimensión, las que quedaron atrás.
 		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
-			if (!(source.getAttacker() instanceof ServerPlayerEntity attacker) || entity.getServer() == null) return;
+			if (entity instanceof ServerPlayerEntity dead) AbilityState.discardSummonsOf(dead, null);
+		});
+		net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register(
+				(player, origin, destination) -> AbilityState.discardSummonsOf(player, destination.getRegistryKey()));
+		ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
+			ServerPlayerEntity attacker = ownerOf(source.getAttacker());
+			if (attacker == null || entity.getServer() == null) return;
 			int tick = entity.getServer().getTicks();
 			for (Listener l : LISTENERS) {
 				try {
@@ -143,6 +155,18 @@ public final class CombatEvents {
 		} finally {
 			current = previous;
 		}
+	}
+
+	/**
+	 * V94: el jugador al que se atribuye un golpe: el propio jugador, el dueño de una invocación registrada ({@link AbilityState}) o el
+	 * dueño de una mascota domesticada. {@code null} si el atacante no es de ningún jugador.
+	 */
+	static ServerPlayerEntity ownerOf(net.minecraft.entity.Entity attacker) {
+		if (attacker instanceof ServerPlayerEntity player) return player;
+		if (attacker == null) return null;
+		if (AbilityState.isTracked(attacker)) return AbilityState.ownerOf(attacker);
+		if (attacker instanceof net.minecraft.entity.passive.TameableEntity pet && pet.getOwner() instanceof ServerPlayerEntity owner) return owner;
+		return null;
 	}
 
 	/** Golpe de cuerpo a cuerpo, flecha, tridente o proyectil lanzado: lo que haría un jugador sin rol. */

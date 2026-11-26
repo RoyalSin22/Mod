@@ -218,6 +218,8 @@ public class AptitudesConfig {
 	public int fogDurationTicks = 24_000;
 	/** Días de espera entre dos Lluvias de brasas provocadas por un portal. */
 	public int emberRainCooldownDays = 5;
+	/** V94: presupuesto de invocaciones por jugador (puntos: esbirro 2, diablillo 1, lobo 3, golem 4). 0 = sin límite. */
+	public int summonBudget = 16;
 	/** Días de juego de espera, por mundo y desde el fin del último Eclipse, para volver a convocarlo (Astrolabio o Damnorath). 0 = sin espera. */
 	public int eclipseSummonCooldownDays = 3;
 	// ---------- Las Tres Torres Señoriales (V86) ----------
@@ -659,6 +661,7 @@ public class AptitudesConfig {
 				dev.aptitudes.event.EventTriggerRules.MAX_FOG_TICKS);
 		c.emberRainCooldownDays = clamp(c.emberRainCooldownDays, 1, 365);
 		c.eclipseSummonCooldownDays = clamp(c.eclipseSummonCooldownDays, 0, 365);
+		c.summonBudget = dev.aptitudes.logic.SummonBudgetRules.clamp(c.summonBudget);
 		c.deathEchoLifetimeSeconds = clamp(c.deathEchoLifetimeSeconds, 10, 1800);
 		c.deathEchoMaxActive = clamp(c.deathEchoMaxActive, 1, 50);
 		c.groundMessagesPerPlayer = clamp(c.groundMessagesPerPlayer, 1, 20);

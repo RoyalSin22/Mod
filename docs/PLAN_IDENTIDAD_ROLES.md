@@ -35,7 +35,7 @@ Una versión por tarea y por rama (`AGENTS.md`). Orden por dependencias: lo que 
 |---|---|---|---|
 | **V92 – Validación y accesibilidad** | (1) Pasar la **hoja de pruebas en partida** por los 20 roles (el autor) y corregir P0/P1. (2) Sliders de cliente separados: partículas, temblor, FOV, viñeteado, volumen de habilidades, efectos de otros jugadores (completos/reducidos/mínimos) y alto contraste de señales. (3) Marcar qué efectos son **señal funcional** (avisos de ataque enemigo) y no se atenúan. | Opciones en `ClientConfig` + `ConfigScreen`; sin tocar el servidor | B–M |
 | **V93 – Eventos de combate y telemetría** ✅ *primera entrega hecha (2026-11-25); ver «Estado de V93» al final* (incluye línea base vanilla, tiempo en solitario por rol, esmeraldas consumidas y, si se decide, PvP) | Bus central en servidor: `AbilityCast`, `AbilityImpact`, `DamageDealt`, `DamageMitigated`, `EffectiveHeal`, `TargetMarked`, `CompanionCommand`, `CombatEnded`, con propietario, habilidad, objetivo y marca **directo/derivado**. Los `*Kit` se suscriben en vez de enganchar cada uno su evento. Telemetría mínima (daño efectivo/s, daño por recurso, curación efectiva y sobrecuración, activaciones derivadas, MSPT, entidades activas) con comando de operador para volcarla. | `ability/CombatEvents` (puro donde se pueda, con pruebas), migración gradual de enganches existentes, `/aptitudes telemetry` | M–A |
-| **V94 – Presupuesto de invocaciones** | Presupuesto ponderado por jugador sobre `AbilityState.trackSummon`: esbirros, lobos, mascotas, torretas, diablillos y espadas; tope configurable; política al desconectar, morir y cambiar de dimensión; validar PvP y grupo. Auditoría de rendimiento antes de fijar números. | `ability/SummonBudget` + configuración | M |
+| **V94 – Presupuesto de invocaciones** ✅ *hecha (2026-11-26); ver §7* | Presupuesto ponderado por jugador sobre `AbilityState.trackSummon`: esbirros, lobos, mascotas, torretas, diablillos y espadas; tope configurable; política al desconectar, morir y cambiar de dimensión; validar PvP y grupo. Auditoría de rendimiento antes de fijar números. | `ability/SummonBudget` + configuración | M |
 | **V95 – Feedback compartido** | Lenguaje común de impacto: normal, pesado, crítico, bloqueo, interrupción, curación efectiva, recurso completo/insuficiente, definitiva lista. Se reutiliza en habilidades base, extras y pasivas (con confirmación breve, sin partículas constantes). | Extender `FxIds`/`FxClient` con un puñado de eventos genéricos | M |
 | **V96 – Progresión audiovisual** | Firmas, definitivas y piedras angulares con motivo propio del rol (empezando por los 5 pilotos). Luego evoluciones Maestro/Definitiva. Los 10 nodos extra de cada rol al final. | `*Fx` por rol ampliados | A |
 | **V97 – Posturas** | Piloto con 4 roles (Bersérker, Lancero, Monje, Mago) de postura de combate sobre la capa PAL; respaldo a la locomoción vanilla; precedencia muerte > reacción > habilidad > postura > locomoción. | PAL, validar versión 1.1.6 | M–A |
@@ -135,6 +135,22 @@ de jugadores sin rol en la misma etiqueta. `reset` vacía los datos.
 - Es en memoria: se pierde al reiniciar.
 - El daño de pasivas que no pasa por un oyente y ocurre fuera de una activa se clasifica por tipo de daño (mágico, explosión…) como derivado;
   el golpe, el arco y el tridente cuentan como vanilla. No es una atribución perfecta.
-- El daño de esbirros, lobos, mascotas y torretas no se atribuye al dueño todavía (se resolverá con V94).
+- ~~El daño de esbirros, lobos, mascotas y torretas no se atribuye al dueño~~ Resuelto en V94.
 - Falta la **curación efectiva** (no hay un punto único de curación en el código) y las **esmeraldas consumidas** del Mercader.
 - Los `*Kit` aún no usan el bus; se migrarán por roles en versiones posteriores sin cambiar su comportamiento.
+
+## 7. Estado de V94 (2026-11-26)
+
+**Hecho:** `SummonBudgetRules` (puro, con pruebas), opción `summonBudget` (16 por defecto, 0 = sin límite), `AbilityState.enforceBudget`
+al registrar cada invocación, `discardSummonsOf` (al morir el dueño y al cambiar de dimensión) y atribución al dueño del daño y las bajas
+de invocaciones y mascotas domesticadas (`CombatEvents.ownerOf`), visible como columna «autónomo» en `/aptitudes telemetry`.
+
+**Costes:** esbirro y esqueleto 2, diablillo 1, lobo 3, golem y torreta 4, cualquier otro 2. Salen primero las más antiguas.
+
+**Limitaciones y decisiones abiertas:**
+- Los 16 puntos permiten, por ejemplo, 4 esbirros (8) + 2 lobos (6) + 1 diablillo (1) sin recortes; apilar tres roles de invocación sí recorta.
+  Es un valor inicial: hay que medirlo con la telemetría («autónomo» por rol) y ajustarlo.
+- No hay aviso al jugador cuando se retira una invocación por el presupuesto (como ya ocurre con el tope de esbirros).
+- Las espadas del Invocador de armas, las marcas del Cazador y otros estados virtuales **no son entidades** y no cuentan.
+- Las mascotas vanilla del Domador (domesticadas) no consumen presupuesto (no son invocaciones), pero su daño sí se atribuye.
+- El límite de actualización de IA y la persistencia al reiniciar siguen como estaban (las invocaciones son efímeras).

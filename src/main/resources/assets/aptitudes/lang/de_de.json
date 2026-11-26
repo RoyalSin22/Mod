@@ -4481,6 +4481,7 @@
   "config.aptitudes.field.fogCooldownDays": "Tage Wartezeit zwischen zwei Seelennebeln.",
   "config.aptitudes.field.fogDurationTicks": "Dauer des Seelennebels in Ticks (24000 ist ein Minecraft-Tag).",
   "config.aptitudes.field.emberRainCooldownDays": "Tage Wartezeit zwischen zwei durch ein Portal ausgelösten Glutregen.",
+  "config.aptitudes.field.summonBudget": "Beschwörungsbudget pro Spieler: jede kostet Punkte (Diener 2, Wichtel 1, Wolf 3, Golem 4); die ältesten gehen zuerst. 0 = kein Limit.",
   "config.aptitudes.field.eclipseSummonCooldownDays": "Spieltage Wartezeit pro Welt nach dem Ende einer Sonnenfinsternis, bevor eine weitere mit Astrolabium oder Damnorath beschworen wird. 0: keine Wartezeit.",
   "config.aptitudes.field.parryEnabled": "Den Nahkampftreffer einer Kreatur genau beim Heben des Schilds zu blocken betäubt sie und öffnet einen Gnadenstoß. Betrifft nie Spieler oder Bosse.",
   "config.aptitudes.field.parryStunTicks": "Ticks, die eine parierte Kreatur betäubt bleibt. 0: keine Betäubung.",

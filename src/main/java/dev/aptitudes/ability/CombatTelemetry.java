@@ -59,7 +59,8 @@ public final class CombatTelemetry implements CombatEvents.Listener {
 
 	@Override
 	public void onDamage(CombatEvents.DamageEvent e) {
-		Kind kind = e.abilityId() != null || e.derived() ? (e.derived() ? Kind.DERIVED : Kind.ABILITY) : Kind.VANILLA;
+		Kind kind = e.autonomous() ? Kind.SUMMON
+				: e.abilityId() != null || e.derived() ? (e.derived() ? Kind.DERIVED : Kind.ABILITY) : Kind.VANILLA;
 		sampleOf(e.attacker()).addDamage(kind, e.amount(), e.pvp(), e.tick());
 		if (firstHits.size() >= MAX_TRACKED_VICTIMS) firstHits.clear();
 		firstHits.putIfAbsent(e.victim().getUuid(), new FirstHit(e.tick(), e.attacker().getUuid()));

@@ -13,15 +13,20 @@ public final class CombatTelemetryRules {
 	private CombatTelemetryRules() {
 	}
 
-	/** Origen del daño: la habilidad lanzada directamente, un efecto derivado de otra, o un golpe/disparo vanilla. */
+	/**
+	 * Origen del daño: la habilidad lanzada directamente, un efecto derivado de otra, un golpe/disparo vanilla, o (V94) el golpe
+	 * autónomo de una invocación o mascota del jugador.
+	 */
 	public enum Kind {
-		ABILITY, DERIVED, VANILLA
+		ABILITY, DERIVED, VANILLA, SUMMON
 	}
 
 	public static final class Sample {
 		public double abilityDamage;
 		public double derivedDamage;
 		public double vanillaDamage;
+		/** Daño autónomo de invocaciones y mascotas, atribuido a su dueño. */
+		public double summonDamage;
 		/** Parte del daño total que cayó sobre jugadores (PvP). */
 		public double pvpDamage;
 		public int casts;
@@ -40,6 +45,7 @@ public final class CombatTelemetryRules {
 				case ABILITY -> abilityDamage += amount;
 				case DERIVED -> derivedDamage += amount;
 				case VANILLA -> vanillaDamage += amount;
+				case SUMMON -> summonDamage += amount;
 			}
 			if (pvp) pvpDamage += amount;
 			long gap = tick - lastHitTick;
@@ -63,7 +69,7 @@ public final class CombatTelemetryRules {
 		}
 
 		public double totalDamage() {
-			return abilityDamage + derivedDamage + vanillaDamage;
+			return abilityDamage + derivedDamage + vanillaDamage + summonDamage;
 		}
 
 		public double activeSeconds() {
@@ -79,6 +85,12 @@ public final class CombatTelemetryRules {
 		public double abilityShare() {
 			double total = totalDamage();
 			return total <= 0 ? 0 : (abilityDamage + derivedDamage) / total;
+		}
+
+		/** Parte del daño total que dieron invocaciones y mascotas sin intervención directa del jugador, entre 0 y 1. */
+		public double summonShare() {
+			double total = totalDamage();
+			return total <= 0 ? 0 : summonDamage / total;
 		}
 
 		/** Parte del daño de habilidad que es derivada (cadenas de pasivas), entre 0 y 1. */
@@ -107,6 +119,7 @@ public final class CombatTelemetryRules {
 			abilityDamage += other.abilityDamage;
 			derivedDamage += other.derivedDamage;
 			vanillaDamage += other.vanillaDamage;
+			summonDamage += other.summonDamage;
 			pvpDamage += other.pvpDamage;
 			casts += other.casts;
 			energySpent += other.energySpent;
