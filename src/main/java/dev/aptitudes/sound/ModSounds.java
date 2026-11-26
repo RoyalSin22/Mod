@@ -109,6 +109,11 @@ public final class ModSounds {
 	public static final SoundEvent ELEMENT_WATER = register("element_water");
 	public static final SoundEvent ELEMENT_MAGIC = register("element_magic");
 	public static final SoundEvent ELEMENT_DARK = register("element_dark");
+	public static final SoundEvent FEEDBACK_HEAVY = register("feedback_heavy");
+	public static final SoundEvent FEEDBACK_CRIT = register("feedback_crit");
+	public static final SoundEvent FEEDBACK_BLOCK = register("feedback_block");
+	public static final SoundEvent FEEDBACK_HEAL = register("feedback_heal");
+	public static final SoundEvent FEEDBACK_DENIED = register("feedback_denied");
 
 	private ModSounds() {
 	}

@@ -1099,6 +1099,55 @@ def osario_step(rng):
     return ossuary_sound(rng, .26, [(.005, .63, 146), (.071, .39, 197)], .72)
 
 
+# ---------------------------------------------------------------- Feedback compartido de combate (V95)
+
+def feedback_heavy(rng):
+    """Impacto pesado: golpe grave con crujido corto."""
+    t = t_axis(0.35)
+    thud = np.sin(2 * np.pi * (110 * np.exp(-t * 22) + 48) * t) * env(t, 0.001, 0.09) * 1.0
+    crunch = _soft_air(rng, len(t), 500, 3500) * env(t, 0.0008, 0.05) * 0.6
+    return fade_out(normalize(thud + crunch, 0.82), 0.05)
+
+
+def feedback_crit(rng):
+    """Crítico: chasquido agudo y un acento metálico."""
+    t = t_axis(0.4)
+    crack = _soft_air(rng, len(t), 2500, 8000) * env(t, 0.0004, 0.03) * 0.8
+    ping = _bell(t, 2700, [(1.0, 0.6), (2.0, 0.3), (3.2, 0.15)], 0.16) * 0.7
+    body = np.sin(2 * np.pi * (200 * np.exp(-t * 26) + 90) * t) * env(t, 0.001, 0.05) * 0.5
+    return fade_out(normalize(crack + ping + body, 0.82), 0.06)
+
+
+def feedback_block(rng):
+    """Bloqueo: choque metálico con eco."""
+    t = t_axis(0.5)
+    clang = _bell(t, 640, [(1.0, 0.8), (2.4, 0.6), (4.1, 0.35), (5.8, 0.2)], 0.22) * 0.8
+    spark = _soft_air(rng, len(t), 2000, 7000) * env(t, 0.0005, 0.03) * 0.5
+    thump = np.sin(2 * np.pi * (140 * np.exp(-t * 24) + 60) * t) * env(t, 0.001, 0.06) * 0.6
+    return fade_out(normalize(clang + spark + thump, 0.84), 0.08)
+
+
+def feedback_heal(rng):
+    """Curación efectiva: dos notas cálidas que suben."""
+    t = t_axis(0.6)
+    out = np.zeros(len(t))
+    for k, f in enumerate((659.3, 987.8)):
+        tt = np.maximum(t - 0.11 * k, 0)
+        out += np.sin(2 * np.pi * f * tt) * env(tt, 0.01, 0.2) * (t >= 0.11 * k) * 0.5
+        out += np.sin(2 * np.pi * f * 2 * tt) * env(tt, 0.01, 0.1) * (t >= 0.11 * k) * 0.15
+    return fade_out(normalize(out, 0.7), 0.12)
+
+
+def feedback_denied(rng):
+    """Recurso insuficiente: dos golpecitos sordos y discretos."""
+    t = t_axis(0.25)
+    out = np.zeros(len(t))
+    for k in range(2):
+        tt = np.maximum(t - 0.08 * k, 0)
+        out += np.sin(2 * np.pi * (170 * np.exp(-tt * 40) + 110) * tt) * env(tt, 0.001, 0.03) * (t >= 0.08 * k) * 0.8
+    return fade_out(normalize(out, 0.55), 0.04)
+
+
 SOUNDS = {
     'eclipse_announce': eclipse_announce,
     'eclipse_start': eclipse_start,
@@ -1201,6 +1250,11 @@ SOUNDS = {
     'element_water': element_water,
     'element_magic': element_magic,
     'element_dark': element_dark,
+    'feedback_heavy': feedback_heavy,
+    'feedback_crit': feedback_crit,
+    'feedback_block': feedback_block,
+    'feedback_heal': feedback_heal,
+    'feedback_denied': feedback_denied,
 }
 
 

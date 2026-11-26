@@ -36,7 +36,7 @@ Una versión por tarea y por rama (`AGENTS.md`). Orden por dependencias: lo que 
 | **V92 – Validación y accesibilidad** | (1) Pasar la **hoja de pruebas en partida** por los 20 roles (el autor) y corregir P0/P1. (2) Sliders de cliente separados: partículas, temblor, FOV, viñeteado, volumen de habilidades, efectos de otros jugadores (completos/reducidos/mínimos) y alto contraste de señales. (3) Marcar qué efectos son **señal funcional** (avisos de ataque enemigo) y no se atenúan. | Opciones en `ClientConfig` + `ConfigScreen`; sin tocar el servidor | B–M |
 | **V93 – Eventos de combate y telemetría** ✅ *primera entrega hecha (2026-11-25); ver «Estado de V93» al final* (incluye línea base vanilla, tiempo en solitario por rol, esmeraldas consumidas y, si se decide, PvP) | Bus central en servidor: `AbilityCast`, `AbilityImpact`, `DamageDealt`, `DamageMitigated`, `EffectiveHeal`, `TargetMarked`, `CompanionCommand`, `CombatEnded`, con propietario, habilidad, objetivo y marca **directo/derivado**. Los `*Kit` se suscriben en vez de enganchar cada uno su evento. Telemetría mínima (daño efectivo/s, daño por recurso, curación efectiva y sobrecuración, activaciones derivadas, MSPT, entidades activas) con comando de operador para volcarla. | `ability/CombatEvents` (puro donde se pueda, con pruebas), migración gradual de enganches existentes, `/aptitudes telemetry` | M–A |
 | **V94 – Presupuesto de invocaciones** ✅ *hecha (2026-11-26); ver §7* | Presupuesto ponderado por jugador sobre `AbilityState.trackSummon`: esbirros, lobos, mascotas, torretas, diablillos y espadas; tope configurable; política al desconectar, morir y cambiar de dimensión; validar PvP y grupo. Auditoría de rendimiento antes de fijar números. | `ability/SummonBudget` + configuración | M |
-| **V95 – Feedback compartido** | Lenguaje común de impacto: normal, pesado, crítico, bloqueo, interrupción, curación efectiva, recurso completo/insuficiente, definitiva lista. Se reutiliza en habilidades base, extras y pasivas (con confirmación breve, sin partículas constantes). | Extender `FxIds`/`FxClient` con un puñado de eventos genéricos | M |
+| **V95 – Feedback compartido** ✅ *hecha (2026-11-26); ver §8* | Lenguaje común de impacto: normal, pesado, crítico, bloqueo, interrupción, curación efectiva, recurso completo/insuficiente, definitiva lista. Se reutiliza en habilidades base, extras y pasivas (con confirmación breve, sin partículas constantes). | Extender `FxIds`/`FxClient` con un puñado de eventos genéricos | M |
 | **V96 – Progresión audiovisual** | Firmas, definitivas y piedras angulares con motivo propio del rol (empezando por los 5 pilotos). Luego evoluciones Maestro/Definitiva. Los 10 nodos extra de cada rol al final. | `*Fx` por rol ampliados | A |
 | **V97 – Posturas** | Piloto con 4 roles (Bersérker, Lancero, Monje, Mago) de postura de combate sobre la capa PAL; respaldo a la locomoción vanilla; precedencia muerte > reacción > habilidad > postura > locomoción. | PAL, validar versión 1.1.6 | M–A |
 | **V98 – Identidad mecánica (pilotos)** | Auditar los recursos que ya existen y diseñar solo los huecos, empezando por los 5 pilotos: **Bersérker, Elementalista, Cambiaformas, Paladín, Ingeniero** (cinco problemas arquitectónicos distintos). | Cambios en los `*Kit` y HUD | A |
@@ -154,3 +154,28 @@ de invocaciones y mascotas domesticadas (`CombatEvents.ownerOf`), visible como c
 - Las espadas del Invocador de armas, las marcas del Cazador y otros estados virtuales **no son entidades** y no cuentan.
 - Las mascotas vanilla del Domador (domesticadas) no consumen presupuesto (no son invocaciones), pero su daño sí se atribuye.
 - El límite de actualización de IA y la persistencia al reiniciar siguen como estaban (las invocaciones son efímeras).
+
+## 8. Estado de V95 (2026-11-26)
+
+**Hecho:** `ImpactFeedbackRules` (puro, con pruebas), `ImpactFeedback` (oyente del bus de V93), `CombatEvents.heal` (curación efectiva y
+sobrecuración, también en la telemetría), eventos `FEEDBACK_IMPACT`/`BLOCK`/`HEAL` (ids 64–66), `FeedbackClientFx` y cinco sonidos.
+
+| Señal | Cuándo | Visual | Sonido |
+|---|---|---|---|
+| Golpe de habilidad | Daño de una activa que no es pesado ni crítico | Chispas del color del rol | El de la propia habilidad |
+| Golpe pesado | ≥ 20 % de la vida máxima de la víctima o ≥ 8 de daño | Ráfaga, anillo y polvo | Golpe grave |
+| Crítico | Crítico vanilla del jugador (cae, no corre, no está en agua ni ciego ni montado) | Destello y estrella de cuatro puntas | Chasquido agudo |
+| Bloqueo | Un escudo bloquea un golpe al jugador (máx. cada 0,5 s) | Chispas metálicas hacia delante | Choque metálico |
+| Curación efectiva | Una activa cura de verdad ≥ 0,5 de vida (máx. cada 0,5 s por objetivo) | Ascenso de luz verde y un corazón | Dos notas cálidas |
+| Recurso insuficiente | Falta energía al lanzar (máx. cada 0,5 s) | — | Dos golpecitos sordos, solo para el jugador |
+
+**Decisiones de diseño:** los golpes vanilla normales no dan señal (ya tienen la suya) y el daño autónomo de invocaciones tampoco; se
+limita la frecuencia por atacante, víctima y jugador para que una ráfaga de golpes no sature.
+
+**Limitaciones y pendiente:**
+- La curación solo se cuenta en las habilidades que llaman a `CombatEvents.heal` (Bálsamo, Lluvia sanadora, Consagración, Sifón de
+  almas); el resto (pasivas, curaciones de otros roles, Estus) sigue sin señal ni telemetría hasta que se migren.
+- «Recurso completo» y «Definitiva disponible» **no** están hechos: necesitan un cambio del HUD (marco o pulso en el indicador) y un
+  seguimiento del enfriamiento de la definitiva; se dejan para V92/V96.
+- La detección del crítico es una aproximación de la regla vanilla (no hay evento de crítico).
+- Las señales funcionales (aviso de ataque enemigo) siguen sin atenuación propia: es parte de V92.

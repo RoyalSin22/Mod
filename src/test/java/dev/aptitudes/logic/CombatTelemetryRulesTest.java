@@ -90,6 +90,23 @@ class CombatTelemetryRulesTest {
 	}
 
 	@Test
+	void healingSplitsEffectiveFromOverheal() {
+		Sample s = new Sample();
+		s.addHeal(6, 2);
+		s.addHeal(-3, -1); // se ignora
+		s.addHeal(2, 0);
+		assertEquals(8, s.healEffective, 1e-9);
+		assertEquals(2, s.healOver, 1e-9);
+		assertEquals(0.2, s.overhealShare(), 1e-9);
+		assertEquals(0, new Sample().overhealShare(), 0);
+		Sample o = new Sample();
+		o.addHeal(4, 4);
+		s.merge(o);
+		assertEquals(12, s.healEffective, 1e-9);
+		assertEquals(6, s.healOver, 1e-9);
+	}
+
+	@Test
 	void mergeAddsEverything() {
 		Sample a = new Sample();
 		a.addDamage(Kind.ABILITY, 10, false, 0);

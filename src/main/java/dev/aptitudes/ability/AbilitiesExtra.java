@@ -126,7 +126,7 @@ final class AbilitiesExtra {
 			AbilityState.repeat(server(p), 5, 20, i -> {
 				for (PlayerEntity ally : Targeting.playersInSupportArea(p,
 						new Box(center, center).expand(5 + r))) {
-					ally.heal(HerbalistKit.heal(p, 1.0f + 0.5f * r));
+					CombatEvents.heal(p, ally, HerbalistKit.heal(p, 1.0f + 0.5f * r)); // V95
 					HerbalistKit.onHealed(p, ally);
 				}
 			});
@@ -252,7 +252,7 @@ final class AbilitiesExtra {
 			AbilityState.repeat(server(p), 6, 20, i -> {
 				for (LivingEntity e : world(p).getEntitiesByClass(LivingEntity.class, new Box(center, center).expand(radius),
 						LivingEntity::isAlive)) {
-					if (e instanceof PlayerEntity) e.heal(1.0f);
+					if (e instanceof PlayerEntity) CombatEvents.heal(p, e, 1.0f); // V95
 					else if (Targeting.isHostileTo(p, e)) {
 						e.damage(magic(p), (e.getType().isIn(EntityTypeTags.UNDEAD) ? 2 : 1) * (1.5f + 0.5f * r));
 					}
@@ -303,7 +303,7 @@ final class AbilitiesExtra {
 				total += dmg;
 				NecromancerFx.link(p, e); // V88
 			}
-			p.heal(total * 0.5f);
+			CombatEvents.heal(p, p, total * 0.5f); // V95
 			if (targets.isEmpty()) return false;
 			NecromancerFx.siphon(p, 5 + r);
 			return true;

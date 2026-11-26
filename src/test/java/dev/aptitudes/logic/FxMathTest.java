@@ -112,7 +112,8 @@ class FxMathTest {
 				FxIds.HUNTER_MARK, FxIds.HUNTER_TRAP, FxIds.HUNTER_ARROW, FxIds.HUNTER_FALCON, FxIds.BARD_SONG, FxIds.BARD_DISSONANCE,
 				FxIds.WARLOCK_CURSE, FxIds.WARLOCK_PULSE, FxIds.WARLOCK_BOLT, FxIds.WARLOCK_IMPS, FxIds.WARLOCK_DOOM,
 				FxIds.TAMER_COMMAND, FxIds.TAMER_PET, FxIds.TAMER_STAMPEDE,
-				FxIds.ELEMENT_BOLT, FxIds.ELEMENT_ARC, FxIds.ELEMENT_BURST};
+				FxIds.ELEMENT_BOLT, FxIds.ELEMENT_ARC, FxIds.ELEMENT_BURST,
+				FxIds.FEEDBACK_IMPACT, FxIds.FEEDBACK_BLOCK, FxIds.FEEDBACK_HEAL};
 		java.util.Set<Integer> seen = new java.util.HashSet<>();
 		for (int id : ids) {
 			assertTrue(FxIds.valid(id));

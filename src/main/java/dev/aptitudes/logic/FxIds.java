@@ -117,8 +117,14 @@ public final class FxIds {
 	public static final int ELEMENT_ARC = 62;
 	/** Estallido elemental en quien lo lanza; {@code power} = ordinal del elemento y {@code dx} = radio. */
 	public static final int ELEMENT_BURST = 63;
+	/** Feedback común (V95) de un golpe en el punto del evento; {@code power} = ordinal de {@code ImpactFeedbackRules.Kind} y {@code dx} = peso 0–1. */
+	public static final int FEEDBACK_IMPACT = 64;
+	/** Feedback común de un golpe bloqueado con escudo, en el punto del evento. */
+	public static final int FEEDBACK_BLOCK = 65;
+	/** Feedback común de una curación efectiva en el punto del evento; {@code power} = vida recuperada. */
+	public static final int FEEDBACK_HEAL = 66;
 	/** Mayor id válido; el cliente descarta lo desconocido. */
-	public static final int MAX = 63;
+	public static final int MAX = 66;
 
 	private FxIds() {
 	}

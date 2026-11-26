@@ -174,6 +174,7 @@ public final class AbilityManager {
 			// Nigromante Maestro+: la magia de sangre cubre la energía que falta con vida.
 			if (!canUseBloodMagic(data, role)) {
 				fail(player, Text.translatable("aptitudes.ability.no_energy", (int) Math.ceil(payableEnergy)));
+				ImpactFeedback.denied(player); // V95
 				return;
 			}
 			bloodCost = (float) Math.ceil(missingEnergy / ENERGY_PER_HEALTH);

@@ -545,6 +545,36 @@
       "aptitudes:element_dark"
     ]
   },
+  "feedback_heavy": {
+    "subtitle": "subtitles.aptitudes.feedback_heavy",
+    "sounds": [
+      "aptitudes:feedback_heavy"
+    ]
+  },
+  "feedback_crit": {
+    "subtitle": "subtitles.aptitudes.feedback_crit",
+    "sounds": [
+      "aptitudes:feedback_crit"
+    ]
+  },
+  "feedback_block": {
+    "subtitle": "subtitles.aptitudes.feedback_block",
+    "sounds": [
+      "aptitudes:feedback_block"
+    ]
+  },
+  "feedback_heal": {
+    "subtitle": "subtitles.aptitudes.feedback_heal",
+    "sounds": [
+      "aptitudes:feedback_heal"
+    ]
+  },
+  "feedback_denied": {
+    "subtitle": "subtitles.aptitudes.feedback_denied",
+    "sounds": [
+      "aptitudes:feedback_denied"
+    ]
+  },
   "osario_ambient": {
     "subtitle": "subtitles.aptitudes.osario.ambient",
     "sounds": [

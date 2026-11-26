@@ -30,6 +30,9 @@ public final class CombatTelemetryRules {
 		/** Parte del daño total que cayó sobre jugadores (PvP). */
 		public double pvpDamage;
 		public int casts;
+		/** Curación que subió vida de verdad y la que sobró (sobrecuración), de las habilidades que usan el punto común. */
+		public double healEffective;
+		public double healOver;
 		public double energySpent;
 		public int kills;
 		public double hpKilled;
@@ -52,6 +55,17 @@ public final class CombatTelemetryRules {
 			if (lastHitTick == Long.MIN_VALUE || gap > IDLE_TICKS || gap < 0) activeTicks += OPENING_TICKS;
 			else activeTicks += gap;
 			lastHitTick = tick;
+		}
+
+		public void addHeal(double effective, double over) {
+			if (effective > 0) healEffective += effective;
+			if (over > 0) healOver += over;
+		}
+
+		/** Parte de la curación aplicada que se desperdició, entre 0 y 1. */
+		public double overhealShare() {
+			double total = healEffective + healOver;
+			return total <= 0 ? 0 : healOver / total;
 		}
 
 		public void addCast(double energy) {
@@ -122,6 +136,8 @@ public final class CombatTelemetryRules {
 			summonDamage += other.summonDamage;
 			pvpDamage += other.pvpDamage;
 			casts += other.casts;
+			healEffective += other.healEffective;
+			healOver += other.healOver;
 			energySpent += other.energySpent;
 			kills += other.kills;
 			hpKilled += other.hpKilled;

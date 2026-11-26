@@ -116,6 +116,9 @@ public final class FxClient {
 			case FxIds.ELEMENT_BOLT -> ElementClientFx.bolt(world, p);
 			case FxIds.ELEMENT_ARC -> ElementClientFx.arc(world, p);
 			case FxIds.ELEMENT_BURST -> ElementClientFx.burst(world, p);
+			case FxIds.FEEDBACK_IMPACT -> FeedbackClientFx.impact(world, p);
+			case FxIds.FEEDBACK_BLOCK -> FeedbackClientFx.block(world, p);
+			case FxIds.FEEDBACK_HEAL -> FeedbackClientFx.heal(world, p);
 			default -> { }
 		}
 	}

@@ -115,7 +115,7 @@ public final class Abilities {
 		register("balm", (p, r) -> {
 			var allies = Targeting.playersAround(p, 6);
 			for (PlayerEntity ally : allies) {
-				ally.heal(HerbalistKit.heal(p, 2 + 2 * r));
+				CombatEvents.heal(p, ally, HerbalistKit.heal(p, 2 + 2 * r)); // V95
 				HerbalistKit.onHealed(p, ally);
 				effect(ally, StatusEffects.REGENERATION, 100, 0);
 			}

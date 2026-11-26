@@ -49,6 +49,10 @@ public final class CombatEvents {
 
 		default void onKill(ServerPlayerEntity player, LivingEntity victim, int tick) {
 		}
+
+		/** Una curación aplicada con {@link CombatEvents#heal}: {@code effective} es lo que subió la vida, {@code over} lo que sobró. */
+		default void onHeal(ServerPlayerEntity healer, LivingEntity target, double effective, double over, int tick) {
+		}
 	}
 
 	private static final List<Listener> LISTENERS = new ArrayList<>();
@@ -103,6 +107,29 @@ public final class CombatEvents {
 				Aptitudes.LOGGER.error("Error en un oyente de combate (lanzamiento)", e);
 			}
 		}
+	}
+
+	/**
+	 * V95: cura a {@code target} y avisa a los oyentes de cuánto fue curación efectiva y cuánto sobrecuración. Es el punto común para las
+	 * habilidades de curación; si no se usa, la curación funciona igual pero no cuenta en la telemetría ni da señal.
+	 *
+	 * @return la curación efectiva (puntos de vida que subieron de verdad)
+	 */
+	public static double heal(ServerPlayerEntity healer, LivingEntity target, float amount) {
+		float before = target.getHealth();
+		target.heal(amount);
+		double effective = dev.aptitudes.logic.ImpactFeedbackRules.effectiveHeal(before, target.getMaxHealth(), amount);
+		double over = dev.aptitudes.logic.ImpactFeedbackRules.overheal(before, target.getMaxHealth(), amount);
+		if (healer.getServer() == null) return effective;
+		int tick = healer.getServer().getTicks();
+		for (Listener l : LISTENERS) {
+			try {
+				l.onHeal(healer, target, effective, over, tick);
+			} catch (RuntimeException e) {
+				Aptitudes.LOGGER.error("Error en un oyente de combate (curación)", e);
+			}
+		}
+		return effective;
 	}
 
 	public static void register() {

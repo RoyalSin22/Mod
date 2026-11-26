@@ -67,6 +67,11 @@ public final class CombatTelemetry implements CombatEvents.Listener {
 	}
 
 	@Override
+	public void onHeal(ServerPlayerEntity healer, LivingEntity target, double effective, double over, int tick) {
+		sampleOf(healer).addHeal(effective, over);
+	}
+
+	@Override
 	public void onKill(ServerPlayerEntity player, LivingEntity victim, int tick) {
 		FirstHit first = firstHits.remove(victim.getUuid());
 		long ttk = first != null && first.attacker().equals(player.getUuid()) ? tick - first.tick() : -1;

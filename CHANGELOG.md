@@ -33,6 +33,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   PNG a mano tras ejecutar `gen_items.py`. Los mundos antiguos conservan, inofensivo, el archivo de datos de `SummonState`. Sin cambios de balance.
 
 ### Añadido
+- **V95 — Feedback compartido de combate.** Un lenguaje común de señales, igual para los 20 roles, en `ability/ImpactFeedback`: golpe de
+  habilidad (chispas del color del rol), **golpe pesado** (≥ 20 % de la vida de la víctima o ≥ 8 de daño: ráfaga, anillo y golpe grave),
+  **crítico** vanilla (destello y estrella con acento agudo), **bloqueo con escudo** (chispas metálicas y choque), **curación efectiva**
+  (ascenso de luz verde y nota cálida) y **recurso insuficiente** (golpecito discreto solo para quien lo intenta). Los golpes vanilla
+  normales y el daño de invocaciones no dan señal, para no saturar. La curación pasa por `CombatEvents.heal`, que distingue **curación
+  efectiva** de **sobrecuración** y las suma a la telemetría (`curación X (Y % sobra)` en `/aptitudes telemetry`); la usan Bálsamo, Lluvia
+  sanadora, Consagración y Sifón de almas. Opción de cliente `impactFeedback` (activada) para apagarlo; se escala con `fxIntensity`.
+  Cinco sonidos sintetizados con subtítulos en los 11 idiomas. **Sin ver en partida.**
 - **V94 — Presupuesto de invocaciones y daño autónomo atribuido.** Cada jugador tiene un presupuesto de puntos de invocación (opción
   `summonBudget`, 16 por defecto, 0 = sin límite): esbirro y esqueleto 2, diablillo 1, lobo 3, golem y torreta 4. La suma de las activas
   de **cualquier rol** no puede pasar del presupuesto: al lanzar una nueva se retiran las más antiguas hasta que quepa, y la nueva

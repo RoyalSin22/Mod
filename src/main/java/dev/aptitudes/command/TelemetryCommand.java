@@ -36,9 +36,9 @@ public final class TelemetryCommand {
 
 	private static String line(String name, Sample s) {
 		return String.format(Locale.ROOT,
-				"%s: %.1f dps · %.0f %% habilidad (%.0f %% derivada) · %.0f %% autónomo · %.2f dmg/energía · %d bajas · %.1f s por baja · %.1f vida/s · PvP %.0f · %d usos",
+				"%s: %.1f dps · %.0f %% habilidad (%.0f %% derivada) · %.0f %% autónomo · %.2f dmg/energía · %d bajas · %.1f s por baja · %.1f vida/s · PvP %.0f · curación %.0f (%.0f %% sobra) · %d usos",
 				name, s.dps(), s.abilityShare() * 100, s.derivedShare() * 100, s.summonShare() * 100, s.damagePerEnergy(), s.kills,
-				s.averageTimeToKillSeconds(), s.hpKilledPerSecond(), s.pvpDamage, s.casts);
+				s.averageTimeToKillSeconds(), s.hpKilledPerSecond(), s.pvpDamage, s.healEffective, s.overhealShare() * 100, s.casts);
 	}
 
 	private static int me(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {

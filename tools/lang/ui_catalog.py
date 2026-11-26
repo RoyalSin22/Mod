@@ -1883,6 +1883,11 @@ subtitles.aptitudes.element_wind¦Uma rajada sopra¦Une rafale souffle¦Eine Bö
 subtitles.aptitudes.element_water¦A água respinga¦L'eau éclabousse¦Wasser spritzt
 subtitles.aptitudes.element_magic¦Sinos brilhantes soam¦Des carillons brillants tintent¦Helle Glocken klingen
 subtitles.aptitudes.element_dark¦A escuridão pulsa¦L'obscurité palpite¦Die Dunkelheit pulsiert
+subtitles.aptitudes.feedback_heavy¦Um golpe pesado acerta¦Un coup lourd frappe¦Ein schwerer Schlag trifft
+subtitles.aptitudes.feedback_crit¦Um golpe crítico¦Un coup critique¦Ein kritischer Treffer
+subtitles.aptitudes.feedback_block¦Um golpe é bloqueado¦Un coup est paré¦Ein Schlag wird geblockt
+subtitles.aptitudes.feedback_heal¦A cura faz efeito¦Un soin fait effet¦Eine Heilung wirkt
+subtitles.aptitudes.feedback_denied¦Falta energia¦Pas assez d'énergie¦Nicht genug Energie
 entity.aptitudes.custodio_cuatro_llaves¦O Custódio das Quatro Chaves¦Le Gardien des Quatre Clés¦Der Wächter der vier Schlüssel
 item.aptitudes.faceless_colossus_spawn_egg¦Ovo gerador do Colosso Sem Rosto¦Œuf d'apparition du Colosse sans visage¦Spawn-Ei des gesichtslosen Kolosses
 bestiary.aptitudes.faceless_colossus.tip¦Guerreiro gigante com espadão. Anuncia um golpe amplo e um golpe descendente com onda: saia do círculo marcado. Com metade da vida sua armadura racha: fica mais rápido, investe de longe e recebe mais dano.¦Guerrier géant armé d'une grande épée. Il annonce un large balayage et un coup plongeant avec onde de choc : sortez du cercle marqué. À mi-vie son armure se fissure : il va plus vite, charge de loin et subit plus de dégâts.¦Riesiger Krieger mit Zweihänder. Er kündigt einen weiten Hieb und einen Abwärtsschlag mit Schockwelle an: Verlasse den markierten Kreis. Bei halber Lebenskraft bricht seine Rüstung: Er wird schneller, stürmt aus der Ferne an und erleidet mehr Schaden.
