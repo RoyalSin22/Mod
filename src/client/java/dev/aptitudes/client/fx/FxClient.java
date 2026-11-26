@@ -119,6 +119,8 @@ public final class FxClient {
 			case FxIds.FEEDBACK_IMPACT -> FeedbackClientFx.impact(world, p);
 			case FxIds.FEEDBACK_BLOCK -> FeedbackClientFx.block(world, p);
 			case FxIds.FEEDBACK_HEAL -> FeedbackClientFx.heal(world, p);
+			case FxIds.GRAND_SIGNATURE -> GrandClientFx.signature(world, p);
+			case FxIds.GRAND_ULTIMATE -> GrandClientFx.ultimate(world, p);
 			default -> { }
 		}
 	}

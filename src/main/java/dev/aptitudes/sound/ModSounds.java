@@ -114,6 +114,12 @@ public final class ModSounds {
 	public static final SoundEvent FEEDBACK_BLOCK = register("feedback_block");
 	public static final SoundEvent FEEDBACK_HEAL = register("feedback_heal");
 	public static final SoundEvent FEEDBACK_DENIED = register("feedback_denied");
+	public static final SoundEvent GRAND_BERSERKER = register("grand_berserker");
+	public static final SoundEvent GRAND_ELEMENTALIST = register("grand_elementalist");
+	public static final SoundEvent GRAND_SHAPESHIFTER = register("grand_shapeshifter");
+	public static final SoundEvent GRAND_PALADIN = register("grand_paladin");
+	public static final SoundEvent GRAND_ENGINEER = register("grand_engineer");
+	public static final SoundEvent GRAND_RUMBLE = register("grand_rumble");
 
 	private ModSounds() {
 	}

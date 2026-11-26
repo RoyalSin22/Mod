@@ -179,3 +179,10 @@ limita la frecuencia por atacante, víctima y jugador para que una ráfaga de go
   seguimiento del enfriamiento de la definitiva; se dejan para V92/V96.
 - La detección del crítico es una aproximación de la regla vanilla (no hay evento de crítico).
 - Las señales funcionales (aviso de ataque enemigo) siguen sin atenuación propia: es parte de V92.
+
+## 9. Estado de V96 (2026-11-26) — 1.ª tanda
+
+- Hecho: firma y definitiva de los cinco pilotos con gesto de cuerpo, encuadre de partículas, cámara y sonido propios (`GrandFx`, `GrandClientFx`, ids 67–68,
+  `grand.json`, 6 sonidos). Documentado en `docs/V77_EFECTOS_BATALLA.md` (fase 11).
+- Pendiente de V96: piedras angulares, firmas/definitivas de los otros 15 roles, evoluciones Maestro/Definitiva y los 10 nodos extra.
+- Limitaciones: sin probar en partida; la Baliza del Ingeniero no distingue «fijar» de «teletransportar»; los sonidos solo están medidos.

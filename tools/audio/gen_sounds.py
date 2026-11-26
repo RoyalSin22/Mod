@@ -1148,6 +1148,68 @@ def feedback_denied(rng):
     return fade_out(normalize(out, 0.55), 0.04)
 
 
+# ---------------------------------------------------------------- Firmas y definitivas de los roles piloto (V96)
+
+def grand_berserker(rng):
+    """Bersérker: rugido grave que se rompe, con golpe de tambor."""
+    t = t_axis(1.3)
+    f = 120 + 50 * np.sin(np.pi * np.clip(t / 1.0, 0, 1)) + 7 * np.sin(2 * np.pi * 9 * t)
+    ph = 2 * np.pi * np.cumsum(f) / RATE
+    roar = (np.sin(ph) + 0.6 * np.sin(2 * ph) + 0.4 * np.sin(3 * ph)) * (0.55 + 0.45 * np.sin(2 * np.pi * 28 * t)) * env(t, 0.05, 0.5)
+    drum = np.sin(2 * np.pi * (85 * np.exp(-t * 9) + 38) * t) * env(t, 0.002, 0.3) * 1.1
+    grit = _soft_air(rng, len(t), 300, 3500) * env(t, 0.02, 0.25) * 0.4
+    return fade_out(normalize(roar * 0.6 + drum + grit, 0.86), 0.2)
+
+
+def grand_elementalist(rng):
+    """Elementalista: acorde brillante de campanas con barrido de elementos."""
+    t = t_axis(1.4)
+    out = np.zeros(len(t))
+    for k, f in enumerate((523.3, 659.3, 784.0, 1046.5)):
+        tt = np.maximum(t - 0.06 * k, 0)
+        out += _bell(tt, f, [(1.0, 0.5), (2.0, 0.25), (3.0, 0.12)], 0.8) * (t >= 0.06 * k)
+    sweep = np.sin(2 * np.pi * np.cumsum(300 + 1800 * np.clip(t / 0.9, 0, 1) ** 2) / RATE) * env(t, 0.1, 0.4) * 0.25
+    air = _soft_air(rng, len(t), 1500, 7000) * env(t, 0.15, 0.4) * 0.15
+    return fade_out(normalize(out + sweep + air, 0.8), 0.25)
+
+
+def grand_shapeshifter(rng):
+    """Cambiaformas: transformación orgánica, burbujeo húmedo y gruñido que cae."""
+    t = t_axis(1.3)
+    wet = _soft_air(rng, len(t), 150, 1500) * (0.5 + 0.5 * np.sin(2 * np.pi * 11 * t)) * env(t, 0.05, 0.5) * 0.7
+    growl = np.sin(2 * np.pi * np.cumsum(260 - 150 * np.clip(t / 1.0, 0, 1)) / RATE) * (np.sin(2 * np.pi * 34 * t) > -0.2) * env(t, 0.1, 0.5) * 0.5
+    crack = _soft_air(rng, len(t), 800, 5000) * env(t, 0.003, 0.05) * 0.5
+    return fade_out(normalize(wet + growl + crack, 0.82), 0.2)
+
+
+def grand_paladin(rng):
+    """Paladín: campana mayor con un coro luminoso."""
+    t = t_axis(1.6)
+    bell = _bell(t, 392.0, [(1.0, 0.9), (2.0, 0.5), (3.01, 0.35), (4.2, 0.2)], 1.2) * 1.0
+    choir = sum(np.sin(2 * np.pi * f * t) * env(t, 0.3, 0.7) for f in (196.0, 246.9, 293.7, 392.0)) * 0.22
+    shimmer = _bell(t, 1568.0, [(1.0, 0.4), (1.5, 0.25)], 0.9) * 0.3
+    return fade_out(normalize(bell + choir + shimmer, 0.82), 0.3)
+
+
+def grand_engineer(rng):
+    """Ingeniero: servo que sube, golpe de engranaje y descarga eléctrica."""
+    t = t_axis(1.2)
+    whine = np.sin(2 * np.pi * np.cumsum(220 + 1400 * np.clip(t / 0.55, 0, 1) ** 1.5) / RATE) * env(t, 0.05, 0.3) * 0.35 * (t < 0.7)
+    hit_t = np.maximum(t - 0.55, 0)
+    clank = _bell(hit_t, 520, [(1.0, 0.7), (2.7, 0.5), (4.5, 0.3)], 0.2) * (t >= 0.55) * 0.7
+    boom = np.sin(2 * np.pi * (120 * np.exp(-hit_t * 12) + 45) * hit_t) * env(hit_t, 0.002, 0.2) * 0.9 * (t >= 0.55)
+    zap = _soft_air(rng, len(t), 2000, 8000) * env(hit_t, 0.001, 0.05) * 0.5 * (t >= 0.55)
+    return fade_out(normalize(whine + clank + boom + zap, 0.84), 0.2)
+
+
+def grand_rumble(rng):
+    """Retumbo común de las definitivas: subgrave que crece y se apaga."""
+    t = t_axis(1.8)
+    sub = np.sin(2 * np.pi * (55 + 12 * np.sin(np.pi * np.clip(t / 1.6, 0, 1))) * t) * env(t, 0.5, 0.7) * 1.0
+    air = _soft_air(rng, len(t), 60, 700) * env(t, 0.4, 0.6) * 0.5
+    return fade_out(normalize(sub + air, 0.8), 0.4)
+
+
 SOUNDS = {
     'eclipse_announce': eclipse_announce,
     'eclipse_start': eclipse_start,
@@ -1255,6 +1317,12 @@ SOUNDS = {
     'feedback_block': feedback_block,
     'feedback_heal': feedback_heal,
     'feedback_denied': feedback_denied,
+    'grand_berserker': grand_berserker,
+    'grand_elementalist': grand_elementalist,
+    'grand_shapeshifter': grand_shapeshifter,
+    'grand_paladin': grand_paladin,
+    'grand_engineer': grand_engineer,
+    'grand_rumble': grand_rumble,
 }
 
 

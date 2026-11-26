@@ -63,6 +63,9 @@ public final class PlayerAnimIds {
 	public static final String TAMER_STAMPEDE = "tamer_stampede";
 	public static final String ELEMENT_BOLT = "elementalist_bolt";
 	public static final String ELEMENT_BURST = "elementalist_burst";
+	/** V96: gesto compartido de las firmas y de las definitivas de los roles piloto. */
+	public static final String GRAND_SIGNATURE = "grand_signature";
+	public static final String GRAND_ULTIMATE = "grand_ultimate";
 
 	/**
 	 * Tick (20 por segundo) en que cada animación llega a su golpe. Los efectos de partículas, cámara y pantalla se retrasan esos ticks
@@ -78,7 +81,8 @@ public final class PlayerAnimIds {
 			Map.entry(NECRO_SPEAR, 4), Map.entry(NECRO_SIPHON, 4), Map.entry(DRUID_WOLVES, 5), Map.entry(DRUID_THORNS, 4), Map.entry(MERCHANT_COIN, 3), Map.entry(MERCHANT_GUARD, 4), Map.entry(MONK_KICK, 3), Map.entry(MONK_FISTS, 2),
 			Map.entry(GUNSLINGER_SHOT, 2), Map.entry(GUNSLINGER_DEADEYE, 4), Map.entry(WEAPON_SUMMON, 4), Map.entry(WEAPON_GREATSWORD, 4), Map.entry(SHAPE_POUNCE, 3), Map.entry(SHAPE_HOWL, 5),
 			Map.entry(HUNTER_MARK, 3), Map.entry(HUNTER_TRAP, 3), Map.entry(HUNTER_VOLLEY, 4), Map.entry(HUNTER_FALCON, 4), Map.entry(BARD_SONG, 4), Map.entry(BARD_DISSONANCE, 3), Map.entry(WARLOCK_CURSE, 3), Map.entry(WARLOCK_BOLT, 3), Map.entry(WARLOCK_IMPS, 5), Map.entry(WARLOCK_DOOM, 4), Map.entry(TAMER_COMMAND, 4), Map.entry(TAMER_STAMPEDE, 3),
-			Map.entry(ELEMENT_BOLT, 3), Map.entry(ELEMENT_BURST, 4));
+			Map.entry(ELEMENT_BOLT, 3), Map.entry(ELEMENT_BURST, 4),
+			Map.entry(GRAND_SIGNATURE, 5), Map.entry(GRAND_ULTIMATE, 8));
 
 	public static final List<String> ALL = List.of(BERSERKER_RAGE, BERSERKER_WAR_CRY, BERSERKER_LEAP, BERSERKER_SLAM, BERSERKER_WHIRL,
 			MAGE_BOLT, MAGE_BLINK, MAGE_TIME_WARP, MAGE_MISSILE_RIGHT, MAGE_MISSILE_LEFT, ASSASSIN_VANISH, ASSASSIN_STEP, ASSASSIN_FAN, ASSASSIN_SHURIKEN,
@@ -88,7 +92,8 @@ public final class PlayerAnimIds {
 			NECRO_SPEAR, NECRO_SIPHON, DRUID_WOLVES, DRUID_THORNS, MERCHANT_COIN, MERCHANT_GUARD, MONK_KICK, MONK_FISTS,
 			GUNSLINGER_SHOT, GUNSLINGER_DEADEYE, WEAPON_SUMMON, WEAPON_GREATSWORD, SHAPE_POUNCE, SHAPE_HOWL,
 			HUNTER_MARK, HUNTER_TRAP, HUNTER_VOLLEY, HUNTER_FALCON, BARD_SONG, BARD_DISSONANCE, WARLOCK_CURSE, WARLOCK_BOLT, WARLOCK_IMPS, WARLOCK_DOOM, TAMER_COMMAND, TAMER_STAMPEDE,
-			ELEMENT_BOLT, ELEMENT_BURST);
+			ELEMENT_BOLT, ELEMENT_BURST,
+			GRAND_SIGNATURE, GRAND_ULTIMATE);
 
 	private PlayerAnimIds() {
 	}

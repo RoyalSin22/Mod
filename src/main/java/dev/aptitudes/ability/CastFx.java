@@ -59,6 +59,13 @@ public final class CastFx {
 	}
 
 	public static void onCast(ServerPlayerEntity player, Role role, Kind kind) {
+		// V96: firma y definitiva de los roles piloto con guion propio (sustituye al efecto genérico).
+		if ((kind == Kind.SIGNATURE || kind == Kind.ULTIMATE) && GrandFx.handles(role, kind == Kind.ULTIMATE)) {
+			player.swingHand(net.minecraft.util.Hand.MAIN_HAND, true);
+			if (kind == Kind.ULTIMATE) GrandFx.ultimate(player, role);
+			else GrandFx.signature(player, role);
+			return;
+		}
 		ServerWorld world = player.getServerWorld();
 		int color = colorOf(player, role);
 		DustParticleEffect dust = ParticleFx.dust(color, kind == Kind.ACTIVE ? 1.0f : 1.6f);

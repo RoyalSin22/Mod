@@ -33,6 +33,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   PNG a mano tras ejecutar `gen_items.py`. Los mundos antiguos conservan, inofensivo, el archivo de datos de `SummonState`. Sin cambios de balance.
 
 ### Añadido
+- **V96 (1.ª tanda) — Firmas y definitivas de los cinco roles piloto.** Bersérker, Elementalista, Cambiaformas, Paladín e Ingeniero tienen guion
+  propio para la firma (Z) y la definitiva (R): gesto de cuerpo nuevo (`grand_signature`, `grand_ultimate`), carga de energía, anillos de choque,
+  motivo de partículas por rol, pilar en la definitiva, cámara/FOV/viñeteado y sonido propio (`grand_*` más un retumbo común). Un único evento
+  (`FxIds.GRAND_SIGNATURE`/`GRAND_ULTIMATE`) desde `ability/GrandFx`, enganchado en `CastFx.onCast`; dibuja `client/fx/GrandClientFx`. Las partículas del
+  mundo que ya hacían las firmas y definitivas se conservan. Sin cambios de balance. **Sin probar en partida** (sonidos solo medidos, no oídos).
+  Quedan: piedras angulares, los otros 15 roles, evoluciones y nodos extra; la Baliza del Ingeniero aún no distingue colocar/teletransportar.
 - **V95 — Feedback compartido de combate.** Un lenguaje común de señales, igual para los 20 roles, en `ability/ImpactFeedback`: golpe de
   habilidad (chispas del color del rol), **golpe pesado** (≥ 20 % de la vida de la víctima o ≥ 8 de daño: ráfaga, anillo y golpe grave),
   **crítico** vanilla (destello y estrella con acento agudo), **bloqueo con escudo** (chispas metálicas y choque), **curación efectiva**

@@ -41,7 +41,7 @@ El plan completo, con hallazgos y decisiones, está en `docs/PLAN_IDENTIDAD_ROLE
 2. **V93 (resto):** curación efectiva y esmeraldas consumidas en la telemetría; migrar los `*Kit` al bus; persistir si hace falta.
 3. ~~**V94 – Presupuesto de invocaciones**~~ **Hecha el 2026-11-26** (ver `PLAN_IDENTIDAD_ROLES.md` §7): `summonBudget` y daño autónomo atribuido.
 4. ~~**V95 – Feedback compartido**~~ **Hecha el 2026-11-26** (ver `PLAN_IDENTIDAD_ROLES.md` §8). Pendiente de ella: «recurso completo» y «definitiva lista» (HUD).
-5. **V96 – Efectos para firmas, definitivas y piedras angulares**, y luego evoluciones y los 10 nodos extra. Hoy solo las activas base tienen
+5. **V96 – Efectos (1.ª tanda hecha el 2026-11-26: firmas y definitivas de los 5 pilotos; faltan piedras angulares y el resto) para firmas, definitivas y piedras angulares**, y luego evoluciones y los 10 nodos extra. Hoy solo las activas base tienen
    guion propio; el resto usa el efecto genérico (`CastFx`).
 6. **V97 – Posturas de combate** (piloto con Bersérker, Lancero, Monje y Mago).
 7. **V98 – Identidad mecánica en pilotos** (Bersérker, Elementalista, Cambiaformas, Paladín, Ingeniero): primero un inventario de los recursos

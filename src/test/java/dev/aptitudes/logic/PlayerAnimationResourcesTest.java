@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /** V78: los archivos de animación del jugador los acepta el cargador real de PAL y coinciden con los nombres del código. */
 class PlayerAnimationResourcesTest {
-	private static final List<String> FILES = List.of("berserker.json", "mage.json", "assassin.json", "herbalist.json", "engineer.json", "lancer.json", "swordsman.json", "paladin.json", "necromancer.json", "druid.json", "merchant.json", "monk.json", "gunslinger.json", "weaponsummoner.json", "shapeshifter.json", "hunter.json", "bard.json", "warlock.json", "tamer.json", "elementalist.json");
+	private static final List<String> FILES = List.of("berserker.json", "mage.json", "assassin.json", "herbalist.json", "engineer.json", "lancer.json", "swordsman.json", "paladin.json", "necromancer.json", "druid.json", "merchant.json", "monk.json", "gunslinger.json", "weaponsummoner.json", "shapeshifter.json", "hunter.json", "bard.json", "warlock.json", "tamer.json", "elementalist.json", "grand.json");
 	private static final Set<String> BONES = Set.of("head", "torso", "body", "right_arm", "left_arm", "right_leg", "left_leg");
 
 	private static InputStream open(String file) {

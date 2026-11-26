@@ -214,6 +214,19 @@ Identidad de taller: naranja y cian, chispas, cable y esquirlas de hierro. Cubre
 - **Queda sin cubrir** el Elementalista (efectos por elemento).
 - **No verificado en partida:** aspecto, sincronía y rendimiento (la Lluvia de flechas y las espirales del Bardo son lo más cargado).
 
+## Fase 11: Firmas y definitivas de los roles piloto (V96, 1.ª tanda)
+
+`GrandFx` (servidor) + `GrandClientFx` (cliente); ids 67 (firma) y 68 (definitiva), `power` = ordinal del rol, `dx` = variante (elemento activo del Elementalista).
+Animaciones `grand_signature` (tick 5) y `grand_ultimate` (tick 8) en `grand.json`; sonidos `grand_berserker|elementalist|shapeshifter|paladin|engineer` y `grand_rumble` (solo definitivas).
+
+| Rol | Motivo visual | Sonido |
+|---|---|---|
+| Bersérker | Lava y llamas que suben del suelo | Rugido grave con tambor |
+| Elementalista | Lluvia de destellos con el color del elemento | Acorde de campanas |
+| Cambiaformas | Esporas y mutación sobre el cuerpo | Burbujeo y gruñido |
+| Paladín | Halo y cera dorada ascendente | Campana mayor y coro |
+| Ingeniero | Chispas eléctricas dispersas | Servo, engranaje y descarga |
+
 ## Fase 10: Elementalista (V91)
 
 Los efectos se enganchan en `ElementEffects.bolt` y `burst`, no en cada activa, así que el Proyectil, el Estallido, la Ráfaga (3 proyectiles),

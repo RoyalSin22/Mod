@@ -123,8 +123,12 @@ public final class FxIds {
 	public static final int FEEDBACK_BLOCK = 65;
 	/** Feedback común de una curación efectiva en el punto del evento; {@code power} = vida recuperada. */
 	public static final int FEEDBACK_HEAL = 66;
+	/** Firma de un rol piloto (V96) en quien la usa; {@code power} = ordinal del rol y {@code dx} = variante (elemento del Elementalista, 0/1 de la Baliza). */
+	public static final int GRAND_SIGNATURE = 67;
+	/** Definitiva de un rol piloto (V96) en quien la usa; {@code power} = ordinal del rol y {@code dx} = variante. */
+	public static final int GRAND_ULTIMATE = 68;
 	/** Mayor id válido; el cliente descarta lo desconocido. */
-	public static final int MAX = 66;
+	public static final int MAX = 68;
 
 	private FxIds() {
 	}

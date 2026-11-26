@@ -575,6 +575,42 @@
       "aptitudes:feedback_denied"
     ]
   },
+  "grand_berserker": {
+    "subtitle": "subtitles.aptitudes.grand_berserker",
+    "sounds": [
+      "aptitudes:grand_berserker"
+    ]
+  },
+  "grand_elementalist": {
+    "subtitle": "subtitles.aptitudes.grand_elementalist",
+    "sounds": [
+      "aptitudes:grand_elementalist"
+    ]
+  },
+  "grand_shapeshifter": {
+    "subtitle": "subtitles.aptitudes.grand_shapeshifter",
+    "sounds": [
+      "aptitudes:grand_shapeshifter"
+    ]
+  },
+  "grand_paladin": {
+    "subtitle": "subtitles.aptitudes.grand_paladin",
+    "sounds": [
+      "aptitudes:grand_paladin"
+    ]
+  },
+  "grand_engineer": {
+    "subtitle": "subtitles.aptitudes.grand_engineer",
+    "sounds": [
+      "aptitudes:grand_engineer"
+    ]
+  },
+  "grand_rumble": {
+    "subtitle": "subtitles.aptitudes.grand_rumble",
+    "sounds": [
+      "aptitudes:grand_rumble"
+    ]
+  },
   "osario_ambient": {
     "subtitle": "subtitles.aptitudes.osario.ambient",
     "sounds": [

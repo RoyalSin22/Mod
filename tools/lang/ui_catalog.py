@@ -1888,6 +1888,12 @@ subtitles.aptitudes.feedback_crit¦Um golpe crítico¦Un coup critique¦Ein krit
 subtitles.aptitudes.feedback_block¦Um golpe é bloqueado¦Un coup est paré¦Ein Schlag wird geblockt
 subtitles.aptitudes.feedback_heal¦A cura faz efeito¦Un soin fait effet¦Eine Heilung wirkt
 subtitles.aptitudes.feedback_denied¦Falta energia¦Pas assez d'énergie¦Nicht genug Energie
+subtitles.aptitudes.grand_berserker¦O rugido de um berserker sacode o ar¦Le rugissement d'un berserker secoue l'air¦Das Brüllen eines Berserkers erschüttert die Luft
+subtitles.aptitudes.grand_elementalist¦Os elementos convergem¦Les éléments convergent¦Die Elemente vereinen sich
+subtitles.aptitudes.grand_shapeshifter¦Carne e osso se transformam¦La chair et l'os changent¦Fleisch und Knochen wandeln sich
+subtitles.aptitudes.grand_paladin¦Um sino sagrado toca¦Une cloche sacrée sonne¦Eine heilige Glocke läutet
+subtitles.aptitudes.grand_engineer¦A maquinaria ruge¦La machinerie rugit¦Die Maschinerie dröhnt
+subtitles.aptitudes.grand_rumble¦O chão ribomba¦Le sol gronde¦Der Boden grollt
 entity.aptitudes.custodio_cuatro_llaves¦O Custódio das Quatro Chaves¦Le Gardien des Quatre Clés¦Der Wächter der vier Schlüssel
 item.aptitudes.faceless_colossus_spawn_egg¦Ovo gerador do Colosso Sem Rosto¦Œuf d'apparition du Colosse sans visage¦Spawn-Ei des gesichtslosen Kolosses
 bestiary.aptitudes.faceless_colossus.tip¦Guerreiro gigante com espadão. Anuncia um golpe amplo e um golpe descendente com onda: saia do círculo marcado. Com metade da vida sua armadura racha: fica mais rápido, investe de longe e recebe mais dano.¦Guerrier géant armé d'une grande épée. Il annonce un large balayage et un coup plongeant avec onde de choc : sortez du cercle marqué. À mi-vie son armure se fissure : il va plus vite, charge de loin et subit plus de dégâts.¦Riesiger Krieger mit Zweihänder. Er kündigt einen weiten Hieb und einen Abwärtsschlag mit Schockwelle an: Verlasse den markierten Kreis. Bei halber Lebenskraft bricht seine Rüstung: Er wird schneller, stürmt aus der Ferne an und erleidet mehr Schaden.
