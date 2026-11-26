@@ -13,7 +13,7 @@ puede recorrerlo en el orden que quiera, pero **no entra a la Torre del Mariscal
 
 | Parte | Propuesta | Nota |
 |---|---|---|
-| Huella total | ~96 × 96 (rango a discutir: 80–128) | hoy 31 × 31 |
+| Huella total | **~128 × 128 (tope 160)**, decisión del autor (propuesta inicial: 96) | hoy 31 × 31 |
 | Torres de Vigilancia | 2, en vértices opuestos del recinto, ~13 × 13 y ~38 de alto | atalayas con sala de vigía arriba |
 | Torre del Mariscal | 1, al fondo, ~17 × 17 y ~64 de alto | la más alta; silueta inconfundible desde 100+ bloques |
 | Distancia entre torres | 45–60 bloques | recorridos por el recinto, murallas y puentes |
@@ -106,10 +106,10 @@ Dificultad alta, como ya decidió el autor. **El orden de las torres de vigilanc
 
 | Tema | Decisión |
 |---|---|
-| Escala | **Grande** (~96×96; rango 80–128 que concretará Codex) |
-| Cuartos imprescindibles | **Dormitorios**, **barbacana**, **sala de estudio** (biblioteca), **sala de botín** (cámara del tesoro; Codex confirma si es la cámara del Coloso o una aparte), **cofres ocultos repartidos** por toda la estructura, **monasterio o lugar de rezo**, **ala de pociones y encantamientos** (alquimia y mesa de encantamiento, en línea con las habilidades Encantamiento y la alquimia v42). Los demás (baño, comedor, cocina, armería, calabozos) quedan como decoración y relleno opcionales |
+| Escala | **Aún más grande que lo propuesto** (2026-11-26): objetivo **~128×128**, tope **160×160** (unos 64–100 chunks); Codex concreta la cifra final y mide el coste de generación |
+| Cuartos imprescindibles | **Dormitorios**, **barbacana**, **sala de estudio** (biblioteca), **sala de botín** (cámara del tesoro, confirmado por el autor), **cofres ocultos repartidos** por toda la estructura, **monasterio o lugar de rezo**, **ala de pociones y encantamientos** (alquimia y mesa de encantamiento, en línea con la habilidad Encantamiento y la alquimia v42; confirmado por el autor). Los demás (baño, comedor, cocina, armería, calabozos) quedan como decoración y relleno opcionales |
 | Capilla / monasterio con mini-jefe | **Sí, opcional**, un **élite o campeón** del sistema `elite/` (armadura visible), **sin poder nuevo** y sin recompensa de poder |
 | Botín | **El principal, tras el Coloso**; además **cofres repartidos durante toda la estructura** (algunos **ocultos**) |
-| Método de generación | **Pendiente de elegir** entre plano puro por columna (A, recomendada) y estructura propia (B); explicado en §3 |
+| Método de generación | **Opción A: plano puro por columna** (clase pura `FortressLayout` con JUnit, evaluada por chunk desde el origen de `RegionGridPlacement`); descartada la estructura propia (B) |
 
 Los cofres repartidos no deben dar poder nuevo ni saltarse el balance: materiales, comida, pergaminos, fragmentos de alma, frascos y piezas de botín ya existentes.
