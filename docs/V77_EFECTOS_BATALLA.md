@@ -227,6 +227,23 @@ Animaciones `grand_signature` (tick 5) y `grand_ultimate` (tick 8) en `grand.jso
 | Paladín | Halo y cera dorada ascendente | Campana mayor y coro |
 | Ingeniero | Chispas eléctricas dispersas | Servo, engranaje y descarga |
 
+### V96, 2.ª tanda: piedras angulares
+
+Id 69 (`FxIds.KEYSTONE`), `power` = ordinal de `KeystoneRules.Template`. Se dibuja por plantilla, no por rol, y el color es el del rol principal.
+
+| Plantilla | Guion |
+|---|---|
+| Matanza | Motas rojas que suben al pecho y anillo de esporas |
+| Baluarte | Doble anillo dorado y destello; cámara y viñeteado locales |
+| Sobrecarga | Espiral de chispas |
+| Detonación | Destello, anillo de llamas al radio real y lava; sacudida leve |
+| Contagio | Línea de motas e tinta entre víctima y receptor |
+| Legión | Sin disparo (pasiva) |
+| Espectro | Runas y nube donde esquivó |
+| Fortuna | Destellos dorados que saltan |
+| Tempestad | Rayo quebrado hasta el segundo objetivo |
+| Santuario | Pulso de luz al radio real y motas verdes |
+
 ## Fase 10: Elementalista (V91)
 
 Los efectos se enganchan en `ElementEffects.bolt` y `burst`, no en cada activa, así que el Proyectil, el Estallido, la Ráfaga (3 proyectiles),

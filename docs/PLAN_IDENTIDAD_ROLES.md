@@ -184,5 +184,6 @@ limita la frecuencia por atacante, víctima y jugador para que una ráfaga de go
 
 - Hecho: firma y definitiva de los cinco pilotos con gesto de cuerpo, encuadre de partículas, cámara y sonido propios (`GrandFx`, `GrandClientFx`, ids 67–68,
   `grand.json`, 6 sonidos). Documentado en `docs/V77_EFECTOS_BATALLA.md` (fase 11).
-- Pendiente de V96: piedras angulares, firmas/definitivas de los otros 15 roles, evoluciones Maestro/Definitiva y los 10 nodos extra.
+- Hecho (2.ª tanda): piedras angulares, guion por plantilla (10) con el id 69 (`KeystoneClientFx`), enganchado en `Keystones`.
+- Pendiente de V96: firmas/definitivas de los otros 15 roles, evoluciones Maestro/Definitiva y los 10 nodos extra.
 - Limitaciones: sin probar en partida; la Baliza del Ingeniero no distingue «fijar» de «teletransportar»; los sonidos solo están medidos.

@@ -134,6 +134,16 @@ public final class Keystones {
 				SoundCategory.PLAYERS, volume, 1.0f);
 	}
 
+	/** V96: guion visual de la plantilla en {@code pos}; {@code dir} lleva la dirección al segundo objetivo o el radio en {@code x}. */
+	private static void fx(ServerPlayerEntity p, Template t, Vec3d pos, Vec3d dir) {
+		dev.aptitudes.role.Role role = RoleManager.get(p).primary();
+		FxEvents.onAt(p, pos, dev.aptitudes.logic.FxIds.KEYSTONE, CastFx.colorOf(p, role), t.ordinal(), dir, p.getRandom().nextInt());
+	}
+
+	private static void fx(ServerPlayerEntity p, Template t) {
+		fx(p, t, p.getPos(), Vec3d.ZERO);
+	}
+
 	// ------------------------------------------------------------ Sobrecarga (AbilityManager.execute)
 
 	/** ¿La próxima habilidad es la gratuita? (se consulta antes de cobrar el maná). */
@@ -149,6 +159,7 @@ public final class Keystones {
 		OVERLOAD.put(player.getUuid(), KeystoneRules.overloadAfterCast(OVERLOAD.getOrDefault(player.getUuid(), 0), every));
 		if (free) {
 			sound(player, Template.OVERLOAD, 0.8f);
+			fx(player, Template.OVERLOAD);
 			player.getServerWorld().spawnParticles(ParticleTypes.ELECTRIC_SPARK, player.getX(), player.getBodyY(0.6),
 					player.getZ(), 16, 0.4, 0.5, 0.4, 0.05);
 		}
@@ -161,6 +172,7 @@ public final class Keystones {
 		if (!has(player, Template.SPECTER)) return;
 		SPECTER_UNTIL.put(player.getUuid(), KeystoneRules.readyAt(now(player), Aptitudes.config().keystoneSpecterSeconds));
 		sound(player, Template.SPECTER, 0.6f);
+		fx(player, Template.SPECTER);
 	}
 
 	/** ¿Este golpe es crítico seguro por Espectro? Consume la ventana. */
@@ -194,6 +206,7 @@ public final class Keystones {
 				next.getPos().add(0, next.getHeight() * 0.6, 0));
 		damage(player, next, (float) cfg.keystoneTempestDamage);
 		sound(player, Template.TEMPEST, 0.7f);
+		fx(player, Template.TEMPEST, target.getPos(), next.getPos().subtract(target.getPos()));
 	}
 
 	// ------------------------------------------------------------ Esbirros (Minions.spawn)
@@ -215,6 +228,7 @@ public final class Keystones {
 			if (ticks > 0) player.addStatusEffect(new StatusEffectInstance(StatusEffects.HASTE, ticks, 1, false, true, true));
 			world.spawnParticles(ParticleTypes.DAMAGE_INDICATOR, player.getX(), player.getBodyY(0.6), player.getZ(), 6, 0.3, 0.3, 0.3, 0.1);
 			sound(player, Template.CARNAGE, 0.7f);
+			fx(player, Template.CARNAGE);
 		}
 		if (active.contains(Template.DETONATION) && !inEffect) {
 			inEffect = true;
@@ -227,6 +241,7 @@ public final class Keystones {
 				inEffect = false;
 			}
 			sound(player, Template.DETONATION, 0.9f);
+			fx(player, Template.DETONATION, victim.getPos(), new Vec3d(DETONATION_RADIUS, 0, 0));
 		}
 		if (active.contains(Template.CONTAGION)) contagion(player, victim, cfg.keystoneContagionTargets);
 		if (active.contains(Template.FORTUNE) && victim instanceof MobEntity mob) fortune(player, mob, source, cfg);
@@ -250,6 +265,7 @@ public final class Keystones {
 			}
 			if (fire) e.setOnFireFor(3);
 			Targeting.particleLine(world, ParticleTypes.SQUID_INK, victim.getPos().add(0, 0.8, 0), e.getPos().add(0, 0.8, 0));
+			fx(player, Template.CONTAGION, victim.getPos(), e.getPos().subtract(victim.getPos()));
 		}
 		sound(player, Template.CONTAGION, 0.6f);
 	}
@@ -282,6 +298,7 @@ public final class Keystones {
 		if (rolled) {
 			world.spawnParticles(ParticleTypes.HAPPY_VILLAGER, mob.getX(), mob.getBodyY(0.5), mob.getZ(), 10, 0.4, 0.4, 0.4, 0.02);
 			sound(player, Template.FORTUNE, 0.6f);
+			fx(player, Template.FORTUNE, mob.getPos(), Vec3d.ZERO);
 		}
 	}
 
@@ -303,6 +320,7 @@ public final class Keystones {
 		player.getServerWorld().spawnParticles(ParticleTypes.TOTEM_OF_UNDYING, player.getX(), player.getBodyY(0.5),
 				player.getZ(), 24, 0.4, 0.6, 0.4, 0.15);
 		sound(player, Template.BULWARK, 1.0f);
+		fx(player, Template.BULWARK);
 	}
 
 	// ------------------------------------------------------------ Santuario y HUD (cada 10 ticks)
@@ -337,7 +355,10 @@ public final class Keystones {
 			healed = true;
 			player.getServerWorld().spawnParticles(ParticleTypes.HEART, p.getX(), p.getBodyY(1.0), p.getZ(), 2, 0.3, 0.2, 0.3, 0.0);
 		}
-		if (healed) sound(player, Template.SANCTUARY, 0.5f);
+		if (healed) {
+			sound(player, Template.SANCTUARY, 0.5f);
+			fx(player, Template.SANCTUARY, player.getPos(), new Vec3d(SANCTUARY_RADIUS, 0, 0));
+		}
 	}
 
 	private static void sync(ServerPlayerEntity player, Set<Template> active, AptitudesConfig cfg) {
@@ -395,6 +416,7 @@ public final class Keystones {
 							player.getPos().add(0, player.getHeight() * 0.6, 0),
 							target.getPos().add(0, target.getHeight() * 0.6, 0));
 					sound(player, Template.TEMPEST, 0.7f);
+					fx(player, Template.TEMPEST, player.getPos(), target.getPos().subtract(player.getPos()));
 				}
 			}
 			// Baluarte: escudo defensivo temporal.
@@ -408,6 +430,7 @@ public final class Keystones {
 				world.spawnParticles(ParticleTypes.TOTEM_OF_UNDYING, player.getX(), player.getBodyY(0.5),
 						player.getZ(), 24, 0.4, 0.6, 0.4, 0.15);
 				sound(player, Template.BULWARK, 1.0f);
+				fx(player, Template.BULWARK);
 			}
 			// Espectro: crítico seguro en el siguiente golpe.
 			case SPECTER -> {
@@ -415,6 +438,7 @@ public final class Keystones {
 				world.spawnParticles(ParticleTypes.ENCHANT, player.getX(), player.getBodyY(0.6), player.getZ(),
 						12, 0.4, 0.5, 0.4, 0.05);
 				sound(player, Template.SPECTER, 0.6f);
+				fx(player, Template.SPECTER);
 			}
 			// Santuario: curación inmediata en área.
 			case SANCTUARY -> {
@@ -430,7 +454,10 @@ public final class Keystones {
 							world.spawnParticles(ParticleTypes.HEART, p.getX(), p.getBodyY(1.0), p.getZ(), 2, 0.3, 0.2, 0.3, 0.0);
 						}
 					}
-					if (healed) sound(player, Template.SANCTUARY, 0.5f);
+					if (healed) {
+						sound(player, Template.SANCTUARY, 0.5f);
+						fx(player, Template.SANCTUARY, player.getPos(), new Vec3d(SANCTUARY_RADIUS, 0, 0));
+					}
 				}
 			}
 			// Sobrecarga: sin efecto combo (manejado aparte).

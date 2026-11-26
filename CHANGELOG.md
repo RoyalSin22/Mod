@@ -33,6 +33,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
   PNG a mano tras ejecutar `gen_items.py`. Los mundos antiguos conservan, inofensivo, el archivo de datos de `SummonState`. Sin cambios de balance.
 
 ### Añadido
+- **V96 (2.ª tanda) — Piedras angulares.** Las diez plantillas del escalón S7 (Matanza, Baluarte, Sobrecarga, Detonación, Contagio, Legión,
+  Espectro, Fortuna, Tempestad y Santuario) tienen guion visual propio con el color del rol, un evento por disparo (`FxIds.KEYSTONE`, 69) desde
+  `Keystones` y dibujo en `client/fx/KeystoneClientFx`. Cada guion es breve y barato porque se dispara a menudo; solo Baluarte y Detonación mueven la
+  cámara de quien los dispara. Los sonidos por plantilla ya existían. Legión no tiene disparo (es pasiva). Sin cambios de balance. **Sin probar en partida.**
 - **V96 (1.ª tanda) — Firmas y definitivas de los cinco roles piloto.** Bersérker, Elementalista, Cambiaformas, Paladín e Ingeniero tienen guion
   propio para la firma (Z) y la definitiva (R): gesto de cuerpo nuevo (`grand_signature`, `grand_ultimate`), carga de energía, anillos de choque,
   motivo de partículas por rol, pilar en la definitiva, cámara/FOV/viñeteado y sonido propio (`grand_*` más un retumbo común). Un único evento

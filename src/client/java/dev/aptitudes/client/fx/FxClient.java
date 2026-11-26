@@ -121,6 +121,7 @@ public final class FxClient {
 			case FxIds.FEEDBACK_HEAL -> FeedbackClientFx.heal(world, p);
 			case FxIds.GRAND_SIGNATURE -> GrandClientFx.signature(world, p);
 			case FxIds.GRAND_ULTIMATE -> GrandClientFx.ultimate(world, p);
+			case FxIds.KEYSTONE -> KeystoneClientFx.fire(world, p);
 			default -> { }
 		}
 	}

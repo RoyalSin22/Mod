@@ -127,8 +127,10 @@ public final class FxIds {
 	public static final int GRAND_SIGNATURE = 67;
 	/** Definitiva de un rol piloto (V96) en quien la usa; {@code power} = ordinal del rol y {@code dx} = variante. */
 	public static final int GRAND_ULTIMATE = 68;
+	/** Disparo de una piedra angular (V96); {@code power} = ordinal de la plantilla, {@code dx,dy,dz} = dirección al segundo objetivo o radio en {@code dx}. */
+	public static final int KEYSTONE = 69;
 	/** Mayor id válido; el cliente descarta lo desconocido. */
-	public static final int MAX = 68;
+	public static final int MAX = 69;
 
 	private FxIds() {
 	}

@@ -114,7 +114,7 @@ class FxMathTest {
 				FxIds.TAMER_COMMAND, FxIds.TAMER_PET, FxIds.TAMER_STAMPEDE,
 				FxIds.ELEMENT_BOLT, FxIds.ELEMENT_ARC, FxIds.ELEMENT_BURST,
 				FxIds.FEEDBACK_IMPACT, FxIds.FEEDBACK_BLOCK, FxIds.FEEDBACK_HEAL,
-				FxIds.GRAND_SIGNATURE, FxIds.GRAND_ULTIMATE};
+				FxIds.GRAND_SIGNATURE, FxIds.GRAND_ULTIMATE, FxIds.KEYSTONE};
 		java.util.Set<Integer> seen = new java.util.HashSet<>();
 		for (int id : ids) {
 			assertTrue(FxIds.valid(id));
