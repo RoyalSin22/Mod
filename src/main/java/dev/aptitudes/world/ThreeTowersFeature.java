@@ -3,9 +3,9 @@ package dev.aptitudes.world;
 import com.mojang.serialization.Codec;
 import dev.aptitudes.Aptitudes;
 import dev.aptitudes.dungeon.FortressLayout;
+import dev.aptitudes.dungeon.FortressPalette;
 import dev.aptitudes.dungeon.TowersBlocks;
 import dev.aptitudes.dungeon.TowersControllerBlockEntity;
-import dev.aptitudes.temple.Temples;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -13,6 +13,10 @@ import net.minecraft.block.BedBlock;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.enums.BedPart;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.tag.BiomeTags;
+import net.minecraft.world.biome.BiomeKeys;
+import net.minecraft.util.Identifier;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -31,6 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class ThreeTowersFeature extends Feature<DefaultFeatureConfig> {
 	private record Site(boolean valid, int y) {}
 	private static final Map<ServerWorld, Map<Long, Site>> SITES = new ConcurrentHashMap<>();
+	private static final Map<String, BlockState> PALETTE_STATES = new ConcurrentHashMap<>();
 
 	public ThreeTowersFeature(Codec<DefaultFeatureConfig> codec) {
 		super(codec);
@@ -51,10 +56,11 @@ public final class ThreeTowersFeature extends Feature<DefaultFeatureConfig> {
 		Site site = site(world.toServerWorld(), context.getGenerator(), xz[0], xz[1]);
 		if (!site.valid()) return false;
 		BlockPos origin = new BlockPos(xz[0], site.y(), xz[1]);
-		buildChunk(world, origin, chunkX, chunkZ);
+		int ring = placeRing(world.toServerWorld(), xz[0], xz[1]);
+		buildChunk(world, origin, chunkX, chunkZ, ring);
 		if (chunkX == xz[0] >> 4 && chunkZ == xz[1] >> 4) {
 			if (world.getBlockEntity(origin) instanceof TowersControllerBlockEntity controller) {
-				controller.setupFortress(CustodianTempleFeature.ring(context, origin));
+				controller.setupFortress(ring);
 			}
 			StructureIndex.record(world, "three_towers", origin);
 		}
@@ -67,16 +73,15 @@ public final class ThreeTowersFeature extends Feature<DefaultFeatureConfig> {
 		Site site = site(world, generator, x, z);
 		if (!site.valid()) return null;
 		BlockPos origin = new BlockPos(x, site.y(), z);
+		int ring = placeRing(world, x, z);
 		for (int cx = (x + FortressLayout.MIN) >> 4; cx <= (x + FortressLayout.MAX) >> 4; cx++) {
 			for (int cz = (z + FortressLayout.MIN) >> 4; cz <= (z + FortressLayout.MAX) >> 4; cz++) world.getChunk(cx, cz);
 		}
 		for (int cx = (x + FortressLayout.MIN) >> 4; cx <= (x + FortressLayout.MAX) >> 4; cx++) {
-			for (int cz = (z + FortressLayout.MIN) >> 4; cz <= (z + FortressLayout.MAX) >> 4; cz++) buildChunk(world, origin, cx, cz);
+			for (int cz = (z + FortressLayout.MIN) >> 4; cz <= (z + FortressLayout.MAX) >> 4; cz++) buildChunk(world, origin, cx, cz, ring);
 		}
 		if (world.getBlockEntity(origin) instanceof TowersControllerBlockEntity controller) {
-			var config = Aptitudes.config();
-			BlockPos spawn = world.getSpawnPos();
-			controller.setupFortress(dev.aptitudes.logic.ThreatRules.ring(x, z, spawn.getX(), spawn.getZ(), config.threatRingSize, config.threatMaxRing));
+			controller.setupFortress(ring);
 		}
 		StructureIndex.record(world, "three_towers", origin);
 		return origin;
@@ -120,8 +125,25 @@ public final class ThreeTowersFeature extends Feature<DefaultFeatureConfig> {
 				&& max - FortressLayout.MAX_FOUNDATION > world.getBottomY() + 4, max);
 	}
 
-	private static void buildChunk(StructureWorldAccess world, BlockPos origin, int chunkX, int chunkZ) {
+	private static int placeRing(ServerWorld world, int x, int z) {
+		var config = Aptitudes.config();
+		BlockPos spawn = world.getSpawnPos();
+		return dev.aptitudes.logic.ThreatRules.ring(x, z, spawn.getX(), spawn.getZ(), config.threatRingSize, config.threatMaxRing);
+	}
+
+	private static String biome(StructureWorldAccess world, BlockPos at) {
+		var biome = world.getBiome(at);
+		if (biome.matchesKey(BiomeKeys.DESERT)) return "minecraft:desert";
+		if (biome.matchesKey(BiomeKeys.BADLANDS) || biome.matchesKey(BiomeKeys.ERODED_BADLANDS)
+				|| biome.matchesKey(BiomeKeys.WOODED_BADLANDS)) return "minecraft:badlands";
+		if (biome.isIn(BiomeTags.IS_TAIGA)) return "minecraft:taiga";
+		if (biome.matchesKey(BiomeKeys.SNOWY_PLAINS)) return "minecraft:snowy_plains";
+		return "minecraft:plains";
+	}
+
+	private static void buildChunk(StructureWorldAccess world, BlockPos origin, int chunkX, int chunkZ, int ring) {
 		StructureBuilder b = new StructureBuilder(world, origin, Random.create(world.getSeed() ^ origin.asLong()));
+		String biome = biome(world, new BlockPos((chunkX << 4) + 8, origin.getY(), (chunkZ << 4) + 8));
 		int minX = Math.max(FortressLayout.MIN, (chunkX << 4) - origin.getX());
 		int maxX = Math.min(FortressLayout.MAX, (chunkX << 4) + 15 - origin.getX());
 		int minZ = Math.max(FortressLayout.MIN, (chunkZ << 4) - origin.getZ());
@@ -139,35 +161,28 @@ public final class ThreeTowersFeature extends Feature<DefaultFeatureConfig> {
 					FortressLayout.Cell cell = FortressLayout.cell(x, y, z);
 					if (cell == null) continue;
 					if (cell == FortressLayout.Cell.HIDDEN_CHEST || cell == FortressLayout.Cell.SUPPLY_CHEST) b.chest(x, y, z, "three_towers_supplies");
-					else b.set(x, y, z, state(cell, x, y, z));
+					else b.set(x, y, z, state(cell, x, y, z, ring, biome));
 				}
 			}
 		}
 	}
 
-	private static BlockState state(FortressLayout.Cell cell, int x, int y, int z) {
-		return switch (cell) {
-			case AIR -> Blocks.AIR.getDefaultState();
-			case STONE -> ((x * 73 + y * 19 + z * 37) & 15) < 3 ? Blocks.CRACKED_STONE_BRICKS.getDefaultState()
-					: ((x * 31 + z * 17) & 15) < 4 ? Blocks.MOSSY_STONE_BRICKS.getDefaultState() : Blocks.STONE_BRICKS.getDefaultState();
-			case FLOOR -> Blocks.STONE_BRICKS.getDefaultState();
-			case WOOD -> Blocks.DARK_OAK_PLANKS.getDefaultState();
-			case ROOF -> Blocks.DEEPSLATE_TILES.getDefaultState();
-			case RUBBLE -> Blocks.COBBLESTONE.getDefaultState();
-			case MERLON -> Blocks.DEEPSLATE_BRICKS.getDefaultState();
-			case WINDOW -> Blocks.BLUE_STAINED_GLASS_PANE.getDefaultState();
-			case SOUL_LIGHT -> Blocks.SOUL_LANTERN.getDefaultState();
-			case STAIR_EAST -> Blocks.STONE_BRICK_STAIRS.getDefaultState().with(StairsBlock.FACING, Direction.EAST);
-			case STAIR_WEST -> Blocks.STONE_BRICK_STAIRS.getDefaultState().with(StairsBlock.FACING, Direction.WEST);
-			case GATE, REWARD_GATE -> Temples.GATE.getDefaultState();
-			case CONTROLLER -> TowersBlocks.CONTROLLER.getDefaultState();
-			case BOOKSHELF -> Blocks.BOOKSHELF.getDefaultState();
-			case BED_FOOT -> Blocks.RED_BED.getDefaultState().with(BedBlock.PART, BedPart.FOOT).with(HorizontalFacingBlock.FACING, Direction.SOUTH);
-			case BED_HEAD -> Blocks.RED_BED.getDefaultState().with(BedBlock.PART, BedPart.HEAD).with(HorizontalFacingBlock.FACING, Direction.SOUTH);
-			case BREWING -> Blocks.BREWING_STAND.getDefaultState();
-			case ENCHANTING -> Blocks.ENCHANTING_TABLE.getDefaultState();
-			case ALTAR -> Blocks.CHISELED_DEEPSLATE.getDefaultState();
-			case HIDDEN_CHEST, SUPPLY_CHEST -> Blocks.CHEST.getDefaultState();
-		};
+	private static BlockState state(FortressLayout.Cell cell, int x, int y, int z, int ring, String biome) {
+		String key = FortressPalette.state(cell, x, y, z, ring, biome);
+		return PALETTE_STATES.computeIfAbsent(key, ThreeTowersFeature::resolveState);
+	}
+
+	private static BlockState resolveState(String key) {
+		int bracket = key.indexOf('[');
+		BlockState state = Registries.BLOCK.get(Identifier.of(bracket < 0 ? key : key.substring(0, bracket))).getDefaultState();
+		if (bracket < 0) return state;
+		if (state.getBlock() instanceof StairsBlock) {
+			return state.with(StairsBlock.FACING, key.contains("facing=east") ? Direction.EAST : Direction.WEST);
+		}
+		if (state.getBlock() instanceof BedBlock) {
+			return state.with(BedBlock.PART, key.contains("part=head") ? BedPart.HEAD : BedPart.FOOT)
+					.with(HorizontalFacingBlock.FACING, Direction.SOUTH);
+		}
+		throw new IllegalArgumentException("Propiedades no admitidas en la paleta: " + key);
 	}
 }

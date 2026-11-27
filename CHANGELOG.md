@@ -5,6 +5,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Añadido (V91, Fase 1)
+- Paleta pura por anillo y bioma para Tres Torres, compartida por la generación y las vistas previas.
+- Exportador Gradle a Sponge `.schem` y plantas/isométrica Pillow del plano V88 para revisión visual.
+  La geometría nueva espera capturas del prototipo aprobadas por el autor; no se ha probado en partida.
+
 ### Cambiado (V90)
 - Torre menor de 21×21 con patio amurallado roto, dos contornos (cuadrado y redondo), tres grados de ruina, sótano,
   cinco pisos y Centinela en la azotea. Conserva los generadores de los pisos 2 y 3, los botines `tower_*` y la

@@ -117,6 +117,24 @@ java {
 	targetCompatibility = JavaVersion.VERSION_21
 }
 
+// Herramienta V91: compila el exportador aparte del jar del mod y usa el mismo plano puro.
+sourceSets {
+	fortressPreview {
+		java.srcDir 'tools/fortress/java'
+		compileClasspath += sourceSets.main.output
+		runtimeClasspath += sourceSets.main.output
+	}
+}
+
+tasks.register('exportFortressSchem', JavaExec) {
+	group = 'aptitudes'
+	description = 'Exporta el plano actual de Tres Torres a build/fortress.schem y datos de vista previa'
+	dependsOn tasks.named('fortressPreviewClasses')
+	classpath = sourceSets.fortressPreview.runtimeClasspath
+	mainClass = 'dev.aptitudes.tools.FortressExport'
+	args layout.buildDirectory.get().asFile.absolutePath
+}
+
 jar {
 	from("LICENSE") {
 		rename { "${it}_${project.base.archivesName.get()}" }
