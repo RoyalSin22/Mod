@@ -1,5 +1,12 @@
 # Pruebas de Aptitudes
 
+## Localización sin generación síncrona
+
+`StructureLocateRulesTest` verifica que `three_towers` y `custodian_temple` no entran en la búsqueda activa.
+En partida: ejecutar ambos `locate` con y sin estructuras registradas, observar MSPT y FPS y confirmar que
+no aparecen chunks nuevos por el comando. `/aptitudes place` sigue siendo la acción explícita que genera
+una estructura para pruebas.
+
 ## V90 — Torre menor y campamentos
 
 `TowerCompoundLayoutTest` recorre las dos formas de torre con tres grados de daño y verifica entrada, sótano,
@@ -87,13 +94,14 @@ límites y los criterios pendientes.
 
 ## V77 — Localizar estructuras
 
-`/aptitudes locate custodian_temple` (o `temple`, `tower`, `bonfire_shrine`, `camp`) da las coordenadas de la más cercana ya generada; pulsa las
+`/aptitudes locate custodian_temple` (o `three_towers`, `tower`, `bonfire_shrine`, `camp`) da las coordenadas de la más cercana ya generada; pulsa las
 coordenadas para teletransportarte. `/aptitudes place custodian_temple` genera una en un sitio llano cerca de ti. Las estructuras
 generadas antes de la V77 no están indexadas: los templos del Custodio «hondos» solo existen en terreno nuevo (chunks generados con la
 V70 o posterior); en un mundo ya explorado usa `place` o viaja a terreno sin explorar. Rareza natural: desde la V77 el templo del Custodio se coloca
 en una cuadrícula de regiones de 32×32 chunks (un chunk designado por región, determinista con la semilla); si ese chunk cae en
-agua o en terreno con más de 4 bloques de desnivel, esa región se queda sin templo. `locate` busca región a región (un chunk
-generado por región) y puede tardar decenas de segundos en un ordenador lento; muestra el progreso.
+agua o en terreno con más de 4 bloques de desnivel, esa región se queda sin templo. Desde esta corrección,
+`locate custodian_temple` y `locate three_towers` no buscan en terreno sin explorar: devuelven el índice
+de estructuras ya generadas sin forzar chunks. Los otros tres tipos conservan la búsqueda activa.
 
 ## V76 — Arte de las armas de evolución
 

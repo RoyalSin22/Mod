@@ -63,6 +63,8 @@ public final class StructureSearch {
 	/** Empieza (o sustituye) la búsqueda de {@code owner}. */
 	public static void start(String owner, ServerWorld world, String kind, int px, int pz, Consumer<StructureLocateRules.Hit> onFound,
 							 IntConsumer onFail, IntConsumer onProgress) {
+		if (!StructureLocateRules.searchable(kind))
+			throw new IllegalArgumentException("La búsqueda activa no está permitida para " + kind);
 		JOBS.put(owner, new Job(world, kind, px, pz, onFound, onFail, onProgress));
 	}
 

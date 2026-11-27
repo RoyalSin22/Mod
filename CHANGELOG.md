@@ -5,6 +5,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Corregido — /aptitudes locate
+- `locate three_towers` y `locate custodian_temple` consultan solo el índice de estructuras ya generadas.
+  La búsqueda ya no fuerza chunks nuevos desde el hilo del servidor; la generación síncrona podía exceder
+  ampliamente el presupuesto de 25 ms por tick y causar bajones de TPS y FPS.
+
 ### Cambiado (V90)
 - Torre menor de 21×21 con patio amurallado roto, dos contornos (cuadrado y redondo), tres grados de ruina, sótano,
   cinco pisos y Centinela en la azotea. Conserva los generadores de los pisos 2 y 3, los botines `tower_*` y la

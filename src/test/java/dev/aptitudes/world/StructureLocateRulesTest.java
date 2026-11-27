@@ -38,7 +38,10 @@ class StructureLocateRulesTest {
 
 	@Test void theRemovedSealedTempleIsNoLongerAKind() {
 		assertFalse(StructureLocateRules.searchable("temple"));
-		assertTrue(StructureLocateRules.searchable("custodian_temple"));
+		assertFalse(StructureLocateRules.searchable("custodian_temple"));
+		assertFalse(StructureLocateRules.searchable("three_towers"));
+		for (String small : new String[] {"tower", "bonfire_shrine", "camp"})
+			assertTrue(StructureLocateRules.searchable(small), small);
 		assertFalse(StructureLocateRules.searchable("village"));
 		assertFalse(StructureLocateRules.searchable(null));
 	}

@@ -61,9 +61,13 @@ public final class StructureLocateRules {
 		return d[0] == chunkX && d[1] == chunkZ;
 	}
 
-	/** Todas las estructuras del mod se pueden buscar explorando. */
+	/**
+	 * Solo las estructuras pequeñas pueden buscarse generando chunks. La fortaleza y el templo abarcan
+	 * 64 y 49 chunks: una sola llamada síncrona a getChunk puede bloquear el tick mucho más que el presupuesto
+	 * de StructureSearch. Para ellas, locate consulta exclusivamente el índice de estructuras ya generadas.
+	 */
 	public static boolean searchable(String kind) {
-		return isKind(kind);
+		return isKind(kind) && regionSize(kind) == 0;
 	}
 
 	public static boolean isKind(String kind) {

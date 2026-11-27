@@ -219,9 +219,9 @@ public final class AptitudesCommand {
 	private static final int LOCATE_KNOWN_OK_BLOCKS = 600;
 
 	/**
-	 * V77: la estructura del mod más cercana. Se usa el índice de las ya generadas; si no hay ninguna cerca, se explora en anillos
-	 * alrededor del jugador generando chunks <b>repartidos entre ticks</b> ({@link dev.aptitudes.world.StructureSearch}) hasta
-	 * encontrar una o llegar al radio máximo, y el resultado llega al terminar. Las coordenadas se pueden pulsar para teletransportarse.
+	 * La fortaleza y el templo solo consultan el índice de estructuras generadas: buscar nuevos candidatos generando chunks
+	 * síncronamente podía congelar el servidor. Las estructuras pequeñas conservan la búsqueda activa de V77.
+	 * Las coordenadas se pueden pulsar para teletransportarse.
 	 */
 	private static int locate(CommandContext<ServerCommandSource> ctx, String kind) throws CommandSyntaxException {
 		if (!dev.aptitudes.world.StructureLocateRules.isKind(kind)) throw UNKNOWN_STRUCTURE.create(kind);

@@ -44,7 +44,7 @@ class ThreeTowersResourcesTest {
 
 	@Test void itIsALocatableKindWithItsOwnDesignatedChunks() {
 		assertTrue(StructureLocateRules.isKind("three_towers"));
-		assertTrue(StructureLocateRules.searchable("three_towers"));
+		assertFalse(StructureLocateRules.searchable("three_towers"), "locate usa el índice sin generar chunks");
 		int[] d = StructureLocateRules.designatedChunk(987654321L, "three_towers", 3, -2, 24);
 		assertTrue(d[0] >= 3 * 24 && d[0] < 4 * 24 && d[1] >= -2 * 24 && d[1] < -1 * 24, "dentro de su región");
 		assertTrue(StructureLocateRules.isDesignated(987654321L, "three_towers", d[0], d[1], 24));

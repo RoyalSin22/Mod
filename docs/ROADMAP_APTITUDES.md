@@ -5,6 +5,10 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
+### Localización de estructuras grandes
+- `/aptitudes locate three_towers` y `custodian_temple` usan el índice persistente y no generan terreno al buscar.
+  Pendiente: medir en partida el tiempo del comando, TPS/MSPT y el caso sin estructuras registradas.
+
 ### V90 — Torre menor y campamentos
 - **Forma implementada, pendiente de prueba en partida:** planos puros `TowerCompoundLayout` y `CampLayout`,
   traducción de bloques en las `Feature` existentes, siete contratos de limpieza y alarma local.
