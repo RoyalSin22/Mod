@@ -24,6 +24,14 @@ con la arcada y las dos figuras nuevas. El exportador contó 197 111 celdas: 108
 y 88 200 de material. La nueva comprobación en `ThreeTowersFeature` omite la escritura de una
 celda de despeje cuando el mundo ya contiene aire; aún no se ha medido MSPT ni probado en partida.
 
+Pulido posterior: `FortressLayoutTest` comprueba que el alero se genera fuera del muro sin añadir
+cimiento, que las torres conservan sus rutas y que el pavimento tiene parches variados.
+`FortressPaletteTest` comprueba el degradado vertical. El exportador mide 10 246 columnas,
+200 274 celdas y 11 726 en el chunk más denso. El visor compara el `.schem` con los vóxeles antes
+de dibujar también las cuatro elevaciones. La comprobación en partida sigue pendiente.
+Verificación del 2026-11-27: `.\gradlew.bat --offline build --console=plain` terminó con
+**BUILD SUCCESSFUL**; `python tools/lang/check_lang.py` y `git diff --check` pasaron.
+
 ## V90 — Torre menor y campamentos
 
 `TowerCompoundLayoutTest` recorre las dos formas de torre con tres grados de daño y verifica entrada, sótano,

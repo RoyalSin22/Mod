@@ -5,6 +5,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
+### Cambiado (V91, pulido de fachadas y torres)
+- Las alas tienen aleros salientes y repisas; las torres refuerzan su base, muestran contrafuertes
+  altos, aspilleras y estandartes. El estudio y los dormitorios reciben revestimientos y muebles
+  propios, y los caminos mezclan parches irregulares de tierra y piedra. El muro usa un degradado
+  vertical dentro de la paleta de cada anillo. La sala del Coloso y las rutas conservan sus cotas.
+- La lista fija de alas deja de crearse en cada consulta de celda. La vista previa exporta las
+  cuatro elevaciones de fachada además de plantas e isométrica. Sin prueba en partida todavía.
+
 ### Cambiado (V91, Fases 1 a 3)
 - Las Tres Torres reciben contrafuertes, cubiertas inclinadas, atalayas, ventanas, cornisas,
   barbacana y brechas con escombros, además de mobiliario y cofres ocultos señalados en las salas.

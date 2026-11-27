@@ -115,8 +115,14 @@ def color(state):
         return (173, 172, 160)
     if "cobble" in state:
         return (106, 108, 101)
-    if "planks" in state:
+    if "planks" in state or "_log" in state or "_wood" in state:
         return (100, 71, 52)
+    if "dirt" in state:
+        return (117, 91, 65)
+    if "azalea" in state:
+        return (75, 126, 70)
+    if "banner" in state:
+        return (38, 35, 42)
     if "bed" in state:
         return (151, 57, 57)
     if "glass" in state:
@@ -251,11 +257,37 @@ def isometric(build, palette, voxels):
     return path
 
 
+def elevation(build, palette, voxels, direction):
+    image = Image.new("RGB", (SIZE * 7 + 80, (TOP + 1) * 7 + 90), (25, 30, 37))
+    draw = ImageDraw.Draw(image)
+    for y in range(TOP + 1):
+        for u in range(-64, 64):
+            if direction == "sur":
+                ray = ((u, z) for z in range(63, -65, -1))
+            elif direction == "norte":
+                ray = ((-u - 1, z) for z in range(-64, 64))
+            elif direction == "este":
+                ray = ((x, -u - 1) for x in range(63, -65, -1))
+            else:
+                ray = ((x, u) for x in range(-64, 64))
+            for x, z in ray:
+                state = palette[cell(voxels, x, y, z)]
+                if state != "minecraft:air":
+                    px, py = 40 + (u + 64) * 7, 45 + (TOP - y) * 7
+                    draw.rectangle((px, py, px + 6, py + 6), fill=color(state))
+                    break
+    draw.text((40, 18), f"Tres Torres V91 | fachada {direction} | bloques visibles", fill=(238, 227, 202))
+    path = build / f"fortress_elevation_{direction}.png"
+    image.save(path)
+    return path
+
+
 def main():
     build = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("build")
     palette, voxels = load(build)
     paths = [floor_plan(build, palette, voxels, y) for y in (1, 7, 13, 19, 25)]
     paths.append(isometric(build, palette, voxels))
+    paths.extend(elevation(build, palette, voxels, side) for side in ("sur", "norte", "este", "oeste"))
     for path in paths:
         print(path)
 

@@ -18,7 +18,7 @@ public final class FortressPalette {
 		int weathering = Math.floorMod(x * 73 + y * 19 + z * 37, 16);
 		return switch (cell) {
 			case AIR -> "minecraft:air";
-			case STONE -> masonry(tier, dry, weathering);
+			case STONE -> masonry(tier, dry, weathering, y);
 			case FLOOR -> tier >= 4 ? "minecraft:polished_blackstone_bricks"
 					: tier >= 2 ? "minecraft:deepslate_bricks" : "minecraft:stone_bricks";
 			case WOOD -> dry ? "minecraft:spruce_planks" : "minecraft:dark_oak_planks";
@@ -59,12 +59,29 @@ public final class FortressPalette {
 			case STATUE_BODY -> tier >= 4 ? "minecraft:polished_blackstone_brick_wall"
 					: tier >= 2 ? "minecraft:deepslate_brick_wall" : "minecraft:stone_brick_wall";
 			case STATUE_HEAD -> "minecraft:calcite";
+			case PATH_WORN -> dry ? "minecraft:coarse_dirt" : "minecraft:dirt_path";
+			case PATH_STONE -> tier >= 4 ? "minecraft:blackstone" : tier >= 2 ? "minecraft:cobbled_deepslate" : "minecraft:cobblestone";
+			case WALL_PANEL -> dry ? "minecraft:stripped_spruce_wood" : "minecraft:stripped_dark_oak_wood";
+			case CARTOGRAPHY -> "minecraft:cartography_table";
+			case PLANTER -> "minecraft:potted_azalea_bush";
+			case TIMBER -> dry ? "minecraft:stripped_spruce_log" : "minecraft:stripped_dark_oak_log";
+			case BANNER -> "minecraft:black_banner";
 		};
 	}
 
-	private static String masonry(int tier, boolean dry, int weathering) {
-		if (tier >= 4) return weathering < 3 ? "minecraft:cracked_polished_blackstone_bricks" : "minecraft:polished_blackstone_bricks";
-		if (tier >= 2) return weathering < 3 ? "minecraft:cracked_deepslate_bricks" : "minecraft:deepslate_bricks";
+	private static String masonry(int tier, boolean dry, int weathering, int y) {
+		if (tier >= 4) {
+			if (y <= 3 && weathering < 9) return "minecraft:blackstone";
+			if (y >= 14 && weathering < 4) return "minecraft:polished_blackstone";
+			return weathering < 3 ? "minecraft:cracked_polished_blackstone_bricks" : "minecraft:polished_blackstone_bricks";
+		}
+		if (tier >= 2) {
+			if (y <= 3 && weathering < 9) return "minecraft:cobbled_deepslate";
+			if (y >= 14 && weathering < 4) return "minecraft:polished_deepslate";
+			return weathering < 3 ? "minecraft:cracked_deepslate_bricks" : "minecraft:deepslate_bricks";
+		}
+		if (y <= 3 && weathering < 7) return "minecraft:cobblestone";
+		if (y >= 12 && weathering < 4) return "minecraft:polished_andesite";
 		if (weathering < 3) return "minecraft:cracked_stone_bricks";
 		return !dry && weathering < 7 ? "minecraft:mossy_stone_bricks" : "minecraft:stone_bricks";
 	}

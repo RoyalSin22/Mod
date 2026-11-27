@@ -23,6 +23,9 @@ class FortressPaletteTest {
 		assertEquals("aptitudes:three_towers_controller",
 				FortressPalette.state(FortressLayout.Cell.CONTROLLER, 0, 0, 0, 3, "minecraft:plains"));
 		assertEquals("minecraft:calcite", FortressPalette.state(FortressLayout.Cell.STATUE_HEAD, -8, 4, 46, 3, "minecraft:plains"));
+		assertEquals("minecraft:cobbled_deepslate", FortressPalette.state(FortressLayout.Cell.STONE, 0, 2, 0, 3, "minecraft:plains"));
+		assertEquals("minecraft:polished_deepslate", FortressPalette.state(FortressLayout.Cell.STONE, 0, 16, 0, 3, "minecraft:plains"));
+		assertEquals("minecraft:stripped_dark_oak_log", FortressPalette.state(FortressLayout.Cell.TIMBER, 0, 5, 0, 3, "minecraft:plains"));
 		for (var type : FortressLayout.Cell.values()) {
 			String state = FortressPalette.state(type, 0, 0, 0, 3, "minecraft:plains");
 			assertTrue(state.startsWith("minecraft:") || type == FortressLayout.Cell.CONTROLLER, type.toString());

@@ -12,6 +12,9 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
   el mundo ya tiene aire. La entrada del Mariscal no tiene reja nueva; el controlador conserva la progresión.
   [Plano y comprobaciones](V91_FORTALEZA_REVISION.md). Falta aprobar las capturas reales del autor,
   recorrerla y medir la generación en partida.
+- **Pulido posterior en rama:** aleros, repisas, bases y contrafuertes de torres, aspilleras,
+  revestimientos y muebles por sala, pavimento irregular y cuatro fachadas exportadas para revisión.
+  Sigue pendiente de prueba en partida e integración.
 
 ### V90 — Torre menor y campamentos
 - **Forma implementada, pendiente de prueba en partida:** planos puros `TowerCompoundLayout` y `CampLayout`,

@@ -156,11 +156,13 @@ public final class ThreeTowersFeature extends Feature<DefaultFeatureConfig> {
 		for (int x = minX; x <= maxX; x++) {
 			for (int z = minZ; z <= maxZ; z++) {
 				if (!FortressLayout.occupied(x, z)) continue;
-				for (int y = -4; y >= -FortressLayout.MAX_FOUNDATION; y--) {
-					BlockPos p = b.at(x, y, z);
-					BlockState current = world.getBlockState(p);
-					if (!current.isReplaceable() && current.getFluidState().isEmpty()) break;
-					b.set(x, y, z, Blocks.DEEPSLATE_BRICKS.getDefaultState());
+				if (FortressLayout.cell(x, 0, z) != null) {
+					for (int y = -4; y >= -FortressLayout.MAX_FOUNDATION; y--) {
+						BlockPos p = b.at(x, y, z);
+						BlockState current = world.getBlockState(p);
+						if (!current.isReplaceable() && current.getFluidState().isEmpty()) break;
+						b.set(x, y, z, Blocks.DEEPSLATE_BRICKS.getDefaultState());
+					}
 				}
 				for (int y = FortressLayout.BOTTOM_Y; y <= FortressLayout.TOP_Y; y++) {
 					FortressLayout.Cell cell = FortressLayout.cell(x, y, z);

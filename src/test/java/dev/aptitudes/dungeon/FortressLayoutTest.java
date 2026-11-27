@@ -16,7 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FortressLayoutTest {
 	private static boolean floor(Cell cell) {
-		return cell == Cell.FLOOR || cell == Cell.TRIM || cell == Cell.WOOL_MARKER;
+		return cell == Cell.FLOOR || cell == Cell.TRIM || cell == Cell.WOOL_MARKER
+				|| cell == Cell.PATH_WORN || cell == Cell.PATH_STONE;
 	}
 
 	private static boolean walkable(int x, int z) {
@@ -200,6 +201,26 @@ class FortressLayoutTest {
 		assertEquals(Cell.STATUE_HEAD, FortressLayout.cell(-8, 4, 46), "figura sin rostro del patio");
 		assertEquals(Cell.CORNICE, FortressLayout.cell(12, 6, -7), "bóveda de la arcada");
 		assertEquals(Cell.RUBBLE, FortressLayout.cell(-12, 2, 8), "tramo hundido de la arcada");
+		assertEquals(Cell.CORNICE, FortressLayout.cell(-54, 10, -12), "alero fuera del muro del monasterio");
+		assertTrue(FortressLayout.occupied(-54, -12), "el alero se escribe aunque no tenga suelo propio");
+		assertNull(FortressLayout.cell(-54, 0, -12), "el alero no añade suelo ni cimiento");
+		assertEquals(Cell.TIMBER, FortressLayout.cell(-51, 4, -48), "pilar saliente de la vigía");
+		assertEquals(Cell.BANNER, FortressLayout.cell(28, 62, -36), "estandarte del Mariscal");
+		assertEquals(Cell.WALL_PANEL, FortressLayout.cell(-51, 2, 12), "revestimiento del estudio");
+		assertEquals(Cell.CARTOGRAPHY, FortressLayout.cell(-41, 1, 13), "mesa del estudio");
+		assertEquals(Cell.TRIM, FortressLayout.cell(-39, 9, -13), "apoyo de la luz colgante");
+		assertEquals(Cell.IRON_BARS, FortressLayout.cell(-43, 8, -47), "aspillera de la vigía");
+	}
+
+	@Test void courtyardPavingHasDeterministicIrregularPatches() {
+		int worn = 0, stone = 0, clean = 0;
+		for (int x = -10; x <= 10; x++) for (int z = 0; z <= 40; z++) {
+			Cell c = FortressLayout.cell(x, 0, z);
+			if (c == Cell.PATH_WORN) worn++;
+			if (c == Cell.PATH_STONE) stone++;
+			if (c == Cell.FLOOR) clean++;
+		}
+		assertTrue(worn > 15 && stone > 15 && clean > 200);
 	}
 
 	@Test void layoutDoesNotDependOnTheOrderOfChunkQueries() {
