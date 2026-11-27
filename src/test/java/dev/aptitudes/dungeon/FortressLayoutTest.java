@@ -5,20 +5,28 @@ import dev.aptitudes.world.StructureLocateRules;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class FortressLayoutTest {
-	private static boolean walkable(int x, int z, boolean gateOpen) {
-		Cell feet = FortressLayout.cell(x, 1, z), head = FortressLayout.cell(x, 2, z);
-		return FortressLayout.cell(x, 0, z) == Cell.FLOOR
-				&& (feet == Cell.AIR || gateOpen && feet == Cell.GATE)
-				&& (head == Cell.AIR || gateOpen && head == Cell.GATE);
+	private static boolean floor(Cell cell) {
+		return cell == Cell.FLOOR || cell == Cell.TRIM || cell == Cell.WOOL_MARKER;
 	}
 
-	private static Set<Long> reach(boolean gateOpen) {
+	private static boolean walkable(int x, int z) {
+		Cell feet = FortressLayout.cell(x, 1, z), head = FortressLayout.cell(x, 2, z);
+		return floor(FortressLayout.cell(x, 0, z))
+				&& (feet == Cell.AIR || feet == Cell.MOSS)
+				&& head == Cell.AIR;
+	}
+
+	private static Set<Long> reach() {
 		Set<Long> seen = new HashSet<>();
 		ArrayDeque<int[]> queue = new ArrayDeque<>();
 		queue.add(new int[] {0, 62});
@@ -27,7 +35,7 @@ class FortressLayoutTest {
 			int[] p = queue.removeFirst();
 			for (int[] d : new int[][] {{1, 0}, {-1, 0}, {0, 1}, {0, -1}}) {
 				int x = p[0] + d[0], z = p[1] + d[1];
-				if (FortressLayout.inside(x, z) && walkable(x, z, gateOpen) && seen.add(key(x, z))) queue.addLast(new int[] {x, z});
+				if (FortressLayout.inside(x, z) && walkable(x, z) && seen.add(key(x, z))) queue.addLast(new int[] {x, z});
 			}
 		}
 		return seen;
@@ -39,7 +47,7 @@ class FortressLayoutTest {
 
 	private static boolean free(int x, int y, int z) {
 		Cell c = FortressLayout.cell(x, y, z);
-		return c == Cell.AIR || c == Cell.SOUL_LIGHT || c == Cell.GATE || c == Cell.REWARD_GATE;
+		return c == Cell.AIR || c == Cell.SOUL_LIGHT || c == Cell.MOSS || c == Cell.CHAIN;
 	}
 
 	private static boolean standable(int x, int y, int z) {
@@ -68,19 +76,20 @@ class FortressLayoutTest {
 		return false;
 	}
 
-	@Test void allRequiredRoomsAndBothWatchtowersAreReachableBeforeTheMarshalGate() {
-		Set<Long> open = reach(false);
+	@Test void allRequiredRoomsAndAllThreeTowersAreReachableWithoutASeal() {
+		Set<Long> open = reach();
 		assertTrue(open.contains(key(FortressLayout.WEST.cx(), FortressLayout.WEST.cz())));
 		assertTrue(open.contains(key(FortressLayout.EAST.cx(), FortressLayout.EAST.cz())));
 		assertTrue(open.contains(key(-38, -13)), "monasterio");
 		assertTrue(open.contains(key(-39, 17)), "estudio");
 		assertTrue(open.contains(key(-34, 42)), "dormitorios");
 		assertTrue(open.contains(key(34, 15)), "alquimia y encantamiento");
-		assertFalse(open.contains(key(FortressLayout.MARSHAL.cx(), FortressLayout.MARSHAL.cz())));
-		assertTrue(reach(true).contains(key(FortressLayout.MARSHAL.cx(), FortressLayout.MARSHAL.cz())));
+		assertTrue(open.contains(key(FortressLayout.MARSHAL.cx(), FortressLayout.MARSHAL.cz())));
+		for (int[] chestMarker : new int[][] {{-50, -4}, {-49, 23}, {-48, 49}, {23, 24}})
+			assertTrue(open.contains(key(chestMarker[0], chestMarker[1])), "cofre oculto " + chestMarker[0] + "," + chestMarker[1]);
 	}
 
-	@Test void marshalArenaAndTreasuryHaveTheExpectedClearanceAndGates() {
+	@Test void marshalArenaAndTreasuryHaveTheExpectedClearanceWithoutGates() {
 		var m = FortressLayout.MARSHAL;
 		assertEquals(39, m.half() * 2 + 1);
 		for (int x = m.cx() - 17; x <= m.cx() + 17; x++) {
@@ -88,8 +97,8 @@ class FortressLayoutTest {
 				for (int y = 25; y <= 38; y++) assertEquals(Cell.AIR, FortressLayout.cell(x, y, z), x + "," + y + "," + z);
 			}
 		}
-		assertEquals(Cell.GATE, FortressLayout.cell(28, 2, -17));
-		assertEquals(Cell.REWARD_GATE, FortressLayout.cell(28, 26, -55));
+		assertEquals(Cell.AIR, FortressLayout.cell(28, 2, -17));
+		assertEquals(Cell.AIR, FortressLayout.cell(28, 26, -55));
 		assertEquals(Cell.AIR, FortressLayout.cell(FortressLayout.REWARD[0], FortressLayout.REWARD[1], FortressLayout.REWARD[2]));
 		assertEquals(Cell.FLOOR, FortressLayout.cell(FortressLayout.REWARD[0], FortressLayout.REWARD[1] - 1, FortressLayout.REWARD[2]));
 		assertTrue(m.roofY() > FortressLayout.WEST.roofY());
@@ -99,6 +108,23 @@ class FortressLayoutTest {
 
 	@Test void allThreeTowersHaveAClimbableRouteToTheirBossRoom() {
 		for (var tower : FortressLayout.TOWERS) assertTrue(canClimbToBoss(tower), tower.role().toString());
+	}
+
+	@Test void treasureIsReachableFromTheColossusFloorWithoutAGate() {
+		ArrayDeque<int[]> queue = new ArrayDeque<>();
+		Set<Long> seen = new HashSet<>();
+		queue.add(new int[] {FortressLayout.COLOSSUS[0], FortressLayout.COLOSSUS[2]});
+		while (!queue.isEmpty()) {
+			int[] p = queue.removeFirst();
+			if (!seen.add(key(p[0], p[1]))) continue;
+			if (p[0] == FortressLayout.REWARD[0] && p[1] == FortressLayout.REWARD[2]) return;
+			for (int[] d : new int[][] {{1, 0}, {-1, 0}, {0, 1}, {0, -1}}) {
+				int x = p[0] + d[0], z = p[1] + d[1];
+				if (FortressLayout.inside(x, z) && standable(x, 25, z) && !seen.contains(key(x, z)))
+					queue.addLast(new int[] {x, z});
+			}
+		}
+		fail("El tesoro no es alcanzable a pie desde el Coloso");
 	}
 
 	@Test void thePlanIsExactlyEightByEightChunksAndHasNoOutsideCells() {
@@ -122,8 +148,13 @@ class FortressLayoutTest {
 		for (int x = FortressLayout.MIN; x <= FortressLayout.MAX; x++) {
 			for (int z = FortressLayout.MIN; z <= FortressLayout.MAX; z++) {
 				Cell c = FortressLayout.cell(x, 1, z);
-				if (c == Cell.HIDDEN_CHEST || c == Cell.SUPPLY_CHEST) {
-					assertEquals(Cell.FLOOR, FortressLayout.cell(x, 0, z));
+				if (c == Cell.SUPPLY_CHEST) {
+					assertTrue(floor(FortressLayout.cell(x, 0, z)));
+					chests++;
+				}
+				if (FortressLayout.cell(x, -1, z) == Cell.HIDDEN_CHEST) {
+					assertEquals(Cell.WOOL_MARKER, FortressLayout.cell(x, 0, z));
+					assertEquals(Cell.STONE, FortressLayout.cell(x, -2, z));
 					chests++;
 				}
 			}
@@ -137,17 +168,54 @@ class FortressLayoutTest {
 
 	@Test void constructionBudgetIsBoundedBeforeTerrainFoundations() {
 		int columns = 0, writes = 0;
+		int[] perChunk = new int[64];
 		for (int x = FortressLayout.MIN; x <= FortressLayout.MAX; x++) {
 			for (int z = FortressLayout.MIN; z <= FortressLayout.MAX; z++) {
 				if (!FortressLayout.occupied(x, z)) continue;
 				columns++;
 				for (int y = FortressLayout.BOTTOM_Y; y <= FortressLayout.TOP_Y; y++) {
-					if (FortressLayout.cell(x, y, z) != null) writes++;
+					if (FortressLayout.cell(x, y, z) != null) {
+						writes++;
+						perChunk[((z - FortressLayout.MIN) / 16) * 8 + (x - FortressLayout.MIN) / 16]++;
+					}
 				}
 			}
 		}
-		assertTrue(columns < 10_000, "columnas ocupadas: " + columns);
-		assertTrue(writes < 250_000, "bloques escritos antes del cimiento: " + writes);
-		System.out.println("V88 fortaleza: " + columns + " columnas, " + writes + " celdas; 64 chunks");
+		assertTrue(columns <= 19_000, "columnas ocupadas: " + columns);
+		assertTrue(writes <= 359_626, "bloques escritos antes del cimiento: " + writes);
+		for (int count : perChunk) assertTrue(count <= 23_306, "celdas en un chunk: " + count);
+		System.out.println("V91 fortaleza: " + columns + " columnas, " + writes + " celdas; 64 chunks");
+	}
+
+	@Test void gothicDetailsAndRuinCausesAreVisibleInThePurePlan() {
+		assertEquals(Cell.TRIM, FortressLayout.cell(-51, 0, -47), "contrafuerte de vigía");
+		assertEquals(Cell.WOOL_MARKER, FortressLayout.cell(-50, 0, -4), "marca del cofre oculto");
+		assertEquals(Cell.HIDDEN_CHEST, FortressLayout.cell(-50, -1, -4));
+		assertEquals(Cell.BENCH, FortressLayout.cell(-47, 1, -20), "banco de la capilla");
+		assertEquals(Cell.CAULDRON, FortressLayout.cell(24, 1, 7), "ala de pociones");
+		assertEquals(Cell.RUBBLE, FortressLayout.cell(-58, 0, 10), "brecha y escombro");
+		for (Cell c : Cell.values()) assertFalse(c.name().contains("GATE"));
+		assertEquals(Cell.ROOF, FortressLayout.cell(-40, 16, -12), "cumbrera inclinada del monasterio");
+		assertEquals(Cell.ROOF, FortressLayout.cell(28, 50, -28), "cubierta escalonada del Mariscal");
+	}
+
+	@Test void layoutDoesNotDependOnTheOrderOfChunkQueries() {
+		List<int[]> positions = new ArrayList<>();
+		List<Cell> expected = new ArrayList<>();
+		for (int x = FortressLayout.MIN; x <= FortressLayout.MAX; x += 4) {
+			for (int z = FortressLayout.MIN; z <= FortressLayout.MAX; z += 4) {
+				for (int y = FortressLayout.BOTTOM_Y; y <= FortressLayout.TOP_Y; y += 3) {
+					positions.add(new int[] {x, y, z});
+					expected.add(FortressLayout.cell(x, y, z));
+				}
+			}
+		}
+		List<Integer> order = new ArrayList<>();
+		for (int i = 0; i < positions.size(); i++) order.add(i);
+		Collections.shuffle(order, new Random(91));
+		for (int i : order) {
+			int[] p = positions.get(i);
+			assertEquals(expected.get(i), FortressLayout.cell(p[0], p[1], p[2]));
+		}
 	}
 }

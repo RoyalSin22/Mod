@@ -3,11 +3,20 @@
 ## V91 — Revisión visual de Tres Torres
 
 `FortressPaletteTest` comprueba estados deterministas por anillo y bioma, propiedades de escaleras
-y camas y las excepciones funcionales del controlador y la reja V88. `exportFortressSchem` debe
-producir las 9535 columnas y 179 813 celdas que mide `FortressLayoutTest`; el script
-`tools/fortress/preview.py` valida el NBT Sponge v3 y compara cada índice del `.schem` con el
-volumen de vista previa antes de dibujar las plantas y la isométrica. Importar el esquema en
-WorldEdit, comprobar las cuatro fachadas y recorrerlo a altura de jugador sigue pendiente.
+y camas y que solo el controlador nuevo requiere un bloque propio. `FortressLayoutTest` comprueba
+los caminos por planta y escaleras, la llegada al tesoro, posiciones de cofres y apariciones,
+determinismo con otro orden de consultas y el presupuesto de 9772 columnas, 197 111 celdas y
+11 725 celdas en el chunk más denso. `exportFortressSchem` genera ese volumen y
+`tools/fortress/preview.py` valida el NBT Sponge v3 contra cada vóxel antes de dibujar las plantas
+y la isométrica. Importar el esquema en WorldEdit, comprobar las cuatro fachadas y recorrerlo a
+altura de jugador sigue pendiente. [Procedimiento y revisión](V91_FORTALEZA_REVISION.md).
+
+Verificación de la Fase 2, 2026-11-27: `.\gradlew.bat --offline build --console=plain` terminó con
+**BUILD SUCCESSFUL**; `python tools/lang/check_lang.py`,
+`gen_fortress_lang.py --check` y `gen_interface_lang.py --check` pasaron. El exportador y el visor
+regeneraron y validaron `build/fortress.schem`. El build se repitió después de corregir la
+accesibilidad de los cuatro cofres ocultos y terminó con **BUILD SUCCESSFUL** (1033 pruebas Java,
+ningún fallo). No se ha probado en partida.
 
 ## V90 — Torre menor y campamentos
 

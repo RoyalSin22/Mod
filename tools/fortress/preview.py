@@ -109,6 +109,8 @@ def color(state):
         return (94, 116, 86)
     if "stone_brick" in state:
         return (143, 145, 141)
+    if "andesite" in state:
+        return (173, 172, 160)
     if "cobble" in state:
         return (106, 108, 101)
     if "planks" in state:
@@ -121,8 +123,12 @@ def color(state):
         return (242, 182, 89)
     if "chest" in state:
         return (205, 137, 66)
-    if "vigil_gate" in state:
-        return (171, 84, 139)
+    if "wool" in state:
+        return (148, 79, 160)
+    if "iron_bars" in state or "chain" in state:
+        return (87, 97, 109)
+    if "moss" in state or "carpet" in state:
+        return (92, 126, 85)
     if "controller" in state:
         return (90, 120, 137)
     if "bookshelf" in state:
@@ -130,14 +136,14 @@ def color(state):
     return (132, 119, 103)
 
 
-def shortest_path(palette, voxels, start, goal, gate_open=False):
+def shortest_path(palette, voxels, start, goal):
     def walkable(x, z):
         if not (-64 <= x <= 63 and -64 <= z <= 63):
             return False
         floor = palette[cell(voxels, x, 0, z)]
         feet = palette[cell(voxels, x, 1, z)]
         head = palette[cell(voxels, x, 2, z)]
-        free = lambda state: state == "minecraft:air" or gate_open and state == "aptitudes:vigil_gate"
+        free = lambda state: state == "minecraft:air" or state.endswith("_carpet")
         return floor != "minecraft:air" and free(feet) and free(head)
 
     queue = deque([start])
@@ -176,7 +182,7 @@ def floor_plan(build, palette, voxels, floor):
             draw.rectangle((px, pz, px + TILE - 1, pz + TILE - 1), fill=c)
     if floor == 1:
         for start, goal in zip(ROUTE, ROUTE[1:]):
-            path = shortest_path(palette, voxels, start, goal, goal == ROUTE[-1])
+            path = shortest_path(palette, voxels, start, goal)
             if path:
                 draw.line([(ox + (x + 64) * TILE + 4, oz + (z + 64) * TILE + 4)
                            for x, z in path], fill=(249, 205, 101), width=3)
@@ -188,16 +194,16 @@ def floor_plan(build, palette, voxels, floor):
         for name, x, z in LABELS[-4:]:
             draw.text((ox + (x + 64) * TILE + 8, oz + (z + 64) * TILE - 10), name,
                       fill=(255, 241, 196), stroke_width=2, stroke_fill=(24, 29, 36))
-    draw.text((50, 20), f"Tres Torres | planta y={floor} | norte arriba", fill=(238, 227, 202))
+    draw.text((50, 20), f"Tres Torres V91 | planta y={floor} | norte arriba", fill=(238, 227, 202))
     draw.text((1085, 70), "Leyenda", fill=(238, 227, 202))
     for i, (name, c) in enumerate([("Piedra", (143, 145, 141)), ("Pizarra", (76, 85, 99)),
                                    ("Madera", (100, 71, 52)), ("Cofre", (205, 137, 66)),
-                                   ("Reja V88", (171, 84, 139))]):
+                                   ("Marca de cofre", (148, 79, 160))]):
         draw.rectangle((1085, 100 + i * 25, 1100, 115 + i * 25), fill=c)
         draw.text((1110, 99 + i * 25), name, fill=(222, 219, 207))
     if floor == 1:
         draw.text((1085, 255), "Dorado: ruta a pie", fill=(249, 205, 101))
-        draw.text((1085, 278), "Mariscal: tras Guardianes", fill=(222, 219, 207))
+        draw.text((1085, 278), "Mariscal: abierto", fill=(222, 219, 207))
     path = build / f"fortress_plan_y{floor}.png"
     image.save(path)
     return path
@@ -237,7 +243,7 @@ def isometric(build, palette, voxels):
                          fill=tuple(max(10, v * 4 // 5) for v in c))
         draw.polygon([(px, py - scale_z), (px + scale_x, py),
                       (px, py + scale_z), (px - scale_x, py)], fill=c)
-    draw.text((40, 25), "Tres Torres | vista isométrica del plano V88", fill=(238, 227, 202))
+    draw.text((40, 25), "Tres Torres | vista isométrica del plano V91", fill=(238, 227, 202))
     path = build / "fortress_isometric.png"
     image.save(path)
     return path

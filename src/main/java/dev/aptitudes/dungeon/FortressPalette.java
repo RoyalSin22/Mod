@@ -4,8 +4,8 @@ import dev.aptitudes.dungeon.FortressLayout.Cell;
 
 /**
  * Paleta pura de la fortaleza. El identificador incluye las propiedades de estado que deben
- * compartir el Feature y las vistas previas. Controlador y rejas son las dos excepciones
- * funcionales a los bloques vanilla del diseño V88.
+ * compartir el Feature y las vistas previas. El controlador es la única excepción
+ * funcional a los bloques vanilla de la fortaleza V91.
  */
 public final class FortressPalette {
 	private FortressPalette() {}
@@ -29,7 +29,6 @@ public final class FortressPalette {
 			case SOUL_LIGHT -> "minecraft:soul_lantern";
 			case STAIR_EAST -> stairs(tier) + "[facing=east]";
 			case STAIR_WEST -> stairs(tier) + "[facing=west]";
-			case GATE, REWARD_GATE -> "aptitudes:vigil_gate";
 			case CONTROLLER -> "aptitudes:three_towers_controller";
 			case BOOKSHELF -> "minecraft:bookshelf";
 			case BED_FOOT -> "minecraft:red_bed[facing=south,part=foot]";
@@ -38,6 +37,25 @@ public final class FortressPalette {
 			case ENCHANTING -> "minecraft:enchanting_table";
 			case ALTAR -> tier >= 4 ? "minecraft:chiseled_polished_blackstone" : "minecraft:chiseled_deepslate";
 			case HIDDEN_CHEST, SUPPLY_CHEST -> "minecraft:chest";
+			case TRIM -> tier >= 4 ? "minecraft:polished_blackstone" : tier >= 2 ? "minecraft:polished_deepslate" : "minecraft:polished_andesite";
+			case CORNICE -> tier >= 4 ? "minecraft:polished_blackstone_brick_slab"
+					: tier >= 2 ? "minecraft:deepslate_brick_slab" : "minecraft:stone_brick_slab";
+			case ARCH_NORTH -> stairs(tier) + "[facing=north]";
+			case ARCH_SOUTH -> stairs(tier) + "[facing=south]";
+			case ARCH_EAST -> stairs(tier) + "[facing=east]";
+			case ARCH_WEST -> stairs(tier) + "[facing=west]";
+			case IRON_BARS -> "minecraft:iron_bars";
+			case CHAIN -> "minecraft:chain";
+			case LANTERN -> "minecraft:lantern[hanging=true]";
+			case BENCH -> "minecraft:dark_oak_stairs[facing=east]";
+			case TABLE -> "minecraft:dark_oak_slab[type=top]";
+			case LECTERN -> "minecraft:lectern";
+			case CAULDRON -> "minecraft:cauldron";
+			case BARREL -> "minecraft:barrel";
+			case GRINDSTONE -> "minecraft:grindstone";
+			case WOOL_MARKER -> "minecraft:purple_wool";
+			case MOSS -> dry ? "minecraft:brown_carpet" : "minecraft:moss_carpet";
+			case FENCE -> "minecraft:dark_oak_fence";
 		};
 	}
 

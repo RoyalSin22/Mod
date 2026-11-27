@@ -25,7 +25,7 @@ class TowersResourcesTest {
 		for (String lang : new String[] {"en_us", "es_es", "pt_br", "fr_fr", "de_de"}) {
 			String text = read("assets/aptitudes/lang/" + lang + ".json");
 			for (String key : new String[] {"block.aptitudes.three_towers_controller", "towers.aptitudes.guardian_woke", "towers.aptitudes.guardian_down",
-					"towers.aptitudes.lord_open", "towers.aptitudes.colossus_woke", "towers.aptitudes.colossus_down",
+					"towers.aptitudes.lord_open", "towers.aptitudes.marshal_ready", "towers.aptitudes.colossus_woke", "towers.aptitudes.colossus_down",
 					"advancement.aptitudes.three_towers.title", "advancement.aptitudes.three_towers.description", "aptitudes.structure.three_towers"}) {
 				assertTrue(text.contains("\"" + key + "\""), lang + " sin " + key);
 			}

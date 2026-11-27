@@ -3,7 +3,7 @@ package dev.aptitudes.dungeon;
 import java.util.List;
 
 /**
- * V88: plano puro de la fortaleza de las Tres Torres. Cada consulta depende solo de coordenadas relativas;
+ * V91: plano puro de la fortaleza de las Tres Torres. Cada consulta depende solo de coordenadas relativas;
  * un chunk puede construir sus columnas sin consultar ni escribir en los vecinos.
  */
 public final class FortressLayout {
@@ -24,8 +24,11 @@ public final class FortressLayout {
 
 	public enum Cell {
 		AIR, STONE, FLOOR, WOOD, ROOF, RUBBLE, MERLON, WINDOW, SOUL_LIGHT,
-		STAIR_EAST, STAIR_WEST, GATE, REWARD_GATE, CONTROLLER, BOOKSHELF,
-		BED_FOOT, BED_HEAD, BREWING, ENCHANTING, ALTAR, HIDDEN_CHEST, SUPPLY_CHEST
+		STAIR_EAST, STAIR_WEST, CONTROLLER, BOOKSHELF,
+		BED_FOOT, BED_HEAD, BREWING, ENCHANTING, ALTAR, HIDDEN_CHEST, SUPPLY_CHEST,
+		TRIM, CORNICE, ARCH_NORTH, ARCH_SOUTH, ARCH_EAST, ARCH_WEST,
+		IRON_BARS, CHAIN, LANTERN, BENCH, TABLE, LECTERN, CAULDRON, BARREL,
+		GRINDSTONE, WOOL_MARKER, MOSS, FENCE
 	}
 
 	public record Spawn(TowersLayout.Role role, int level, int x, int y, int z) {}
@@ -72,15 +75,19 @@ public final class FortressLayout {
 		if (rect(x, z, -51, -17, 32, 52)) return room(x, y, z, -51, -17, 32, 52, -28, 32, 2);
 		if (rect(x, z, 20, 51, 3, 27)) return room(x, y, z, 20, 51, 3, 27, 20, 15, 3);
 		if (rect(x, z, -10, 10, 51, 63)) return barbican(x, y, z);
+		Cell depth = facadeDepth(x, y, z);
+		if (depth != null) return depth;
 		if (bridge(x, z)) {
 			if (y == 12) return Cell.WOOD;
+			if (y == 13 && (x == -45 || x == -41 || x == 41 || x == 45)) return Cell.FENCE;
 			if (y >= 13 && y <= 15) return Cell.AIR;
 		}
 		if (Math.abs(x) >= 58 && Math.abs(x) <= 61 && Math.abs(z) <= 61
 				|| Math.abs(z) >= 58 && Math.abs(z) <= 61 && Math.abs(x) <= 61) return curtain(x, y, z);
 		if (path(x, z)) {
 			if (y < 0) return Cell.STONE;
-			if (y == 0) return Cell.FLOOR;
+			if (y == 0) return Math.floorMod(x * 3 + z * 7, 11) == 0 ? Cell.TRIM : Cell.FLOOR;
+			if (y == 1 && Math.abs(x) >= 10 && Math.floorMod(z, 17) == 0) return Cell.MOSS;
 			return y <= 6 ? Cell.AIR : null;
 		}
 		return null;
@@ -108,26 +115,76 @@ public final class FortressLayout {
 				|| rect(x, z, 24, 32, -18, -12); // puerta del Mariscal
 	}
 
+	/** Contrafuertes y escombros exteriores: añaden profundidad sin cerrar los accesos. */
+	private static Cell facadeDepth(int x, int y, int z) {
+		for (TowersLayout.Tower t : TOWERS) {
+			int dx = x - t.cx(), dz = z - t.cz(), h = t.half();
+			if (t == MARSHAL && dz < -h) continue; // conserva la entrada al tesoro
+			boolean flank = (Math.abs(dx) == h + 1 && Math.abs(dz) <= h && Math.abs(dz) >= h - 2)
+					|| (Math.abs(dz) == h + 1 && Math.abs(dx) <= h && Math.abs(dx) >= h - 2);
+			boolean pier = (Math.abs(dx) == h + 1 && dz == 0) || (Math.abs(dz) == h + 1 && Math.abs(dx) == h / 2);
+			if (flank || pier) {
+				if (y < 0) return Cell.STONE;
+				if (y == 0) return Cell.TRIM;
+				if (y <= (t == MARSHAL ? 19 : 13)) return y % 6 == 5 ? Cell.CORNICE : Cell.STONE;
+				return null;
+			}
+		}
+		int[][] wings = {{-53, -25, -25, -1}, {-52, -27, 7, 26}, {-51, -17, 32, 52}, {20, 51, 3, 27}};
+		for (int[] r : wings) {
+			boolean side = (x == r[0] - 1 || x == r[1] + 1) && z > r[2] + 2 && z < r[3] - 2
+					&& Math.floorMod(z - r[2], 7) == 0;
+			boolean end = (z == r[2] - 1 || z == r[3] + 1) && x > r[0] + 2 && x < r[1] - 2
+					&& Math.floorMod(x - r[0], 7) == 0;
+			if (side || end) {
+				if (y < 0) return Cell.STONE;
+				if (y == 0) return Cell.TRIM;
+				if (y <= 6) return y == 6 ? Cell.CORNICE : Cell.STONE;
+			}
+		}
+		boolean wallPier = (Math.abs(x) == 57 || Math.abs(x) == 62) && Math.abs(z) < 57 && Math.floorMod(z + 60, 12) == 0
+				|| (Math.abs(z) == 57 || Math.abs(z) == 62) && Math.abs(x) < 57 && Math.floorMod(x + 60, 12) == 0;
+		if (wallPier) {
+			if (y < 0) return Cell.STONE;
+			if (y == 0) return Cell.TRIM;
+			if (y <= 6) return y == 6 ? Cell.CORNICE : Cell.STONE;
+		}
+		boolean breachRubble = rect(x, z, -57, -54, 8, 16) || rect(x, z, -17, -10, -57, -55)
+				|| rect(x, z, 55, 57, -8, -3);
+		if (breachRubble && Math.floorMod(x * 5 + z * 3, 4) != 0) {
+			if (y < 0) return Cell.STONE;
+			if (y == 0) return Cell.RUBBLE;
+			if (y == 1 && Math.floorMod(x + z, 3) == 0) return Cell.RUBBLE;
+		}
+		return null;
+	}
+
 	private static Cell tower(TowersLayout.Tower t, int x, int y, int z) {
 		int dx = x - t.cx(), dz = z - t.cz(), h = t.half();
 		if (y < 0) return Cell.STONE;
 		if (y == 0) return Cell.FLOOR;
-		if (y == t.roofY()) return Cell.ROOF;
-		if (y > t.roofY()) {
-			int high = t.role() == TowersLayout.Role.LORD ? 60 : 39;
-			int narrow = t.role() == TowersLayout.Role.LORD ? 6 : 2;
-			if (y <= high && Math.max(Math.abs(dx), Math.abs(dz)) == narrow) return Cell.STONE;
-			if (y == high + 1 && Math.abs(dx) <= 1 && Math.abs(dz) <= 1) return Cell.ROOF;
-			return null;
+		if (y == t.roofY()) {
+			if (t == MARSHAL && Math.abs(dx) <= 2 && Math.abs(dz) <= 2) return Cell.WINDOW;
+			return Math.abs(dx) == h || Math.abs(dz) == h ? Cell.CORNICE : Cell.ROOF;
 		}
+		if (y > t.roofY()) return towerCrown(t, dx, y, dz);
 		boolean wall = Math.abs(dx) == h || Math.abs(dz) == h;
 		if (wall) {
-			if (t.role() == TowersLayout.Role.LORD && dz == -h && Math.abs(dx) <= 1 && y >= 25 && y <= 27) return Cell.REWARD_GATE;
+			if (t.role() == TowersLayout.Role.LORD && dz == -h && Math.abs(dx) <= 1 && y >= 25 && y <= 27) return Cell.AIR;
 			if (t.role() == TowersLayout.Role.VASSAL_WEST && dz == h && Math.abs(dx) <= 1 && y >= 13 && y <= 15) return Cell.AIR;
 			if (t.role() == TowersLayout.Role.VASSAL_EAST && dz == -h && Math.abs(dx) <= 1 && y >= 13 && y <= 15) return Cell.AIR;
 			int entryZ = t.role() == TowersLayout.Role.VASSAL_EAST ? -h : h;
-			if (dz == entryZ && Math.abs(dx) <= 1 && y <= 3) return t.role() == TowersLayout.Role.LORD ? Cell.GATE : Cell.AIR;
-			if (y >= 3 && y <= t.bossFloorY() + 5 && y % 6 >= 3 && Math.abs(dx + dz) % 7 == 0) return Cell.WINDOW;
+			if (dz == entryZ && Math.abs(dx) <= 1 && y <= 3) return Cell.AIR;
+			if (y % 6 == 5 && y < t.bossFloorY()) return Cell.CORNICE;
+			int along = Math.abs(dx) == h ? dz : dx;
+			boolean window = Math.floorMod(along, t == MARSHAL ? 8 : 5) == 0 && Math.abs(along) < h - 2;
+			if (window && y >= 2 && y <= t.roofY() - 3) {
+				int phase = Math.floorMod(y, 6);
+				if (phase == 2 || phase == 3) return Cell.WINDOW;
+				if (phase == 4) return dz == -h ? Cell.ARCH_NORTH : dz == h ? Cell.ARCH_SOUTH
+						: dx == -h ? Cell.ARCH_WEST : Cell.ARCH_EAST;
+			}
+			if (Math.floorMod(along + h, 7) == 0) return Cell.TRIM;
 			return Cell.STONE;
 		}
 		if (y == t.bossFloorY() && x == t.cx() && z == t.cz()) return Cell.FLOOR;
@@ -143,10 +200,46 @@ public final class FortressLayout {
 		for (int floor = 0; floor < t.bossFloorY(); floor += TowersLayout.FLOOR_H) {
 			Cell step = staircase(t, x, y, z, floor, false);
 			if (step != null) return step;
+			if (y == floor + 1 && Math.abs(dx) == h - 2 && Math.abs(dz) == h - 2) return Cell.BARREL;
+			if (y == floor + 1 && dz == 0 && dx == h - 2) return Cell.TABLE;
+			if (y == floor + 4 && dx == 0 && dz == 0) return Cell.LANTERN;
+			if (y == floor + 5 && dx == 0 && dz == 0) return Cell.CHAIN;
 		}
 		if (y == t.bossFloorY() + 1 && Math.abs(dx) == h - 1 && dz == 0) return Cell.SOUL_LIGHT;
 		if (y == 1 && t.role() != TowersLayout.Role.LORD && dx == -h + 2 && dz == 0) return Cell.SUPPLY_CHEST;
 		return Cell.AIR;
+	}
+
+	/** Atalayas abiertas y linterna octogonal del Mariscal, con almenas sobre la cubierta. */
+	private static Cell towerCrown(TowersLayout.Tower t, int dx, int y, int dz) {
+		int h = t.half(), roof = t.roofY();
+		if (y <= roof + 2 && (Math.abs(dx) == h || Math.abs(dz) == h))
+			return Math.floorMod(dx + dz, 3) == 0 ? Cell.MERLON : Cell.AIR;
+		if (t == MARSHAL) {
+			int distance = Math.max(Math.abs(dx), Math.abs(dz));
+			if (y <= 50) return distance == 58 - y ? Cell.ROOF : null;
+			int radius = y <= 52 ? 7 : 5;
+			if (y == 59 && Math.max(Math.abs(dx), Math.abs(dz)) <= 5) return Cell.ROOF;
+			if (y >= 60) return Math.abs(dx) <= 1 && Math.abs(dz) <= 1 && y <= 61 ? Cell.TRIM : null;
+			if (y == 53 && Math.max(Math.abs(dx), Math.abs(dz)) <= 7) return Cell.FLOOR;
+			if (y <= 58 && Math.max(Math.abs(dx), Math.abs(dz)) == radius
+					&& Math.abs(dx) + Math.abs(dz) < radius * 2 - 1) {
+				boolean opening = (Math.abs(dx) <= 2 || Math.abs(dz) <= 2) && y >= 52 && y <= 56;
+				return opening ? Cell.WINDOW : y % 4 == 0 ? Cell.TRIM : Cell.STONE;
+			}
+			return null;
+		}
+		int radius = 5;
+		if (y == 36 && Math.max(Math.abs(dx), Math.abs(dz)) <= 5) return Cell.ROOF;
+		if (y >= 37) {
+			int distance = Math.max(Math.abs(dx), Math.abs(dz));
+			return y <= 40 && distance == 40 - y ? Cell.ROOF : null;
+		}
+		if (y <= 35 && Math.max(Math.abs(dx), Math.abs(dz)) == radius && Math.abs(dx) + Math.abs(dz) <= 8) {
+			boolean opening = (dx == 0 || dz == 0) && y >= 30 && y <= 33;
+			return opening ? Cell.WINDOW : y == 35 ? Cell.CORNICE : Cell.STONE;
+		}
+		return null;
 	}
 
 	private static Cell staircase(TowersLayout.Tower t, int x, int y, int z, int floor, boolean headroom) {
@@ -166,54 +259,120 @@ public final class FortressLayout {
 
 	private static Cell treasury(int x, int y, int z) {
 		if (y < 24) return Cell.STONE;
-		if (y == 24) return Cell.FLOOR;
-		if (y == 33) return Cell.ROOF;
+		if (y == 24) return Math.floorMod(x + z, 4) == 0 ? Cell.TRIM : Cell.FLOOR;
+		if (y == 33) return Math.abs(x - 28) == 7 ? Cell.TRIM : Cell.ROOF;
 		if (y > 33) return null;
-		return x == 20 || x == 36 || z == -61 ? Cell.STONE : Cell.AIR;
+		if (x == 20 || x == 36 || z == -61) {
+			if (y == 30) return Cell.CORNICE;
+			if (y >= 27 && y <= 29 && Math.floorMod(x + z, 5) == 0) return Cell.WINDOW;
+			return Cell.STONE;
+		}
+		if (y >= 25 && y <= 31 && (x == 22 || x == 34) && (z == -59 || z == -57)) return Cell.TRIM;
+		if (y == 30 && z == -58 && x == 28) return Cell.LANTERN;
+		if (y == 31 && z == -58 && x == 28) return Cell.CHAIN;
+		return Cell.AIR;
 	}
 
 	private static Cell room(int x, int y, int z, int x0, int x1, int z0, int z1, int doorX, int doorZ, int kind) {
+		boolean secret = x == x0 + 3 && z == z1 - 3;
+		if (secret && y == -1) return Cell.HIDDEN_CHEST;
 		if (y < 0) return Cell.STONE;
-		if (y == 0) return Cell.FLOOR;
-		if (y == 10) return ((x + z) % 11 == 0 || (x - z) % 13 == 0) ? Cell.AIR : Cell.ROOF;
-		if (y > 10) return null;
+		if (y == 0) return secret ? Cell.WOOL_MARKER
+				: Math.floorMod(x * 3 + z * 5 + kind, 13) == 0 ? Cell.TRIM : Cell.FLOOR;
+		int roofY = 10 + Math.min(6, Math.min(x - x0, x1 - x) / 2);
+		if (y >= 10) {
+			if (missingRoof(kind, x, z)) return y <= roofY ? Cell.AIR : null;
+			if (y == roofY) return Cell.ROOF;
+			if ((z == z0 || z == z1) && y < roofY) return y == roofY - 1 && x == (x0 + x1) / 2 ? Cell.WINDOW : Cell.STONE;
+			return y <= roofY ? Cell.AIR : null;
+		}
 		boolean wall = x == x0 || x == x1 || z == z0 || z == z1;
 		if (wall) {
 			if (Math.abs(x - doorX) + Math.abs(z - doorZ) <= 1 && y <= 3) return Cell.AIR;
-			if (y >= 4 && y <= 6 && (x + z) % 7 == 0) return Cell.WINDOW;
+			int along = x == x0 || x == x1 ? z - z0 : x - x0;
+			if (y == 8) return Cell.CORNICE;
+			if (Math.floorMod(along, 7) == 3 && y >= 3 && y <= 6) {
+				if (y <= 5) return Cell.WINDOW;
+				return z == z0 ? Cell.ARCH_NORTH : z == z1 ? Cell.ARCH_SOUTH
+						: x == x0 ? Cell.ARCH_WEST : Cell.ARCH_EAST;
+			}
+			if (Math.floorMod(along, 7) == 0) return Cell.TRIM;
 			return Cell.STONE;
 		}
+		if (y == 9 && (Math.floorMod(x - x0, 7) == 0 || Math.floorMod(z - z0, 7) == 0)) return Cell.TRIM;
+		if (y == 7 && x == (x0 + x1) / 2 && z == (z0 + z1) / 2) return Cell.LANTERN;
+		if (y == 8 && x == (x0 + x1) / 2 && z == (z0 + z1) / 2) return Cell.CHAIN;
+		if (y >= 1 && y <= 8 && (x == x0 + 2 || x == x1 - 2) && (z == z0 + 2 || z == z1 - 2)) return Cell.TRIM;
+		if (kind == 1 && y <= 3 && (x == -49 || x == -30) && Math.floorMod(z, 3) == 0) return Cell.BOOKSHELF;
+		if (kind == 3 && y <= 3 && x == 48 && Math.floorMod(z, 4) == 0) return Cell.BOOKSHELF;
 		if (y > 1) return Cell.AIR;
-		if (x == x0 + 3 && z == z0 + 3) return Cell.SOUL_LIGHT;
-		if (kind == 0 && x == -39 && z == -13) return Cell.ALTAR;
-		if (kind == 1 && (x == -49 || x == -30) && z % 3 == 0) return Cell.BOOKSHELF;
-		if (kind == 2 && x % 5 == 0 && (z == 36 || z == 43)) return Cell.BED_FOOT;
-		if (kind == 2 && x % 5 == 0 && (z == 37 || z == 44)) return Cell.BED_HEAD;
-		if (kind == 3 && x == 36 && z == 14) return Cell.ENCHANTING;
-		if (kind == 3 && x == 29 && z == 14) return Cell.BREWING;
-		if (x == x0 + 2 && z == z1 - 2) return Cell.HIDDEN_CHEST;
+		if (kind == 0) {
+			if (x == -39 && z == -13) return Cell.ALTAR;
+			if ((x == -47 || x == -31) && z >= -20 && z <= -5 && Math.floorMod(z + 20, 4) == 0) return Cell.BENCH;
+			if (x == -39 && z == -21) return Cell.LECTERN;
+		}
+		if (kind == 1) {
+			if ((x == -44 && z == 12) || (x == -34 && z == 22)) return Cell.LECTERN;
+			if (x == -39 && (z == 11 || z == 22)) return Cell.TABLE;
+		}
+		if (kind == 2) {
+			if (x % 5 == 0 && (z == 36 || z == 43)) return Cell.BED_FOOT;
+			if (x % 5 == 0 && (z == 37 || z == 44)) return Cell.BED_HEAD;
+			if ((x == -47 || x == -21) && z == 49) return Cell.BARREL;
+		}
+		if (kind == 3) {
+			if (x == 36 && z == 14) return Cell.ENCHANTING;
+			if (x == 29 && z == 14) return Cell.BREWING;
+			if (x == 24 && Math.floorMod(z - 7, 5) == 0) return Cell.CAULDRON;
+			if (x == 43 && z == 20) return Cell.GRINDSTONE;
+			if (x == 39 && z == 7) return Cell.LECTERN;
+		}
 		return Cell.AIR;
+	}
+
+	private static boolean missingRoof(int kind, int x, int z) {
+		return switch (kind) {
+			case 0 -> x < -42 && z < -14;
+			case 1 -> x < -43 && z > 17;
+			case 2 -> x > -30 && z > 44;
+			default -> x > 41 && z < 14;
+		};
 	}
 
 	private static Cell barbican(int x, int y, int z) {
 		if (y < 0) return Cell.STONE;
-		if (y == 0) return Cell.FLOOR;
+		if (y == 0) return Math.floorMod(x + z, 5) == 0 ? Cell.TRIM : Cell.FLOOR;
 		if (y > 12) return null;
-		if (y == 1 && Math.abs(x) == 5 && z == 59) return Cell.SOUL_LIGHT;
+		if (y == 1 && Math.abs(x) == 5 && (z == 54 || z == 60)) return Cell.BARREL;
+		if (y == 6 && x == 0 && z == 57) return Cell.LANTERN;
+		if (y == 7 && x == 0 && z == 57) return Cell.CHAIN;
 		if (Math.abs(x) <= 3 && y <= 5) return Cell.AIR;
-		if (Math.abs(x) >= 7 || z == 51 || z == 63) return y == 12 ? Cell.MERLON : Cell.STONE;
+		if (z == 63 && Math.abs(x) <= 3 && y == 6 - Math.abs(x) / 2) return Cell.ARCH_SOUTH;
+		if (Math.abs(x) >= 7 || z == 51 || z == 63) {
+			if (y == 12) return Math.floorMod(x + z, 3) == 0 ? Cell.MERLON : Cell.AIR;
+			if (y == 10) return Cell.CORNICE;
+			if (Math.abs(x) >= 7 && y >= 3 && y <= 5 && Math.floorMod(z, 5) == 0) return Cell.IRON_BARS;
+			return Cell.STONE;
+		}
 		return y == 9 ? Cell.WOOD : Cell.AIR;
 	}
 
 	private static Cell curtain(int x, int y, int z) {
 		if (y < 0) return Cell.STONE;
-		if (y == 0) return Cell.FLOOR;
 		boolean breach = (x <= -58 && z >= 8 && z <= 16) || (z <= -58 && x >= -17 && x <= -10)
 				|| (x >= 58 && z >= -8 && z <= -3);
-		if (breach) return y <= 2 ? Cell.RUBBLE : null;
-		if (y <= 8) return Cell.STONE;
+		if (y == 0) return breach ? Cell.RUBBLE : Cell.FLOOR;
+		if (breach) return y <= 2 && Math.floorMod(x * 3 + z * 5 + y, 4) != 0 ? Cell.RUBBLE : Cell.AIR;
+		int along = Math.abs(x) >= 58 ? z : x;
+		boolean damaged = Math.floorMod(Math.floorDiv(along + 61, 13), 5) == 2;
+		if (damaged && y >= 7) return null;
+		if (y <= 8) {
+			if (y >= 4 && y <= 6 && Math.floorMod(along + 61, 11) == 0) return Cell.IRON_BARS;
+			if (y == 7) return Cell.CORNICE;
+			return Cell.STONE;
+		}
 		if (y == 9) return Cell.FLOOR;
-		if (y <= 11 && ((x + z) & 3) < 2) return Cell.MERLON;
+		if (y <= 11 && Math.floorMod(along, 4) < 2) return Cell.MERLON;
 		return null;
 	}
 }

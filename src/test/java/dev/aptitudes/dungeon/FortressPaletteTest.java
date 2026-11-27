@@ -15,7 +15,7 @@ class FortressPaletteTest {
 		assertEquals("minecraft:spruce_planks", FortressPalette.state(FortressLayout.Cell.WOOD, 0, 0, 0, 1, "minecraft:desert"));
 	}
 
-	@Test void directionalBlocksAndFunctionalExceptionsAreExplicit() {
+	@Test void directionalBlocksAndControllerExceptionAreExplicit() {
 		assertEquals("minecraft:deepslate_brick_stairs[facing=east]",
 				FortressPalette.state(FortressLayout.Cell.STAIR_EAST, 0, 1, 0, 3, "minecraft:plains"));
 		assertEquals("minecraft:red_bed[facing=south,part=head]",
@@ -24,8 +24,7 @@ class FortressPaletteTest {
 				FortressPalette.state(FortressLayout.Cell.CONTROLLER, 0, 0, 0, 3, "minecraft:plains"));
 		for (var type : FortressLayout.Cell.values()) {
 			String state = FortressPalette.state(type, 0, 0, 0, 3, "minecraft:plains");
-			assertTrue(state.startsWith("minecraft:") || type == FortressLayout.Cell.CONTROLLER
-					|| type == FortressLayout.Cell.GATE || type == FortressLayout.Cell.REWARD_GATE, type.toString());
+			assertTrue(state.startsWith("minecraft:") || type == FortressLayout.Cell.CONTROLLER, type.toString());
 		}
 	}
 }

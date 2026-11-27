@@ -83,7 +83,7 @@ public final class FortressExport {
 		Files.writeString(output.resolve("fortress.palette"), text, StandardCharsets.UTF_8);
 		int busiest = 0;
 		for (int count : chunkWrites) busiest = Math.max(busiest, count);
-		System.out.println("Fortaleza V88: " + columns + " columnas, " + written + " celdas, " + palette.size()
+		System.out.println("Fortaleza V91: " + columns + " columnas, " + written + " celdas, " + palette.size()
 				+ " estados; máximo " + busiest + " celdas/chunk; " + WIDTH + "x" + HEIGHT + "x" + LENGTH);
 		System.out.println("Exportación pura: " + ((System.nanoTime() - start) / 1_000_000) + " ms (no mide generación del mundo)");
 		System.out.println(output.resolve("fortress.schem").toAbsolutePath());

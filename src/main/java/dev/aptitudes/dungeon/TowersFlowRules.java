@@ -8,7 +8,8 @@ import dev.aptitudes.dungeon.TowersLayout.Tower;
  *
  * <p>Los jefes están «dormidos» porque <b>no existen</b> hasta que un jugador entra en su sala (como el Autómata del Custodio).
  * Cada jefe pasa de {@link Boss#ASLEEP} a {@link Boss#AWAKE} y a {@link Boss#DEFEATED} y <b>nunca retrocede</b>: una sola vez por
- * estructura. La puerta del Señor se abre al vencer a los dos Guardianes. La dificultad es alta: el anillo de Amenaza efectivo
+ * estructura. Tras vencer a los dos Guardianes se habilita el Coloso; solo las fortalezas V88 ya
+ * generadas tenían una reja física. La dificultad es alta: el anillo de Amenaza efectivo
  * sube uno sobre el del lugar con un mínimo de {@link #MIN_RING}.</p>
  */
 public final class TowersFlowRules {
@@ -49,12 +50,12 @@ public final class TowersFlowRules {
 		return state == Boss.ASLEEP && playerInRoom;
 	}
 
-	/** La puerta del Señor se abre cuando los dos Guardianes han caído. */
+	/** El encuentro del Mariscal se habilita cuando los dos Guardianes han caído. */
 	public static boolean lordDoorOpen(Boss west, Boss east) {
 		return west == Boss.DEFEATED && east == Boss.DEFEATED;
 	}
 
-	/** El Coloso despierta si la puerta está abierta, duerme y hay un jugador en su sala. */
+	/** El Coloso despierta si el controlador ha habilitado el encuentro, duerme y hay un jugador en su sala. */
 	public static boolean shouldWakeColossus(boolean doorOpen, Boss colossus, boolean playerInRoom) {
 		return doorOpen && shouldWake(colossus, playerInRoom);
 	}

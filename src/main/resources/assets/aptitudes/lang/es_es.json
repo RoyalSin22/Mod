@@ -72,6 +72,7 @@
   "towers.aptitudes.guardian_woke": "Un caballero hueco se alza de su puesto…",
   "towers.aptitudes.guardian_down": "Ha caído un guardián. Quedan %s.",
   "towers.aptitudes.lord_open": "La puerta sellada de la torre del Mariscal cede.",
+  "towers.aptitudes.marshal_ready": "Han caído los dos Guardianes. Ya puedes enfrentarte al Mariscal.",
   "towers.aptitudes.colossus_woke": "El Mariscal sin rostro despierta.",
   "towers.aptitudes.colossus_down": "La Vigilia ha terminado.",
   "key.aptitudes.roles": "Abrir roles",

@@ -316,20 +316,20 @@ public final class TowersControllerBlockEntity extends BlockEntity {
 
 	private void openLordDoor(ServerWorld world) {
 		doorOpen = true;
-		if (fortress) openGate(world, FortressLayout.MARSHAL.cx(), FortressLayout.MARSHAL.cz() + FortressLayout.MARSHAL.half(), 1, 3);
+		if (fortress) breakLegacyFortressGate(world, FortressLayout.MARSHAL.cx(), FortressLayout.MARSHAL.cz() + FortressLayout.MARSHAL.half(), 1, 3);
 		else for (int[] c : TowersLayout.build0().sealed) {
 			BlockPos p = pos.add(c[0], c[1], c[2]);
 			if (world.getBlockState(p).isOf(Temples.GATE)) world.breakBlock(p, false);
 		}
 		world.playSound(null, pos, SoundEvents.BLOCK_VAULT_OPEN_SHUTTER, SoundCategory.BLOCKS, 1.4f, 0.6f);
-		tell(nearby(world, RANGE), "towers.aptitudes.lord_open", Formatting.GOLD);
+		tell(nearby(world, RANGE), fortress ? "towers.aptitudes.marshal_ready" : "towers.aptitudes.lord_open", Formatting.GOLD);
 	}
 
 	/** Cae el Coloso: un cofre de recompensa por jugador cercano (hasta cinco) y el logro. */
 	private void finish(ServerWorld world) {
 		List<ServerPlayerEntity> players = nearby(world, 64.0);
 		var layout = TowersLayout.build0();
-		if (fortress) openGate(world, FortressLayout.MARSHAL.cx(), FortressLayout.MARSHAL.cz() - FortressLayout.MARSHAL.half(), 25, 27);
+		if (fortress) breakLegacyFortressGate(world, FortressLayout.MARSHAL.cx(), FortressLayout.MARSHAL.cz() - FortressLayout.MARSHAL.half(), 25, 27);
 		int chests = Math.max(1, Math.min(TowersFlowRules.MAX_REWARD_CHESTS, players.size()));
 		int[] offsets = {0, 1, -1, 2, -2};
 		for (int i = 0; i < chests; i++) {
@@ -343,7 +343,8 @@ public final class TowersControllerBlockEntity extends BlockEntity {
 		tell(players, "towers.aptitudes.colossus_down", Formatting.GOLD);
 	}
 
-	private void openGate(ServerWorld world, int x, int z, int y0, int y1) {
+	/** V88 ya generado: abre sus rejas. V91 no coloca ninguna en la fortaleza. */
+	private void breakLegacyFortressGate(ServerWorld world, int x, int z, int y0, int y1) {
 		for (int dx = -1; dx <= 1; dx++) for (int y = y0; y <= y1; y++) {
 			BlockPos p = pos.add(x + dx, y, z);
 			if (world.getBlockState(p).isOf(Temples.GATE)) world.breakBlock(p, false);

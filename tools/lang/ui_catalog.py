@@ -1929,6 +1929,7 @@ block.aptitudes.three_towers_controller¦Pedra da Vigília¦Pierre de la Veille�
 towers.aptitudes.guardian_woke¦Um cavaleiro oco se ergue de seu posto…¦Un chevalier creux se lève de son poste…¦Ein hohler Ritter erhebt sich von seinem Posten…
 towers.aptitudes.guardian_down¦Um guardião caiu. Restam %s.¦Un gardien est tombé. Il en reste %s.¦Ein Wächter ist gefallen. Noch %s übrig.
 towers.aptitudes.lord_open¦A porta selada da torre do Marechal cede.¦La porte scellée de la tour du Maréchal cède.¦Die versiegelte Tür des Marschallturms gibt nach.
+towers.aptitudes.marshal_ready¦Os dois Guardiões caíram. O Marechal já pode ser enfrentado.¦Les deux Gardiens sont tombés. Vous pouvez désormais affronter le Maréchal.¦Beide Wächter sind gefallen. Der Marschall kann nun herausgefordert werden.
 towers.aptitudes.colossus_woke¦O Marechal sem rosto desperta.¦Le Maréchal sans visage s’éveille.¦Der gesichtslose Marschall erwacht.
 towers.aptitudes.colossus_down¦A Vigília terminou.¦La Veille est terminée.¦Die Wacht ist vorbei.
 advancement.aptitudes.three_towers.title¦Fim da Vigília¦Fin de la Veille¦Das Ende der Wacht

@@ -72,6 +72,7 @@
   "towers.aptitudes.guardian_woke": "Un chevalier creux se lève de son poste…",
   "towers.aptitudes.guardian_down": "Un gardien est tombé. Il en reste %s.",
   "towers.aptitudes.lord_open": "La porte scellée de la tour du Maréchal cède.",
+  "towers.aptitudes.marshal_ready": "Les deux Gardiens sont tombés. Vous pouvez désormais affronter le Maréchal.",
   "towers.aptitudes.colossus_woke": "Le Maréchal sans visage s’éveille.",
   "towers.aptitudes.colossus_down": "La Veille est terminée.",
   "key.aptitudes.roles": "Ouvrir les rôles",

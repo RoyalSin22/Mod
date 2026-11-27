@@ -12,7 +12,10 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.StairsBlock;
+import net.minecraft.block.SlabBlock;
+import net.minecraft.block.LanternBlock;
 import net.minecraft.block.enums.BedPart;
+import net.minecraft.block.enums.SlabType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.world.biome.BiomeKeys;
@@ -179,12 +182,16 @@ public final class ThreeTowersFeature extends Feature<DefaultFeatureConfig> {
 		BlockState state = Registries.BLOCK.get(Identifier.of(bracket < 0 ? key : key.substring(0, bracket))).getDefaultState();
 		if (bracket < 0) return state;
 		if (state.getBlock() instanceof StairsBlock) {
-			return state.with(StairsBlock.FACING, key.contains("facing=east") ? Direction.EAST : Direction.WEST);
+			Direction facing = key.contains("facing=north") ? Direction.NORTH : key.contains("facing=south") ? Direction.SOUTH
+					: key.contains("facing=east") ? Direction.EAST : Direction.WEST;
+			return state.with(StairsBlock.FACING, facing);
 		}
 		if (state.getBlock() instanceof BedBlock) {
 			return state.with(BedBlock.PART, key.contains("part=head") ? BedPart.HEAD : BedPart.FOOT)
 					.with(HorizontalFacingBlock.FACING, Direction.SOUTH);
 		}
+		if (state.getBlock() instanceof SlabBlock && key.contains("type=top")) return state.with(SlabBlock.TYPE, SlabType.TOP);
+		if (state.getBlock() instanceof LanternBlock && key.contains("hanging=true")) return state.with(LanternBlock.HANGING, true);
 		throw new IllegalArgumentException("Propiedades no admitidas en la paleta: " + key);
 	}
 }

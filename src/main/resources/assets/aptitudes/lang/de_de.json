@@ -72,6 +72,7 @@
   "towers.aptitudes.guardian_woke": "Ein hohler Ritter erhebt sich von seinem Posten…",
   "towers.aptitudes.guardian_down": "Ein Wächter ist gefallen. Noch %s übrig.",
   "towers.aptitudes.lord_open": "Die versiegelte Tür des Marschallturms gibt nach.",
+  "towers.aptitudes.marshal_ready": "Beide Wächter sind gefallen. Der Marschall kann nun herausgefordert werden.",
   "towers.aptitudes.colossus_woke": "Der gesichtslose Marschall erwacht.",
   "towers.aptitudes.colossus_down": "Die Wacht ist vorbei.",
   "key.aptitudes.roles": "Rollen öffnen",

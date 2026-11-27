@@ -72,6 +72,7 @@
   "towers.aptitudes.guardian_woke": "A hollow knight rises from its post…",
   "towers.aptitudes.guardian_down": "A guardian has fallen. %s remaining.",
   "towers.aptitudes.lord_open": "The sealed door of the Marshal’s tower gives way.",
+  "towers.aptitudes.marshal_ready": "Both Guardians have fallen. The Marshal can now be challenged.",
   "towers.aptitudes.colossus_woke": "The Faceless Marshal wakes.",
   "towers.aptitudes.colossus_down": "The Vigil is over.",
   "key.aptitudes.roles": "Open roles",

@@ -5,10 +5,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); v
 
 ## [Sin publicar]
 
-### Añadido (V91, Fase 1)
-- Paleta pura por anillo y bioma para Tres Torres, compartida por la generación y las vistas previas.
-- Exportador Gradle a Sponge `.schem` y plantas/isométrica Pillow del plano V88 para revisión visual.
-  La geometría nueva espera capturas del prototipo aprobadas por el autor; no se ha probado en partida.
+### Cambiado (V91, Fases 1 y 2)
+- Las Tres Torres reciben contrafuertes, cubiertas inclinadas, atalayas, ventanas, cornisas,
+  barbacana y brechas con escombros, además de mobiliario y cofres ocultos señalados en las salas.
+  La entrada del Mariscal queda libre; el controlador habilita al Coloso al caer los dos Guardianes.
+  La reja antigua se conserva para estructuras ya generadas y para el templo.
+- Paleta pura por anillo y bioma, compartida por generación y vista previa. El exportador Gradle
+  genera un `.schem` y plantas/isométrica para revisión visual. No se ha probado V91 en partida;
+  el autor enviará capturas antes de aprobar el aspecto.
 
 ### Cambiado (V90)
 - Torre menor de 21×21 con patio amurallado roto, dos contornos (cuadrado y redondo), tres grados de ruina, sótano,

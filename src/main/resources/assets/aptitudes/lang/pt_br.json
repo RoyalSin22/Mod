@@ -72,6 +72,7 @@
   "towers.aptitudes.guardian_woke": "Um cavaleiro oco se ergue de seu posto…",
   "towers.aptitudes.guardian_down": "Um guardião caiu. Restam %s.",
   "towers.aptitudes.lord_open": "A porta selada da torre do Marechal cede.",
+  "towers.aptitudes.marshal_ready": "Os dois Guardiões caíram. O Marechal já pode ser enfrentado.",
   "towers.aptitudes.colossus_woke": "O Marechal sem rosto desperta.",
   "towers.aptitudes.colossus_down": "A Vigília terminou.",
   "key.aptitudes.roles": "Abrir classes",
