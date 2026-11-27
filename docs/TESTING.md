@@ -18,6 +18,12 @@ regeneraron y validaron `build/fortress.schem`. El build se repitió después de
 accesibilidad de los cuatro cofres ocultos y terminó con **BUILD SUCCESSFUL** (1033 pruebas Java,
 ningún fallo). No se ha probado en partida.
 
+Verificación de la Fase 3, 2026-11-27: `.\gradlew.bat --offline build --console=plain` terminó con
+**BUILD SUCCESSFUL**; `python tools/lang/check_lang.py` pasó. La prueba de caminos sigue pasando
+con la arcada y las dos figuras nuevas. El exportador contó 197 111 celdas: 108 911 de despeje
+y 88 200 de material. La nueva comprobación en `ThreeTowersFeature` omite la escritura de una
+celda de despeje cuando el mundo ya contiene aire; aún no se ha medido MSPT ni probado en partida.
+
 ## V90 — Torre menor y campamentos
 
 `TowerCompoundLayoutTest` recorre las dos formas de torre con tres grados de daño y verifica entrada, sótano,

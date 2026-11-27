@@ -5,10 +5,11 @@ Versión objetivo verificada: **Minecraft 1.21.1 · Fabric Loader 0.16.14 · Fab
 
 ## Estado real
 
-### V91 — Fortaleza visual, Fases 1 y 2
+### V91 — Fortaleza visual, Fases 1 a 3
 - Herramientas de revisión y geometría implementadas: `FortressPalette`, exportación `.schem`,
   vistas Pillow, fachadas con profundidad, cubiertas inclinadas, ruinas, salas amuebladas y cofres
-  ocultos. La entrada del Mariscal no tiene reja nueva; el controlador conserva la progresión.
+  ocultos. La Fase 3 añade una arcada rota y dos figuras sin rostro, y evita escribir aire donde
+  el mundo ya tiene aire. La entrada del Mariscal no tiene reja nueva; el controlador conserva la progresión.
   [Plano y comprobaciones](V91_FORTALEZA_REVISION.md). Falta aprobar las capturas reales del autor,
   recorrerla y medir la generación en partida.
 

@@ -101,6 +101,8 @@ def cell(voxels, x, y, z):
 def color(state):
     if state.endswith(":air"):
         return (29, 35, 42)
+    if "calcite" in state:
+        return (218, 214, 195)
     if "blackstone" in state:
         return (56, 53, 64)
     if "deepslate" in state:

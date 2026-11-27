@@ -34,7 +34,7 @@ public final class FortressExport {
 		byte[] voxels = new byte[WIDTH * HEIGHT * LENGTH];
 		boolean[] occupied = new boolean[WIDTH * LENGTH];
 		int[] chunkWrites = new int[64];
-		int written = 0, columns = 0, cursor = 0;
+		int written = 0, airWrites = 0, columns = 0, cursor = 0;
 		for (int z = FortressLayout.MIN; z <= FortressLayout.MAX; z++) {
 			for (int x = FortressLayout.MIN; x <= FortressLayout.MAX; x++) {
 				boolean included = FortressLayout.occupied(x, z);
@@ -49,6 +49,7 @@ public final class FortressExport {
 							? FortressLayout.cell(x, y, z) : null;
 					if (cell != null) {
 						written++;
+						if (cell == FortressLayout.Cell.AIR) airWrites++;
 						chunkWrites[((z - FortressLayout.MIN) / 16) * 8 + (x - FortressLayout.MIN) / 16]++;
 					}
 					String state = FortressPalette.state(cell, x, y, z, ring, biome);
@@ -85,6 +86,7 @@ public final class FortressExport {
 		for (int count : chunkWrites) busiest = Math.max(busiest, count);
 		System.out.println("Fortaleza V91: " + columns + " columnas, " + written + " celdas, " + palette.size()
 				+ " estados; máximo " + busiest + " celdas/chunk; " + WIDTH + "x" + HEIGHT + "x" + LENGTH);
+		System.out.println("Celdas de despeje: " + airWrites + "; material: " + (written - airWrites));
 		System.out.println("Exportación pura: " + ((System.nanoTime() - start) / 1_000_000) + " ms (no mide generación del mundo)");
 		System.out.println(output.resolve("fortress.schem").toAbsolutePath());
 	}

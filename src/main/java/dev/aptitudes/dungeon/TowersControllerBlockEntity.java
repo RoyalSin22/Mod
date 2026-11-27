@@ -47,7 +47,7 @@ import java.util.UUID;
 /**
  * V86 · fase 3: el controlador de Las Tres Torres Señoriales, en el centro del patio (la posición del bloque es el origen de
  * {@link TowersLayout}). Despierta a las criaturas de cada planta, a los dos Guardianes y al Coloso cuando un jugador entra en su
- * sala, abre la puerta del Señor al vencer a los dos Guardianes y, al caer el Coloso, coloca los cofres de la recompensa y concede
+ * sala, habilita el encuentro del Mariscal al vencer a los dos Guardianes y, al caer el Coloso, coloca los cofres de la recompensa y concede
  * el logro. Todo el estado es persistente y <b>nunca retrocede</b>: una sola vez por estructura. Las reglas viven en
  * {@link TowersFlowRules} (puras y con pruebas). Los textos de los avisos son provisionales (los reescribe Codex).
  */

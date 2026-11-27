@@ -28,7 +28,7 @@ public final class FortressLayout {
 		BED_FOOT, BED_HEAD, BREWING, ENCHANTING, ALTAR, HIDDEN_CHEST, SUPPLY_CHEST,
 		TRIM, CORNICE, ARCH_NORTH, ARCH_SOUTH, ARCH_EAST, ARCH_WEST,
 		IRON_BARS, CHAIN, LANTERN, BENCH, TABLE, LECTERN, CAULDRON, BARREL,
-		GRINDSTONE, WOOL_MARKER, MOSS, FENCE
+		GRINDSTONE, WOOL_MARKER, MOSS, FENCE, STATUE_BODY, STATUE_HEAD
 	}
 
 	public record Spawn(TowersLayout.Role role, int level, int x, int y, int z) {}
@@ -77,6 +77,8 @@ public final class FortressLayout {
 		if (rect(x, z, -10, 10, 51, 63)) return barbican(x, y, z);
 		Cell depth = facadeDepth(x, y, z);
 		if (depth != null) return depth;
+		Cell courtyard = courtyard(x, y, z);
+		if (courtyard != null) return courtyard;
 		if (bridge(x, z)) {
 			if (y == 12) return Cell.WOOD;
 			if (y == 13 && (x == -45 || x == -41 || x == 41 || x == 45)) return Cell.FENCE;
@@ -156,6 +158,24 @@ public final class FortressLayout {
 			if (y == 0) return Cell.RUBBLE;
 			if (y == 1 && Math.floorMod(x + z, 3) == 0) return Cell.RUBBLE;
 		}
+		return null;
+	}
+
+	/** Arcada procesional rota y dos figuras sin rostro que señalan la entrada desde el patio. */
+	private static Cell courtyard(int x, int y, int z) {
+		if (Math.abs(x) == 8 && z == 46) {
+			if (y == 0 || y == 1) return Cell.TRIM;
+			if (y == 2 || y == 3) return Cell.STATUE_BODY;
+			if (y == 4) return Cell.STATUE_HEAD;
+		}
+		if (Math.abs(x) != 12 || z < -8 || z > 40) return null;
+		int bay = Math.floorMod(z + 8, 8);
+		boolean broken = x < 0 ? z >= 8 && z <= 16 : z >= 24 && z <= 32;
+		if (bay == 0 && y >= 1 && y <= (broken ? 2 : 5)) return broken && y == 2 ? Cell.RUBBLE : Cell.TRIM;
+		if (broken) return null;
+		if (bay != 0 && y == 6) return Cell.CORNICE;
+		if (y == 5 && bay == 1) return Cell.ARCH_NORTH;
+		if (y == 5 && bay == 7) return Cell.ARCH_SOUTH;
 		return null;
 	}
 

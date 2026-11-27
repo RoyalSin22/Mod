@@ -56,6 +56,9 @@ public final class FortressPalette {
 			case WOOL_MARKER -> "minecraft:purple_wool";
 			case MOSS -> dry ? "minecraft:brown_carpet" : "minecraft:moss_carpet";
 			case FENCE -> "minecraft:dark_oak_fence";
+			case STATUE_BODY -> tier >= 4 ? "minecraft:polished_blackstone_brick_wall"
+					: tier >= 2 ? "minecraft:deepslate_brick_wall" : "minecraft:stone_brick_wall";
+			case STATUE_HEAD -> "minecraft:calcite";
 		};
 	}
 

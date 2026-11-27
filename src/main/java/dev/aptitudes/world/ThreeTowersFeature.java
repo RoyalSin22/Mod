@@ -34,7 +34,7 @@ import net.minecraft.world.gen.feature.util.FeatureContext;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/** V88: cada chunk construye solo su parte del plano de 128×128, desde un origen común por región. */
+/** V91: cada chunk construye solo su parte del plano de 128×128, desde un origen común por región. */
 public final class ThreeTowersFeature extends Feature<DefaultFeatureConfig> {
 	private record Site(boolean valid, int y) {}
 	private static final Map<ServerWorld, Map<Long, Site>> SITES = new ConcurrentHashMap<>();
@@ -165,6 +165,7 @@ public final class ThreeTowersFeature extends Feature<DefaultFeatureConfig> {
 				for (int y = FortressLayout.BOTTOM_Y; y <= FortressLayout.TOP_Y; y++) {
 					FortressLayout.Cell cell = FortressLayout.cell(x, y, z);
 					if (cell == null) continue;
+					if (cell == FortressLayout.Cell.AIR && world.getBlockState(b.at(x, y, z)).isAir()) continue;
 					if (cell == FortressLayout.Cell.HIDDEN_CHEST || cell == FortressLayout.Cell.SUPPLY_CHEST) b.chest(x, y, z, "three_towers_supplies");
 					else b.set(x, y, z, state(cell, x, y, z, ring, biome));
 				}

@@ -197,6 +197,9 @@ class FortressLayoutTest {
 		for (Cell c : Cell.values()) assertFalse(c.name().contains("GATE"));
 		assertEquals(Cell.ROOF, FortressLayout.cell(-40, 16, -12), "cumbrera inclinada del monasterio");
 		assertEquals(Cell.ROOF, FortressLayout.cell(28, 50, -28), "cubierta escalonada del Mariscal");
+		assertEquals(Cell.STATUE_HEAD, FortressLayout.cell(-8, 4, 46), "figura sin rostro del patio");
+		assertEquals(Cell.CORNICE, FortressLayout.cell(12, 6, -7), "bóveda de la arcada");
+		assertEquals(Cell.RUBBLE, FortressLayout.cell(-12, 2, 8), "tramo hundido de la arcada");
 	}
 
 	@Test void layoutDoesNotDependOnTheOrderOfChunkQueries() {
