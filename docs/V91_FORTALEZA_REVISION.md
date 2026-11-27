@@ -27,7 +27,8 @@ Las capturas a altura del jugador tomadas allí deben ser aprobadas por el autor
 `FortressPalette` es la fuente común de estados para la generación y la vista previa: piedra en
 anillos bajos, pizarra profunda en medios y piedra negra en altos, con desgaste y variación de
 madera/vidrio según el bioma. El controlador y las rejas V88 son las dos excepciones funcionales
-a los bloques vanilla. El exportador toma por defecto anillo 3 y `minecraft:plains`; puede recibir
+a los bloques vanilla. El bioma se consulta en el origen común de la fortaleza para evitar costuras
+de material entre chunks. El exportador toma por defecto anillo 3 y `minecraft:plains`; puede recibir
 otros valores como segundo y tercer argumento de su clase Java. La geometría no depende de esos
 valores.
 
